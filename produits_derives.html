@@ -1,0 +1,2487 @@
+<!DOCTYPE html>
+<html lang="fr" subject-id="produits-derives">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Produits Dérivés I — M1 MBAF</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --card:#fff; --card2:#fbf9f5;
+  --paper:#faf6ef; --paper2:#f3ece0; --ink:#22201b; --line:#e3d9c8;
+  --teal:#1b6b5e; --amber:#c87a12; --rust:#a8432a; --plum:#6b3a73; --navy:#241C15;
+  --teal-soft:#e3efec; --amber-soft:#f6ead4; --rust-soft:#f3e0da; --plum-soft:#ece3ef; --navy-soft:#dde6f0;
+  --shadow:0 2px 14px rgba(34,32,27,.07); --shadow-lg:0 8px 30px rgba(34,32,27,.13);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-track{background:var(--paper2)}
+::-webkit-scrollbar-thumb{background:#cdbfa6;border-radius:6px;border:2px solid var(--paper2)}
+::-webkit-scrollbar-thumb:hover{background:var(--amber)}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:62px;z-index:50;background:var(--paper);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:18px;padding:0 22px}
+.brand{display:flex;align-items:center;gap:11px;font-family:'Fraunces',serif;font-weight:600;font-size:1.12rem;color:var(--navy)}
+.brand .logo{width:36px;height:36px;border-radius:9px;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:1.15rem;flex-shrink:0;box-shadow:var(--shadow)}
+.brand small{display:block;font-family:'DM Sans';font-weight:500;font-size:.66rem;letter-spacing:.09em;color:var(--amber);text-transform:uppercase}
+.hublink{font-family:'DM Mono';font-size:.72rem;color:#8a8170;text-decoration:none;padding:5px 10px;border-radius:8px;border:1px solid var(--line);white-space:nowrap;transition:.15s}
+.hublink:hover{color:var(--navy);border-color:#c9bca3;background:var(--card)}
+.progress-wrap{flex:1;max-width:300px;display:flex;flex-direction:column;gap:3px}
+.progress-wrap .lab{font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:#8a8170;font-weight:600;display:flex;justify-content:space-between}
+.progress-bar{height:8px;background:var(--paper2);border-radius:5px;overflow:hidden;border:1px solid var(--line)}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),#2a8a78);transition:width .5s cubic-bezier(.4,0,.2,1)}
+.xp{margin-left:auto;display:flex;align-items:center;gap:7px;background:var(--amber-soft);border:1px solid #e6cf9e;color:var(--amber);font-weight:700;padding:7px 14px;border-radius:30px;font-size:.9rem}
+.burger{display:none;background:none;border:1px solid var(--line);border-radius:8px;padding:7px 10px;cursor:pointer;font-size:1.1rem;color:var(--ink)}
+
+.shell{display:flex;padding-top:62px}
+.sidebar{position:fixed;top:62px;bottom:0;left:0;width:282px;background:var(--paper2);border-right:1px solid var(--line);overflow-y:auto;padding:20px 14px 50px;z-index:40;transition:transform .3s}
+.sidebar h4{font-family:'Fraunces',serif;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:#8a8170;margin:18px 10px 9px;font-weight:600}
+.sidebar h4:first-child{margin-top:0}
+.nav-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;cursor:pointer;font-size:.92rem;color:var(--ink);border:1px solid transparent;transition:.16s;margin-bottom:3px}
+.nav-item:hover{background:#ece3d3}
+.nav-item.active{background:var(--card);border-color:var(--line);box-shadow:var(--shadow);font-weight:600;color:var(--navy)}
+.nav-item .num{width:25px;height:25px;border-radius:50%;background:var(--card);border:1.5px solid var(--line);flex-shrink:0;display:grid;place-items:center;font-size:.78rem;font-weight:700;font-family:'DM Mono';color:#8a8170;transition:.16s}
+.nav-item.active .num,.nav-item.done .num{background:var(--teal);color:#fff;border-color:var(--teal)}
+.nav-item .lab{flex:1;line-height:1.25}
+.nav-item.special{background:var(--plum-soft);border-color:#d8c5dc;color:var(--plum);font-weight:600}
+.nav-item.special.active{background:var(--plum);color:#fff}
+.nav-item.special2{background:var(--navy-soft);border-color:#c3d2e2;color:var(--navy);font-weight:600}
+.nav-item.special2.active{background:var(--navy);color:#fff}
+.nav-item.special3{background:var(--amber-soft);border-color:#e6cf9e;color:var(--amber);font-weight:600}
+.nav-item.special3.active{background:var(--amber);color:#fff}
+.nav-item .ico{font-size:1.05rem}
+
+.main{flex:1;margin-left:282px;padding:40px 6vw 120px;max-width:920px}
+.view{display:none;animation:fadeIn .45s ease}
+.view.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.tag{display:inline-block;font-family:'DM Mono';font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;background:var(--navy-soft);color:var(--navy);padding:5px 12px;border-radius:20px;font-weight:500;margin-bottom:16px}
+h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;font-weight:600;color:var(--ink);margin-bottom:10px;letter-spacing:-.01em}
+.subtitle{font-size:1.12rem;color:#6f6757;margin-bottom:30px;max-width:62ch}
+.main p{margin-bottom:16px;font-size:1.04rem;max-width:68ch}
+.main h2{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:600;color:var(--navy);margin:38px 0 14px;letter-spacing:-.01em}
+.main strong{font-weight:600;color:var(--ink)}
+
+.callout{border-radius:14px;padding:18px 20px 18px 22px;margin:24px 0;border-left:5px solid;position:relative;font-size:1rem}
+.callout .ct{font-weight:700;font-family:'Fraunces',serif;font-size:1.02rem;display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.callout p{margin:0;max-width:none}
+.c-analogy{background:var(--amber-soft);border-color:var(--amber);color:#5e3a06}
+.c-analogy .ct{color:var(--amber)}
+.c-retenir{background:var(--teal-soft);border-color:var(--teal);color:#0f3d36}
+.c-retenir .ct{color:var(--teal)}
+.c-piege{background:var(--rust-soft);border-color:var(--rust);color:#5e2317}
+.c-piege .ct{color:var(--rust)}
+
+.rulebox{background:#1c1a16;color:#f3ece0;border-radius:14px;padding:22px 24px;margin:26px 0;font-family:'DM Mono';box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
+.rulebox::before{content:'REPÈRE';position:absolute;top:13px;right:18px;font-size:.62rem;letter-spacing:.2em;color:#7d7566}
+.rulebox.formule::before{content:'FORMULE'}
+.rulebox .rb-main{font-size:1.18rem;font-weight:500;line-height:1.5;color:#fff}
+.rulebox .rb-sub{font-size:.86rem;color:#b8af9d;margin-top:10px;line-height:1.55}
+.rulebox em{color:var(--amber);font-style:normal;font-weight:500}
+
+.tbl{width:100%;border-collapse:collapse;margin:22px 0;font-size:.96rem;background:var(--card);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line)}
+.tbl th{background:var(--navy);color:#fff;text-align:left;padding:11px 15px;font-weight:600;font-size:.86rem}
+.tbl td{padding:11px 15px;border-top:1px solid var(--line);vertical-align:top}
+.tbl tr:nth-child(even) td{background:var(--paper)}
+.tbl td:first-child{font-weight:600;color:var(--navy);white-space:nowrap}
+.tbl.wrap td:first-child{white-space:normal}
+.tbl.num td{font-family:'DM Mono';font-size:.94rem}
+.tbl.num td:first-child{font-family:'DM Sans'}
+
+.example{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:26px 0;box-shadow:var(--shadow)}
+.example .ex-head{font-family:'Fraunces',serif;font-weight:600;color:var(--plum);font-size:1.08rem;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.step{display:flex;gap:14px;margin-bottom:14px}
+.step:last-child{margin-bottom:0}
+.step .sn{width:27px;height:27px;border-radius:50%;background:var(--plum);color:#fff;flex-shrink:0;display:grid;place-items:center;font-family:'DM Mono';font-weight:500;font-size:.85rem}
+.step .sc{flex:1;padding-top:1px}
+.step .sc b{color:var(--navy)}
+.step .sc code{background:var(--paper2);padding:2px 7px;border-radius:5px;font-family:'DM Mono';font-size:.9rem;color:var(--teal)}
+.ex-result{margin-top:6px;background:var(--teal-soft);border:1px solid #bcdcd4;border-radius:10px;padding:12px 16px;font-weight:600;color:#0f3d36}
+
+.schema{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin:26px 0;box-shadow:var(--shadow);text-align:center}
+.schema .scap{font-size:.82rem;color:#8a8170;margin-top:12px;font-style:italic}
+.schema svg{max-width:100%;height:auto}
+
+.quiz{background:var(--plum-soft);border:1px solid #d8c5dc;border-radius:14px;padding:20px 22px;margin:24px 0}
+.quiz .qhead{font-family:'DM Mono';font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--plum);font-weight:500;margin-bottom:9px}
+.quiz .q{font-weight:600;font-size:1.05rem;margin-bottom:14px;color:var(--ink)}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{text-align:left;background:var(--card);border:1.5px solid #d8c5dc;border-radius:10px;padding:11px 15px;cursor:pointer;font-family:'DM Sans';font-size:.98rem;color:var(--ink);transition:.15s}
+.opt:hover:not(:disabled){border-color:var(--plum);background:#fbf8fc}
+.opt:disabled{cursor:default}
+.opt.right{background:var(--teal-soft);border-color:var(--teal);color:#0f3d36;font-weight:600}
+.opt.right::after{content:' ✓';color:var(--teal);font-weight:700}
+.opt.wrong{background:var(--rust-soft);border-color:var(--rust);color:#5e2317}
+.opt.wrong::after{content:' ✗';color:var(--rust);font-weight:700}
+.feedback{margin-top:13px;padding:12px 15px;border-radius:10px;background:var(--card);border:1px dashed #cbb9cf;font-size:.95rem;color:#5a4d5d}
+.feedback b{color:var(--plum)}
+
+.lesson-nav{display:flex;justify-content:space-between;gap:14px;margin-top:46px;padding-top:26px;border-top:1px solid var(--line)}
+.btn{font-family:'DM Sans';font-weight:600;font-size:.98rem;padding:12px 22px;border-radius:11px;cursor:pointer;border:1.5px solid var(--line);background:var(--card);color:var(--ink);transition:.16s;display:inline-flex;align-items:center;gap:8px}
+.btn:hover{border-color:#bbac90;transform:translateY(-1px)}
+.btn.primary{background:var(--teal);color:#fff;border-color:var(--teal);box-shadow:var(--shadow)}
+.btn.primary:hover{background:#155a4f}
+.btn.plum{background:var(--plum);color:#fff;border-color:var(--plum)}
+.btn.plum:hover{background:#592f60}
+.btn.amber{background:var(--amber);color:#fff;border-color:var(--amber)}
+.btn.amber:hover{background:#a86610}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.print-fab{position:fixed;bottom:26px;left:26px;z-index:110;background:var(--card);color:var(--ink2);border:1.5px solid var(--line2);font-weight:600;padding:10px 16px;border-radius:24px;cursor:pointer;font-family:'DM Sans';font-size:.85rem;box-shadow:var(--shadow);transition:.15s}
+.print-fab:hover{border-color:var(--navy);color:var(--navy);transform:translateY(-1px)}
+@media(max-width:880px){.print-fab{bottom:20px;left:16px;padding:9px 13px;font-size:.8rem}}
+.xp-pop{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--amber);color:#fff;font-weight:700;padding:13px 26px;border-radius:30px;box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:.4s;z-index:200;font-size:1rem}
+.xp-pop.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.test-q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:18px;box-shadow:var(--shadow);transition:.3s}
+.test-q .tq-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px}
+.test-q .tq-num{font-family:'DM Mono';font-weight:500;color:var(--navy);font-size:.9rem}
+.test-q .tq-chap{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:#8a8170;font-weight:600;background:var(--paper2);padding:4px 10px;border-radius:20px;text-align:right}
+.test-q .tq-q{font-weight:600;font-size:1.08rem;margin-bottom:14px}
+.num-input{font-family:'DM Mono';font-size:1.05rem;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;width:190px;background:var(--paper)}
+.num-input:focus{outline:none;border-color:var(--teal)}
+.unit{font-family:'DM Mono';color:#8a8170;margin-left:9px}
+.topt{display:flex;flex-direction:column;gap:8px}
+.topt button{text-align:left;background:var(--paper);border:1.5px solid var(--line);border-radius:10px;padding:11px 15px;cursor:pointer;font-family:'DM Sans';font-size:.98rem;transition:.15s}
+.topt button:hover{border-color:var(--teal)}
+.topt button.sel{background:var(--teal-soft);border-color:var(--teal);font-weight:600;color:#0f3d36}
+.remed{margin-top:14px;border-radius:11px;border-left:5px solid var(--rust);background:var(--rust-soft);padding:15px 18px;display:none}
+.remed.show{display:block;animation:fadeIn .35s}
+.remed .rt{font-weight:700;color:var(--rust);font-family:'Fraunces',serif;margin-bottom:5px;display:flex;align-items:center;gap:7px}
+.remed .ra{font-size:.95rem;color:#5e2317;margin-bottom:11px}
+.remed-btns{display:flex;gap:10px;flex-wrap:wrap}
+.remed-btns .btn{padding:8px 16px;font-size:.88rem}
+.test-q.ok{border-color:var(--teal);background:#fbfdfc}
+.test-q.ko{border-color:var(--rust)}
+.float-retry{position:fixed;bottom:26px;right:26px;z-index:120;display:none;background:var(--plum);color:#fff;border:none;font-weight:700;padding:14px 24px;border-radius:30px;box-shadow:var(--shadow-lg);cursor:pointer;font-family:'DM Sans';font-size:.98rem;align-items:center;gap:9px}
+.float-retry.show{display:inline-flex;animation:fadeIn .4s}
+
+.result{display:none;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:34px;box-shadow:var(--shadow-lg);text-align:center;animation:fadeIn .5s}
+.result.show{display:block}
+.result .score-big{font-family:'Fraunces',serif;font-size:4rem;font-weight:700;line-height:1;color:var(--teal)}
+.result .score-lab{color:#8a8170;font-weight:600;margin-bottom:8px}
+.result .msg{font-size:1.12rem;margin:14px auto 28px;max-width:46ch;color:var(--ink)}
+.chapbars{text-align:left;max-width:560px;margin:0 auto}
+.chapbar{margin-bottom:14px}
+.chapbar .cbl{display:flex;justify-content:space-between;font-size:.9rem;font-weight:600;margin-bottom:5px}
+.chapbar .cbl span:last-child{font-family:'DM Mono';color:#8a8170}
+.cbt{height:13px;background:var(--paper2);border-radius:7px;overflow:hidden;border:1px solid var(--line)}
+.cbf{height:100%;border-radius:7px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+
+.annale{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px 26px;margin-bottom:22px;box-shadow:var(--shadow)}
+.annale .an-tag{font-family:'DM Mono';font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);font-weight:500}
+.annale h3{font-family:'Fraunces',serif;font-size:1.32rem;color:var(--navy);margin:6px 0 14px;font-weight:600}
+.annale .enonce{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:16px 19px;font-size:1rem;color:#3a352c}
+.annale .enonce .qlist{margin:10px 0 0 4px}
+.annale .enonce .qlist li{margin-bottom:5px;list-style:none;padding-left:22px;position:relative}
+.annale .enonce .qlist li::before{content:'▸';position:absolute;left:0;color:var(--amber);font-weight:700}
+.corrige{margin-top:14px;display:none;animation:fadeIn .4s}
+.corrige.show{display:block}
+.corrige-head{font-family:'Fraunces',serif;font-weight:600;color:var(--teal);margin-bottom:12px;display:flex;align-items:center;gap:8px;font-size:1.06rem}
+
+.intro-card{background:var(--navy);color:#f3ece0;border-radius:16px;padding:24px 26px;margin-bottom:26px}
+.intro-card h2{color:#fff;margin:0 0 8px;font-family:'Fraunces',serif;font-size:1.4rem}
+.intro-card p{color:#cdd8e6;max-width:none;margin:0}
+.intro-card.amber{background:#7a4c08}
+.intro-card.amber p{color:#f2e0c0}
+.intro-card.plum{background:#4a2750}
+.intro-card.plum p{color:#e6d5ea}
+
+/* ===== GÉNÉRATEUR DE CALCULS ===== */
+.gen-modes{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:22px}
+.gen-mode{padding:10px 16px;border-radius:24px;border:1.5px solid var(--line);background:var(--card);color:#6f6757;font-family:'DM Sans';font-weight:600;font-size:.9rem;cursor:pointer;transition:.15s}
+.gen-mode:hover{border-color:#bbac90}
+.gen-mode.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.gen-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;box-shadow:var(--shadow);margin-bottom:20px}
+.gen-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.gen-type{font-family:'DM Mono';font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--plum);font-weight:500}
+.gen-stats{display:flex;gap:8px;font-family:'DM Mono';font-size:.78rem}
+.gen-stat{background:var(--paper2);border:1px solid var(--line);border-radius:20px;padding:4px 11px;color:#6f6757}
+.gen-stat b{color:var(--navy)}
+.gen-enonce{font-size:1.06rem;margin-bottom:8px}
+.gen-enonce b{color:var(--navy)}
+.gen-data{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:14px 18px;margin:14px 0;font-family:'DM Mono';font-size:.95rem;line-height:1.85}
+.gen-data .dl{color:#8a8170;display:inline-block;min-width:170px}
+.gen-ask{font-weight:600;margin:14px 0 12px;color:var(--ink)}
+.gen-input-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.gen-fb{margin-top:16px;border-radius:12px;padding:16px 19px;display:none;animation:fadeIn .35s}
+.gen-fb.show{display:block}
+.gen-fb.ok{background:var(--teal-soft);border:1px solid #bcdcd4}
+.gen-fb.ko{background:var(--rust-soft);border:1px solid #e7c4b8}
+.gen-fb .fb-head{font-family:'Fraunces',serif;font-weight:700;font-size:1.05rem;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.gen-fb.ok .fb-head{color:#0f3d36}
+.gen-fb.ko .fb-head{color:var(--rust)}
+.gen-fb .yours{font-family:'DM Mono';font-size:.88rem;color:var(--rust);margin-bottom:10px}
+.timer{font-family:'DM Mono';font-size:.82rem;background:var(--amber-soft);border:1px solid #e6cf9e;color:var(--amber);padding:4px 12px;border-radius:20px;font-weight:600}
+.timer.off{opacity:.45}
+
+.hint{font-size:.85rem;color:#8a8170;font-style:italic;margin-top:8px}
+.overlay{display:none;position:fixed;inset:62px 0 0 0;background:rgba(34,32,27,.4);z-index:35}
+@media(max-width:880px){
+  .main{margin-left:0;padding:30px 22px 110px}
+  .sidebar{transform:translateX(-100%);box-shadow:var(--shadow-lg)}
+  .sidebar.open{transform:translateX(0)}
+  .overlay.show{display:block}
+  .burger{display:block}
+  .progress-wrap{max-width:none}
+  .brand small{display:none}
+  h1.lesson-title{font-size:1.8rem}
+  .xp{padding:6px 11px;font-size:.82rem}
+  .gen-data .dl{min-width:0;display:block}
+}
+@media(max-width:560px){
+  .progress-wrap,.hublink{display:none}
+  .topbar{gap:12px}
+}
+</style>
+<link rel="stylesheet" href="ui.css">
+<link rel="stylesheet" href="theme.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#F7F8FA">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="M1 MBAF">
+</head>
+<body>
+
+<div class="topbar">
+  <button class="burger" onclick="toggleSidebar()">☰</button>
+  <div class="brand">
+    <span class="logo">💱</span>
+    <span>Produits Dérivés I<small>M1 MBAF · Forward</small></span>
+  </div>
+  <span id="nav-slot"></span>
+  <div class="progress-wrap">
+    <div class="lab"><span>Progression</span><span id="progPct">0 %</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+  </div>
+  <div class="xp"><span class="star">★</span><span id="xpVal">0</span> XP</div>
+  <span id="lb-id-slot"></span>
+</div>
+
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <h4>Chapitre 1 · Le marché des changes</h4>
+    <div id="navList1"></div>
+    <h4>Chapitre 2 · Le marché au comptant</h4>
+    <div id="navList2"></div>
+    <h4>Chapitre 3 · Le marché à terme (Forward)</h4>
+    <div id="navList3"></div>
+    <h4>S'entraîner</h4>
+    <div class="nav-item special3" data-view="generateur" onclick="go('generateur')">
+      <span class="ico">🎲</span><span class="lab">Calculs générés · ∞</span>
+    </div>
+    <div class="nav-item special2" data-view="annales" onclick="go('annales')">
+      <span class="ico">📐</span><span class="lab">Applications corrigées</span>
+    </div>
+    <div class="nav-item special" data-view="test" onclick="go('test')">
+      <span class="ico">🎯</span><span class="lab">Test final adaptatif</span>
+    </div>
+  </aside>
+
+  <main class="main" id="main">
+
+    <!-- ============ LEÇON 1 ============ -->
+    <section class="view" data-view="l1">
+      <span class="tag">Leçon 1 · Introduction</span>
+      <h1 class="lesson-title">Le marché des changes : poids et géographie</h1>
+      <p class="subtitle">Pourquoi les entreprises subissent un risque de change, et à quoi ressemble le plus grand marché du monde.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Une entreprise qui exporte, c'est quelqu'un qui accepte d'être payé dans une monnaie qu'il ne maîtrise pas. Entre la signature du contrat et le paiement, la valeur de cette monnaie bouge — et ce mouvement peut effacer toute la marge commerciale. Le marché des changes existe pour gérer ce décalage.</p>
+      </div>
+
+      <p>Les entreprises sont confrontées au <strong>risque de change</strong> parce qu'elles réalisent des opérations de nature commerciale (exportations, importations de biens et services) ou financière (prêts, emprunts) libellées dans des devises différentes de celles utilisées pour établir leurs états financiers. Comme les taux de change varient, ces fluctuations génèrent des gains ou des pertes parfois importants.</p>
+
+      <p>Le marché des changes est le marché sur lequel se confrontent les <strong>offres</strong> (les ventes) et les <strong>demandes</strong> (les achats) de devises, afin de déterminer les cours ou taux de change.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Transactions quotidiennes mondiales : environ <em>5 100 milliards de USD</em> en 2023 (source BRI).</div>
+        <div class="rb-sub">Le marché s'est développé de façon considérable depuis l'instauration des taux de change flottants.</div>
+      </div>
+
+      <h2>Les places financières</h2>
+      <p>Une <strong>place financière internationale</strong> est un lieu de rencontre de flux financiers internationaux, redistribués à travers le monde. Elle doit témoigner d'une capacité d'attraction des capitaux étrangers et offrir suffisamment de débouchés pour ces fonds.</p>
+
+      <table class="tbl num">
+        <tr><th>Place</th><th>Part des transactions de change</th></tr>
+        <tr><td>Londres</td><td>Plus de 30 % — premier rang</td></tr>
+        <tr><td>New York</td><td>Près de 16 %</td></tr>
+        <tr><td>Tokyo</td><td>Un peu plus de 9 %</td></tr>
+      </table>
+
+      <h2>Le poids des devises</h2>
+      <p>L'<strong>USD</strong> intervient dans environ <strong>88 %</strong> des transactions de change mondiales : toutes les monnaies sont cotées par rapport à lui. Viennent ensuite l'<strong>EUR (31 %)</strong>, le <strong>JPY (23 %)</strong>, la <strong>GBP (13 %)</strong> et le <strong>CHF (6 %)</strong>.</p>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Ces pourcentages s'apprécient <strong>par rapport à 200 %</strong>, et non à 100 % : une transaction de change met toujours en jeu <strong>deux</strong> monnaies. Le poids relatif réel de l'USD est donc d'environ <strong>44 %</strong> par rapport aux autres devises. C'est exactement le type de subtilité qui distingue une bonne copie d'une copie moyenne.</p>
+      </div>
+
+      <h2>La structure du marché</h2>
+      <div class="schema">
+        <svg viewBox="0 0 620 210" xmlns="http://www.w3.org/2000/svg">
+          <g font-family="DM Sans" font-size="13">
+            <rect x="200" y="10" width="220" height="42" rx="11" fill="var(--navy-soft)" stroke="var(--navy)" stroke-width="2"/>
+            <text x="310" y="36" text-anchor="middle" font-weight="700" fill="var(--navy)">Marché des changes</text>
+            <path d="M255 52 L150 82" stroke="var(--muted2)" stroke-width="1.5"/>
+            <path d="M365 52 L470 82" stroke="var(--muted2)" stroke-width="1.5"/>
+            <rect x="20" y="82" width="260" height="40" rx="10" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="2"/>
+            <text x="150" y="107" text-anchor="middle" font-weight="700" fill="var(--teal)">Changes traditionnel</text>
+            <rect x="345" y="82" width="260" height="40" rx="10" fill="var(--plum-soft)" stroke="var(--plum)" stroke-width="2"/>
+            <text x="475" y="107" text-anchor="middle" font-weight="700" fill="var(--plum)">Produits dérivés</text>
+            <path d="M90 122 L70 150" stroke="var(--muted2)" stroke-width="1.3"/>
+            <path d="M210 122 L230 150" stroke="var(--muted2)" stroke-width="1.3"/>
+            <rect x="10" y="150" width="125" height="46" rx="9" fill="var(--card)" stroke="var(--teal)" stroke-width="1.5"/>
+            <text x="72" y="170" text-anchor="middle" font-size="12" font-weight="600" fill="var(--teal)">Au comptant</text>
+            <text x="72" y="187" text-anchor="middle" font-size="10.5" fill="var(--teal-deep)">Spot</text>
+            <rect x="155" y="150" width="125" height="46" rx="9" fill="var(--card)" stroke="var(--teal)" stroke-width="1.5"/>
+            <text x="217" y="170" text-anchor="middle" font-size="12" font-weight="600" fill="var(--teal)">À terme</text>
+            <text x="217" y="187" text-anchor="middle" font-size="10.5" fill="var(--teal-deep)">Forward</text>
+            <rect x="345" y="150" width="260" height="46" rx="9" fill="var(--card)" stroke="var(--plum)" stroke-width="1.5"/>
+            <text x="475" y="170" text-anchor="middle" font-size="12" font-weight="600" fill="var(--plum)">Currency Futures · Options</text>
+            <text x="475" y="187" text-anchor="middle" font-size="10.5" fill="var(--plum-deep)">valeur dépendant d'un sous-jacent</text>
+          </g>
+        </svg>
+        <div class="scap">Deux compartiments interdépendants pour le marché traditionnel ; seul le marché à terme permet la couverture.</div>
+      </div>
+
+      <div class="rulebox">
+        <div class="rb-main">Marché traditionnel = <em>comptant (spot)</em> + <em>à terme (forward)</em>, deux compartiments interdépendants.</div>
+        <div class="rb-sub">Contrairement au comptant, le marché à terme permet la couverture du risque de change. Les produits dérivés de devises (Currency Futures, options de change) ont une valeur qui dépend d'un actif sous-jacent : une devise.</div>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>5 100 Mds USD/jour (BRI 2023) · Londres &gt; 30 %, New York ≈ 16 %, Tokyo ≈ 9 % · USD ≈ 88 % (sur 200 %, soit ≈ 44 % en poids relatif) · EUR 31 %, JPY 23 %, GBP 13 %, CHF 6 % · traditionnel (spot + forward) vs dérivés.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Quelle place financière occupe le premier rang sur le marché des changes ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">New York</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Londres</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Tokyo</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Londres dépasse 30 % des transactions, devant New York (≈ 16 %) et Tokyo (≈ 9 %).</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Les 88 % de l'USD s'apprécient par rapport à…</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">100 %</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">200 %</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">50 %</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Une transaction met en jeu deux monnaies : le total fait 200 %. Le poids relatif réel de l'USD est donc d'environ 44 %.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <span></span>
+        <button class="btn primary" onclick="validate('l1',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 2 ============ -->
+    <section class="view" data-view="l2">
+      <span class="tag">Leçon 2 · Participants</span>
+      <h1 class="lesson-title">Qui intervient sur le marché des changes ?</h1>
+      <p class="subtitle">Banques et cambistes, banque centrale, courtiers, institutions financières non bancaires : quatre familles d'acteurs aux rôles distincts.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Imaginez une place de marché : les banques tiennent les étals (elles affichent en permanence un prix d'achat et de vente), la banque centrale est le maire qui intervient quand les prix s'emballent, les courtiers sont les rabatteurs qui mettent en relation sans jamais acheter pour eux-mêmes, et les fonds sont les gros clients qui font bouger les volumes.</p>
+      </div>
+
+      <div class="rulebox">
+        <div class="rb-main">Quatre participants : les <em>banques</em>, la <em>banque centrale</em>, les <em>courtiers (brokers)</em>, les <em>institutions financières non bancaires</em>.</div>
+      </div>
+
+      <h2>Les banques et les cambistes</h2>
+      <p>Les banques sont les <strong>principaux participants</strong> au marché des changes. Elles agissent pour le compte de leurs clients ou pour leur propre compte — deux activités difficiles à dissocier. Cette présence continue suppose une infrastructure humaine et matérielle coûteuse : une <strong>salle des marchés</strong>.</p>
+
+      <p>Dans les banques, les spécialistes du marché des changes sont les <strong>cambistes</strong>, qui opèrent dans ces salles.</p>
+
+      <table class="tbl wrap">
+        <tr><th>Type de cambiste</th><th>Rôle</th></tr>
+        <tr><td>Teneurs de marché (Market Makers)</td><td>Assurent en permanence la liquidité du marché : ils sont à tout instant en mesure d'offrir un grand nombre de devises à l'achat et à la vente. Ils assurent un rôle de contrepartie et les cours qu'ils fixent servent de référence. Seules les très grandes banques peuvent exercer cette fonction</td></tr>
+        <tr><td>Cambistes clientèle (Salers)</td><td>Chargés de répondre à la demande de leurs clients</td></tr>
+      </table>
+
+      <p>Toute banque agissant sur le marché doit disposer d'un réseau de <strong>banques correspondantes</strong> à l'étranger, qui servent d'intermédiaires pour verser ou recevoir les devises négociées. Un compte de correspondant pour une banque d'un pays A est un compte ouvert dans une banque partenaire d'un pays B, tenu dans la monnaie de ce pays B.</p>
+
+      <h2>La banque centrale</h2>
+      <table class="tbl wrap">
+        <tr><th>Fonction</th><th>Contenu</th></tr>
+        <tr><td>Exécuter les ordres de sa clientèle</td><td>Administrations publiques, banques centrales étrangères, organismes internationaux</td></tr>
+        <tr><td>Régulariser le cours de la monnaie nationale</td><td>Pour des raisons de politique économique interne, ou pour respecter des parités fixes dans un système de taux de change fixe. Intervient aussi en change flottant quand des turbulences provoquent des fluctuations erratiques jugées sans justification économique</td></tr>
+      </table>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Compte tenu de l'ampleur du marché face aux réserves des banques centrales, leurs interventions sont <strong>en général limitées</strong>. Pour être efficaces, elles doivent être <strong>massives, coordonnées et se produire à des moments opportuns</strong> — retenez ces trois conditions, elles tombent souvent.</p>
+      </div>
+
+      <h2>Les courtiers ou brokers</h2>
+      <p>Passer par un courtier n'est pas indispensable. Les courtiers <strong>n'interviennent pas pour leur propre compte</strong> : ce sont de simples intermédiaires qui ne prennent <strong>aucune position de change</strong>. Ce sont des professionnels indépendants jouant un rôle d'intermédiaires et d'informateurs : grâce à leurs contacts, ils centralisent les ordres d'achat et de vente de plusieurs banques et informent les opérateurs des meilleurs cours.</p>
+
+      <p>L'intérêt principal pour un cambiste est de <strong>conserver l'anonymat</strong> de ses transactions : le nom de la contrepartie n'est révélé qu'une fois la transaction réalisée.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Courtiers : maisons principalement à <em>Londres</em> et <em>New York</em> · environ <em>40 %</em> des transactions · commission de l'ordre de <em>0,01 %</em>.</div>
+        <div class="rb-sub">Depuis 1992, le courtage électronique s'est développé sur le marché au comptant : les cours s'affichent sur des terminaux informatiques, ce qui assure une meilleure transparence.</div>
+      </div>
+
+      <h2>Les institutions financières non bancaires</h2>
+      <p>Depuis le début des années 90, elles sont devenues des opérateurs très actifs.</p>
+
+      <table class="tbl wrap">
+        <tr><th>Catégorie</th><th>Définition et exemples</th></tr>
+        <tr><td>Corporates</td><td>Filiales de groupes industriels et commerciaux</td></tr>
+        <tr><td>Institutionnelles</td><td>Fonds de pension, caisses de retraite, sociétés d'assurances, fonds gérés pour compte de tiers : mutual funds et hedge funds américains, SICAV et FCP français, Unit Trusts britanniques (Fidelity, Schwab…)</td></tr>
+      </table>
+
+      <p class="hint">Exemple à retenir : <strong>CALPERS</strong>, le fonds de pension des employés de l'État de Californie.</p>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Banques = principaux participants · cambistes = market makers (liquidité, référence) ou salers (clientèle) · banque centrale = exécution + régulation, interventions massives/coordonnées/opportunes · courtiers = intermédiaires sans position, 40 % des transactions, 0,01 % de commission, anonymat · institutions non bancaires = corporates + institutionnelles.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Un courtier (broker) sur le marché des changes…</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Prend des positions de change pour son propre compte</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Est un simple intermédiaire qui ne prend aucune position de change</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Fixe les cours de référence du marché</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Le courtier n'intervient jamais pour son propre compte. Ce sont les market makers qui fixent les cours de référence.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Quel est l'intérêt principal, pour un cambiste, de passer par un courtier ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Obtenir une commission plus faible</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Conserver l'anonymat de ses transactions</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Éviter le risque de contrepartie</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Le nom de la contrepartie n'est révélé qu'une fois la transaction conclue.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l1')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l2',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 3 ============ -->
+    <section class="view" data-view="l3">
+      <span class="tag">Leçon 3 · Supports & fonctionnement</span>
+      <h1 class="lesson-title">Comment circulent réellement les devises</h1>
+      <p class="subtitle">Comptes nostri et lori, SWIFT, marché de gros et de détail : la mécanique concrète derrière chaque transaction.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Aucun billet ne traverse l'Atlantique quand on achète des dollars. Tout se joue par écriture comptable : deux banques tiennent chacune un compte chez l'autre, et l'opération se résume à débiter l'un et créditer l'autre. Le change, c'est de la comptabilité à distance, pas du transport de valise.</p>
+      </div>
+
+      <h2>Les virements interbancaires</h2>
+      <p>Les supports des transactions de change sont principalement les <strong>virements interbancaires</strong> (le change scriptural) et accessoirement le <strong>numéraire</strong> (le change manuel). Les mouvements de devises s'effectuent par un <strong>simple jeu d'écriture</strong> entre comptes bancaires.</p>
+
+      <table class="tbl wrap">
+        <tr><th>Compte</th><th>Définition</th></tr>
+        <tr><td>Compte nostri</td><td>Le compte ouvert par la banque auprès de son correspondant étranger. Il enregistre des écritures <strong>en devises</strong></td></tr>
+        <tr><td>Compte lori</td><td>Le compte ouvert par le correspondant étranger auprès de la banque. Il enregistre des écritures <strong>en monnaie nationale</strong></td></tr>
+      </table>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Il n'y a <strong>aucun passage possible entre les deux comptes</strong>. Retenez l'astuce : <em>nostri</em> = « le nôtre chez eux » (en devises), <em>lori</em> = « le leur chez nous » (en monnaie nationale).</p>
+      </div>
+
+      <div class="rulebox">
+        <div class="rb-main"><em>SWIFT</em> = Society for Worldwide Interbank Financial Telecommunication, créé en <em>1977</em>.</div>
+        <div class="rb-sub">Il transmet les messages relatifs aux opérations des banques adhérentes — c'est un mode de transmission des ordres, <em>pas</em> un mode de paiement. Face au Télex, il offre sécurité (codes d'accès, détecteurs d'erreurs), rapidité et coût réduit ; si la ligne du destinataire est occupée, le message est stocké puis transmis.</div>
+      </div>
+
+      <p>Le <strong>numéraire</strong> est peu utilisé. Les cours appliqués aux particuliers (touristes, hommes d'affaires) sont défavorables par rapport aux conditions interbancaires : les transactions portent sur de petits montants et les banques doivent détenir des devises en caisse, d'où un coût d'opportunité et un coût de détention des billets (transport, assurance, manipulation).</p>
+
+      <h2>Les deux niveaux du marché</h2>
+      <table class="tbl wrap">
+        <tr><th>Niveau</th><th>Caractéristiques</th></tr>
+        <tr><td>Marché de gros</td><td>Marché interbancaire réunissant uniquement les très grandes banques internationales, parfois avec les banques centrales, directement ou via des courtiers. Peu nombreuses (<strong>de 50 à 80 banques</strong>), elles remplissent la fonction de <strong>Market Makers</strong>. Transaction minimale : <strong>1 million de USD</strong></td></tr>
+        <tr><td>Marché de détail</td><td>Transactions entre les banques et leurs clients. Les banques conseillent et exécutent les ordres : <strong>au mieux</strong> (au premier cours coté permettant l'échange) ou <strong>à cours limité</strong> (cours minimum de vente ou maximum d'achat exigé par le client)</td></tr>
+      </table>
+
+      <div class="rulebox">
+        <div class="rb-main">Le marché des changes est un marché de <em>gré à gré</em> (OTC : Over The Counter) : les transactions ne sont <em>pas officiellement standardisées</em> et il n'existe aucune bourse centralisée.</div>
+        <div class="rb-sub">Il est totalement <em>délocalisé</em> : tout se passe entre salles de marché, par téléphone, télex et ordinateurs. Les engagements verbaux sont vitaux — d'où l'importance de la réputation des intervenants.</div>
+      </div>
+
+      <h2>L'organisation d'une salle des marchés</h2>
+      <table class="tbl wrap">
+        <tr><th>Service</th><th>Rôle</th></tr>
+        <tr><td>Front office</td><td>Les cambistes clientèle (salers) et les teneurs de marché (market makers)</td></tr>
+        <tr><td>Middle office</td><td>Les contrôles</td></tr>
+        <tr><td>Back office</td><td>Les fonctions administratives et comptables</td></tr>
+      </table>
+
+      <h2>Les horaires du marché</h2>
+      <p>Les cotations s'opèrent en continu, pratiquement <strong>24 heures sur 24</strong>, successivement sur les différentes places financières, et <strong>5 jours ouvrables sur 7</strong>. Quand les places européennes clôturent (17-18 h), le relais est pris par les places nord-américaines, puis par l'Extrême-Orient. Pendant le week-end, seules les tables de change du monde arabe sont actives.</p>
+
+      <p>Les agences d'informations financières <strong>Thomson Reuters</strong> et <strong>Bloomberg</strong> jouent un rôle essentiel : elles diffusent en temps réel les tableaux de cotation contenant les cours pratiqués par les principaux teneurs de marchés.</p>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Nostri (devises) vs lori (monnaie nationale), sans passage entre les deux · SWIFT créé en 1977, transmission et non paiement · marché de gros : 50 à 80 banques, minimum 1 M USD · marché de détail : au mieux ou à cours limité · OTC, non standardisé, délocalisé · front/middle/back office · 24h/24, 5j/7.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Le compte nostri enregistre des écritures…</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">En devises</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">En monnaie nationale</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Dans les deux, indifféremment</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Nostri = notre compte chez le correspondant étranger, en devises. Lori = leur compte chez nous, en monnaie nationale.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Quelle est la valeur minimale d'une transaction sur le marché de gros ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">100 000 USD</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">1 million de USD</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">10 millions de USD</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> 1 million de USD minimum sur le marché de gros, animé par 50 à 80 banques.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l2')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l3',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 4 ============ -->
+    <section class="view" data-view="l4">
+      <span class="tag">Leçon 4 · Opérations</span>
+      <h1 class="lesson-title">Couverture, spéculation, arbitrage</h1>
+      <p class="subtitle">Trois opérations, trois rapports au risque — et la position de change qui permet de les mesurer.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Face au risque de change, il y a trois attitudes : s'en protéger (couverture), le rechercher volontairement pour gagner (spéculation), ou ne pas en prendre du tout en exploitant une incohérence de prix (arbitrage). La troisième est la seule qui promette un gain sans risque — et c'est pour ça qu'elle disparaît vite.</p>
+      </div>
+
+      <div class="rulebox">
+        <div class="rb-main">Trois opérations : <em>couverture</em> (hedging) · <em>spéculation</em> · <em>arbitrage</em>.</div>
+        <div class="rb-sub">Selon la BRI (septembre 2016), environ <em>60 %</em> des opérations sur le marché des changes relèvent de la spéculation et de l'arbitrage : les opérations de couverture sont peu rémunératrices du fait d'une concurrence importante.</div>
+      </div>
+
+      <h2>La couverture (hedging)</h2>
+      <p>C'est le motif <strong>premier et le plus important</strong> d'intervention. Les agents cherchent à couvrir un risque de change généré par des opérations commerciales ou financières, d'encaissement ou de décaissement en devises, à une échéance donnée. Dès la date de couverture, l'agent connaît avec certitude la contrepartie en monnaie nationale de ses flux futurs.</p>
+
+      <p>La couverture suppose l'existence d'un <strong>risque initial</strong> et consiste à prendre une <strong>position inverse</strong> pour l'annuler : toute fluctuation défavorable sur la première position sera compensée par un gain sur la position de couverture.</p>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Deux idées contre-intuitives à retenir. D'abord, la couverture correspond à une forte <strong>aversion au risque</strong> et entraîne l'abandon des opportunités de gain en cas de fluctuation favorable. Ensuite, <strong>le risque de change ne disparaît pas</strong> : il est <strong>transféré</strong> à un autre agent qui accepte de le prendre en espérant un gain.</p>
+      </div>
+
+      <h2>La mesure du risque : la position de change</h2>
+      <div class="rulebox formule">
+        <div class="rb-main">Position de change (PC) = <em>créances en devises</em> − <em>dettes en devises</em></div>
+        <div class="rb-sub">Calculée <em>pour chaque devise</em> et <em>pour chaque échéance</em>.</div>
+      </div>
+
+      <table class="tbl wrap">
+        <tr><th>Position</th><th>Situation</th><th>Risque encouru</th></tr>
+        <tr><td>Longue (long position)</td><td>Créances &gt; dettes</td><td>Risque de <strong>baisse</strong> du cours au comptant futur — cas de l'entreprise <strong>exportatrice</strong> : la baisse se traduirait par un encaissement en monnaie nationale plus faible</td></tr>
+        <tr><td>Courte (short position)</td><td>Créances &lt; dettes</td><td>Risque de <strong>hausse</strong> du cours au comptant futur — cas de l'entreprise <strong>importatrice</strong> : la hausse se traduirait par un décaissement plus élevé</td></tr>
+        <tr><td>Fermée ou nulle (closed position)</td><td>Créances = dettes</td><td><strong>Aucun risque de change</strong> : les créances compensent les dettes à une échéance donnée</td></tr>
+      </table>
+
+      <div class="example">
+        <div class="ex-head">📂 Cas pratique</div>
+        <div class="step"><div class="sn">1</div><div class="sc">Une entreprise française détient 800 000 USD de créances et 500 000 USD de dettes à l'échéance de 3 mois. <b>Quelle est sa position de change et quel risque court-elle ?</b></div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><code>PC = 800 000 − 500 000 = +300 000 USD</code> : les créances excèdent les dettes.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc">La position est donc <b>longue</b>. Elle est exposée à une <b>baisse</b> du cours de l'USD : elle encaisserait alors moins d'euros à l'échéance.</div></div>
+        <div class="step"><div class="sn">4</div><div class="sc">Pour se couvrir, elle prendra une <b>position inverse</b> (vente à terme de 300 000 USD) afin de figer dès aujourd'hui sa contrepartie en euros.</div></div>
+        <div class="ex-result">Réponse : PC longue de +300 000 USD, risque de baisse, couverture par vente à terme.</div>
+      </div>
+
+      <h2>La spéculation</h2>
+      <p>Objectif <strong>totalement opposé</strong> à la couverture : s'exposer <strong>volontairement</strong> au risque de change en espérant réaliser un gain. Une opération de spéculation n'est pas motivée par des transactions commerciales ou financières. Elle consiste à anticiper l'évolution future des cours pour une échéance donnée et à prendre immédiatement une position, liquidée à l'échéance.</p>
+
+      <table class="tbl wrap">
+        <tr><th>Horizon</th><th>Type de spéculateur</th></tr>
+        <tr><td>Quelques minutes</td><td>Scalpers</td></tr>
+        <tr><td>Un jour</td><td>Day-to-day traders</td></tr>
+        <tr><td>Échéance plus lointaine</td><td>Long term traders</td></tr>
+      </table>
+
+      <p>Les <strong>pertes potentielles sont illimitées</strong> : c'est pourquoi les directions générales imposent aux cambistes des <strong>limites de risques</strong>. La spéculation peut être <strong>passive</strong> si les opérateurs ne se couvrent pas, anticipant une évolution favorable.</p>
+
+      <p>Leur rôle est <strong>controversé</strong> : en période de crise, ils sont tenus responsables de l'instabilité des taux de change et de la diminution des échanges internationaux ; en revanche, ils assurent la <strong>liquidité du marché</strong> en acceptant le risque dont les autres ne veulent pas. Les opérations de spéculation sont la contrepartie des opérations de couverture.</p>
+
+      <h2>L'arbitrage</h2>
+      <p>Initiées par les cambistes pour le compte propre de la banque ou de la clientèle, ces opérations consistent à <strong>tirer profit sans risque</strong> de l'existence, au même moment, d'écarts de cours de change. Ces écarts sont provoqués par une mauvaise propagation de l'information et par certaines réglementations.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Tout opérateur rationnel <em>achète la devise au cours le plus bas</em> et la <em>revend instantanément au cours le plus haut</em>.</div>
+        <div class="rb-sub">En se multipliant, ces opérations <em>éliminent les écarts</em> : l'arbitrage est un facteur d'<em>équilibre systématique</em> qui assure la convergence des cours d'une place à l'autre.</div>
+      </div>
+
+      <p>L'arbitrage exige une <strong>grande rapidité</strong> (les taux varient instantanément) : il est réservé aux institutions financières intervenant directement sur le marché. Avec le développement des moyens d'information, les gains d'arbitrage durables deviennent de plus en plus difficiles. Les <strong>coûts de transaction</strong> expliquent l'existence de petits écarts non arbitrés : le gain serait insuffisant pour les couvrir.</p>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Couverture = aversion au risque, position inverse, risque transféré et non supprimé · PC = créances − dettes, par devise et par échéance · longue = exportateur, risque de baisse ; courte = importateur, risque de hausse ; fermée = pas de risque · spéculation = exposition volontaire, pertes illimitées, scalpers/day-to-day/long term · arbitrage = gain sans risque, facteur d'équilibre.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Une entreprise importatrice se trouve typiquement en position…</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Longue, avec un risque de baisse</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Courte, avec un risque de hausse</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Fermée, sans risque</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> L'importateur a des dettes en devises supérieures à ses créances : une hausse du cours alourdirait son décaissement.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Lorsqu'un agent se couvre sur le marché des changes, le risque de change…</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Disparaît totalement du marché</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Est transféré à un autre agent qui accepte de le prendre</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Est absorbé par la banque centrale</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Le risque ne disparaît pas : il change de porteur, contre l'espérance d'un gain de change.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l3')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l4',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 5 ============ -->
+    <section class="view" data-view="l5">
+      <span class="tag">Leçon 5 · Le marché spot</span>
+      <h1 class="lesson-title">Lire un cours de change</h1>
+      <p class="subtitle">La convention A/B, la norme ISO 4217 et le délai de livraison : les bases sans lesquelles aucun calcul ne tient.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Un cours de change est une étiquette de prix, mais avec une subtilité : on ne peut pas acheter une devise seule. Acheter des dollars, c'est forcément vendre autre chose en contrepartie. D'où la cotation par paires — et l'importance absolue de savoir laquelle des deux est la marchandise et laquelle est le prix.</p>
+      </div>
+
+      <p>Le marché des changes au comptant représente environ <strong>37 %</strong> des opérations du marché traditionnel. C'est le <strong>lieu fictif</strong> de rencontre des offreurs et demandeurs de devises au comptant. La <strong>livraison</strong> a lieu au plus tard dans les <strong>deux jours ouvrables</strong> qui suivent la conclusion de la transaction (J+2), au cours arrêté par les deux parties.</p>
+
+      <div class="rulebox formule">
+        <div class="rb-main">Le cours <em>A/B</em> (ou S<sub>(A/B)</sub>) exprime le nombre d'unités de <em>B</em> échangées contre <strong>une</strong> unité de <em>A</em>.</div>
+        <div class="rb-sub">La monnaie au numérateur (A) est toujours celle dont <em>une unité</em> est cotée en termes de l'autre (B). Exemple : GBP/USD = 1,63171 signifie 1 GBP = 1,6317 USD.</div>
+      </div>
+
+      <h2>D'où viennent les offres et les demandes</h2>
+      <table class="tbl wrap">
+        <tr><th>Offres de devises</th><th>Demandes de devises</th></tr>
+        <tr><td>Exportateurs de biens et services · investisseurs rapatriant leurs placements de l'étranger · prêteurs en devises · touristes étrangers</td><td>Importateurs de biens et services · investisseurs à l'étranger · emprunteurs en devises · résidents se rendant à l'étranger</td></tr>
+      </table>
+
+      <h2>La dénomination des devises : la norme ISO 4217</h2>
+      <p>Toutes les devises sont identifiées par un code commun à toutes les places financières. Le principe est simple : un code de <strong>trois lettres</strong>, dont les <strong>deux premières viennent du nom du pays</strong> et la <strong>dernière est la première lettre de la devise</strong>.</p>
+
+      <table class="tbl">
+        <tr><th>Code</th><th>Signification</th></tr>
+        <tr><td>USD</td><td>United States Dollar</td></tr>
+        <tr><td>GBP</td><td>Great Britain Pound</td></tr>
+        <tr><td>CAD</td><td>Canadian Dollar</td></tr>
+        <tr><td>CHF</td><td>Confoederatio Helvetica Franc</td></tr>
+        <tr><td>JPY</td><td>Japan Yen</td></tr>
+        <tr><td>EUR</td><td>Exception : monnaie d'une zone économique, simplement nommée EUR</td></tr>
+      </table>
+
+      <p>Cette codification évite les confusions causées par des noms comme « dollar », « franc » ou « livre », utilisés dans de très nombreux pays. Les cinq devises les plus échangées sur le forex sont appelées les <strong>majeures</strong> : EUR, GBP, USD, CHF, JPY.</p>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Pour certaines devises, la cotation se fait <strong>par 10, 100 ou 1 000 unités</strong>. Si un tableau indique CHF avec une unité de 10 et un cours de 9,1924, cela signifie que <strong>10 CHF</strong> valent 9,1924 — donc 1 CHF vaut 0,91924. Oublier de diviser est l'erreur numéro un dans les calculs de cours croisés.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Comptant ≈ 37 % des opérations · livraison à J+2 ouvrables · A/B = nombre d'unités de B pour 1 unité de A · ISO 4217 = 3 lettres (2 pays + 1 devise), EUR est l'exception · les 5 majeures : EUR, GBP, USD, CHF, JPY · attention aux cotations par 10/100/1000 unités.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Dans combien de jours ouvrables a lieu la livraison sur le marché au comptant ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Le jour même</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Au plus tard 2 jours ouvrables (J+2)</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">5 jours ouvrables</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Les transactions sont effectuées le jour même au cours au comptant, mais la livraison se fait à J+2.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Le cours GBP/USD = 1,6317 signifie que…</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">1 GBP vaut 1,6317 USD</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">1 USD vaut 1,6317 GBP</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">1,6317 GBP valent 1 USD</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> La monnaie au numérateur est celle dont une unité est cotée : 1 GBP = 1,6317 USD.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l4')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l5',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 6 ============ -->
+    <section class="view" data-view="l6">
+      <span class="tag">Leçon 6 · Cotations</span>
+      <h1 class="lesson-title">Certain, incertain et double cotation</h1>
+      <p class="subtitle">Les deux modalités de cotation, leur inversion, et la fourchette acheteur-vendeur qui rémunère la banque.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Certain ou incertain, c'est la même information vue depuis deux côtés du comptoir. « Le dollar vaut 0,91 € » et « l'euro vaut 1,10 $ » disent exactement la même chose. Ce qui change, c'est qui est la marchandise et qui est le prix — et donc quel sens prend « acheter ».</p>
+      </div>
+
+      <table class="tbl wrap">
+        <tr><th>Modalité</th><th>Définition</th></tr>
+        <tr><td>Cotation à l'incertain</td><td>Prix d'<strong>une unité de monnaie étrangère</strong> en termes de monnaie locale : 1 ME = x ML. <em>Exemple :</em> à Paris, USD/EUR = 0,9093 → le dollar vaut 0,9093 euro</td></tr>
+        <tr><td>Cotation au certain</td><td>Prix d'<strong>une unité de monnaie locale</strong> en termes de monnaie étrangère : 1 ML = x' ME. <em>Exemple :</em> à Londres, GBP/EUR = 1,13 → la livre vaut 1,13 euro</td></tr>
+      </table>
+
+      <div class="rulebox">
+        <div class="rb-main">La cotation <em>au certain</em> est pratiquée principalement en <em>Grande-Bretagne</em>, dans les pays de la <em>zone euro</em>, au <em>Canada</em> (sauf contre l'USD), en <em>Australie</em> et en <em>Nouvelle-Zélande</em>.</div>
+        <div class="rb-sub">Partout ailleurs, la cotation à l'incertain domine.</div>
+      </div>
+
+      <h2>Le passage d'une cotation à l'autre</h2>
+      <p>Les deux cotations traduisent une même réalité et sont parfaitement <strong>symétriques</strong> : leur produit, pour une même devise à un instant donné, est égal à <strong>1</strong>.</p>
+
+      <div class="rulebox formule">
+        <div class="rb-main">(B/A) = 1 / (A/B) &nbsp;&nbsp;·&nbsp;&nbsp; (B/A)<sup>A</sup> = 1 / (A/B)<sup>V</sup> &nbsp;&nbsp;·&nbsp;&nbsp; (B/A)<sup>V</sup> = 1 / (A/B)<sup>A</sup></div>
+        <div class="rb-sub">En double cotation, l'inversion <em>croise</em> les cours : l'acheteur devient l'inverse du vendeur, et réciproquement. C'est l'erreur la plus fréquente en examen.</div>
+      </div>
+
+      <h2>La double cotation affichée par les banques</h2>
+      <table class="tbl wrap">
+        <tr><th>Cours</th><th>Signification</th></tr>
+        <tr><td>Cours acheteur (bid), (A/B)<sup>A</sup></td><td>Prix auquel la banque <strong>sollicitée</strong> se propose d'<strong>acheter</strong> au comptant une unité de A contre B</td></tr>
+        <tr><td>Cours vendeur (ask), (A/B)<sup>V</sup></td><td>Prix auquel la banque sollicitée se propose de <strong>vendre</strong> au comptant une unité de A contre B</td></tr>
+      </table>
+
+      <p>Le cours vendeur est <strong>toujours supérieur</strong> au cours acheteur. La différence représente la marge de la banque par unité de devise achetée puis revendue : c'est le <strong>spread</strong>.</p>
+
+      <div class="rulebox formule">
+        <div class="rb-main">spread (%) = <em>(cours vendeur − cours acheteur) / cours acheteur</em> × 100</div>
+        <div class="rb-sub">Calculé en points, le spread est généralement de l'ordre de <em>10 à 50 points</em>, jusqu'à <em>100 points</em>. La convention retenue dans ce cours est la formule anglo-saxonne (rapportée au cours acheteur).</div>
+      </div>
+
+      <p>Le spread dépend du <strong>risque de volatilité</strong> de la devise négociée. Le cambiste annonce ses cours <strong>sans savoir</strong> si le client veut acheter ou vendre : il est en situation d'asymétrie d'information et doit pouvoir répondre à toute demande sans perdre d'argent. Il varie légèrement d'une banque à l'autre selon sa politique commerciale, sa part de marché et ses anticipations.</p>
+
+      <p>Les cambistes demandent en général une <strong>commission de change</strong> supplémentaire : jusqu'à <strong>0,5 %</strong> pour des montants faibles et des devises rares, de l'ordre de <strong>0,2 %</strong> pour des montants élevés supérieurs à 1 million de USD.</p>
+
+      <h2>Figure et points</h2>
+      <p>Un cours comporte une partie entière et une partie décimale, généralement de quatre chiffres après la virgule.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">La partie entière + les <em>deux premières décimales</em> = la <em>figure</em>. Le <em>quatrième chiffre</em> = le <em>point</em> (ou pip).</div>
+        <div class="rb-sub">Exemple : USD/CHF = 0,9268 − 0,9280. La figure est <em>0,92</em> ; 68 et 80 sont les points. En pratique, le cambiste annonce simplement « 68/80 », la figure étant supposée connue.</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">📂 Exemple résolu</div>
+        <div class="step"><div class="sn">1</div><div class="sc">Une banque affiche USD/CHF = 0,9268 − 0,9280. <b>Interprétez et calculez le spread.</b></div></div>
+        <div class="step"><div class="sn">2</div><div class="sc">Elle est prête à <b>acheter</b> 1 USD à 0,9268 CHF et à le <b>vendre</b> à 0,9280 CHF. La contrepartie qui la sollicite subit la cotation.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc">Spread en points : <code>0,9280 − 0,9268 = 0,0012</code>, soit <b>12 points</b> de CHF par USD acheté puis revendu.</div></div>
+        <div class="step"><div class="sn">4</div><div class="sc">Spread en pourcentage : <code>(0,9280 − 0,9268) / 0,9268 × 100 = 0,13 %</code>.</div></div>
+        <div class="ex-result">Réponse : 12 points, soit 0,13 % — un spread étroit, typique d'une devise liquide.</div>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Si une autre banque cote USD/CHF : 0,9273 − 0,9286, son cours acheteur plus élevé signale qu'elle <strong>cherche à acheter</strong> des USD ; son cours vendeur plus élevé signale qu'elle ne souhaite <strong>pas vendre</strong> — elle se constitue un stock, anticipant une appréciation de l'USD. Savoir lire l'intention derrière une cotation est régulièrement demandé.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">En double cotation, le cours acheteur de (B/A) correspond à…</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">1 / (A/B)<sup>A</sup></button>
+          <button class="opt" data-correct="true" onclick="pick(this)">1 / (A/B)<sup>V</sup></button>
+          <button class="opt" data-correct="false" onclick="pick(this)">(A/B)<sup>A</sup> × (A/B)<sup>V</sup></button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> L'inversion croise les cours : l'acheteur devient l'inverse du vendeur. C'est l'erreur classique en examen.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Dans la cotation USD/CHF = 0,9268, que représente « 0,92 » ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">La figure</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Les points</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le spread</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Partie entière + 2 premières décimales = la figure ; le 4<sup>e</sup> chiffre est le point (pip).</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l5')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l6',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 7 ============ -->
+    <section class="view" data-view="l7">
+      <span class="tag">Leçon 7 · Cours croisés</span>
+      <h1 class="lesson-title">Fabriquer un cours qui n'existe pas</h1>
+      <p class="subtitle">Le calcul des cross rates par la monnaie pivot, en cotation simple puis en double cotation.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Toutes les paires de devises ne sont pas cotées directement : certaines ne sont pas assez « tradées ». Il faut alors passer par une monnaie relais, comme on ferait une correspondance dans un aéroport hub. Le USD joue ce rôle de hub pour à peu près tout le marché.</p>
+      </div>
+
+      <p>Les cambistes calculent des cours croisés pour leur propre compte ou pour répondre aux besoins de leurs clients. Ils utilisent généralement le <strong>USD</strong> comme monnaie intermédiaire, ou encore la monnaie locale. Le USD occupe une place centrale : il sert de <strong>pivot</strong> à l'ensemble des transactions, toutes les devises étant cotées contre lui alors qu'elles ne sont pas nécessairement cotées entre elles.</p>
+
+      <div class="rulebox formule">
+        <div class="rb-main">(A/B) = (A/C) × (C/B) &nbsp;&nbsp;— C est la monnaie intermédiaire ou <em>pivot</em></div>
+        <div class="rb-sub">En double cotation : (A/B)<sup>A</sup> = (A/C)<sup>A</sup> × (C/B)<sup>A</sup> &nbsp;·&nbsp; (A/B)<sup>V</sup> = (A/C)<sup>V</sup> × (C/B)<sup>V</sup></div>
+      </div>
+
+      <div class="rulebox formule">
+        <div class="rb-main">Variante par division : (A/B)<sup>A</sup> = (A/C)<sup>A</sup> / (B/C)<sup>V</sup> &nbsp;&nbsp;·&nbsp;&nbsp; (A/B)<sup>V</sup> = (A/C)<sup>V</sup> / (B/C)<sup>A</sup></div>
+        <div class="rb-sub">À utiliser quand les deux devises sont cotées <em>contre</em> la même monnaie pivot plutôt qu'en chaîne. Noter l'inversion acheteur/vendeur au dénominateur.</div>
+      </div>
+
+      <div class="schema">
+        <svg viewBox="0 0 620 160" xmlns="http://www.w3.org/2000/svg">
+          <g font-family="DM Sans" font-size="13">
+            <rect x="25" y="55" width="140" height="52" rx="11" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="2"/>
+            <text x="95" y="86" text-anchor="middle" font-weight="700" fill="var(--teal)">Devise A</text>
+            <rect x="240" y="55" width="140" height="52" rx="11" fill="var(--amber-soft)" stroke="var(--amber)" stroke-width="2"/>
+            <text x="310" y="80" text-anchor="middle" font-weight="700" fill="var(--amber-deep)">Pivot C</text>
+            <text x="310" y="97" text-anchor="middle" font-size="11" fill="var(--amber-deep)">souvent l'USD</text>
+            <rect x="455" y="55" width="140" height="52" rx="11" fill="var(--navy-soft)" stroke="var(--navy)" stroke-width="2"/>
+            <text x="525" y="86" text-anchor="middle" font-weight="700" fill="var(--navy)">Devise B</text>
+            <path d="M170 81 L233 81" stroke="var(--muted2)" stroke-width="2" marker-end="url(#a2)"/>
+            <path d="M385 81 L448 81" stroke="var(--muted2)" stroke-width="2" marker-end="url(#a2)"/>
+            <text x="201" y="72" text-anchor="middle" font-size="11" font-family="DM Mono" fill="var(--muted2)">(A/C)</text>
+            <text x="416" y="72" text-anchor="middle" font-size="11" font-family="DM Mono" fill="var(--muted2)">(C/B)</text>
+            <path d="M95 115 Q310 152 525 115" stroke="var(--plum)" stroke-width="2" fill="none" stroke-dasharray="5,4"/>
+            <text x="310" y="150" text-anchor="middle" font-size="11.5" font-family="DM Mono" fill="var(--plum)">(A/B) = cours croisé</text>
+            <defs><marker id="a2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="var(--muted2)"/></marker></defs>
+          </g>
+        </svg>
+        <div class="scap">Le cours croisé se reconstitue en passant par la monnaie pivot.</div>
+      </div>
+
+      <h2>Pourquoi la banque « fabrique » ce cours</h2>
+      <p>Une banque qui affiche ses cotations <strong>ne prend pas de risque</strong> : elle a la possibilité de <strong>déboucler immédiatement</strong> sur le marché les opérations faites avec sa clientèle. Cela revient à formuler deux hypothèses :</p>
+      <ul style="margin:0 0 16px 22px;font-size:1.02rem">
+        <li style="margin-bottom:6px">La banque ne garde pas la devise reçue du client : elle veut éliminer son risque de change.</li>
+        <li>La banque ne dispose pas de la devise à livrer au client, son stock étant insuffisant ou nul.</li>
+      </ul>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Deux réflexes avant tout calcul de cours croisé. D'abord, vérifier l'<strong>unité de cotation</strong> (par 1, 10, 100 ou 1 000 unités) et ramener à 1 si nécessaire. Ensuite, vérifier le <strong>sens</strong> des cotations fournies : si l'on vous donne (CHF/EUR) et qu'il vous faut (EUR/CHF), il faut inverser <em>en croisant</em> acheteur et vendeur avant de multiplier.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>(A/B) = (A/C) × (C/B) · en double cotation, les acheteurs se multiplient entre eux et les vendeurs entre eux · variante par division avec inversion A/V au dénominateur · le USD est le pivot naturel · toujours vérifier unité et sens de cotation avant de calculer.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Comment calcule-t-on le cours croisé acheteur (A/B)<sup>A</sup> en chaîne ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">(A/C)<sup>A</sup> × (C/B)<sup>A</sup></button>
+          <button class="opt" data-correct="false" onclick="pick(this)">(A/C)<sup>A</sup> × (C/B)<sup>V</sup></button>
+          <button class="opt" data-correct="false" onclick="pick(this)">(A/C)<sup>V</sup> × (C/B)<sup>A</sup></button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> En chaîne, les acheteurs se multiplient entre eux. L'inversion A/V n'intervient que dans la variante par division.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Pourquoi le USD sert-il de monnaie pivot ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Parce qu'il est la devise la plus stable</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Parce que toutes les devises sont cotées contre lui, sans l'être entre elles</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Parce que la BRI l'impose</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> C'est sa position centrale dans les cotations, pas sa stabilité, qui en fait le pivot.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l6')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l7',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 8 ============ -->
+    <section class="view" data-view="l8">
+      <span class="tag">Leçon 8 · Arbitrage</span>
+      <h1 class="lesson-title">Arbitrage géographique et triangulaire</h1>
+      <p class="subtitle">Deux méthodes pour détecter une incohérence de cours — et la transformer en gain sans risque.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>L'arbitrage géographique, c'est repérer que le même produit est moins cher dans un magasin que ce qu'un autre magasin est prêt à le racheter. L'arbitrage triangulaire, c'est plus subtil : le prix affiché d'un produit ne colle pas avec le prix qu'on obtiendrait en passant par deux achats successifs. Dans les deux cas, on exploite une incohérence, pas une anticipation.</p>
+      </div>
+
+      <div class="rulebox">
+        <div class="rb-main">Une opération d'arbitrage consiste à tirer profit <em>sans risque</em> d'un écart existant <em>au même moment</em> sur des places financières différentes.</div>
+        <div class="rb-sub">Deux types : l'arbitrage <em>géographique</em> (2 devises, 2 places) et l'arbitrage <em>triangulaire</em> (3 devises, plusieurs places).</div>
+      </div>
+
+      <h2>L'arbitrage géographique</h2>
+      <p>Il peut être effectué lorsque, au même moment, le <strong>cours acheteur</strong> d'une devise sur une place est <strong>supérieur au cours vendeur</strong> de cette même devise sur une autre place.</p>
+
+      <div class="rulebox formule">
+        <div class="rb-main">Condition : (X/Y)<sup>A</sup><sub>place 1</sub> &gt; (X/Y)<sup>V</sup><sub>place 2</sub></div>
+        <div class="rb-sub">On <em>achète</em> là où le cours vendeur est le plus bas, on <em>revend</em> là où le cours acheteur est le plus haut.</div>
+      </div>
+
+      <h2>L'arbitrage triangulaire</h2>
+      <p>Il met en jeu <strong>trois devises</strong> et plusieurs places financières, et nécessite le calcul de <strong>cours croisés</strong>. Il permet de tirer profit d'un écart entre un cours croisé <strong>calculé</strong> et un cours <strong>observé</strong> au même moment.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Si le cours croisé <em>vendeur calculé</em> &lt; cours <em>acheteur observé</em> → on achète via le cours croisé et on revend sur la place qui cote directement.</div>
+        <div class="rb-sub">Si au contraire le cours croisé <em>acheteur calculé</em> &gt; cours <em>vendeur observé</em>, l'opération se fait dans l'autre sens.</div>
+      </div>
+
+      <p>La réalisation exige une <strong>grande rapidité</strong> : les cours varient très vite et le cambiste risque de se faire « coller ». Ces possibilités sont <strong>limitées dans le temps</strong>, car rapidement détectées par les nombreux professionnels qui suivent les cotations en continu.</p>
+
+      <h2>Pour le compte de la clientèle</h2>
+      <p>Lorsqu'une banque intervient pour sa clientèle, elle peut procéder à des achats ou ventes <strong>directs</strong> de devises, ou passer par une <strong>devise tierce</strong> (en l'occurrence le USD) si cette opération indirecte lui donne la possibilité d'obtenir un <strong>profit supplémentaire</strong> qu'elle transférera à son client. Il s'agit alors d'un arbitrage triangulaire.</p>
+
+      <div class="example">
+        <div class="ex-head">📂 Méthode — arbitrage géographique en 3 temps</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Comparer :</b> repérer le cours vendeur le plus bas et le cours acheteur le plus haut. S'il n'y a pas de recouvrement (acheteur d'une place &gt; vendeur de l'autre), il n'y a pas d'arbitrage possible.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Acheter :</b> convertir le capital de départ au <b>cours vendeur le plus bas</b> (on subit le cours vendeur quand on achète à la banque).</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>Revendre :</b> reconvertir immédiatement au <b>cours acheteur le plus haut</b> sur l'autre place.</div></div>
+        <div class="ex-result">Gain = capital final − capital initial. Si le résultat est négatif, c'est que l'opportunité n'existait pas : vérifier le sens de lecture des cotations.</div>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>On subit toujours la cotation de la banque que l'on sollicite : quand <strong>vous achetez</strong> une devise, vous payez le <strong>cours vendeur</strong> de la banque ; quand <strong>vous vendez</strong>, vous recevez son <strong>cours acheteur</strong>. Inverser les deux est la source d'erreur la plus fréquente dans tous les exercices d'arbitrage.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Arbitrage géographique = 2 devises, 2 places, condition acheteur&gt;vendeur · triangulaire = 3 devises, comparaison cours croisé calculé vs observé · on achète au cours vendeur, on vend au cours acheteur · rapidité indispensable, opportunités éphémères · pour la clientèle, le profit supplémentaire lui est transféré.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Un arbitrage géographique est possible lorsque…</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">Le cours acheteur sur une place dépasse le cours vendeur sur une autre</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Les deux places affichent exactement la même cotation</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le spread est identique sur les deux places</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Sans ce recouvrement, l'écart est absorbé par les spreads et l'opération serait perdante.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Quand vous achetez une devise auprès d'une banque, quel cours subissez-vous ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Son cours acheteur</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Son cours vendeur</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">La moyenne des deux</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> La banque vend au cours vendeur (le plus élevé) et achète au cours acheteur. C'est toujours le sollicité qui impose sa cotation.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l7')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l8',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 9 ============ -->
+    <section class="view" data-view="l9">
+      <span class="tag">Leçon 9 · Chapitre 3</span>
+      <h1 class="lesson-title">Le marché des changes à terme</h1>
+      <p class="subtitle">Fixer aujourd'hui le prix d'une livraison future de devises : la définition, les échéances et les deux segments du marché.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>C'est la réservation d'un billet d'avion à prix bloqué pour un voyage dans six mois. Le jour du départ, peu importe que le tarif ait doublé ou s'est effondré : vous payez le prix convenu. Vous avez acheté de la certitude, et vous avez renoncé à la bonne surprise.</p>
+      </div>
+
+      <div class="rulebox">
+        <div class="rb-main">Le change à terme est un accord entre deux parties portant sur l'achat ou la vente d'un montant déterminé de devises, à un <em>cours fixé immédiatement</em>, mais dont le règlement et la livraison ont lieu à une <em>date d'échéance future précise</em>.</div>
+        <div class="rb-sub">Il permet de transformer une incertitude de cours en un prix certain à l'échéance : c'est la fonction de couverture.</div>
+      </div>
+
+      <p>Le change à terme est un <strong>engagement ferme et définitif</strong>. Trois éléments sont négociés le jour de l'accord : la quantité de devises, le cours de change et la date d'échéance. En revanche, les mouvements de fonds n'ont lieu qu'au jour de l'échéance. Le risque de change lié à une évolution défavorable des cours est donc éliminé.</p>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Le piège</div>
+        <p>Couverture ne veut pas dire gain. Figer le cours, c'est aussi <strong>renoncer à un gain éventuel</strong> si les cours évoluent favorablement. À l'écrit, une copie qui présente le terme comme « gagnant » a manqué la moitié du raisonnement.</p>
+      </div>
+
+      <h2>Les échéances traitées</h2>
+      <p>Les transactions se font pour des échéances allant de <strong>3 à 7 jours, 1, 2, 3, 6, 9, 12, 18 mois</strong> et <strong>2, 3, 5 ans</strong>. Le dénouement effectif s'effectue le <strong>deuxième jour ouvrable après l'échéance (J+2)</strong>.</p>
+
+      <table class="tbl wrap">
+        <tr><th>Horizon</th><th>Ce que le marché offre</th></tr>
+        <tr><td>3 jours → 6 mois</td><td>Des cotations à terme pour toutes les monnaies utilisées dans les échanges internationaux.</td></tr>
+        <tr><td>Au-delà de 2 ans</td><td>Quelques devises seulement : principalement <strong>USD, JPY, CHF, GBP et EUR</strong>.</td></tr>
+        <tr><td>Échéance « brisée »</td><td>Une échéance qui ne correspond pas à un nombre de mois exact : possible, mais le coût est plus élevé, car le banquier couvre plus difficilement son propre risque.</td></tr>
+      </table>
+
+      <div class="rulebox formule">
+        <div class="rb-main">Deux segments : le <em>terme sec</em> (forward outright) et le <em>swap de change</em>.</div>
+        <div class="rb-sub">Ce chapitre traite uniquement du terme sec.</div>
+      </div>
+
+      <p>Contrairement à une opération au comptant, le change à terme est une opération <strong>montée par le cambiste en plusieurs étapes</strong> : une opération de change au comptant accompagnée d'une opération de trésorerie qui lui assure sa propre couverture. En effet, les entreprises qui se couvrent transfèrent leur risque de change aux banques — et les banques ne souhaitent pas non plus l'assumer.</p>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 À retenir</div>
+        <p>Depuis 2024-2025, le contexte a ravivé l'usage des contrats à terme : taux directeurs stables en zone euro à l'automne 2025, interventions de change rappelées par la Banque nationale suisse, vigilance des autorités japonaises sur les mouvements du yen et flux liés aux stratégies de <em>carry trade</em>. Le <strong>carry trade</strong> consiste à emprunter dans une devise à faible coût pour investir dans une devise à rendement plus élevé ; son risque clé est la dépréciation de la devise d'investissement, et les épisodes d'<em>unwind</em> (fermetures simultanées des positions) amplifient les mouvements de change.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Quand a lieu le dénouement effectif d'une opération de change à terme ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Le jour de la négociation</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Le deuxième jour ouvrable après l'échéance (J+2)</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le dernier jour ouvrable du mois de l'échéance</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Le cours, le montant et l'échéance sont fixés le jour de l'accord, mais les fonds circulent à J+2 après l'échéance.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Une entreprise couverte à terme profite-t-elle d'une évolution favorable du cours ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Oui, la banque lui reverse la différence</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Non, l'engagement est ferme et définitif</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Oui, si elle dénoue avant l'échéance sans frais</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> C'est le prix de la certitude : le terme sec ne laisse aucune optionalité, contrairement à une option de change.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l8')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l9',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 10 ============ -->
+    <section class="view" data-view="l10">
+      <span class="tag">Leçon 10 · Chapitre 3</span>
+      <h1 class="lesson-title">Cours à terme, report et déport</h1>
+      <p class="subtitle">Lire une cotation à terme, dire si la devise est en report ou en déport, et annualiser l'écart.</p>
+
+      <div class="rulebox formule">
+        <div class="rb-main">Le cours à terme à n mois de la monnaie A par rapport à la monnaie B, noté <code>A/B à n mois</code> ou <code>f<sub>A/B</sub></code>, exprime le <em>nombre d'unités de B échangées contre une unité de A</em> pour le terme en question.</div>
+        <div class="rb-sub">Même logique de lecture qu'au comptant : seule la date de livraison change.</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">Exemple du cours</div>
+        <p>Le 23 août N, <code>USD/JPY à 3 mois = 81,2150</code>. La banque est prête à échanger dans 3 mois 1 USD contre 81,2150 JPY — <strong>quel que soit le cours au comptant observé à l'échéance</strong>.</p>
+      </div>
+
+      <h2>Report et déport</h2>
+      <p>Le cours à terme est généralement différent du cours au comptant : il lui est <strong>supérieur (report)</strong> ou <strong>inférieur (déport)</strong>, et rarement égal (<strong>au pair</strong>, ou <em>square</em>). La différence s'explique par le mécanisme de formation des cours à terme, où les taux d'intérêt jouent un rôle fondamental.</p>
+
+      <div class="rulebox formule">
+        <div class="rb-main"><code>f<sub>A/B</sub> &gt; S<sub>A/B</sub></code> ⟹ A est en <em>report</em> (premium) : f = S + points de report<br><code>f<sub>A/B</sub> &lt; S<sub>A/B</sub></code> ⟹ A est en <em>déport</em> (discount) : f = S − points de déport</div>
+        <div class="rb-sub">Le report et le déport se définissent toujours <em>pour la devise A, par rapport à la monnaie B</em>.</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">Report — exemple du cours</div>
+        <p><code>EUR/USD comptant = 1,3820</code> et <code>EUR/USD à 1 mois = 1,3827</code>. Le cours à terme est supérieur : l'euro est <strong>en report</strong> par rapport au dollar à 1 mois. Points de report : <code>1,3827 − 1,3820 = 0,0007 = 7 points de base</code>.</p>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">Déport — exemple du cours</div>
+        <p><code>EUR/USD comptant = 1,3820</code> et <code>EUR/USD à 3 mois = 1,3808</code>. Le cours à terme est inférieur : l'euro est <strong>en déport</strong> par rapport au dollar à 3 mois. Points de déport : <code>1,3820 − 1,3808 = 0,0012 = 12 points de base</code>.</p>
+      </div>
+
+      <h2>Annualiser pour comparer</h2>
+      <p>Exprimés en points, le report et le déport ne permettent pas de comparer des monnaies et des échéances différentes. On les exprime alors en <strong>pourcentage annuel du cours au comptant</strong> :</p>
+
+      <div class="rulebox formule">
+        <div class="rb-main"><code>Taux de report/déport de A/B = (f<sub>A/B</sub> − S<sub>A/B</sub>) / S<sub>A/B</sub> × 360/t × 100</code><br><code>= (f<sub>A/B</sub> − S<sub>A/B</sub>) / S<sub>A/B</sub> × 12/n × 100</code></div>
+        <div class="rb-sub">t : la durée en jours · n : la durée en mois. Le résultat est positif en report, négatif en déport.</div>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Le piège</div>
+        <p>Ne pas confondre l'écart en points et le taux annualisé. 12 points de déport sur 3 mois, ce n'est pas « 12 % » : <code>0,0012/1,3820 × 12/3 × 100 = −0,35 %</code> par an. C'est un classique de l'oral.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">GBP/CHF au comptant = 2,3375 et à 3 mois = 2,3405. Que dire de la livre ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">Elle est en report de 30 points face au franc suisse</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Elle est en déport de 30 points face au franc suisse</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Elle est au pair</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> <code>f &gt; S</code> donc report, et <code>2,3405 − 2,3375 = 0,0030 = 30 points</code>.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Pourquoi annualise-t-on le report ou le déport ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Parce que les points de base ne sont pas une unité officielle</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Pour comparer des monnaies et des échéances différentes</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Parce que le cours au comptant change tous les jours</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Un écart de 7 points à 1 mois et de 12 points à 3 mois ne se comparent qu'une fois ramenés à un taux annuel.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l9')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l10',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 11 ============ -->
+    <section class="view" data-view="l11">
+      <span class="tag">Leçon 11 · Chapitre 3</span>
+      <h1 class="lesson-title">Coter en points de swap</h1>
+      <p class="subtitle">Les cambistes ne donnent pas le cours à terme complet : ils donnent l'écart. Savoir s'il s'ajoute ou se retranche est LE réflexe du chapitre.</p>
+
+      <p>Sur le marché des changes à terme, il est habituel que les cambistes cotent les <strong>écarts par rapport au cours spot</strong>. La plupart ne communiquent pas le cours à terme complet (le terme sec) : ils indiquent seulement les <strong>points de terme</strong>, qui peuvent être des points de report ou de déport. Ces écarts sont également qualifiés de <strong>points de swap</strong>, car ils sont utilisés dans les opérations de swap de change.</p>
+
+      <table class="tbl wrap">
+        <tr><th>Pourquoi coter en points ?</th><th></th></tr>
+        <tr><td>Stabilité</td><td>Le report/déport dépend principalement des taux d'intérêt : il varie peu, alors que le spot fluctue fortement au jour le jour.</td></tr>
+        <tr><td>Swaps</td><td>Dans les opérations de swap de change, ces écarts déterminent directement le prix de l'opération.</td></tr>
+        <tr><td>Lisibilité</td><td>Ils permettent de savoir si une différence de cotation entre deux banques vient du <em>spot retenu</em> ou des <em>taux d'intérêt</em>.</td></tr>
+      </table>
+
+      <div class="rulebox">
+        <div class="rb-main">Règle de lecture : <em>PS<sup>A</sup> &lt; PS<sup>V</sup></em> ⟹ <em>report</em> de A contre B ⟹ on <em>additionne</em>.<br><em>PS<sup>A</sup> &gt; PS<sup>V</sup></em> ⟹ <em>déport</em> ⟹ on <em>soustrait</em>.</div>
+        <div class="rb-sub">Le fondement : le spread doit augmenter avec l'échéance, car plus l'échéance est lointaine, plus le risque supporté par le cambiste est grand et plus les possibilités de transactions se réduisent.</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">Cotation en points de terme (points de swap)</div>
+        <table class="tbl num" style="margin:8px 0 0">
+          <tr><th></th><th>GBP/USD</th><th>EUR/USD</th></tr>
+          <tr><td>Spot</td><td>1,6312 − 22</td><td>1,3820 − 35</td></tr>
+          <tr><td>1 mois</td><td>5 − 12</td><td>28 − 23</td></tr>
+          <tr><td>2 mois</td><td>15 − 26</td><td>41 − 32</td></tr>
+        </table>
+        <p style="margin-top:12px">GBP/USD : <code>5 &lt; 12</code> ⟹ la livre est en <strong>report</strong> contre le dollar, on additionne. EUR/USD : <code>28 &gt; 23</code> ⟹ l'euro est en <strong>déport</strong>, on soustrait.</p>
+      </div>
+
+      <table class="tbl num">
+        <tr><th>Échéance</th><th>GBP/USD (report)</th><th>EUR/USD (déport)</th></tr>
+        <tr><td>Spot</td><td>1,6312 − 1,6322</td><td>1,3820 − 1,3835</td></tr>
+        <tr><td>1 mois</td><td>1,6317 − 1,6334</td><td>1,3792 − 1,3812</td></tr>
+        <tr><td>2 mois</td><td>1,6327 − 1,6348</td><td>1,3779 − 1,3803</td></tr>
+      </table>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 Le contrôle qui sauve la copie</div>
+        <p>Vérifiez toujours que le spread s'élargit avec l'échéance. Ici GBP/USD : 10 points au comptant, 17 à 1 mois, 21 à 2 mois. EUR/USD : 15, puis 20, puis 24. Si votre spread se rétrécit, vous avez additionné au lieu de soustraire (ou l'inverse).</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Les points de swap affichés sont « 145 − 139 ». Que faites-vous ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">Je les retranche du spot : la devise est en déport</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Je les ajoute au spot : la devise est en report</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">J'ajoute le premier et je retranche le second</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> <code>145 &gt; 139</code> : points acheteurs supérieurs aux points vendeurs, donc déport et soustraction.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Pourquoi le spread doit-il augmenter avec l'échéance ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Parce que les taux d'intérêt montent toujours avec la durée</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Parce que le risque du cambiste grandit et que les transactions se raréfient</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Parce que la réglementation l'impose aux teneurs de marché</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Plus l'échéance est lointaine, plus il est difficile de se couvrir : le cambiste élargit sa marge.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l10')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l11',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 12 ============ -->
+    <section class="view" data-view="l12">
+      <span class="tag">Leçon 12 · Chapitre 3</span>
+      <h1 class="lesson-title">Le marché des eurodevises</h1>
+      <p class="subtitle">Les taux d'intérêt qui alimentent les cours à terme : où ils se forment, comment ils se cotent, comment ils se lisent.</p>
+
+      <p>Comme le report ou le déport à terme d'une monnaie par rapport à une autre s'explique par le <strong>différentiel de taux d'intérêt</strong> entre les deux pays, il faut examiner les modalités de cotation des taux. Celles affichées par les banques s'observent sur le <strong>marché monétaire local</strong> ou sur le <strong>marché des eurodevises</strong>.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Une <em>eurodevise</em> est une devise détenue en dehors du pays qui l'a émise.</div>
+        <div class="rb-sub">Un dollar déposé à Londres ou à Tokyo est un eurodollar ; un dollar déposé aux États-Unis est un dollar, quelles que soient les nationalités du déposant et de la banque. Une <em>euro-banque</em> accepte des dépôts et offre des crédits en eurodevises.</div>
+      </div>
+
+      <p>Le développement de ce marché s'explique principalement par le fait qu'il <strong>échappe aux réglementations et aux coûts des marchés financiers nationaux</strong> : réserves obligatoires, plafonds de rémunération des dépôts, impôt.</p>
+
+      <h2>Les cotations</h2>
+      <table class="tbl wrap">
+        <tr><th>Élément</th><th>Règle</th></tr>
+        <tr><td>Forme</td><td>Un taux <strong>emprunteur</strong> et un taux <strong>prêteur</strong> (r<sub>e</sub> − r<sub>p</sub>) ; la différence est la marge de la banque, le <em>spread</em> de taux.</td></tr>
+        <tr><td>Spread</td><td>De <strong>1/8 %</strong> jusqu'à <strong>2 %</strong>.</td></tr>
+        <tr><td>Écriture</td><td>Une partie entière et une partie décimale, généralement un <strong>multiple de 1/32</strong>.</td></tr>
+        <tr><td>Échéances</td><td>1 jour, 2 jours, 1 semaine, 1 mois, 2 mois, 3 mois, 1 an.</td></tr>
+        <tr><td>Règlement</td><td>Transactions conclues par téléphone, confirmées par télex ou SWIFT, virements en date de valeur <strong>J+2</strong>.</td></tr>
+        <tr><td>Taille</td><td>Marché de gros : volume minimum de l'ordre de <strong>1 million de USD</strong> par transaction.</td></tr>
+      </table>
+
+      <div class="example">
+        <div class="ex-head">Lire une cotation de taux</div>
+        <p><code>Eurodollar à 1 mois : 1 3/4 − 1 7/8</code>. La banque emprunte des eurodollars à 1 mois au taux de <strong>1,75 %</strong> l'an et en prête au taux de <strong>1,875 %</strong> l'an. Son spread est de 1/8 %.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 À retenir</div>
+        <p>Sur le marché des eurodevises, le <strong>USD est dominant</strong> : il représente plus de 50 % des eurodevises traitées, et plus de <strong>80 % des dépôts ont une échéance inférieure à 6 mois</strong>.</p>
+      </div>
+
+      <h2>Eurodevises et marché local</h2>
+      <p>Pour toute eurodevise, la monnaie nationale reste la référence, et les deux marchés sont étroitement corrélés. Les taux du marché des eurodevises sont généralement <strong>plus compétitifs</strong> : le taux emprunteur sur l'eurodevise est plus élevé que le taux emprunteur national, et le taux prêteur sur l'eurodevise est plus faible que le taux prêteur national.</p>
+      <p>La raison : les euro-banques ne sont pas tenues de respecter un coefficient de réserves obligatoires ni de plafonner leurs taux emprunteurs. S'ajoutent les économies d'échelle d'un marché de gros destiné aux États, aux organismes publics et aux grandes firmes multinationales. En contrepartie, les prêts y présentent un risque important en cas de non-remboursement : ces marchés sont auto-contrôlés par les euro-banques et réservés à des banques de haute qualité.</p>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Un dollar déposé dans une banque à New York est-il un eurodollar ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Oui, si le déposant est européen</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Non, c'est un dollar : il est dans son pays d'émission</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Oui, si la banque est une filiale étrangère</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Seule compte la localisation du dépôt, jamais la nationalité du déposant ou de la banque.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Dans la cotation « 2 5/16 − 2 7/16 », que vaut le taux prêteur ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">2,3125 %</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">2,4375 %</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">2,5000 %</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Le second taux est le taux prêteur : <code>2 + 7/16 = 2,4375 %</code>. Le premier, <code>2 + 5/16 = 2,3125 %</code>, est le taux emprunteur.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l11')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l12',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 13 ============ -->
+    <section class="view" data-view="l13">
+      <span class="tag">Leçon 13 · Chapitre 3</span>
+      <h1 class="lesson-title">Risque de change et position de change</h1>
+      <p class="subtitle">Mesurer avant de couvrir : les trois conditions du risque, et la position longue, courte ou fermée.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Le <em>risque de change</em> est le risque de perte ou de gain lié aux variations du cours de change.</div>
+        <div class="rb-sub">Une entreprise est en risque de change lorsque sa valeur dépend de l'évolution future des cours de change.</div>
+      </div>
+
+      <h2>Les trois conditions cumulatives</h2>
+      <table class="tbl wrap">
+        <tr><th>Condition</th><th>Précision</th></tr>
+        <tr><td>Transactions avec l'étranger</td><td>Commerciales (importations, exportations de biens et services) ou financières (prêts et emprunts de capitaux).</td></tr>
+        <tr><td>Transactions libellées en devises</td><td>Un opérateur qui importe ou exporte <strong>en monnaie nationale n'est pas soumis</strong> au risque de change.</td></tr>
+        <tr><td>Décalage dans le temps</td><td>Un décalage entre la date de réalisation de la transaction et la date du flux financier d'encaissement ou de décaissement.</td></tr>
+      </table>
+
+      <div class="example">
+        <div class="ex-head">Le décalage, concrètement</div>
+        <p>Une entreprise française qui achète des marchandises aux USA <strong>au comptant</strong> les paie sur la base du cours spot : il est connu, il n'y a pas d'incertitude. Si l'achat est effectué <strong>à crédit</strong>, le décaissement se fera sur la base du cours EUR/USD à l'échéance, c'est-à-dire du cours au comptant futur — qui peut être supérieur au cours observé aujourd'hui.</p>
+      </div>
+
+      <h2>La position de change</h2>
+      <div class="rulebox formule">
+        <div class="rb-main"><code>PC = créances en devises − dettes en devises</code></div>
+        <div class="rb-sub">Elle se calcule <em>pour chaque devise</em> et <em>pour chaque échéance</em> : c'est la position de change de transaction.</div>
+      </div>
+
+      <table class="tbl wrap">
+        <tr><th>Position</th><th>Définition</th><th>Risque subi</th></tr>
+        <tr><td><strong>Longue</strong> (long position)</td><td>Créances &gt; dettes pour la même échéance</td><td>Risque de <strong>baisse</strong> du cours au comptant futur : encaissement en monnaie nationale plus faible (cas de l'exportateur).</td></tr>
+        <tr><td><strong>Courte</strong> (short position)</td><td>Créances &lt; dettes pour la même échéance</td><td>Risque de <strong>hausse</strong> du cours au comptant futur : décaissement plus élevé (cas de l'importateur).</td></tr>
+        <tr><td><strong>Fermée</strong> ou nulle (closed position)</td><td>Créances = dettes pour la même échéance</td><td>Aucun : les créances compensent les dettes, inutile de se référer au cours futur.</td></tr>
+      </table>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Le piège</div>
+        <p>On ne compense <strong>ni entre devises différentes ni entre échéances différentes</strong>. Une créance de 50 000 USD au 1<sup>er</sup> avril ne ferme pas une dette de 50 000 EUR au 1<sup>er</sup> juillet : cela fait deux positions ouvertes, pas une position nulle.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Un exportateur français facture en euros. Est-il exposé au risque de change ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">Non : la transaction n'est pas libellée en devises</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Oui : dès qu'il y a une transaction avec l'étranger</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Oui, mais seulement si le paiement est à crédit</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Les trois conditions sont cumulatives : c'est le client étranger qui supporte alors le risque.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Une position de change longue en USD expose à…</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Une hausse du cours du USD</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Une baisse du cours du USD</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Rien, la position est couverte par construction</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Position longue = on recevra des devises : si elles se déprécient, l'encaissement en monnaie nationale fond. C'est le cas typique de l'exportateur, qui se couvre en <em>vendant</em> à terme.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l12')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l13',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 14 ============ -->
+    <section class="view" data-view="l14">
+      <span class="tag">Leçon 14 · Chapitre 3</span>
+      <h1 class="lesson-title">Le cours à terme acheteur</h1>
+      <p class="subtitle">Le client est exportateur : il vend des devises à terme. Comment le cambiste fabrique le prix, et avec quelle formule.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>La banque ne « parie » pas sur le cours futur : elle le fabrique. Elle emprunte aujourd'hui les devises que le client lui livrera plus tard, les vend tout de suite au comptant, et place le produit jusqu'à l'échéance. Le cours à terme n'est que le résultat arithmétique de ces trois opérations.</p>
+      </div>
+
+      <p>Sur le marché à terme, le cambiste propose ses prix sous forme d'une <strong>double cotation</strong>. Il calcule un <strong>cours à terme acheteur</strong> s'il est sollicité par un client exportateur — plus largement par un client créancier en devises étrangères — et un cours à terme vendeur s'il est sollicité par un importateur ou un débiteur en devises.</p>
+      <p>La couverture sur le marché forward est la technique la plus utilisée par les entreprises, du fait de sa simplicité : <strong>l'exportateur vend à terme</strong> les devises correspondant au montant de sa créance, <strong>l'importateur achète à terme</strong> les devises correspondant au montant de sa dette.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Fabrication d'une <em>vente à terme</em> d'une monnaie A contre une monnaie B, à n mois : trois opérations simultanées.</div>
+        <div class="rb-sub">1. Un <strong>emprunt en monnaie A</strong> pour l'échéance de n mois · 2. Une <strong>vente au comptant</strong> de A contre B · 3. Un <strong>prêt en monnaie B</strong> pour l'échéance de n mois.</div>
+      </div>
+
+      <div class="rulebox formule">
+        <div class="rb-main"><code>f<sup>A</sup><sub>A/B</sub> à n mois = S<sup>A</sup><sub>A/B</sub> × (1 + r<sub>B</sub><sup>emprunteur</sup> × n/12) / (1 + r<sub>A</sub><sup>prêteur</sup> × n/12)</code></div>
+        <div class="rb-sub">Au numérateur, le produit du placement en B ; au dénominateur, le montant à rembourser de l'emprunt en A. Taux annuels, formule valable pour un terme inférieur à un an.</div>
+      </div>
+
+      <div class="rulebox formule">
+        <div class="rb-main"><code>PS<sup>A</sup> = f<sup>A</sup><sub>A/B</sub> − S<sup>A</sup><sub>A/B</sub> = S<sup>A</sup><sub>A/B</sub> × (r<sub>B</sub><sup>emp</sup> − r<sub>A</sub><sup>prêt</sup>) / (1 + r<sub>A</sub><sup>prêt</sup> × n/12) × n/12</code></div>
+        <div class="rb-sub">Le taux de report ou de déport annualisé, relatif aux cours acheteurs, vaut <code>(r<sub>B</sub><sup>emp</sup> − r<sub>A</sub><sup>prêt</sup>) / (1 + r<sub>A</sub><sup>prêt</sup> × n/12)</code>.</div>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 Le sens du différentiel</div>
+        <p>Si le taux sur A est <strong>supérieur</strong> au taux sur B, les intérêts payés sur l'emprunt dépassent les intérêts reçus sur le placement : cette perte d'intérêt donne un <strong>déport</strong> de A par rapport à B. Si le taux sur A est <strong>inférieur</strong> à celui sur B, le gain d'intérêt donne un <strong>report</strong>.</p>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">Application 3 du cours — exportateur suisse</div>
+        <p>Spot <code>USD/CHF = 1,4925 − 55</code> · euro-USD 6 mois <code>2 5/16 − 2 7/16</code> · marché monétaire suisse 6 mois <code>1 5/8 − 1 3/4</code>. L'exportateur couvre une créance de 1 million de USD à 6 mois : il vend ses USD à terme à sa banque.</p>
+        <p><code>f<sup>A</sup> = 1,4925 × (1 + 0,01625 × 0,5) / (1 + 0,024375 × 0,5) = 1,4865</code></p>
+        <p>Soit un <strong>déport de 60 points</strong> du USD contre le CHF, et un taux annualisé de <code>−0,80 %</code>. Le taux USD étant supérieur au taux CHF, le dollar est logiquement en déport. L'exportateur encaissera <code>1 000 000 × 1,4865 = 1 486 500 CHF</code>, quel que soit le cours à l'échéance.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Pour fabriquer une vente à terme de A contre B, la banque…</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">Emprunte A, vend A au comptant contre B, prête B</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Emprunte B, achète A au comptant, prête A</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Attend l'échéance et achète A au cours du jour</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> L'emprunt en A sera remboursé par les devises livrées par le client à l'échéance ; le placement en B servira à le payer.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Le taux d'intérêt sur A est supérieur à celui sur B. La devise A est donc…</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">En report par rapport à B</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">En déport par rapport à B</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Au pair par rapport à B</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> La devise dont le taux d'intérêt est le plus élevé est en déport à terme : c'est ce qui empêche l'arbitrage de taux couvert.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l13')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l14',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 15 ============ -->
+    <section class="view" data-view="l15">
+      <span class="tag">Leçon 15 · Chapitre 3</span>
+      <h1 class="lesson-title">Le cours à terme vendeur</h1>
+      <p class="subtitle">Le client est importateur : il achète des devises à terme. Le miroir exact du cours acheteur — à condition de ne pas se tromper de taux.</p>
+
+      <p>Les banques calculent le cours à terme vendeur pour leurs clients qui cherchent à <strong>acheter de la monnaie étrangère à terme</strong> : importateurs ou emprunteurs en devises. L'importateur transfère ainsi son risque de hausse à sa banque.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Fabrication d'un <em>achat à terme</em> d'une monnaie A contre une monnaie B, à n mois : trois opérations simultanées.</div>
+        <div class="rb-sub">1. Un <strong>emprunt en monnaie B</strong> pour l'échéance de n mois · 2. Une <strong>vente au comptant</strong> de B contre A · 3. Un <strong>prêt en monnaie A</strong> pour l'échéance de n mois.</div>
+      </div>
+
+      <div class="rulebox formule">
+        <div class="rb-main"><code>f<sup>V</sup><sub>A/B</sub> à n mois = S<sup>V</sup><sub>A/B</sub> × (1 + r<sub>B</sub><sup>prêteur</sup> × n/12) / (1 + r<sub>A</sub><sup>emprunteur</sup> × n/12)</code></div>
+        <div class="rb-sub">Au numérateur, le montant à rembourser de l'emprunt en B ; au dénominateur, le produit du placement en A. Les taux sont l'exact miroir de ceux du cours acheteur.</div>
+      </div>
+
+      <div class="rulebox formule">
+        <div class="rb-main"><code>PS<sup>V</sup> = f<sup>V</sup><sub>A/B</sub> − S<sup>V</sup><sub>A/B</sub> = S<sup>V</sup><sub>A/B</sub> × (r<sub>B</sub><sup>prêt</sup> − r<sub>A</sub><sup>emp</sup>) / (1 + r<sub>A</sub><sup>emp</sup> × n/12) × n/12</code></div>
+        <div class="rb-sub">Taux annualisé relatif aux cours vendeurs : <code>(r<sub>B</sub><sup>prêt</sup> − r<sub>A</sub><sup>emp</sup>) / (1 + r<sub>A</sub><sup>emp</sup> × n/12)</code>.</div>
+      </div>
+
+      <table class="tbl wrap">
+        <tr><th></th><th>Cours acheteur f<sup>A</sup></th><th>Cours vendeur f<sup>V</sup></th></tr>
+        <tr><td>Client</td><td>Exportateur, créancier en devises</td><td>Importateur, débiteur en devises</td></tr>
+        <tr><td>Spot utilisé</td><td>S<sup>A</sup> (le plus bas)</td><td>S<sup>V</sup> (le plus haut)</td></tr>
+        <tr><td>Numérateur</td><td>1 + r<sub>B</sub><sup>emprunteur</sup> × n/12</td><td>1 + r<sub>B</sub><sup>prêteur</sup> × n/12</td></tr>
+        <tr><td>Dénominateur</td><td>1 + r<sub>A</sub><sup>prêteur</sup> × n/12</td><td>1 + r<sub>A</sub><sup>emprunteur</sup> × n/12</td></tr>
+      </table>
+
+      <div class="example">
+        <div class="ex-head">Application 4 du cours — importateur suisse</div>
+        <p>Mêmes conditions de marché : spot <code>USD/CHF = 1,4925 − 55</code>, euro-USD 6 mois <code>2 5/16 − 2 7/16</code>, CHF 6 mois <code>1 5/8 − 1 3/4</code>. L'importateur couvre une dette de 1 million de USD à 6 mois : il achète ses USD à terme.</p>
+        <p><code>f<sup>V</sup> = 1,4955 × (1 + 0,0175 × 0,5) / (1 + 0,023125 × 0,5) = 1,4913</code></p>
+        <p>Soit un <strong>déport de 42 points</strong>. La double cotation à 6 mois est donc <code>1,4865 − 1,4913</code> : le spread à terme est de 48 points, contre 30 points au comptant — le contrôle est validé. L'importateur décaissera <code>1 000 000 × 1,4913 = 1 491 300 CHF</code>.</p>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Le piège classique</div>
+        <p>Inverser un seul taux et tout s'effondre. Le réflexe : la banque <strong>emprunte</strong> toujours la monnaie qu'elle devra livrer plus tard et <strong>prête</strong> celle qu'elle recevra. Puis on vérifie que le spread à terme dépasse le spread au comptant.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Dans le cours à terme vendeur, quel taux figure au dénominateur ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">Le taux emprunteur de la monnaie A</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le taux prêteur de la monnaie A</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le taux prêteur de la monnaie B</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> La banque prête A : elle le fait au taux auquel le marché emprunte, donc le taux emprunteur de A.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Vos cours à terme donnent un spread plus étroit qu'au comptant. Que se passe-t-il ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">C'est normal si la devise est en déport</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Il y a une erreur : un taux a été inversé</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">C'est normal pour les échéances courtes</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Le spread s'élargit toujours avec l'échéance : un spread qui se resserre signale une erreur de taux ou de sens.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l14')">← Précédent</button>
+        <button class="btn amber" onclick="validate('l15',2)">Valider et terminer le chapitre →</button>
+      </div>
+    </section>
+
+    <!-- ============ GÉNÉRATEUR ============ -->
+    <section class="view" data-view="generateur">
+      <span class="tag">Entraînement</span>
+      <h1 class="lesson-title">Calculs générés à l'infini</h1>
+      <p class="subtitle">Cinq types de calculs, des données tirées au sort à chaque fois, un corrigé détaillé étape par étape.</p>
+
+      <div class="intro-card amber">
+        <h2>🎤 Pensé pour l'oral</h2>
+        <p>20 % de ta note est un calcul à l'oral : l'enjeu est la vitesse et l'automatisme, pas la découverte. Enchaîne les séries jusqu'à ce que la méthode devienne réflexe. Le chronomètre est là pour t'habituer à la pression — tu peux le couper.</p>
+      </div>
+
+      <div class="gen-modes" id="genModes"></div>
+
+      <div class="gen-card">
+        <div class="gen-head">
+          <span class="gen-type" id="genType">—</span>
+          <div class="gen-stats">
+            <span class="gen-stat">Série : <b id="genDone">0</b></span>
+            <span class="gen-stat">Justes : <b id="genOk">0</b></span>
+            <span class="gen-stat">Suite : <b id="genStreak">0</b></span>
+            <span class="timer" id="genTimer" onclick="toggleTimer()" title="Cliquer pour activer/couper">⏱ —</span>
+          </div>
+        </div>
+        <div class="gen-enonce" id="genEnonce"></div>
+        <div class="gen-data" id="genData"></div>
+        <div class="gen-ask" id="genAsk"></div>
+        <div class="gen-input-row">
+          <input type="number" step="any" class="num-input" id="genInput" placeholder="ta réponse" onkeydown="if(event.key==='Enter')checkGen()">
+          <span class="unit" id="genUnit"></span>
+          <button class="btn primary" id="genCheck" onclick="checkGen()">Vérifier ✓</button>
+          <button class="btn" onclick="newGen()">Passer →</button>
+        </div>
+        <div class="gen-fb" id="genFb"></div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l8')">← Revoir le cours</button>
+        <button class="btn" onclick="go('annales')">Applications du cours →</button>
+      </div>
+    </section>
+
+    <!-- ============ APPLICATIONS ============ -->
+    <section class="view" data-view="annales">
+      <span class="tag">Applications</span>
+      <h1 class="lesson-title">Les applications du cours, corrigées</h1>
+      <p class="subtitle">Les applications des chapitres 1 et 2, puis les six exercices du TD 2 sur le marché à terme, résolus pas à pas.</p>
+
+      <div class="intro-card">
+        <h2>📐 Mode révision active</h2>
+        <p>Ce sont les énoncés exacts du cours, laissés sans corrigé dans le polycopié. Traite-les au brouillon avant d'ouvrir la correction — c'est là que se joue l'écart de note.</p>
+      </div>
+
+      <!-- Application 1 -->
+      <div class="annale">
+        <div class="an-tag">Application 1 · Passage incertain → certain</div>
+        <h3>Interpréter un tableau de cotations</h3>
+        <div class="enonce">
+          Pour la journée du 23 août N, les cours observés sur le marché des changes au comptant français sont les suivants (la cotation est à l'incertain) :
+          <table class="tbl num" style="margin:12px 0 0">
+            <tr><th>Monnaie</th><th>Unité</th><th>Cours acheteur</th><th>Cours vendeur</th></tr>
+            <tr><td>USD</td><td>1</td><td>0,8914</td><td>0,9170</td></tr>
+            <tr><td>CHF</td><td>10</td><td>9,1924</td><td>9,1997</td></tr>
+          </table>
+          <ul class="qlist">
+            <li>Interprétez le tableau.</li>
+            <li>Déterminez les cotations (EUR/USD) et (EUR/CHF).</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Interprétation.</b> Le marché est français, la cotation est à l'incertain : les cours donnent le prix d'une unité de devise étrangère en EUR. La banque achète 1 USD à 0,8914 EUR et le vend à 0,9170 EUR. Pour le CHF, l'unité est <b>10</b> : 10 CHF valent 9,1924 EUR à l'achat et 9,1997 EUR à la vente.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Ramener le CHF à 1 unité.</b> <code>(CHF/EUR)ᴬ = 9,1924/10 = 0,91924</code> et <code>(CHF/EUR)ⱽ = 9,1997/10 = 0,91997</code>.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Passage au certain — EUR/USD.</b> L'inversion croise les cours : <code>(EUR/USD)ᴬ = 1/(USD/EUR)ⱽ = 1/0,9170 = 1,0905</code> et <code>(EUR/USD)ⱽ = 1/(USD/EUR)ᴬ = 1/0,8914 = 1,1218</code>.</div></div>
+          <div class="step"><div class="sn">4</div><div class="sc"><b>Passage au certain — EUR/CHF.</b> <code>(EUR/CHF)ᴬ = 1/0,91997 = 1,0870</code> et <code>(EUR/CHF)ⱽ = 1/0,91924 = 1,0879</code>.</div></div>
+          <div class="ex-result">EUR/USD = 1,0905 − 1,1218 &nbsp;·&nbsp; EUR/CHF = 1,0870 − 1,0879</div>
+        </div>
+      </div>
+
+      <!-- Application 2 -->
+      <div class="annale">
+        <div class="an-tag">Application 2 · Cours croisé</div>
+        <h3>Fabriquer le cours USD/CHF</h3>
+        <div class="enonce">
+          Une banque française est sollicitée par un client pour réaliser des transactions en USD/CHF. Ce cours n'étant pas observé directement sur le marché des changes français, la banque va le fabriquer. En reprenant les cours de l'application 1, interprétez et calculez le cours croisé USD/CHF (acheteur et vendeur).
+          <ul class="qlist">
+            <li>Quelles sont les deux hypothèses implicites de ce calcul ?</li>
+            <li>Quelles opérations la banque réalise-t-elle sur le marché ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Formule.</b> L'EUR sert de monnaie pivot : <code>(USD/CHF)ᴬ = (USD/EUR)ᴬ / (CHF/EUR)ⱽ</code> et <code>(USD/CHF)ⱽ = (USD/EUR)ⱽ / (CHF/EUR)ᴬ</code>. Noter l'inversion acheteur/vendeur au dénominateur.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Cours acheteur.</b> <code>0,8914 / 0,91997 = 0,9689</code>.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Cours vendeur.</b> <code>0,9170 / 0,91924 = 0,9976</code>.</div></div>
+          <div class="step"><div class="sn">4</div><div class="sc"><b>Les deux hypothèses.</b> La banque ne garde pas les USD reçus du client (elle élimine son risque de change USD/CHF), et elle ne dispose pas des CHF à livrer (stock insuffisant ou nul).</div></div>
+          <div class="step"><div class="sn">5</div><div class="sc"><b>Les opérations.</b> Deux opérations simultanées via l'EUR : la banque vend les USD et achète des EUR au cours (USD/EUR)ᴬ du marché, soit 0,8914 ; puis elle vend ces EUR contre l'achat de CHF au cours (EUR/CHF)ᴬ, soit 10/9,1997.</div></div>
+          <div class="ex-result">USD/CHF = 0,9689 − 0,9976</div>
+        </div>
+      </div>
+
+      <!-- Application 3 -->
+      <div class="annale">
+        <div class="an-tag">Application 3 · Arbitrage géographique</div>
+        <h3>1 million de USD entre New York et Londres</h3>
+        <div class="enonce">
+          Un cambiste détient 1 million de USD et cherche à bénéficier des conditions du marché des changes au comptant suivantes :
+          <table class="tbl num" style="margin:12px 0 0">
+            <tr><th>GBP/USD</th><th>Acheteur</th><th>Vendeur</th></tr>
+            <tr><td>New York</td><td>1,6370</td><td>1,6380</td></tr>
+            <tr><td>Londres</td><td>1,6360</td><td>1,6365</td></tr>
+          </table>
+          <ul class="qlist">
+            <li>Déterminez l'opportunité d'arbitrage.</li>
+            <li>Calculez le gain ou la perte de cette opération.</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Détecter l'opportunité.</b> On compare le cours acheteur le plus haut au cours vendeur le plus bas : <code>NY acheteur = 1,6370 &gt; Londres vendeur = 1,6365</code>. L'écart est de 5 points : l'arbitrage est possible.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Acheter les GBP à Londres</b> (cours vendeur le plus bas) : <code>1 000 000 / 1,6365 = 611 060,19 GBP</code>.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Revendre les GBP à New York</b> (cours acheteur le plus haut) : <code>611 060,19 × 1,6370 = 1 000 305,53 USD</code>.</div></div>
+          <div class="step"><div class="sn">4</div><div class="sc"><b>Résultat.</b> <code>1 000 305,53 − 1 000 000 = 305,53 USD</code> de gain, hors coûts de transaction.</div></div>
+          <div class="ex-result">Gain d'arbitrage ≈ 305,53 USD — modeste en relatif, mais sans risque et instantané.</div>
+        </div>
+      </div>
+
+      <!-- Application 4 -->
+      <div class="annale">
+        <div class="an-tag">Application 4 · Arbitrage triangulaire</div>
+        <h3>100 000 CHF sur trois places</h3>
+        <div class="enonce">
+          Un cambiste détient 100 000 CHF et cherche à bénéficier des conditions suivantes :
+          <ul class="qlist">
+            <li>À New York : GBP/USD = 1,6300 − 20</li>
+            <li>À Zurich : USD/CHF = 0,9273 − 85</li>
+            <li>À Londres : GBP/CHF = 1,5282 − 95</li>
+          </ul>
+          Déterminez l'opportunité d'arbitrage et calculez le résultat en détaillant toutes les étapes.
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Lire les cotations en clair.</b> NY : 1,6300 − 1,6320 · Zurich : 0,9273 − 0,9285 · Londres : 1,5282 − 1,5295.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Calculer le cours croisé GBP/CHF</b> via l'USD : <code>(GBP/CHF)ᴬ = 1,6300 × 0,9273 = 1,5115</code> et <code>(GBP/CHF)ⱽ = 1,6320 × 0,9285 = 1,5153</code>.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Comparer.</b> Cours croisé calculé = 1,5115 − 1,5153 ; cours observé à Londres = 1,5282 − 1,5295. Le vendeur calculé (1,5153) est <b>inférieur</b> à l'acheteur observé (1,5282) : on fabrique des GBP par le croisement et on les revend à Londres.</div></div>
+          <div class="step"><div class="sn">4</div><div class="sc"><b>Étape 1 — CHF vers USD à Zurich.</b> On achète des USD, donc au cours vendeur : <code>100 000 / 0,9285 = 107 700,59 USD</code>.</div></div>
+          <div class="step"><div class="sn">5</div><div class="sc"><b>Étape 2 — USD vers GBP à New York.</b> On achète des GBP, donc au cours vendeur : <code>107 700,59 / 1,6320 = 65 993,01 GBP</code>.</div></div>
+          <div class="step"><div class="sn">6</div><div class="sc"><b>Étape 3 — GBP vers CHF à Londres.</b> On vend des GBP, donc au cours acheteur : <code>65 993,01 × 1,5282 = 100 850,52 CHF</code>.</div></div>
+          <div class="ex-result">Gain ≈ 100 850,52 − 100 000 = 850,52 CHF, hors coûts de transaction.</div>
+        </div>
+      </div>
+
+      <!-- Application 5 -->
+      <div class="annale">
+        <div class="an-tag">Application 5 · Arbitrage pour la clientèle</div>
+        <h3>Convertir 500 000 USD pour un exportateur</h3>
+        <div class="enonce">
+          Un client exportateur français demande à sa banque de convertir en EUR 500 000 USD. Les données sur le marché des changes spot sont les suivantes :
+          <ul class="qlist">
+            <li>À Paris : EUR/USD = 1,3904 − 25</li>
+            <li>À Londres : GBP/USD = 1,6240 − 50</li>
+            <li>À Paris : EUR/GBP = 0,8513 − 18</li>
+          </ul>
+          Le cambiste peut effectuer une vente directe de USD contre EUR, ou une vente indirecte en passant par la GBP. Quelle possibilité va-t-il retenir ?
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Lire les cotations.</b> Paris : EUR/USD = 1,3904 − 1,3925 · Londres : GBP/USD = 1,6240 − 1,6250 · Paris : EUR/GBP = 0,8513 − 0,8518.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Voie directe.</b> Le client vend des USD et achète des EUR : la banque vend l'EUR, donc au cours vendeur 1,3925. <code>500 000 / 1,3925 = 359 066,43 EUR</code>.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Voie indirecte — étape 1.</b> USD vers GBP à Londres, au cours vendeur : <code>500 000 / 1,6250 = 307 692,31 GBP</code>.</div></div>
+          <div class="step"><div class="sn">4</div><div class="sc"><b>Voie indirecte — étape 2.</b> GBP vers EUR à Paris, au cours vendeur de l'EUR : <code>307 692,31 / 0,8518 = 361 226,00 EUR</code>.</div></div>
+          <div class="step"><div class="sn">5</div><div class="sc"><b>Comparer.</b> <code>361 226,00 &gt; 359 066,43</code> : la voie indirecte rapporte <b>2 159,57 EUR</b> de plus.</div></div>
+          <div class="ex-result">Le cambiste retient la vente indirecte via la GBP — arbitrage triangulaire dont le profit supplémentaire est transféré au client.</div>
+        </div>
+      </div>
+
+
+      <div class="intro-card plum" style="margin-top:34px">
+        <h2>📄 TD 2 · Le marché des changes à terme</h2>
+        <p>Les six exercices du TD, corrigés pas à pas. Ils sont nettement plus proches du partiel écrit que les applications du cours : traite-les en conditions réelles, calculatrice et feuille de brouillon, avant d'ouvrir le corrigé.</p>
+      </div>
+
+      <!-- TD2 Exercice 1 -->
+      <div class="annale">
+        <div class="an-tag">TD 2 · Exercice 1 · Cours croisé à terme</div>
+        <h3>Vendre des EUR contre des CHF à 1 mois</h3>
+        <div class="enonce">
+          Un client désire vendre des EUR à 1 mois contre des CHF. Quel prix la banque lui proposera-t-elle si elle dispose des cours suivants sur le marché ?
+          <table class="tbl num" style="margin:12px 0 0">
+            <tr><th></th><th>EUR/USD</th><th>USD/CHF</th></tr>
+            <tr><td>Spot</td><td>1,1470 − 75</td><td>1,6975 − 95</td></tr>
+            <tr><td>Points de terme à 1 mois</td><td>10 − 15</td><td>145 − 139</td></tr>
+          </table>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Sens des points — EUR/USD.</b> <code>10 &lt; 15</code> : points acheteurs inférieurs aux vendeurs, donc <b>report</b> de l'EUR contre l'USD, on additionne. <code>EUR/USD à 1 mois = 1,1480 − 1,1490</code>.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Sens des points — USD/CHF.</b> <code>145 &gt; 139</code> : <b>déport</b> de l'USD contre le CHF, on soustrait. <code>USD/CHF à 1 mois = 1,6975 − 0,0145 = 1,6830</code> et <code>1,6995 − 0,0139 = 1,6856</code>.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Contrôle des spreads.</b> EUR/USD : 5 points au comptant, 10 à 1 mois. USD/CHF : 20 puis 26. Les deux s'élargissent : les sens retenus sont bons.</div></div>
+          <div class="step"><div class="sn">4</div><div class="sc"><b>Cours croisé EUR/CHF à 1 mois.</b> L'USD est la monnaie pivot : <code>(EUR/CHF)ᴬ = (EUR/USD)ᴬ × (USD/CHF)ᴬ = 1,1480 × 1,6830 = 1,9321</code> et <code>(EUR/CHF)ⱽ = 1,1490 × 1,6856 = 1,9368</code>.</div></div>
+          <div class="step"><div class="sn">5</div><div class="sc"><b>Le prix du client.</b> Le client <b>vend</b> des EUR : la banque les achète, donc au cours acheteur.</div></div>
+          <div class="ex-result">La banque propose 1 EUR = 1,9321 CHF à 1 mois (double cotation EUR/CHF 1 mois : 1,9321 − 1,9368).</div>
+        </div>
+      </div>
+
+      <!-- TD2 Exercice 2 -->
+      <div class="annale">
+        <div class="an-tag">TD 2 · Exercice 2 · Parité des taux couverte</div>
+        <h3>Placer à Londres ou à New York ?</h3>
+        <div class="enonce">
+          Le 20 novembre à 14 h, le cours <em>spot</em> de l'USD est de 0,68 GBP et le cours <em>forward</em> à 1 an est de 0,6874 GBP. Le taux d'intérêt sur les bons du Trésor américains est de 4 % l'an, celui sur les bons du Trésor britanniques de 6 % l'an.
+          <ul class="qlist">
+            <li>Un détenteur de 1 000 000 GBP a-t-il intérêt à placer en Grande-Bretagne ou aux États-Unis ? Calculez la richesse finale dans chacun des deux cas.</li>
+            <li>Même question pour un détenteur de 1 000 000 USD.</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Détenteur de GBP — placement local.</b> <code>1 000 000 × 1,06 = 1 060 000 GBP</code>.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Détenteur de GBP — placement couvert aux USA.</b> Conversion : <code>1 000 000 / 0,68 = 1 470 588,24 USD</code>. Placement : <code>× 1,04 = 1 529 411,76 USD</code>. Revente à terme : <code>× 0,6874 = 1 051 317,65 GBP</code>.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Conclusion 1.</b> <code>1 060 000 &gt; 1 051 317,65</code> : la Grande-Bretagne l'emporte de <b>8 682,35 GBP</b>.</div></div>
+          <div class="step"><div class="sn">4</div><div class="sc"><b>Détenteur de USD — placement local.</b> <code>1 000 000 × 1,04 = 1 040 000 USD</code>.</div></div>
+          <div class="step"><div class="sn">5</div><div class="sc"><b>Détenteur de USD — placement couvert en GB.</b> <code>1 000 000 × 0,68 = 680 000 GBP</code>, puis <code>× 1,06 = 720 800 GBP</code>, revendus à terme : <code>720 800 / 0,6874 = 1 048 588,89 USD</code>.</div></div>
+          <div class="step"><div class="sn">6</div><div class="sc"><b>Conclusion 2.</b> <code>1 048 588,89 &gt; 1 040 000</code> : la Grande-Bretagne l'emporte encore, de <b>8 588,89 USD</b>.</div></div>
+          <div class="step"><div class="sn">7</div><div class="sc"><b>Pourquoi les deux vont dans le même sens.</b> La parité des taux couverte donnerait <code>f = 0,68 × 1,06/1,04 = 0,6931</code>. Le marché cote 0,6874 : le déport du dollar est insuffisant pour compenser l'écart de taux, la relation est violée et l'arbitrage est possible dans les deux sens.</div></div>
+          <div class="ex-result">Placement en Grande-Bretagne dans les deux cas — signe que la parité des taux d'intérêt couverte n'est pas vérifiée.</div>
+        </div>
+      </div>
+
+      <!-- TD2 Exercice 3 -->
+      <div class="annale">
+        <div class="an-tag">TD 2 · Exercice 3 · Sens des mouvements de capitaux</div>
+        <h3>New York ou Stockholm ?</h3>
+        <div class="enonce">
+          Le taux d'intérêt à 6 mois sur les bons du Trésor à New York est de 2 % par an, celui à Stockholm de 4 % par an. Le taux de change au comptant est <code>10 SEK = 0,9300 USD</code> et le taux à terme à 6 mois <code>10 SEK = 0,9350 USD</code>.
+          <ul class="qlist">
+            <li>Quel devrait être théoriquement le taux de change à terme 10 SEK/USD à 6 mois ?</li>
+            <li>Toutes choses égales par ailleurs, dans quel sens vont s'effectuer les mouvements de capitaux ?</li>
+            <li>Et si le taux à terme à 6 mois était de 10 SEK = 0,9050 ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Cours à terme théorique.</b> <code>f = S × (1 + r<sub>USD</sub> × 6/12) / (1 + r<sub>SEK</sub> × 6/12) = 0,9300 × 1,01 / 1,02 = 0,9209</code>. La couronne, mieux rémunérée, doit être en déport.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Comparaison.</b> Le marché cote 0,9350, soit <b>au-dessus</b> du cours théorique : la couronne est trop chère à terme, le déport est insuffisant.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Vérification par le placement couvert.</b> 1 USD donne <code>10/0,93 = 10,7527 SEK</code>, placés 6 mois : <code>× 1,02 = 10,9677 SEK</code>, revendus à terme : <code>× 0,9350/10 = 1,0255 USD</code>, contre <code>1,0100 USD</code> à New York.</div></div>
+          <div class="step"><div class="sn">4</div><div class="sc"><b>Conclusion 2.</b> Les capitaux se dirigent vers <b>Stockholm</b> (placement en SEK couvert à terme).</div></div>
+          <div class="step"><div class="sn">5</div><div class="sc"><b>Si f = 0,9050.</b> Le cours est cette fois <b>sous</b> le théorique : <code>10,7527 × 1,02 × 0,9050/10 = 0,9926 USD</code>, contre 1,0100 à New York. Les capitaux repartent vers <b>New York</b>.</div></div>
+          <div class="ex-result">Théorique 0,9209 · à 0,9350 les capitaux vont à Stockholm · à 0,9050 ils vont à New York.</div>
+        </div>
+      </div>
+
+      <!-- TD2 Exercice 4 -->
+      <div class="annale">
+        <div class="an-tag">TD 2 · Exercice 4 · Double cotation à terme</div>
+        <h3>CHF/DKK à 6 mois et arbitrage</h3>
+        <div class="enonce">
+          Cours <em>spot</em> : <code>1 CHF = 5,0425 − 35 DKK</code>. Taux d'intérêt <strong>prêteurs</strong> en pourcentage annuel à 6 mois : DKK 4 7/8, CHF 3. Le spread est de 1/8 % pour la couronne danoise et de 1/16 % pour le franc suisse.
+          <ul class="qlist">
+            <li>Calculez les cours forward acheteur et vendeur à 6 mois du CHF/DKK.</li>
+            <li>Que se passe-t-il si le cours forward à 6 mois affiché par une banque est 1 CHF = 5,0810 − 5,0853 ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Reconstituer les taux emprunteurs.</b> Le taux emprunteur est le taux prêteur diminué du spread. DKK : <code>4,875 − 0,125 = 4,75 %</code> → <b>4,75 − 4,875</b>. CHF : <code>3 − 0,0625 = 2,9375 %</code> → <b>2,9375 − 3</b>.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Cours acheteur (A = CHF, B = DKK).</b> <code>fᴬ = 5,0425 × (1 + 0,0475 × 0,5) / (1 + 0,03 × 0,5) = 5,0860</code>.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Cours vendeur.</b> <code>fⱽ = 5,0435 × (1 + 0,04875 × 0,5) / (1 + 0,029375 × 0,5) = 5,0916</code>.</div></div>
+          <div class="step"><div class="sn">4</div><div class="sc"><b>Lecture.</b> Le taux danois dépasse le taux suisse : le CHF est en <b>report</b> contre la DKK, d'environ 435 et 482 points. Contrôle : spread au comptant 10 points, spread à terme 56 points — cohérent.</div></div>
+          <div class="step"><div class="sn">5</div><div class="sc"><b>La banque qui cote 5,0810 − 5,0853.</b> Son cours vendeur (5,0853) est <b>inférieur</b> à notre cours acheteur (5,0860) : on achète des CHF à terme chez elle à 5,0853 DKK et on les revend à terme à 5,0860 DKK.</div></div>
+          <div class="ex-result">Cours théoriques 5,0860 − 5,0916 · arbitrage de 0,0007 DKK par CHF, soit 7 points, sans risque ni mise de fonds.</div>
+        </div>
+      </div>
+
+      <!-- TD2 Exercice 5 -->
+      <div class="annale">
+        <div class="an-tag">TD 2 · Exercice 5 · Placement d'un excédent de trésorerie</div>
+        <h3>20 millions de CHF pendant 3 mois</h3>
+        <div class="enonce">
+          Taux d'intérêt annuels à 3 mois : CHF <code>2 − 2 1/2</code>, GBP <code>3 1/8 − 3 1/2</code>. Cotations : <code>GBP/CHF spot = 2,3375 − 95</code> et <code>GBP/CHF à 3 mois = 2,3405 − 26</code>. Une entreprise suisse dispose d'un excédent de trésorerie de 20 millions de CHF pendant 3 mois et hésite entre un placement en Grande-Bretagne et un placement en Suisse. Quel est le meilleur choix ? Calculez la richesse finale dans chacun des deux cas.
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Quel taux pour un placement ?</b> L'entreprise prête à sa banque : elle obtient le taux <b>emprunteur</b> de la banque, le plus bas. CHF : 2 % · GBP : 3,125 %.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Placement en Suisse.</b> <code>20 000 000 × (1 + 0,02 × 3/12) = 20 100 000 CHF</code>.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Placement en Grande-Bretagne — achat des GBP.</b> L'entreprise achète des livres, la banque les vend au cours vendeur : <code>20 000 000 / 2,3395 = 8 548 835,22 GBP</code>.</div></div>
+          <div class="step"><div class="sn">4</div><div class="sc"><b>Placement 3 mois.</b> <code>8 548 835,22 × (1 + 0,03125 × 0,25) = 8 615 623,00 GBP</code>.</div></div>
+          <div class="step"><div class="sn">5</div><div class="sc"><b>Revente à terme des GBP.</b> Opération couverte dès le départ, au cours à terme acheteur de la banque : <code>8 615 623,00 × 2,3405 = 20 164 865,62 CHF</code>.</div></div>
+          <div class="step"><div class="sn">6</div><div class="sc"><b>Comparaison.</b> <code>20 164 865,62 − 20 100 000 = 64 865,62 CHF</code> en faveur du placement britannique — l'écart de taux n'est pas entièrement absorbé par le report de la livre.</div></div>
+          <div class="ex-result">Placement en Grande-Bretagne : 20 164 865,62 CHF contre 20 100 000 CHF en Suisse, soit +64 865,62 CHF.</div>
+        </div>
+      </div>
+
+      <!-- TD2 Exercice 6 -->
+      <div class="annale">
+        <div class="an-tag">TD 2 · Exercice 6 · Cas complet</div>
+        <h3>La société Sigma : couvrir import et export</h3>
+        <div class="enonce">
+          La société française <em>Sigma</em> importe des montres de Suisse : 1/5 est vendu en France, le reste est exporté vers la Suède. Prix unitaires : achat 20 CHF, vente en France 30 EUR, vente en Suède 250 SEK. Le 02/01/N, Sigma importe 1 000 montres.
+          <ul class="qlist">
+            <li>Fournisseur suisse : 50 % au comptant, le reste à 6 mois.</li>
+            <li>Clients suédois : 50 % au comptant, le reste à 3 mois. Ventes en France réglées au comptant.</li>
+            <li>Cours au comptant au 02/01/N : <code>1 EUR = 1,5020 − 30 CHF</code> et <code>1 EUR = 8,4010 − 70 SEK</code>.</li>
+            <li>Taux annuels : EUR 3 mois 3 − 3 1/4 et 6 mois 3 1/2 − 3 3/4 · CHF 6 mois 4 1/2 − 4 2/3 · SEK 3 mois 3 3/4 − 3 7/8.</li>
+          </ul>
+          Calculez les cours à terme proposés par le cambiste, puis le chiffre d'affaires en EUR et le bénéfice dégagé.
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Les flux.</b> Achat : <code>1 000 × 20 = 20 000 CHF</code>, soit 10 000 CHF au comptant et 10 000 CHF à 6 mois (position courte en CHF). Ventes : 200 montres en France à 30 EUR = <code>6 000 EUR</code> ; 800 montres en Suède à 250 SEK = <code>200 000 SEK</code>, soit 100 000 SEK au comptant et 100 000 SEK à 3 mois (position longue en SEK).</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Créance SEK à 3 mois.</b> Sigma vend des SEK et achète des EUR : la banque vend de l'EUR, donc cours <b>vendeur</b> EUR/SEK. <code>fⱽ = 8,4070 × (1 + 0,03875 × 0,25) / (1 + 0,03 × 0,25) = 8,4253</code>.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Dette CHF à 6 mois.</b> Sigma achète des CHF et vend des EUR : la banque achète de l'EUR, donc cours <b>acheteur</b> EUR/CHF. <code>fᴬ = 1,5020 × (1 + 0,045 × 0,5) / (1 + 0,0375 × 0,5) = 1,5075</code>.</div></div>
+          <div class="step"><div class="sn">4</div><div class="sc"><b>Chiffre d'affaires en EUR.</b> France <code>6 000,00</code> + Suède comptant <code>100 000 / 8,4070 = 11 894,85</code> + Suède à 3 mois <code>100 000 / 8,4253 = 11 869,08</code> = <b>29 763,93 EUR</b>.</div></div>
+          <div class="step"><div class="sn">5</div><div class="sc"><b>Coût des achats en EUR.</b> Comptant <code>10 000 / 1,5020 = 6 657,79</code> + à 6 mois <code>10 000 / 1,5075 = 6 633,37</code> = <b>13 291,16 EUR</b>.</div></div>
+          <div class="step"><div class="sn">6</div><div class="sc"><b>Bénéfice.</b> <code>29 763,93 − 13 291,16 = 16 472,77 EUR</code>, connu dès le 02/01/N puisque toutes les positions sont couvertes.</div></div>
+          <div class="ex-result">Cours à terme 8,4253 EUR/SEK à 3 mois et 1,5075 EUR/CHF à 6 mois · CA 29 763,93 EUR · bénéfice 16 472,77 EUR</div>
+          <div class="step" style="margin-top:12px"><div class="sn">!</div><div class="sc"><b>Une ligne à vérifier sur ton énoncé.</b> La ligne des taux SEK est peu lisible sur le scan. Le corrigé retient <code>3 3/4 − 3 7/8</code> à 3 mois. Si ton polycopié indique autre chose, seule l'étape 2 change ; la méthode reste identique.</div></div>
+        </div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('generateur')">← Calculs générés</button>
+        <button class="btn plum" onclick="go('test')">Passer au test final 🎯</button>
+      </div>
+    </section>
+
+    <!-- ============ TEST FINAL ============ -->
+    <section class="view" data-view="test">
+      <span class="tag">Évaluation</span>
+      <h1 class="lesson-title">Test final adaptatif</h1>
+      <p class="subtitle">Un test mêlant QCM de cours et calculs, dans l'esprit des tests surprises et du partiel écrit.</p>
+
+      <div class="intro-card">
+        <h2>🎯 Modalités d'évaluation de la matière</h2>
+        <p><strong>20 %</strong> — 2 tests surprises, meilleure note des deux &nbsp;·&nbsp; <strong>20 %</strong> — un calcul à l'oral &nbsp;·&nbsp; <strong>60 %</strong> — le partiel écrit. Les QCM ci-dessous préparent les tests surprises et l'écrit ; pour l'oral, enchaîne les séries dans « Calculs générés ».</p>
+      </div>
+
+      <div id="testQuestions"></div>
+
+      <div class="lesson-nav" id="testSubmitRow">
+        <button class="btn" onclick="go('l1')">← Revoir le cours</button>
+        <button class="btn plum" onclick="gradeTest()">Valider mes réponses ✓</button>
+      </div>
+
+      <div class="result" id="testResult">
+        <div class="score-lab">Ton score</div>
+        <div class="score-big" id="scoreBig">0</div>
+        <div class="msg" id="scoreMsg"></div>
+        <div class="chapbars" id="chapBars"></div>
+        <div style="margin-top:28px"><button class="btn plum" onclick="resetTest()">↻ Reprendre le test</button></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<button class="float-retry" id="floatRetry" onclick="resetTest()">↻ Reprendre le test</button>
+<button class="print-fab" onclick="imprimerFiche()" title="Imprimer cette leçon en fiche">🖨️ Fiche</button>
+<div class="xp-pop" id="xpPop"></div>
+
+<script src="lb.js"></script>
+<script src="progress.js"></script>
+<script>
+const SUBJECT_KEY = 'Produits Dérivés I';
+
+/* ===================== ÉTAT ===================== */
+const LESSONS = [
+  {id:'l1', t:'Introduction', ch:1},
+  {id:'l2', t:'Les participants', ch:1},
+  {id:'l3', t:'Supports & fonctionnement', ch:1},
+  {id:'l4', t:'Les opérations', ch:1},
+  {id:'l5', t:'Lire un cours', ch:2},
+  {id:'l6', t:'Certain & incertain', ch:2},
+  {id:'l7', t:'Cours croisés', ch:2},
+  {id:'l8', t:'Arbitrage', ch:2},
+  {id:'l9',  t:'Le marché à terme', ch:3},
+  {id:'l10', t:'Report & déport', ch:3},
+  {id:'l11', t:'Points de swap', ch:3},
+  {id:'l12', t:'Les eurodevises', ch:3},
+  {id:'l13', t:'Position de change', ch:3},
+  {id:'l14', t:'Cours à terme acheteur', ch:3},
+  {id:'l15', t:'Cours à terme vendeur', ch:3}
+];
+const SAVE = (window.P ? P.etat() : {done:{},xp:0,last:null});
+const state = { xp: SAVE.xp||0, done: Object.assign({}, SAVE.done), view:'l1' };
+
+/* ===================== NAVIGATION ===================== */
+function buildNav(){
+  [1,2,3].forEach(ch=>{
+    const nav = document.getElementById('navList'+ch);
+    nav.innerHTML = '';
+    LESSONS.forEach((l,i)=>{
+      if(l.ch!==ch) return;
+      const d = document.createElement('div');
+      d.className = 'nav-item' + (state.done[l.id]?' done':'');
+      d.dataset.view = l.id;
+      d.onclick = ()=>go(l.id);
+      d.innerHTML = '<span class="num">'+(state.done[l.id]?'✓':(i+1))+'</span><span class="lab">'+l.t+'</span>';
+      nav.appendChild(d);
+    });
+  });
+  highlightNav();
+}
+function highlightNav(){
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.dataset.view===state.view));
+}
+function go(view){
+  state.view = view;
+  if(window.P && /^l\d+$/.test(view)) P.derniereLecon(view);
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active', v.dataset.view===view));
+  highlightNav();
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(view==='generateur' && !GEN.current) newGen();
+  if(window.innerWidth<=880) closeSidebar();
+}
+function imprimerFiche(){ window.print(); }
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+/* ===================== XP ===================== */
+function addXp(n){
+  state.xp += n;
+  if(window.P) P.ajouterXp(n);
+  document.getElementById('xpVal').textContent = state.xp;
+  popXp('+'+n+' XP');
+}
+function popXp(txt){
+  const p = document.getElementById('xpPop');
+  p.textContent = '★ '+txt;
+  p.classList.add('show');
+  clearTimeout(p._t);
+  p._t = setTimeout(()=>p.classList.remove('show'),1400);
+}
+function updateProgress(){
+  const pct = Math.round(Object.keys(state.done).length/LESSONS.length*100);
+  document.getElementById('progFill').style.width = pct+'%';
+  document.getElementById('progPct').textContent = pct+' %';
+}
+
+/* ===================== MINI-QUIZ ===================== */
+function pick(btn){
+  const quiz = btn.closest('.quiz');
+  if(quiz.classList.contains('answered')) return;
+  quiz.classList.add('answered');
+  const correct = btn.dataset.correct === 'true';
+  quiz.querySelectorAll('.opt').forEach(o=>{
+    o.disabled = true;
+    if(o.dataset.correct === 'true') o.classList.add('right');
+  });
+  if(!correct) btn.classList.add('wrong');
+  const fb = quiz.querySelector('.feedback');
+  if(fb) fb.hidden = false;
+  if(window.P){
+    const sec = quiz.closest('.view');
+    const lec = sec ? sec.dataset.view : '?';
+    const rang = sec ? [...sec.querySelectorAll('.quiz')].indexOf(quiz) : 0;
+    P.noterReponse('quiz:'+lec+':'+rang, correct, 'Leçon '+lec.replace('l',''));
+  }
+  if(correct) addXp(10);
+}
+function validate(id, quizCount){
+  const sec = document.querySelector('.view[data-view="'+id+'"]');
+  const answered = sec.querySelectorAll('.quiz.answered').length;
+  if(answered < quizCount){
+    popXp("Réponds aux "+quizCount+" quiz d'abord");
+    sec.querySelectorAll('.quiz:not(.answered)').forEach(q=>{ q.style.boxShadow='0 0 0 2px var(--plum)'; setTimeout(()=>q.style.boxShadow='',1200); });
+    return;
+  }
+  if(!state.done[id]){ state.done[id]=true; if(window.P) P.marquerLecon(id); addXp(50); buildNav(); updateProgress(); }
+  const idx = LESSONS.findIndex(l=>l.id===id);
+  const next = LESSONS[idx+1];
+  if(next) go(next.id); else go('generateur');
+}
+
+/* ═══════════════════════════════════════════════════════
+   GÉNÉRATEUR DE CALCULS
+   ═══════════════════════════════════════════════════════ */
+const GEN = { mode:'inversion', current:null, done:0, ok:0, streak:0, timerOn:true, t0:0, tick:null };
+
+const GEN_TYPES = [
+  {id:'inversion',   lab:'Inversion de cotation'},
+  {id:'spread',      lab:'Spread'},
+  {id:'croise',      lab:'Cours croisé'},
+  {id:'geo',         lab:'Arbitrage géographique'},
+  {id:'triangle',    lab:'Arbitrage triangulaire'}
+];
+const DEVISES = ['USD','GBP','CHF','JPY','CAD','AUD','NZD'];
+function rnd(a,b,dec){ const v = a + Math.random()*(b-a); return +v.toFixed(dec); }
+function ri(a,b){ return Math.floor(a + Math.random()*(b-a+1)); }
+function pickOne(arr){ return arr[ri(0,arr.length-1)]; }
+function two(arr){ const a=pickOne(arr); let b=pickOne(arr); while(b===a) b=pickOne(arr); return [a,b]; }
+function fmt(v,d){ return v.toLocaleString('fr-FR',{minimumFractionDigits:d,maximumFractionDigits:d}); }
+
+function buildModes(){
+  const host=document.getElementById('genModes');
+  host.innerHTML = GEN_TYPES.map(t=>
+    '<button class="gen-mode'+(GEN.mode===t.id?' on':'')+'" onclick="setMode(\''+t.id+'\')">'+t.lab+'</button>'
+  ).join('') + '<button class="gen-mode" onclick="setMode(\'mix\')">🎲 Aléatoire</button>';
+  if(GEN.mode==='mix'){
+    host.querySelectorAll('.gen-mode').forEach(b=>b.classList.remove('on'));
+    host.lastElementChild.classList.add('on');
+  }
+}
+function setMode(m){ GEN.mode=m; buildModes(); newGen(); }
+
+function genInversion(){
+  const d = pickOne(['USD','CHF','CAD','AUD']);
+  const a = rnd(0.72,1.28,4);
+  const v = +(a + rnd(0.0008,0.0060,4)).toFixed(4);
+  const sens = Math.random()<0.5 ? 'A' : 'V';
+  const ask = sens==='A'
+    ? 'Calcule le cours <b>acheteur</b> de (EUR/'+d+').'
+    : 'Calcule le cours <b>vendeur</b> de (EUR/'+d+').';
+  const answer = sens==='A' ? 1/v : 1/a;
+  return {
+    type:'Inversion de cotation',
+    enonce:'À Paris, la cotation de <b>'+d+'/EUR</b> est affichée à l\'incertain.',
+    data:[['Cours acheteur ('+d+'/EUR)ᴬ', fmt(a,4)],['Cours vendeur ('+d+'/EUR)ⱽ', fmt(v,4)]],
+    ask: ask,
+    unit:'EUR/'+d, answer:answer, tol:0.0006, dec:4,
+    steps:[
+      'L\'inversion <b>croise</b> les cours : l\'acheteur devient l\'inverse du vendeur, et réciproquement.',
+      sens==='A'
+        ? '<code>(EUR/'+d+')ᴬ = 1 / ('+d+'/EUR)ⱽ = 1 / '+fmt(v,4)+'</code>'
+        : '<code>(EUR/'+d+')ⱽ = 1 / ('+d+'/EUR)ᴬ = 1 / '+fmt(a,4)+'</code>',
+      'Résultat : <b>'+fmt(answer,4)+'</b>. Vérification : l\'autre borne vaut '+fmt(sens==='A'?1/a:1/v,4)+', et le vendeur reste bien supérieur à l\'acheteur.'
+    ]
+  };
+}
+function genSpread(){
+  const [A,B] = two(DEVISES);
+  const a = rnd(0.65,1.75,4);
+  const pts = ri(8,95);
+  const v = +(a + pts/10000).toFixed(4);
+  const enPct = Math.random()<0.5;
+  const answer = enPct ? (v-a)/a*100 : pts;
+  return {
+    type:'Spread',
+    enonce:'Une banque affiche la cotation <b>'+A+'/'+B+'</b> suivante.',
+    data:[['Cotation affichée', fmt(a,4)+' − '+fmt(v,4)]],
+    ask: enPct ? 'Calcule le spread <b>en pourcentage</b> (convention du cours).'
+               : 'Calcule le spread <b>en points</b>.',
+    unit: enPct?'%':'points', answer:answer, tol: enPct?0.004:0.5, dec: enPct?3:0,
+    steps: enPct ? [
+      'Formule du cours : <code>spread(%) = (cours vendeur − cours acheteur) / cours acheteur × 100</code>',
+      '<code>('+fmt(v,4)+' − '+fmt(a,4)+') / '+fmt(a,4)+' × 100</code>',
+      '<code>= '+fmt(v-a,4)+' / '+fmt(a,4)+' × 100 = '+fmt(answer,3)+' %</code>'
+    ] : [
+      'Le spread en points est la différence brute, lue sur la 4<sup>e</sup> décimale.',
+      '<code>'+fmt(v,4)+' − '+fmt(a,4)+' = '+fmt(v-a,4)+'</code>',
+      'Soit <b>'+pts+' points</b> de '+B+' par unité de '+A+' achetée puis revendue.'
+    ]
+  };
+}
+function genCroise(){
+  const B = pickOne(['CHF','CAD','JPY','AUD']);
+  const A = pickOne(['GBP','EUR','AUD']);
+  const aAC = rnd(1.05,1.72,4), vAC = +(aAC+rnd(0.0010,0.0040,4)).toFixed(4);
+  const aCB = rnd(0.78,1.42,4), vCB = +(aCB+rnd(0.0010,0.0040,4)).toFixed(4);
+  const sens = Math.random()<0.5?'A':'V';
+  const answer = sens==='A' ? aAC*aCB : vAC*vCB;
+  return {
+    type:'Cours croisé',
+    enonce:'Le cours <b>'+A+'/'+B+'</b> n\'est pas coté directement. La banque le fabrique via l\'USD.',
+    data:[['Cours ('+A+'/USD)', fmt(aAC,4)+' − '+fmt(vAC,4)],['Cours (USD/'+B+')', fmt(aCB,4)+' − '+fmt(vCB,4)]],
+    ask: 'Calcule le cours croisé <b>'+(sens==='A'?'acheteur':'vendeur')+'</b> ('+A+'/'+B+').',
+    unit:A+'/'+B, answer:answer, tol:0.0015, dec:4,
+    steps:[
+      'En chaîne par le pivot : <code>('+A+'/'+B+') = ('+A+'/USD) × (USD/'+B+')</code>',
+      'Les acheteurs se multiplient entre eux, les vendeurs entre eux.',
+      sens==='A'
+        ? '<code>('+A+'/'+B+')ᴬ = '+fmt(aAC,4)+' × '+fmt(aCB,4)+' = '+fmt(answer,4)+'</code>'
+        : '<code>('+A+'/'+B+')ⱽ = '+fmt(vAC,4)+' × '+fmt(vCB,4)+' = '+fmt(answer,4)+'</code>',
+      'Fourchette complète : '+fmt(aAC*aCB,4)+' − '+fmt(vAC*vCB,4)+'.'
+    ]
+  };
+}
+function genGeo(){
+  const [P1,P2] = two(['New York','Londres','Tokyo','Zurich','Francfort','Singapour']);
+  const base = rnd(1.08,1.72,4);
+  const a1 = base, v1 = +(base+rnd(0.0005,0.0015,4)).toFixed(4);
+  const ecart = rnd(0.0004,0.0022,4);
+  const v2 = +(a1-ecart).toFixed(4), a2 = +(v2-rnd(0.0003,0.0012,4)).toFixed(4);
+  const K = ri(1,9)*ri(100000,1000000);
+  const cap = Math.round(K/100000)*100000 || 500000;
+  const gbp = cap/v2, fin = gbp*a1;
+  return {
+    type:'Arbitrage géographique',
+    enonce:'Un cambiste détient <b>'+fmt(cap,0)+' USD</b> et observe les cotations <b>GBP/USD</b> suivantes, au même instant.',
+    data:[[P1+' (acheteur − vendeur)', fmt(a1,4)+' − '+fmt(v1,4)],[P2+' (acheteur − vendeur)', fmt(a2,4)+' − '+fmt(v2,4)]],
+    ask:'Calcule le <b>gain</b> de l\'arbitrage, en USD.',
+    unit:'USD', answer:fin-cap, tol:Math.max(1,(fin-cap)*0.02), dec:2,
+    steps:[
+      'Repérer l\'opportunité : <code>'+P1+' acheteur '+fmt(a1,4)+' &gt; '+P2+' vendeur '+fmt(v2,4)+'</code> → arbitrage possible.',
+      'Acheter les GBP là où le cours vendeur est le plus bas ('+P2+') : <code>'+fmt(cap,0)+' / '+fmt(v2,4)+' = '+fmt(gbp,2)+' GBP</code>',
+      'Revendre les GBP là où le cours acheteur est le plus haut ('+P1+') : <code>'+fmt(gbp,2)+' × '+fmt(a1,4)+' = '+fmt(fin,2)+' USD</code>',
+      'Gain : <code>'+fmt(fin,2)+' − '+fmt(cap,0)+' = '+fmt(fin-cap,2)+' USD</code> (hors coûts de transaction).'
+    ]
+  };
+}
+function genTriangle(){
+  const aGU = rnd(1.55,1.72,4), vGU = +(aGU+rnd(0.0010,0.0025,4)).toFixed(4);
+  const aUC = rnd(0.88,1.02,4), vUC = +(aUC+rnd(0.0008,0.0020,4)).toFixed(4);
+  const croiseA = aGU*aUC, croiseV = vGU*vUC;
+  const aGC = +(croiseV + rnd(0.0080,0.0220,4)).toFixed(4);
+  const vGC = +(aGC + rnd(0.0008,0.0020,4)).toFixed(4);
+  const cap = ri(1,9)*100000;
+  const usd = cap/vUC, gbp = usd/vGU, fin = gbp*aGC;
+  return {
+    type:'Arbitrage triangulaire',
+    enonce:'Un cambiste détient <b>'+fmt(cap,0)+' CHF</b> et observe les cotations suivantes.',
+    data:[['À New York : GBP/USD', fmt(aGU,4)+' − '+fmt(vGU,4)],['À Zurich : USD/CHF', fmt(aUC,4)+' − '+fmt(vUC,4)],['À Londres : GBP/CHF', fmt(aGC,4)+' − '+fmt(vGC,4)]],
+    ask:'Calcule le <b>gain</b> de l\'arbitrage triangulaire, en CHF.',
+    unit:'CHF', answer:fin-cap, tol:Math.max(1,(fin-cap)*0.02), dec:2,
+    steps:[
+      'Cours croisé GBP/CHF via l\'USD : <code>ᴬ = '+fmt(aGU,4)+' × '+fmt(aUC,4)+' = '+fmt(croiseA,4)+'</code> et <code>ⱽ = '+fmt(vGU,4)+' × '+fmt(vUC,4)+' = '+fmt(croiseV,4)+'</code>',
+      'Comparer : vendeur calculé ('+fmt(croiseV,4)+') &lt; acheteur observé à Londres ('+fmt(aGC,4)+') → on fabrique des GBP et on les revend à Londres.',
+      'Étape 1 — CHF → USD à Zurich, au cours vendeur : <code>'+fmt(cap,0)+' / '+fmt(vUC,4)+' = '+fmt(usd,2)+' USD</code>',
+      'Étape 2 — USD → GBP à New York, au cours vendeur : <code>'+fmt(usd,2)+' / '+fmt(vGU,4)+' = '+fmt(gbp,2)+' GBP</code>',
+      'Étape 3 — GBP → CHF à Londres, au cours acheteur : <code>'+fmt(gbp,2)+' × '+fmt(aGC,4)+' = '+fmt(fin,2)+' CHF</code>',
+      'Gain : <code>'+fmt(fin,2)+' − '+fmt(cap,0)+' = '+fmt(fin-cap,2)+' CHF</code>'
+    ]
+  };
+}
+const GENERATORS = {inversion:genInversion, spread:genSpread, croise:genCroise, geo:genGeo, triangle:genTriangle};
+
+function newGen(){
+  const m = GEN.mode==='mix' ? pickOne(GEN_TYPES).id : GEN.mode;
+  GEN.current = GENERATORS[m]();
+  const q = GEN.current;
+  document.getElementById('genType').textContent = q.type;
+  document.getElementById('genEnonce').innerHTML = q.enonce;
+  document.getElementById('genData').innerHTML = q.data.map(d=>'<span class="dl">'+d[0]+'</span> '+d[1]).join('<br>');
+  document.getElementById('genAsk').innerHTML = q.ask;
+  document.getElementById('genUnit').textContent = q.unit;
+  const inp = document.getElementById('genInput');
+  inp.value=''; inp.disabled=false; inp.focus();
+  document.getElementById('genCheck').disabled=false;
+  document.getElementById('genFb').classList.remove('show','ok','ko');
+  startTimer();
+}
+function startTimer(){
+  clearInterval(GEN.tick);
+  GEN.t0 = Date.now();
+  const el = document.getElementById('genTimer');
+  el.classList.toggle('off', !GEN.timerOn);
+  if(!GEN.timerOn){ el.textContent='⏱ off'; return; }
+  const upd=()=>{ el.textContent = '⏱ '+((Date.now()-GEN.t0)/1000).toFixed(0)+'s'; };
+  upd(); GEN.tick=setInterval(upd,1000);
+}
+function toggleTimer(){ GEN.timerOn=!GEN.timerOn; startTimer(); }
+function checkGen(){
+  const q = GEN.current; if(!q) return;
+  const inp = document.getElementById('genInput');
+  const val = parseFloat(String(inp.value).replace(',','.'));
+  if(isNaN(val)){ popXp('Saisis une valeur'); return; }
+  clearInterval(GEN.tick);
+  const ok = Math.abs(val - q.answer) <= q.tol;
+  const secs = ((Date.now()-GEN.t0)/1000).toFixed(0);
+  GEN.done++; if(ok){ GEN.ok++; GEN.streak++; addXp(15); } else { GEN.streak=0; }
+  document.getElementById('genDone').textContent = GEN.done;
+  document.getElementById('genOk').textContent = GEN.ok;
+  document.getElementById('genStreak').textContent = GEN.streak;
+  inp.disabled=true; document.getElementById('genCheck').disabled=true;
+  const fb = document.getElementById('genFb');
+  fb.className = 'gen-fb show '+(ok?'ok':'ko');
+  fb.innerHTML =
+    '<div class="fb-head">'+(ok?'✅ Juste'+(GEN.timerOn?' — en '+secs+' s':'')
+                              :'❌ Pas tout à fait')+'</div>'+
+    (ok?'':'<div class="yours">Ta réponse : '+fmt(val,q.dec)+' '+q.unit+' · attendu : '+fmt(q.answer,q.dec)+' '+q.unit+'</div>')+
+    q.steps.map((s,i)=>'<div class="step"><div class="sn">'+(i+1)+'</div><div class="sc">'+s+'</div></div>').join('')+
+    '<div style="margin-top:14px"><button class="btn primary" onclick="newGen()">Calcul suivant →</button></div>';
+  if(window.LB && GEN.done%5===0){
+    try{ LB.record({subject:SUBJECT_KEY, mode:'Calculs générés', correct:GEN.ok, total:GEN.done, xp:state.xp}); }catch(e){}
+  }
+}
+
+/* ===================== TEST FINAL ===================== */
+const TEST = [
+  {ch:'Introduction', lesson:'l1', type:'qcm',
+   q:"Quel est le volume quotidien des transactions sur le marché des changes (BRI, 2023) ?",
+   opts:["510 milliards USD","1 500 milliards USD","5 100 milliards USD","25 000 milliards USD"], correct:2,
+   ex:"Environ 5 100 milliards de USD par jour selon l'enquête triennale de la BRI de 2023."},
+  {ch:'Introduction', lesson:'l1', type:'qcm',
+   q:"Les pourcentages de poids des devises (USD 88 %, EUR 31 %…) s'apprécient par rapport à…",
+   opts:["100 %","200 %","300 %","Aucun total fixe"], correct:1,
+   ex:"Une transaction met en jeu deux monnaies : le total est de 200 %. Le poids relatif réel de l'USD est d'environ 44 %."},
+  {ch:'Les participants', lesson:'l2', type:'num',
+   q:"Quelle part des transactions passe par les services des courtiers ? (en %)",
+   answer:40, tol:0, unit:"%",
+   ex:"Environ 40 % des transactions, pour une commission de courtage de l'ordre de 0,01 %."},
+  {ch:'Les participants', lesson:'l2', type:'qcm',
+   q:"Un teneur de marché (market maker) se distingue d'un saler parce qu'il…",
+   opts:["Répond uniquement à la demande des clients","Assure en permanence la liquidité et fixe les cours de référence","Ne prend aucune position de change","Travaille au back office"], correct:1,
+   ex:"Le market maker assure la liquidité et la contrepartie ; ses cours servent de référence. Le saler, lui, répond à la demande clientèle."},
+  {ch:'Supports & fonctionnement', lesson:'l3', type:'qcm',
+   q:"Le compte lori est…",
+   opts:["Le compte de la banque chez son correspondant, en devises","Le compte du correspondant chez la banque, en monnaie nationale","Un compte de compensation SWIFT","Le compte de la banque centrale"], correct:1,
+   ex:"Lori = le leur chez nous, en monnaie nationale. Nostri = le nôtre chez eux, en devises. Aucun passage entre les deux."},
+  {ch:'Supports & fonctionnement', lesson:'l3', type:'num',
+   q:"En quelle année le système SWIFT a-t-il été créé ?",
+   answer:1977, tol:0, unit:"",
+   ex:"SWIFT a été créé en 1977. C'est un mode de transmission des ordres, pas un mode de paiement."},
+  {ch:'Supports & fonctionnement', lesson:'l3', type:'qcm',
+   q:"Le marché des changes est un marché…",
+   opts:["Organisé avec une bourse centralisée","De gré à gré (OTC), non standardisé et délocalisé","Réglementé par l'AMF","Limité aux heures d'ouverture européennes"], correct:1,
+   ex:"OTC : pas de standardisation officielle, pas de bourse centralisée, cotations en continu 24h/24 et 5 jours ouvrables sur 7."},
+  {ch:'Les opérations', lesson:'l4', type:'qcm',
+   q:"Une entreprise a 600 000 USD de créances et 900 000 USD de dettes à la même échéance. Sa position est…",
+   opts:["Longue, risque de baisse","Courte, risque de hausse","Fermée, aucun risque","Longue, risque de hausse"], correct:1,
+   ex:"PC = 600 000 − 900 000 = −300 000 : position courte (cas de l'importateur), exposée à une hausse du cours."},
+  {ch:'Les opérations', lesson:'l4', type:'qcm',
+   q:"Lorsqu'un agent se couvre, le risque de change…",
+   opts:["Disparaît du marché","Est transféré à un autre agent","Est pris en charge par la BRI","Est divisé par deux"], correct:1,
+   ex:"Le risque ne disparaît pas : il est transféré à un agent qui l'accepte en espérant un gain de change."},
+  {ch:'Les opérations', lesson:'l4', type:'qcm',
+   q:"Un spéculateur intervenant sur quelques minutes est appelé…",
+   opts:["Scalper","Day-to-day trader","Long term trader","Market maker"], correct:0,
+   ex:"Scalpers (quelques minutes), day-to-day traders (un jour), long term traders (échéance lointaine)."},
+  {ch:'Lire un cours', lesson:'l5', type:'num',
+   q:"Dans combien de jours ouvrables a lieu la livraison au comptant ?",
+   answer:2, tol:0, unit:"jours",
+   ex:"La livraison a lieu au plus tard dans les 2 jours ouvrables suivant la conclusion de la transaction (J+2)."},
+  {ch:'Lire un cours', lesson:'l5', type:'qcm',
+   q:"Dans la norme ISO 4217, les trois lettres correspondent à…",
+   opts:["3 lettres du nom du pays","2 lettres du pays + 1re lettre de la devise","1 lettre du pays + 2 de la devise","Un code attribué aléatoirement"], correct:1,
+   ex:"Deux lettres du pays et la première lettre de la devise. L'EUR fait exception, étant la monnaie d'une zone économique."},
+  {ch:'Certain & incertain', lesson:'l6', type:'qcm',
+   q:"La cotation à l'incertain exprime…",
+   opts:["Le prix d'1 unité de monnaie locale en monnaie étrangère","Le prix d'1 unité de monnaie étrangère en monnaie locale","La moyenne des cours acheteur et vendeur","Le cours à terme"], correct:1,
+   ex:"À l'incertain : 1 ME = x ML. Au certain : 1 ML = x' ME, pratiqué notamment en zone euro, en Grande-Bretagne, au Canada, en Australie et Nouvelle-Zélande."},
+  {ch:'Certain & incertain', lesson:'l6', type:'num',
+   q:"Cotation USD/CHF = 0,9268 − 0,9280. Calcule le spread en points.",
+   answer:12, tol:0, unit:"points",
+   ex:"0,9280 − 0,9268 = 0,0012, soit 12 points de CHF par USD acheté puis revendu (0,13 % en pourcentage)."},
+  {ch:'Certain & incertain', lesson:'l6', type:'qcm',
+   q:"En double cotation, (B/A)ⱽ est égal à…",
+   opts:["1 / (A/B)ⱽ","1 / (A/B)ᴬ","(A/B)ᴬ × (A/B)ⱽ","(A/B)ⱽ − (A/B)ᴬ"], correct:1,
+   ex:"L'inversion croise les cours : le vendeur de (B/A) est l'inverse de l'acheteur de (A/B)."},
+  {ch:'Cours croisés', lesson:'l7', type:'num',
+   q:"(GBP/USD)ᴬ = 1,2500 et (USD/CHF)ᴬ = 0,9000. Calcule (GBP/CHF)ᴬ.",
+   answer:1.125, tol:0.002, unit:"GBP/CHF",
+   ex:"En chaîne, les acheteurs se multiplient : 1,2500 × 0,9000 = 1,1250."},
+  {ch:'Cours croisés', lesson:'l7', type:'qcm',
+   q:"Pourquoi une banque fabrique-t-elle un cours croisé pour son client ?",
+   opts:["Pour prendre une position spéculative","Parce que la paire n'est pas cotée directement et qu'elle veut déboucler sans risque","Pour contourner la réglementation","Pour éviter de payer une commission"], correct:1,
+   ex:"La paire n'est pas assez tradée pour être cotée directement ; la banque débouclé immédiatement l'opération sur le marché pour ne pas porter de risque."},
+  {ch:'Arbitrage', lesson:'l8', type:'qcm',
+   q:"Un arbitrage géographique est possible si…",
+   opts:["Le cours acheteur d'une place dépasse le cours vendeur d'une autre","Les spreads sont égaux","Le cours croisé calculé égale le cours observé","Le marché est fermé sur une place"], correct:0,
+   ex:"Il faut un recouvrement : acheter au cours vendeur le plus bas et revendre au cours acheteur le plus haut."},
+  {ch:'Arbitrage', lesson:'l8', type:'num',
+   q:"Avec 100 000 USD : achat de GBP à 1,6000 (vendeur), revente à 1,6040 (acheteur). Gain en USD ?",
+   answer:250, tol:3, unit:"USD",
+   ex:"100 000/1,6000 = 62 500 GBP ; 62 500 × 1,6040 = 100 250 USD ; gain = 250 USD."},
+  {ch:'Arbitrage', lesson:'l8', type:'qcm',
+   q:"Quand vous achetez une devise à une banque, vous subissez…",
+   opts:["Son cours acheteur","Son cours vendeur","Le cours moyen","Le cours croisé"], correct:1,
+   ex:"C'est toujours la banque sollicitée qui impose sa cotation : elle vend au cours vendeur et achète au cours acheteur."}
+  ,
+  {ch:'Marché à terme', lesson:'l9', type:'qcm',
+   q:"Le dénouement effectif d'une opération de change à terme a lieu…",
+   opts:["Le jour de la négociation","Le jour de l'échéance","Le deuxième jour ouvrable après l'échéance","Le dernier jour du mois"], correct:2,
+   ex:"Comme au comptant, le règlement-livraison se fait en J+2, ici après la date d'échéance."},
+  {ch:'Marché à terme', lesson:'l9', type:'qcm',
+   q:"Au-delà de deux ans, quelles devises restent négociées à terme ?",
+   opts:["Toutes les monnaies convertibles","USD, JPY, CHF, GBP et EUR","Uniquement l'USD et l'EUR","Les monnaies des pays émergents"], correct:1,
+   ex:"Entre 3 jours et 6 mois toutes les monnaies des échanges internationaux sont cotées ; au-delà de 2 ans, principalement USD, JPY, CHF, GBP et EUR."},
+  {ch:'Marché à terme', lesson:'l9', type:'qcm',
+   q:"Le marché des changes à terme se subdivise en…",
+   opts:["Terme sec et swap de change","Comptant et terme","Gré à gré et organisé","Couverture et spéculation"], correct:0,
+   ex:"Le terme sec (forward outright) et le swap de change ; ce chapitre traite du terme sec."},
+  {ch:'Report & déport', lesson:'l10', type:'num',
+   q:"EUR/USD comptant 1,3820 et à 1 mois 1,3827. Combien de points de report ? (en points de base)",
+   answer:7, tol:0, unit:"pb",
+   ex:"1,3827 − 1,3820 = 0,0007, soit 7 points de base de report de l'euro contre le dollar."},
+  {ch:'Report & déport', lesson:'l10', type:'num',
+   q:"EUR/USD comptant 1,3820 et à 3 mois 1,3808 : taux de déport annualisé ? (en %, valeur absolue)",
+   answer:0.35, tol:0.03, unit:"%",
+   ex:"(1,3808 − 1,3820)/1,3820 × 12/3 × 100 = −0,35 % : l'euro est en déport de 0,35 % l'an."},
+  {ch:'Report & déport', lesson:'l10', type:'qcm',
+   q:"Une devise « au pair » (square) signifie que…",
+   opts:["Le cours à terme égale le cours au comptant","Le spread est nul","Les taux d'intérêt sont nuls","Le cours est fixé par la banque centrale"], correct:0,
+   ex:"f = S : ni report ni déport, situation rare en pratique."},
+  {ch:'Points de swap', lesson:'l11', type:'qcm',
+   q:"Points de swap affichés 28 − 23 sur EUR/USD. Que fait-on ?",
+   opts:["On additionne : report","On soustrait : déport","On additionne le premier, on soustrait le second","Rien, la cotation est erronée"], correct:1,
+   ex:"PS acheteur > PS vendeur : déport de l'euro contre le dollar, donc soustraction au cours comptant."},
+  {ch:'Points de swap', lesson:'l11', type:'num',
+   q:"GBP/USD spot 1,6312 − 22, points à 1 mois 5 − 12. Quel est le cours à terme acheteur ?",
+   answer:1.6317, tol:0.0001, unit:"",
+   ex:"5 < 12 donc report : 1,6312 + 0,0005 = 1,6317 (et le vendeur : 1,6322 + 0,0012 = 1,6334)."},
+  {ch:'Points de swap', lesson:'l11', type:'qcm',
+   q:"Quel contrôle valide un calcul de cours à terme ?",
+   opts:["Le spread doit rester constant","Le spread doit s'élargir avec l'échéance","Le spread doit se resserrer avec l'échéance","Le cours à terme doit dépasser le comptant"], correct:1,
+   ex:"Le risque du cambiste augmente avec l'échéance : le spread s'élargit toujours."},
+  {ch:'Eurodevises', lesson:'l12', type:'qcm',
+   q:"Qu'est-ce qu'une eurodevise ?",
+   opts:["Une devise de la zone euro","Une devise détenue hors de son pays d'émission","Une devise cotée à Francfort","Une devise convertible en euro"], correct:1,
+   ex:"Un dollar déposé à Londres ou à Tokyo est un eurodollar ; déposé aux États-Unis, c'est un dollar."},
+  {ch:'Eurodevises', lesson:'l12', type:'num',
+   q:"Cotation eurodollar 6 mois : 2 5/16 − 2 7/16. Quel est le taux emprunteur ? (en %)",
+   answer:2.3125, tol:0.0001, unit:"%",
+   ex:"2 + 5/16 = 2,3125 %. Le taux prêteur est 2 + 7/16 = 2,4375 %."},
+  {ch:'Eurodevises', lesson:'l12', type:'qcm',
+   q:"Sur le marché des eurodevises, les spreads de taux vont de…",
+   opts:["1/32 % à 1/8 %","1/8 % à 2 %","1 % à 5 %","0 % à 1/2 %"], correct:1,
+   ex:"De 1/8 % jusqu'à 2 %, la partie décimale des taux étant généralement un multiple de 1/32."},
+  {ch:'Position de change', lesson:'l13', type:'qcm',
+   q:"Laquelle de ces conditions n'est PAS nécessaire au risque de change ?",
+   opts:["Une transaction avec l'étranger","Une transaction libellée en devises","Un décalage entre transaction et flux financier","Un régime de changes fixes"], correct:3,
+   ex:"Les trois premières conditions sont cumulatives ; c'est au contraire le flottement qui amplifie le risque."},
+  {ch:'Position de change', lesson:'l13', type:'num',
+   q:"Créances 70 000 EUR et dettes 40 000 EUR au 01/07. Quelle est la position de change en EUR ?",
+   answer:30000, tol:0, unit:"EUR",
+   ex:"70 000 − 40 000 = +30 000 EUR : position longue, donc risque de baisse de l'euro à l'échéance."},
+  {ch:'Position de change', lesson:'l13', type:'qcm',
+   q:"Un importateur en devises est en position…",
+   opts:["Longue, risque de baisse","Courte, risque de hausse","Fermée, aucun risque","Longue, risque de hausse"], correct:1,
+   ex:"Ses dettes en devises excèdent ses créances : il craint une hausse du cours et se couvre en achetant à terme."},
+  {ch:'Cours à terme', lesson:'l14', type:'qcm',
+   q:"Pour fabriquer une vente à terme de A contre B, la banque réalise…",
+   opts:["Un emprunt en A, une vente comptant de A contre B, un prêt en B","Un emprunt en B, un achat comptant de A, un prêt en A","Un simple achat à terme auprès d'une autre banque","Un placement en A et un emprunt en B"], correct:0,
+   ex:"Emprunt en A remboursé par les devises du client, vente au comptant, placement du produit en B jusqu'à l'échéance."},
+  {ch:'Cours à terme', lesson:'l14', type:'num',
+   q:"Spot USD/CHF acheteur 1,4925, r(CHF) emprunteur 1,625 %, r(USD) prêteur 2,4375 %, 6 mois. Cours à terme acheteur ?",
+   answer:1.4865, tol:0.0003, unit:"",
+   ex:"1,4925 × (1 + 0,01625 × 0,5)/(1 + 0,024375 × 0,5) = 1,4865, soit 60 points de déport du dollar."},
+  {ch:'Cours à terme', lesson:'l15', type:'num',
+   q:"Spot USD/CHF vendeur 1,4955, r(CHF) prêteur 1,75 %, r(USD) emprunteur 2,3125 %, 6 mois. Cours à terme vendeur ?",
+   answer:1.4913, tol:0.0003, unit:"",
+   ex:"1,4955 × (1 + 0,0175 × 0,5)/(1 + 0,023125 × 0,5) = 1,4913 : la double cotation à 6 mois est 1,4865 − 1,4913."},
+  {ch:'Cours à terme', lesson:'l15', type:'qcm',
+   q:"Le taux d'intérêt de la devise A dépasse celui de la monnaie B. La devise A est…",
+   opts:["En report contre B","En déport contre B","Au pair","Indéterminée sans le cours comptant"], correct:1,
+   ex:"La devise la mieux rémunérée est en déport à terme : c'est ce qui neutralise l'arbitrage de taux couvert."}
+];
+
+function renderTest(){
+  const c = document.getElementById('testQuestions');
+  c.innerHTML = '';
+  TEST.forEach((q,i)=>{
+    const div = document.createElement('div');
+    div.className = 'test-q'; div.id = 'tq'+i;
+    let body = '';
+    if(q.type==='qcm'){
+      body = '<div class="topt">' + q.opts.map((o,j)=>
+        '<button onclick="selOpt('+i+','+j+')" id="tq'+i+'o'+j+'">'+o+'</button>').join('') + '</div>';
+    } else {
+      body = '<input type="number" step="any" class="num-input" id="tq'+i+'in" placeholder="…"><span class="unit">'+(q.unit||'')+'</span>';
+    }
+    div.innerHTML =
+      '<div class="tq-head"><span class="tq-num">Question '+(i+1)+'/'+TEST.length+'</span><span class="tq-chap">'+q.ch+'</span></div>'+
+      '<div class="tq-q">'+q.q+'</div>'+ body +
+      '<div class="remed" id="tq'+i+'rem"><div class="rt">⚠️ À revoir</div><div class="ra" id="tq'+i+'ra"></div>'+
+      '<div class="remed-btns"><button class="btn" onclick="go(\''+q.lesson+'\')">📖 Revoir la leçon</button>'+
+      '<button class="btn primary" onclick="dismissRemed('+i+')">Continuer →</button></div></div>';
+    c.appendChild(div);
+  });
+  document.getElementById('testResult').classList.remove('show');
+  document.getElementById('testSubmitRow').style.display = 'flex';
+  document.getElementById('floatRetry').classList.remove('show');
+  TEST._answers = {};
+}
+function selOpt(qi, oi){
+  if(document.getElementById('tq'+qi).classList.contains('graded')) return;
+  TEST._answers = TEST._answers || {};
+  TEST._answers[qi] = oi;
+  TEST[qi].opts.forEach((_,j)=>document.getElementById('tq'+qi+'o'+j).classList.toggle('sel', j===oi));
+}
+function gradeTest(){
+  TEST._answers = TEST._answers || {};
+  let score = 0; const chap = {};
+  TEST.forEach((q,i)=>{
+    const box = document.getElementById('tq'+i);
+    box.classList.add('graded');
+    let ok = false;
+    if(q.type==='qcm'){
+      ok = TEST._answers[i] === q.correct;
+      q.opts.forEach((_,j)=>{ const b=document.getElementById('tq'+i+'o'+j); b.disabled=true;
+        if(j===q.correct) b.classList.add('sel'); });
+    } else {
+      const val = parseFloat(document.getElementById('tq'+i+'in').value);
+      ok = !isNaN(val) && Math.abs(val - q.answer) <= (q.tol||0);
+      document.getElementById('tq'+i+'in').disabled = true;
+    }
+    if(window.P) P.noterReponse('test:'+i, ok, q.ch);
+    chap[q.ch] = chap[q.ch] || {ok:0,tot:0};
+    chap[q.ch].tot++;
+    if(ok){ score++; chap[q.ch].ok++; box.classList.add('ok'); }
+    else { box.classList.add('ko');
+      document.getElementById('tq'+i+'ra').innerHTML = q.ex;
+      document.getElementById('tq'+i+'rem').classList.add('show'); }
+  });
+  showResult(score, chap);
+}
+function dismissRemed(i){ document.getElementById('tq'+i+'rem').classList.remove('show'); }
+function showResult(score, chap){
+  document.getElementById('testSubmitRow').style.display = 'none';
+  document.getElementById('scoreBig').textContent = score+'/'+TEST.length;
+  let msg, col; const pct = score/TEST.length*100;
+  if(pct>=90){ msg="Excellent — les chapitres 1 à 3 sont acquis."; col=getCss('--teal'); }
+  else if(pct>=70){ msg="Très bon niveau. Revois les chapitres en orange ci-dessous."; col=getCss('--teal'); }
+  else if(pct>=50){ msg="Bon début. Concentre tes révisions sur les chapitres faibles."; col=getCss('--amber'); }
+  else { msg="Il reste du travail. Reprends les leçons signalées, puis réessaie."; col=getCss('--rust'); }
+  document.getElementById('scoreBig').style.color = col;
+  document.getElementById('scoreMsg').textContent = msg;
+  const bars = document.getElementById('chapBars');
+  bars.innerHTML = '';
+  Object.keys(chap).forEach(name=>{
+    const c = chap[name];
+    const p = Math.round(c.ok/c.tot*100);
+    const bc = p>=67?getCss('--teal'):p>=34?getCss('--amber'):getCss('--rust');
+    bars.innerHTML += '<div class="chapbar"><div class="cbl"><span>'+name+'</span><span>'+c.ok+'/'+c.tot+'</span></div>'+
+      '<div class="cbt"><div class="cbf" style="width:0;background:'+bc+'" data-w="'+p+'"></div></div></div>';
+  });
+  document.getElementById('testResult').classList.add('show');
+  document.getElementById('floatRetry').classList.add('show');
+  setTimeout(()=>document.querySelectorAll('.cbf').forEach(b=>b.style.width=b.dataset.w+'%'),120);
+  addXp(score*20);
+  if(window.P) P.meilleurScore('Test final', score, TEST.length);
+  document.getElementById('testResult').scrollIntoView({behavior:'smooth'});
+  if(window.LB){ try{ LB.record({subject:SUBJECT_KEY, mode:'Test final', correct:score, total:TEST.length, xp:state.xp}); }catch(e){} }
+}
+function resetTest(){ renderTest(); go('test'); }
+function getCss(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+
+/* ===================== APPLICATIONS ===================== */
+function toggleCorrige(btn){
+  const cor = btn.nextElementSibling;
+  const open = cor.classList.toggle('show');
+  btn.textContent = open ? 'Masquer le corrigé' : 'Voir le corrigé';
+}
+
+/* ===================== INIT ===================== */
+buildNav();
+updateProgress();
+renderTest();
+buildModes();
+go((window.P && SAVE.last && document.querySelector('.view[data-view="'+SAVE.last+'"]')) ? SAVE.last : 'l1');
+try{ document.getElementById('lb-id-slot').appendChild(LB.idButton()); }catch(e){}
+</script>
+<script src="banque.js"></script>
+<script src="ui.js"></script>
+</body>
+</html>

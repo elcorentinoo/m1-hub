@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="fr" subject-id="fiscalite-particulier">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entraînement Fiscalité — M1 MBAF</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+:root{
+  --card:#fff; --card2:#fbf9f5;
+  --paper:#faf6ef; --paper2:#f3ece0; --ink:#22201b; --ink2:#4a4640; --muted:#8a8378;
+  --line:#e3d9c8; --line2:#d4c7b0;
+  --teal:#1b6b5e; --teal-l:#e4f0ed; --teal-d:#0f4a40;
+  --amber:#c87a12; --amber-l:#fbf0db;
+  --rust:#a8432a; --rust-l:#f7e6df;
+  --plum:#6b3a73; --plum-l:#f0e7f2;
+  --navy:#241C15; --navy-l:#e3ebf4;
+  --gold:#b8860b;
+  --shadow:0 1px 3px rgba(34,32,27,.08), 0 8px 24px rgba(34,32,27,.06);
+  --shadow-lg:0 4px 12px rgba(34,32,27,.12), 0 24px 56px rgba(34,32,27,.14);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+code,.mono{font-family:'DM Mono',monospace}
+button{font-family:inherit}
+
+/* ---------- barre du haut ---------- */
+.topbar{position:sticky;top:0;z-index:50;background:var(--paper);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:0 20px;height:62px}
+.brand{display:flex;align-items:center;gap:11px;font-family:'Fraunces',serif;font-weight:600;font-size:1.08rem;color:var(--navy);min-width:0}
+.brand .logo{width:36px;height:36px;border-radius:9px;background:var(--amber);color:#fff;display:grid;place-items:center;font-size:1.1rem;flex-shrink:0;box-shadow:var(--shadow)}
+.brand small{display:block;font-family:'DM Sans';font-weight:500;font-size:.64rem;letter-spacing:.09em;color:var(--amber);text-transform:uppercase}
+.brand .t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-space{flex:1}
+.cd-chip{font-family:'DM Mono',monospace;font-size:.74rem;padding:6px 11px;border-radius:20px;background:var(--navy);color:#fff;white-space:nowrap;text-decoration:none}
+.cd-chip b{color:#f3c969;font-weight:500}
+
+.wrap{max-width:900px;margin:0 auto;padding:28px 18px 70px}
+
+/* ---------- en-tête ---------- */
+.hero{background:linear-gradient(140deg,#2A1A0C,#5A3208 55%,#241C15);color:#F6EEE4;border-radius:22px;padding:30px 28px;position:relative;overflow:hidden;box-shadow:var(--shadow-lg)}
+.hero::after{content:'';position:absolute;right:-60px;top:-60px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(200,122,18,.35),transparent 70%)}
+.eyebrow{font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:#f3c969;margin-bottom:8px}
+.hero h1{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.6rem,4.6vw,2.3rem);line-height:1.12;letter-spacing:-.5px}
+.hero h1 em{font-style:normal;color:#f3c969}
+.hero p{margin-top:10px;color:#c9d6e4;font-size:.95rem;max-width:600px;position:relative;z-index:1}
+.hero-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px;position:relative;z-index:1}
+.partiel{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:14px;padding:12px 16px;min-width:210px}
+.partiel .l{font-family:'DM Mono',monospace;font-size:.66rem;letter-spacing:1.4px;text-transform:uppercase;color:#a9c3e0}
+.partiel .m{font-family:'Fraunces',serif;font-weight:700;font-size:1.25rem;color:#fff}
+.hero a.back{align-self:center;color:#fff;font-weight:600;font-size:.88rem;text-decoration:none;border:1px solid rgba(255,255,255,.3);padding:9px 15px;border-radius:22px}
+.hero a.back:hover{background:rgba(255,255,255,.1)}
+
+/* ---------- onglets de mode ---------- */
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:24px 0 16px}
+.mode{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:14px 14px 12px;text-align:left;cursor:pointer;transition:.15s;color:var(--ink)}
+.mode:hover{border-color:var(--line2);transform:translateY(-2px)}
+.mode.on{border-color:var(--navy);box-shadow:0 0 0 3px var(--navy-l)}
+.mode .i{font-size:1.3rem}
+.mode .t{display:block;font-weight:700;font-size:.95rem;margin-top:4px}
+.mode .s{display:block;font-size:.78rem;color:var(--muted);line-height:1.4;margin-top:2px}
+
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:var(--shadow);margin-bottom:18px}
+.panel h3{font-family:'Fraunces',serif;font-size:1.05rem;color:var(--navy);margin-bottom:10px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:8px 13px;border-radius:22px;border:1.5px solid var(--line);background:var(--card);color:var(--ink2);font-weight:600;font-size:.86rem;cursor:pointer;transition:.15s}
+.chip:hover{border-color:var(--line2)}
+.chip.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.row{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:14px}
+.toggle{display:inline-flex;align-items:center;gap:9px;font-size:.9rem;color:var(--ink2);cursor:pointer;user-select:none}
+.toggle input{width:18px;height:18px;accent-color:var(--amber)}
+.help{font-size:.82rem;color:var(--muted);margin-top:8px;line-height:1.5}
+.sess{display:flex;gap:18px;font-family:'DM Mono',monospace;font-size:.78rem;color:var(--muted);margin-left:auto}
+.sess b{color:var(--ink);font-weight:500}
+
+.btn{font-family:'DM Sans';font-weight:600;font-size:.94rem;padding:11px 20px;border-radius:11px;cursor:pointer;border:1.5px solid var(--line);background:var(--card);color:var(--ink);transition:.16s;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
+.btn:hover{border-color:var(--line2);transform:translateY(-1px)}
+.btn.primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn.primary:hover{background:#155a4f}
+.btn.navy{background:var(--navy);color:#fff;border-color:var(--navy)}
+.btn.small{padding:7px 12px;font-size:.84rem;border-radius:9px}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+
+/* ---------- exercice ---------- */
+.ex{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+.ex-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:14px 20px;border-bottom:1px solid var(--line);background:var(--card2)}
+.tag{font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.6px;text-transform:uppercase;padding:4px 10px;border-radius:20px;background:var(--amber-l);color:var(--amber)}
+.tag.navy{background:var(--navy-l);color:var(--navy)}
+.ex-head .prog{margin-left:auto;font-family:'DM Mono',monospace;font-size:.78rem;color:var(--muted)}
+.ex-body{padding:20px}
+.ctx{font-size:.98rem;line-height:1.65}
+.ctx b{color:var(--navy)}
+table.data{width:100%;border-collapse:collapse;margin:14px 0 4px;font-size:.92rem}
+table.data th{text-align:left;font-weight:600;font-size:.74rem;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);padding:6px 10px;border-bottom:1.5px solid var(--line)}
+table.data td{padding:8px 10px;border-bottom:1px solid var(--line)}
+table.data td.v{font-family:'DM Mono',monospace;white-space:nowrap}
+table.data td.v i{font-style:normal;color:var(--muted);margin:0 6px}
+
+.q{border-top:1px dashed var(--line);margin-top:18px;padding-top:16px;animation:fade .35s both}
+.q-top{display:flex;gap:10px;align-items:flex-start}
+.qn{flex:none;width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-family:'DM Mono',monospace;font-size:.78rem;margin-top:1px}
+.q.ok .qn{background:var(--teal)} .q.ko .qn{background:var(--rust)} .q.saved .qn{background:var(--muted)}
+.qp{font-size:.98rem;line-height:1.55;flex:1}
+.qp .nt{display:block;font-family:'DM Mono',monospace;font-size:.66rem;letter-spacing:.8px;text-transform:uppercase;color:var(--amber);margin-bottom:2px}
+.ans{margin:12px 0 0 38px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ans input{font-family:'DM Mono',monospace;font-size:1rem;padding:10px 12px;border-radius:10px;border:1.5px solid var(--line2);background:var(--card);color:var(--ink);width:210px;max-width:100%}
+.ans input:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px var(--navy-l)}
+.ans .unit{font-family:'DM Mono',monospace;font-size:.86rem;color:var(--muted)}
+.opts{margin:12px 0 0 38px;display:grid;gap:8px}
+.opt{text-align:left;padding:11px 14px;border-radius:11px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font-size:.93rem;cursor:pointer;transition:.14s;line-height:1.45}
+.opt:hover:not(:disabled){border-color:var(--navy)}
+.opt:disabled{cursor:default}
+.opt.pick{border-color:var(--navy);background:var(--navy-l)}
+.opt.good{border-color:var(--teal);background:var(--teal-l)}
+.opt.bad{border-color:var(--rust);background:var(--rust-l)}
+.aids{margin:10px 0 0 38px;display:flex;flex-wrap:wrap;gap:6px}
+.aid{font-size:.8rem;padding:5px 11px;border-radius:18px;border:1px solid var(--line);background:var(--paper2);color:var(--ink2);cursor:pointer;font-weight:600}
+.aid:hover:not(:disabled){border-color:var(--line2);color:var(--navy)}
+.aid:disabled{opacity:.5;cursor:default}
+.box{margin:10px 0 0 38px;border-radius:12px;padding:12px 14px;font-size:.9rem;line-height:1.6}
+.box.hint{background:var(--amber-l);border-left:3px solid var(--amber)}
+.box.meth{background:var(--navy-l);border-left:3px solid var(--navy)}
+.box.fb{border:1px solid var(--line);background:var(--card2)}
+.box.fb.ok{border-color:rgba(27,107,94,.35);background:var(--teal-l)}
+.box.fb.ko{border-color:rgba(168,67,42,.35);background:var(--rust-l)}
+.box.fb.saved{background:var(--paper2)}
+.fb-h{font-weight:700;margin-bottom:4px}
+.fb-msg{margin-bottom:6px}
+.yours{font-family:'DM Mono',monospace;font-size:.82rem;color:var(--ink2);margin-bottom:8px}
+.steps{display:grid;gap:7px;margin-top:6px}
+.st{display:flex;gap:9px}
+.st .sn{flex:none;width:20px;height:20px;border-radius:50%;background:var(--card);border:1px solid var(--line2);font-family:'DM Mono',monospace;font-size:.68rem;display:grid;place-items:center;margin-top:2px}
+.st .sc code,.box code{font-family:'DM Mono',monospace;font-size:.86rem;background:rgba(127,127,127,.12);padding:1px 5px;border-radius:5px;white-space:nowrap}
+details.more{margin-top:6px} details.more summary{cursor:pointer;font-size:.84rem;color:var(--navy);font-weight:600}
+table.mini{border-collapse:collapse;font-size:.84rem;margin:6px 0;width:100%}
+table.mini td,table.mini th{border:1px solid rgba(127,127,127,.25);padding:4px 7px;text-align:left}
+table.mini th{font-size:.72rem;text-transform:uppercase;letter-spacing:.4px}
+.ex-foot{padding:14px 20px;border-top:1px solid var(--line);display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:var(--card2)}
+.ex-foot .sp{flex:1}
+.timer{font-family:'DM Mono',monospace;font-size:.8rem;color:var(--muted)}
+
+/* ---------- bilan ---------- */
+.bilan-score{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.ring{width:110px;height:110px;border-radius:50%;display:grid;place-items:center;font-family:'Fraunces',serif;font-weight:900;font-size:1.7rem;color:var(--navy)}
+.bars{display:grid;gap:8px;margin-top:16px}
+.bar-l{display:flex;justify-content:space-between;font-size:.84rem}
+.bar{height:8px;border-radius:5px;background:var(--paper2);border:1px solid var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--teal)}
+.bar.low i{background:var(--rust)} .bar.mid i{background:var(--amber)}
+.corr{border-top:1px dashed var(--line);padding-top:12px;margin-top:12px}
+.corr h4{font-size:.92rem;margin-bottom:4px}
+
+/* ---------- aide-mémoire ---------- */
+details.memo{margin-top:22px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 18px;box-shadow:var(--shadow)}
+details.memo summary{cursor:pointer;font-family:'Fraunces',serif;font-weight:700;color:var(--navy)}
+details.memo .in{margin-top:10px;font-size:.9rem;line-height:1.6}
+details.memo .in p{margin:8px 0}
+
+.hidden{display:none!important}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(max-width:640px){
+  .modes{grid-template-columns:1fr}
+  .mode{display:flex;gap:10px;align-items:center}.mode .t{margin-top:0}
+  .ans,.opts,.aids,.box{margin-left:0}
+  .brand small{display:none}
+  .brand .t{display:none}
+  .sess{margin-left:0;width:100%}
+  .topbar{padding:0 12px;gap:10px}
+}
+@media(prefers-reduced-motion:reduce){.q{animation:none}}
+</style>
+<link rel="stylesheet" href="ui.css">
+<link rel="stylesheet" href="theme.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#F7F8FA">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="logo">§</span>
+    <span class="t">Entraînement · Fiscalité<small>M1 MBAF · IR du particulier</small></span>
+  </div>
+  <span class="tb-space"></span>
+  <a class="cd-chip" id="cdChip" href="#partiel">⏳ Partiel</a>
+  <span id="nav-slot"></span>
+</div>
+
+<div class="wrap">
+
+  <header class="hero" id="partiel">
+    <div class="eyebrow">Mode entraînement · séparé du cours</div>
+    <h1>Les calculs de l'impôt sur le revenu,<br><em>à l'infini</em>.</h1>
+    <p>Neuf notions, de la composition du foyer fiscal au revenu net global imposable : chaque exercice est tiré au hasard — nouvelle famille, nouveaux âges, nouveaux montants. Tu réponds question par question, avec des aides si tu bloques, et la correction arrive tout de suite, avec le détail du raisonnement.</p>
+    <div class="hero-row">
+      <div class="partiel">
+        <div class="l">⏳ Partiel Fiscalité · <span id="cdDate">15 janvier 2027</span></div>
+        <div class="m" id="cdMain">—</div>
+      </div>
+      <a class="back" href="fiscalite_particulier.html">📖 Revoir le cours →</a>
+    </div>
+  </header>
+
+  <div class="modes" role="tablist">
+    <button class="mode on" data-mode="notion" onclick="setMode('notion')"><span class="i">🧩</span><span><span class="t">Par notion</span><span class="s">Un type de calcul, à la chaîne</span></span></button>
+    <button class="mode" data-mode="serie" onclick="setMode('serie')"><span class="i">🔟</span><span><span class="t">Série</span><span class="s">5 ou 10 exercices mélangés, avec un bilan</span></span></button>
+    <button class="mode" data-mode="cas" onclick="setMode('cas')"><span class="i">📝</span><span><span class="t">Cas complet</span><span class="s">Un foyer entier, du nombre de parts au RNGI</span></span></button>
+  </div>
+
+  <div class="panel" id="pNotion">
+    <h3>Choisis une notion</h3>
+    <div class="chips" id="chips"></div>
+    <div class="row">
+      <button class="btn navy" onclick="startNotion()">Nouvel exercice →</button>
+      <div class="sess">Faits <b id="sDone">0</b> · Justes <b id="sOk">0</b> · Série <b id="sStreak">0</b></div>
+    </div>
+  </div>
+
+  <div class="panel hidden" id="pSerie">
+    <h3>Série mélangée</h3>
+    <div class="chips" id="serieLen">
+      <button class="chip on" data-n="5" onclick="setLen(5)">5 exercices</button>
+      <button class="chip" data-n="10" onclick="setLen(10)">10 exercices</button>
+    </div>
+    <div class="row">
+      <label class="toggle"><input type="checkbox" id="partielSerie"> Conditions de partiel</label>
+      <button class="btn navy" onclick="startSerie()">Lancer la série →</button>
+    </div>
+    <p class="help">En conditions de partiel : chronomètre, aucune aide, et tu ne vois si tu as juste qu'à la fin. Toutes les corrections sont regroupées dans le bilan.</p>
+  </div>
+
+  <div class="panel hidden" id="pCas">
+    <h3>Cas complet, format sujet d'examen</h3>
+    <p class="help" style="margin-top:0">Un foyer fiscal tiré au sort, traité du début à la fin : composition du foyer, nombre de parts, puis chaque revenu catégoriel — traitements et salaires, revenus fonciers, BIC — et enfin l'enchaînement complet revenu global, revenu brut global, revenu net global et revenu net global imposable. Huit à dix questions, dans l'esprit de l'exercice BRAVIC.</p>
+    <div class="row">
+      <label class="toggle"><input type="checkbox" id="partielCas"> Conditions de partiel</label>
+      <button class="btn navy" onclick="startCas()">Commencer le cas →</button>
+    </div>
+  </div>
+
+  <div id="stage"></div>
+
+  <details class="memo">
+    <summary>📌 Aide-mémoire : les trois tableaux qui débloquent tout</summary>
+    <div class="in">
+      <p><b>Le nombre de parts.</b> Contribuable seul : 1 part. Couple marié ou pacsé : 2 parts. Puis les majorations :</p>
+      <table class="mini">
+        <tr><th>Rang de la PAC</th><th>Mariés / pacsés</th><th>Célibataire, divorcé</th><th>Parent isolé (case T)</th><th>Veuf</th></tr>
+        <tr><td>1<sup>re</sup></td><td>+ 0,5</td><td>+ 0,5</td><td>+ 0,5 + 0,5</td><td>+ 0,5 + 1</td></tr>
+        <tr><td>2<sup>e</sup></td><td>+ 0,5</td><td>+ 0,5</td><td>+ 0,5</td><td>+ 0,5</td></tr>
+        <tr><td>3<sup>e</sup> et suivantes</td><td>+ 1</td><td>+ 1</td><td>+ 1</td><td>+ 1</td></tr>
+      </table>
+      <p><b>Case T :</b> célibataire, divorcé ou séparé, qui <i>vit seul</i> ET assume <i>seul</i> la charge effective d'au moins une PAC. Une seule fois, sur la première PAC. Exclue en résidence alternée. Jamais pour les veufs.</p>
+      <p><b>Résidence alternée :</b> les majorations sont divisées par deux.</p>
+      <p><b>Invalidité :</b> + 0,5 part par personne titulaire de la carte d'invalidité, de la carte mobilité inclusion « invalidité », ou d'une pension d'au moins 40 %. L'infirmité seule n'y donne pas droit.</p>
+      <p><b>Les quatre étapes.</b> <code>RG = Σ revenus et déficits nets catégoriels</code> → <code>RBG = RG − déficits globaux des 6 années antérieures</code> → <code>RNG = RBG − charges déductibles</code> → <code>RNGI = RNG − abattements spéciaux</code>. L'ordre ne change jamais.</p>
+      <p><b>Deux abattements à connaître.</b> Micro-foncier : <code>recettes × 0,70</code>, applicable jusqu'à 15 000 € de recettes. Traitements et salaires : <code>brut × 0,90</code>.</p>
+      <p><b>Les personnes à charge de droit :</b> enfant mineur (moins de 18 ans au 1<sup>er</sup> janvier), enfant infirme à tout âge, enfant mineur recueilli à charge effective et exclusive, personne invalide vivant sous le toit avec une carte à au moins 80 %. <b>Rattachement</b> des majeurs : moins de 21 ans, ou moins de 25 ans si études, au 1<sup>er</sup> janvier.</p>
+    </div>
+  </details>
+</div>
+<script src="lb.js"></script>
+<script src="progress.js"></script>
+<script>
+/* ════════════════════════════════════════════════════════════
+   Entraînement · Fiscalité du particulier
+   Neuf notions générées à l'infini + un cas complet enchaîné.
+   Même moteur d'exercices que l'entraînement au change.
+   ════════════════════════════════════════════════════════════ */
+
+/* ---------- utilitaires ---------- */
+function ri(a,b){ return Math.floor(a+Math.random()*(b-a+1)); }
+function pick(a){ return a[ri(0,a.length-1)]; }
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=ri(0,i); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function fmt(v,d){
+  d = (d===undefined?0:d);
+  const neg = v<0; const s = Math.abs(+v).toFixed(d);
+  const p = s.split('.');
+  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g,' ');
+  return (neg?'−':'')+p[0]+(p[1]?','+p[1]:'');
+}
+function eur(v){ return fmt(v,0)+' €'; }
+function parseNum(s){
+  s = String(s).replace(/[\s  €%]/g,'').replace(',','.');
+  return parseFloat(s);
+}
+function grade(q,val){
+  const tol = (q.tol!==undefined)?q.tol:0.5;
+  return { ok: Math.abs(val-q.ans) <= tol+1e-9, msg:'' };
+}
+
+/* ---------- les neuf notions ---------- */
+const NOTIONS = {
+  foyers:   {ico:'👪', lab:'Nombre de foyers fiscaux'},
+  pac:      {ico:'🧒', lab:'Personne à charge ou non'},
+  parts:    {ico:'➗', lab:'Nombre de parts'},
+  domicile: {ico:'🌍', lab:'Domicile fiscal'},
+  dates:    {ico:'📅', lab:"Dates d'appréciation"},
+  micro:    {ico:'🏠', lab:'Revenus fonciers'},
+  ts:       {ico:'💼', lab:'Traitements et salaires'},
+  rbg:      {ico:'📉', lab:'Déficits globaux antérieurs'},
+  rngi:     {ico:'🧮', lab:'Du revenu global au RNGI'}
+};
+const METH = {
+  foyers:   "Cherche les liens juridiques reconnus : mariage et PACS seulement. Le concubinage ne crée pas de foyer commun, et vivre sous le même toit non plus. Puis regarde qui est à charge de qui.",
+  pac:      "Deux voies : à charge <b>de droit</b> (enfant mineur, enfant infirme à tout âge, mineur recueilli à charge exclusive, personne invalide sous le toit avec carte à 80 %) ou <b>par rattachement</b> sur demande (moins de 21 ans, ou moins de 25 ans si études, au 1<sup>er</sup> janvier).",
+  parts:    "Base d'abord : 1 part seul, 2 parts en couple. Puis les majorations rang par rang. Puis la case T si et seulement si le contribuable vit seul et assume seul la charge. Puis les demi-parts d'invalidité. En résidence alternée, les majorations sont divisées par deux.",
+  domicile: "Quatre tests de l'article 4 B, dans l'ordre : le foyer, le séjour principal de plus de 183 jours, l'activité professionnelle non accessoire, le centre des intérêts économiques. Un seul suffit.",
+  dates:    "Principe : 1<sup>er</sup> janvier. Exception : 31 décembre en cas d'augmentation des charges de famille. Mariage, PACS, divorce et rupture : l'impôt retient la situation au 31 décembre. Décès : situation au 1<sup>er</sup> janvier.",
+  micro:    "Si les recettes ne dépassent pas 15 000 €, le micro-foncier s'applique : abattement forfaitaire de 30 %, soit <code>recettes × 0,70</code>. Au-delà, le régime réel est obligatoire : <code>recettes − charges réelles</code>.",
+  ts:       "On part du brut imposable annuel — salaire mensuel × 12, plus les primes — puis on applique la déduction forfaitaire de 10 % : <code>brut × 0,90</code>.",
+  rbg:      "On écarte d'abord les déficits de plus de six ans : ils sont perdus. On impute ensuite du plus ancien au plus récent, dans la limite du revenu global de l'année.",
+  rngi:     "Quatre étapes, jamais dans un autre ordre : revenu global, puis revenu brut global (− déficits antérieurs), puis revenu net global (− charges déductibles), puis revenu net global imposable (− abattements spéciaux)."
+};
+
+/* ---------- calcul de référence du nombre de parts ---------- */
+function calcParts(f){
+  const base = (f.sit==='marie'||f.sit==='pacse') ? 2 : 1;
+  let maj = 0;
+  for(let k=1;k<=f.nPac;k++){
+    let m;
+    if(f.sit==='veuf') m = (k===1?1.5 : k===2?0.5 : 1);
+    else               m = (k<=2?0.5 : 1);
+    if(k===1 && f.caseT) m += 0.5;
+    if(f.alternee) m = m/2;
+    maj += m;
+  }
+  return base + maj + 0.5*(f.invalides||0);
+}
+const SIT_LAB = {marie:'marié', pacse:'pacsé', celib:'célibataire', divorce:'divorcé', veuf:'veuf'};
+
+/* ---------- générateurs ---------- */
+const GEN = {};
+
+GEN.parts = function(){
+  const sit = pick(['marie','pacse','celib','divorce','veuf','marie','celib','divorce']);
+  const couple = (sit==='marie'||sit==='pacse');
+  const nPac = couple ? ri(0,4) : ri(1,3);
+  const alternee = (!couple && sit!=='veuf' && nPac===1 && Math.random()<0.25);
+  const caseT = (!couple && sit!=='veuf' && nPac>=1 && !alternee && Math.random()<0.55);
+  const invalides = Math.random()<0.22 ? 1 : 0;
+  const f = {sit, nPac, alternee, caseT, invalides};
+  const parts = calcParts(f);
+
+  const prenom = pick(['Maëlle','Gurvan','Soazig','Erwan','Katell','Ronan','Nolwenn','Yann','Awena','Tanguy']);
+  const nom = pick(['LE GOFF','KERVELLA','QUÉMÉNER','TANGUY','RIOU','LE BRAS','PRIGENT','GUÉGUEN']);
+  let ctx = `<b>${prenom} ${nom}</b> est ${SIT_LAB[sit]}`;
+  if(couple) ctx += ` et fait l'objet d'une imposition commune avec ${pick(['son conjoint','sa conjointe','son partenaire de PACS'])}`;
+  ctx += '. ';
+  if(nPac===0) ctx += "Le foyer ne compte aucune personne à charge.";
+  else {
+    ctx += `Le foyer compte <b>${nPac} personne${nPac>1?'s':''} à charge</b>`;
+    ctx += alternee ? ", en <b>résidence alternée</b>." : ".";
+  }
+  if(caseT) ctx += ` ${prenom} vit seul${/e$/.test(prenom)?'e':''} et assume seul${/e$/.test(prenom)?'e':''} la charge effective de ${nPac>1?'ces personnes':'cette personne'}.`;
+  if(!caseT && !couple && sit!=='veuf' && !alternee) ctx += ` ${prenom} vit en concubinage.`;
+  if(invalides) ctx += ` Une personne du foyer est titulaire de la <b>carte mobilité inclusion mention « invalidité »</b>.`;
+
+  const steps = [];
+  steps.push(`Base : ${couple?'couple marié ou pacsé → <b>2 parts</b>':'contribuable seul → <b>1 part</b>'}.`);
+  if(nPac){
+    let det = [];
+    for(let k=1;k<=nPac;k++){
+      let m = (f.sit==='veuf') ? (k===1?1.5:k===2?0.5:1) : (k<=2?0.5:1);
+      let txt = `${k}<sup>${k===1?'re':'e'}</sup> PAC : +${fmt(m,2).replace(',00','')}`;
+      if(k===1 && caseT){ m+=0.5; txt += ` +0,5 (case T)`; }
+      if(alternee){ m=m/2; txt += ` ÷ 2 (résidence alternée)`; }
+      det.push(txt+` → <b>+${fmt(m,2).replace(/,?0+$/,'')}</b>`);
+    }
+    steps.push('Majorations : '+det.join(' · '));
+  }
+  if(caseT) steps.push("Case T : le contribuable est célibataire, divorcé ou séparé, il <b>vit seul</b> et assume <b>seul</b> la charge effective de la première personne à charge → une demi-part supplémentaire, une seule fois.");
+  if(alternee) steps.push("Résidence alternée : les majorations sont <b>divisées par deux</b>, et la case T est exclue puisque la charge n'est pas assumée seul.");
+  if(invalides) steps.push("Carte d'invalidité : <b>+ 0,5 part</b> par personne concernée, qu'elle soit le contribuable ou une personne à charge.");
+  if(sit==='veuf' && nPac) steps.push("Barème des veufs : la première personne à charge vaut <b>+ 1,5 part</b>, de sorte que le total rejoigne celui d'un couple. Pas de case T pour les veufs.");
+  steps.push(`Total : <b>${fmt(parts,2).replace(/,?0+$/,'')} part${parts>1?'s':''}</b>.`);
+
+  return {n:'parts', ctx, qs:[{
+    n:'parts', kind:'num', prompt:"De combien de parts ce foyer fiscal dispose-t-il ?",
+    ans:parts, dec:2, tol:0.001, unit:'parts',
+    hint:"Commence par la base, puis ajoute les majorations rang par rang. La case T ne joue qu'une fois, sur la première personne à charge.",
+    steps
+  }]};
+};
+
+GEN.foyers = function(){
+  const T = [
+    {c:"M. et Mme ${n}, mariés, vivent avec leurs deux enfants de 9 et 14 ans.", a:1,
+     s:["Couple marié : imposition commune, un seul foyer.","Les deux enfants sont mineurs : personnes à charge de droit.","<b>1 foyer fiscal.</b>"]},
+    {c:"${p} et ${q} vivent en concubinage depuis six ans avec leurs deux enfants communs, âgés de 4 et 7 ans.", a:2,
+     s:["<b>Le concubinage n'est pas reconnu fiscalement</b> : aucune imposition commune.","Chaque concubin déclare séparément ; les enfants sont rattachés à l'un ou à l'autre, jamais aux deux.","<b>2 foyers fiscaux.</b>"]},
+    {c:"M. ${n}, veuf, vit sous le toit de sa tante Mme ${m}, veuve également. Aucun des deux n'est invalide.", a:2,
+     s:["Aucun des deux n'est à la charge de l'autre : ni enfant, ni personne invalide titulaire d'une carte.","Partager un toit ne crée pas de foyer commun.","<b>2 foyers fiscaux</b>, une part chacun."]},
+    {c:"M. et Mme ${n} sont pacsés. Leur fils, âgé de 28 ans, salarié, vit sous leur toit.", a:2,
+     s:["Le PACS emporte imposition commune : un foyer pour le couple.","À 28 ans, le fils dépasse les deux plafonds de rattachement (21 ans, ou 25 ans si études) : il ne peut plus se rattacher.","Vivre sous le toit ne vaut jamais rattachement. <b>2 foyers fiscaux.</b>"]},
+    {c:"Mme ${m}, célibataire, héberge sous son toit sa cousine, titulaire de la carte d'invalidité, dont elle assume la charge.", a:1,
+     s:["Une personne invalide titulaire de la carte, vivant sous le toit du contribuable, est <b>personne à charge de droit</b> — sans condition d'âge, de parenté ni de revenu.","Elle entre donc dans le foyer de Mme ${m}.","<b>1 foyer fiscal.</b>"]},
+    {c:"M. et Mme ${n} sont mariés. Leur fille, 23 ans, étudiante, a demandé son rattachement, que ses parents ont accepté.", a:1,
+     s:["Couple marié : un foyer.","À 23 ans et poursuivant ses études, la fille a moins de 25 ans au 1<sup>er</sup> janvier : le rattachement est possible, il est demandé et accepté.","<b>1 foyer fiscal.</b>"]},
+    {c:"M. ${n}, divorcé, vit seul avec son fils de 11 ans. Son ex-épouse s'est remariée.", a:1,
+     s:["Le foyer de M. ${n} comprend son fils mineur, personne à charge de droit.","L'ex-épouse remariée relève d'un autre foyer, hors de l'énoncé.","<b>1 foyer fiscal</b> parmi ceux décrits."]}
+  ];
+  const t = pick(T);
+  const n = pick(['LE BIHAN','MORVAN','CADIOU','JÉGOU','HÉLIAS','LE DUFF']);
+  const m = pick(['KERGOAT','LE MOAL','SALAÜN','ABALAIN']);
+  const p = pick(['Gaël','Erwan','Youenn']); const q = pick(['Maïwenn','Solenn','Anaïg']);
+  const rep = s => s.replace(/\$\{n\}/g,n).replace(/\$\{m\}/g,m).replace(/\$\{p\}/g,p).replace(/\$\{q\}/g,q);
+  return {n:'foyers', ctx:rep(t.c), qs:[{
+    n:'foyers', kind:'num', prompt:"Combien de foyers fiscaux cette situation fait-elle apparaître ?",
+    ans:t.a, dec:0, tol:0, unit:'foyers',
+    hint:"Seuls le mariage et le PACS emportent imposition commune. Cherche ensuite qui est à charge de qui.",
+    steps:t.s.map(rep)
+  }]};
+};
+
+GEN.pac = function(){
+  const C = [
+    {d:"un enfant du contribuable, âgé de 15 ans", ok:true,  w:"Enfant mineur au 1<sup>er</sup> janvier : personne à charge <b>de droit</b>."},
+    {d:"un enfant du contribuable, âgé de 19 ans, sans emploi, qui ne demande pas son rattachement", ok:false, w:"Majeur : il forme son propre foyer fiscal tant qu'il ne demande pas le rattachement. Le rattachement est une option, pas un automatisme."},
+    {d:"un enfant du contribuable, âgé de 22 ans, étudiant, qui demande son rattachement et l'obtient", ok:true, w:"Moins de 25 ans au 1<sup>er</sup> janvier et poursuite d'études : le rattachement est possible, demandé et accepté."},
+    {d:"un enfant du contribuable, âgé de 30 ans, infirme, qui vit au foyer sans détenir de carte d'invalidité", ok:true, w:"L'enfant infirme est à charge <b>de droit quel que soit son âge</b>, peu importe qu'il détienne ou non une carte. En revanche, pas de demi-part supplémentaire."},
+    {d:"la mère du contribuable, 72 ans, valide, sans ressources, hébergée au foyer", ok:false, w:"Un ascendant valide n'est jamais une personne à charge, et l'absence de ressources n'y change rien."},
+    {d:"le père du contribuable, 79 ans, valide, hébergé au foyer", ok:false, w:"Toujours pas de personne à charge. En revanche, au-delà de 75 ans, les <b>frais d'accueil</b> deviennent une charge déductible du revenu brut global."},
+    {d:"la tante du contribuable, titulaire de la carte d'invalidité, qui vit sous son toit", ok:true, w:"Personne invalide vivant sous le toit, titulaire de la carte : personne à charge <b>de droit</b>, sans condition d'âge, de parenté ni de revenu."},
+    {d:"la grand-mère du contribuable, titulaire de la carte d'invalidité, qui vit dans son propre appartement", ok:false, w:"La condition de <b>cohabitation</b> n'est pas remplie : vivre sous le toit du contribuable est exigé."},
+    {d:"le neveu orphelin du contribuable, 10 ans, recueilli au foyer, dont il assume seul tous les besoins", ok:true, w:"Enfant mineur recueilli : à charge de droit, dès lors qu'il vit au foyer et que la charge est <b>effective et exclusive</b>."},
+    {d:"un enfant du contribuable, âgé de 26 ans, étudiant en médecine, vivant sous son toit", ok:false, w:"À 26 ans au 1<sup>er</sup> janvier, le plafond de 25 ans est dépassé : plus de rattachement possible, même en poursuivant ses études et en vivant au domicile."}
+  ];
+  const c = pick(C);
+  return {n:'pac', ctx:`On examine la composition d'un foyer fiscal pour l'année N.`, qs:[{
+    n:'pac', kind:'qcm',
+    prompt:`Cette personne est-elle une personne à charge du foyer : <b>${c.d}</b> ?`,
+    opts: shuffle([
+      {t:"Oui, elle entre dans le foyer fiscal", ok:c.ok,  why:c.ok?'':c.w},
+      {t:"Non, elle n'est pas à charge",         ok:!c.ok, why:c.ok?c.w:''}
+    ]),
+    hint:"Repasse la liste : enfant mineur, enfant infirme à tout âge, mineur recueilli à charge exclusive, personne invalide sous le toit avec carte — puis le rattachement sur demande des majeurs.",
+    steps:[c.w]
+  }]};
+};
+
+GEN.domicile = function(){
+  const jours = pick([98,142,165,171,186,204,251]);
+  const foyerFr = Math.random()<0.3;
+  const proFr   = Math.random()<0.3;
+  const ecoFr   = Math.random()<0.3;
+  const sejourFr = jours>183;
+  const domicilie = foyerFr||sejourFr||proFr||ecoFr;
+  const pays = pick(['au Portugal','en Thaïlande','au Maroc','en Belgique','au Canada']);
+  const ville = pick(['Brest','Vannes','Rennes','Quimper','Lorient']);
+  let ctx = `Un contribuable de nationalité française réside principalement ${pays}. `;
+  ctx += foyerFr ? `Sa résidence habituelle et permanente est néanmoins située à ${ville}. `
+                 : `Sa résidence habituelle et permanente se situe ${pays}. `;
+  ctx += `Il a passé <b>${jours} jours</b> en France au cours de l'année. `;
+  ctx += proFr ? `Il exerce en France son activité professionnelle principale. `
+               : `Son activité professionnelle principale est exercée ${pays}. `;
+  ctx += ecoFr ? `Le centre de ses intérêts économiques se trouve en France.`
+               : `Le centre de ses intérêts économiques se trouve ${pays}.`;
+  const steps = [
+    `① Le <b>foyer</b> — résidence habituelle et permanente : ${foyerFr?'<b>rempli</b> (en France)':'non rempli'}.`,
+    `② Le <b>séjour principal</b> — plus de 183 jours : ${jours} jours, ${sejourFr?'<b>rempli</b>':'non rempli'}.`,
+    `③ L'<b>activité professionnelle</b> non accessoire : ${proFr?'<b>remplie</b> (en France)':'non remplie'}.`,
+    `④ Le <b>centre des intérêts économiques</b> : ${ecoFr?'<b>rempli</b> (en France)':'non rempli'}.`,
+    domicilie
+      ? "Les critères sont <b>alternatifs</b> : un seul rempli suffit. Le contribuable est <b>domicilié fiscalement en France</b> et y est imposable sur l'ensemble de ses revenus."
+      : "Aucun des quatre critères n'est rempli : le contribuable <b>n'est pas domicilié fiscalement en France</b>. Il n'y est imposable que sur ses revenus de source française, sous réserve de la convention applicable."
+  ];
+  return {n:'domicile', ctx, qs:[{
+    n:'domicile', kind:'qcm', prompt:"Ce contribuable a-t-il son domicile fiscal en France au sens de l'article 4 B ?",
+    opts: shuffle([
+      {t:"Oui, domicilié en France", ok:domicilie,  why:domicilie?'':"Aucun des quatre critères n'est rempli."},
+      {t:"Non, domicilié hors de France", ok:!domicilie, why:domicilie?"Au moins un critère est rempli, et ils sont alternatifs.":''}
+    ]),
+    hint:"Quatre tests, examinés dans l'ordre. Un seul rempli suffit à domicilier en France.",
+    steps
+  }]};
+};
+
+GEN.dates = function(){
+  const C = [
+    {q:"Un enfant naît le 7 octobre de l'année N. Pour l'imposition des revenus de l'année N, il :",
+     o:[{t:"compte pour une majoration entière", ok:true},{t:"ne compte pas", ok:false},{t:"compte au prorata des mois", ok:false}],
+     s:["L'arrivée d'un enfant <b>augmente les charges de famille</b> : la situation s'apprécie au <b>31 décembre</b>.","L'enfant compte dès l'année N, pour une majoration entière — jamais de prorata."]},
+    {q:"Un couple divorce le 12 mai de l'année N. Combien de déclarations au titre de l'année N ?",
+     o:[{t:"Deux déclarations, couvrant chacune l'année entière", ok:true},{t:"Une commune, puis deux séparées", ok:false},{t:"Une seule déclaration commune", ok:false}],
+     s:["Divorce, séparation et rupture de PACS : <b>deux déclarations séparées pour l'année entière</b>.","Chacun déclare ses revenus de l'année et sa quote-part des revenus communs.","Le découpage en deux périodes concerne le <b>décès</b>, pas le divorce."]},
+    {q:"Un conjoint décède le 3 juin de l'année N. Combien de déclarations au titre de l'année N ?",
+     o:[{t:"Deux : une commune jusqu'au décès, une du survivant ensuite", ok:true},{t:"Deux déclarations couvrant l'année entière", ok:false},{t:"Une seule, commune", ok:false}],
+     s:["Une déclaration <b>commune</b> du 1<sup>er</sup> janvier à la date du décès.","Puis une déclaration du <b>conjoint survivant</b>, de la date du décès au 31 décembre.","Pour le calcul de l'impôt, la situation retenue est celle du <b>1<sup>er</sup> janvier</b>."]},
+    {q:"Un couple se marie le 4 septembre de l'année N. Quel est le principe ?",
+     o:[{t:"Déclaration commune de l'ensemble des revenus de l'année", ok:true},{t:"Deux déclarations séparées obligatoires", ok:false},{t:"Une déclaration commune à partir de la date du mariage seulement", ok:false}],
+     s:["L'année du mariage ou du PACS, le principe est la <b>déclaration commune</b> de l'ensemble des revenus de l'année.","Sur option <b>irrévocable</b>, les époux peuvent souscrire deux déclarations individuelles pour l'année entière."]},
+    {q:"En matière de charges de famille, quelle est la date d'appréciation de principe ?",
+     o:[{t:"Le 1<sup>er</sup> janvier de l'année d'imposition", ok:true},{t:"Le 31 décembre dans tous les cas", ok:false},{t:"La date de dépôt de la déclaration", ok:false}],
+     s:["Principe : <b>1<sup>er</sup> janvier</b> de l'année d'imposition.","Exception : <b>31 décembre</b>, notamment en cas d'augmentation des charges de famille au cours de l'année."]}
+  ];
+  const c = pick(C);
+  return {n:'dates', ctx:"Question de méthode sur la date à retenir.", qs:[{
+    n:'dates', kind:'qcm', prompt:c.q,
+    opts: shuffle(c.o.map(o=>({t:o.t, ok:o.ok, why:o.ok?'':''}))),
+    hint:"Principe au 1<sup>er</sup> janvier, exception au 31 décembre quand les charges de famille augmentent.",
+    steps:c.s
+  }]};
+};
+
+GEN.micro = function(){
+  const reel = Math.random()<0.35;
+  const rec = reel ? ri(160,420)*100 : ri(30,148)*100;
+  const chg = reel ? ri(20,90)*100 : 0;
+  const ans = reel ? rec-chg : Math.round(rec*0.70);
+  const steps = reel
+    ? [`Recettes de ${eur(rec)}, <b>au-delà du plafond de 15 000 €</b> : le micro-foncier est écarté, le <b>régime réel est obligatoire</b>.`,
+       `Revenu foncier net = recettes − charges réelles = <code>${eur(rec)} − ${eur(chg)}</code>.`,
+       `Soit <b>${eur(ans)}</b>.`]
+    : [`Recettes de ${eur(rec)}, <b>inférieures au plafond de 15 000 €</b> : le régime <b>micro-foncier</b> s'applique.`,
+       `Abattement forfaitaire de 30 % : <code>${eur(rec)} × 0,70</code>.`,
+       `Soit <b>${eur(ans)}</b>.`];
+  const ctx = reel
+    ? `Un contribuable donne en location nue un immeuble. Les loyers encaissés dans l'année s'élèvent à <b>${eur(rec)}</b>. Les charges réelles déductibles se montent à <b>${eur(chg)}</b>.`
+    : `Un contribuable donne en location nue un studio. Les loyers encaissés dans l'année s'élèvent à <b>${eur(rec)}</b>. Il relève du régime micro-foncier.`;
+  return {n:'micro', ctx, qs:[{
+    n:'micro', kind:'num', prompt:"Quel est le revenu foncier net de l'année ?",
+    ans, dec:0, tol:0.5, unit:'€',
+    hint:"Regarde d'abord le montant des recettes : le micro-foncier s'arrête à 15 000 €.",
+    steps
+  }]};
+};
+
+GEN.ts = function(){
+  const mens = ri(18,52)*100;
+  const prime = Math.random()<0.6 ? ri(0,32)*100 : 0;
+  const brut = mens*12 + prime;
+  const ans = Math.round(brut*0.90);
+  const ctx = `Un salarié perçoit un traitement mensuel imposable de <b>${eur(mens)}</b>`
+    + (prime ? `, auquel s'ajoute une prime annuelle de <b>${eur(prime)}</b>` : '')
+    + `. Il retient la déduction forfaitaire de 10 % pour frais professionnels.`;
+  return {n:'ts', ctx, qs:[{
+    n:'ts', kind:'num', prompt:"Quel est le revenu net catégoriel « traitements et salaires » ?",
+    ans, dec:0, tol:0.5, unit:'€',
+    hint:"Brut imposable annuel d'abord, primes comprises. Puis 10 % de déduction.",
+    steps:[
+      `Brut imposable annuel : <code>${eur(mens)} × 12${prime?` + ${eur(prime)}`:''} = ${eur(brut)}</code>.`,
+      `Déduction forfaitaire de 10 % : <code>${eur(brut)} × 0,90</code>.`,
+      `Soit <b>${eur(ans)}</b>. La déduction s'élève à ${eur(brut-ans)}, bien en deçà du plafond annuel.`
+    ]
+  }]};
+};
+
+GEN.rbg = function(){
+  const anneeN = 2025;
+  const rg = ri(90,320)*100;
+  const nb = ri(2,4);
+  const defs = [];
+  const anciens = shuffle([anneeN-8, anneeN-7, anneeN-6, anneeN-5, anneeN-4, anneeN-3, anneeN-2, anneeN-1]).slice(0,nb).sort((a,b)=>a-b);
+  anciens.forEach(a=>defs.push({an:a, m:ri(8,70)*100}));
+  let reste = rg, perdus = [], imputes = [];
+  defs.forEach(d=>{
+    if(anneeN - d.an > 6){ perdus.push(d); return; }
+    const u = Math.min(d.m, reste);
+    if(u>0){ imputes.push({an:d.an, u, m:d.m}); reste -= u; }
+    else imputes.push({an:d.an, u:0, m:d.m});
+  });
+  const ans = reste;
+  const ctx = `Revenu global de l'année <b>${anneeN}</b> : <b>${eur(rg)}</b>. Le contribuable dispose de déficits globaux antérieurs non encore imputés :`;
+  const rows = defs.map(d=>[`Déficit global ${d.an}`, eur(d.m)]);
+  const steps = [];
+  if(perdus.length) steps.push(`Les déficits de <b>${perdus.map(d=>d.an).join(', ')}</b> ont plus de six ans : ils sont <b>perdus</b> et ne s'imputent plus.`);
+  steps.push(`On impute du <b>plus ancien au plus récent</b>, dans la limite du revenu global de l'année.`);
+  let cum = rg;
+  imputes.forEach(d=>{
+    steps.push(`Déficit ${d.an} : ${eur(d.m)}, imputable à hauteur de <b>${eur(d.u)}</b> → reste <code>${eur(cum)} − ${eur(d.u)} = ${eur(cum-d.u)}</code>.`);
+    cum -= d.u;
+  });
+  steps.push(`Revenu brut global ${anneeN} : <b>${eur(ans)}</b>.`);
+  const reliquat = imputes.reduce((s,d)=>s+(d.m-d.u),0);
+  if(reliquat>0) steps.push(`Il subsiste <b>${eur(reliquat)}</b> de déficit non imputé, reportable sur les années suivantes dans la limite des six ans.`);
+  return {n:'rbg', ctx, thead:['Origine','Montant'], rows, qs:[{
+    n:'rbg', kind:'num', prompt:`Quel est le revenu brut global de l'année ${anneeN} ?`,
+    ans, dec:0, tol:0.5, unit:'€',
+    hint:"Commence par écarter ce qui a plus de six ans, puis impute du plus ancien au plus récent.",
+    steps
+  }]};
+};
+
+GEN.rngi = function(){
+  const ts = Math.round(ri(18,46)*100*12*0.9);
+  const rfBrut = ri(40,140)*100;
+  const rf = Math.round(rfBrut*0.70);
+  const bic = Math.random()<0.25 ? -ri(20,80)*100 : ri(60,260)*100;
+  const rg = ts + rf + bic;
+  const defAnt = Math.random()<0.6 ? Math.min(ri(10,90)*100, Math.max(0,rg)) : 0;
+  const rbg = Math.max(0, rg - defAnt);
+  const charges = Math.random()<0.6 ? Math.min(ri(5,40)*100, rbg) : 0;
+  const rng = rbg - charges;
+  const abat = Math.random()<0.3 ? Math.min(ri(3,20)*100, rng) : 0;
+  const rngi = rng - abat;
+  const ctx = `Pour l'année N, un foyer fiscal présente les éléments suivants.`;
+  const rows = [
+    ['Traitements et salaires, nets de la déduction de 10 %', eur(ts)],
+    ['Revenus fonciers, nets (micro-foncier)', eur(rf)],
+    [bic<0?'Bénéfices industriels et commerciaux (déficit professionnel)':'Bénéfices industriels et commerciaux, nets', eur(bic)],
+    ['Déficits globaux des années antérieures, imputables', eur(defAnt)],
+    ['Charges déductibles du revenu brut global', eur(charges)],
+    ['Abattements spéciaux', eur(abat)]
+  ];
+  return {n:'rngi', ctx, thead:['Élément','Montant'], rows, qs:[
+    {n:'rngi', kind:'num', prompt:"① Quel est le <b>revenu global</b> de l'année N ?", ans:rg, dec:0, tol:0.5, unit:'€',
+     hint:"Somme algébrique des revenus et déficits nets catégoriels. Un déficit professionnel se soustrait.",
+     steps:[`<code>${eur(ts)} + ${eur(rf)} ${bic<0?'−':'+'} ${eur(Math.abs(bic))} = ${eur(rg)}</code>.`]},
+    {n:'rngi', kind:'num', prompt:"② Quel est le <b>revenu brut global</b> ?", ans:rbg, dec:0, tol:0.5, unit:'€',
+     hint:"On retranche les déficits globaux des six années antérieures, dans la limite du revenu global.",
+     steps:[`<code>${eur(rg)} − ${eur(defAnt)} = ${eur(rbg)}</code>.`+(rg-defAnt<0?' Le résultat ne peut pas être négatif : le revenu brut global est nul.':'')]},
+    {n:'rngi', kind:'num', prompt:"③ Quel est le <b>revenu net global</b> ?", ans:rng, dec:0, tol:0.5, unit:'€',
+     hint:"On retranche les charges déductibles. Elles ne peuvent ni créer ni augmenter un déficit global.",
+     steps:[`<code>${eur(rbg)} − ${eur(charges)} = ${eur(rng)}</code>.`]},
+    {n:'rngi', kind:'num', prompt:"④ Quel est le <b>revenu net global imposable</b> ?", ans:rngi, dec:0, tol:0.5, unit:'€',
+     hint:"Dernière étape : les abattements spéciaux, déductibles dans la limite du revenu net global.",
+     steps:[`<code>${eur(rng)} − ${eur(abat)} = ${eur(rngi)}</code>.`,
+            `Récapitulatif : RG ${eur(rg)} → RBG ${eur(rbg)} → RNG ${eur(rng)} → <b>RNGI ${eur(rngi)}</b>.`]}
+  ]};
+};
+
+/* ---------- le cas complet ---------- */
+function genCas(){
+  const sit = pick(['marie','pacse','divorce','veuf']);
+  const couple = (sit==='marie'||sit==='pacse');
+  const nPac = couple ? ri(1,3) : ri(1,2);
+  const caseT = (sit==='divorce' && Math.random()<0.6);
+  const f = {sit, nPac, alternee:false, caseT, invalides:0};
+  const parts = calcParts(f);
+
+  const mens = ri(20,44)*100, prime = ri(0,28)*100;
+  const brutTs = mens*12 + prime, ts = Math.round(brutTs*0.90);
+  const recF = ri(40,130)*100, rf = Math.round(recF*0.70);
+  const ca = ri(300,760)*1000, chg = Math.round(ca*(0.72+Math.random()*0.16)/100)*100;
+  const bic = ca - chg;
+  const rg = ts + rf + bic;
+  const defAnt = Math.min(ri(20,120)*100, rg);
+  const rbg = rg - defAnt;
+  const charges = Math.random()<0.5 ? Math.min(ri(5,30)*100, rbg) : 0;
+  const rng = rbg - charges;
+  const rngi = rng;
+
+  const nom = pick(['LE GUEN','CORVEZ','BRAVIC','KERNEIS','LE PAPE']);
+  const ctx = `<b>Le foyer ${nom}</b>, année N. Le contribuable est ${SIT_LAB[sit]}${couple?' et fait l\'objet d\'une imposition commune':''}, avec <b>${nPac} personne${nPac>1?'s':''} à charge</b>`
+    + (caseT ? `, dont il assume seul la charge effective en vivant seul` : '')
+    + `. Il dirige une entreprise individuelle et le foyer perçoit par ailleurs un traitement et des revenus fonciers.`;
+  const rows = [
+    ["Chiffre d'affaires hors taxe de l'entreprise", eur(ca)],
+    ['Charges fiscalement déductibles de l\'entreprise', eur(chg)],
+    ['Traitement mensuel imposable', eur(mens)],
+    ['Prime annuelle', eur(prime)],
+    ['Loyers encaissés, location nue (micro-foncier)', eur(recF)],
+    ['Déficit global de l\'année N−1', eur(defAnt)],
+    ['Charges déductibles du revenu brut global', eur(charges)]
+  ];
+  return {n:'cas', ctx, thead:['Élément','Montant'], rows, qs:[
+    {n:'parts', kind:'num', prompt:"De combien de <b>parts</b> ce foyer dispose-t-il ?", ans:parts, dec:2, tol:0.001, unit:'parts',
+     hint:"Base, puis majorations rang par rang, puis la case T si elle s'applique.",
+     steps:[`Base : ${couple?'2 parts (couple)':'1 part (contribuable seul)'}.`,
+            `Majorations pour ${nPac} personne${nPac>1?'s':''} à charge${sit==='veuf'?' (barème des veufs : 1,5 sur la première)':''}${caseT?', plus la demi-part de la case T':''}.`,
+            `Total : <b>${fmt(parts,2).replace(/,?0+$/,'')} parts</b>.`]},
+    {n:'ts', kind:'num', prompt:"Quel est le revenu net catégoriel <b>traitements et salaires</b> ?", ans:ts, dec:0, tol:0.5, unit:'€',
+     hint:"Brut annuel, primes comprises, puis 10 %.",
+     steps:[`<code>${eur(mens)} × 12 + ${eur(prime)} = ${eur(brutTs)}</code>, puis <code>× 0,90 = ${eur(ts)}</code>.`]},
+    {n:'micro', kind:'num', prompt:"Quel est le revenu net catégoriel <b>foncier</b> ?", ans:rf, dec:0, tol:0.5, unit:'€',
+     hint:"Recettes inférieures à 15 000 € : micro-foncier, abattement de 30 %.",
+     steps:[`<code>${eur(recF)} × 0,70 = ${eur(rf)}</code>.`]},
+    {n:'rngi', kind:'num', prompt:"Quel est le <b>BIC</b> net de l'entreprise ?", ans:bic, dec:0, tol:0.5, unit:'€',
+     hint:"Chiffre d'affaires moins charges déductibles.",
+     steps:[`<code>${eur(ca)} − ${eur(chg)} = ${eur(bic)}</code>.`]},
+    {n:'rngi', kind:'num', prompt:"① <b>Revenu global</b> ?", ans:rg, dec:0, tol:0.5, unit:'€',
+     hint:"Somme des trois revenus catégoriels nets.",
+     steps:[`<code>${eur(bic)} + ${eur(rf)} + ${eur(ts)} = ${eur(rg)}</code>.`]},
+    {n:'rbg', kind:'num', prompt:"② <b>Revenu brut global</b> ?", ans:rbg, dec:0, tol:0.5, unit:'€',
+     hint:"On impute le déficit global antérieur.",
+     steps:[`<code>${eur(rg)} − ${eur(defAnt)} = ${eur(rbg)}</code>.`]},
+    {n:'rngi', kind:'num', prompt:"③ <b>Revenu net global</b> ?", ans:rng, dec:0, tol:0.5, unit:'€',
+     hint:"On retranche les charges déductibles.",
+     steps:[`<code>${eur(rbg)} − ${eur(charges)} = ${eur(rng)}</code>.`]},
+    {n:'rngi', kind:'num', prompt:"④ <b>Revenu net global imposable</b> ?", ans:rngi, dec:0, tol:0.5, unit:'€',
+     hint:"Aucun abattement spécial dans cet énoncé.",
+     steps:[`Aucun abattement spécial : <b>RNGI = ${eur(rngi)}</b> pour ${fmt(parts,2).replace(/,?0+$/,'')} parts.`]}
+  ]};
+}
+
+/* ════════ MOTEUR ════════ */
+const S = {mode:'notion', notion:'parts', len:5, partiel:false, ex:null, qi:0,
+           queue:null, exIdx:0, res:[], xp:0, t0:0, tick:null,
+           sess:{done:0, ok:0, streak:0}};
+
+function majSess(){
+  document.getElementById('sDone').textContent = S.sess.done;
+  document.getElementById('sOk').textContent   = S.sess.ok;
+  document.getElementById('sStreak').textContent = S.sess.streak;
+}
+function buildChips(){
+  const host = document.getElementById('chips');
+  host.innerHTML = Object.keys(NOTIONS).map(k=>
+    `<button class="chip${k===S.notion?' on':''}" data-n="${k}" onclick="setNotion('${k}')">${NOTIONS[k].ico} ${NOTIONS[k].lab}</button>`
+  ).join('') + `<button class="chip${S.notion==='mix'?' on':''}" data-n="mix" onclick="setNotion('mix')">🎲 Au hasard</button>`;
+}
+function setNotion(k){ S.notion=k; buildChips(); }
+function setLen(n){ S.len=n; document.querySelectorAll('#serieLen .chip').forEach(c=>c.classList.toggle('on', +c.dataset.n===n)); }
+function setMode(m){
+  S.mode=m;
+  document.querySelectorAll('.mode').forEach(b=>b.classList.toggle('on', b.dataset.mode===m));
+  document.getElementById('pNotion').classList.toggle('hidden', m!=='notion');
+  document.getElementById('pSerie').classList.toggle('hidden', m!=='serie');
+  document.getElementById('pCas').classList.toggle('hidden', m!=='cas');
+  stopTimer(); document.getElementById('stage').innerHTML='';
+}
+function makeEx(n){ return (GEN[n]||GEN.parts)(); }
+function startNotion(){
+  S.partiel=false; S.queue=null; S.res=[];
+  const n = S.notion==='mix' ? pick(Object.keys(NOTIONS)) : S.notion;
+  loadEx(makeEx(n));
+}
+function startSerie(){
+  S.partiel = document.getElementById('partielSerie').checked;
+  const keys = Object.keys(NOTIONS); let bag=[];
+  while(bag.length<S.len) bag = bag.concat(shuffle(keys));
+  S.queue = bag.slice(0,S.len).map(makeEx); S.exIdx=0; S.res=[]; S.t0=Date.now();
+  loadEx(S.queue[0]); startTimer();
+}
+function startCas(){
+  S.partiel = document.getElementById('partielCas').checked;
+  S.queue=[genCas()]; S.exIdx=0; S.res=[]; S.t0=Date.now();
+  loadEx(S.queue[0]); startTimer();
+}
+
+function loadEx(ex){
+  S.ex=ex; S.qi=0; ex.qs.forEach(q=>{ q.state='todo'; q.aids=0; });
+  const lab = ex.n==='cas' ? '📝 Cas complet' : `${NOTIONS[ex.n].ico} ${NOTIONS[ex.n].lab}`;
+  const progr = (S.queue && S.queue.length>1) ? `Exercice ${S.exIdx+1} / ${S.queue.length}` : '';
+  const table = (ex.rows && ex.rows.length)
+    ? `<table class="data">${ex.thead?`<tr>${ex.thead.map(t=>`<th>${t}</th>`).join('')}</tr>`:''}`
+      + ex.rows.map(rw=>`<tr><td>${rw[0]}</td><td class="v">${rw[1]}</td></tr>`).join('') + `</table>`
+    : '';
+  document.getElementById('stage').innerHTML = `<article class="ex" id="ex">
+    <div class="ex-head"><span class="tag">${lab}</span>${S.partiel?'<span class="tag navy">Conditions de partiel</span>':''}<span class="prog" id="exProg">${progr}</span></div>
+    <div class="ex-body"><div class="ctx">${ex.ctx}</div>${table}<div id="qs"></div></div>
+    <div class="ex-foot" id="exFoot"><span class="timer" id="timer"></span><span class="sp"></span><span class="mono" style="font-size:.8rem;color:var(--muted)">${ex.qs.length} question${ex.qs.length>1?'s':''}</span></div>
+  </article>`;
+  renderQ(0);
+  document.getElementById('ex').scrollIntoView({behavior:'smooth',block:'start'});
+  if(S.tick) updTimer();
+}
+
+function renderQ(i){
+  const q = S.ex.qs[i], host = document.getElementById('qs');
+  const div = document.createElement('div'); div.className='q'; div.id='q'+i;
+  const nt = S.ex.n==='cas' ? `<span class="nt">${NOTIONS[q.n].lab}</span>` : '';
+  let ans;
+  if(q.kind==='num'){
+    ans = `<div class="ans"><input type="text" inputmode="decimal" id="in${i}" autocomplete="off" placeholder="ta réponse" onkeydown="if(event.key==='Enter')valider(${i})"><span class="unit">${q.unit||''}</span><button class="btn primary small" id="ok${i}" onclick="valider(${i})">Valider</button></div>`;
+  } else {
+    ans = `<div class="opts">${q.opts.map((o,j)=>`<button class="opt" id="o${i}_${j}" onclick="valider(${i},${j})">${o.t}</button>`).join('')}</div>`;
+  }
+  const aids = S.partiel ? '' : `<div class="aids" id="aids${i}">
+      <button class="aid" onclick="aid(${i},1)">💡 Indice</button>
+      <button class="aid" onclick="aid(${i},2)">🧭 Méthode</button>
+      <button class="aid" onclick="aid(${i},3)">✅ Voir la correction</button></div>`;
+  div.innerHTML = `<div class="q-top"><span class="qn">${i+1}</span><div class="qp">${nt}${q.prompt}</div></div>${ans}${aids}<div id="aidbox${i}"></div><div id="fb${i}"></div>`;
+  host.appendChild(div);
+  const inp = document.getElementById('in'+i); if(inp) setTimeout(()=>inp.focus({preventScroll:true}),60);
+  if(i>0) div.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function aid(i,lvl){
+  const q = S.ex.qs[i]; if(q.state!=='todo') return;
+  const box = document.getElementById('aidbox'+i);
+  if(lvl===3){ q.aids=3; finir(i,{ok:false, revealed:true}, null); return; }
+  q.aids = Math.max(q.aids,lvl);
+  if(lvl===1 && !box.querySelector('.hint')) box.insertAdjacentHTML('beforeend',`<div class="box hint">💡 ${q.hint||'Reprends le raisonnement étape par étape.'}</div>`);
+  if(lvl===2 && !box.querySelector('.meth')) box.insertAdjacentHTML('beforeend',`<div class="box meth">🧭 ${METH[q.n]||''}</div>`);
+}
+
+function valider(i,j){
+  const q = S.ex.qs[i]; if(q.state!=='todo') return;
+  let g, shown;
+  if(q.kind==='num'){
+    const inp = document.getElementById('in'+i); const val = parseNum(inp.value);
+    if(isNaN(val)){ inp.focus(); inp.style.borderColor='var(--rust)'; setTimeout(()=>inp.style.borderColor='',900); return; }
+    g = grade(q,val); shown = inp.value.trim();
+  } else {
+    const o = q.opts[j]; g = {ok:!!o.ok, msg:o.ok?'':(o.why||''), pick:j}; shown = o.t.replace(/<[^>]+>/g,'');
+  }
+  finir(i,g,shown);
+}
+
+function attendu(q){
+  if(q.kind==='num') return `${fmt(q.ans,q.dec||0)} ${q.unit||''}`;
+  const o = q.opts.find(o=>o.ok); return o?o.t.replace(/<[^>]+>/g,''):'';
+}
+function stepsHtml(q){ return `<div class="steps">${q.steps.map((s,k)=>`<div class="st"><span class="sn">${k+1}</span><div class="sc">${s}</div></div>`).join('')}</div>`; }
+
+function finir(i,g,shown){
+  const q = S.ex.qs[i];
+  q.state = g.revealed?'ko':(g.ok?'ok':'ko'); q.shown=shown; q.msg=g.msg||'';
+  const inp = document.getElementById('in'+i); if(inp) inp.disabled=true;
+  const okb = document.getElementById('ok'+i); if(okb) okb.disabled=true;
+  document.querySelectorAll(`#q${i} .opt`).forEach((b,k)=>{ b.disabled=true;
+    if(!S.partiel){ if(q.opts[k].ok) b.classList.add('good'); else if(k===g.pick) b.classList.add('bad'); }
+    else if(k===g.pick) b.classList.add('pick'); });
+  document.querySelectorAll(`#aids${i} .aid`).forEach(b=>b.disabled=true);
+
+  const ok = q.state==='ok';
+  S.res.push({n:q.n, ok, q, shown});
+  if(S.queue===null){ S.sess.done++; if(ok){ S.sess.ok++; S.sess.streak++; } else S.sess.streak=0; majSess(); }
+  const gainXp = ok ? (q.aids?8:15) : 0; S.xp += gainXp;
+  if(window.P){ try{ P.noterReponse('entrfisc:'+q.n, ok, 'Entraînement fiscal — '+(NOTIONS[q.n]?NOTIONS[q.n].lab:q.n)); if(gainXp) P.ajouterXp(gainXp); }catch(e){} }
+
+  const fb = document.getElementById('fb'+i), div = document.getElementById('q'+i);
+  if(S.partiel){
+    div.classList.add('saved');
+    fb.innerHTML = `<div class="box fb saved">Réponse enregistrée. La correction t'attend dans le bilan.</div>`;
+  } else {
+    div.classList.add(ok?'ok':'ko');
+    const head = g.revealed ? '📖 Correction' : ok ? (q.aids?'✅ Juste (avec aide)':'✅ Juste') : '❌ Pas tout à fait';
+    const yours = (!ok && !g.revealed) ? `<div class="yours">Ta réponse : ${shown} · attendu : ${attendu(q)}</div>` : '';
+    const detail = (ok && !g.msg) ? `<details class="more"><summary>Voir le détail</summary>${stepsHtml(q)}</details>` : stepsHtml(q);
+    fb.innerHTML = `<div class="box fb ${g.revealed?'':(ok?'ok':'ko')}"><div class="fb-h">${head}</div>${g.msg?`<div class="fb-msg">${g.msg}</div>`:''}${yours}${detail}</div>`;
+  }
+  if(i+1 < S.ex.qs.length){ S.qi=i+1; renderQ(i+1); } else finEx();
+}
+
+function finEx(){
+  const foot = document.getElementById('exFoot');
+  const nOk = S.ex.qs.filter(q=>q.state==='ok').length, tot = S.ex.qs.length;
+  const recap = S.partiel ? '' : `<span class="mono" style="font-size:.85rem">${nOk} / ${tot} juste${nOk>1?'s':''}</span>`;
+  let btn;
+  if(S.queue===null) btn = `<button class="btn navy" onclick="startNotion()">Exercice suivant →</button>`;
+  else if(S.exIdx+1 < S.queue.length) btn = `<button class="btn navy" onclick="nextEx()">Exercice suivant (${S.exIdx+2}/${S.queue.length}) →</button>`;
+  else btn = `<button class="btn navy" onclick="bilan()">Voir le bilan →</button>`;
+  foot.innerHTML = `<span class="timer" id="timer"></span>${recap}<span class="sp"></span>${btn}`;
+  if(S.tick) updTimer();
+  foot.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function nextEx(){ S.exIdx++; loadEx(S.queue[S.exIdx]); }
+
+function bilan(){
+  stopTimer();
+  const tot = S.res.length, ok = S.res.filter(r=>r.ok).length;
+  const pct = tot ? Math.round(ok/tot*100) : 0;
+  const parN = {};
+  S.res.forEach(r=>{ parN[r.n] = parN[r.n]||{ok:0,tot:0}; parN[r.n].tot++; if(r.ok) parN[r.n].ok++; });
+  const secs = Math.round((Date.now()-S.t0)/1000);
+  const mm = String(Math.floor(secs/60)).padStart(2,'0'), ss = String(secs%60).padStart(2,'0');
+  const bars = Object.keys(parN).map(k=>{
+    const c = parN[k], p = Math.round(c.ok/c.tot*100);
+    const col = p>=67?'var(--teal)':p>=34?'var(--amber)':'var(--rust)';
+    return `<div class="bar"><div class="bar-l"><span>${NOTIONS[k]?NOTIONS[k].lab:k}</span><span class="mono">${c.ok}/${c.tot}</span></div>
+      <div class="bars"><i style="width:${p}%;background:${col}"></i></div></div>`;
+  }).join('');
+  const corr = S.partiel ? `<h4 style="margin:22px 0 10px">Les corrections</h4>` + S.res.map((r,i)=>
+      `<div class="corr ${r.ok?'ok':'ko'}"><div class="fb-h">${r.ok?'✅':'❌'} Question ${i+1} — ${NOTIONS[r.n]?NOTIONS[r.n].lab:r.n}</div>
+       <div class="qp" style="margin:6px 0">${r.q.prompt}</div>
+       ${r.ok?'':`<div class="yours">Ta réponse : ${r.shown} · attendu : ${attendu(r.q)}</div>`}
+       ${stepsHtml(r.q)}</div>`).join('') : '';
+  document.getElementById('stage').innerHTML = `<article class="ex">
+    <div class="ex-head"><span class="tag">📊 Bilan</span><span class="prog">${S.partiel?'Conditions de partiel':''}</span></div>
+    <div class="ex-body">
+      <div class="bilan-score"><div class="ring" style="--p:${pct}">${pct}<span>%</span></div>
+        <div><b>${ok} / ${tot}</b> réponses justes<br><span class="mono" style="color:var(--muted)">temps : ${mm}:${ss} · ${S.xp} XP gagnés</span></div></div>
+      ${bars}${corr}
+    </div>
+    <div class="ex-foot"><span class="sp"></span>
+      <button class="btn" onclick="setMode('notion')">Revenir aux notions</button>
+      <button class="btn navy" onclick="${S.ex && S.ex.n==='cas' ? 'startCas()' : 'startSerie()'}">Recommencer →</button></div>
+  </article>`;
+  if(window.LB && tot){ try{ LB.record({subject:'Fiscalité du Particulier', mode:S.ex&&S.ex.n==='cas'?'Cas complet':'Série', correct:ok, total:tot, xp:S.xp}); }catch(e){} }
+  document.querySelector('.ex').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+/* ---------- chronomètre ---------- */
+function startTimer(){ stopTimer(); S.t0=Date.now(); S.tick=setInterval(updTimer,1000); updTimer(); }
+function stopTimer(){ if(S.tick){ clearInterval(S.tick); S.tick=null; } }
+function updTimer(){
+  const el = document.getElementById('timer'); if(!el) return;
+  const s = Math.round((Date.now()-S.t0)/1000);
+  el.textContent = '⏱ '+String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+}
+
+/* ---------- compte à rebours du partiel ---------- */
+(function(){
+  const fin = Date.UTC(2027,0,15,8,0,0);
+  function maj(){
+    const d = fin - Date.now();
+    const el = document.getElementById('cdMain'), ch = document.getElementById('cdChip');
+    if(!el) return;
+    if(d<=0){ el.textContent = "c'est aujourd'hui"; if(ch) ch.textContent='⏳ Partiel'; return; }
+    const j = Math.floor(d/864e5), h = Math.floor(d/36e5)%24, m = Math.floor(d/6e4)%60, s = Math.floor(d/1e3)%60;
+    el.textContent = `${j}j ${h}h ${m}m ${s}s`;
+    if(ch) ch.textContent = `⏳ J−${j}`;
+  }
+  maj(); setInterval(maj,1000);
+})();
+
+/* ---------- init ---------- */
+buildChips(); majSess();
+try{ document.getElementById('nav-slot').appendChild(LB.idButton()); }catch(e){}
+</script>
+<script src="ui.js"></script>
+</body>
+</html>

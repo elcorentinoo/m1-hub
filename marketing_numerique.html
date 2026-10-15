@@ -1,0 +1,1917 @@
+<!DOCTYPE html>
+<html lang="fr" subject-id="marketing-numerique">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marketing Numérique de la Banque — M1 MBAF</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --card:#fff; --card2:#fbf9f5;
+  --paper:#faf6ef; --paper2:#f3ece0; --ink:#22201b; --line:#e3d9c8;
+  --teal:#1b6b5e; --amber:#c87a12; --rust:#a8432a; --plum:#6b3a73; --navy:#241C15;
+  --teal-soft:#e3efec; --amber-soft:#f6ead4; --rust-soft:#f3e0da; --plum-soft:#ece3ef; --navy-soft:#dde6f0;
+  --shadow:0 2px 14px rgba(34,32,27,.07); --shadow-lg:0 8px 30px rgba(34,32,27,.13);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-track{background:var(--paper2)}
+::-webkit-scrollbar-thumb{background:#cdbfa6;border-radius:6px;border:2px solid var(--paper2)}
+::-webkit-scrollbar-thumb:hover{background:var(--amber)}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:62px;z-index:50;background:var(--paper);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:18px;padding:0 22px}
+.brand{display:flex;align-items:center;gap:11px;font-family:'Fraunces',serif;font-weight:600;font-size:1.12rem;color:var(--navy)}
+.brand .logo{width:36px;height:36px;border-radius:9px;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:1.15rem;flex-shrink:0;box-shadow:var(--shadow)}
+.brand small{display:block;font-family:'DM Sans';font-weight:500;font-size:.66rem;letter-spacing:.09em;color:var(--amber);text-transform:uppercase}
+.hublink{font-family:'DM Mono';font-size:.72rem;color:#8a8170;text-decoration:none;padding:5px 10px;border-radius:8px;border:1px solid var(--line);white-space:nowrap;transition:.15s}
+.hublink:hover{color:var(--navy);border-color:#c9bca3;background:var(--card)}
+.progress-wrap{flex:1;max-width:300px;display:flex;flex-direction:column;gap:3px}
+.progress-wrap .lab{font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:#8a8170;font-weight:600;display:flex;justify-content:space-between}
+.progress-bar{height:8px;background:var(--paper2);border-radius:5px;overflow:hidden;border:1px solid var(--line)}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),#2a8a78);transition:width .5s cubic-bezier(.4,0,.2,1)}
+.xp{margin-left:auto;display:flex;align-items:center;gap:7px;background:var(--amber-soft);border:1px solid #e6cf9e;color:var(--amber);font-weight:700;padding:7px 14px;border-radius:30px;font-size:.9rem}
+.burger{display:none;background:none;border:1px solid var(--line);border-radius:8px;padding:7px 10px;cursor:pointer;font-size:1.1rem;color:var(--ink)}
+
+.shell{display:flex;padding-top:62px}
+.sidebar{position:fixed;top:62px;bottom:0;left:0;width:282px;background:var(--paper2);border-right:1px solid var(--line);overflow-y:auto;padding:20px 14px 50px;z-index:40;transition:transform .3s}
+.sidebar h4{font-family:'Fraunces',serif;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:#8a8170;margin:18px 10px 9px;font-weight:600}
+.sidebar h4:first-child{margin-top:0}
+.nav-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;cursor:pointer;font-size:.92rem;color:var(--ink);border:1px solid transparent;transition:.16s;margin-bottom:3px}
+.nav-item:hover{background:#ece3d3}
+.nav-item.active{background:var(--card);border-color:var(--line);box-shadow:var(--shadow);font-weight:600;color:var(--navy)}
+.nav-item .num{width:25px;height:25px;border-radius:50%;background:var(--card);border:1.5px solid var(--line);flex-shrink:0;display:grid;place-items:center;font-size:.78rem;font-weight:700;font-family:'DM Mono';color:#8a8170;transition:.16s}
+.nav-item.active .num,.nav-item.done .num{background:var(--teal);color:#fff;border-color:var(--teal)}
+.nav-item .lab{flex:1;line-height:1.25}
+.nav-item.special{background:var(--plum-soft);border-color:#d8c5dc;color:var(--plum);font-weight:600}
+.nav-item.special.active{background:var(--plum);color:#fff}
+.nav-item.special2{background:var(--navy-soft);border-color:#c3d2e2;color:var(--navy);font-weight:600}
+.nav-item.special2.active{background:var(--navy);color:#fff}
+.nav-item.special3{background:var(--amber-soft);border-color:#e6cf9e;color:var(--amber);font-weight:600}
+.nav-item.special3.active{background:var(--amber);color:#fff}
+.nav-item .ico{font-size:1.05rem}
+
+.main{flex:1;margin-left:282px;padding:40px 6vw 120px;max-width:920px}
+.view{display:none;animation:fadeIn .45s ease}
+.view.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.tag{display:inline-block;font-family:'DM Mono';font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;background:var(--navy-soft);color:var(--navy);padding:5px 12px;border-radius:20px;font-weight:500;margin-bottom:16px}
+h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;font-weight:600;color:var(--ink);margin-bottom:10px;letter-spacing:-.01em}
+.subtitle{font-size:1.12rem;color:#6f6757;margin-bottom:30px;max-width:62ch}
+.main p{margin-bottom:16px;font-size:1.04rem;max-width:68ch}
+.main h2{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:600;color:var(--navy);margin:38px 0 14px;letter-spacing:-.01em}
+.main h3{font-family:'Fraunces',serif;font-size:1.18rem;font-weight:600;color:var(--plum);margin:26px 0 10px}
+.main strong{font-weight:600;color:var(--ink)}
+.main ul{margin:0 0 16px 22px;font-size:1.03rem}
+.main ul li{margin-bottom:6px}
+
+.callout{border-radius:14px;padding:18px 20px 18px 22px;margin:24px 0;border-left:5px solid;position:relative;font-size:1rem}
+.callout .ct{font-weight:700;font-family:'Fraunces',serif;font-size:1.02rem;display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.callout p{margin:0;max-width:none}
+.c-analogy{background:var(--amber-soft);border-color:var(--amber);color:#5e3a06}
+.c-analogy .ct{color:var(--amber)}
+.c-retenir{background:var(--teal-soft);border-color:var(--teal);color:#0f3d36}
+.c-retenir .ct{color:var(--teal)}
+.c-piege{background:var(--rust-soft);border-color:var(--rust);color:#5e2317}
+.c-piege .ct{color:var(--rust)}
+
+.rulebox{background:#1c1a16;color:#f3ece0;border-radius:14px;padding:22px 24px;margin:26px 0;font-family:'DM Mono';box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
+.rulebox::before{content:'REPÈRE';position:absolute;top:13px;right:18px;font-size:.62rem;letter-spacing:.2em;color:#7d7566}
+.rulebox.def::before{content:'DÉFINITION'}
+.rulebox .rb-main{font-size:1.18rem;font-weight:500;line-height:1.5;color:#fff}
+.rulebox .rb-sub{font-size:.86rem;color:#b8af9d;margin-top:10px;line-height:1.55}
+.rulebox em{color:var(--amber);font-style:normal;font-weight:500}
+
+.tbl{width:100%;border-collapse:collapse;margin:22px 0;font-size:.96rem;background:var(--card);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line)}
+.tbl th{background:var(--navy);color:#fff;text-align:left;padding:11px 15px;font-weight:600;font-size:.86rem}
+.tbl td{padding:11px 15px;border-top:1px solid var(--line);vertical-align:top}
+.tbl tr:nth-child(even) td{background:var(--paper)}
+.tbl td:first-child{font-weight:600;color:var(--navy);white-space:nowrap}
+.tbl.wrap td:first-child{white-space:normal}
+
+.example{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:26px 0;box-shadow:var(--shadow)}
+.example .ex-head{font-family:'Fraunces',serif;font-weight:600;color:var(--plum);font-size:1.08rem;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.step{display:flex;gap:14px;margin-bottom:14px}
+.step:last-child{margin-bottom:0}
+.step .sn{width:27px;height:27px;border-radius:50%;background:var(--plum);color:#fff;flex-shrink:0;display:grid;place-items:center;font-family:'DM Mono';font-weight:500;font-size:.85rem}
+.step .sc{flex:1;padding-top:1px}
+.step .sc b{color:var(--navy)}
+.ex-result{margin-top:6px;background:var(--teal-soft);border:1px solid #bcdcd4;border-radius:10px;padding:12px 16px;font-weight:600;color:#0f3d36}
+
+.schema{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin:26px 0;box-shadow:var(--shadow);text-align:center}
+.schema .scap{font-size:.82rem;color:#8a8170;margin-top:12px;font-style:italic}
+.schema svg{max-width:100%;height:auto}
+
+/* grilles 2x2 / PESTEL */
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:24px 0}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0}
+.cell{border-radius:12px;padding:15px 17px;font-size:.93rem;border:1px solid}
+.cell b{display:block;font-family:'Fraunces',serif;font-size:1rem;margin-bottom:5px}
+.cell.s{background:#e6f2e9;border-color:#a9cdb4;color:#1e4a2c}
+.cell.w{background:#f7dedb;border-color:#e2b2ab;color:#6d2b21}
+.cell.o{background:#dfe8f5;border-color:#b3c6e0;color:#1e3a5f}
+.cell.t{background:#fbe8d2;border-color:#e6cb9e;color:#6d4708}
+.cell.p1{background:#fdf0cd;border-color:#e8d79a;color:#5f4a06}
+.cell.p2{background:#e6f0d4;border-color:#c2d5a1;color:#3f5210}
+.cell.p3{background:#d6eef5;border-color:#a7d2de;color:#12495a}
+.cell.p4{background:#ece0f7;border-color:#cbb5e0;color:#452766}
+.cell.p5{background:#f9dcd8;border-color:#e3b2ab;color:#6d2b21}
+.cell.p6{background:#fce3cf;border-color:#e8c19a;color:#6b3f10}
+
+.quiz{background:var(--plum-soft);border:1px solid #d8c5dc;border-radius:14px;padding:20px 22px;margin:24px 0}
+.quiz .qhead{font-family:'DM Mono';font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--plum);font-weight:500;margin-bottom:9px}
+.quiz .q{font-weight:600;font-size:1.05rem;margin-bottom:14px;color:var(--ink)}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{text-align:left;background:var(--card);border:1.5px solid #d8c5dc;border-radius:10px;padding:11px 15px;cursor:pointer;font-family:'DM Sans';font-size:.98rem;color:var(--ink);transition:.15s}
+.opt:hover:not(:disabled){border-color:var(--plum);background:#fbf8fc}
+.opt:disabled{cursor:default}
+.opt.right{background:var(--teal-soft);border-color:var(--teal);color:#0f3d36;font-weight:600}
+.opt.right::after{content:' ✓';color:var(--teal);font-weight:700}
+.opt.wrong{background:var(--rust-soft);border-color:var(--rust);color:#5e2317}
+.opt.wrong::after{content:' ✗';color:var(--rust);font-weight:700}
+.feedback{margin-top:13px;padding:12px 15px;border-radius:10px;background:var(--card);border:1px dashed #cbb9cf;font-size:.95rem;color:#5a4d5d}
+.feedback b{color:var(--plum)}
+
+.lesson-nav{display:flex;justify-content:space-between;gap:14px;margin-top:46px;padding-top:26px;border-top:1px solid var(--line)}
+.btn{font-family:'DM Sans';font-weight:600;font-size:.98rem;padding:12px 22px;border-radius:11px;cursor:pointer;border:1.5px solid var(--line);background:var(--card);color:var(--ink);transition:.16s;display:inline-flex;align-items:center;gap:8px}
+.btn:hover{border-color:#bbac90;transform:translateY(-1px)}
+.btn.primary{background:var(--teal);color:#fff;border-color:var(--teal);box-shadow:var(--shadow)}
+.btn.primary:hover{background:#155a4f}
+.btn.plum{background:var(--plum);color:#fff;border-color:var(--plum)}
+.btn.plum:hover{background:#592f60}
+.btn.amber{background:var(--amber);color:#fff;border-color:var(--amber)}
+.btn.amber:hover{background:#a86610}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.print-fab{position:fixed;bottom:26px;left:26px;z-index:110;background:var(--card);color:var(--ink2);border:1.5px solid var(--line2);font-weight:600;padding:10px 16px;border-radius:24px;cursor:pointer;font-family:'DM Sans';font-size:.85rem;box-shadow:var(--shadow);transition:.15s}
+.print-fab:hover{border-color:var(--navy);color:var(--navy);transform:translateY(-1px)}
+@media(max-width:880px){.print-fab{bottom:20px;left:16px;padding:9px 13px;font-size:.8rem}}
+.xp-pop{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--amber);color:#fff;font-weight:700;padding:13px 26px;border-radius:30px;box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:.4s;z-index:200;font-size:1rem}
+.xp-pop.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.test-q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:18px;box-shadow:var(--shadow);transition:.3s}
+.test-q .tq-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px}
+.test-q .tq-num{font-family:'DM Mono';font-weight:500;color:var(--navy);font-size:.9rem}
+.test-q .tq-chap{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:#8a8170;font-weight:600;background:var(--paper2);padding:4px 10px;border-radius:20px;text-align:right}
+.test-q .tq-q{font-weight:600;font-size:1.08rem;margin-bottom:14px}
+.topt{display:flex;flex-direction:column;gap:8px}
+.topt button{text-align:left;background:var(--paper);border:1.5px solid var(--line);border-radius:10px;padding:11px 15px;cursor:pointer;font-family:'DM Sans';font-size:.98rem;transition:.15s}
+.topt button:hover{border-color:var(--teal)}
+.topt button.sel{background:var(--teal-soft);border-color:var(--teal);font-weight:600;color:#0f3d36}
+.remed{margin-top:14px;border-radius:11px;border-left:5px solid var(--rust);background:var(--rust-soft);padding:15px 18px;display:none}
+.remed.show{display:block;animation:fadeIn .35s}
+.remed .rt{font-weight:700;color:var(--rust);font-family:'Fraunces',serif;margin-bottom:5px;display:flex;align-items:center;gap:7px}
+.remed .ra{font-size:.95rem;color:#5e2317;margin-bottom:11px}
+.remed-btns{display:flex;gap:10px;flex-wrap:wrap}
+.remed-btns .btn{padding:8px 16px;font-size:.88rem}
+.test-q.ok{border-color:var(--teal);background:#fbfdfc}
+.test-q.ko{border-color:var(--rust)}
+.float-retry{position:fixed;bottom:26px;right:26px;z-index:120;display:none;background:var(--plum);color:#fff;border:none;font-weight:700;padding:14px 24px;border-radius:30px;box-shadow:var(--shadow-lg);cursor:pointer;font-family:'DM Sans';font-size:.98rem;align-items:center;gap:9px}
+.float-retry.show{display:inline-flex;animation:fadeIn .4s}
+
+.result{display:none;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:34px;box-shadow:var(--shadow-lg);text-align:center;animation:fadeIn .5s}
+.result.show{display:block}
+.result .score-big{font-family:'Fraunces',serif;font-size:4rem;font-weight:700;line-height:1;color:var(--teal)}
+.result .score-lab{color:#8a8170;font-weight:600;margin-bottom:8px}
+.result .msg{font-size:1.12rem;margin:14px auto 28px;max-width:46ch;color:var(--ink)}
+.chapbars{text-align:left;max-width:560px;margin:0 auto}
+.chapbar{margin-bottom:14px}
+.chapbar .cbl{display:flex;justify-content:space-between;font-size:.9rem;font-weight:600;margin-bottom:5px}
+.chapbar .cbl span:last-child{font-family:'DM Mono';color:#8a8170}
+.cbt{height:13px;background:var(--paper2);border-radius:7px;overflow:hidden;border:1px solid var(--line)}
+.cbf{height:100%;border-radius:7px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+
+.annale{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px 26px;margin-bottom:22px;box-shadow:var(--shadow)}
+.annale .an-tag{font-family:'DM Mono';font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);font-weight:500}
+.annale h3{font-family:'Fraunces',serif;font-size:1.32rem;color:var(--navy);margin:6px 0 14px;font-weight:600}
+.annale .enonce{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:16px 19px;font-size:1rem;color:#3a352c}
+.annale .enonce .qlist{margin:10px 0 0 4px}
+.annale .enonce .qlist li{margin-bottom:5px;list-style:none;padding-left:22px;position:relative}
+.annale .enonce .qlist li::before{content:'▸';position:absolute;left:0;color:var(--amber);font-weight:700}
+.corrige{margin-top:14px;display:none;animation:fadeIn .4s}
+.corrige.show{display:block}
+.corrige-head{font-family:'Fraunces',serif;font-weight:600;color:var(--teal);margin-bottom:12px;display:flex;align-items:center;gap:8px;font-size:1.06rem}
+
+.intro-card{background:var(--navy);color:#f3ece0;border-radius:16px;padding:24px 26px;margin-bottom:26px}
+.intro-card h2{color:#fff;margin:0 0 8px;font-family:'Fraunces',serif;font-size:1.4rem}
+.intro-card p{color:#cdd8e6;max-width:none;margin:0}
+.intro-card.amber{background:#7a4c08}
+.intro-card.amber p{color:#f2e0c0}
+
+/* méthode : 6 questions */
+.meth{counter-reset:m;margin:26px 0}
+.meth-item{display:flex;gap:16px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:12px;box-shadow:var(--shadow)}
+.meth-item .mn{width:34px;height:34px;border-radius:10px;background:var(--navy);color:#fff;flex-shrink:0;display:grid;place-items:center;font-family:'Fraunces',serif;font-weight:700;font-size:1.05rem}
+.meth-item .mc h4{font-family:'Fraunces',serif;font-size:1.08rem;color:var(--navy);margin-bottom:4px;font-weight:600}
+.meth-item .mc p{margin:0;font-size:.97rem;color:#5b544a;max-width:none}
+.meth-item .mc .tools{font-family:'DM Mono';font-size:.8rem;color:var(--amber);margin-top:6px}
+
+.hint{font-size:.85rem;color:#8a8170;font-style:italic;margin-top:8px}
+.overlay{display:none;position:fixed;inset:62px 0 0 0;background:rgba(34,32,27,.4);z-index:35}
+@media(max-width:880px){
+  .main{margin-left:0;padding:30px 22px 110px}
+  .sidebar{transform:translateX(-100%);box-shadow:var(--shadow-lg)}
+  .sidebar.open{transform:translateX(0)}
+  .overlay.show{display:block}
+  .burger{display:block}
+  .progress-wrap{max-width:none}
+  .brand small{display:none}
+  h1.lesson-title{font-size:1.8rem}
+  .xp{padding:6px 11px;font-size:.82rem}
+  .grid2,.grid3{grid-template-columns:1fr}
+}
+@media(max-width:560px){
+  .progress-wrap,.hublink{display:none}
+  .topbar{gap:12px}
+}
+</style>
+<link rel="stylesheet" href="ui.css">
+<link rel="stylesheet" href="theme.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#F7F8FA">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="M1 MBAF">
+</head>
+<body>
+
+<div class="topbar">
+  <button class="burger" onclick="toggleSidebar()">☰</button>
+  <div class="brand">
+    <span class="logo">📊</span>
+    <span>Marketing Numérique<small>M1 MBAF · cours complet</small></span>
+  </div>
+  <span id="nav-slot"></span>
+  <div class="progress-wrap">
+    <div class="lab"><span>Progression</span><span id="progPct">0 %</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+  </div>
+  <div class="xp"><span class="star">★</span><span id="xpVal">0</span> XP</div>
+  <span id="lb-id-slot"></span>
+</div>
+
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <h4>Le numérique en amont</h4>
+    <div id="navList1"></div>
+    <h4>La démarche marketing</h4>
+    <div id="navList2"></div>
+    <h4>Données, parcours & conformité</h4>
+    <div id="navList3"></div>
+    <h4>S'entraîner</h4>
+    <div class="nav-item special3" data-view="methode" onclick="go('methode')">
+      <span class="ico">🧭</span><span class="lab">Méthode : la grille de cas</span>
+    </div>
+    <div class="nav-item special2" data-view="annales" onclick="go('annales')">
+      <span class="ico">📋</span><span class="lab">Études de cas corrigées</span>
+    </div>
+    <div class="nav-item special" data-view="test" onclick="go('test')">
+      <span class="ico">🎯</span><span class="lab">Test final adaptatif</span>
+    </div>
+  </aside>
+
+  <main class="main" id="main">
+
+    <!-- ============ LEÇON 1 ============ -->
+    <section class="view" data-view="l1">
+      <span class="tag">Leçon 1 · Données</span>
+      <h1 class="lesson-title">Données, CRM et DMP</h1>
+      <p class="subtitle">Ce qui rend le marketing « numérique » : une matière première nouvelle, la donnée, et les plateformes qui l'exploitent.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Avant, connaître son client tenait dans une fiche cartonnée : nom, adresse, produits détenus. Aujourd'hui, c'est un portrait composite reconstitué à partir de dizaines de traces — ce qu'il achète, où il vit, ce qu'il poste, s'il ouvre ses mails. La fiche est devenue un profil vivant.</p>
+      </div>
+
+      <h2>Tout devient données</h2>
+      <p>Transaction, texte, son, image, vidéo : tout se ramène à du <strong>0/1</strong>. Cette numérisation permet trois choses — <strong>stocker</strong>, <strong>communiquer</strong>, et <strong>influencer</strong> (jouer sur les émotions).</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Les données proviennent des <em>humains</em>, des <em>capteurs</em> ou des <em>machines</em>.</div>
+        <div class="rb-sub">Sources typiques : logs de sites web, monitoring réseau, services financiers, météo, e-commerce, trafic, consommation d'énergie.</div>
+      </div>
+
+      <h2>Les quatre phénomènes</h2>
+      <div class="grid2">
+        <div class="cell o"><b>#1 Digital</b>Les parcours et les usages basculent en ligne.</div>
+        <div class="cell s"><b>#2 Social</b>Les réseaux sociaux produisent une masse de signaux déclaratifs.</div>
+        <div class="cell t"><b>#1 Big Data</b>La capacité de stockage et de traitement change d'échelle.</div>
+        <div class="cell w"><b>#2 Intelligence Artificielle</b>Les modèles apprennent et décident (exemple emblématique : AlphaGo).</div>
+      </div>
+
+      <h2>La DMP : un processus quasi industrialisé</h2>
+      <p>La <strong>DMP</strong> (Data Management Platform) enchaîne les étapes qui transforment des données brutes en valeur métier.</p>
+
+      <div class="schema">
+        <svg viewBox="0 0 640 130" xmlns="http://www.w3.org/2000/svg">
+          <g font-family="DM Sans" font-size="11.5">
+            <rect x="8" y="42" width="106" height="46" rx="10" fill="var(--navy-soft)" stroke="var(--navy)" stroke-width="1.8"/>
+            <text x="61" y="62" text-anchor="middle" font-weight="700" fill="var(--navy)" font-size="11">Données</text>
+            <text x="61" y="77" text-anchor="middle" font-size="10.5" fill="var(--navy-deep)">brutes</text>
+            <path d="M118 65 L134 65" stroke="var(--muted2)" stroke-width="1.8" marker-end="url(#a3)"/>
+            <rect x="138" y="42" width="106" height="46" rx="10" fill="var(--amber-soft)" stroke="var(--amber)" stroke-width="1.8"/>
+            <text x="191" y="62" text-anchor="middle" font-weight="700" fill="var(--amber-deep)" font-size="11">Filtre /</text>
+            <text x="191" y="77" text-anchor="middle" font-size="10.5" fill="var(--amber-deep)">nettoyage</text>
+            <path d="M248 65 L264 65" stroke="var(--muted2)" stroke-width="1.8" marker-end="url(#a3)"/>
+            <rect x="268" y="42" width="106" height="46" rx="10" fill="var(--plum-soft)" stroke="var(--plum)" stroke-width="1.8"/>
+            <text x="321" y="62" text-anchor="middle" font-weight="700" fill="var(--plum)" font-size="11">Feature</text>
+            <text x="321" y="77" text-anchor="middle" font-size="10.5" fill="var(--plum-deep)">selection</text>
+            <path d="M378 65 L394 65" stroke="var(--muted2)" stroke-width="1.8" marker-end="url(#a3)"/>
+            <rect x="398" y="42" width="112" height="46" rx="10" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.8"/>
+            <text x="454" y="62" text-anchor="middle" font-weight="700" fill="var(--teal)" font-size="11">Statistiques /</text>
+            <text x="454" y="77" text-anchor="middle" font-size="10.5" fill="var(--teal-deep)">Machine Learning</text>
+            <path d="M514 65 L530 65" stroke="var(--muted2)" stroke-width="1.8" marker-end="url(#a3)"/>
+            <rect x="534" y="42" width="100" height="46" rx="10" fill="var(--rust-soft)" stroke="var(--rust)" stroke-width="1.8"/>
+            <text x="584" y="62" text-anchor="middle" font-weight="700" fill="var(--rust)" font-size="11">Valeur</text>
+            <text x="584" y="77" text-anchor="middle" font-size="10.5" fill="var(--rust-deep)">métier</text>
+            <text x="320" y="22" text-anchor="middle" font-family="Fraunces" font-size="14" font-weight="600" fill="var(--ink)">La chaîne de traitement d'une DMP</text>
+            <defs><marker id="a3" markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto"><path d="M0,0 L0,5 L6,2.5 z" fill="var(--muted2)"/></marker></defs>
+          </g>
+        </svg>
+        <div class="scap">De la donnée brute à la décision commerciale, en cinq étapes.</div>
+      </div>
+
+      <h2>Les sources d'un profil client</h2>
+      <p>Autour d'un même client s'agrègent des données de natures très différentes : attributs d'adresse (voisinage urbain, revenu moyen du quartier), informations de groupe, marques achetées et part de portefeuille, usage des canaux, attributs d'achat, profils sociaux (Facebook, Instagram, Twitter), attributs d'engagement (ouvre-t-il ses mails, réagit-il aux SMS).</p>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Toutes ces données n'ont pas le même statut. Une donnée <strong>constatée</strong> est observée sur le client lui-même ; une donnée <strong>jumeau</strong> est inférée à partir de profils similaires. Confondre les deux revient à prêter au client des comportements qu'il n'a jamais eus — c'est la limite majeure de ce type de profilage.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Tout se numérise (0/1) pour stocker, communiquer, influencer · données issues d'humains, capteurs ou machines · 4 phénomènes : Digital, Social, Big Data, IA · DMP = données brutes → filtre → feature selection → stats/ML → valeur métier · distinguer données constatées et données inférées.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Que permet la numérisation de toute information en 0/1 ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Uniquement de stocker</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Stocker, communiquer et influencer</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Uniquement de communiquer plus vite</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Les trois usages sont indissociables — c'est la dimension « influencer », via les émotions, qui fait du numérique un enjeu marketing.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Que signifie DMP ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Digital Marketing Process</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Data Management Platform</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Data Mining Program</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> La DMP industrialise le passage de la donnée brute à la valeur métier.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <span></span>
+        <button class="btn primary" onclick="validate('l1',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 2 ============ -->
+    <section class="view" data-view="l2">
+      <span class="tag">Leçon 2 · Fondamentaux</span>
+      <h1 class="lesson-title">À quoi sert le marketing ?</h1>
+      <p class="subtitle">La définition, et la démarche en quatre temps qui structure tout le reste du cours.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Le mot le dit : <em>market-ing</em>. Le marché, plus l'action sur le marché. Réduire le marketing à « faire vendre », c'est ne garder que la seconde moitié du mot — et se priver de la partie qui rend la vente possible.</p>
+      </div>
+
+      <div class="rulebox def">
+        <div class="rb-main">« Le marketing est une démarche qui englobe l'ensemble des méthodes et pratiques qui permettent de <em>comprendre les besoins d'un marché</em> et d'y répondre en <em>délivrant de la valeur</em>, au service des clients, des organisations et de la société. »</div>
+        <div class="rb-sub">American Marketing Association</div>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>À la question « le marketing sert d'abord à… », les réponses « faire vendre », « faire connaître une marque » ou « comprendre les consommateurs » sont toutes trop étroites. La bonne réponse est <strong>comprendre un marché pour faire des choix et créer de la valeur</strong> : la vente est une conséquence, pas la finalité.</p>
+      </div>
+
+      <h2>La démarche marketing en quatre temps</h2>
+      <div class="schema">
+        <svg viewBox="0 0 620 300" xmlns="http://www.w3.org/2000/svg">
+          <g font-family="DM Sans" font-size="12">
+            <rect x="40" y="14" width="230" height="52" rx="11" fill="var(--navy-soft)" stroke="var(--navy)" stroke-width="2"/>
+            <text x="155" y="36" text-anchor="middle" font-weight="700" fill="var(--navy)">ANALYSE MARKETING</text>
+            <text x="155" y="54" text-anchor="middle" font-size="11" fill="var(--navy-deep)">Marketing Études</text>
+            <text x="290" y="45" font-size="11.5" font-weight="700" fill="var(--amber)">= Analyser</text>
+            <path d="M155 66 L155 84" stroke="var(--muted2)" stroke-width="2" marker-end="url(#a4)"/>
+            <rect x="40" y="86" width="230" height="52" rx="11" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="2"/>
+            <text x="155" y="108" text-anchor="middle" font-weight="700" fill="var(--teal)">DÉFINITION STRATÉGIE</text>
+            <text x="155" y="126" text-anchor="middle" font-size="11" fill="var(--teal-deep)">Marketing stratégique</text>
+            <text x="290" y="117" font-size="11.5" font-weight="700" fill="var(--amber)">= Choisir</text>
+            <path d="M155 138 L155 156" stroke="var(--muted2)" stroke-width="2" marker-end="url(#a4)"/>
+            <rect x="40" y="158" width="230" height="52" rx="11" fill="var(--plum-soft)" stroke="var(--plum)" stroke-width="2"/>
+            <text x="155" y="180" text-anchor="middle" font-weight="700" fill="var(--plum)">MISE EN ŒUVRE</text>
+            <text x="155" y="198" text-anchor="middle" font-size="11" fill="var(--plum-deep)">Marketing opérationnel</text>
+            <text x="290" y="189" font-size="11.5" font-weight="700" fill="var(--amber)">= Agir</text>
+            <path d="M155 210 L155 228" stroke="var(--muted2)" stroke-width="2" marker-end="url(#a4)"/>
+            <rect x="40" y="230" width="230" height="52" rx="11" fill="var(--amber-soft)" stroke="var(--amber)" stroke-width="2"/>
+            <text x="155" y="252" text-anchor="middle" font-weight="700" fill="var(--amber-deep)">SUIVI, VEILLE</text>
+            <text x="155" y="270" text-anchor="middle" font-size="11" fill="var(--amber-deep)">Audit et contrôle marketing</text>
+            <text x="290" y="261" font-size="11.5" font-weight="700" fill="var(--amber)">= Mesurer</text>
+            <path d="M30 256 L18 256 L18 40 L30 40" stroke="var(--plum)" stroke-width="1.8" fill="none" stroke-dasharray="4,3" marker-end="url(#a4)"/>
+            <text x="440" y="120" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--teal)">MARKETING</text>
+            <text x="440" y="136" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--teal)">STRATÉGIQUE</text>
+            <text x="440" y="153" text-anchor="middle" font-size="10.5" fill="var(--muted2)">Démarche d'analyse</text>
+            <text x="440" y="167" text-anchor="middle" font-size="10.5" fill="var(--muted2)">Connaissance des marchés</text>
+            <text x="440" y="205" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--plum)">MARKETING</text>
+            <text x="440" y="221" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--plum)">OPÉRATIONNEL</text>
+            <text x="440" y="238" text-anchor="middle" font-size="10.5" fill="var(--muted2)">Démarche d'action</text>
+            <text x="440" y="252" text-anchor="middle" font-size="10.5" fill="var(--muted2)">Conquête des marchés</text>
+            <defs><marker id="a4" markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto"><path d="M0,0 L0,5 L6,2.5 z" fill="var(--muted2)"/></marker></defs>
+          </g>
+        </svg>
+        <div class="scap">Une boucle : le contrôle réalimente l'analyse.</div>
+      </div>
+
+      <table class="tbl wrap">
+        <tr><th>Étape</th><th>Contenu</th></tr>
+        <tr><td>Analyse marketing</td><td>Diagnostic interne et externe : environnement, marché, concurrence, comportement du consommateur</td></tr>
+        <tr><td>Définition de la stratégie</td><td>Plan marketing : moyens à mettre en œuvre, segmentation et positionnement, objectifs marketing datés et chiffrés</td></tr>
+        <tr><td>Mise en œuvre</td><td>Marketing mix (4P) : produit, prix, distribution, communication</td></tr>
+        <tr><td>Suivi, veille, amélioration</td><td>Évaluation des résultats au regard des objectifs</td></tr>
+      </table>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Marketing = comprendre un marché pour faire des choix et créer de la valeur · market-ING = le marché + les actions sur le marché · 4 temps : Analyser → Choisir → Agir → Mesurer · stratégique (connaissance) vs opérationnel (conquête) · le contrôle boucle vers l'analyse.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Selon la définition de l'AMA, le marketing sert d'abord à…</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Faire vendre</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Faire connaître une marque</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Comprendre un marché pour faire des choix et créer de la valeur</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> La vente et la notoriété sont des conséquences ; la finalité est la création de valeur pour les clients, les organisations et la société.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Le marketing opérationnel correspond à…</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Une démarche d'analyse et de connaissance des marchés</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Une démarche d'action et de conquête des marchés</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">L'audit des résultats</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Le stratégique analyse et connaît, l'opérationnel agit et conquiert.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l1')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l2',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 3 ============ -->
+    <section class="view" data-view="l3">
+      <span class="tag">Leçon 3 · Analyser</span>
+      <h1 class="lesson-title">Le marché : demande et offre</h1>
+      <p class="subtitle">Deux façons de découper un même marché — par les gens qui achètent, ou par les produits qui se substituent.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Regarder un marché par la demande, c'est compter les personnes dans la salle. Le regarder par l'offre, c'est regarder ce qu'elles pourraient consommer à la place. Deux photos du même sujet, prises sous deux angles — et un cas d'examen demande souvent les deux.</p>
+      </div>
+
+      <div class="rulebox def">
+        <div class="rb-main">Un marché est « l'ensemble des personnes ou organisations qui ont, ou peuvent avoir, une influence sur la consommation et par conséquent sur l'achat et les ventes d'un produit ou service considéré ».</div>
+        <div class="rb-sub">Trois lectures complémentaires : la rencontre organisée d'une <em>offre</em> et d'une <em>demande</em> · un ensemble d'offres <em>substituables</em> du point de vue du client · un ensemble de <em>segments</em> de clients partageant les mêmes besoins.</div>
+      </div>
+
+      <h2>Le marché du point de vue de la demande</h2>
+      <p>La population totale se décompose en poupées russes. Les <strong>non-consommateurs absolus</strong> ne consommeront jamais (incapacité définitive). Les <strong>non-consommateurs relatifs</strong> pourraient consommer si un frein levé — ce sont eux qui forment, avec les clients des concurrents, la réserve de croissance.</p>
+
+      <div class="schema">
+        <svg viewBox="0 0 620 230" xmlns="http://www.w3.org/2000/svg">
+          <g font-family="DM Sans" font-size="11.5">
+            <rect x="10" y="10" width="600" height="34" rx="8" fill="var(--paper2)" stroke="var(--line2b)" stroke-width="1.5"/>
+            <text x="310" y="32" text-anchor="middle" font-weight="700" fill="var(--ink)">Le marché (population totale)</text>
+            <rect x="10" y="52" width="150" height="46" rx="8" fill="var(--paper2)" stroke="var(--line2b)" stroke-width="1.5"/>
+            <text x="85" y="72" text-anchor="middle" font-size="10.5" fill="var(--muted2)">Non-consommateurs</text>
+            <text x="85" y="87" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--muted2)">ABSOLUS</text>
+            <rect x="168" y="52" width="442" height="46" rx="8" fill="var(--navy-soft)" stroke="var(--navy)" stroke-width="1.8"/>
+            <text x="389" y="80" text-anchor="middle" font-weight="700" fill="var(--navy)">Les consommateurs potentiels</text>
+            <rect x="168" y="106" width="150" height="46" rx="8" fill="var(--navy-soft)" stroke="var(--navy-deep)" stroke-width="1.5"/>
+            <text x="243" y="126" text-anchor="middle" font-size="10.5" fill="var(--navy-deep)">Non-consommateurs</text>
+            <text x="243" y="141" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--navy-deep)">RELATIFS</text>
+            <rect x="326" y="106" width="284" height="46" rx="8" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.8"/>
+            <text x="468" y="134" text-anchor="middle" font-weight="700" fill="var(--teal)">Les consommateurs actuels</text>
+            <rect x="326" y="160" width="138" height="58" rx="8" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.5"/>
+            <text x="395" y="180" text-anchor="middle" font-size="10.5" fill="var(--teal-deep)">Produits de</text>
+            <text x="395" y="194" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--teal-deep)">l'entreprise</text>
+            <text x="395" y="209" text-anchor="middle" font-size="9.5" fill="var(--teal-deep)">(marché de l'entreprise)</text>
+            <rect x="472" y="160" width="138" height="58" rx="8" fill="var(--rust-soft)" stroke="var(--rust)" stroke-width="1.5"/>
+            <text x="541" y="180" text-anchor="middle" font-size="10.5" fill="var(--rust-deep)">Produits des</text>
+            <text x="541" y="194" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--rust-deep)">concurrents</text>
+            <text x="541" y="209" text-anchor="middle" font-size="9.5" fill="var(--rust-deep)">(prospects)</text>
+          </g>
+        </svg>
+        <div class="scap">Le marché potentiel de l'entreprise = ses clients actuels + les prospects + les non-consommateurs relatifs.</div>
+      </div>
+
+      <h2>Le marché du point de vue de l'offre</h2>
+      <table class="tbl wrap">
+        <tr><th>Marché</th><th>Question posée</th></tr>
+        <tr><td>Marché principal</td><td>Quel produit ?</td></tr>
+        <tr><td>Marché substitut</td><td>Qu'est-ce qui peut le remplacer ?</td></tr>
+        <tr><td>Marché complémentaire</td><td>Qu'est-ce qui accompagne son utilisation ?</td></tr>
+        <tr><td>Marché support</td><td>Qu'est-ce qui permet ou facilite son utilisation ?</td></tr>
+        <tr><td>Marché générique</td><td>Quel besoin ?</td></tr>
+      </table>
+
+      <div class="example">
+        <div class="ex-head">📂 Application bancaire</div>
+        <div class="step"><div class="sn">1</div><div class="sc">Prenons le <b>crédit immobilier</b> comme marché principal. <b>Comment se déploient les autres marchés autour ?</b></div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Générique</b> (quel besoin ?) : se loger, ou plus largement constituer un patrimoine.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>Substitut</b> : la location, l'apport familial, un prêt entre particuliers — tout ce qui répond au même besoin autrement.</div></div>
+        <div class="step"><div class="sn">4</div><div class="sc"><b>Complémentaire</b> : l'assurance emprunteur, l'assurance habitation, la garantie — ce qui accompagne le crédit.</div></div>
+        <div class="step"><div class="sn">5</div><div class="sc"><b>Support</b> : le compte de dépôt, les moyens de paiement, l'accès en ligne — ce qui rend l'usage possible.</div></div>
+        <div class="ex-result">L'intérêt : identifier où se situe la vraie concurrence, qui n'est pas toujours une autre banque.</div>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Ne confondez pas <strong>non-consommateur absolu</strong> et <strong>relatif</strong>. L'absolu ne consommera jamais, quoi qu'on fasse. Le relatif est retenu par un frein levable (prix, information, accessibilité) — c'est lui qui constitue le potentiel de croissance, et c'est cette distinction qui est attendue dans un cas.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Demande : NC absolus / NC relatifs / consommateurs actuels (entreprise ou concurrents = prospects) · marché potentiel = actuels + prospects + NC relatifs · offre : principal, substitut, complémentaire, support, générique · parts de marché entreprise vs concurrents.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Un non-consommateur relatif est une personne qui…</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Ne consommera jamais le produit</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Pourrait consommer si un frein était levé</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Consomme chez un concurrent</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Celui qui consomme chez un concurrent est un prospect ; l'absolu, lui, ne consommera jamais.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Le marché générique répond à la question…</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Quel produit ?</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Quel besoin ?</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Qu'est-ce qui peut le remplacer ?</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> « Quel produit ? » définit le marché principal, « qu'est-ce qui peut le remplacer ? » le marché substitut.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l2')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l3',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 4 ============ -->
+    <section class="view" data-view="l4">
+      <span class="tag">Leçon 4 · Diagnostic</span>
+      <h1 class="lesson-title">PESTEL, Porter, SWOT et cycle de vie</h1>
+      <p class="subtitle">Les quatre outils du diagnostic : l'environnement lointain, la concurrence immédiate, la synthèse, et le temps.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>PESTEL, c'est la météo générale. Porter, c'est la circulation sur votre route. Le SWOT, c'est le point que vous faites avant de partir en croisant les deux avec l'état de votre voiture. Et le cycle de vie vous dit à quelle heure de la journée vous roulez.</p>
+      </div>
+
+      <h2>Le macro-environnement : PESTEL</h2>
+      <div class="grid3">
+        <div class="cell p1"><b>Politiques</b>Stabilité du gouvernement, corruption, réglementation, forces syndicales, manifestations, budgets publics, lobbying, règles de concurrence, subventions, importations/exportations.</div>
+        <div class="cell p2"><b>Économiques</b>Taux de croissance, inflation, taux d'intérêt, revenu disponible, évolution du PIB, chômage, fluctuations des prix, niveau des dépenses.</div>
+        <div class="cell p3"><b>Socio-culturel</b>Taille de la population, natalité/mortalité, classes sociales, modes de vie, santé, habitudes de consommation, éducation, épargne, valeurs et aspirations.</div>
+        <div class="cell p4"><b>Technologiques</b>Incitations technologiques, R&D, innovation, accès à la technologie, infrastructure internet, cycle de vie de la technologie, automatisation.</div>
+        <div class="cell p5"><b>Écologiques</b>Météo, climat, changement climatique, recyclage et traitement des déchets, produits verts, pressions ONG, politiques environnementales.</div>
+        <div class="cell p6"><b>Légaux</b>Droit du travail, protection des consommateurs, brevets, lois sur l'éducation, protection des données, investissement public et privé en R&D.</div>
+      </div>
+
+      <h2>Le micro-environnement : les 5+1 forces de Porter</h2>
+      <table class="tbl wrap">
+        <tr><th>Force</th><th>Nature</th></tr>
+        <tr><td>Rivalité du secteur</td><td>Concurrence entre les entreprises existantes — la force centrale</td></tr>
+        <tr><td>Pouvoir des fournisseurs</td><td>Leur capacité de négociation</td></tr>
+        <tr><td>Pouvoir des clients</td><td>Leur capacité de négociation</td></tr>
+        <tr><td>Entrants potentiels</td><td>Menace des nouveaux entrants</td></tr>
+        <tr><td>Substituts</td><td>Menace des produits de substitution</td></tr>
+        <tr><td>L'État (+1)</td><td>La sixième force, qui encadre et influence les cinq autres</td></tr>
+      </table>
+
+      <div class="rulebox">
+        <div class="rb-main">Porter, c'est <em>5 forces + 1</em> : la sixième est l'<em>État</em>.</div>
+        <div class="rb-sub">Dans le secteur bancaire, cette sixième force pèse particulièrement lourd : agrément, réglementation prudentielle, protection du consommateur.</div>
+      </div>
+
+      <h2>La synthèse : la matrice SWOT</h2>
+      <div class="grid2">
+        <div class="cell s"><b>Forces (Strengths)</b>Interne · positif</div>
+        <div class="cell w"><b>Faiblesses (Weaknesses)</b>Interne · négatif</div>
+        <div class="cell o"><b>Opportunités (Opportunities)</b>Externe · positif</div>
+        <div class="cell t"><b>Menaces (Threats)</b>Externe · négatif</div>
+      </div>
+
+      <div class="rulebox">
+        <div class="rb-main">L'entreprise doit s'appuyer sur ses <em>forces</em> et/ou chercher à combler ses <em>faiblesses</em>, pour saisir les <em>opportunités</em> de marché et faire face aux <em>menaces</em>.</div>
+        <div class="rb-sub">Le SWOT n'est pas une liste : c'est un raisonnement de mise en relation entre l'interne et l'externe.</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">📂 Exemple du cours — Spotify</div>
+        <div class="step"><div class="sn">1</div><div class="sc">Objectif énoncé : <b>Spotify veut rester incontournable auprès des 18-25 ans.</b> Il faut classer six éléments.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Force :</b> la forte personnalisation grâce aux algorithmes — c'est interne et positif.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>Faiblesse :</b> la dépendance aux ayants droit — interne et subie.</div></div>
+        <div class="step"><div class="sn">4</div><div class="sc"><b>Opportunités :</b> le développement de l'IA, et celui des podcasts et livres audio — externes et exploitables.</div></div>
+        <div class="step"><div class="sn">5</div><div class="sc"><b>Menaces :</b> la concurrence d'Apple Music et YouTube Music, et l'influence de TikTok sur la découverte musicale.</div></div>
+        <div class="ex-result">Le réflexe qui fait la différence : toujours se demander si l'élément est <b>interne</b> (force/faiblesse) ou <b>externe</b> (opportunité/menace).</div>
+      </div>
+
+      <h2>Le cycle de vie produit-marché</h2>
+      <table class="tbl wrap">
+        <tr><th>Phase</th><th>Question du client</th><th>Utilisateurs</th><th>Conditions concurrentielles</th></tr>
+        <tr><td>Émergence</td><td>« Qu'est-ce que c'est ? »</td><td>Peu nombreux, précurseurs</td><td>Peu nombreux, innovateurs</td></tr>
+        <tr><td>Croissance</td><td>« Où puis-je en acheter ? »</td><td>Plus nombreux</td><td>Nombreuses entrées, bataille pour les parts de marché, offres indifférenciées</td></tr>
+        <tr><td>Sélection</td><td>« Lequel acheter ? »</td><td>Sélectivité des achats</td><td>Beaucoup de concurrents, réduction des prix, disparition des plus faibles</td></tr>
+        <tr><td>Maturité</td><td>« Lequel acheter ? »</td><td>Saturation, achats de remplacement</td><td>Bataille pour les parts de marché, accent sur l'efficacité et les coûts</td></tr>
+        <tr><td>Déclin</td><td>« Combien ? »</td><td>Abandon, substituts</td><td>Sortie de concurrents, distribution sélective</td></tr>
+      </table>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Dans un SWOT, une erreur classique consiste à classer en « faiblesse » ce qui est en réalité une <strong>menace</strong>. Le test est simple : si l'entreprise peut agir directement dessus, c'est interne (force/faiblesse) ; si elle ne peut que s'y adapter, c'est externe (opportunité/menace).</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>PESTEL = 6 familles du macro-environnement · Porter = 5 forces + l'État · SWOT = interne (F/f) × externe (O/M), à croiser et non à lister · cycle de vie en 5 phases : émergence, croissance, sélection, maturité, déclin.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Quelle est la « sixième force » ajoutée au modèle de Porter ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Les actionnaires</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">L'État</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Les salariés</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> L'État encadre et influence les cinq autres forces — un poids majeur dans le secteur bancaire.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Dans le cycle de vie, à quelle phase le client se demande-t-il « Où puis-je en acheter ? »</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Émergence</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Croissance</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Maturité</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> À l'émergence il demande « qu'est-ce que c'est ? », en sélection et maturité « lequel acheter ? », en déclin « combien ? ».</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l3')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l4',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 5 ============ -->
+    <section class="view" data-view="l5">
+      <span class="tag">Leçon 5 · Choisir</span>
+      <h1 class="lesson-title">Segmenter et cibler</h1>
+      <p class="subtitle">Découper le marché, puis décider à qui l'on parle vraiment.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Segmenter, c'est trier une foule en groupes cohérents. Cibler, c'est choisir à quel groupe on va adresser la parole. On peut très bien segmenter finement et cibler large — ou l'inverse. Ce sont deux décisions distinctes, dans cet ordre.</p>
+      </div>
+
+      <h2>Deux segmentations à ne pas confondre</h2>
+      <table class="tbl wrap">
+        <tr><th>Segmentation</th><th>Définition</th></tr>
+        <tr><td>Stratégique (DAS)</td><td>« Partitionner une <strong>organisation</strong> en sous-ensembles homogènes à partir de plusieurs critères »</td></tr>
+        <tr><td>Marketing</td><td>« Subdiviser un <strong>marché</strong> en sous-ensembles homogènes de clients, chaque sous-ensemble pouvant être sélectionné en fonction d'une cible de marché à atteindre grâce à un mix marketing distinct » (Philip Kotler)</td></tr>
+      </table>
+
+      <div class="rulebox">
+        <div class="rb-main"><em>Segmentation</em> → <em>Ciblage</em> → <em>Positionnement</em></div>
+        <div class="rb-sub">Segmentation : découper le marché en sous-ensembles homogènes de consommateurs. Ciblage : sélectionner un ou plusieurs segments selon leur attrait et la cohérence avec les objectifs et ressources de l'entreprise. Positionnement : concevoir un produit et son image pour lui donner une place déterminée dans l'esprit du consommateur cible.</div>
+      </div>
+
+      <h2>Les variables de segmentation</h2>
+      <div class="grid2">
+        <div class="cell o"><b>Caractéristiques intrinsèques des consommateurs</b>Segmentation géographique · sociodémographique · psychographique.<br><span style="font-size:.88rem;opacity:.85">Exemples de catégories : la presse, les jouets, la mode, le train.</span></div>
+        <div class="cell s"><b>Réponses à la catégorie de produits</b>Situations d'achat · avantages recherchés · statut d'utilisateur · statut de fidélité.<br><span style="font-size:.88rem;opacity:.85">Exemples de catégories : le cinéma, le shampoing, l'outillage.</span></div>
+      </div>
+
+      <h2>Le ciblage</h2>
+      <div class="rulebox def">
+        <div class="rb-main">« Le ciblage correspond à l'<em>identification</em>, à l'<em>évaluation</em> puis au <em>choix</em> par une entreprise du ou des segments de clientèle auxquels elle souhaite s'adresser. »</div>
+      </div>
+
+      <h3>Les stratégies de ciblage</h3>
+      <table class="tbl wrap">
+        <tr><th>Stratégie</th><th>Principe et effets</th></tr>
+        <tr><td>Concentration</td><td>Un seul couple produit/marché, un seul segment · connaissance précise de ses besoins spécifiques · importantes économies d'échelle grâce à la spécialisation <em>(ex. Crocs)</em></td></tr>
+        <tr><td>Spécialisation par produit</td><td>Offrir des produits distincts d'une même catégorie à plusieurs segments · réputation de spécialiste · <strong>risquée</strong> lorsque le produit entame son déclin <em>(ex. Michelin)</em></td></tr>
+        <tr><td>Spécialisation par marché</td><td>Répondre aux différents besoins d'un segment en lui proposant des produits de nature diverse · se focaliser sur un seul marché en croissance <em>(ex. Black+Decker)</em></td></tr>
+        <tr><td>Couverture globale — indifférenciée</td><td>Un produit et un plan marketing uniques pour attirer le plus grand nombre <em>(ex. Coca-Cola)</em></td></tr>
+        <tr><td>Couverture globale — différenciée</td><td>Concevoir des produits et plans d'action différents pour chaque segment visé <em>(ex. P&amp;G : Dash, Tide, Ariel)</em></td></tr>
+      </table>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>La <strong>spécialisation par produit</strong> et la <strong>spécialisation par marché</strong> sont symétriques et souvent inversées en examen. Par produit : <em>un type de produit, plusieurs segments</em>. Par marché : <em>un segment, plusieurs types de produits</em>. Retenez ce qui reste fixe dans chaque cas.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Segmentation stratégique = organisation (DAS), marketing = marché (Kotler) · enchaînement segmentation → ciblage → positionnement · variables intrinsèques vs variables de réponse · 5 stratégies de ciblage : concentration, spécialisation produit, spécialisation marché, couverture indifférenciée, couverture différenciée.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">La segmentation stratégique partitionne…</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Un marché en groupes de clients</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Une organisation en sous-ensembles homogènes</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Une gamme de produits</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> C'est la segmentation <em>marketing</em> qui découpe le marché en sous-ensembles de clients.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Proposer des produits de nature diverse à un seul segment de marché correspond à…</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">La spécialisation par produit</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">La spécialisation par marché</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le marketing indifférencié</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Par marché : un segment fixe, des produits variés. Par produit : une catégorie de produit fixe, plusieurs segments.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l4')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l5',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 6 ============ -->
+    <section class="view" data-view="l6">
+      <span class="tag">Leçon 6 · Positionner</span>
+      <h1 class="lesson-title">Positionnement et stratégies de croissance</h1>
+      <p class="subtitle">Occuper une place dans l'esprit du client — et choisir par où grandir.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Le positionnement ne se décide pas dans une salle de réunion : il se constate dans la tête du client. On peut vouloir être perçu comme premium ; si le client vous range mentalement à côté du discount, c'est lui qui a raison.</p>
+      </div>
+
+      <div class="rulebox def">
+        <div class="rb-main">« Le positionnement est le <em>choix stratégique des éléments-clés d'une proposition de valeur</em>, qui permet de donner à son offre une position <em>crédible, attractive et différente</em> sur son marché et dans l'esprit des clients. »</div>
+      </div>
+
+      <h2>Le losange de Kapferer</h2>
+      <p>Quatre questions structurent tout positionnement.</p>
+
+      <div class="schema">
+        <svg viewBox="0 0 620 250" xmlns="http://www.w3.org/2000/svg">
+          <g font-family="DM Sans" font-size="12">
+            <path d="M310 30 L440 125 L310 220 L180 125 Z" fill="none" stroke="var(--navy)" stroke-width="2"/>
+            <rect x="260" y="95" width="100" height="60" rx="10" fill="var(--amber-soft)" stroke="var(--amber)" stroke-width="1.8"/>
+            <text x="310" y="122" text-anchor="middle" font-weight="700" fill="var(--amber-deep)" font-size="11.5">Produit</text>
+            <text x="310" y="139" text-anchor="middle" font-weight="700" fill="var(--amber-deep)" font-size="11.5">Service</text>
+            <text x="310" y="20" text-anchor="middle" font-weight="700" fill="var(--navy)">Qui ?</text>
+            <text x="310" y="245" text-anchor="middle" font-weight="700" fill="var(--navy)">Quand ?</text>
+            <text x="150" y="129" text-anchor="end" font-weight="700" fill="var(--navy)">Contre qui ?</text>
+            <text x="470" y="129" font-weight="700" fill="var(--navy)">Pourquoi ?</text>
+            <text x="310" y="248" text-anchor="middle" font-size="0" fill="var(--card)">.</text>
+            <text x="440" y="148" font-size="10.5" fill="var(--muted2)">Quels bénéfices ?</text>
+            <text x="150" y="148" text-anchor="end" font-size="10.5" fill="var(--muted2)">Quels concurrents directs ?</text>
+            <text x="310" y="6" text-anchor="middle" font-size="10.5" fill="var(--muted2)">Quelle cible de marché ?</text>
+          </g>
+        </svg>
+        <div class="scap">Qui ? Pourquoi ? Quand ? Contre qui ? — les quatre sommets du losange.</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">📂 Exemple du cours — Red Bull</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Qui ?</b> Étudiants et jeunes actifs (18-35 ans), sportifs occasionnels, conducteurs sur long trajet.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Pourquoi ?</b> Apporte un coup de boost rapide (caféine), permet de rester éveillé et concentré, image « cool » et dynamique portée par le marketing d'événements sportifs extrêmes.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>Quand ?</b> Avant ou pendant les révisions, pendant une activité sportive, en soirée pour « tenir » plus longtemps, lors des trajets nocturnes.</div></div>
+        <div class="step"><div class="sn">4</div><div class="sc"><b>Contre qui ?</b> Monster, Burn, les MDD, et le café ou autres boissons stimulantes en produits substituts.</div></div>
+        <div class="ex-result">Noter que les concurrents incluent les <b>substituts</b> (le café), pas seulement les autres energy drinks.</div>
+      </div>
+
+      <h2>Les axes de différenciation</h2>
+      <table class="tbl wrap">
+        <tr><th>Axe</th><th>Exemple du cours</th></tr>
+        <tr><td>Les attributs et performances du produit</td><td>Duracell propose des piles qui durent plus longtemps</td></tr>
+        <tr><td>L'imaginaire du produit ou de la marque (univers, style de vie, origine)</td><td>Evian est l'eau minérale naturelle source de jeunesse pour le corps</td></tr>
+        <tr><td>Les publics auxquels l'offre est destinée</td><td>Helios est la banque durable en ligne pour les clients responsables qui veulent que leur argent favorise la transition écologique</td></tr>
+        <tr><td>Les services associés</td><td>SAV, relation clients, programme de fidélité…</td></tr>
+      </table>
+
+      <p class="hint">L'exemple <strong>Helios</strong> est à retenir : c'est le cas bancaire du cours, et il illustre une différenciation par le public visé plutôt que par le produit.</p>
+
+      <h2>La matrice d'Ansoff</h2>
+      <table class="tbl">
+        <tr><th></th><th>Produit actuel</th><th>Produit nouveau</th></tr>
+        <tr><td>Marché actuel</td><td>Pénétration du marché</td><td>Développement par les produits</td></tr>
+        <tr><td>Marché nouveau</td><td>Développement par les marchés</td><td>Diversification</td></tr>
+      </table>
+
+      <div class="rulebox">
+        <div class="rb-main">Ansoff croise <em>produit</em> (actuel / nouveau) et <em>marché</em> (actuel / nouveau) → 4 stratégies de croissance.</div>
+        <div class="rb-sub">La diversification (nouveau produit × nouveau marché) est la plus risquée : rien n'est connu des deux côtés.</div>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Dans Ansoff, ne confondez pas « développement par les <strong>produits</strong> » (nouveau produit sur marché actuel) et « développement par les <strong>marchés</strong> » (produit actuel sur nouveau marché). Le mot qui suit « développement par » désigne ce qui est <strong>nouveau</strong>.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Positionnement = crédible, attractif, différent, dans l'esprit du client · losange de Kapferer : Qui ? Pourquoi ? Quand ? Contre qui ? · 4 axes de différenciation (attributs, imaginaire, publics, services) · Ansoff : pénétration, développement produits, développement marchés, diversification.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Dans le losange de Kapferer, la question « Contre qui ? » porte sur…</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Les moments d'utilisation</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Les concurrents directs</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Les bénéfices apportés</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> « Quand ? » vise les moments d'utilisation et « Pourquoi ? » les bénéfices.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Lancer un produit nouveau sur un marché nouveau correspond, chez Ansoff, à…</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">La pénétration du marché</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le développement par les marchés</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">La diversification</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> C'est la stratégie la plus risquée : ni le produit ni le marché ne sont maîtrisés.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l5')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l6',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 7 ============ -->
+    <section class="view" data-view="l7">
+      <span class="tag">Leçon 7 · Agir</span>
+      <h1 class="lesson-title">Le mix : produit et prix</h1>
+      <p class="subtitle">Les deux premiers P — et la façon dont un prix se construit entre un plancher et un plafond.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Un prix n'est jamais un chiffre isolé : il vit dans un couloir. En dessous du plancher, on perd de l'argent. Au-dessus du plafond, plus personne n'achète. Tout l'art consiste à choisir sa place dans ce couloir — et cette place raconte votre positionnement.</p>
+      </div>
+
+      <div class="rulebox">
+        <div class="rb-main">Le mix marketing durable : <em>Produit</em> · <em>Prix</em> · <em>Distribution</em> · <em>Communication</em> — déclinés en <em>physique</em> et en <em>digital</em>.</div>
+      </div>
+
+      <h2>La politique de produit</h2>
+      <p>Trois volets principaux : <strong>la marque</strong>, <strong>le packaging</strong>, <strong>la gamme</strong>. La dimension durable y ajoute l'<strong>éco-conception</strong>.</p>
+
+      <h2>La politique de prix</h2>
+      <p>Trois facteurs influencent le prix : les <strong>coûts</strong>, la <strong>concurrence</strong>, les <strong>clients</strong>.</p>
+
+      <div class="schema">
+        <svg viewBox="0 0 620 230" xmlns="http://www.w3.org/2000/svg">
+          <g font-family="DM Sans" font-size="12">
+            <rect x="180" y="14" width="260" height="46" rx="10" fill="var(--rust-soft)" stroke="var(--rust)" stroke-width="1.8"/>
+            <text x="310" y="42" text-anchor="middle" font-weight="700" fill="var(--rust)">Demande inexistante</text>
+            <text x="120" y="42" text-anchor="end" font-size="11" fill="var(--rust)">Prix impossibles</text>
+            <line x1="180" y1="64" x2="470" y2="64" stroke="var(--amber)" stroke-width="2" stroke-dasharray="5,3"/>
+            <text x="478" y="68" font-size="11" fill="var(--amber-deep)" font-weight="700">Prix plafond</text>
+            <rect x="180" y="72" width="260" height="76" rx="10" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.8"/>
+            <text x="310" y="102" text-anchor="middle" font-weight="700" fill="var(--teal)">Stratégie</text>
+            <text x="310" y="124" text-anchor="middle" font-weight="700" fill="var(--teal)">Concurrence</text>
+            <text x="120" y="116" text-anchor="end" font-size="11" fill="var(--teal)" font-weight="700">Prix possibles</text>
+            <line x1="180" y1="152" x2="470" y2="152" stroke="var(--amber)" stroke-width="2" stroke-dasharray="5,3"/>
+            <text x="478" y="156" font-size="11" fill="var(--amber-deep)" font-weight="700">Prix plancher</text>
+            <rect x="180" y="160" width="260" height="46" rx="10" fill="var(--rust-soft)" stroke="var(--rust)" stroke-width="1.8"/>
+            <text x="310" y="188" text-anchor="middle" font-weight="700" fill="var(--rust)">Profit &lt; 0</text>
+            <text x="120" y="188" text-anchor="end" font-size="11" fill="var(--rust)">Prix impossibles</text>
+          </g>
+        </svg>
+        <div class="scap">Entre plancher (rentabilité) et plafond (acceptabilité), la zone des prix possibles.</div>
+      </div>
+
+      <h3>Déterminer le « bon prix »</h3>
+      <ul>
+        <li>Alignement sur la concurrence</li>
+        <li>Politique de baisse des prix (pression sur les marges)</li>
+        <li>Politique de hausse des prix (positionnement qui montre une réelle valeur ajoutée)</li>
+        <li>Tarifs différenciés selon le moment (heures creuses, saisons) ou les personnes (enfants, étudiants, seniors)</li>
+      </ul>
+
+      <h3>Une question de position sur le marché</h3>
+      <div class="grid2">
+        <div class="cell o"><b>Écrémage — leader / nouveau marché</b>Vendre au prix fort à une cible réduite · optique de <strong>profit</strong> · risque : envoyer un signal à la concurrence sur les forts profits envisageables.</div>
+        <div class="cell s"><b>Pénétration — challengeur / marché mature</b>Vendre à faible marge · optique de <strong>volume</strong> · risque : difficulté à maintenir une rentabilité suffisante dans le temps.</div>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Écrémage et pénétration ne se choisissent pas au hasard : ils dépendent de la <strong>position sur le marché</strong>. Écrémage = leader sur un marché nouveau (profit). Pénétration = challengeur sur un marché mature (volume). Un cas d'examen donne presque toujours l'indice de position avant de demander la politique de prix.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Mix = Produit, Prix, Distribution, Communication, en physique et digital · produit = marque + packaging + gamme (+ éco-conception) · prix influencé par coûts, concurrence, clients · couloir plancher-plafond · écrémage (profit, leader, marché nouveau) vs pénétration (volume, challengeur, marché mature).</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Le prix plancher est déterminé par…</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">L'acceptabilité par le client</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Le seuil en dessous duquel le profit devient négatif</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le prix moyen de la concurrence</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Le plafond, lui, correspond au niveau au-delà duquel la demande devient inexistante.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Une politique de pénétration correspond à…</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Vendre au prix fort à une cible réduite</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Vendre à faible marge dans une optique de volume</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Aligner ses prix sur le leader</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> C'est la stratégie du challengeur sur un marché mature ; l'écrémage vise le profit sur un marché nouveau.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l6')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l7',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 8 ============ -->
+    <section class="view" data-view="l8">
+      <span class="tag">Leçon 8 · Agir</span>
+      <h1 class="lesson-title">Le mix : distribution et communication</h1>
+      <p class="subtitle">Comment le produit atteint le client, et comment le message l'atteint.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>L'intensité de distribution est un curseur entre deux extrêmes : être partout (et perdre le contrôle de son image), ou être rare (et gagner en désir ce qu'on perd en volume). Rolex et Coca-Cola ont fait des choix opposés — et tous deux ont raison, parce qu'ils ne vendent pas la même chose.</p>
+      </div>
+
+      <h2>La stratégie de distribution</h2>
+      <p>Objectif général : <strong>optimiser l'adéquation entre l'offre et la demande</strong> selon les contraintes de l'entreprise.</p>
+
+      <table class="tbl wrap">
+        <tr><th>Stratégie</th><th>Principe</th></tr>
+        <tr><td>Intensive</td><td>Être présent dans un maximum de points de vente</td></tr>
+        <tr><td>Sélective</td><td>Un nombre limité de distributeurs choisis <em>(ex. Nespresso : internet + points de vente limités)</em></td></tr>
+        <tr><td>Exclusive</td><td>Vente contrôlée, <strong>un seul distributeur autorisé</strong> · objectif : maîtriser image et expérience client · enjeux : image premium, rareté et désir, contrôle qualité du réseau <em>(ex. Tesla, Rolex)</em></td></tr>
+      </table>
+
+      <p>À cela s'ajoutent les formes d'organisation : <strong>distribution intégrée</strong> ou <strong>par réseau</strong> (coopérative, franchise).</p>
+
+      <h3>La longueur des canaux</h3>
+      <table class="tbl wrap">
+        <tr><th>Canal</th><th>Circuit</th></tr>
+        <tr><td>Canal long</td><td>Producteur → grossistes → détaillants → consommateurs</td></tr>
+        <tr><td>Canal court</td><td>Producteur → détaillants avec centrale d'achat → consommateurs</td></tr>
+        <tr><td>Canal direct ou ultra-court</td><td>Producteur → consommateurs</td></tr>
+      </table>
+
+      <h3>Les formats de la grande distribution</h3>
+      <table class="tbl wrap">
+        <tr><th>Format</th><th>Surface</th><th>Assortiment</th><th>Exemples</th></tr>
+        <tr><td>Hypermarché</td><td>&gt; 2 500 m²</td><td>Alimentaire + non alimentaire</td><td>Carrefour, Auchan</td></tr>
+        <tr><td>Supermarché</td><td>400 à 2 500 m²</td><td>Alimentaire + non alimentaire basique</td><td>Intermarché</td></tr>
+        <tr><td>Magasin populaire</td><td>1 500 m²</td><td>Généraliste</td><td>Monoprix</td></tr>
+        <tr><td>Hard-discount</td><td>600 m² en moyenne</td><td>Alimentation basique</td><td>Aldi, Lidl</td></tr>
+        <tr><td>Supérette / proximité</td><td>120 à 300 m²</td><td>Alimentation générale</td><td>Carrefour Contact, Casino Shop</td></tr>
+      </table>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 Chiffre du cours</div>
+        <p>Enseignes les plus fréquentées en France en 2020 : <strong>E.Leclerc 53 %</strong>, <strong>Carrefour 50 %</strong>, <strong>Lidl 44 %</strong>. La fréquentation ne se confond pas avec la part de marché : un client peut fréquenter trois enseignes et n'en privilégier qu'une.</p>
+      </div>
+
+      <h2>La communication : un message unique</h2>
+      <div class="rulebox">
+        <div class="rb-main">Trois grandes catégories d'objectifs : <em>faire connaître</em> · <em>faire aimer</em> · <em>faire agir</em>.</div>
+        <div class="rb-sub">Échelle d'adoption et KPI associés : je me souviens (souvenir) → je connais (notoriété) → j'apprécie (image) → j'achèterai (intention) — ce sont les <em>attitudes envers la marque</em> ; puis j'achète (achat) → je rachète (réachat) → je suis fidèle (fidélité) — ce sont les <em>ventes et comportements d'achat</em>.</div>
+      </div>
+
+      <h3>Les ingrédients du storytelling</h3>
+      <ul>
+        <li>Un protagoniste</li>
+        <li>Une « musique » de début</li>
+        <li>Une intrigue (un objectif, qui correspond à l'idée centrale)</li>
+        <li>De l'adversité</li>
+        <li>Des personnages secondaires</li>
+        <li>Une chute</li>
+        <li>Une musique de fin</li>
+        <li><strong>Et beaucoup d'émotion et de langage non verbal</strong></li>
+      </ul>
+
+      <div class="example">
+        <div class="ex-head">📂 Exemple du cours — Nespresso, la cohérence du mix</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Positionnement :</b> le système qui permet aux amateurs de bon café de déguster à tout moment le café premium spécialement élaboré de leur choix.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Produit :</b> cafés sélectionnés, appellations recherchées, machines très designées.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>Prix :</b> élevés pour les machines et les dosettes (deux fois le prix d'une dosette Senseo).</div></div>
+        <div class="step"><div class="sn">4</div><div class="sc"><b>Distribution :</b> sélective — internet et points de vente limités.</div></div>
+        <div class="step"><div class="sn">5</div><div class="sc"><b>Communication :</b> émotionnelle et expérientielle.</div></div>
+        <div class="ex-result">Chaque P découle du positionnement : c'est exactement ce qu'un correcteur attend dans un cas — la <b>cohérence</b>, pas l'énumération.</div>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Dans un cas, ne présentez jamais les 4P comme quatre listes indépendantes. La note se gagne en montrant que chaque P <strong>découle du positionnement</strong> et se renforce avec les autres — un prix premium sans distribution sélective serait incohérent.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Distribution intensive / sélective / exclusive · intégrée ou par réseau (coopérative, franchise) · canaux long / court / direct · formats GMS par surface · communication : faire connaître, faire aimer, faire agir · KPI d'attitude puis de comportement · storytelling = protagoniste, intrigue, adversité, chute, émotion.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Une distribution exclusive signifie…</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Un nombre limité de distributeurs choisis</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Un seul distributeur autorisé</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Une présence dans un maximum de points de vente</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Un nombre limité de distributeurs correspond à la distribution sélective ; l'exclusive n'en autorise qu'un.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Quelles sont les trois catégories d'objectifs de communication ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Informer, vendre, fidéliser</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Faire connaître, faire aimer, faire agir</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Segmenter, cibler, positionner</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Segmenter/cibler/positionner relève du marketing stratégique, pas des objectifs de communication.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l7')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l8',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 9 ============ -->
+    <section class="view" data-view="l9">
+      <span class="tag">Leçon 9 · Évaluer</span>
+      <h1 class="lesson-title">Mesurer et intégrer la durabilité</h1>
+      <p class="subtitle">Les KPI du marketing, puis le basculement vers un marketing qui se mesure aussi en impact.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Pendant un siècle, le marketing s'est demandé « combien ai-je vendu ? ». La question qui s'ajoute aujourd'hui est « à quel coût pour le reste ? ». Ce n'est pas un supplément d'âme : c'est un second tableau de bord posé à côté du premier.</p>
+      </div>
+
+      <h2>Une discipline de KPI</h2>
+      <table class="tbl wrap">
+        <tr><th>Famille d'objectifs</th><th>Indicateurs</th></tr>
+        <tr><td>Objectifs de vente</td><td>Volume, chiffre d'affaires, part de marché</td></tr>
+        <tr><td>Objectifs de comportement</td><td>Pénétration, fréquence, panier moyen…</td></tr>
+        <tr><td>Objectifs d'attitude</td><td>Notoriété, image, préférence, intention</td></tr>
+      </table>
+
+      <h2>Le marketing fait sa mue</h2>
+      <div class="schema">
+        <svg viewBox="0 0 620 120" xmlns="http://www.w3.org/2000/svg">
+          <g font-family="DM Sans" font-size="12">
+            <line x1="30" y1="70" x2="590" y2="70" stroke="var(--line2b)" stroke-width="2"/>
+            <circle cx="90" cy="70" r="7" fill="var(--navy)"/><circle cx="310" cy="70" r="7" fill="var(--amber)"/><circle cx="530" cy="70" r="7" fill="var(--teal)"/>
+            <text x="90" y="95" text-anchor="middle" font-family="DM Mono" font-size="11" fill="var(--muted2)">1900</text>
+            <text x="310" y="95" text-anchor="middle" font-family="DM Mono" font-size="11" fill="var(--muted2)">1950-2010</text>
+            <text x="530" y="95" text-anchor="middle" font-family="DM Mono" font-size="11" fill="var(--muted2)">2010 - …</text>
+            <text x="90" y="48" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--navy)">Comprendre</text>
+            <text x="90" y="33" text-anchor="middle" font-size="11" fill="var(--navy-deep)">à qui je vends</text>
+            <text x="310" y="48" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--amber-deep)">Vendre plus</text>
+            <text x="530" y="48" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--teal)">Vendre mieux</text>
+          </g>
+        </svg>
+        <div class="scap">Trois âges du marketing.</div>
+      </div>
+
+      <div class="rulebox def">
+        <div class="rb-main">« Le marketing durable est le <em>processus de création</em>, de communication et de livraison de valeur aux clients de telle sorte que <em>le capital naturel et humain soit préservé ou amélioré</em> tout au long du processus… »</div>
+        <div class="rb-sub">D. Martin et J. W. Schouten, <em>Sustainable Marketing</em>, Pearson, 2012</div>
+      </div>
+
+      <h2>Marketing traditionnel vs responsable</h2>
+      <table class="tbl wrap">
+        <tr><th>Aspect</th><th>Traditionnel</th><th>Responsable</th></tr>
+        <tr><td>Objectif</td><td>Maximiser les ventes, croissance du volume</td><td>Créer de la valeur économique + sociale + environnementale</td></tr>
+        <tr><td>Approche de la demande</td><td>Répondre à la demande, voire créer le besoin</td><td>Éduquer, accompagner de nouveaux comportements (moins mais mieux)</td></tr>
+        <tr><td>Positionnement</td><td>Produit centré, promotion intensive</td><td>Offre éthique, transparente, éco-conception fondée sur l'usage</td></tr>
+        <tr><td>Prix</td><td>Optimisation du coût, promotions agressives</td><td>Justification du coût par la valeur durable et le service</td></tr>
+        <tr><td>Image de marque</td><td>Risque de greenwashing, crédibilité fluctuante</td><td>Renforcement de la confiance et de la réputation</td></tr>
+        <tr><td>Modèle stratégique</td><td>Réactif, centré sur le court terme</td><td>Intégration proactive de la RSE à long terme</td></tr>
+      </table>
+      <p class="hint">Source : ADEME</p>
+
+      <h2>Les 5 leviers du marketing au service de la transition</h2>
+      <table class="tbl wrap">
+        <tr><th>N°</th><th>Levier</th></tr>
+        <tr><td>1</td><td>Réduire les impacts négatifs des actions de marketing et de communication</td></tr>
+        <tr><td>2</td><td>Communiquer de manière responsable (éviter le greenwashing)</td></tr>
+        <tr><td>3</td><td>Concevoir et promouvoir des produits et des modèles d'affaires plus durables</td></tr>
+        <tr><td>4</td><td>Encourager des modes de consommation et de vie plus durables en participant à la construction de nouveaux imaginaires</td></tr>
+        <tr><td>5</td><td>Réduire la surproduction et la surconsommation</td></tr>
+      </table>
+      <p class="hint">Source : Swaen V., 2023, « Le marketing au service de la transition : impératif ou imposture ? », 39<sup>e</sup> Congrès AFM</p>
+
+      <table class="tbl wrap">
+        <tr><th>Levier</th><th>Illustration du cours</th></tr>
+        <tr><td>1 — Réduire les impacts</td><td>Patagonia Worn Wear : allonger la durée de vie des produits ; plus de 583 000 articles maintenus hors des décharges grâce aux réparations · publicité Chocapic tournée avec décors recyclés, personnages sans plastique, caméras alimentées en énergies vertes</td></tr>
+        <tr><td>2 — Communiquer responsable</td><td>Éviter le greenwashing (détournement de la campagne Mercedes-EQ par « Stop the Wash »)</td></tr>
+        <tr><td>3 — Produits plus durables</td><td>Produits réparables, seconde main, reconditionné, location et partage (la location chez Decathlon)</td></tr>
+        <tr><td>4 — Nouveaux imaginaires</td><td>Éduquer aux impacts (Yuka : 94 % des utilisateurs ont arrêté d'acheter certains produits, 83 % achètent moins mais de meilleure qualité) · Eco-score, Planet-score · <strong>choice editing</strong> : sélectionner ou modifier les choix disponibles</td></tr>
+        <tr><td>5 — Réduire la surconsommation</td><td>Biocoop « N'achetez pas de fraises (en hiver) » · Patagonia « Don't buy this jacket »</td></tr>
+      </table>
+
+      <div class="rulebox">
+        <div class="rb-main">Trois cadres de référence à citer : les <em>9 limites planétaires</em> (Rockström et Steffen) · les <em>17 ODD</em> de l'ONU · le <em>donut</em> de Kate Raworth (plafond environnemental / plancher social).</div>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Le <strong>choice editing</strong> n'est pas de la pédagogie : il ne s'agit pas d'informer le client, mais de <strong>modifier les choix qui lui sont proposés</strong> (ne référencer que des produits certifiés, réorganiser l'ordre d'un buffet). Le levier agit sur l'environnement de décision, pas sur la conviction.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>3 familles de KPI : vente, comportement, attitude · 3 âges : comprendre à qui je vends → vendre plus → vendre mieux · définition Martin & Schouten (capital naturel et humain préservé ou amélioré) · 5 leviers de la transition (Swaen 2023) · 9 limites planétaires, 17 ODD, donut de Raworth · greenwashing et choice editing.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">La notoriété et l'image sont des objectifs…</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">De vente</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">De comportement</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">D'attitude</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Vente = volume, CA, part de marché. Comportement = pénétration, fréquence, panier moyen. Attitude = notoriété, image, préférence, intention.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Le « choice editing » consiste à…</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Informer le client sur l'impact de ses achats</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Sélectionner ou modifier les choix disponibles</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Réduire le nombre de références en promotion</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> L'information (Yuka, Eco-score) relève de l'éducation ; le choice editing agit directement sur l'offre proposée.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l8')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l9',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+
+    <!-- ============ LEÇON 10 ============ -->
+    <section class="view" data-view="l10">
+      <span class="tag">Leçon 10 · Parcours</span>
+      <h1 class="lesson-title">Le parcours client et ses points de contact</h1>
+      <p class="subtitle">Cinq étapes, du premier regard à la recommandation — et, à chaque étape, les endroits où la banque peut être présente.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Le mix décrit ce que l'entreprise propose ; le parcours décrit ce que le client traverse. C'est la différence entre le plan d'un magasin et le trajet réel d'une personne dedans — avec ses hésitations, ses détours et le moment précis où elle renonce.</p>
+      </div>
+
+      <div class="rulebox">
+        <div class="rb-main">Le parcours client est la suite des <em>étapes</em> vécues par le client, jalonnée de <em>points de contact</em> physiques et numériques.</div>
+        <div class="rb-sub">Un point de contact est tout endroit, réel ou digital, où le client rencontre la marque : une vitrine, un simulateur, un conseiller, une notification.</div>
+      </div>
+
+      <h2>Les cinq étapes</h2>
+      <table class="tbl wrap">
+        <tr><th>Étape</th><th>Ce que vit le client</th><th>Points de contact typiques</th></tr>
+        <tr><td><strong>Découverte</strong></td><td>Il croise l'offre pour la première fois, souvent sans la chercher.</td><td>Bouche-à-oreille, relations publiques, référencement naturel, publicité sociale, panneau, flyer, vitrine d'agence.</td></tr>
+        <tr><td><strong>Intérêt / considération</strong></td><td>Il cherche des informations précises et compare.</td><td>Site, blog, médias sociaux, marketing direct, simulateur, chatbot, rendez-vous découverte, pop-up.</td></tr>
+        <tr><td><strong>Acquisition / achat</strong></td><td>Il passe à l'acte.</td><td>Site, application mobile, agence, souscription, signature électronique, virement.</td></tr>
+        <tr><td><strong>Service</strong></td><td>Il revient pour une question, une réclamation, un conseil.</td><td>Centre d'appel, clavardage, application, guichet, rendez-vous bilan, tenue de compte.</td></tr>
+        <tr><td><strong>Fidélité / loyauté</strong></td><td>Il reste, puis recommande.</td><td>Programme de fidélité, courriels personnalisés, avis en ligne, réseaux sociaux, offres adaptées au profil.</td></tr>
+      </table>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 À retenir</div>
+        <p>Le parcours n'est pas linéaire : un client peut découvrir sur un réseau social, comparer sur un comparateur, souscrire en agence, puis réclamer par téléphone. Le travail du marketing est de rendre ces passages <strong>sans couture</strong> — mêmes informations, même discours, mêmes engagements d'un canal à l'autre.</p>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Le piège</div>
+        <p>Confondre <strong>canal</strong> et <strong>point de contact</strong>. Le canal est le chemin de distribution (agence, site, application) ; le point de contact est chaque interaction, y compris celles que l'entreprise ne maîtrise pas — un avis Google, un commentaire sous une publication, une conversation entre amis.</p>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">Exemple bancaire — ouvrir un livret</div>
+        <p><strong>Découverte</strong> : une publicité sur le rendement du Livret A. <strong>Considération</strong> : le simulateur d'épargne du site, puis un avis en ligne. <strong>Acquisition</strong> : souscription dans l'application, avec signature électronique. <strong>Service</strong> : une question sur la date de valeur, posée au clavardage. <strong>Fidélité</strong> : un courriel qui propose un LDDS quand le plafond du Livret A approche.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Un simulateur de crédit sur le site de la banque relève surtout de quelle étape ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Découverte</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Intérêt / considération</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Fidélité</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Le client connaît déjà l'offre et cherche des informations précises pour comparer : c'est la considération.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Lequel de ces points de contact échappe au contrôle direct de la marque ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">La vitrine de l'agence</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Un avis client publié en ligne</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le courriel de bienvenue</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> L'avis en ligne et le bouche-à-oreille sont des points de contact subis : on peut y répondre, pas les écrire.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l9')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l10',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 11 ============ -->
+    <section class="view" data-view="l11">
+      <span class="tag">Leçon 11 · Données</span>
+      <h1 class="lesson-title">RGPD, CNIL et données personnelles</h1>
+      <p class="subtitle">La contrepartie du marketing de la donnée : ce que l'on a le droit de collecter, de conserver et d'exploiter — et ce que coûte l'oubli de cette règle.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>La donnée client est un dépôt, pas une propriété. L'entreprise en a la garde, doit pouvoir dire à quoi elle sert, la rendre sur demande et la détruire quand l'objet du dépôt disparaît. Un CRM mal tenu n'est pas seulement un risque d'amende : c'est un dépôt dont on a perdu le registre.</p>
+      </div>
+
+      <div class="rulebox">
+        <div class="rb-main">Le <em>RGPD</em> est le règlement européen en vigueur depuis le <em>25 mai 2018</em>. Il protège les données personnelles des citoyens européens.</div>
+        <div class="rb-sub">Sanction maximale : <strong>4 % du chiffre d'affaires mondial</strong> ou <strong>20 M€</strong>, le montant le plus élevé étant retenu.</div>
+      </div>
+
+      <h2>Les principes à connaître</h2>
+      <table class="tbl wrap">
+        <tr><th>Principe</th><th>Ce qu'il impose</th></tr>
+        <tr><td>Consentement explicite</td><td>Un accord libre, spécifique et éclairé : pas de case pré-cochée, pas de consentement implicite.</td></tr>
+        <tr><td>Droit à l'information</td><td>Dire qui collecte, pourquoi, pour combien de temps et avec qui la donnée est partagée.</td></tr>
+        <tr><td>Droit d'accès et de rectification</td><td>Le client peut demander ce que l'on détient sur lui et le faire corriger.</td></tr>
+        <tr><td>Droit à l'effacement</td><td>Le « droit à l'oubli » : suppression des données qui ne sont plus nécessaires.</td></tr>
+        <tr><td>Minimisation</td><td>Ne collecter que ce qui sert la finalité annoncée — rien de plus.</td></tr>
+      </table>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 Deux décisions de la CNIL</div>
+        <p><strong>Google — 325 M€</strong> : consentement et cookies. <strong>Amazon France Logistique — 32 M€</strong> : surveillance excessive des salariés. La donnée des collaborateurs relève du même règlement que celle des clients.</p>
+      </div>
+
+      <h2>L'analyse d'impact (PIA / DPIA)</h2>
+      <p>Quand un traitement présente un risque élevé pour les personnes, la CNIL impose une <strong>analyse d'impact relative à la protection des données</strong>. C'est un outil à remplir, en quatre étapes :</p>
+      <table class="tbl wrap">
+        <tr><th>Étape</th><th>Contenu</th></tr>
+        <tr><td>1. Étude du contexte</td><td>Finalités, responsable de traitement, sous-traitants, données collectées, destinataires, durées de conservation, processus et supports.</td></tr>
+        <tr><td>2. Principes fondamentaux</td><td>Proportionnalité et nécessité (fondement légal, minimisation, qualité, durées) · droits des personnes (information, consentement, accès et portabilité, rectification et effacement, limitation et opposition, sous-traitance, transferts hors UE).</td></tr>
+        <tr><td>3. Risques de sécurité</td><td>Mesures techniques, mesures générales, gouvernance, puis cartographie des risques.</td></tr>
+        <tr><td>4. Validation</td><td>Synthèse de conformité, plan d'action, avis du DPO, avis des personnes concernées, validation par le responsable de traitement.</td></tr>
+      </table>
+
+      <h2>Le RGPD dans un CRM</h2>
+      <div class="example">
+        <div class="ex-head">Cas du cours — Les Pressoirs des Alpilles</div>
+        <p>Accès aux données <strong>limité par rôle</strong> · demandes de suppression traitées <strong>sous 30 jours</strong> · consentement recueilli pour les offres promotionnelles · minimisation : seules les données nécessaires à la livraison sont demandées · en cas de fuite, notification à la CNIL <strong>sous 72 heures</strong>.</p>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ À proscrire dans un CRM</div>
+        <p>Les <strong>données sensibles</strong> — religion, santé, origine ethnique, opinions politiques — et les <strong>jugements subjectifs</strong> sans lien avec la relation client (« client pénible », « semble en difficulté »). Une fiche CRM peut être demandée par le client : elle doit pouvoir être lue par lui sans dommage.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">En cas de violation de données, sous quel délai faut-il notifier la CNIL ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">30 jours</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">72 heures</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Immédiatement, avant toute vérification</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> 72 heures pour la notification à la CNIL ; les 30 jours sont le délai de traitement d'une demande de suppression.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Quel est le plafond de sanction prévu par le RGPD ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">2 % du chiffre d'affaires national</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">4 % du chiffre d'affaires mondial ou 20 M€</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Un million d'euros par infraction</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> C'est le montant le plus élevé des deux qui s'applique — d'où les 325 M€ infligés à Google sur les cookies.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l10')">← Précédent</button>
+        <button class="btn amber" onclick="validate('l11',2)">Valider et voir la méthode →</button>
+      </div>
+    </section>
+
+    <!-- ============ MÉTHODE ============ -->
+    <section class="view" data-view="methode">
+      <span class="tag">Méthode</span>
+      <h1 class="lesson-title">La grille de lecture pour tous les cas</h1>
+      <p class="subtitle">Six questions à poser dans l'ordre, face à n'importe quel cas marketing.</p>
+
+      <div class="intro-card amber">
+        <h2>📝 Format d'examen : écrit, 2 heures</h2>
+        <p>Le cours donne explicitement cette grille comme « votre grille de lecture pour tous les cas ». Autrement dit : l'attendu n'est pas de réciter les outils, mais de les mobiliser dans cet ordre sur une situation donnée.</p>
+      </div>
+
+      <div class="meth">
+        <div class="meth-item"><div class="mn">1</div><div class="mc">
+          <h4>Quel marché ?</h4>
+          <p>Cadrer la demande, l'offre, l'environnement et la concurrence avant toute chose.</p>
+          <div class="tools">demande (NCA/NCR/actuels) · offre (principal, substitut, complémentaire, support, générique) · PESTEL · Porter</div>
+        </div></div>
+        <div class="meth-item"><div class="mn">2</div><div class="mc">
+          <h4>Quel diagnostic ?</h4>
+          <p>Synthétiser en croisant l'interne et l'externe — sans se contenter d'une liste.</p>
+          <div class="tools">SWOT · cycle de vie produit-marché</div>
+        </div></div>
+        <div class="meth-item"><div class="mn">3</div><div class="mc">
+          <h4>Pour qui ?</h4>
+          <p>Découper le marché, puis choisir explicitement le ou les segments retenus.</p>
+          <div class="tools">segmentation (variables intrinsèques / de réponse) · ciblage (concentration, spécialisation, couverture)</div>
+        </div></div>
+        <div class="meth-item"><div class="mn">4</div><div class="mc">
+          <h4>Quelle place ?</h4>
+          <p>Définir la proposition de valeur : crédible, attractive, différente.</p>
+          <div class="tools">positionnement · losange de Kapferer · axes de différenciation · marque</div>
+        </div></div>
+        <div class="meth-item"><div class="mn">5</div><div class="mc">
+          <h4>Comment ?</h4>
+          <p>Décliner le mix en montrant que chaque P découle du positionnement.</p>
+          <div class="tools">produit · prix (plancher/plafond, écrémage/pénétration) · distribution (intensité, canaux) · communication</div>
+        </div></div>
+        <div class="meth-item"><div class="mn">6</div><div class="mc">
+          <h4>Avec quels résultats et impacts ?</h4>
+          <p>Proposer des indicateurs, et ne pas oublier la dimension durable.</p>
+          <div class="tools">KPI vente / comportement / attitude · consommateurs · société · environnement</div>
+        </div></div>
+      </div>
+
+      <div class="rulebox">
+        <div class="rb-main">Le fil de la copie : <em>Données</em> → <em>Analyse</em> → <em>Diagnostic</em> → <em>Recommandation</em> → <em>Justification</em></div>
+        <div class="rb-sub">C'est la chaîne indiquée en conclusion du cours. Une recommandation non justifiée par le diagnostic ne vaut presque rien ; un diagnostic qui ne débouche sur aucune recommandation non plus.</div>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>La tentation en 2 heures est de dérouler tous les outils pour montrer qu'on les connaît. C'est contre-productif : un PESTEL complet sur un cas qui n'appelle que deux facteurs fait perdre du temps et dilue l'analyse. <strong>Sélectionnez les outils pertinents</strong> et justifiez leur choix — c'est un signe de maîtrise, pas de lacune.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>6 questions dans l'ordre : quel marché · quel diagnostic · pour qui · quelle place · comment · avec quels résultats et impacts. Et une chaîne de raisonnement : données → analyse → diagnostic → recommandation → justification.</p>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l9')">← Revoir le cours</button>
+        <button class="btn plum" onclick="go('annales')">S'entraîner sur des cas →</button>
+      </div>
+    </section>
+
+    <!-- ============ ÉTUDES DE CAS ============ -->
+    <section class="view" data-view="annales">
+      <span class="tag">Études de cas</span>
+      <h1 class="lesson-title">Trois cas bancaires corrigés</h1>
+      <p class="subtitle">Des situations construites à partir des outils du cours, appliquées au secteur bancaire.</p>
+
+      <div class="intro-card">
+        <h2>📋 Mode révision active</h2>
+        <p>Ces cas sont fictifs et construits pour faire travailler les outils du cours — toutes les données nécessaires sont dans l'énoncé. Traite-les au brouillon en suivant la grille des 6 questions, puis compare avec le corrigé.</p>
+      </div>
+
+      <!-- Cas 1 -->
+      <div class="annale">
+        <div class="an-tag">Cas 1 · Diagnostic</div>
+        <h3>Une banque régionale face aux néobanques</h3>
+        <div class="enonce">
+          La Banque du Ponant est une banque mutualiste régionale. Elle dispose d'un maillage dense d'agences et d'un taux de satisfaction élevé chez les plus de 50 ans, mais son application mobile est jugée vieillissante et son délai d'ouverture de compte atteint plusieurs jours. Les néobanques captent une part croissante des 18-30 ans. La réglementation impose une portabilité bancaire facilitée. Par ailleurs, une demande forte émerge pour une épargne à impact local.
+          <ul class="qlist">
+            <li>Construisez la matrice SWOT de la Banque du Ponant.</li>
+            <li>Identifiez deux facteurs PESTEL déterminants et justifiez leur catégorie.</li>
+            <li>Quelle recommandation stratégique en découle ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Forces (interne, positif) :</b> maillage dense d'agences, forte satisfaction des plus de 50 ans. <b>Faiblesses (interne, négatif) :</b> application mobile vieillissante, délai d'ouverture de compte de plusieurs jours.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Opportunités (externe, positif) :</b> la demande émergente pour une épargne à impact local — elle rejoint la logique mutualiste et territoriale de la banque. <b>Menaces (externe, négatif) :</b> la captation des 18-30 ans par les néobanques, et la portabilité facilitée qui abaisse le coût du changement de banque.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>PESTEL — facteur légal :</b> la portabilité bancaire facilitée relève du <b>L</b> (protection du consommateur). Elle fluidifie la concurrence et rend la fidélité plus fragile.</div></div>
+          <div class="step"><div class="sn">4</div><div class="sc"><b>PESTEL — facteur technologique :</b> le niveau attendu des applications mobiles relève du <b>T</b>. On pourrait aussi retenir le <b>socio-culturel</b> pour la demande d'épargne à impact, qui traduit une évolution des valeurs et aspirations.</div></div>
+          <div class="step"><div class="sn">5</div><div class="sc"><b>Recommandation :</b> combler la faiblesse digitale, qui est la condition d'accès aux 18-30 ans, tout en s'appuyant sur la force territoriale pour saisir l'opportunité de l'épargne à impact local. C'est la logique même du SWOT : <b>s'appuyer sur ses forces et combler ses faiblesses pour saisir les opportunités et faire face aux menaces</b>.</div></div>
+          <div class="ex-result">Attention au classement interne/externe : la portabilité bancaire est une menace, pas une faiblesse — la banque ne peut que s'y adapter.</div>
+        </div>
+      </div>
+
+      <!-- Cas 2 -->
+      <div class="annale">
+        <div class="an-tag">Cas 2 · Segmentation, ciblage, positionnement</div>
+        <h3>Lancer une offre bancaire pour jeunes actifs</h3>
+        <div class="enonce">
+          La Banque du Ponant souhaite lancer une offre dédiée aux jeunes actifs de 25 à 35 ans primo-accédants. Cette clientèle recherche de la réactivité, des frais lisibles, et un accompagnement sur le crédit immobilier. Elle est équipée chez des néobanques pour le compte courant, mais revient vers une banque traditionnelle pour le crédit.
+          <ul class="qlist">
+            <li>Quelles variables de segmentation sont ici mobilisées ?</li>
+            <li>Quelle stratégie de ciblage cela traduit-il ?</li>
+            <li>Formulez le positionnement à l'aide du losange de Kapferer.</li>
+            <li>Où situez-vous cette offre dans la matrice d'Ansoff ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Variables :</b> une variable <b>sociodémographique</b> (25-35 ans), donc une caractéristique intrinsèque ; et une variable de <b>réponse</b> — les avantages recherchés (réactivité, lisibilité des frais, accompagnement crédit) et la situation d'achat (primo-accession).</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Ciblage :</b> il s'agit d'une <b>spécialisation par marché</b> — un segment unique (les jeunes actifs primo-accédants) auquel on propose des produits de nature diverse (compte, crédit, assurance emprunteur, épargne). Ce n'est pas de la concentration, qui supposerait un seul couple produit/marché.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Kapferer — Qui ?</b> Jeunes actifs 25-35 ans, primo-accédants. <b>Pourquoi ?</b> Être accompagné sur le projet immobilier, avec des frais lisibles et de la réactivité. <b>Quand ?</b> Au moment du projet d'acquisition, moment de bascule de la relation bancaire. <b>Contre qui ?</b> Les néobanques sur le compte courant, les autres banques traditionnelles et les courtiers en crédit sur le financement.</div></div>
+          <div class="step"><div class="sn">4</div><div class="sc"><b>Ansoff :</b> l'offre s'adresse à un segment que la banque ne détient pas encore, avec une offre repackagée. Si l'on considère le segment comme un nouveau marché et les produits comme existants, c'est un <b>développement par les marchés</b>. Si l'offre est réellement nouvelle, on tend vers la <b>diversification</b> — l'essentiel en examen est de <b>justifier</b> son choix, pas de trouver la case unique.</div></div>
+          <div class="ex-result">Le réflexe à montrer : le positionnement doit être crédible (la banque sait faire du crédit), attractif (le besoin est réel) et différent (la réactivité face aux traditionnelles).</div>
+        </div>
+      </div>
+
+      <!-- Cas 3 -->
+      <div class="annale">
+        <div class="an-tag">Cas 3 · Mix et durabilité</div>
+        <h3>Une offre d'épargne à impact</h3>
+        <div class="enonce">
+          La Banque du Ponant lance un livret dont les encours financent exclusivement des projets de transition écologique sur son territoire. Le taux servi est légèrement inférieur à celui du marché. La banque hésite sur la façon de communiquer, redoutant l'accusation de greenwashing.
+          <ul class="qlist">
+            <li>Déclinez les 4P de cette offre en montrant leur cohérence.</li>
+            <li>Quels leviers du marketing de transition sont mobilisés ?</li>
+            <li>Quels KPI proposez-vous pour en mesurer le succès ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Produit :</b> un livret dont la valeur ajoutée n'est pas le rendement mais l'usage des fonds — la marque et le nom doivent porter l'ancrage territorial. <b>Prix :</b> le taux inférieur au marché est assumé et justifié par la valeur durable et le service, exactement la logique du marketing responsable (« justification du coût par la valeur durable »).</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Distribution :</b> cohérente avec le réseau d'agences et le digital — le conseiller est légitime pour expliquer la contrepartie du taux. <b>Communication :</b> transparente et documentée, jamais sur la promesse seule. La cohérence des 4P vient de ce que chacun découle du positionnement « épargne utile au territoire ».</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Leviers mobilisés :</b> le <b>levier 2</b> (communiquer de manière responsable, en évitant le greenwashing) et le <b>levier 3</b> (concevoir et promouvoir des modèles d'affaires plus durables). Le <b>levier 4</b> est atteignable si la banque éduque ses clients à l'impact de leur épargne.</div></div>
+          <div class="step"><div class="sn">4</div><div class="sc"><b>Anti-greenwashing :</b> publier la liste et le montant des projets financés. C'est ce qui distingue l'engagement réel de la promesse — le cours rappelle que le marketing responsable renforce la confiance et la réputation, là où le traditionnel subit une crédibilité fluctuante.</div></div>
+          <div class="step"><div class="sn">5</div><div class="sc"><b>KPI :</b> de <b>vente</b> (encours collectés, nombre d'ouvertures, part de marché locale sur l'épargne) · de <b>comportement</b> (taux de transformation, versements réguliers, panier moyen) · d'<b>attitude</b> (notoriété de l'offre, image de la banque sur l'engagement territorial, intention de recommandation) · et d'<b>impact</b> (nombre et nature des projets financés) — c'est la sixième question de la grille.</div></div>
+          <div class="ex-result">Le point qui fait la différence : montrer que le taux plus faible n'est pas une faiblesse commerciale mais une <b>cohérence de positionnement</b>, à condition d'être justifié et prouvé.</div>
+        </div>
+      </div>
+
+
+      <!-- Cas 4 -->
+      <div class="annale">
+        <div class="an-tag">Cas 4 · Parcours client, données et sponsoring</div>
+        <h3>Visa : être partout sans vendre au client final</h3>
+        <div class="enonce">
+          Visa est une entreprise américaine de technologie des paiements, fondée en 1958 par Dee Hock, dont le siège est à San Francisco. Elle ne prête pas et n'émet pas de cartes : elle fait circuler les paiements entre consommateurs, commerçants, banques, entreprises et États, via son réseau <strong>VisaNet</strong>, qui autorise, compense et règle les transactions.
+          <p style="margin-top:10px">Sa communication repose presque entièrement sur le sponsoring sportif : partenaire mondial officiel de la <strong>FIFA depuis 2007</strong>, membre fondateur du programme <strong>TOP du CIO depuis 1986</strong>, partenaire de Red Bull Racing en Formule 1, présent sur les grands salons fintech (Money20/20, Singapore Fintech Festival). La Coupe du Monde 2026 est présentée comme un moteur de croissance : un client d'Amérique latine ayant mené une campagne Visa a vu ses <strong>cartes actives progresser de 10 %</strong>.</p>
+          <ul class="qlist">
+            <li>Qui est le client de Visa ? Qu'est-ce que cela change pour sa communication ?</li>
+            <li>Quels objectifs de communication le sponsoring sert-il, dans l'ordre « faire connaître / faire aimer / faire agir » ?</li>
+            <li>À quelles étapes du parcours client Visa intervient-elle réellement ?</li>
+            <li>Pourquoi la statistique des « +10 % de cartes actives » est-elle un bon indicateur pour Visa, et un mauvais pour la banque émettrice ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Un marketing B2B2C.</b> Les clients directs de Visa sont les banques et les commerçants, pas le porteur de carte. Mais la valeur du réseau dépend de la <b>préférence du porteur</b> au moment de payer : Visa doit donc être connue du grand public sans jamais lui vendre quoi que ce soit. D'où une communication de <b>notoriété et d'image</b>, non de conversion.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Faire connaître</b> : la présence sur la FIFA et les JO garantit une exposition mondiale et répétée. <b>Faire aimer</b> : l'association à des événements positifs transfère leurs valeurs à la marque — fiabilité, universalité, fête. <b>Faire agir</b> : marginalement, par l'exclusivité d'acceptation sur les sites de billetterie, qui force l'usage.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Découverte</b> (logo omniprésent pendant l'événement) et <b>fidélité</b> (l'habitude de payer avec cette carte). Les étapes <b>considération</b> et <b>acquisition</b> appartiennent à la banque émettrice, qui choisit le réseau et souscrit le client. Visa agit donc aux deux extrémités du parcours, et délègue le milieu.</div></div>
+          <div class="step"><div class="sn">4</div><div class="sc"><b>Pour Visa</b>, la « carte active » est l'unité de revenu : chaque carte utilisée génère des commissions d'interchange et de réseau. <b>Pour la banque</b>, c'est un indicateur de <b>comportement</b>, pas de vente : une carte active ne dit rien de la rentabilité du client, du PNB dégagé ni de son équipement. Le même chiffre ne se lit pas de la même façon des deux côtés du contrat.</div></div>
+          <div class="ex-result">Ce que le jury attend : identifier le modèle B2B2C, relier le sponsoring aux objectifs d'attitude plutôt que de vente, et montrer que les indicateurs se jugent au regard de la position dans la chaîne de valeur.</div>
+        </div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('methode')">← La méthode</button>
+        <button class="btn plum" onclick="go('test')">Passer au test final 🎯</button>
+      </div>
+    </section>
+
+    <!-- ============ TEST FINAL ============ -->
+    <section class="view" data-view="test">
+      <span class="tag">Évaluation</span>
+      <h1 class="lesson-title">Test final adaptatif</h1>
+      <p class="subtitle">Toutes les notions du cours, au format QCM, pour préparer l'écrit de 2 heures.</p>
+
+      <div class="intro-card">
+        <h2>🎯 Modalités d'évaluation</h2>
+        <p>Examen écrit de <strong>2 heures</strong>. Le cours fournit explicitement une grille de lecture pour les cas : l'épreuve mobilisera donc probablement une situation à analyser, plutôt qu'une simple restitution. Les QCM ci-dessous vérifient les briques ; la section « Méthode » vérifie l'assemblage.</p>
+      </div>
+
+      <div id="testQuestions"></div>
+
+      <div class="lesson-nav" id="testSubmitRow">
+        <button class="btn" onclick="go('l1')">← Revoir le cours</button>
+        <button class="btn plum" onclick="gradeTest()">Valider mes réponses ✓</button>
+      </div>
+
+      <div class="result" id="testResult">
+        <div class="score-lab">Ton score</div>
+        <div class="score-big" id="scoreBig">0</div>
+        <div class="msg" id="scoreMsg"></div>
+        <div class="chapbars" id="chapBars"></div>
+        <div style="margin-top:28px"><button class="btn plum" onclick="resetTest()">↻ Reprendre le test</button></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<button class="float-retry" id="floatRetry" onclick="resetTest()">↻ Reprendre le test</button>
+<button class="print-fab" onclick="imprimerFiche()" title="Imprimer cette leçon en fiche">🖨️ Fiche</button>
+<div class="xp-pop" id="xpPop"></div>
+
+<script src="lb.js"></script>
+<script src="progress.js"></script>
+<script>
+const SUBJECT_KEY = 'Marketing Numérique';
+
+const LESSONS = [
+  {id:'l1', t:'Données, CRM & DMP', ch:1},
+  {id:'l2', t:'À quoi sert le marketing', ch:2},
+  {id:'l3', t:'Le marché : demande & offre', ch:2},
+  {id:'l4', t:'PESTEL, Porter, SWOT', ch:2},
+  {id:'l5', t:'Segmenter & cibler', ch:2},
+  {id:'l6', t:'Positionner & grandir', ch:2},
+  {id:'l7', t:'Mix : produit & prix', ch:2},
+  {id:'l8', t:'Mix : distribution & com', ch:2},
+  {id:'l9', t:'Mesurer & durabilité', ch:2},
+  {id:'l10', t:'Le parcours client', ch:3},
+  {id:'l11', t:'RGPD & données', ch:3}
+];
+const SAVE = (window.P ? P.etat() : {done:{},xp:0,last:null});
+const state = { xp: SAVE.xp||0, done: Object.assign({}, SAVE.done), view:'l1' };
+
+function buildNav(){
+  [1,2,3].forEach(ch=>{
+    const nav = document.getElementById('navList'+ch);
+    nav.innerHTML = '';
+    LESSONS.forEach((l,i)=>{
+      if(l.ch!==ch) return;
+      const d = document.createElement('div');
+      d.className = 'nav-item' + (state.done[l.id]?' done':'');
+      d.dataset.view = l.id;
+      d.onclick = ()=>go(l.id);
+      d.innerHTML = '<span class="num">'+(state.done[l.id]?'✓':(i+1))+'</span><span class="lab">'+l.t+'</span>';
+      nav.appendChild(d);
+    });
+  });
+  highlightNav();
+}
+function highlightNav(){
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.dataset.view===state.view));
+}
+function go(view){
+  state.view = view;
+  if(window.P && /^l\d+$/.test(view)) P.derniereLecon(view);
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active', v.dataset.view===view));
+  highlightNav();
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(window.innerWidth<=880) closeSidebar();
+}
+function imprimerFiche(){ window.print(); }
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+function addXp(n){
+  state.xp += n;
+  if(window.P) P.ajouterXp(n);
+  document.getElementById('xpVal').textContent = state.xp;
+  popXp('+'+n+' XP');
+}
+function popXp(txt){
+  const p = document.getElementById('xpPop');
+  p.textContent = '★ '+txt;
+  p.classList.add('show');
+  clearTimeout(p._t);
+  p._t = setTimeout(()=>p.classList.remove('show'),1400);
+}
+function updateProgress(){
+  const pct = Math.round(Object.keys(state.done).length/LESSONS.length*100);
+  document.getElementById('progFill').style.width = pct+'%';
+  document.getElementById('progPct').textContent = pct+' %';
+}
+function pick(btn){
+  const quiz = btn.closest('.quiz');
+  if(quiz.classList.contains('answered')) return;
+  quiz.classList.add('answered');
+  const correct = btn.dataset.correct === 'true';
+  quiz.querySelectorAll('.opt').forEach(o=>{
+    o.disabled = true;
+    if(o.dataset.correct === 'true') o.classList.add('right');
+  });
+  if(!correct) btn.classList.add('wrong');
+  const fb = quiz.querySelector('.feedback');
+  if(fb) fb.hidden = false;
+  if(window.P){
+    const sec = quiz.closest('.view');
+    const lec = sec ? sec.dataset.view : '?';
+    const rang = sec ? [...sec.querySelectorAll('.quiz')].indexOf(quiz) : 0;
+    P.noterReponse('quiz:'+lec+':'+rang, correct, 'Leçon '+lec.replace('l',''));
+  }
+  if(correct) addXp(10);
+}
+function validate(id, quizCount){
+  const sec = document.querySelector('.view[data-view="'+id+'"]');
+  const answered = sec.querySelectorAll('.quiz.answered').length;
+  if(answered < quizCount){
+    popXp("Réponds aux "+quizCount+" quiz d'abord");
+    sec.querySelectorAll('.quiz:not(.answered)').forEach(q=>{ q.style.boxShadow='0 0 0 2px var(--plum)'; setTimeout(()=>q.style.boxShadow='',1200); });
+    return;
+  }
+  if(!state.done[id]){ state.done[id]=true; if(window.P) P.marquerLecon(id); addXp(50); buildNav(); updateProgress(); }
+  const idx = LESSONS.findIndex(l=>l.id===id);
+  const next = LESSONS[idx+1];
+  if(next) go(next.id); else go('methode');
+}
+
+const TEST = [
+  {ch:'Données & DMP', lesson:'l1', type:'qcm',
+   q:"Que signifie DMP ?",
+   opts:["Digital Marketing Process","Data Management Platform","Data Mining Protocol","Direct Marketing Platform"], correct:1,
+   ex:"Data Management Platform : elle industrialise le passage des données brutes à la valeur métier."},
+  {ch:'Données & DMP', lesson:'l1', type:'qcm',
+   q:"Dans la chaîne de traitement d'une DMP, qu'est-ce qui suit immédiatement les données brutes ?",
+   opts:["Le machine learning","Le filtre / nettoyage","La valeur métier","La feature selection"], correct:1,
+   ex:"Données brutes → filtre/nettoyage → feature selection → statistiques/ML → valeur métier."},
+  {ch:'Fondamentaux', lesson:'l2', type:'qcm',
+   q:"Selon l'AMA, le marketing sert d'abord à…",
+   opts:["Faire vendre","Faire connaître une marque","Comprendre les consommateurs","Comprendre un marché pour faire des choix et créer de la valeur"], correct:3,
+   ex:"Les trois autres réponses sont des conséquences ou des moyens ; la finalité est la création de valeur."},
+  {ch:'Fondamentaux', lesson:'l2', type:'qcm',
+   q:"Quel est l'ordre de la démarche marketing ?",
+   opts:["Choisir → Analyser → Agir → Mesurer","Analyser → Choisir → Agir → Mesurer","Agir → Mesurer → Analyser → Choisir","Analyser → Agir → Choisir → Mesurer"], correct:1,
+   ex:"Analyse marketing → définition de la stratégie → mise en œuvre → suivi et contrôle, qui reboucle sur l'analyse."},
+  {ch:'Le marché', lesson:'l3', type:'qcm',
+   q:"Les clients des concurrents constituent, pour l'entreprise…",
+   opts:["Des non-consommateurs absolus","Des non-consommateurs relatifs","Des prospects","Un marché substitut"], correct:2,
+   ex:"Ils consomment déjà la catégorie, mais pas chez l'entreprise : ce sont des prospects, inclus dans son marché potentiel."},
+  {ch:'Le marché', lesson:'l3', type:'qcm',
+   q:"Le marché support répond à la question…",
+   opts:["Quel besoin ?","Qu'est-ce qui permet ou facilite son utilisation ?","Qu'est-ce qui accompagne son utilisation ?","Qu'est-ce qui peut le remplacer ?"], correct:1,
+   ex:"Le complémentaire accompagne l'utilisation, le support la permet ou la facilite, le générique renvoie au besoin."},
+  {ch:'Diagnostic', lesson:'l4', type:'qcm',
+   q:"Que recouvre le E de PESTEL, en plus de l'économique ?",
+   opts:["Éthique","Écologique","Éducatif","Européen"], correct:1,
+   ex:"Politique, Économique, Socio-culturel, Technologique, Écologique, Légal."},
+  {ch:'Diagnostic', lesson:'l4', type:'qcm',
+   q:"Quelle est la sixième force du modèle de Porter ?",
+   opts:["Les actionnaires","Les salariés","L'État","Les médias"], correct:2,
+   ex:"L'État encadre et influence les cinq forces — un poids déterminant dans le secteur bancaire."},
+  {ch:'Diagnostic', lesson:'l4', type:'qcm',
+   q:"Dans un SWOT, une nouvelle réglementation défavorable est…",
+   opts:["Une faiblesse","Une menace","Une force","Une opportunité"], correct:1,
+   ex:"Elle est externe et négative : l'entreprise ne peut que s'y adapter, donc c'est une menace, pas une faiblesse."},
+  {ch:'Diagnostic', lesson:'l4', type:'qcm',
+   q:"À quelle phase du cycle de vie correspond la saturation de la demande et les achats de remplacement ?",
+   opts:["Croissance","Sélection","Maturité","Déclin"], correct:2,
+   ex:"En maturité : bataille pour les parts de marché, difficultés de croissance, accent sur l'efficacité et les coûts."},
+  {ch:'Segmenter & cibler', lesson:'l5', type:'qcm',
+   q:"La segmentation marketing, selon Kotler, subdivise…",
+   opts:["Une organisation en DAS","Un marché en sous-ensembles homogènes de clients","Une gamme en lignes de produits","Un budget en postes"], correct:1,
+   ex:"C'est la segmentation stratégique qui partitionne l'organisation en DAS."},
+  {ch:'Segmenter & cibler', lesson:'l5', type:'qcm',
+   q:"Coca-Cola, un produit unique pour tous les segments, illustre…",
+   opts:["Le marketing différencié","Le marketing indifférencié","La concentration","La spécialisation par produit"], correct:1,
+   ex:"Marketing indifférencié : un produit et un plan marketing uniques pour attirer le plus grand nombre."},
+  {ch:'Segmenter & cibler', lesson:'l5', type:'qcm',
+   q:"Le statut de fidélité est une variable de segmentation…",
+   opts:["Intrinsèque au consommateur","Exprimant sa réponse à la catégorie de produits","Géographique","Sociodémographique"], correct:1,
+   ex:"Avec les situations d'achat, les avantages recherchés et le statut d'utilisateur, il relève des variables de réponse."},
+  {ch:'Positionner', lesson:'l6', type:'qcm',
+   q:"Un positionnement doit être…",
+   opts:["Crédible, attractif et différent","Large, flou et adaptable","Rentable, rapide et mesurable","Technique, chiffré et daté"], correct:0,
+   ex:"Une position crédible, attractive et différente sur son marché et dans l'esprit des clients."},
+  {ch:'Positionner', lesson:'l6', type:'qcm',
+   q:"Helios, « la banque durable en ligne pour les clients responsables », se différencie par…",
+   opts:["Les attributs du produit","Les publics auxquels l'offre est destinée","Les services associés","L'imaginaire de la marque"], correct:1,
+   ex:"C'est l'exemple bancaire du cours pour l'axe « publics auxquels l'offre est destinée »."},
+  {ch:'Positionner', lesson:'l6', type:'qcm',
+   q:"Vendre un produit existant sur un marché nouveau correspond, chez Ansoff, à…",
+   opts:["La pénétration du marché","Le développement par les produits","Le développement par les marchés","La diversification"], correct:2,
+   ex:"Le terme qui suit « développement par » désigne ce qui est nouveau : ici, les marchés."},
+  {ch:'Le mix', lesson:'l7', type:'qcm',
+   q:"Une politique d'écrémage consiste à…",
+   opts:["Vendre à faible marge pour le volume","Vendre au prix fort à une cible réduite","S'aligner sur la concurrence","Pratiquer des tarifs différenciés"], correct:1,
+   ex:"Écrémage : optique de profit, position de leader sur un marché nouveau. Risque : signaler à la concurrence de forts profits."},
+  {ch:'Le mix', lesson:'l7', type:'qcm',
+   q:"Quels sont les trois facteurs influençant le prix ?",
+   opts:["Coûts, concurrence, clients","Coûts, canaux, communication","Clients, canaux, concurrence","Coûts, clients, communication"], correct:0,
+   ex:"Les trois C : coûts (plancher), clients (plafond), concurrence (positionnement dans le couloir)."},
+  {ch:'Le mix', lesson:'l8', type:'qcm',
+   q:"Tesla et Rolex illustrent une distribution…",
+   opts:["Intensive","Sélective","Exclusive","Par franchise"], correct:2,
+   ex:"Distribution exclusive : un seul distributeur autorisé, pour maîtriser image et expérience client."},
+  {ch:'Le mix', lesson:'l8', type:'qcm',
+   q:"Un canal court se caractérise par…",
+   opts:["Producteur → grossiste → détaillant → consommateur","Producteur → détaillant avec centrale d'achat → consommateur","Producteur → consommateur","Producteur → franchisé → consommateur"], correct:1,
+   ex:"Le canal long passe par un grossiste ; le canal direct ou ultra-court va du producteur au consommateur."},
+  {ch:'Mesurer & durabilité', lesson:'l9', type:'qcm',
+   q:"Le panier moyen est un objectif…",
+   opts:["De vente","De comportement","D'attitude","D'image"], correct:1,
+   ex:"Comportement : pénétration, fréquence, panier moyen. Vente : volume, CA, part de marché. Attitude : notoriété, image, préférence, intention."},
+  {ch:'Mesurer & durabilité', lesson:'l9', type:'qcm',
+   q:"« Don't buy this jacket » de Patagonia illustre quel levier du marketing de transition ?",
+   opts:["Communiquer de manière responsable","Concevoir des produits durables","Réduire la surproduction et la surconsommation","Réduire les impacts des actions marketing"], correct:2,
+   ex:"Le levier 5, aux côtés du « N'achetez pas de fraises (en hiver) » de Biocoop."},
+  {ch:'Mesurer & durabilité', lesson:'l9', type:'qcm',
+   q:"Le modèle du « donut » a été proposé par…",
+   opts:["Philip Kotler","Kate Raworth","Michael Porter","Igor Ansoff"], correct:1,
+   ex:"Kate Raworth : un plafond environnemental et un plancher social délimitant l'espace sûr et juste pour l'humanité."},
+  {ch:'Méthode', lesson:'methode', type:'qcm',
+   q:"Dans la grille de lecture des cas, quelle est la première question ?",
+   opts:["Pour qui ?","Quel diagnostic ?","Quel marché ?","Comment ?"], correct:2,
+   ex:"1. Quel marché ? 2. Quel diagnostic ? 3. Pour qui ? 4. Quelle place ? 5. Comment ? 6. Avec quels résultats et impacts ?"},
+  {ch:'Méthode', lesson:'methode', type:'qcm',
+   q:"Quelle est la chaîne de raisonnement attendue dans une copie ?",
+   opts:["Données → Analyse → Diagnostic → Recommandation → Justification","Recommandation → Données → Analyse → Conclusion","Analyse → Recommandation → Données → Diagnostic","Diagnostic → Données → Justification → Analyse"], correct:0,
+   ex:"C'est la chaîne indiquée en conclusion du cours : une recommandation doit toujours être justifiée par le diagnostic."}
+  ,
+  {ch:'Parcours client', lesson:'l10', type:'qcm',
+   q:"Combien d'étapes compte le parcours client présenté dans le cours ?",
+   opts:["Trois","Quatre","Cinq","Sept"], correct:2,
+   ex:"Découverte, intérêt/considération, acquisition/achat, service, fidélité/loyauté."},
+  {ch:'Parcours client', lesson:'l10', type:'qcm',
+   q:"Un chatbot et un simulateur en ligne sont des points de contact de quelle étape ?",
+   opts:["Découverte","Intérêt / considération","Service","Fidélité"], correct:1,
+   ex:"Le client connaît l'offre et cherche des informations précises pour comparer."},
+  {ch:'Parcours client', lesson:'l10', type:'qcm',
+   q:"Qu'est-ce qu'un point de contact ?",
+   opts:["Un canal de distribution","Tout endroit, physique ou numérique, où le client rencontre la marque","Un indicateur de satisfaction","Une étape du mix marketing"], correct:1,
+   ex:"Y compris les points subis : avis en ligne, bouche-à-oreille, commentaires sous une publication."},
+  {ch:'Parcours client', lesson:'l10', type:'qcm',
+   q:"Le programme de fidélité et les courriels personnalisés interviennent à l'étape…",
+   opts:["Découverte","Acquisition","Service","Fidélité / loyauté"], correct:3,
+   ex:"C'est l'étape où le client devient ambassadeur de la marque."},
+  {ch:'RGPD & données', lesson:'l11', type:'qcm',
+   q:"Depuis quand le RGPD est-il en vigueur ?",
+   opts:["25 mai 2016","25 mai 2018","1er janvier 2020","25 mai 2021"], correct:1,
+   ex:"Règlement adopté en 2016, entré en application le 25 mai 2018."},
+  {ch:'RGPD & données', lesson:'l11', type:'qcm',
+   q:"Sous quel délai la CNIL doit-elle être notifiée d'une violation de données ?",
+   opts:["24 heures","72 heures","30 jours","Deux mois"], correct:1,
+   ex:"72 heures. À ne pas confondre avec les 30 jours de traitement d'une demande de suppression."},
+  {ch:'RGPD & données', lesson:'l11', type:'qcm',
+   q:"Quelle sanction maximale le RGPD prévoit-il ?",
+   opts:["20 M€ uniquement","4 % du CA mondial ou 20 M€, le plus élevé","2 % du CA national","10 % du résultat net"], correct:1,
+   ex:"C'est le montant le plus élevé qui s'applique : Google a été sanctionné de 325 M€ sur les cookies."},
+  {ch:'RGPD & données', lesson:'l11', type:'qcm',
+   q:"Laquelle de ces mentions n'a rien à faire dans une fiche CRM ?",
+   opts:["La date du dernier rendez-vous","Le motif d'une réclamation","L'appartenance religieuse du client","Le canal de contact préféré"], correct:2,
+   ex:"Les données sensibles — religion, santé, origine ethnique, opinions politiques — sont proscrites, comme les jugements subjectifs."},
+  {ch:'RGPD & données', lesson:'l11', type:'qcm',
+   q:"Le principe de minimisation impose de…",
+   opts:["Réduire le nombre de destinataires des données","Ne collecter que les données nécessaires à la finalité annoncée","Limiter la durée de conservation à un an","Anonymiser systématiquement les données"], correct:1,
+   ex:"Rien de plus que ce que la finalité exige : dans le cas des Pressoirs des Alpilles, seules les données nécessaires à la livraison sont demandées."},
+  {ch:'RGPD & données', lesson:'l11', type:'qcm',
+   q:"Que vérifie l'étape 2 d'une analyse d'impact (PIA) ?",
+   opts:["Les mesures de sécurité","Les principes fondamentaux : proportionnalité, nécessité et droits des personnes","La validation par le DPO","La cartographie des risques"], correct:1,
+   ex:"Étape 1 contexte · étape 2 principes fondamentaux · étape 3 risques de sécurité · étape 4 validation."},
+  {ch:'Le mix', lesson:'l8', type:'qcm',
+   q:"Quelle enseigne était la plus fréquentée en France en 2020 ?",
+   opts:["Carrefour (50 %)","E.Leclerc (53 %)","Lidl (44 %)","Intermarché (41 %)"], correct:1,
+   ex:"E.Leclerc 53 %, devant Carrefour 50 % et Lidl 44 %. La fréquentation ne se confond pas avec la part de marché."}
+];
+
+function renderTest(){
+  const c = document.getElementById('testQuestions');
+  c.innerHTML = '';
+  TEST.forEach((q,i)=>{
+    const div = document.createElement('div');
+    div.className = 'test-q'; div.id = 'tq'+i;
+    const body = '<div class="topt">' + q.opts.map((o,j)=>
+      '<button onclick="selOpt('+i+','+j+')" id="tq'+i+'o'+j+'">'+o+'</button>').join('') + '</div>';
+    div.innerHTML =
+      '<div class="tq-head"><span class="tq-num">Question '+(i+1)+'/'+TEST.length+'</span><span class="tq-chap">'+q.ch+'</span></div>'+
+      '<div class="tq-q">'+q.q+'</div>'+ body +
+      '<div class="remed" id="tq'+i+'rem"><div class="rt">⚠️ À revoir</div><div class="ra" id="tq'+i+'ra"></div>'+
+      '<div class="remed-btns"><button class="btn" onclick="go(\''+q.lesson+'\')">📖 Revoir la leçon</button>'+
+      '<button class="btn primary" onclick="dismissRemed('+i+')">Continuer →</button></div></div>';
+    c.appendChild(div);
+  });
+  document.getElementById('testResult').classList.remove('show');
+  document.getElementById('testSubmitRow').style.display = 'flex';
+  document.getElementById('floatRetry').classList.remove('show');
+  TEST._answers = {};
+}
+function selOpt(qi, oi){
+  if(document.getElementById('tq'+qi).classList.contains('graded')) return;
+  TEST._answers = TEST._answers || {};
+  TEST._answers[qi] = oi;
+  TEST[qi].opts.forEach((_,j)=>document.getElementById('tq'+qi+'o'+j).classList.toggle('sel', j===oi));
+}
+function gradeTest(){
+  TEST._answers = TEST._answers || {};
+  let score = 0; const chap = {};
+  TEST.forEach((q,i)=>{
+    const box = document.getElementById('tq'+i);
+    box.classList.add('graded');
+    const ok = TEST._answers[i] === q.correct;
+    q.opts.forEach((_,j)=>{ const b=document.getElementById('tq'+i+'o'+j); b.disabled=true;
+      if(j===q.correct) b.classList.add('sel'); });
+    if(window.P) P.noterReponse('test:'+i, ok, q.ch);
+    chap[q.ch] = chap[q.ch] || {ok:0,tot:0};
+    chap[q.ch].tot++;
+    if(ok){ score++; chap[q.ch].ok++; box.classList.add('ok'); }
+    else { box.classList.add('ko');
+      document.getElementById('tq'+i+'ra').innerHTML = q.ex;
+      document.getElementById('tq'+i+'rem').classList.add('show'); }
+  });
+  showResult(score, chap);
+}
+function dismissRemed(i){ document.getElementById('tq'+i+'rem').classList.remove('show'); }
+function showResult(score, chap){
+  document.getElementById('testSubmitRow').style.display = 'none';
+  document.getElementById('scoreBig').textContent = score+'/'+TEST.length;
+  let msg, col; const pct = score/TEST.length*100;
+  if(pct>=90){ msg="Excellent — le cours est acquis."; col=getCss('--teal'); }
+  else if(pct>=70){ msg="Très bon niveau. Revois les chapitres en orange ci-dessous."; col=getCss('--teal'); }
+  else if(pct>=50){ msg="Bon début. Concentre tes révisions sur les chapitres faibles."; col=getCss('--amber'); }
+  else { msg="Il reste du travail. Reprends les leçons signalées, puis réessaie."; col=getCss('--rust'); }
+  document.getElementById('scoreBig').style.color = col;
+  document.getElementById('scoreMsg').textContent = msg;
+  const bars = document.getElementById('chapBars');
+  bars.innerHTML = '';
+  Object.keys(chap).forEach(name=>{
+    const c = chap[name];
+    const p = Math.round(c.ok/c.tot*100);
+    const bc = p>=67?getCss('--teal'):p>=34?getCss('--amber'):getCss('--rust');
+    bars.innerHTML += '<div class="chapbar"><div class="cbl"><span>'+name+'</span><span>'+c.ok+'/'+c.tot+'</span></div>'+
+      '<div class="cbt"><div class="cbf" style="width:0;background:'+bc+'" data-w="'+p+'"></div></div></div>';
+  });
+  document.getElementById('testResult').classList.add('show');
+  document.getElementById('floatRetry').classList.add('show');
+  setTimeout(()=>document.querySelectorAll('.cbf').forEach(b=>b.style.width=b.dataset.w+'%'),120);
+  addXp(score*20);
+  if(window.P) P.meilleurScore('Test final', score, TEST.length);
+  document.getElementById('testResult').scrollIntoView({behavior:'smooth'});
+  if(window.LB){ try{ LB.record({subject:SUBJECT_KEY, mode:'Test final', correct:score, total:TEST.length, xp:state.xp}); }catch(e){} }
+}
+function resetTest(){ renderTest(); go('test'); }
+function getCss(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+function toggleCorrige(btn){
+  const cor = btn.nextElementSibling;
+  const open = cor.classList.toggle('show');
+  btn.textContent = open ? 'Masquer le corrigé' : 'Voir le corrigé';
+}
+
+buildNav();
+updateProgress();
+renderTest();
+go((window.P && SAVE.last && document.querySelector('.view[data-view="'+SAVE.last+'"]')) ? SAVE.last : 'l1');
+try{ document.getElementById('lb-id-slot').appendChild(LB.idButton()); }catch(e){}
+</script>
+<script src="banque.js"></script>
+<script src="ui.js"></script>
+</body>
+</html>

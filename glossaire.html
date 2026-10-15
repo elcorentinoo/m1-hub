@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glossaire — M1 MBAF</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --card:#fff; --card2:#fbf9f5;
+  --paper:#faf6ef; --paper2:#f3ece0; --ink:#22201b; --ink2:#4a4640;
+  --muted:#8a8378; --line:#e3d9c8; --line2:#d4c7b0;
+  --teal:#1b6b5e; --teal-l:#e4f0ed; --teal-d:#0f4a40;
+  --amber:#c87a12; --amber-l:#fbf0db;
+  --rust:#a8432a; --rust-l:#f7e6df;
+  --plum:#6b3a73; --plum-l:#f0e7f2;
+  --navy:#241C15; --navy-l:#e3ebf4;
+  --gold:#b8860b;
+  --shadow:0 1px 3px rgba(34,32,27,.08), 0 8px 24px rgba(34,32,27,.06);
+  --shadow-lg:0 4px 12px rgba(34,32,27,.12), 0 20px 48px rgba(34,32,27,.1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);line-height:1.6;
+  background-image:radial-gradient(var(--line) .5px, transparent .5px);background-size:22px 22px;
+}
+::-webkit-scrollbar{width:9px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--line2);border-radius:5px}
+
+#topbar{position:sticky;top:0;z-index:50;background:color-mix(in srgb, var(--paper) 94%, transparent);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 24px;
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+#topbar .logo{font-family:'Fraunces',serif;font-weight:900;font-size:18px;color:var(--navy);white-space:nowrap}
+#topbar .logo span{color:var(--amber)}
+.spacer{flex:1}
+
+main{max-width:880px;margin:0 auto;padding:36px 24px 100px}
+.hero-tag{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:1px;text-transform:uppercase;
+  color:var(--amber);font-weight:500;display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.hero-tag::before{content:'';width:24px;height:2px;background:var(--amber)}
+h1{font-family:'Fraunces',serif;font-weight:900;font-size:2.3rem;line-height:1.08;letter-spacing:-1px;margin-bottom:10px}
+h1 .acc{color:var(--amber)}
+.sub{font-size:16.5px;color:var(--ink2);margin-bottom:26px;max-width:62ch}
+
+.toolbar{position:sticky;top:57px;z-index:40;background:color-mix(in srgb, var(--paper) 94%, transparent);
+  backdrop-filter:blur(8px);padding:14px 0 12px;margin-bottom:6px;border-bottom:1px solid var(--line)}
+.toolbar input[type=search]{width:100%;padding:13px 16px;border:1.5px solid var(--line2);border-radius:12px;
+  font-size:15.5px;font-family:'DM Sans';background:var(--card);color:var(--ink)}
+.toolbar input[type=search]:focus{outline:none;border-color:var(--teal)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}
+.chip{padding:7px 14px;border-radius:22px;border:1.5px solid var(--line2);background:var(--card);
+  color:var(--ink2);font-weight:600;font-size:12.5px;cursor:pointer;font-family:'DM Sans';white-space:nowrap}
+.chip:hover{border-color:var(--navy)}
+.chip.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.count{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin:14px 0 10px}
+
+.letter{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:900;color:var(--amber);
+  margin:26px 0 10px;padding-bottom:5px;border-bottom:2px solid var(--line)}
+
+.entry{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:17px 20px;
+  margin-bottom:11px;box-shadow:var(--shadow);transition:.16s}
+.entry:hover{border-color:var(--line2);box-shadow:var(--shadow-lg)}
+.e-head{display:flex;align-items:baseline;gap:11px;flex-wrap:wrap;margin-bottom:5px}
+.e-sigle{font-family:'DM Mono',monospace;font-weight:500;font-size:1.06rem;color:var(--navy);
+  background:var(--navy-l);border:1px solid color-mix(in srgb, var(--navy) 25%, transparent);
+  padding:2px 10px;border-radius:7px}
+.e-dev{font-family:'Fraunces',serif;font-size:1.04rem;color:var(--ink);font-weight:600}
+.e-def{font-size:14.8px;color:var(--ink2);line-height:1.6}
+.e-def b{color:var(--ink);font-weight:600}
+.e-foot{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:11px}
+.e-mat{font-size:11px;font-family:'DM Mono',monospace;padding:3px 10px;border-radius:20px}
+.m-mp{background:var(--teal-l);color:var(--teal-d)}
+.m-pd{background:var(--plum-l);color:var(--plum)}
+.m-mk{background:var(--amber-l);color:var(--amber)}
+.m-fp{background:var(--rust-l);color:var(--rust)}
+.e-lien{font-size:12.5px;color:var(--navy);text-decoration:none;font-weight:600;
+  border:1px solid var(--line);border-radius:8px;padding:4px 11px;transition:.15s}
+.e-lien:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
+.e-conf{margin-top:10px;background:var(--rust-l);border-left:3px solid var(--rust);border-radius:8px;
+  padding:9px 13px;font-size:13.2px;color:var(--rust)}
+.e-conf b{color:var(--rust)}
+:root[data-theme="dark"] .e-conf{color:var(--rust-deep)}
+:root[data-theme="dark"] .e-conf b{color:var(--rust-deep)}
+
+.empty{text-align:center;padding:50px 20px;color:var(--muted);font-size:15px}
+.empty .big{font-size:40px;margin-bottom:12px}
+mark{background:var(--amber-l);color:inherit;padding:0 2px;border-radius:3px;font-weight:600}
+:root[data-theme="dark"] mark{background:#4a3410;color:var(--amber-deep)}
+
+@media(max-width:700px){
+  main{padding:26px 16px 90px}
+  h1{font-size:1.75rem}
+  .toolbar{top:53px}
+}
+</style>
+<link rel="stylesheet" href="ui.css">
+<link rel="stylesheet" href="theme.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#F7F8FA">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="M1 MBAF">
+</head>
+<body>
+
+<div id="topbar">
+  <div class="logo">Glos<span>saire</span></div>
+  <div class="spacer"></div>
+  <span id="nav-slot"></span>
+</div>
+
+<main>
+  <div class="hero-tag">Tous les sigles du Master</div>
+  <h1>Le décodeur <span class="acc">du M1</span></h1>
+  <p class="sub">Chaque sigle rencontré dans les trois matières, avec son développé, une définition courte et un lien direct vers la leçon qui l'explique. Les sigles qui se ressemblent sont signalés entre eux.</p>
+
+  <div class="toolbar">
+    <input type="search" id="q" placeholder="Chercher un sigle, un mot, une définition…" autocomplete="off">
+    <div class="chips" id="chips"></div>
+  </div>
+
+  <div class="count" id="count"></div>
+  <div id="list"></div>
+</main>
+
+<script>
+/* ════════════════════════════════════════════════════════════
+   LE GLOSSAIRE
+   m  : matière — mp (Marché des Particuliers) · pd (Produits Dérivés) · mk (Marketing)
+   f  : fichier · l : ancre de la leçon
+   c  : à ne pas confondre avec…
+   ════════════════════════════════════════════════════════════ */
+const F = {
+  mp:{f:'marche_des_particuliers.html', lab:'Marché des Particuliers', cls:'m-mp'},
+  pd:{f:'produits_derives.html',        lab:'Produits Dérivés',        cls:'m-pd'},
+  mk:{f:'marketing_numerique.html',     lab:'Marketing Numérique',     cls:'m-mk'},
+  fp:{f:'fiscalite_particulier.html',   lab:'Fiscalité du Particulier', cls:'m-fp'}
+};
+
+const G = [
+/* ---------- MARCHÉ DES PARTICULIERS ---------- */
+{s:'DAV', d:'Dépôt à vue', m:'mp', l:'l3', t:"Le compte courant : individuel, joint ou indivis. Sert aux besoins bancaires du quotidien."},
+{s:'LDDS', d:'Livret de Développement Durable et Solidaire', m:'mp', l:'l4', t:"Livret réglementé, plafond <b>12 000 €</b>, 1,7 % net. Finance les entreprises (PME)."},
+{s:'LEP', d:"Livret d'Épargne Populaire", m:'mp', l:'l4', t:"Plafond <b>10 000 €</b>, 2,5 % net, sous conditions de ressources. Fonds gérés par les banques elles-mêmes."},
+{s:'PEL', d:"Plan d'Épargne Logement", m:'mp', l:'l5', t:"Versement initial 225 €, capital maxi <b>61 200 €</b>, prêt maxi 92 000 € au taux de rémunération + 1,20 %. Prime d'État supprimée après le 01/01/2018."},
+{s:'CEL', d:'Compte Épargne Logement', m:'mp', l:'l4', t:"Prêt maximum de 23 000 €. Les CEL ouverts avant 2018 sont nets d'impôt mais soumis aux prélèvements sociaux."},
+{s:'LJ', d:'Livret Jeune', m:'mp', l:'l4', t:"Livret réglementé réservé aux jeunes."},
+{s:'LEE', d:'Livret Épargne Entreprise', m:'mp', l:'l4', t:"Livret réglementé lié à l'épargne d'entreprise."},
+{s:'PEP', d:"Plan d'Épargne Populaire", m:'mp', l:'l5', t:"Plafond de versement 92 000 €, durée conseillée 8 ans, transférable. <b>Commercialisation arrêtée en 2003</b> mais encore détenu."},
+{s:'PEA', d:"Plan d'Épargne en Actions", m:'mp', l:'l5', t:"Deux enveloppes (espèces + titres), un seul par contribuable dès 18 ans, plafond <b>150 000 €</b>, détention minimum 5 ans. Actions, ETF, OPC — pas d'obligations.", c:"le <b>PEA-PME</b>, enveloppe distincte de 75 000 € mais cumulable (225 000 € au total)."},
+{s:'CTO', d:'Compte-Titres Ordinaire', m:'mp', l:'l5', t:"Sans plafond ni régime de faveur : fiscalité de droit commun sur obligations, dividendes et cessions."},
+{s:'DAT', d:'Dépôt à terme', m:'mp', l:'l4', t:"Durée de 5 à 7 ans selon les banques, retrait possible à tout moment mais sans rémunération sous 1 mois. PFU appliqué : <b>31,4 %</b>."},
+{s:'PFU', d:'Prélèvement Forfaitaire Unique', m:'mp', l:'l4', t:"La part d'imposition de la flat-tax : <b>12,8 %</b>, à laquelle s'ajoutent 17,2 % de prélèvements sociaux."},
+{s:'PS', d:'Prélèvements sociaux', m:'mp', l:'l4', t:"<b>17,2 %</b> sur les revenus mobiliers. Attention : <b>18,6 %</b> sur les rentes du PER."},
+{s:'Flat-Tax', d:'Prélèvement forfaitaire global', m:'mp', l:'l4', t:"<b>30 %</b> au total = 12,8 % (PFU) + 17,2 % (PS). Option possible pour le barème progressif de l'IR."},
+{s:'Case 2OP', d:"Option pour le barème de l'impôt sur le revenu", m:'mp', l:'l4', t:"Case à cocher pour déclarer les intérêts à l'IR plutôt qu'au PFU, utile si le foyer n'est pas imposable.", c:"la <b>dispense d'acompte</b> : la case 2OP agit sur la déclaration, la dispense agit en amont sur le prélèvement."},
+{s:"Dispense d'acompte", d:"Demande de non-prélèvement du PFU", m:'mp', l:'l4', t:"À demander <b>avant le 30 novembre</b> si le client ne sera pas imposable l'année suivante : il ne paie alors que les 17,2 % de PS, sans avance de trésorerie."},
+{s:'Quinzaine', d:"Période de calcul des intérêts d'un livret", m:'mp', l:'l4', t:"Deux par mois (1-15 et 16-30/31). Formule : <b>capital × taux annuel × 1/24</b>. Fonds à déposer à J-1 de la quinzaine."},
+{s:'ESTER', d:'Euro Short-Term Rate', m:'mp', l:'l3', t:"Taux interbancaire à <b>1 jour</b>.", c:"l'<b>Euribor</b>, qui couvre les échéances de 1 mois à 1 an."},
+{s:'Euribor', d:'Euro Interbank Offered Rate', m:'mp', l:'l3', t:"Taux interbancaire de <b>1 mois à 1 an</b>.", c:"l'<b>ESTER</b>, qui est le taux à 1 jour."},
+{s:'OAT', d:'Obligation Assimilable du Trésor', m:'mp', l:'l3', t:"Finance la dette de l'État français, autour de 4 %."},
+{s:'FGAP', d:'Fonds de Garantie des Assurances de Personnes', m:'mp', l:'l6', t:"Garantit les contrats d'assurance vie à hauteur de <b>70 000 €</b> par assuré et par compagnie.", c:"le <b>FGAS</b>, qui concerne l'accession sociale côté crédit, et le <b>FGDR</b> (100 000 €) pour les dépôts bancaires."},
+{s:'UC', d:'Unités de compte', m:'mp', l:'l6', t:"Supports d'assurance vie non garantis : actions, obligations, OPC, SCPI, ETF. Prélèvements sociaux <b>à la sortie ou au rachat</b>.", c:"le <b>fonds en euros</b>, où les PS sont prélevés chaque 31/12."},
+{s:'Fonds en euros', d:'Support garanti d\'assurance vie', m:'mp', l:'l6', t:"Indexé sur les emprunts d'État, niveau 1/7 sur l'échelle du risque. PS prélevés <b>au 31/12</b> de chaque année."},
+{s:'PER', d:"Plan d'Épargne Retraite", m:'mp', l:'l7', t:"Versements déductibles jusqu'à <b>10 % du revenu imposable</b>, 6 cas de déblocage. Sortie en capital (IR sans abattement + PFU 31,4 % sur les plus-values) ou en rente (IR après abattement + 18,6 % de PS)."},
+{s:'OPC', d:'Organisme de Placement Collectif', m:'mp', l:'l8', t:"Un portefeuille — ou panier — de valeurs mobilières. Classification AMF : fonds à formule, alternatifs, actions, obligations, monétaires."},
+{s:'SICAV', d:'Société d\'Investissement à Capital Variable', m:'mp', l:'l8', t:"Forme juridique d'OPC : une <b>société anonyme</b>, l'investisseur est actionnaire.", c:"le <b>FCP</b>, qui est une copropriété sans personnalité morale."},
+{s:'FCP', d:'Fonds Commun de Placement', m:'mp', l:'l8', t:"Forme juridique d'OPC : une <b>copropriété de valeurs mobilières sans personnalité morale</b>.", c:"la <b>SICAV</b>, qui est une société anonyme."},
+{s:'AMF', d:'Autorité des Marchés Financiers', m:'mp', l:'l8', t:"Régulateur qui établit notamment la classification des OPC."},
+{s:'SCPI', d:'Société Civile de Placement Immobilier', m:'mp', l:'l5', t:"Pierre-papier : quote-part d'une valeur immobilière. PS à 17,2 %, durée conseillée 8 ans."},
+{s:'OPCI', d:'Organisme de Placement Collectif Immobilier', m:'mp', l:'l5', t:"Investit <b>60 % en immobilier</b> et 40 % en actions foncières cotées. S'investit via un CTO ou une assurance vie."},
+{s:'TAEG', d:'Taux Annuel Effectif Global', m:'mp', l:'l9', t:"Taux nominal + frais de dossier + frais de garantie + assurance. <b>Instrument légal de comparaison</b> entre banques, obligatoire dans toute publicité ou offre.", c:"le <b>taux nominal</b>, qui n'intègre aucun frais, et le <b>taux d'usure</b>, qui est le TAEG maximum autorisé."},
+{s:"Taux d'usure", d:'TAEG maximum légal', m:'mp', l:'l9', t:"Le taux au-delà duquel il est interdit de prêter. Calculé <b>chaque trimestre par la Banque de France</b>."},
+{s:'VTS', d:'Vérification Triennale de Solvabilité', m:'mp', l:'l9', t:"Vérifier que l'emprunteur est toujours solvable, préalable au renouvellement. Obligatoire pour les contrats de <b>3 ans et plus</b>."},
+{s:'LCC', d:'Loi sur le Crédit à la Consommation (loi Lagarde)', m:'mp', l:'l9', t:"Crédit conso entre <b>200 € et 75 000 €</b>, rétractation de <b>14 jours</b>, fonds disponibles à partir du <b>8ᵉ jour</b>."},
+{s:'Loi Neiertz', d:'Loi contre le surendettement', m:'mp', l:'l9', t:"Trois orientations : développer la prévention, organiser une procédure de règlement du surendettement, responsabiliser prêteurs et emprunteurs."},
+{s:'Loi Hamon', d:'Loi sur la reconduction tacite', m:'mp', l:'l9', t:"Les contrats inactifs depuis 12 mois sont suspendus 12 mois (soit 24 au total) puis résiliés automatiquement — vise le crédit renouvelable."},
+{s:'PPD', d:'Privilège de Prêteur de Deniers', m:'mp', l:'l10', t:"Hypothèque légale spéciale du prêteur de deniers : une <b>garantie réelle</b>."},
+{s:'ADE', d:'Assurance Décès-Emprunteur', m:'mp', l:'l10', t:"Assurance adossée au crédit, avec l'assurance chômage."},
+{s:'FGAS', d:"Fonds de Garantie de l'Accession Sociale", m:'mp', l:'l10', t:"Dispositif de garantie des prêts à l'accession sociale.", c:"le <b>FGAP</b>, qui garantit les contrats d'assurance vie à 70 000 €."},
+{s:'CAMCA', d:'Caisse d\'Assurances Mutuelles du Crédit Agricole', m:'mp', l:'l10', t:"Organisme de cautionnement mutuel, comme Crédit Logement."},
+{s:'Nantissement', d:'Garantie réelle sans dépossession', m:'mp', l:'l10', t:"Le débiteur cède un bien en garantie <b>sans en être dépossédé</b> — il en conserve la jouissance.", c:"la <b>caution</b>, garantie personnelle où un tiers s'engage à payer."},
+{s:'RC', d:'Responsabilité Civile', m:'mp', l:'l11', t:"Article <b>1240 du Code civil</b>. Trois conditions cumulatives : faute → lien de causalité → dommage. Peut être contractuelle ou extracontractuelle.", c:"la <b>responsabilité pénale</b>, qui suppose une infraction."},
+{s:'DUC', d:'Direction, Usage, Contrôle', m:'mp', l:'l11', t:"Moyen mnémotechnique des trois éléments permettant de faire jouer la responsabilité civile."},
+{s:'GAV', d:'Garantie des Accidents de la Vie', m:'mp', l:'l11', t:"Assurance de personnes, avec la dépendance, le capital décès et les obsèques."},
+{s:'Loi Badinter', d:"Loi sur l'indemnisation des accidents de la circulation", m:'mp', l:'l11', t:"La faute de la victime n'est que rarement admise : pour le dommage corporel, piétons, cyclistes et passagers sont quasiment toujours indemnisés."},
+{s:'Force majeure', d:'Cause exonératoire de responsabilité', m:'mp', l:'l11', t:"Trois caractères <b>cumulatifs</b> : imprévisible, irrésistible, extérieur. Avec le fait d'un tiers et la faute de la victime, c'est l'un des 3 cas d'exonération."},
+
+/* ---------- PRODUITS DÉRIVÉS ---------- */
+{s:'BRI', d:'Banque des Règlements Internationaux', m:'pd', l:'l1', t:"Publie l'enquête triennale de référence sur le marché des changes : <b>5 100 Mds USD</b> par jour en 2023."},
+{s:'Spot', d:'Marché des changes au comptant', m:'pd', l:'l5', t:"Environ 37 % des opérations. Livraison au plus tard à <b>J+2 ouvrables</b>.", c:"le <b>Forward</b>, marché à terme, seul à permettre la couverture du risque de change."},
+{s:'Forward', d:'Marché des changes à terme', m:'pd', l:'l1', t:"Compartiment du marché traditionnel qui, contrairement au comptant, <b>permet la couverture</b> du risque de change."},
+{s:'OTC', d:'Over The Counter (de gré à gré)', m:'pd', l:'l3', t:"Les transactions ne sont pas officiellement standardisées et il n'existe aucune bourse centralisée. Le marché est totalement délocalisé."},
+{s:'SWIFT', d:'Society for Worldwide Interbank Financial Telecommunication', m:'pd', l:'l3', t:"Créé en <b>1977</b>. C'est un mode de <b>transmission des ordres</b>, pas un mode de paiement. Avantages sur le Télex : sécurité, rapidité, coût réduit."},
+{s:'Nostri', d:'Compte de la banque chez son correspondant', m:'pd', l:'l3', t:"« Le nôtre chez eux » : enregistre des écritures <b>en devises</b>.", c:"le compte <b>lori</b> — aucun passage n'est possible entre les deux."},
+{s:'Lori', d:'Compte du correspondant chez la banque', m:'pd', l:'l3', t:"« Le leur chez nous » : enregistre des écritures <b>en monnaie nationale</b>.", c:"le compte <b>nostri</b>, tenu en devises."},
+{s:'PC', d:'Position de change', m:'pd', l:'l4', t:"<b>Créances en devises − dettes en devises</b>, calculée par devise et par échéance. Longue (exportateur, risque de baisse), courte (importateur, risque de hausse) ou fermée (aucun risque)."},
+{s:'Hedging', d:'Couverture du risque de change', m:'pd', l:'l4', t:"Prendre une position inverse pour annuler un risque initial. Le risque <b>ne disparaît pas</b> : il est transféré à un autre agent."},
+{s:'Cambiste', d:'Spécialiste du marché des changes', m:'pd', l:'l2', t:"Opère en salle des marchés. Soit teneur de marché (market maker), soit cambiste clientèle (saler)."},
+{s:'Market maker', d:'Teneur de marché', m:'pd', l:'l2', t:"Assure en permanence la liquidité et la contrepartie ; ses cours servent de <b>référence</b>. Réservé aux très grandes banques.", c:"le <b>saler</b>, qui répond seulement à la demande des clients."},
+{s:'Saler', d:'Cambiste clientèle', m:'pd', l:'l2', t:"Chargé de répondre à la demande des clients de la banque."},
+{s:'Broker', d:'Courtier', m:'pd', l:'l2', t:"Simple intermédiaire qui ne prend <b>aucune position de change</b>. Environ 40 % des transactions, commission de l'ordre de 0,01 %. Intérêt : l'anonymat."},
+{s:'ISO 4217', d:'Norme de codification des devises', m:'pd', l:'l5', t:"Trois lettres : les <b>deux premières du pays</b> + la <b>première de la devise</b>. L'EUR fait exception."},
+{s:'Incertain', d:'Cotation à l\'incertain', m:'pd', l:'l6', t:"Prix d'une unité de <b>monnaie étrangère</b> en monnaie locale : 1 ME = x ML.", c:"la cotation <b>au certain</b>, son exacte symétrique (leur produit vaut 1)."},
+{s:'Certain', d:'Cotation au certain', m:'pd', l:'l6', t:"Prix d'une unité de <b>monnaie locale</b> en monnaie étrangère : 1 ML = x' ME. Pratiquée en Grande-Bretagne, zone euro, Canada (sauf contre USD), Australie, Nouvelle-Zélande."},
+{s:'Spread', d:'Écart acheteur-vendeur', m:'pd', l:'l6', t:"La marge de la banque. <b>(cours vendeur − cours acheteur) / cours acheteur × 100</b>. Généralement 10 à 50 points, jusqu'à 100."},
+{s:'Figure', d:'Partie stable d\'une cotation', m:'pd', l:'l6', t:"Partie entière + les <b>deux premières décimales</b>. Dans 0,9268, la figure est 0,92.", c:"le <b>point</b> (ou pip), qui est le 4ᵉ chiffre après la virgule."},
+{s:'Pip', d:'Point de cotation', m:'pd', l:'l6', t:"Le <b>quatrième chiffre</b> après la virgule. Dans 0,9268 − 0,9280, 68 et 80 sont les points."},
+{s:'Cross rate', d:'Cours croisé', m:'pd', l:'l7', t:"Cours reconstitué via une monnaie pivot : <b>(A/B) = (A/C) × (C/B)</b>. En double cotation, les acheteurs se multiplient entre eux et les vendeurs entre eux. Le USD est le pivot naturel."},
+{s:'Scalper', d:'Spéculateur à très court terme', m:'pd', l:'l4', t:"Intervient sur quelques <b>minutes</b>.", c:"le <b>day-to-day trader</b> (un jour) et le <b>long term trader</b> (échéance lointaine)."},
+{s:'Front office', d:'Service de négociation', m:'pd', l:'l3', t:"Les cambistes clientèle (salers) et les teneurs de marché. Le <b>middle office</b> assure les contrôles, le <b>back office</b> l'administratif et le comptable."},
+{s:'CALPERS', d:'California Public Employees\' Retirement System', m:'pd', l:'l2', t:"Fonds de pension des employés de l'État de Californie — exemple d'institution financière non bancaire."},
+
+/* ---------- MARKETING NUMÉRIQUE ---------- */
+{s:'DMP', d:'Data Management Platform', m:'mk', l:'l1', t:"Chaîne industrialisée : <b>données brutes → filtre/nettoyage → feature selection → statistiques/ML → valeur métier</b>."},
+{s:'CRM', d:'Customer Relationship Management', m:'mk', l:'l1', t:"Gestion de la relation client, alimentée par les données constatées et inférées."},
+{s:'AMA', d:'American Marketing Association', m:'mk', l:'l2', t:"Auteur de la définition de référence : comprendre les besoins d'un marché et y répondre en délivrant de la valeur."},
+{s:'PESTEL', d:'Politique, Économique, Socio-culturel, Technologique, Écologique, Légal', m:'mk', l:'l4', t:"Les six familles de facteurs du <b>macro-environnement</b>.", c:"les <b>5+1 forces de Porter</b>, qui analysent le micro-environnement concurrentiel."},
+{s:'Porter', d:'Les 5+1 forces de Porter', m:'mk', l:'l4', t:"Rivalité du secteur, pouvoir des fournisseurs, pouvoir des clients, entrants potentiels, substituts — plus l'<b>État</b> en sixième force."},
+{s:'SWOT', d:'Strengths, Weaknesses, Opportunities, Threats', m:'mk', l:'l4', t:"Forces et faiblesses sont <b>internes</b>, opportunités et menaces <b>externes</b>. À croiser, pas à lister. Test : si l'entreprise peut agir dessus, c'est interne."},
+{s:'DAS', d:"Domaine d'Activité Stratégique", m:'mk', l:'l5', t:"Résultat de la segmentation <b>stratégique</b>, qui partitionne une <b>organisation</b>.", c:"la segmentation <b>marketing</b>, qui subdivise un <b>marché</b> en groupes de clients (Kotler)."},
+{s:'STP', d:'Segmentation, Ciblage, Positionnement', m:'mk', l:'l5', t:"L'enchaînement du marketing stratégique : découper, choisir, puis occuper une place dans l'esprit du client."},
+{s:'Kapferer', d:'Le losange de Kapferer', m:'mk', l:'l6', t:"Quatre questions du positionnement : <b>Qui ?</b> (cible) <b>Pourquoi ?</b> (bénéfices) <b>Quand ?</b> (moments d'usage) <b>Contre qui ?</b> (concurrents directs, substituts compris)."},
+{s:'Ansoff', d:"La matrice d'Ansoff", m:'mk', l:'l6', t:"Croise produit et marché : pénétration, développement par les produits, développement par les marchés, <b>diversification</b> (la plus risquée). Le mot après « développement par » désigne ce qui est nouveau."},
+{s:'4P', d:'Produit, Prix, Distribution (Place), Communication (Promotion)', m:'mk', l:'l7', t:"Le marketing mix. Chaque P doit <b>découler du positionnement</b> et se renforcer avec les autres."},
+{s:'Écrémage', d:'Politique de prix élevé', m:'mk', l:'l7', t:"Vendre au prix fort à une cible réduite, optique de <b>profit</b>. Position de leader sur un marché nouveau.", c:"la <b>pénétration</b> : faible marge, optique de volume, challengeur sur marché mature."},
+{s:'Pénétration', d:'Politique de prix bas', m:'mk', l:'l7', t:"Vendre à faible marge, optique de <b>volume</b>. Position de challengeur sur un marché mature."},
+{s:'KPI', d:'Key Performance Indicator', m:'mk', l:'l9', t:"Trois familles : <b>vente</b> (volume, CA, part de marché), <b>comportement</b> (pénétration, fréquence, panier moyen), <b>attitude</b> (notoriété, image, préférence, intention)."},
+{s:'RSE', d:'Responsabilité Sociétale des Entreprises', m:'mk', l:'l9', t:"Le marketing responsable l'intègre de façon <b>proactive et à long terme</b>, là où le traditionnel reste réactif et court-termiste."},
+{s:'ODD', d:'Objectifs de Développement Durable', m:'mk', l:'l9', t:"Les <b>17 objectifs</b> de l'ONU, l'un des trois cadres de référence de la durabilité avec les limites planétaires et le donut."},
+{s:'Greenwashing', d:'Écoblanchiment', m:'mk', l:'l9', t:"Promesse environnementale non tenue ou non prouvée. L'antidote : la preuve documentée plutôt que la promesse seule."},
+{s:'Choice editing', d:'Édition des choix', m:'mk', l:'l9', t:"<b>Sélectionner ou modifier les choix disponibles</b> plutôt qu'informer : ne référencer que des produits certifiés, réorganiser un buffet.", c:"l'<b>éducation du consommateur</b> (Yuka, Eco-score), qui informe sans modifier l'offre."},
+{s:'ADEME', d:"Agence de la Transition Écologique", m:'mk', l:'l9', t:"Source du comparatif marketing traditionnel / marketing responsable et des 5 étapes du marketing responsable."},
+{s:'Donut', d:'Le donut de Kate Raworth', m:'mk', l:'l9', t:"Un <b>plafond environnemental</b> et un <b>plancher social</b> délimitant l'espace sûr et juste pour l'humanité."},
+{s:'Limites planétaires', d:'Les 9 limites planétaires', m:'mk', l:'l9', t:"Cadre de Johan Rockström et Will Steffen, l'un des trois repères de la durabilité cités dans le cours."},
+{s:'Storytelling', d:'Mise en récit', m:'mk', l:'l8', t:"Protagoniste, musique de début, intrigue, adversité, personnages secondaires, chute, musique de fin — et beaucoup d'émotion et de non verbal."},
+{s:'Marché générique', d:'Le besoin sous-jacent', m:'mk', l:'l3', t:"Répond à « <b>quel besoin ?</b> ». Le principal répond à « quel produit ? », le substitut à « qu'est-ce qui peut le remplacer ? », le complémentaire à « qu'est-ce qui accompagne ? », le support à « qu'est-ce qui facilite ? »."},
+{s:'NCR', d:'Non-consommateur relatif', m:'mk', l:'l3', t:"Pourrait consommer si un <b>frein était levé</b> : c'est la réserve de croissance.", c:"le <b>non-consommateur absolu</b>, qui ne consommera jamais, et le <b>prospect</b>, qui consomme déjà chez un concurrent."},
+/* ---------- FISCALITÉ DU PARTICULIER ---------- */
+{s:'IR', d:'Impôt sur le revenu', m:'fp', l:'l1', t:"Impôt d'État, annuel, direct, déclaratif, personnel, global et synthétique, progressif par tranches. Il frappe le <b>revenu net global</b> du foyer fiscal (CGI, art. 1 A)."},
+{s:'RG', d:'Revenu Global', m:'fp', l:'l11', t:"Première étape : somme algébrique des revenus et déficits nets catégoriels. S'il est négatif, un <b>déficit global</b> est constaté, reportable six ans."},
+{s:'RBG', d:'Revenu Brut Global', m:'fp', l:'l11', t:"Deuxième étape : revenu global moins les déficits globaux des <b>six années antérieures</b>, imputés du plus ancien au plus récent, dans la limite du revenu global.", c:"le <b>RNG</b>, qui vient après et retranche les charges déductibles."},
+{s:'RNG', d:'Revenu Net Global', m:'fp', l:'l11', t:"Troisième étape : revenu brut global moins les <b>charges déductibles</b>. Elles ne peuvent ni créer ni augmenter un déficit global."},
+{s:'RNGI', d:'Revenu Net Global Imposable', m:'fp', l:'l11', t:"La base d'imposition. Quatrième et dernière étape : revenu net global moins les <b>abattements spéciaux</b>."},
+{s:'PAC', d:'Personne À Charge', m:'fp', l:'l6', t:"<b>De droit</b> : enfant mineur, enfant infirme à tout âge, mineur recueilli à charge effective et exclusive, personne invalide vivant sous le toit avec une carte à 80 %. <b>Par rattachement</b> : sur demande des majeurs."},
+{s:'Case T', d:'Parent isolé', m:'fp', l:'l9', t:"Demi-part supplémentaire pour le célibataire, divorcé ou séparé qui <b>vit seul</b> ET assume <b>seul</b> la charge effective de la première personne à charge. Jamais pour les veufs, jamais en résidence alternée."},
+{s:'PAS', d:'Prélèvement À la Source', m:'fp', l:'l2', t:"En vigueur depuis le <b>1er janvier 2019</b>. Il change le moment du paiement, pas le caractère déclaratif de l'impôt."},
+{s:'SIPNR', d:'Service des Impôts des Particuliers des Non Résidents', m:'fp', l:'l3', t:"Gère les dossiers des personnes fiscalement domiciliées à l'étranger qui perçoivent des revenus de source française, quelle que soit leur nationalité."},
+{s:'2042', d:"Déclaration d'ensemble des revenus", m:'fp', l:'l2', t:"Quatre pages : état civil et adresse · situation familiale et personnes à charge · traitements, RCM et revenus fonciers · charges déductibles, réductions et crédits d'impôt."},
+{s:'2047', d:"Déclaration des revenus encaissés à l'étranger", m:'fp', l:'l3', t:"Annexée à la 2042 par les contribuables domiciliés en France qui perçoivent des revenus de source étrangère."},
+{s:'Art. 4 B', d:'Le domicile fiscal', m:'fp', l:'l4', t:"Quatre tests <b>alternatifs</b> examinés dans un ordre <b>successif</b> : le foyer, le séjour principal de plus de 183 jours, l'activité professionnelle non accessoire, le centre des intérêts économiques."},
+{s:'Art. 4 A', d:'La territorialité', m:'fp', l:'l3', t:"Domicile en France ⇒ imposition sur <b>l'ensemble</b> des revenus. Domicile hors de France ⇒ imposition sur les <b>seuls revenus de source française</b>."},
+{s:'Micro-foncier', d:'Régime simplifié des revenus fonciers', m:'fp', l:'l11', t:"Applicable jusqu'à <b>15 000 €</b> de recettes : abattement forfaitaire de <b>30 %</b>, soit recettes × 0,70. Au-delà, le régime réel est obligatoire."},
+{s:'CMI', d:'Carte Mobilité Inclusion', m:'fp', l:'l6', t:"Mention « invalidité » : elle rend à charge une personne vivant sous le toit, et ouvre une <b>demi-part supplémentaire</b>.", c:"le simple <b>état d'infirmité</b>, qui rend l'enfant à charge à tout âge mais n'ouvre aucune demi-part."},
+{s:'Rattachement', d:'Option des enfants majeurs', m:'fp', l:'l7', t:"Demande <b>annuelle</b> et en principe <b>irrévocable</b>. Moins de 21 ans, ou moins de 25 ans si études, apprécié au <b>1er janvier</b>. Cases J ou N de la 2042."},
+{s:'DOM', d:"Départements d'outre-mer", m:'fp', l:'l3', t:"Guadeloupe, Martinique, Réunion, Guyane et Mayotte : ils font partie de la France au sens de l'IR.", c:"les <b>collectivités</b> d'outre-mer (Polynésie, Nouvelle-Calédonie…), qui n'en font pas partie."},
+{s:'CGA', d:'Centre de Gestion Agréé', m:'fp', l:'l11', t:"La majoration de 25 % du bénéfice des non-adhérents a été progressivement réduite puis <b>supprimée à compter de l'imposition des revenus 2023</b>."}
+];
+
+/* ---------- rendu ---------- */
+let FILTRE = 'Toutes';
+const norm = s => String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+const esc  = s => String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function surligne(html, q){
+  if(!q) return html;
+  // on ne surligne que hors balises
+  return html.replace(/>([^<]+)</g, (m,txt)=>{
+    const i = norm(txt).indexOf(q);
+    if(i<0) return m;
+    return '>'+txt.slice(0,i)+'<mark>'+txt.slice(i,i+q.length)+'</mark>'+txt.slice(i+q.length)+'<';
+  });
+}
+
+function renderChips(){
+  const mats = ['Toutes', ...Object.keys(F).map(k=>F[k].lab)];
+  document.getElementById('chips').innerHTML = mats.map(m=>
+    `<button class="chip${FILTRE===m?' on':''}" onclick="setFiltre('${m.replace(/'/g,"\\'")}')">${m}</button>`).join('');
+}
+function setFiltre(m){ FILTRE=m; renderChips(); render(); }
+
+function render(){
+  const q = norm(document.getElementById('q').value.trim());
+  let list = G.slice();
+  if(FILTRE!=='Toutes') list = list.filter(e=>F[e.m].lab===FILTRE);
+  if(q) list = list.filter(e=>norm(e.s+' '+e.d+' '+e.t+' '+(e.c||'')).includes(q));
+  list.sort((a,b)=>a.s.localeCompare(b.s,'fr',{sensitivity:'base'}));
+
+  document.getElementById('count').textContent =
+    list.length+' entrée'+(list.length>1?'s':'')+(FILTRE!=='Toutes'||q ? ' sur '+G.length : '');
+
+  const host = document.getElementById('list');
+  if(!list.length){
+    host.innerHTML = '<div class="empty"><div class="big">🔍</div>Aucun sigle ne correspond.<br>Essaie un autre mot.</div>';
+    return;
+  }
+  let html = '', lettre = null;
+  list.forEach(e=>{
+    const L = e.s[0].toUpperCase();
+    if(L !== lettre){ html += `<div class="letter">${L}</div>`; lettre = L; }
+    const mat = F[e.m];
+    html += `<div class="entry">
+      <div class="e-head">
+        <span class="e-sigle">${esc(e.s)}</span>
+        <span class="e-dev">${esc(e.d)}</span>
+      </div>
+      <div class="e-def">${e.t}</div>
+      ${e.c?`<div class="e-conf">⚠️ À ne pas confondre avec ${e.c}</div>`:''}
+      <div class="e-foot">
+        <span class="e-mat ${mat.cls}">${mat.lab}</span>
+        <a class="e-lien" href="${mat.f}#${e.l}">Voir la leçon →</a>
+      </div>
+    </div>`;
+  });
+  host.innerHTML = surligne(html, q);
+}
+
+document.getElementById('q').addEventListener('input', render);
+renderChips();
+render();
+</script>
+<script src="banque.js"></script>
+<script src="ui.js"></script>
+</body>
+</html>

@@ -1,0 +1,518 @@
+────────────────────────────────────────────────────────────
+  HUB M1 MBAF — Conseiller Patrimoine Agence
+  Déploiement sur Netlify
+────────────────────────────────────────────────────────────
+
+CONTENU DE CE DOSSIER
+  • index.html ......................... le hub (portail pseudo + cartes matières)
+  • classement.html .................... le classement partagé
+  • theme.css .......................... charte visuelle 2.0 : typographie,
+                                         palette, composants, mode sombre
+  • img/ ............................... les 7 images du site (WebP, 220 Ko)
+  • lb.js .............................. identité (pseudo) + classement Supabase
+  • marche_des_particuliers.html ....... Le Marché des Particuliers (11 leçons)
+  • produits_derives.html .............. Produits Dérivés I — Forward (ch. 1-3,
+                                         15 leçons, générateur de calculs à
+                                         l'infini, applications du cours et TD 2)
+  • entrainement_changes.html .......... Mode entraînement Produits Dérivés, séparé
+                                         du cours : 13 notions de calcul générées
+                                         (comptant et terme), aides, correction
+                                         ciblée, séries, deux cas complets
+  • marketing_numerique.html ........... Marketing Numérique de la Banque (11 leçons :
+                                         données, démarche, parcours client, RGPD)
+  • es_banque.html ..................... ES Banque — Patrimoine & Assurance (14 leçons,
+                                         simulateur fiscal 990 I / 757 B)
+  • ressourcerie.html .................. Dépôt et partage de documents (analyse locale)
+  • glossaire.html ..................... 93 sigles des 3 matières, liés aux leçons
+  • ui.css / ui.js ..................... Socle commun : navigation, thème, recherche
+  • progress.js ........................ Progression, XP, historique, révision espacée
+  • banque.js .......................... 213 questions et fiches (fichier GÉNÉRÉ)
+  • revision.html ...................... Entraînement du jour + flashcards
+  • stats.html ......................... Tableau de bord de progression
+  • sw.js .............................. Fonctionnement hors ligne
+  • manifest.webmanifest / icons/ ...... Application installable
+
+POUR PUBLIER
+  1. Garde ce dossier tel quel (ne renomme aucun fichier).
+  2. Sur Netlify : glisse CE DOSSIER sur le tableau de bord, ou pousse-le via Git.
+  3. C'est tout — aucune fonction serveur, aucune build à configurer.
+
+⚠️  IMPORTANT : c'est un SITE SÉPARÉ du hub LP Banque.
+    Crée un nouveau site Netlify plutôt que d'écraser l'ancien.
+
+────────────────────────────────────────────────────────────
+  LE CLASSEMENT
+────────────────────────────────────────────────────────────
+lb.js réutilise ton projet Supabase existant (mêmes tables `scores`).
+Les résultats du M1 sont CLOISONNÉS de ceux de la LP grâce à la
+constante PROGRAM en haut de lb.js : chaque score est enregistré
+avec le préfixe "M1 · ", et le classement ne lit que ces lignes-là.
+
+  → Le classement M1 n'affiche que les résultats M1.
+  → Le classement LP (ancien site) continue d'afficher les siens.
+  → Aucune modification de base de données nécessaire.
+
+Si tu préfères un projet Supabase totalement dédié au Master,
+remplace simplement `url` et `key` en haut de lb.js.
+
+────────────────────────────────────────────────────────────
+  AJOUTER UNE NOUVELLE MATIÈRE
+────────────────────────────────────────────────────────────
+1. Dépose le nouveau fichier .html de la matière dans ce dossier.
+
+2. Ouvre index.html, trouve le tableau MATIERES et ajoute un bloc :
+
+     {
+       file:"nom_du_fichier.html",
+       icon:"📑", color:"c-plum", badge:"Format du partiel",
+       title:"Nom de la matière",
+       desc:"Une phrase ou deux sur le contenu du cours.",
+       tags:["Thème 1","Thème 2","Thème 3"],
+       meta:"X leçons · test · mini-cas"
+     },
+
+   Couleurs disponibles : c-teal · c-amber · c-navy · c-plum · c-rust · c-gold
+
+   Pour annoncer une matière pas encore prête, ajoute `soon:true`
+   et retire `file:` → la carte s'affiche grisée "à venir".
+
+3. Dans le fichier de la matière, vérifie que ces 3 lignes sont présentes
+   (elles branchent la matière sur le classement) :
+     • <a class="hublink" href="index.html">← Hub</a>   dans la topbar
+     • <script src="lb.js"></script>                    avant le script principal
+     • const SUBJECT_KEY = 'Nom de la matière';          en haut du script
+     • l'appel LB.record({...}) à la fin de showResult()
+
+────────────────────────────────────────────────────────────
+  METTRE À JOUR LE COMPTE À REBOURS
+────────────────────────────────────────────────────────────
+Dans index.html, tableau ECHEANCES. Une ligne par partiel :
+
+  {end:Date.UTC(2027,0,15,8,0,0), label:"janvier 2027",
+   matiere:"marche_des_particuliers.html",
+   icon:"🏦", color:"c-navy", titre:"Le Marché des Particuliers",
+   format:"QCM + Mini-cas · 1h",
+   tags:["QCM","Mini-cas","1 heure"]},
+
+  • Les mois sont en base 0 : janvier = 0, février = 1, décembre = 11.
+  • L'heure est en UTC. Paris en hiver = UTC+1 → 9h Paris = 8h00 UTC.
+    Paris en été = UTC+2 → 9h Paris = 7h00 UTC.
+  • La date du partiel de janvier est un PLACEHOLDER (15 janvier 2027) :
+    remplace-la dès que la vraie date est communiquée.
+  • Quand une échéance est passée, la une bascule automatiquement
+    sur la suivante de la liste.
+
+────────────────────────────────────────────────────────────
+  CE QUI DIFFÈRE DU HUB LP BANQUE
+────────────────────────────────────────────────────────────
+  • Pas d'onglet "Mes notes" (pas de grille de notation disponible).
+  • Un mode "entraînement" séparé existe pour Produits Dérivés
+    (entrainement_changes.html). Pour les autres matières, le test
+    final adaptatif reste intégré au parcours.
+  • Le classement s'alimente depuis le test final des matières,
+    pas depuis un fichier d'entraînement dédié.
+────────────────────────────────────────────────────────────
+
+────────────────────────────────────────────────────────────
+  LA RESSOURCERIE — À FAIRE AVANT LA PREMIÈRE UTILISATION
+────────────────────────────────────────────────────────────
+La page ressourcerie.html a besoin d'une table ET d'un espace de
+stockage dans ton projet Supabase. Ouvre le SQL Editor et lance
+ce script UNE FOIS :
+
+--------------------------------------------------------------
+-- 1. La table des fiches descriptives
+create table public.ressources (
+  id bigint generated always as identity primary key,
+  titre text not null,
+  resume text,
+  matiere text,
+  mots_cles text,
+  pseudo text not null,
+  fichier_nom text not null,
+  fichier_path text not null,
+  fichier_type text,
+  fichier_taille bigint,
+  created_at timestamptz default now()
+);
+
+alter table public.ressources enable row level security;
+
+create policy "ressources lecture" on public.ressources
+  for select to anon using (true);
+create policy "ressources ecriture" on public.ressources
+  for insert to anon with check (true);
+create policy "ressources suppression" on public.ressources
+  for delete to anon using (true);
+
+-- 2. L'espace de stockage des fichiers
+insert into storage.buckets (id, name, public)
+values ('ressources', 'ressources', true)
+on conflict (id) do nothing;
+
+create policy "fichiers lecture" on storage.objects
+  for select to anon using (bucket_id = 'ressources');
+create policy "fichiers depot" on storage.objects
+  for insert to anon with check (bucket_id = 'ressources');
+create policy "fichiers suppression" on storage.objects
+  for delete to anon using (bucket_id = 'ressources');
+--------------------------------------------------------------
+
+Message attendu : « Success. No rows returned ». C'est normal.
+
+COMMENT FONCTIONNE L'ANALYSE
+  Tout se passe dans le navigateur du déposant, sans serveur ni
+  clé API : aucun frais, et le fichier ne part nulle part avant
+  qu'il valide.
+    • PDF  → texte extrait avec PDF.js (12 premières pages)
+    • DOCX → texte extrait avec Mammoth
+    • TXT / MD / CSV → lus directement
+    • PPTX / XLSX / images → pas d'extraction : saisie manuelle
+  Le résumé est EXTRACTIF : il sélectionne les 3 phrases les plus
+  représentatives du document, il ne les reformule pas. Le titre,
+  le résumé et les mots-clés restent modifiables avant publication.
+
+  Pour passer à un vrai résumé rédigé par une IA, il faudrait une
+  fonction Netlify (dossier netlify/functions) gardant une clé API
+  côté serveur — l'API est facturée à l'usage.
+
+LIMITES À CONNAÎTRE
+  • Le dépôt est libre et sans authentification réelle : le pseudo
+    n'est pas vérifié. Chacun ne peut supprimer que ses propres
+    dépôts, mais rien n'empêche quelqu'un de reprendre un pseudo.
+  • Les fichiers sont PUBLICS : toute personne ayant le lien direct
+    peut les télécharger.
+  • Attention aux droits d'auteur : les supports de cours appartiennent
+    aux enseignants. Un partage entre étudiants d'une même promo est
+    une chose, une diffusion publique en est une autre.
+  • Plan gratuit Supabase : 1 Go de stockage.
+
+────────────────────────────────────────────────────────────
+  NAVIGATION ET THÈME (ui.css + ui.js)
+────────────────────────────────────────────────────────────
+Ces deux fichiers sont chargés par TOUTES les pages. Ne les
+renomme pas et ne les supprime pas.
+
+LA NAVIGATION
+  Chaque page contient <span id="nav-slot"></span> dans sa barre
+  du haut ; ui.js y place le bouton ☰ Menu et le bouton de thème.
+  Le menu s'ouvre en tiroir sur la droite et liste : le Hub, les
+  trois matières, la Ressourcerie, le Glossaire et le Classement.
+
+  → Pour ajouter une matière au menu, édite le tableau PAGES en
+    haut de ui.js (une ligne par entrée).
+
+LE THÈME
+  Depuis la 2.1.0, le site est entièrement sombre : il n'y a plus
+  de mode clair, plus de sélecteur dans le menu et plus de bascule
+  horaire. La palette complète tient dans theme.css (bloc « PALETTE »)
+  et s'applique à toutes les pages ; l'impression des fiches, elle,
+  reste en noir sur blanc.
+
+  Les schémas SVG des cours utilisent des variables de couleur :
+  ils s'adaptent automatiquement au thème. Si tu ajoutes un schéma,
+  utilise var(--teal), var(--navy-soft)… plutôt qu'un code
+  hexadécimal, sinon il restera figé en mode sombre.
+
+LE GLOSSAIRE
+  Les entrées sont dans le tableau G de glossaire.html :
+    {s:'SIGLE', d:'Développé', m:'mp', l:'l4', t:'Définition',
+     c:'à ne pas confondre avec…'}
+    • m : mp / pd / mk (la matière)
+    • l : l'identifiant de la leçon (l1 à l11)
+    • c : facultatif, affiche un avertissement rouge
+  Le lien « Voir la leçon » ouvre le cours directement à la bonne
+  leçon grâce à une ancre (#l4) gérée par ui.js.
+
+────────────────────────────────────────────────────────────
+  VERSIONS DU SITE
+────────────────────────────────────────────────────────────
+Le site fonctionne hors ligne : les navigateurs gardent donc
+l'ancienne version en cache. Le numéro de version sert à leur
+signaler qu'il faut se mettre à jour.
+
+  DEUX ENDROITS, TOUJOURS LA MÊME VALEUR :
+      sw.js  ligne 16   const VERSION = '1.0.0';
+      ui.js  ligne 13   const VERSION_APP = '1.0.0';
+
+CONVENTION
+      MAJEURE   refonte, fonctionnalité structurante
+                (1.0.0 → 2.0.0)
+      MINEURE   nouvelle matière, nouvelle page
+                (1.0.0 → 1.1.0)
+      CORRECTIF correction, ajustement, contenu retouché
+                (1.0.0 → 1.0.1)
+
+Chaque version MAJEURE porte un nom de code monétaire, clin
+d'œil au Master Monnaie Banque : Écu, Denier, Louis, Franc,
+Livre, Sesterce, Florin, Ducat…
+
+La version s'affiche en bas du menu de navigation.
+
+HISTORIQUE
+  4.1.0  NOUVELLE MATIÈRE : FISCALITÉ DU PARTICULIER.
+                   Module 1 du cours de Patrick Morisseaux (IAE Vannes,
+                   M1 CPA 2026-27) : principes et raisonnement en
+                   matière d'impôt sur le revenu.
+                   fiscalite_particulier.html — 11 leçons en 3 chapitres
+                   (les principes de l'IR · le foyer fiscal et le nombre
+                   de parts · la base d'imposition), 22 mini-quiz,
+                   42 questions de test final adaptatif, et les
+                   6 séries d'exercices du polycopié intégralement
+                   corrigées — EBREL, dénombrement des foyers, deux
+                   exercices de parts, GAONAC'H et les époux BRAVIC.
+                   ⚠️ Le polycopié ne fournit AUCUN corrigé : les
+                   corrections sont reconstituées puis vérifiées, et
+                   signalées comme telles dans la page. À confronter à
+                   celles du professeur. Les exercices de parts sont
+                   calibrés pour N = 2025, seule année où les conditions
+                   de rattachement du cas BONNAUD sont remplies.
+                   entrainement_fiscal.html — deuxième générateur de
+                   calculs du site, sur le modèle du change : 9 notions
+                   générées à l'infini (foyers fiscaux, personnes à
+                   charge, nombre de parts, domicile fiscal, dates
+                   d'appréciation, revenus fonciers, traitements,
+                   déficits antérieurs, enchaînement RG → RNGI) plus un
+                   cas complet en 8 questions. Trois modes : par notion,
+                   série chronométrée, cas complet.
+                   LE HUB SÉPARE DÉSORMAIS COURS ET ENTRAÎNEMENT :
+                   deux sections distinctes, « Mes cours » (5 matières)
+                   et « Entraînement » (2 générateurs). Le menu du site
+                   suit la même séparation.
+                   Le calendrier regroupe les partiels qui tombent le
+                   même jour sur un seul jalon du fil du semestre.
+                   Banque de révision : 220 → 284 questions.
+                   Glossaire : 93 → 111 termes.
+                   Partiel inscrit au 15 janvier 2027, provisoire.
+
+  4.0.0 « Sesterce » NOUVELLE DIRECTION ARTISTIQUE : « PRISME ».
+                   Le site repasse en clair, dans un registre
+                   d'instrument de précision : blanc pur sur canevas
+                   froid (#F7F8FA), filets d'un pixel, angles de 10 px,
+                   et un seul dégradé spectral (violet → bleu → cyan)
+                   réservé aux marqueurs — onglet actif, jauges de
+                   progression, fil du semestre, arête des panneaux.
+                   Typographie : Inter Tight en approche resserrée pour
+                   toute l'interface, IBM Plex Mono pour les chiffres,
+                   les étiquettes et les raccourcis. Les titres ne sont
+                   plus en capitales espacées.
+                   Accent violet #4F2DDB (7,7:1), vert #047857,
+                   ambre #9A4708, rouge #C81E1E : tous les textes du
+                   site sont à 4,5:1 au minimum, mesuré page par page.
+                   Les encadrés de règle deviennent un bloc sombre, à la
+                   manière d'un éditeur de code : c'est le seul aplat
+                   foncé du système.
+                   La page d'accueil est refaite en tableau de bord :
+                   quatre métriques, registre des matières en deux
+                   colonnes avec pied de chiffres, fil du semestre
+                   horizontal, panneau de reprise à arête spectrale.
+                   Les photographies de la version 3 ne sont plus
+                   utilisées : le dossier img/ reste dans le dépôt mais
+                   n'est plus mis en cache hors ligne.
+                   L'en-tête passe de 62 à 58 px et la recherche affiche
+                   son raccourci ⌘K.
+                   Une seule feuille porte tout : theme.css.
+
+  3.1.0  « Livre »   Marketing Numérique : le cours passe de 9 à 11 leçons.
+                   Leçon 10 — le parcours client en cinq étapes et ses
+                   points de contact physiques et numériques.
+                   Leçon 11 — RGPD, CNIL et données personnelles :
+                   principes, sanctions (Google 325 M€, Amazon France
+                   Logistique 32 M€), analyse d'impact PIA en quatre
+                   étapes, application au CRM et données à proscrire.
+                   Nouveau cas corrigé : Visa, le sponsoring comme
+                   stratégie (modèle B2B2C, FIFA, CIO, Coupe du Monde
+                   2026). Chiffres de fréquentation des enseignes
+                   ajoutés à la leçon 8. Onze questions de test
+                   supplémentaires : la banque passe à 220 questions.
+  3.0.0  « Franc »   NOUVELLE DIRECTION ARTISTIQUE, PARTOUT.
+                   Sombre lumineux et photographique, inspiré de la
+                   référence fournie : hero en image plein cadre avec
+                   titre translucide, bande de vignettes cliquables,
+                   titres de section en capitales espacées entre deux
+                   filets, cartes à filet fin, panneaux translucides.
+                   Accent vert-olive (#C9DC6E), plus d'orange.
+                   Typographie : Saira (titres), Manrope (texte),
+                   JetBrains Mono (chiffres et étiquettes).
+                   NAVIGATION UNIFIÉE : ui.js construit désormais la
+                   même barre du haut et le même pied de page sur
+                   TOUTES les pages, récupère les widgets de chaque
+                   page (progression, XP, pseudo) et masque l'ancienne
+                   barre. Une seule navigation pour tout le site.
+                   Hub reconstruit : bande de vignettes, calendrier en
+                   frise, bloc « ce qui est inclus », panneau
+                   « reprendre » en verre sur photo, barre basse mobile.
+                   Gabarits intérieurs repris : leçons, quiz, tests,
+                   tableaux, champs, filtres, barre latérale, tiroir et
+                   recherche passent tous au nouveau langage visuel.
+  2.1.0  « Louis »   Le site passe entièrement en sombre : le sélecteur de
+                   thème et la bascule automatique de 20 h sont retirés.
+                   Hub : la photo du hero disparaît au profit d'un grand
+                   titre sur dégradé ambré, avec le mot « conseil
+                   patrimoine » en filigrane. Chercher et Menu rejoignent
+                   la pilule centrale, séparés des liens par un trait.
+                   Pages intérieures : même barre du haut, mêmes surfaces
+                   sombres, mêmes polices et même accent orange que le hub.
+                   Toutes les étiquettes et tous les chiffres passent en
+                   JetBrains Mono, les boutons en Sora.
+                   L'impression des fiches reste en noir sur blanc.
+  2.0.0  « Denier »  REFONTE VISUELLE COMPLÈTE.
+                   Hub : fond sombre chaud, photo en plein cadre, menu
+                   central en pilule, cartes flottantes « prochain partiel »
+                   et « reprendre », bande de chiffres, cartes matières
+                   avec vignettes, bandeau photo et barre basse sur mobile.
+                   Nouvelle charte partout (theme.css) : titres en Archivo,
+                   texte en Sora, chiffres en JetBrains Mono, palette papier
+                   chaud et accent orange, boutons en pilule.
+                   Mode sombre revu : les encadrés, les étiquettes et les
+                   en-têtes de tableau redeviennent lisibles (contrastes
+                   mesurés, tous au-dessus de 8:1).
+                   Images : 7 fichiers WebP (220 Ko au total) dans img/,
+                   mis en cache pour le mode hors ligne.
+                   Accessibilité : focus visible au clavier, cibles
+                   tactiles d'au moins 44 px, animations coupées si
+                   l'appareil le demande.
+                   La progression enregistrée n'est pas touchée.
+  1.6.0  « Florin » Produits Dérivés : chapitre 3, le marché des changes
+                   à terme (Forward). 7 nouvelles leçons (l9 à l15) :
+                   organisation du marché à terme, report et déport,
+                   cotation en points de swap, marché des eurodevises,
+                   risque et position de change, cours à terme acheteur
+                   puis vendeur. Les 6 exercices du TD 2 corrigés pas à
+                   pas (cours croisé à terme, parité des taux couverte,
+                   sens des mouvements de capitaux, double cotation et
+                   arbitrage, placement de trésorerie, cas Sigma).
+                   19 questions de test supplémentaires.
+                   Mode entraînement : 4 nouvelles notions générées à
+                   l'infini (report/déport et taux annualisé, points de
+                   swap, cours à terme acheteur et vendeur, parité
+                   couverte) et un second cas complet « couverture à
+                   terme ».
+  1.5.0            Mode entraînement « Marché des changes », détaché du
+                   cours Produits Dérivés : 9 notions générées à l'infini
+                   (position de change, choix du cours, spread, réciproque,
+                   cours croisé, arbitrages géographique et triangulaire,
+                   ordre à cours limité, commission maximale), indice /
+                   méthode / correction, détection des erreurs classiques,
+                   séries de 5 ou 10 avec bilan, cas complet type partiel,
+                   conditions de partiel (chrono, aides masquées).
+                   À la une : partiel Produits Dérivés du 18/11/2026 avec
+                   compte à rebours et accès direct à l'entraînement.
+  1.4.0  « Sou »   Barre de complétion 0 → 100 % sur chaque matière
+                   du hub : leçons lues (50 %), mini-quiz réussis
+                   (25 %), test final (25 %, acquis dès 80 %).
+                   Pastille 🏅 « Matière maîtrisée » à 100 %.
+  1.2.0            Classement : nouvelle présentation.
+  1.1.0            Nouvelle matière : ES Banque — Patrimoine &
+                   Assurance (14 leçons, 24 questions) avec un
+                   simulateur de transmission calculant l'imposition
+                   progressive avant et après 70 ans.
+                   Mise à jour fiscale 2026 (LFSS) : prélèvements
+                   sociaux portés à 18,6 % et flat-tax à 31,4 % au cas
+                   général, 17,2 % et 30 % maintenus pour l'assurance
+                   vie, le PEL, le CEL et le PEP. Correction apportée
+                   aussi à la leçon 4 du Marché des Particuliers.
+                   Banque de révision portée à 265 éléments.
+  1.0.1            Ressourcerie : résumés plus courts (2 phrases),
+                   boutons « Voir » et « Télécharger » bien visibles,
+                   visionneuse intégrée pour les PDF et les images.
+  1.0.0  « Écu »   Mode hors ligne et application installable.
+                   Révision espacée (213 éléments), flashcards,
+                   recherche globale Ctrl+K, impression en fiche,
+                   progression sauvegardée, tableau de bord.
+  0.5.0            Glossaire (93 sigles), navigation commune,
+                   thème sombre avec bascule à 20 h (retirée en 2.1.0).
+  0.4.0            Ressourcerie : dépôt de documents et analyse
+                   locale.
+  0.3.0            Marketing Numérique de la Banque (cours 1).
+  0.2.0            Produits Dérivés I + générateur de calculs.
+  0.1.0            Hub, classement Supabase, Marché des
+                   Particuliers.
+
+────────────────────────────────────────────────────────────
+  MODE HORS LIGNE
+────────────────────────────────────────────────────────────
+  • La PREMIÈRE visite doit se faire EN LIGNE : le site met
+    alors en cache ses pages, ses polices et ses bibliothèques.
+  • Ensuite, fonctionnent sans réseau : les 3 cours, les quiz,
+    les tests, le générateur de calculs, le glossaire, la
+    révision, les statistiques.
+  • Nécessitent le réseau : le classement et la ressourcerie
+    (données partagées). Un bandeau prévient quand la connexion
+    manque.
+  • Installation : sur Android, menu ⋮ → « Installer l'application ».
+    Sur iPhone, bouton Partager → « Sur l'écran d'accueil ».
+
+────────────────────────────────────────────────────────────
+  RÉVISION ESPACÉE (revision.html)
+────────────────────────────────────────────────────────────
+Paliers : 1, 3, 7, 16, 35 puis 75 jours. Une bonne réponse fait
+monter d'un cran, une erreur ramène au début (à revoir le jour
+même). Trois modes : révision espacée, flashcards (sigles du
+glossaire, auto-évaluation) et tirage au hasard.
+
+  ⚠️ banque.js est un fichier GÉNÉRÉ à partir des questions des
+  trois cours et du glossaire. Si tu ajoutes ou modifies des
+  questions dans un cours, il faut le régénérer — demande-le moi,
+  sinon la révision travaillera sur l'ancienne version.
+
+────────────────────────────────────────────────────────────
+  AUTRES NOUVEAUTÉS
+────────────────────────────────────────────────────────────
+  • Recherche globale : Ctrl+K (ou ⌘+K), ou le bouton 🔍.
+    Indexe les pages, les leçons et les 93 sigles.
+  • Impression : bouton « 🖨️ Fiche » en bas à gauche d'un cours.
+    Imprime la leçon affichée, sans les menus ni les quiz.
+  • Progression : enregistrée sur l'appareil (localStorage).
+    Elle ne suit pas d'un appareil à l'autre et ne survit pas à
+    une navigation privée.
+
+────────────────────────────────────────────────────────────
+  LE SIMULATEUR FISCAL (es_banque.html)
+────────────────────────────────────────────────────────────
+Barèmes codés, tous vérifiés contre les exemples officiels :
+
+  Art. 990 I — primes versées AVANT 70 ans
+    abattement 152 500 € PAR BÉNÉFICIAIRE
+    20 % sur la fraction taxable jusqu'à 700 000 €
+    31,25 % au-delà (soit à partir de 852 500 € reçus)
+
+  Art. 757 B — primes versées APRÈS 70 ans
+    abattement 30 500 € GLOBAL, réparti au prorata des parts
+    assiette = les PRIMES SEULES (les gains sont exonérés)
+    puis barème progressif de l'art. 777 selon le lien
+
+  Art. 777 — barème ligne directe (inchangé depuis 2011)
+    5 % jusqu'à 8 072 € · 10 % · 15 % · 20 % jusqu'à 552 324 €
+    30 % · 40 % · 45 % au-delà de 1 805 677 €
+    abattements art. 779 : 100 000 € enfant · 15 932 € frère/sœur
+    7 967 € neveu/nièce · 1 594 € à défaut
+    conjoint et PACS exonérés (loi TEPA 2007)
+
+HYPOTHÈSES DU SIMULATEUR (affichées dans la page)
+  • bénéficiaires à parts égales
+  • capital réparti entre les deux régimes au prorata des primes
+  • l'abattement personnel n'est appliqué au 757 B que s'il est
+    déclaré disponible (en pratique la succession le consomme
+    en premier)
+  • les prélèvements sociaux sur les gains d'UC non encore
+    prélevés ne sont pas intégrés
+
+────────────────────────────────────────────────────────────
+  FISCALITÉ 2026 — CE QUI A CHANGÉ
+────────────────────────────────────────────────────────────
+LFSS 2026 (article 12) : la CSG sur les revenus du capital passe
+de 9,2 % à 10,6 %.
+
+  Prélèvements sociaux à 18,6 %, flat-tax à 31,4 % :
+    dividendes, intérêts, plus-values mobilières, comptes-titres,
+    livrets fiscalisés, DAT, PEA, PER, épargne salariale, crypto
+
+  Maintenus à 17,2 %, flat-tax à 30 % (exceptions explicites) :
+    assurance vie, PEL, CEL, PEP, revenus fonciers,
+    plus-values immobilières
+
+  Toujours exonérés : Livret A, LDDS, LEP, Livret Jeune
+
+La transmission n'est pas touchée : ni l'article 990 I, ni le
+757 B, ni le barème des droits de succession n'ont été modifiés.

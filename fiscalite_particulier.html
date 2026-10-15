@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html lang="fr" subject-id="fiscalite-particulier">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fiscalité du Particulier — M1 MBAF</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+:root{
+  --card:#fff; --card2:#fbf9f5;
+  --paper:#faf6ef; --paper2:#f3ece0; --ink:#22201b; --line:#e3d9c8;
+  --teal:#1b6b5e; --amber:#c87a12; --rust:#a8432a; --plum:#6b3a73; --navy:#241C15;
+  --teal-soft:#e3efec; --amber-soft:#f6ead4; --rust-soft:#f3e0da; --plum-soft:#ece3ef; --navy-soft:#dde6f0;
+  --shadow:0 2px 14px rgba(34,32,27,.07); --shadow-lg:0 8px 30px rgba(34,32,27,.13);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-track{background:var(--paper2)}
+::-webkit-scrollbar-thumb{background:#cdbfa6;border-radius:6px;border:2px solid var(--paper2)}
+::-webkit-scrollbar-thumb:hover{background:var(--amber)}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:62px;z-index:50;background:var(--paper);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:18px;padding:0 22px}
+.brand{display:flex;align-items:center;gap:11px;font-family:'Fraunces',serif;font-weight:600;font-size:1.12rem;color:var(--navy)}
+.brand .logo{width:36px;height:36px;border-radius:9px;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:1.15rem;flex-shrink:0;box-shadow:var(--shadow)}
+.brand small{display:block;font-family:'DM Sans';font-weight:500;font-size:.66rem;letter-spacing:.09em;color:var(--amber);text-transform:uppercase}
+.hublink{font-family:'DM Mono';font-size:.72rem;color:#8a8170;text-decoration:none;padding:5px 10px;border-radius:8px;border:1px solid var(--line);white-space:nowrap;transition:.15s}
+.hublink:hover{color:var(--navy);border-color:#c9bca3;background:var(--card)}
+.progress-wrap{flex:1;max-width:300px;display:flex;flex-direction:column;gap:3px}
+.progress-wrap .lab{font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:#8a8170;font-weight:600;display:flex;justify-content:space-between}
+.progress-bar{height:8px;background:var(--paper2);border-radius:5px;overflow:hidden;border:1px solid var(--line)}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),#2a8a78);transition:width .5s cubic-bezier(.4,0,.2,1)}
+.xp{margin-left:auto;display:flex;align-items:center;gap:7px;background:var(--amber-soft);border:1px solid #e6cf9e;color:var(--amber);font-weight:700;padding:7px 14px;border-radius:30px;font-size:.9rem}
+.burger{display:none;background:none;border:1px solid var(--line);border-radius:8px;padding:7px 10px;cursor:pointer;font-size:1.1rem;color:var(--ink)}
+
+.shell{display:flex;padding-top:62px}
+.sidebar{position:fixed;top:62px;bottom:0;left:0;width:282px;background:var(--paper2);border-right:1px solid var(--line);overflow-y:auto;padding:20px 14px 50px;z-index:40;transition:transform .3s}
+.sidebar h4{font-family:'Fraunces',serif;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:#8a8170;margin:18px 10px 9px;font-weight:600}
+.sidebar h4:first-child{margin-top:0}
+.nav-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;cursor:pointer;font-size:.92rem;color:var(--ink);border:1px solid transparent;transition:.16s;margin-bottom:3px}
+.nav-item:hover{background:#ece3d3}
+.nav-item.active{background:var(--card);border-color:var(--line);box-shadow:var(--shadow);font-weight:600;color:var(--navy)}
+.nav-item .num{width:25px;height:25px;border-radius:50%;background:var(--card);border:1.5px solid var(--line);flex-shrink:0;display:grid;place-items:center;font-size:.78rem;font-weight:700;font-family:'DM Mono';color:#8a8170;transition:.16s}
+.nav-item.active .num,.nav-item.done .num{background:var(--teal);color:#fff;border-color:var(--teal)}
+.nav-item .lab{flex:1;line-height:1.25}
+.nav-item.special{background:var(--plum-soft);border-color:#d8c5dc;color:var(--plum);font-weight:600}
+.nav-item.special.active{background:var(--plum);color:#fff}
+.nav-item.special2{background:var(--navy-soft);border-color:#c3d2e2;color:var(--navy);font-weight:600}
+.nav-item.special2.active{background:var(--navy);color:#fff}
+.nav-item.special3{background:var(--amber-soft);border-color:#e6cf9e;color:var(--amber);font-weight:600}
+.nav-item.special3.active{background:var(--amber);color:#fff}
+.nav-item .ico{font-size:1.05rem}
+
+.main{flex:1;margin-left:282px;padding:40px 6vw 120px;max-width:920px}
+.view{display:none;animation:fadeIn .45s ease}
+.view.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.tag{display:inline-block;font-family:'DM Mono';font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;background:var(--navy-soft);color:var(--navy);padding:5px 12px;border-radius:20px;font-weight:500;margin-bottom:16px}
+h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;font-weight:600;color:var(--ink);margin-bottom:10px;letter-spacing:-.01em}
+.subtitle{font-size:1.12rem;color:#6f6757;margin-bottom:30px;max-width:62ch}
+.main p{margin-bottom:16px;font-size:1.04rem;max-width:68ch}
+.main h2{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:600;color:var(--navy);margin:38px 0 14px;letter-spacing:-.01em}
+.main strong{font-weight:600;color:var(--ink)}
+
+.callout{border-radius:14px;padding:18px 20px 18px 22px;margin:24px 0;border-left:5px solid;position:relative;font-size:1rem}
+.callout .ct{font-weight:700;font-family:'Fraunces',serif;font-size:1.02rem;display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.callout p{margin:0;max-width:none}
+.c-analogy{background:var(--amber-soft);border-color:var(--amber);color:#5e3a06}
+.c-analogy .ct{color:var(--amber)}
+.c-retenir{background:var(--teal-soft);border-color:var(--teal);color:#0f3d36}
+.c-retenir .ct{color:var(--teal)}
+.c-piege{background:var(--rust-soft);border-color:var(--rust);color:#5e2317}
+.c-piege .ct{color:var(--rust)}
+
+.rulebox{background:#1c1a16;color:#f3ece0;border-radius:14px;padding:22px 24px;margin:26px 0;font-family:'DM Mono';box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
+.rulebox::before{content:'REPÈRE';position:absolute;top:13px;right:18px;font-size:.62rem;letter-spacing:.2em;color:#7d7566}
+.rulebox.formule::before{content:'FORMULE'}
+.rulebox .rb-main{font-size:1.18rem;font-weight:500;line-height:1.5;color:#fff}
+.rulebox .rb-sub{font-size:.86rem;color:#b8af9d;margin-top:10px;line-height:1.55}
+.rulebox em{color:var(--amber);font-style:normal;font-weight:500}
+
+.tbl{width:100%;border-collapse:collapse;margin:22px 0;font-size:.96rem;background:var(--card);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line)}
+.tbl th{background:var(--navy);color:#fff;text-align:left;padding:11px 15px;font-weight:600;font-size:.86rem}
+.tbl td{padding:11px 15px;border-top:1px solid var(--line);vertical-align:top}
+.tbl tr:nth-child(even) td{background:var(--paper)}
+.tbl td:first-child{font-weight:600;color:var(--navy);white-space:nowrap}
+.tbl.wrap td:first-child{white-space:normal}
+.tbl.num td{font-family:'DM Mono';font-size:.94rem}
+.tbl.num td:first-child{font-family:'DM Sans'}
+
+.example{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:26px 0;box-shadow:var(--shadow)}
+.example .ex-head{font-family:'Fraunces',serif;font-weight:600;color:var(--plum);font-size:1.08rem;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.step{display:flex;gap:14px;margin-bottom:14px}
+.step:last-child{margin-bottom:0}
+.step .sn{width:27px;height:27px;border-radius:50%;background:var(--plum);color:#fff;flex-shrink:0;display:grid;place-items:center;font-family:'DM Mono';font-weight:500;font-size:.85rem}
+.step .sc{flex:1;padding-top:1px}
+.step .sc b{color:var(--navy)}
+.step .sc code{background:var(--paper2);padding:2px 7px;border-radius:5px;font-family:'DM Mono';font-size:.9rem;color:var(--teal)}
+.ex-result{margin-top:6px;background:var(--teal-soft);border:1px solid #bcdcd4;border-radius:10px;padding:12px 16px;font-weight:600;color:#0f3d36}
+
+.schema{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin:26px 0;box-shadow:var(--shadow);text-align:center}
+.schema .scap{font-size:.82rem;color:#8a8170;margin-top:12px;font-style:italic}
+.schema svg{max-width:100%;height:auto}
+
+.quiz{background:var(--plum-soft);border:1px solid #d8c5dc;border-radius:14px;padding:20px 22px;margin:24px 0}
+.quiz .qhead{font-family:'DM Mono';font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--plum);font-weight:500;margin-bottom:9px}
+.quiz .q{font-weight:600;font-size:1.05rem;margin-bottom:14px;color:var(--ink)}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{text-align:left;background:var(--card);border:1.5px solid #d8c5dc;border-radius:10px;padding:11px 15px;cursor:pointer;font-family:'DM Sans';font-size:.98rem;color:var(--ink);transition:.15s}
+.opt:hover:not(:disabled){border-color:var(--plum);background:#fbf8fc}
+.opt:disabled{cursor:default}
+.opt.right{background:var(--teal-soft);border-color:var(--teal);color:#0f3d36;font-weight:600}
+.opt.right::after{content:' ✓';color:var(--teal);font-weight:700}
+.opt.wrong{background:var(--rust-soft);border-color:var(--rust);color:#5e2317}
+.opt.wrong::after{content:' ✗';color:var(--rust);font-weight:700}
+.feedback{margin-top:13px;padding:12px 15px;border-radius:10px;background:var(--card);border:1px dashed #cbb9cf;font-size:.95rem;color:#5a4d5d}
+.feedback b{color:var(--plum)}
+
+.lesson-nav{display:flex;justify-content:space-between;gap:14px;margin-top:46px;padding-top:26px;border-top:1px solid var(--line)}
+.btn{font-family:'DM Sans';font-weight:600;font-size:.98rem;padding:12px 22px;border-radius:11px;cursor:pointer;border:1.5px solid var(--line);background:var(--card);color:var(--ink);transition:.16s;display:inline-flex;align-items:center;gap:8px}
+.btn:hover{border-color:#bbac90;transform:translateY(-1px)}
+.btn.primary{background:var(--teal);color:#fff;border-color:var(--teal);box-shadow:var(--shadow)}
+.btn.primary:hover{background:#155a4f}
+.btn.plum{background:var(--plum);color:#fff;border-color:var(--plum)}
+.btn.plum:hover{background:#592f60}
+.btn.amber{background:var(--amber);color:#fff;border-color:var(--amber)}
+.btn.amber:hover{background:#a86610}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.print-fab{position:fixed;bottom:26px;left:26px;z-index:110;background:var(--card);color:var(--ink2);border:1.5px solid var(--line2);font-weight:600;padding:10px 16px;border-radius:24px;cursor:pointer;font-family:'DM Sans';font-size:.85rem;box-shadow:var(--shadow);transition:.15s}
+.print-fab:hover{border-color:var(--navy);color:var(--navy);transform:translateY(-1px)}
+@media(max-width:880px){.print-fab{bottom:20px;left:16px;padding:9px 13px;font-size:.8rem}}
+.xp-pop{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--amber);color:#fff;font-weight:700;padding:13px 26px;border-radius:30px;box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:.4s;z-index:200;font-size:1rem}
+.xp-pop.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.test-q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:18px;box-shadow:var(--shadow);transition:.3s}
+.test-q .tq-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px}
+.test-q .tq-num{font-family:'DM Mono';font-weight:500;color:var(--navy);font-size:.9rem}
+.test-q .tq-chap{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:#8a8170;font-weight:600;background:var(--paper2);padding:4px 10px;border-radius:20px;text-align:right}
+.test-q .tq-q{font-weight:600;font-size:1.08rem;margin-bottom:14px}
+.num-input{font-family:'DM Mono';font-size:1.05rem;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;width:190px;background:var(--paper)}
+.num-input:focus{outline:none;border-color:var(--teal)}
+.unit{font-family:'DM Mono';color:#8a8170;margin-left:9px}
+.topt{display:flex;flex-direction:column;gap:8px}
+.topt button{text-align:left;background:var(--paper);border:1.5px solid var(--line);border-radius:10px;padding:11px 15px;cursor:pointer;font-family:'DM Sans';font-size:.98rem;transition:.15s}
+.topt button:hover{border-color:var(--teal)}
+.topt button.sel{background:var(--teal-soft);border-color:var(--teal);font-weight:600;color:#0f3d36}
+.remed{margin-top:14px;border-radius:11px;border-left:5px solid var(--rust);background:var(--rust-soft);padding:15px 18px;display:none}
+.remed.show{display:block;animation:fadeIn .35s}
+.remed .rt{font-weight:700;color:var(--rust);font-family:'Fraunces',serif;margin-bottom:5px;display:flex;align-items:center;gap:7px}
+.remed .ra{font-size:.95rem;color:#5e2317;margin-bottom:11px}
+.remed-btns{display:flex;gap:10px;flex-wrap:wrap}
+.remed-btns .btn{padding:8px 16px;font-size:.88rem}
+.test-q.ok{border-color:var(--teal);background:#fbfdfc}
+.test-q.ko{border-color:var(--rust)}
+.float-retry{position:fixed;bottom:26px;right:26px;z-index:120;display:none;background:var(--plum);color:#fff;border:none;font-weight:700;padding:14px 24px;border-radius:30px;box-shadow:var(--shadow-lg);cursor:pointer;font-family:'DM Sans';font-size:.98rem;align-items:center;gap:9px}
+.float-retry.show{display:inline-flex;animation:fadeIn .4s}
+
+.result{display:none;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:34px;box-shadow:var(--shadow-lg);text-align:center;animation:fadeIn .5s}
+.result.show{display:block}
+.result .score-big{font-family:'Fraunces',serif;font-size:4rem;font-weight:700;line-height:1;color:var(--teal)}
+.result .score-lab{color:#8a8170;font-weight:600;margin-bottom:8px}
+.result .msg{font-size:1.12rem;margin:14px auto 28px;max-width:46ch;color:var(--ink)}
+.chapbars{text-align:left;max-width:560px;margin:0 auto}
+.chapbar{margin-bottom:14px}
+.chapbar .cbl{display:flex;justify-content:space-between;font-size:.9rem;font-weight:600;margin-bottom:5px}
+.chapbar .cbl span:last-child{font-family:'DM Mono';color:#8a8170}
+.cbt{height:13px;background:var(--paper2);border-radius:7px;overflow:hidden;border:1px solid var(--line)}
+.cbf{height:100%;border-radius:7px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+
+.annale{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px 26px;margin-bottom:22px;box-shadow:var(--shadow)}
+.annale .an-tag{font-family:'DM Mono';font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);font-weight:500}
+.annale h3{font-family:'Fraunces',serif;font-size:1.32rem;color:var(--navy);margin:6px 0 14px;font-weight:600}
+.annale .enonce{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:16px 19px;font-size:1rem;color:#3a352c}
+.annale .enonce .qlist{margin:10px 0 0 4px}
+.annale .enonce .qlist li{margin-bottom:5px;list-style:none;padding-left:22px;position:relative}
+.annale .enonce .qlist li::before{content:'▸';position:absolute;left:0;color:var(--amber);font-weight:700}
+.corrige{margin-top:14px;display:none;animation:fadeIn .4s}
+.corrige.show{display:block}
+.corrige-head{font-family:'Fraunces',serif;font-weight:600;color:var(--teal);margin-bottom:12px;display:flex;align-items:center;gap:8px;font-size:1.06rem}
+
+.intro-card{background:var(--navy);color:#f3ece0;border-radius:16px;padding:24px 26px;margin-bottom:26px}
+.intro-card h2{color:#fff;margin:0 0 8px;font-family:'Fraunces',serif;font-size:1.4rem}
+.intro-card p{color:#cdd8e6;max-width:none;margin:0}
+.intro-card.amber{background:#7a4c08}
+.intro-card.amber p{color:#f2e0c0}
+.intro-card.plum{background:#4a2750}
+.intro-card.plum p{color:#e6d5ea}
+
+/* ===== GÉNÉRATEUR DE CALCULS ===== */
+.gen-modes{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:22px}
+.gen-mode{padding:10px 16px;border-radius:24px;border:1.5px solid var(--line);background:var(--card);color:#6f6757;font-family:'DM Sans';font-weight:600;font-size:.9rem;cursor:pointer;transition:.15s}
+.gen-mode:hover{border-color:#bbac90}
+.gen-mode.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.gen-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;box-shadow:var(--shadow);margin-bottom:20px}
+.gen-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.gen-type{font-family:'DM Mono';font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--plum);font-weight:500}
+.gen-stats{display:flex;gap:8px;font-family:'DM Mono';font-size:.78rem}
+.gen-stat{background:var(--paper2);border:1px solid var(--line);border-radius:20px;padding:4px 11px;color:#6f6757}
+.gen-stat b{color:var(--navy)}
+.gen-enonce{font-size:1.06rem;margin-bottom:8px}
+.gen-enonce b{color:var(--navy)}
+.gen-data{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:14px 18px;margin:14px 0;font-family:'DM Mono';font-size:.95rem;line-height:1.85}
+.gen-data .dl{color:#8a8170;display:inline-block;min-width:170px}
+.gen-ask{font-weight:600;margin:14px 0 12px;color:var(--ink)}
+.gen-input-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.gen-fb{margin-top:16px;border-radius:12px;padding:16px 19px;display:none;animation:fadeIn .35s}
+.gen-fb.show{display:block}
+.gen-fb.ok{background:var(--teal-soft);border:1px solid #bcdcd4}
+.gen-fb.ko{background:var(--rust-soft);border:1px solid #e7c4b8}
+.gen-fb .fb-head{font-family:'Fraunces',serif;font-weight:700;font-size:1.05rem;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.gen-fb.ok .fb-head{color:#0f3d36}
+.gen-fb.ko .fb-head{color:var(--rust)}
+.gen-fb .yours{font-family:'DM Mono';font-size:.88rem;color:var(--rust);margin-bottom:10px}
+.timer{font-family:'DM Mono';font-size:.82rem;background:var(--amber-soft);border:1px solid #e6cf9e;color:var(--amber);padding:4px 12px;border-radius:20px;font-weight:600}
+.timer.off{opacity:.45}
+
+.hint{font-size:.85rem;color:#8a8170;font-style:italic;margin-top:8px}
+.overlay{display:none;position:fixed;inset:62px 0 0 0;background:rgba(34,32,27,.4);z-index:35}
+@media(max-width:880px){
+  .main{margin-left:0;padding:30px 22px 110px}
+  .sidebar{transform:translateX(-100%);box-shadow:var(--shadow-lg)}
+  .sidebar.open{transform:translateX(0)}
+  .overlay.show{display:block}
+  .burger{display:block}
+  .progress-wrap{max-width:none}
+  .brand small{display:none}
+  h1.lesson-title{font-size:1.8rem}
+  .xp{padding:6px 11px;font-size:.82rem}
+  .gen-data .dl{min-width:0;display:block}
+}
+@media(max-width:560px){
+  .progress-wrap,.hublink{display:none}
+  .topbar{gap:12px}
+}
+</style>
+<link rel="stylesheet" href="ui.css">
+<link rel="stylesheet" href="theme.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#F7F8FA">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+</head>
+<body>
+
+<div class="topbar">
+  <button class="burger" onclick="toggleSidebar()">☰</button>
+  <div class="brand">
+    <span class="logo">§</span>
+    <span>Fiscalité du Particulier<small>M1 MBAF · IR &amp; prélèvements sociaux</small></span>
+  </div>
+  <span id="nav-slot"></span>
+  <div class="progress-wrap">
+    <div class="lab"><span>Progression</span><span id="progPct">0 %</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+  </div>
+  <div class="xp"><span class="star">★</span><span id="xpVal">0</span> XP</div>
+  <span id="lb-id-slot"></span>
+</div>
+
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <h4>Chapitre 1 · Les principes de l'IR</h4>
+    <div id="navList1"></div>
+    <h4>Chapitre 2 · Foyer fiscal et nombre de parts</h4>
+    <div id="navList2"></div>
+    <h4>Chapitre 3 · La base d'imposition</h4>
+    <div id="navList3"></div>
+    <h4>S'entraîner</h4>
+    <a class="nav-item special3" href="entrainement_fiscal.html" style="text-decoration:none;color:inherit">
+      <span class="ico">🎲</span><span class="lab">Calculs générés · ∞</span>
+    </a>
+    <div class="nav-item special2" data-view="annales" onclick="go('annales')">
+      <span class="ico">📐</span><span class="lab">Applications corrigées</span>
+    </div>
+    <div class="nav-item special" data-view="test" onclick="go('test')">
+      <span class="ico">🎯</span><span class="lab">Test final adaptatif</span>
+    </div>
+  </aside>
+
+  <main class="main" id="main">
+
+    <!-- ============ LEÇON 1 ============ -->
+    <section class="view" data-view="l1">
+      <span class="tag">Leçon 1 · Principes</span>
+      <h1 class="lesson-title">L'impôt sur le revenu : ce que dit l'article 1 A</h1>
+      <p class="subtitle">Un impôt unique, annuel, qui frappe le revenu net global du contribuable — et huit catégories de revenus qui s'additionnent avant de ne former qu'un seul chiffre.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Imagine huit robinets qui remplissent la même cuve. Chacun a son débit propre et ses propres règles de calcul — un salaire ne se mesure pas comme un loyer — mais c'est le niveau de la cuve, et lui seul, qui déclenche l'impôt. Tout le module tient dans cette image : calculer chaque robinet séparément, puis ne regarder que la cuve.</p>
+      </div>
+
+      <div class="rulebox">
+        <div class="rb-main">Article 1 A du CGI : « Il est établi un impôt annuel unique sur le revenu des personnes physiques désigné sous le nom d'impôt sur le revenu. Cet impôt frappe le <em>revenu net global</em> du contribuable. »</div>
+        <div class="rb-sub">Ce revenu net global est constitué par le total des revenus nets des catégories énumérées par le même article.</div>
+      </div>
+
+      <h2>Les huit catégories de revenus</h2>
+      <table class="tbl wrap">
+        <tr><th>Catégorie</th><th>Ce qu'elle recouvre</th></tr>
+        <tr><td><strong>Revenus fonciers</strong></td><td>Les loyers des immeubles donnés en location nue.</td></tr>
+        <tr><td><strong>BIC</strong></td><td>Bénéfices industriels et commerciaux.</td></tr>
+        <tr><td><strong>Rémunérations de dirigeants</strong></td><td>Certains dirigeants et gérants de sociétés.</td></tr>
+        <tr><td><strong>BA</strong></td><td>Bénéfices de l'exploitation agricole.</td></tr>
+        <tr><td><strong>Traitements et salaires</strong></td><td>Traitements, salaires, indemnités, émoluments, pensions et rentes viagères.</td></tr>
+        <tr><td><strong>BNC</strong></td><td>Bénéfices des professions non commerciales et revenus assimilés.</td></tr>
+        <tr><td><strong>RCM</strong></td><td>Revenus de capitaux mobiliers.</td></tr>
+        <tr><td><strong>Plus-values</strong></td><td>Plus-values de cession à titre onéreux de biens ou de droits de toute nature.</td></tr>
+      </table>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 À retenir</div>
+        <p>Huit catégories, <strong>huit jeux de règles distincts</strong>. L'article 13 du CGI le dit explicitement : « le bénéfice ou revenu net de chacune des catégories est déterminé distinctement suivant les règles propres à chacune d'elles ». C'est seulement une fois chaque revenu catégoriel net calculé qu'on les additionne.</p>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">Exemple bancaire — un même client, trois robinets</div>
+        <p>Un client de l'agence perçoit un salaire (traitements et salaires), les loyers d'un studio loué nu (revenus fonciers) et les intérêts d'un compte à terme (revenus de capitaux mobiliers). Trois catégories, trois modes de calcul — abattement de 10 % sur le salaire, charges réelles ou micro-foncier sur le studio, prélèvement forfaitaire sur les intérêts — mais un seul revenu net global à la fin, et un seul impôt.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Sur quoi porte l'impôt sur le revenu, selon l'article 1 A du CGI ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Sur chaque revenu catégoriel pris isolément</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Sur le revenu net global du contribuable</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Sur le revenu brut encaissé dans l'année</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> L'impôt frappe le revenu <em>net global</em>. Les catégories servent à le construire, pas à être imposées séparément.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Les loyers d'un appartement loué vide relèvent de quelle catégorie ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">Les revenus fonciers</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Les revenus de capitaux mobiliers</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Les bénéfices industriels et commerciaux</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Location <strong>nue</strong> = revenus fonciers. En location meublée, on bascule en BIC : c'est une distinction qui tombe souvent.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('annales')">Voir les applications</button>
+        <button class="btn primary" onclick="validate('l1',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 2 ============ -->
+    <section class="view" data-view="l2">
+      <span class="tag">Leçon 2 · Principes</span>
+      <h1 class="lesson-title">Les sept caractéristiques de l'impôt sur le revenu</h1>
+      <p class="subtitle">Sept adjectifs à savoir réciter — c'est la question de cours la plus prévisible du module, et chacun d'eux a une conséquence pratique.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Ces sept mots sont la carte d'identité de l'impôt. Comme pour une personne, chaque mention répond à une question différente : qui le perçoit, qui le paie, à quel rythme, sur quelle base, et selon quel tarif.</p>
+      </div>
+
+      <h2>Les sept caractéristiques</h2>
+      <table class="tbl wrap">
+        <tr><th>Caractéristique</th><th>Ce que cela implique</th></tr>
+        <tr><td><strong>Impôt d'État</strong></td><td>Il alimente le budget de l'État, pas celui des collectivités.</td></tr>
+        <tr><td><strong>Il concerne les personnes physiques</strong></td><td>Les sociétés relèvent de l'impôt sur les sociétés, sauf option ou transparence.</td></tr>
+        <tr><td><strong>Impôt direct annuel</strong></td><td>Il se calcule par année civile, du 1<sup>er</sup> janvier au 31 décembre, sur le revenu des personnes qui composent un même foyer fiscal.</td></tr>
+        <tr><td><strong>Impôt déclaratif</strong></td><td>Le contribuable déclare ; l'administration calcule. Le solde est acquitté l'année suivant celle de réalisation des revenus.</td></tr>
+        <tr><td><strong>Impôt personnel</strong></td><td>Il prend en considération la situation personnelle et familiale du contribuable.</td></tr>
+        <tr><td><strong>Impôt global et synthétique</strong></td><td>Il vise tous les revenus de tous les membres du foyer, quelle que soit leur nature, en une seule fois.</td></tr>
+        <tr><td><strong>Impôt progressif par tranches</strong></td><td>Le taux s'élève avec le revenu, par application d'un barème.</td></tr>
+      </table>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Le piège</div>
+        <p>Le <strong>prélèvement à la source</strong>, en vigueur depuis le 1<sup>er</sup> janvier 2019, ne supprime pas le caractère déclaratif de l'impôt. Il fait seulement payer l'impôt en même temps que le revenu est perçu : la déclaration annuelle reste obligatoire, et c'est elle qui détermine le solde. Dire « avec le prélèvement à la source, l'impôt n'est plus déclaratif » est faux.</p>
+      </div>
+
+      <div class="rulebox">
+        <div class="rb-main">Les revenus imposables sont les revenus <em>disponibles</em> : ceux dont le contribuable a eu la disposition au titre de l'année d'imposition.</div>
+        <div class="rb-sub">À distinguer des revenus <strong>acquis</strong> (le droit est né) et des revenus <strong>perçus</strong> (l'argent est encaissé). Un revenu est disponible lorsque sa perception ne dépend plus que de la volonté du bénéficiaire.</div>
+      </div>
+
+      <h2>La déclaration n° 2042, page par page</h2>
+      <table class="tbl wrap">
+        <tr><th>Page</th><th>Ce qu'on y porte</th></tr>
+        <tr><td>1<sup>re</sup></td><td>État civil, adresse.</td></tr>
+        <tr><td>2<sup>e</sup></td><td>Situation familiale, personnes à charge.</td></tr>
+        <tr><td>3<sup>e</sup></td><td>Traitements et salaires, revenus de capitaux mobiliers, revenus fonciers.</td></tr>
+        <tr><td>4<sup>e</sup></td><td>Charges déductibles, réductions et crédits d'impôt.</td></tr>
+      </table>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Un salarié a droit à une prime votée en décembre N, mise à sa disposition en janvier N+1. Elle est imposable au titre de :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">L'année N, année d'acquisition du droit</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">L'année N+1, année de mise à disposition</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">L'année au choix du contribuable</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> C'est la <em>disponibilité</em> qui compte, pas l'acquisition du droit.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Le prélèvement à la source a-t-il supprimé la déclaration annuelle de revenus ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Oui, depuis le 1<sup>er</sup> janvier 2019</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Non, l'impôt reste déclaratif</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Oui, sauf pour les revenus fonciers</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Le prélèvement à la source change le <em>moment du paiement</em>, pas la nature déclarative de l'impôt.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l1')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l2',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 3 ============ -->
+    <section class="view" data-view="l3">
+      <span class="tag">Leçon 3 · Territorialité</span>
+      <h1 class="lesson-title">La territorialité : qui est imposable, et sur quoi</h1>
+      <p class="subtitle">Deux questions, jamais une seule : où est le domicile fiscal, et d'où viennent les revenus. Le croisement des deux donne la réponse.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Article 4 A du CGI : les personnes qui ont en France leur <em>domicile fiscal</em> sont passibles de l'impôt sur le revenu en raison de <em>l'ensemble de leurs revenus</em>.</div>
+        <div class="rb-sub">Celles dont le domicile fiscal est situé hors de France ne sont imposables qu'en raison de leurs <strong>seuls revenus de source française</strong>.</div>
+      </div>
+
+      <h2>Le territoire, au sens de l'IR</h2>
+      <p>Pour l'application de l'impôt sur le revenu, la France comprend la France continentale, la Corse et les îles du littoral, ainsi que les cinq départements d'outre-mer : Guadeloupe, Martinique, Réunion, Guyane et Mayotte.</p>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Le piège</div>
+        <p>Les collectivités d'outre-mer — Polynésie française, Nouvelle-Calédonie, Saint-Pierre-et-Miquelon, Wallis-et-Futuna, Saint-Barthélemy, Saint-Martin — ne font <strong>pas</strong> partie du territoire au sens de l'IR. Seuls les cinq DOM y figurent.</p>
+      </div>
+
+      <h2>Le croisement domicile × source</h2>
+      <table class="tbl wrap">
+        <tr><th>Domicile fiscal</th><th>En France</th><th>Hors de France</th></tr>
+        <tr><td><strong>Revenus de source française</strong></td><td>Imposables à l'IR</td><td>Imposables à l'IR</td></tr>
+        <tr><td><strong>Revenus de source étrangère</strong></td><td>Imposables à l'IR</td><td>Non imposables à l'IR</td></tr>
+      </table>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 À retenir</div>
+        <p>Une seule case sur quatre échappe à l'impôt français : domicile hors de France <em>et</em> revenu de source étrangère. Partout ailleurs, l'IR s'applique — sous réserve des conventions internationales.</p>
+      </div>
+
+      <h2>Les conventions internationales</h2>
+      <p>Pour éviter une double imposition lorsque la source du revenu et la résidence du contribuable ne sont pas dans le même État, la France a signé de nombreuses conventions internationales. Ces conventions <strong>s'imposent au droit interne français</strong> : on les consulte toujours avant de conclure.</p>
+      <p>Un contribuable domicilié en France qui a encaissé des revenus étrangers souscrit une déclaration spéciale n° <strong>2047</strong>, annexée à la déclaration d'ensemble n° 2042. Les dossiers des personnes fiscalement domiciliées à l'étranger et percevant des revenus de source française sont gérés par le <strong>SIPNR</strong>, Service des Impôts des Particuliers des Non Résidents, quelle que soit leur nationalité.</p>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Une personne domiciliée fiscalement hors de France perçoit des loyers d'un immeuble situé à Lyon. Ces loyers sont :</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">Imposables en France, sous réserve des conventions</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Non imposables en France</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Imposables seulement si la personne est française</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Revenu de source française : imposable quel que soit le domicile, et quelle que soit la nationalité. La gestion relève du SIPNR.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">La Polynésie française fait-elle partie du territoire au sens de l'impôt sur le revenu ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Oui, comme tous les territoires d'outre-mer</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Non, seuls les cinq DOM sont inclus</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Oui, depuis la réforme du prélèvement à la source</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Guadeloupe, Martinique, Réunion, Guyane et Mayotte — et rien d'autre.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l2')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l3',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 4 ============ -->
+    <section class="view" data-view="l4">
+      <span class="tag">Leçon 4 · Territorialité</span>
+      <h1 class="lesson-title">Le domicile fiscal : quatre critères, un seul suffit</h1>
+      <p class="subtitle">L'article 4 B énumère trois ordres de critères, qui se déclinent en quatre tests. Ils s'apprécient de manière alternative, mais s'examinent dans un ordre imposé.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>C'est un contrôle à quatre portes : il suffit qu'une seule s'ouvre pour que le contribuable soit domicilié en France. Mais on les essaie dans l'ordre — les deux portes personnelles d'abord, la professionnelle ensuite, l'économique en dernier.</p>
+      </div>
+
+      <h2>Les quatre tests</h2>
+      <table class="tbl wrap">
+        <tr><th>Ordre</th><th>Critère</th><th>Contenu</th></tr>
+        <tr><td>1</td><td rowspan="2"><strong>Personnel</strong><br><small>critères dominants</small></td><td>Avoir son <strong>foyer</strong> en France : la résidence habituelle et permanente.</td></tr>
+        <tr><td>2</td><td>Avoir en France son <strong>lieu de séjour principal</strong> : plus de 183 jours.</td></tr>
+        <tr><td>3</td><td><strong>Professionnel</strong></td><td>Exercer en France son <strong>activité professionnelle</strong>, sauf s'il s'agit d'une activité accessoire.</td></tr>
+        <tr><td>4</td><td><strong>Économique</strong></td><td>Avoir en France le <strong>centre de ses intérêts économiques</strong>.</td></tr>
+      </table>
+
+      <div class="rulebox">
+        <div class="rb-main">Les critères sont <em>alternatifs</em> : un seul rempli suffit à domicilier en France.</div>
+        <div class="rb-sub">Mais ils s'apprécient de manière <strong>successive</strong> : on commence par les critères personnels, puis le professionnel, et enfin l'économique.</div>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Le piège</div>
+        <p>« Alternatif » et « successif » ne se contredisent pas. Alternatif décrit la <em>conséquence</em> : une porte ouverte suffit. Successif décrit la <em>méthode</em> : on les essaie dans l'ordre. Confondre les deux coûte des points, parce que la copie doit montrer les quatre tests dans le bon ordre même quand le premier répond déjà.</p>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">Exercice 1 du cours — M. et Mme EBREL</div>
+        <p>Monsieur et Madame EBREL vivent en Thaïlande, où ils ont créé il y a dix ans une entreprise commerciale d'import-export, en particulier avec la France. Français tous les deux, ils ont conservé à Brest un appartement qu'ils louent en temps ordinaire mais qui est resté vacant depuis plus de quinze mois. Ils résident en France lors de leurs venues d'affaires et pendant leurs vacances : <strong>165 jours</strong> à Brest au cours de l'année écoulée. Ils possèdent par ailleurs une villa en Thaïlande dans laquelle ils résident habituellement. Ont-ils leur domicile fiscal en France ? Le corrigé complet est dans les <a href="#" onclick="go('annales');return false;">applications corrigées</a>.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Une personne a passé 165 jours en France cette année. Le critère du séjour principal est-il rempli ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Oui, elle y a séjourné plus de la moitié du temps utile</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Non, le seuil est de plus de 183 jours</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Cela dépend de sa nationalité</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> 165 &lt; 183 : le critère du séjour principal n'est pas rempli. Il reste à examiner le foyer, l'activité professionnelle et le centre des intérêts économiques.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Les quatre critères de l'article 4 B s'apprécient :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">De manière cumulative : les quatre doivent être remplis</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">De manière alternative, mais dans un ordre successif</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Dans l'ordre que choisit l'administration</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Un seul critère suffit, mais l'examen suit l'ordre : personnel, professionnel, économique.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l3')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l4',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 5 ============ -->
+    <section class="view" data-view="l5">
+      <span class="tag">Leçon 5 · Foyer fiscal</span>
+      <h1 class="lesson-title">Le foyer fiscal et le contribuable</h1>
+      <p class="subtitle">L'unité de base du calcul n'est pas la personne : c'est le foyer. Tout le raisonnement de l'examen part de là, en deux étapes immuables.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Ce ne sont pas les personnes physiques qui sont personnellement soumises à l'impôt sur le revenu, mais le <em>foyer fiscal</em> que ces personnes composent.</div>
+        <div class="rb-sub">C'est le principe de <strong>l'imposition par foyer fiscal</strong>. Le schéma de raisonnement est toujours le même : 1<sup>re</sup> étape, la composition du foyer ; 2<sup>e</sup> étape, le calcul du nombre de parts.</div>
+      </div>
+
+      <h2>Le contribuable : seul ou en couple</h2>
+      <table class="tbl wrap">
+        <tr><th>Personne seule</th><th>Couple</th></tr>
+        <tr><td>Célibataire<br>Séparé ou divorcé<br>Veuf</td><td>Marié<br>Pacsé</td></tr>
+      </table>
+      <p>Toute personne physique devient contribuable de plein droit lors de la majorité civile à 18 ans, ou par le mariage.</p>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Le piège</div>
+        <p>Le <strong>concubinage n'existe pas fiscalement</strong>. Deux concubins, même avec des enfants communs et un même toit, forment <em>deux</em> foyers fiscaux distincts. Seuls le mariage et le PACS emportent imposition commune. C'est le cas qui tombe le plus souvent dans les exercices de dénombrement.</p>
+      </div>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Vivre sous le même toit ne fait pas un foyer fiscal, pas plus que partager un palier ne fait une famille. Il faut un lien juridique reconnu par le droit fiscal — mariage, PACS — ou un lien de charge au sens de l'article 196.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">M. MARTIN, veuf, vit sous le toit de sa tante Mme DUBOIS, veuve elle aussi. Combien de foyers fiscaux ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Un seul, celui de Mme DUBOIS</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Deux foyers fiscaux distincts</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Un seul, au choix des intéressés</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Aucun des deux n'est à la charge de l'autre, et vivre sous le même toit ne crée pas de foyer commun. Deux foyers, une part chacun.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Deux concubins ont deux enfants communs mineurs. Combien de foyers fiscaux ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Un seul, comme un couple marié</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Deux, les enfants étant à la charge de l'un ou de l'autre</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Trois, un par adulte et un pour les enfants</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Deux foyers. Les enfants sont rattachés à l'un des deux parents — jamais aux deux simultanément pour la même année.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l4')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l5',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 6 ============ -->
+    <section class="view" data-view="l6">
+      <span class="tag">Leçon 6 · Foyer fiscal</span>
+      <h1 class="lesson-title">Les personnes à charge de droit</h1>
+      <p class="subtitle">Quatre situations, et aucune n'est optionnelle : si les conditions sont réunies, la personne entre dans le foyer sans qu'on ait à le demander.</p>
+
+      <h2>Les quatre cas</h2>
+      <table class="tbl wrap">
+        <tr><th>Personne à charge</th><th>Condition</th></tr>
+        <tr><td><strong>Enfant mineur</strong></td><td>Moins de 18 ans au 1<sup>er</sup> janvier de l'année d'imposition. Légitime, adoptif ou naturel, indifféremment.</td></tr>
+        <tr><td><strong>Enfant infirme</strong></td><td><strong>Quel que soit son âge</strong>, s'il est hors d'état de subvenir à ses besoins — peu importe qu'il soit ou non titulaire d'une carte.</td></tr>
+        <tr><td><strong>Enfant mineur recueilli</strong></td><td>Qu'il y ait ou non lien de parenté, à condition qu'il vive au foyer <strong>et</strong> que le contribuable assume la charge effective <strong>et exclusive</strong>, matérielle comme éducative.</td></tr>
+        <tr><td><strong>Personne invalide sous le toit</strong></td><td>Sans condition d'âge, de parenté ni de revenu, si elle vit sous le toit du contribuable <strong>et</strong> détient une carte pour une invalidité d'au moins 80 % (ou carte mobilité inclusion mention « invalidité », ou pension d'invalidité pour accident du travail d'au moins 40 %, ou pension militaire d'au moins 40 %).</td></tr>
+      </table>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 À retenir</div>
+        <p>Une personne à charge ne peut appartenir qu'à <strong>un seul foyer fiscal</strong> au titre d'une même année d'imposition — sous réserve de l'exception des enfants qui atteignent 18 ans dans l'année.</p>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Les deux pièges classiques</div>
+        <p>La personne invalide doit <strong>vivre sous le toit</strong> du contribuable : une grand-mère titulaire de la carte d'invalidité qui vient déjeuner toutes les semaines mais habite chez elle n'est pas à charge. Et un <strong>ascendant hébergé mais valide</strong> n'est jamais une personne à charge, quel que soit son âge ou son absence de ressources — tout au plus ouvre-t-il droit à la déduction des frais d'accueil s'il a plus de 75 ans.</p>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">Exemple — l'enfant infirme majeur</div>
+        <p>Louis, 34 ans, infirme, vit sous le toit de ses parents. Il n'est pas titulaire de la carte d'invalidité. Il est malgré tout personne à charge <em>de droit</em>, parce que l'infirmité suffit et qu'elle joue à tout âge. En revanche, l'absence de carte le prive de la demi-part supplémentaire d'invalidité : charge oui, demi-part non.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">La mère d'un contribuable, 74 ans, sans ressources, vit au foyer de son fils. Elle est :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Personne à charge de droit</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Pas à charge : un ascendant valide n'est pas une PAC</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Personne à charge sur demande de rattachement</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> L'absence de ressources ne crée pas la qualité de personne à charge. Il faudrait une invalidité constatée par une carte, ou avoir plus de 75 ans pour la seule déduction des frais d'accueil.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Un enfant infirme de 30 ans, sans carte d'invalidité, vivant chez ses parents :</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">Est à charge de droit, mais sans demi-part supplémentaire</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">N'est pas à charge, faute de carte</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Est à charge et ouvre droit à une demi-part supplémentaire</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> L'infirmité ouvre la qualité de personne à charge à tout âge, mais « l'état d'infirmité ne permet pas de bénéficier d'une demi-part supplémentaire ».</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l5')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l6',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 7 ============ -->
+    <section class="view" data-view="l7">
+      <span class="tag">Leçon 7 · Foyer fiscal</span>
+      <h1 class="lesson-title">Le rattachement des enfants majeurs</h1>
+      <p class="subtitle">Devenir majeur crée un foyer fiscal. Le rattachement permet d'y renoncer — mais sous conditions d'âge strictes, appréciées au 1<sup>er</sup> janvier.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Le rattachement est une <em>option</em>, pas un droit automatique : l'enfant majeur demande, les parents acceptent.</div>
+        <div class="rb-sub">La demande est <strong>annuelle</strong> et, en principe, <strong>irrévocable</strong>.</div>
+      </div>
+
+      <h2>Qui peut demander son rattachement</h2>
+      <table class="tbl wrap">
+        <tr><th>Situation</th><th>Condition d'âge au 1<sup>er</sup> janvier</th></tr>
+        <tr><td>Enfant majeur, sans autre condition</td><td>Moins de <strong>21 ans</strong></td></tr>
+        <tr><td>Enfant majeur qui poursuit ses études</td><td>Moins de <strong>25 ans</strong></td></tr>
+        <tr><td>Enfant accomplissant un service national volontaire</td><td><strong>Quel que soit l'âge</strong></td></tr>
+        <tr><td>Enfant ayant fondé un foyer distinct — marié, pacsé ou chargé de famille</td><td>Il suffit que <strong>l'un des conjoints</strong> remplisse les conditions ci-dessus</td></tr>
+      </table>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 Le rattachement global</div>
+        <p>Quand un enfant ayant fondé un foyer distinct se rattache, c'est <strong>tout son foyer</strong> qui se rattache : lui-même, son conjoint ou partenaire de PACS, et ses propres enfants à charge. D'où le nom de « rattachement global ». Le rattachement peut être demandé au foyer des parents <em>ou</em> à celui des beaux-parents.</p>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Le piège</div>
+        <p>« Moins de 21 ans » et « moins de 25 ans » se lisent au sens strict et <strong>au 1<sup>er</sup> janvier</strong> de l'année d'imposition. Un étudiant né le 13 mai 2000 a 25 ans au 1<sup>er</sup> janvier 2026 : il n'est plus rattachable, même s'il étudie encore et vit chez ses parents. Vivre sous le toit ne vaut jamais rattachement.</p>
+      </div>
+
+      <h2>La contrepartie</h2>
+      <p>Les parents qui acceptent le rattachement mentionnent sur la déclaration n° 2042 le nombre d'enfants rattachés (cases <strong>J</strong> ou <strong>N</strong>) ainsi que l'identité, la date et le lieu de naissance de chaque enfant concerné. En contrepartie, ils doivent déclarer les revenus perçus pendant <strong>l'année entière</strong> par les personnes rattachées.</p>
+      <p>Si les parents sont imposés séparément, le rattachement peut être demandé à l'un ou à l'autre.</p>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Un étudiant en lettres a 24 ans au 1<sup>er</sup> janvier de l'année d'imposition. Peut-il demander son rattachement ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">Oui, il a moins de 25 ans et poursuit ses études</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Non, il a dépassé 21 ans</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Oui, mais seulement s'il vit chez ses parents</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> La condition d'études repousse le plafond de 21 à 25 ans. La résidence n'est pas une condition du rattachement.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Un enfant majeur marié et chargé de famille se rattache au foyer de ses parents. Qui est rattaché ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Lui seul</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Lui, son conjoint et ses enfants à charge</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Lui et ses enfants, mais pas son conjoint</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> C'est le rattachement global : tout le foyer de l'enfant concerné bascule dans celui des parents — ou des beaux-parents.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l6')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l7',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 8 ============ -->
+    <section class="view" data-view="l8">
+      <span class="tag">Leçon 8 · Foyer fiscal</span>
+      <h1 class="lesson-title">À quelle date on photographie le foyer</h1>
+      <p class="subtitle">1<sup>er</sup> janvier en principe, 31 décembre quand la famille s'agrandit — et quatre cas particuliers qui reviennent chaque année à l'examen.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">La situation de famille et les charges de famille s'apprécient au <em>1<sup>er</sup> janvier</em> de l'année d'imposition dans la majorité des cas.</div>
+        <div class="rb-sub">Elles s'apprécient au <strong>31 décembre</strong> notamment en cas d'augmentation des charges de famille au cours de l'année considérée.</div>
+      </div>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>La règle est faite pour ne jamais pénaliser une naissance. On photographie le foyer au 1<sup>er</sup> janvier, sauf si la photo du 31 décembre est plus favorable parce qu'un enfant est arrivé entre-temps — auquel cas c'est celle-là qu'on retient.</p>
+      </div>
+
+      <h2>Les quatre cas particuliers</h2>
+      <table class="tbl wrap">
+        <tr><th>Événement</th><th>Traitement</th></tr>
+        <tr><td><strong>Année du mariage ou du PACS</strong></td><td>Déclaration <strong>commune</strong> de l'ensemble des revenus de l'année. Sur option <strong>irrévocable</strong>, deux déclarations individuelles pour l'année entière, chacun déclarant ses revenus personnels et sa quote-part des revenus communs.</td></tr>
+        <tr><td><strong>Année de la séparation, du divorce ou de la rupture du PACS</strong></td><td><strong>Deux déclarations séparées</strong> pour l'année entière. Chacun déclare les revenus dont il a disposé sur l'année, plus sa quote-part des revenus communs — les revenus fonciers, par exemple.</td></tr>
+        <tr><td><strong>Année du décès du conjoint ou partenaire</strong></td><td><strong>Deux déclarations</strong> : une commune du 1<sup>er</sup> janvier à la date du décès, puis une du conjoint survivant de la date du décès au 31 décembre.</td></tr>
+        <tr><td><strong>Année de la majorité d'un enfant</strong></td><td>Au choix : rester <strong>mineur à charge</strong> de ses parents jusqu'au 31/12, demander le <strong>rattachement</strong>, ou constituer un <strong>foyer fiscal distinct</strong> et déposer sa propre déclaration.</td></tr>
+      </table>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Attention à la date retenue pour l'impôt</div>
+        <p>En cas de mariage, PACS, séparation, divorce ou rupture de PACS, l'impôt est calculé en retenant la situation et les charges de famille existant <strong>au 31 décembre</strong>. En cas de <strong>décès</strong>, en revanche, la situation retenue est celle du <strong>1<sup>er</sup> janvier</strong> de l'année d'imposition.</p>
+      </div>
+
+      <h2>L'enfant qui atteint 18 ans dans l'année</h2>
+      <p>Lorsque les parents sont imposés distinctement, l'enfant ne pourra demander son rattachement qu'au foyer fiscal du parent qui le considérait à charge de droit au 1<sup>er</sup> janvier de l'année de sa majorité. L'année suivante, le rattachement pourra être demandé à l'un ou à l'autre parent.</p>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Un enfant naît le 13 septembre de l'année N. Compte-t-il comme personne à charge au titre de l'année N ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">Oui : augmentation des charges, on apprécie au 31 décembre</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Non, il faudra attendre l'année N+1</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Oui, mais pour une demi-part divisée au prorata</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Une naissance augmente les charges de famille : la situation s'apprécie au 31 décembre et l'enfant compte dès l'année N, pour une majoration entière.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Un couple divorce en cours d'année N. Combien de déclarations pour l'année N ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Une commune jusqu'au divorce, puis deux séparées</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Deux déclarations séparées pour l'année entière</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Une seule déclaration commune pour l'année entière</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Divorce, séparation et rupture de PACS : deux déclarations couvrant chacune l'année entière. Le découpage en deux périodes, c'est le cas du <em>décès</em>.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l7')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l8',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 9 ============ -->
+    <section class="view" data-view="l9">
+      <span class="tag">Leçon 9 · Nombre de parts</span>
+      <h1 class="lesson-title">Le nombre de parts : cas général et case T</h1>
+      <p class="subtitle">À revenu équivalent, plus le nombre de parts est élevé, plus l'impôt est faible. Ce tableau est le cœur du module — et le seul qu'il faut savoir reconstruire de mémoire.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Sans personne à charge : un contribuable seul a <em>1 part</em>, un couple marié ou pacsé <em>2 parts</em>.</div>
+        <div class="rb-sub">Les personnes à charge ajoutent ensuite des majorations, selon un barème qui dépend de la situation du contribuable.</div>
+      </div>
+
+      <h2>Le barème des majorations</h2>
+      <table class="tbl wrap">
+        <tr><th></th><th>Mariés ou pacsés</th><th>Célibataires, divorcés — concubinage</th><th>Parent isolé (case T)</th><th>Veufs</th></tr>
+        <tr><td><strong>Pas de PAC</strong></td><td>2 parts</td><td>1 part</td><td>1 part</td><td>1 part</td></tr>
+        <tr><td><strong>1<sup>re</sup> PAC</strong></td><td>+ 0,5</td><td>+ 0,5</td><td>+ 0,5 + 0,5</td><td>+ 0,5 + 1</td></tr>
+        <tr><td><strong>2<sup>e</sup> PAC</strong></td><td>+ 0,5</td><td>+ 0,5</td><td>+ 0,5</td><td>+ 0,5</td></tr>
+        <tr><td><strong>3<sup>e</sup> PAC et suivantes</strong></td><td>+ 1</td><td>+ 1</td><td>+ 1</td><td>+ 1</td></tr>
+      </table>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 La mécanique</div>
+        <p>Les deux premières personnes à charge valent une demi-part chacune ; à partir de la troisième, chaque enfant vaut une part entière. C'est un barème qui récompense la troisième naissance. Et lorsque les enfants sont en <strong>résidence alternée</strong>, les majorations sont <strong>divisées par deux</strong>.</p>
+      </div>
+
+      <h2>La case T : le parent isolé</h2>
+      <p>Les contribuables célibataires, divorcés ou séparés bénéficient d'une demi-part supplémentaire s'ils remplissent deux conditions cumulatives : <strong>vivre seuls</strong> et <strong>assurer seuls la charge effective</strong> d'au moins une personne à charge — enfant mineur ou majeur, ou personne titulaire d'une carte d'invalidité.</p>
+      <p>« Vivre seul » signifie ne pas vivre en concubinage, et s'apprécie au 1<sup>er</sup> janvier de l'année d'imposition. Toutefois, en cas de changement de situation familiale au cours de l'année — mariage, conclusion ou dissolution d'un PACS, séparation, divorce — cette condition s'apprécie au 31 décembre. Chaque ex-époux ou ex-partenaire peut donc bénéficier de la majoration liée à la case T si les autres conditions sont remplies.</p>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Trois pièges sur la case T</div>
+        <p>Elle ne joue que pour la <strong>première</strong> personne à charge. Elle est <strong>exclue en résidence alternée</strong>, puisque la charge n'est alors pas assumée seul. Et les <strong>veufs n'y ont pas droit</strong> : la condition de vivre seul ne leur est pas applicable, ils relèvent d'un barème propre.</p>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">Exemple — Elena, divorcée, garde alternée</div>
+        <p>Elena vit seule avec son fils de 6 ans, dont elle partage la garde avec son ex-mari. Elle a 1 part en tant que divorcée. La première personne à charge vaudrait + 0,5 part, mais la résidence alternée divise la majoration par deux : <strong>+ 0,25</strong>. Et la case T est écartée, puisqu'elle n'assume pas seule la charge. Total : <strong>1,25 part</strong>.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Un couple pacsé avec quatre enfants mineurs dispose de combien de parts ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">4 parts</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">5 parts</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">6 parts</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> 2 + 0,5 + 0,5 + 1 + 1 = <strong>5 parts</strong>. Les deux premiers enfants valent une demi-part, les suivants une part entière.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Un parent divorcé vivant seul avec deux enfants à sa charge exclusive dispose de :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">2 parts</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">2,5 parts</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">3 parts</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> 1 (divorcé) + 0,5 + 0,5 (case T, 1<sup>re</sup> PAC) + 0,5 (2<sup>e</sup> PAC) = <strong>2,5 parts</strong>. La demi-part de la case T ne joue qu'une fois.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l8')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l9',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 10 ============ -->
+    <section class="view" data-view="l10">
+      <span class="tag">Leçon 10 · Nombre de parts</span>
+      <h1 class="lesson-title">Les veufs et les situations d'invalidité</h1>
+      <p class="subtitle">Deux régimes qui s'ajoutent au barème général — et qui expliquent la plupart des écarts de réponse dans les exercices de parts.</p>
+
+      <h2>Les veufs avec personnes à charge</h2>
+      <p>Les contribuables veufs avec personnes à charge bénéficient du <strong>même nombre de parts que les contribuables mariés ou pacsés</strong> ayant le même nombre de personnes à charge.</p>
+      <table class="tbl wrap">
+        <tr><th>Situation</th><th>Nombre de parts</th></tr>
+        <tr><td>Veuf</td><td>1 part</td></tr>
+        <tr><td>1<sup>re</sup> personne à charge</td><td>+ 1,5 part</td></tr>
+        <tr><td>2<sup>e</sup> personne à charge</td><td>+ 0,5 part</td></tr>
+        <tr><td>À partir de la 3<sup>e</sup> personne à charge</td><td>+ 1 part par personne supplémentaire</td></tr>
+      </table>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 Pourquoi + 1,5 sur la première</div>
+        <p>Le total doit rejoindre celui d'un couple : 1 + 1,5 = 2,5 parts, exactement ce qu'obtient un couple marié avec un enfant. La majoration de 1,5 part comble l'écart laissé par le conjoint disparu. <strong>La condition de vivre seul ne s'applique pas aux veufs</strong> : ils ne peuvent donc pas bénéficier de la case T.</p>
+      </div>
+
+      <h2>Les situations d'invalidité</h2>
+      <div class="rulebox">
+        <div class="rb-main">Pour chaque personne — le contribuable lui-même ou une personne à charge — titulaire de la carte d'invalidité, de la carte mobilité inclusion mention « invalidité », ou d'une pension d'invalidité d'au moins <em>40 %</em>, le nombre de parts est augmenté d'une <em>demi-part</em>.</div>
+        <div class="rb-sub">Ouvrent également droit à cette demi-part la pension pour accident du travail et la pension militaire, dès lors que le taux atteint 40 %.</div>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Les deux seuils à ne pas confondre</div>
+        <p><strong>80 %</strong> est le seuil de la carte d'invalidité qui fait d'une personne vivant sous le toit une <em>personne à charge</em>. <strong>40 %</strong> est le seuil de la pension d'invalidité qui donne une <em>demi-part supplémentaire</em>. Ce sont deux mécanismes différents, avec deux seuils différents. Et « l'état d'infirmité ne permet pas, au contraire, de bénéficier d'une demi-part supplémentaire ».</p>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">Exemple — M. LAFONT</div>
+        <p>Célibataire de 68 ans, titulaire d'une pension d'invalidité au taux de 42 % à la suite d'un accident du travail, il vit seul et a recueilli son neveu Émile, orphelin de 12 ans, dont il assume tous les besoins matériels. Émile est mineur recueilli : personne à charge de droit. Le compte : <strong>1</strong> (célibataire) <strong>+ 0,5</strong> (1<sup>re</sup> PAC) <strong>+ 0,5</strong> (case T : il vit seul et assume seul la charge) <strong>+ 0,5</strong> (pension à 42 %) = <strong>2,5 parts</strong>.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Une veuve élève seule un enfant mineur. Elle dispose de :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">2 parts</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">2,5 parts</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">3 parts, avec la case T</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> 1 + 1,5 = <strong>2,5 parts</strong>, soit le niveau d'un couple avec un enfant. Pas de case T pour les veufs.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Quel taux de pension d'invalidité ouvre droit à une demi-part supplémentaire ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">Au moins 40 %</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Au moins 80 %</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Au moins 50 %</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> 40 % pour la demi-part liée à la pension ; 80 % est le seuil de la <em>carte</em> qui fait d'une personne sous le toit une personne à charge.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l9')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l10',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 11 ============ -->
+    <section class="view" data-view="l11">
+      <span class="tag">Leçon 11 · Base d'imposition</span>
+      <h1 class="lesson-title">Du revenu global au revenu net global imposable</h1>
+      <p class="subtitle">Quatre étapes, quatre soustractions, et un ordre qu'on ne change jamais. C'est le schéma qui structure toute copie de fiscalité.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Article 156 du CGI : « L'impôt sur le revenu est établi d'après le montant total du <em>revenu net annuel</em> dont dispose chaque foyer fiscal. »</div>
+        <div class="rb-sub">Article 13 : le revenu global net annuel servant de base à l'impôt est déterminé en totalisant les bénéfices ou revenus nets des différentes catégories, compte tenu le cas échéant du montant des déficits, des charges et de l'abattement.</div>
+      </div>
+
+      <h2>Les trois conséquences</h2>
+      <table class="tbl wrap">
+        <tr><th>Principe</th><th>Conséquence</th></tr>
+        <tr><td>Chaque revenu catégoriel suit ses propres règles</td><td>Le revenu imposable repose sur la détermination des revenus imposables de chaque catégorie, chacune autonome du point de vue des règles fiscales.</td></tr>
+        <tr><td>Tous les revenus catégoriels sont des <strong>revenus nets</strong></td><td>Le contribuable peut déduire les charges supportées pour l'acquisition et la préservation de son revenu.</td></tr>
+        <tr><td>Le revenu imposable est <strong>global et unique</strong></td><td>La base d'imposition est le Revenu Net Global Imposable (RNGI) de chaque foyer fiscal.</td></tr>
+      </table>
+
+      <h2>Le schéma en quatre étapes</h2>
+
+      <div class="rulebox">
+        <div class="rb-main">① <em>REVENU GLOBAL</em> = somme des revenus et déficits nets catégoriels</div>
+        <div class="rb-sub">Somme algébrique des revenus nets catégoriels imposables et des déficits nets catégoriels imputables. Si un membre du foyer subit un déficit dans son activité, celui-ci s'impute d'abord sur les revenus de même nature réalisés par les autres membres ; le reliquat s'impute sur les autres catégories — sauf déficits non professionnels, fonciers et agricoles. Si le résultat est négatif, un <strong>déficit global</strong> est constaté : le revenu imposable est nul pour l'année, et le déficit est reportable sur les revenus globaux des <strong>6 années suivantes</strong>.</div>
+      </div>
+
+      <div class="rulebox">
+        <div class="rb-main">② <em>REVENU BRUT GLOBAL</em> = revenu global − déficits globaux des 6 années antérieures</div>
+        <div class="rb-sub">L'imputation s'effectue année par année, en commençant par les <strong>déficits les plus anciens</strong>, et dans la limite du montant du revenu global de l'année N. Les cases de la déclaration vont de 6FA à 6FL.</div>
+      </div>
+
+      <div class="rulebox">
+        <div class="rb-main">③ <em>REVENU NET GLOBAL</em> = revenu brut global − charges déductibles</div>
+        <div class="rb-sub">Ces charges ne peuvent ni créer ni augmenter un déficit global lorsqu'elles excèdent le revenu brut global.</div>
+      </div>
+
+      <div class="rulebox">
+        <div class="rb-main">④ <em>REVENU NET GLOBAL IMPOSABLE</em> = revenu net global − abattements spéciaux</div>
+        <div class="rb-sub">Ces abattements ne sont déductibles que dans la limite du revenu net global.</div>
+      </div>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Quatre filtres successifs, du plus large au plus étroit. On ne saute jamais un filtre et on ne change jamais l'ordre : un déficit antérieur s'impute avant les charges, et les charges avant les abattements. Inverser deux étapes donne presque toujours un résultat faux, parce que chaque filtre est plafonné par ce qui reste à sa sortie.</p>
+      </div>
+
+      <h2>Les charges déductibles du revenu brut global</h2>
+      <p>Pour être déductibles, les charges doivent remplir <strong>quatre conditions cumulatives</strong> : être expressément prévues par la loi — l'énumération est limitative ; n'avoir pas déjà été prises en compte pour la détermination des revenus nets catégoriels ; avoir été payées au cours de l'année d'imposition ; être justifiées, spontanément ou à la demande du service.</p>
+      <table class="tbl wrap">
+        <tr><th>Charge déductible</th></tr>
+        <tr><td>La part de CSG déductible sur les revenus du patrimoine</td></tr>
+        <tr><td>Les cotisations versées au titre d'un Plan d'Épargne Retraite Populaire ou assimilé</td></tr>
+        <tr><td>Les pensions alimentaires</td></tr>
+        <tr><td>Les frais d'accueil d'une personne âgée de plus de 75 ans</td></tr>
+        <tr><td>Les déductions diverses (Monuments historiques…)</td></tr>
+      </table>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Trois choses à ne pas confondre</div>
+        <p>Les <strong>charges déductibles</strong> diminuent le revenu brut global. Les <strong>déficits globaux antérieurs</strong> suivent des règles d'imputation propres, à l'étape précédente. Les <strong>réductions et crédits d'impôt</strong> n'interviennent ni ici ni nulle part dans ce schéma : ils s'appliquent sur l'impôt déjà calculé, pas sur la base.</p>
+      </div>
+
+      <h2>Les abattements spéciaux</h2>
+      <p>Le revenu net global imposable s'obtient en déduisant du revenu net global deux types d'abattements spécifiques : l'abattement pour <strong>personnes âgées ou invalides de condition modeste</strong>, et l'abattement pour <strong>enfants à charge mariés ou pacsés et/ou chargés de famille</strong>.</p>
+
+      <div class="example">
+        <div class="ex-head">Exemple du cours — l'imputation des déficits antérieurs</div>
+        <p>Revenu global 2025 : 23 500 €. Déficits globaux non encore imputés : 5 500 € en 2018, 8 500 € en 2019, 5 000 € en 2020, 12 000 € en 2021.</p>
+        <p>Le déficit de 2018 a plus de six ans : il est <strong>perdu</strong>. On impute ensuite du plus ancien au plus récent : 8 500 € (2019), puis 5 000 € (2020), soit 13 500 €. Reste 10 000 € de revenu global, sur lesquels s'impute partiellement le déficit 2021. Le revenu brut global 2025 est donc de <strong>0 €</strong>, et il subsiste un reliquat de déficit 2021 de <strong>2 000 €</strong>, imputable sur les revenus globaux de 2026 et 2027 au plus tard.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Un déficit global constaté au titre de l'année N est reportable sur les revenus globaux :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Des 3 années suivantes</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Des 6 années suivantes</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Sans limitation de durée</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Six ans, et l'imputation se fait en commençant par les déficits les plus anciens — sinon on en perd par péremption.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Dans quel ordre s'enchaînent les quatre étapes ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">RG → charges → déficits antérieurs → abattements</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">RG → déficits antérieurs → charges → abattements</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">RG → abattements → charges → déficits antérieurs</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Revenu global, puis revenu brut global (− déficits antérieurs), puis revenu net global (− charges), puis revenu net global imposable (− abattements).</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l10')">← Précédent</button>
+        <button class="btn amber" onclick="validate('l11',2)">Valider et voir les applications →</button>
+      </div>
+    </section>
+
+    <!-- ============ APPLICATIONS ============ -->
+    <section class="view" data-view="annales">
+      <span class="tag">Applications</span>
+      <h1 class="lesson-title">Les six exercices du module, corrigés</h1>
+      <p class="subtitle">Les énoncés exacts du polycopié, laissés sans correction. Traite-les au brouillon avant d'ouvrir le corrigé — c'est là que se joue l'écart de note.</p>
+
+      <div class="intro-card">
+        <h2>📐 Deux avertissements avant de commencer</h2>
+        <p>Le polycopié ne fournit <strong>aucun corrigé</strong> : les corrections ci-dessous sont reconstituées à partir du cours et vérifiées pas à pas. Confronte-les à celles du professeur dès qu'il les distribue. Par ailleurs, le document numérote deux fois « exercice 4 » ; la numérotation est rétablie ici de 1 à 6.</p>
+        <p>Les exercices sur les parts ne donnent pas l'année d'imposition. Le cas BONNAUD la fixe : Martin doit avoir moins de 21 ans et Joël moins de 25 ans au 1<sup>er</sup> janvier, ce qui n'est vrai qu'en <strong>N = 2025</strong>. Cette année est retenue pour tous les exercices 3 et 4.</p>
+      </div>
+
+      <!-- Exercice 1 -->
+      <div class="annale">
+        <div class="an-tag">Exercice 1 · Domicile fiscal</div>
+        <h3>M. et Mme EBREL</h3>
+        <div class="enonce">
+          Monsieur et Madame EBREL vivent en Thaïlande, pays avec lequel ils ont créé il y a dix ans une entreprise commerciale d'import-export, en particulier avec la France. Français tous les deux, ils ont conservé à Brest un appartement qu'ils louent en temps ordinaire mais qui est resté vacant depuis le départ du dernier locataire il y a plus de 15 mois. De ce fait, Monsieur et Madame EBREL y résident lors de leurs fréquentes venues en France, le temps de traiter leurs affaires et de rencontrer les personnes avec lesquelles ils sont en relations commerciales, ainsi que pendant la durée de leurs vacances. Au cours de l'année écoulée, ils ont ainsi passé 165 jours à Brest. Par ailleurs, ils possèdent une villa en Thaïlande dans laquelle ils résident habituellement.
+          <ul class="qlist">
+            <li>Monsieur et Madame EBREL ont-ils leur domicile fiscal en France ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Poser la méthode.</b> L'article 4 B énumère quatre tests, examinés dans l'ordre : le foyer, le lieu de séjour principal, l'activité professionnelle, le centre des intérêts économiques. Ils sont <b>alternatifs</b> — un seul rempli suffirait à domicilier en France.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Le foyer — non.</b> Le foyer est la résidence habituelle et permanente. Ils résident habituellement dans leur villa en Thaïlande. L'appartement de Brest est un <b>investissement locatif</b> : ils le louent en temps ordinaire. Sa vacance depuis 15 mois est accidentelle et ne le transforme pas en résidence habituelle.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Le séjour principal — non.</b> <code>165 jours &lt; 183 jours</code>. Le seuil n'est pas atteint.</div></div>
+          <div class="step"><div class="sn">4</div><div class="sc"><b>L'activité professionnelle — non.</b> L'entreprise d'import-export est créée et exploitée en Thaïlande. Les venues en France servent à traiter des affaires et rencontrer des partenaires : c'est une activité <b>accessoire</b> au regard de l'activité principale, exercée hors de France.</div></div>
+          <div class="step"><div class="sn">5</div><div class="sc"><b>Le centre des intérêts économiques — non.</b> Leur principal investissement et la source de leurs revenus se situent en Thaïlande. L'appartement de Brest, vacant, ne produit aucun revenu.</div></div>
+          <div class="step"><div class="sn">6</div><div class="sc"><b>Conclusion.</b> Aucun des quatre critères n'est rempli : Monsieur et Madame EBREL <b>n'ont pas leur domicile fiscal en France</b>. Ils n'y sont imposables qu'au titre de leurs revenus de source française — soit, cette année, aucun, l'appartement étant vacant. Leur dossier relèverait du <b>SIPNR</b>, et la convention fiscale franco-thaïlandaise prime en tout état de cause sur le droit interne.</div></div>
+          <div class="step"><div class="sn">⚠</div><div class="sc"><b>Le piège de l'énoncé.</b> La question parle de « foyer fiscal » là où elle vise le <b>domicile fiscal</b>. Ne pas confondre : le foyer fiscal est l'unité d'imposition, le domicile fiscal est le rattachement territorial. Et la nationalité française des époux est sans incidence : l'article 4 B ne la mentionne pas.</div></div>
+        </div>
+      </div>
+
+      <!-- Exercice 2 -->
+      <div class="annale">
+        <div class="an-tag">Exercice 2 · Dénombrement</div>
+        <h3>Combien de foyers fiscaux ?</h3>
+        <div class="enonce">
+          Dans chacun des cas suivants, déterminez le nombre de foyers fiscaux existants ainsi que leur composition.
+          <ul class="qlist">
+            <li><b>1.</b> M. et Mme DURAND, leur fils Alain âgé de 16 ans et leur fille Christine, 28 ans, vivent sous le même toit.</li>
+            <li><b>2.</b> M. MARTIN, veuf, et sa tante Mme DUBOIS, veuve, vivent tous les deux sous le toit de Mme DUBOIS.</li>
+            <li><b>3.</b> M. JACQUES, lié depuis trois ans par un PACS à Mme DENIS et leurs 2 enfants jumeaux, nés en 2009.</li>
+            <li><b>4.</b> Même hypothèse que le cas précédent mais les parents sont célibataires et vivent en concubinage.</li>
+            <li><b>5.</b> M. HERVE, divorcé, son fils Bruno, étudiant âgé de 24 ans, et sa tante Mme DUPUIS, veuve et titulaire de la carte d'invalidité, vivent au foyer de M. HERVE.</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>DURAND — 2 foyers.</b> Foyer 1 : M. et Mme DURAND, mariés, avec Alain (16 ans, mineur, personne à charge de droit). Foyer 2 : Christine seule. À 28 ans, elle dépasse les deux plafonds de rattachement (21 ans, ou 25 ans si études) : elle constitue nécessairement son propre foyer fiscal, même en vivant sous le toit de ses parents.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>MARTIN / DUBOIS — 2 foyers.</b> Aucun des deux n'est à la charge de l'autre : ni enfant, ni personne invalide titulaire d'une carte. Partager un toit ne crée pas de foyer commun. Une part chacun.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>JACQUES / DENIS — 1 foyer.</b> Le PACS emporte imposition commune au même titre que le mariage. Les jumeaux nés en 2009 sont mineurs au 1<sup>er</sup> janvier : personnes à charge de droit. Composition : M. JACQUES, Mme DENIS et les deux enfants.</div></div>
+          <div class="step"><div class="sn">4</div><div class="sc"><b>Concubinage — 2 foyers.</b> C'est le cœur du cas. <b>Le concubinage n'est pas reconnu fiscalement</b> : chaque concubin déclare séparément. Les deux enfants sont rattachés à l'un ou à l'autre — jamais aux deux pour la même année — ou répartis entre eux.</div></div>
+          <div class="step"><div class="sn">5</div><div class="sc"><b>HERVE — 1 ou 2 foyers, selon l'option de Bruno.</b> Mme DUPUIS est titulaire de la carte d'invalidité et vit sous le toit de M. HERVE : <b>personne à charge de droit</b>, sans condition d'âge, de parenté ni de revenu. Bruno, 24 ans et étudiant, remplit les conditions du rattachement (moins de 25 ans, poursuite d'études) mais le rattachement est une <b>option</b> : s'il le demande et que M. HERVE l'accepte, le foyer est unique ; sinon Bruno forme son propre foyer et M. HERVE en conserve un avec Mme DUPUIS.</div></div>
+          <div class="step"><div class="sn">✓</div><div class="sc"><b>Récapitulatif.</b> Cas 1 : <b>2</b> · cas 2 : <b>2</b> · cas 3 : <b>1</b> · cas 4 : <b>2</b> · cas 5 : <b>1 ou 2</b>.</div></div>
+        </div>
+      </div>
+
+      <!-- Exercice 3 -->
+      <div class="annale">
+        <div class="an-tag">Exercice 3 · Composition et parts</div>
+        <h3>Cinq foyers à composer</h3>
+        <div class="enonce">
+          Pour chacun des cas, vous déterminerez la composition du (ou des) foyer(s) fiscal(aux) et le nombre de parts auquel il(s) a (ont) droit.
+          <ul class="qlist">
+            <li><b>Cas 1.</b> M. CAMUS et Mme SARRASIN sont pacsés depuis le 08/11/2012. Ils ont 4 enfants : Laura née le 14/08/2013, Gabrielle née le 15/10/2016, Léo né le 23/12/2017, Stéphane né le 11/04/2023.</li>
+            <li><b>Cas 2.</b> M. et Mme BONNAUD sont mariés. Ils ont 2 enfants : Martin, né le 21/12/2004, actuellement à la recherche d'un emploi, et Joël, né le 13/05/2000, étudiant en lettres. Les 2 enfants ont demandé le rattachement au foyer fiscal de leurs parents, qui l'ont accepté. La mère de M. BONNAUD, âgée de 74 ans, sans ressources, vit également au foyer.</li>
+            <li><b>Cas 3.</b> M. LAFONT, célibataire, âgé de 68 ans, perçoit une pension d'invalidité (taux de 42 %) à la suite d'un accident du travail. Il est en mesure de justifier qu'il vit seul. Il a recueilli chez lui son neveu Émile, orphelin né le 18/04/2012. Il pourvoit à tous les besoins matériels de ce dernier.</li>
+            <li><b>Cas 4.</b> Mme MOUCHET, 48 ans, est veuve. Elle élève seule Gaël, né le 24/11/2012. Sa fille Hélène, née le 23/03/1998, étudiante en médecine, vit sous son toit.</li>
+            <li><b>Cas 5.</b> M. et Mme CASANOVA sont mariés. Ils ont un enfant, Louis. Ce dernier, né le 23/09/1990, est infirme et vit sous le toit de ses parents. Il n'est pas titulaire de la carte d'invalidité.</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé — âges appréciés au 1<sup>er</sup> janvier 2025</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Cas 1 — SARRASIN : 1 foyer, 5 parts.</b> Âges au 1<sup>er</sup> janvier : 11, 8, 7 et 1 an. Les quatre enfants sont mineurs, donc personnes à charge de droit. Couple pacsé = 2 parts. <code>2 + 0,5 + 0,5 + 1 + 1 = 5 parts</code>. Les deux premiers enfants valent une demi-part, les suivants une part entière.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Cas 2 — BONNAUD : 1 foyer, 3 parts.</b> Martin a 20 ans au 1<sup>er</sup> janvier : moins de 21 ans, il peut se rattacher sans condition d'études — être en recherche d'emploi est indifférent. Joël a 24 ans et poursuit ses études : moins de 25 ans, il peut se rattacher. <b>La mère de M. BONNAUD n'est pas à charge</b> : un ascendant valide ne l'est jamais, et l'absence de ressources n'y change rien ; à 74 ans, elle n'ouvre même pas droit à la déduction des frais d'accueil, réservée aux plus de 75 ans. <code>2 + 0,5 + 0,5 = 3 parts</code>.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Cas 3 — LAFONT : 1 foyer, 2,5 parts.</b> Émile, 12 ans, est un <b>mineur recueilli</b> : M. LAFONT pourvoit à tous ses besoins, la charge est effective et exclusive, donc personne à charge de droit. <code>1</code> (célibataire) <code>+ 0,5</code> (1<sup>re</sup> PAC) <code>+ 0,5</code> (case T : il vit seul et assume seul la charge) <code>+ 0,5</code> (pension d'invalidité pour accident du travail à 42 %, soit au moins 40 %) <code>= 2,5 parts</code>.</div></div>
+          <div class="step"><div class="sn">4</div><div class="sc"><b>Cas 4 — MOUCHET : 2 foyers, 2,5 parts pour Mme MOUCHET.</b> Gaël, 12 ans, est mineur : personne à charge de droit. <b>Hélène a 26 ans au 1<sup>er</sup> janvier 2025</b> : au-delà du plafond de 25 ans, elle ne peut plus se rattacher malgré ses études et sa résidence au domicile maternel — elle forme son propre foyer, à 1 part. Mme MOUCHET relève du barème des veufs : <code>1 + 1,5 = 2,5 parts</code>. <b>Pas de case T</b> : la condition de vivre seul ne s'applique pas aux veufs, qui n'y ont donc pas droit.</div></div>
+          <div class="step"><div class="sn">5</div><div class="sc"><b>Cas 5 — CASANOVA : 1 foyer, 2,5 parts.</b> Louis a 34 ans, mais il est <b>infirme</b> : personne à charge de droit <b>quel que soit son âge</b>, et peu importe qu'il détienne ou non une carte. <code>2 + 0,5 = 2,5 parts</code>. En revanche, l'absence de carte d'invalidité le prive de la demi-part supplémentaire : « l'état d'infirmité ne permet pas, au contraire, de bénéficier d'une demi-part supplémentaire ». C'est tout l'intérêt du cas — charge oui, demi-part non.</div></div>
+          <div class="step"><div class="sn">⚠</div><div class="sc"><b>Sur l'année retenue.</b> En N = 2026, Martin aurait 21 ans et Joël 25 ans au 1<sup>er</sup> janvier : aucun des deux ne serait rattachable, ce qui contredirait l'énoncé. L'exercice est donc calibré pour 2025. Si le professeur retient une autre année, seuls les cas 2 et 4 changent de réponse.</div></div>
+        </div>
+      </div>
+
+      <!-- Exercice 4 -->
+      <div class="annale">
+        <div class="an-tag">Exercice 4 · Composition et parts</div>
+        <h3>Quatre situations à démêler</h3>
+        <div class="enonce">
+          Déterminer le foyer fiscal ou les foyers fiscaux existants et calculer le nombre de parts associées.
+          <ul class="qlist">
+            <li><b>Cas 1.</b> Elena est divorcée. Elle vit seule avec son unique fils, âgé de 6 ans, dont elle partage la garde avec son ex-mari.</li>
+            <li><b>Cas 2.</b> M. Fanch MORVAN, 82 ans, est célibataire. Il vit sous le même toit que Madelaine MORVAN, sa sœur, âgée de 86 ans, également célibataire. Madelaine est titulaire de la carte d'invalidité.</li>
+            <li><b>Cas 3.</b> Hervé LE BIHAN, 31 ans, vient de se pacser avec Julie MARREC, 29 ans, le 19 avril N. Ils ont une fille, Laure, âgée de 15 mois. La mère d'Hervé, Mme Jeanne LE BIHAN, vit au domicile d'Hervé et Julie. Elle a 67 ans, elle est veuve et elle aime toujours jouer au tennis.</li>
+            <li><b>Cas 4.</b> Gurvan, fils de M. et Mme LE GALL, est né le 13 septembre N. Il a deux sœurs jumelles de 4 ans, Nolwenn et Maëlwenn, qui vivent au domicile de leurs parents. M. LE GALL a un fils d'un premier lit, Cheun, qui a 12 ans. Conformément au droit de visite du père, Cheun vient un week-end sur deux au domicile des LE GALL. Huguette JONCOUR, mère de Mme LE GALL, est titulaire de la carte d'invalidité ; mariée à Georges JONCOUR, elle vient prendre un café-gâteau chez LE GALL tous les mercredis.</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Cas 1 — Elena : 1,25 part.</b> Son fils est en <b>résidence alternée</b> : les majorations sont divisées par deux. Elena est divorcée, donc 1 part ; la première personne à charge vaudrait + 0,5, ramenée à <code>+ 0,25</code>. La <b>case T est exclue</b> : elle n'assume pas <i>seule</i> la charge effective de l'enfant, puisque la garde est partagée. <code>1 + 0,25 = 1,25 part</code>.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Cas 2 — Fanch MORVAN : 1 foyer, 2,5 parts.</b> Madelaine est titulaire de la carte d'invalidité et vit sous le toit de son frère : <b>personne à charge de droit</b>, sans condition d'âge ni de parenté. Fanch est célibataire et « vit seul » au sens fiscal — vivre seul signifie ne pas vivre en concubinage, et héberger une personne à charge ne rompt pas cette condition. Il assume seul la charge de Madelaine : <b>case T applicable</b>. <code>1 + 0,5</code> (1<sup>re</sup> PAC) <code>+ 0,5</code> (case T) <code>+ 0,5</code> (carte d'invalidité de Madelaine) <code>= 2,5 parts</code>.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Cas 3 — LE BIHAN : 2 foyers.</b> Hervé et Julie se sont pacsés le 19 avril N : l'année du PACS, le principe est la <b>déclaration commune</b> de l'ensemble des revenus de l'année, avec option irrévocable pour deux déclarations individuelles. Laure, 15 mois, est mineure : personne à charge de droit. Foyer 1 : <code>2 + 0,5 = 2,5 parts</code>. <b>Jeanne LE BIHAN n'est pas à charge</b> : ascendante hébergée, veuve certes, mais valide — le tennis est le signal de l'énoncé — et non titulaire d'une carte d'invalidité. À 67 ans, elle n'ouvre pas non plus droit à la déduction des frais d'accueil, réservée aux plus de 75 ans. Foyer 2 : Jeanne seule, <b>1 part</b>.</div></div>
+          <div class="step"><div class="sn">4</div><div class="sc"><b>Cas 4 — LE GALL : 1 foyer, 4 parts.</b> Trois personnes à charge seulement. Les jumelles de 4 ans sont mineures. <b>Gurvan, né le 13 septembre N, compte dès l'année N</b> : la naissance augmente les charges de famille, la situation s'apprécie donc au 31 décembre. <code>2 + 0,5 + 0,5 + 1 = 4 parts</code>.</div></div>
+          <div class="step"><div class="sn">⚠</div><div class="sc"><b>Les deux pièges du cas 4.</b> <b>Cheun</b> vient un week-end sur deux au titre du <i>droit de visite et d'hébergement</i> : ce n'est ni une résidence alternée ni une charge effective. Il reste à la charge de sa mère et ne compte pas chez les LE GALL. <b>Huguette JONCOUR</b> est bien titulaire de la carte d'invalidité, mais elle <b>ne vit pas sous le toit</b> du contribuable : elle est mariée, vit avec son époux, et vient prendre un café le mercredi. La condition de cohabitation n'est pas remplie — elle n'est pas personne à charge, et n'ouvre donc aucune demi-part.</div></div>
+        </div>
+      </div>
+
+      <!-- Exercice 5 -->
+      <div class="annale">
+        <div class="an-tag">Exercice 5 · Déficit global antérieur</div>
+        <h3>Mme GAONAC'H</h3>
+        <div class="enonce">
+          Madame GAONAC'H, célibataire, est commerçante. Elle a débuté son activité en 2024. Elle a dégagé sur l'exercice 2024 un résultat déficitaire (déficit industriel et commercial) de 5 600 €. Toujours en 2024, elle donnait en location un immeuble nu (montant des loyers encaissés : 6 000 €) qu'elle déclare en micro-foncier. En 2025, son activité commerciale lui a permis de dégager un BIC de 12 000 €. Elle est adhérente d'un centre de gestion agréé. Elle a encaissé au titre de la location nue de son immeuble 6 200 € de recettes imposables.
+          <ul class="qlist">
+            <li>Déterminez son revenu brut global 2025.</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Revenu foncier 2024.</b> Régime micro-foncier : abattement forfaitaire de 30 %. <code>6 000 × 0,70 = 4 200 €</code>.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Revenu global 2024.</b> Le déficit BIC est <b>professionnel</b> : il s'impute sur le revenu global, sans faire partie des exceptions (déficits non professionnels, fonciers, agricoles). <code>− 5 600 + 4 200 = − 1 400 €</code>. Un <b>déficit global de 1 400 €</b> est constaté au titre de 2024, reportable sur les six années suivantes.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Revenu foncier 2025.</b> Recettes de 6 200 €, inférieures au plafond de 15 000 € : le micro-foncier s'applique encore. <code>6 200 × 0,70 = 4 340 €</code>.</div></div>
+          <div class="step"><div class="sn">4</div><div class="sc"><b>Revenu global 2025.</b> <code>12 000 + 4 340 = 16 340 €</code>.</div></div>
+          <div class="step"><div class="sn">5</div><div class="sc"><b>Revenu brut global 2025.</b> On impute le déficit global antérieur, dans la limite du revenu global de l'année. <code>16 340 − 1 400 = <b>14 940 €</b></code>.</div></div>
+          <div class="step"><div class="sn">⚠</div><div class="sc"><b>Sur le centre de gestion agréé.</b> L'adhésion est ici un <b>indice sans effet sur le calcul</b>. Historiquement, les non-adhérents voyaient leur bénéfice majoré de 25 % ; cette majoration a été progressivement réduite puis <b>supprimée à compter de l'imposition des revenus de 2023</b>. Et de toute façon, les adhérents n'ont jamais subi la majoration : le BIC reste de 12 000 € dans les deux lectures. Si le professeur raisonne encore avec le coefficient, la réponse est inchangée.</div></div>
+        </div>
+      </div>
+
+      <!-- Exercice 6 -->
+      <div class="annale">
+        <div class="an-tag">Exercice 6 · RNGI complet</div>
+        <h3>Les époux BRAVIC</h3>
+        <div class="enonce">
+          Monsieur BRAVIC dirige une librairie, Les Étagères, à Brest, sous la forme d'une entreprise individuelle. Il a adhéré à un centre de gestion agréé. Le chiffre d'affaires hors taxe réalisé s'est élevé à 736 000 € pour l'année écoulée N. Les charges fiscalement déductibles sont égales à 586 000 € pour la même période.
+          <br><br>Les locaux commerciaux (non meublés) dans lesquels la librairie est installée ne sont pas inscrits au bilan de l'entreprise. Ils appartiennent en propre à Monsieur BRAVIC, qui prélève un loyer de 2 400 € par mois. Les charges de copropriété et de gestion de l'immeuble correspondant se sont élevées à 7 000 € pour l'année.
+          <br><br>Madame BRAVIC est professeure à l'Université et perçoit un traitement de 3 200 € nets par mois. Elle a reçu au cours de l'année une prime de 2 200 € correspondant à la mise en place d'une nouvelle formation au sein de son université. Les traitements bénéficient d'une déduction forfaitaire de 10 % pour frais professionnels.
+          <br><br>Madame BRAVIC possède en propre un appartement qu'elle a acquis cette année. Les travaux de remise en état de cet appartement se sont élevés à 11 000 €. Les loyers perçus (location non meublée) se montent à 3 600 € pour l'année.
+          <br><br>Monsieur et Madame BRAVIC ont une fille, Hélène, de 27 ans, infirme, qui vit chez eux. Ils lui ont versé au cours de l'année 5 200 € et considèrent que les frais relatifs à son entretien s'élèvent à 5 000 €.
+          <br><br>Monsieur et Madame BRAVIC ont déclaré un déficit global de 95 000 € au titre de l'année N−1. Seules les charges indiquées dans l'énoncé sont déduites des différentes catégories de revenus.
+          <ul class="qlist">
+            <li><b>1.</b> Déterminer les revenus nets catégoriels du foyer fiscal au titre de l'année N.</li>
+            <li><b>2.</b> Calculer le revenu net global imposable du foyer fiscal au titre de l'année N.</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé</div>
+          <div class="step"><div class="sn">0</div><div class="sc"><b>Composition du foyer.</b> Couple marié. Hélène, 27 ans, est <b>infirme</b> : personne à charge de droit quel que soit son âge. <code>2 + 0,5 = 2,5 parts</code>. Aucune demi-part d'invalidité : l'énoncé ne mentionne ni carte, ni pension d'au moins 40 %.</div></div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>BIC — la librairie.</b> Les locaux ne sont pas inscrits au bilan : ils restent dans le patrimoine privé. Le loyer que l'entreprise verse à son exploitant est donc une <b>charge déductible du BIC</b>, et symétriquement un revenu foncier pour Monsieur BRAVIC. <code>Loyer annuel = 2 400 × 12 = 28 800 €</code>.<br><code>BIC = 736 000 − 586 000 − 28 800 = <b>121 200 €</b></code>. L'adhésion au centre de gestion agréé est sans incidence sur le montant.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Revenus fonciers — les deux biens ensemble.</b> La catégorie est unique au niveau du foyer fiscal : on additionne les recettes des deux immeubles et on en retranche les charges. <code>Recettes = 28 800 + 3 600 = 32 400 €</code>, au-delà du plafond de 15 000 € : le <b>régime réel est obligatoire</b>, le micro-foncier est écarté. <code>Charges = 7 000 + 11 000 = 18 000 €</code> — les travaux de remise en état sont des dépenses de réparation et d'entretien, donc déductibles.<br><code>RF net = 32 400 − 18 000 = <b>14 400 €</b></code>.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Traitements et salaires — Mme BRAVIC.</b> <code>3 200 × 12 = 38 400 €</code>, plus la prime de 2 200 € : <code>40 600 €</code>. Déduction forfaitaire de 10 % : <code>40 600 × 0,90 = <b>36 540 €</b></code>. La déduction s'élève à 4 060 €, bien en deçà du plafond annuel.</div></div>
+          <div class="step"><div class="sn">4</div><div class="sc"><b>① Revenu global.</b> <code>121 200 + 14 400 + 36 540 = <b>172 140 €</b></code>.</div></div>
+          <div class="step"><div class="sn">5</div><div class="sc"><b>② Revenu brut global.</b> On impute le déficit global de l'année N−1, bien dans la fenêtre des six ans. <code>172 140 − 95 000 = <b>77 140 €</b></code>.</div></div>
+          <div class="step"><div class="sn">6</div><div class="sc"><b>③ Revenu net global.</b> Aucune charge déductible n'est mentionnée — et l'énoncé précise que seules les charges indiquées sont déduites. <code>RNG = <b>77 140 €</b></code>.</div></div>
+          <div class="step"><div class="sn">7</div><div class="sc"><b>④ Revenu net global imposable.</b> Aucun abattement spécial : Hélène n'est ni mariée ni chargée de famille, et l'abattement pour personnes âgées ou invalides de condition modeste vise le contribuable, non une personne à charge. <code>RNGI = <b>77 140 €</b></code>.</div></div>
+          <div class="step"><div class="sn">⚠</div><div class="sc"><b>Les 5 200 € versés à Hélène.</b> Ils ne sont <b>pas déductibles</b>. Il n'y a pas de cumul possible entre le quotient familial et la pension alimentaire : Hélène étant comptée comme personne à charge, aucune pension ne peut être déduite pour elle. Les 5 000 € de frais d'entretien sont, eux, un pur distracteur. À signaler au professeur : pour un enfant majeur infirme, le contribuable peut en principe <i>choisir</i> entre le rattachement comme personne à charge et la déduction d'une pension alimentaire sans plafond — mais les deux s'excluent, et l'énoncé oriente clairement vers la première branche.</div></div>
+          <div class="step"><div class="sn">✓</div><div class="sc"><b>Récapitulatif.</b> BIC <b>121 200 €</b> · revenus fonciers <b>14 400 €</b> · traitements et salaires <b>36 540 €</b> · revenu global <b>172 140 €</b> · revenu brut global <b>77 140 €</b> · <b>RNGI 77 140 €</b> pour 2,5 parts.</div></div>
+        </div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l11')">← Revoir la leçon 11</button>
+        <button class="btn plum" onclick="go('test')">Passer au test final →</button>
+      </div>
+    </section>
+
+    <!-- ============ TEST ============ -->
+    <section class="view" data-view="test">
+      <span class="tag">Évaluation</span>
+      <h1 class="lesson-title">Test final adaptatif</h1>
+      <p class="subtitle">Quarante-deux questions mêlant cours et calculs de parts, dans l'esprit d'un partiel de fiscalité.</p>
+
+      <div class="intro-card">
+        <h2>🎯 Comment le lire</h2>
+        <p>Chaque erreur rouvre la leçon correspondante. Le bilan par chapitre, en bas, te dit où réviser en priorité : c'est lui qui vaut le plus, pas le score brut. Pour les calculs de parts, enchaîne ensuite les séries dans <strong>Calculs générés</strong>.</p>
+      </div>
+
+      <div id="testQuestions"></div>
+
+      <div class="lesson-nav" id="testSubmitRow">
+        <button class="btn" onclick="go('l1')">← Revoir le cours</button>
+        <button class="btn plum" onclick="gradeTest()">Valider mes réponses ✓</button>
+      </div>
+
+      <div class="result" id="testResult">
+        <div class="score-lab">Ton score</div>
+        <div class="score-big" id="scoreBig">0</div>
+        <div class="msg" id="scoreMsg"></div>
+        <div class="chapbars" id="chapBars"></div>
+        <div style="margin-top:28px"><button class="btn plum" onclick="resetTest()">↻ Reprendre le test</button></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<button class="float-retry" id="floatRetry" onclick="resetTest()">↻ Reprendre le test</button>
+<button class="print-fab" onclick="imprimerFiche()" title="Imprimer cette leçon en fiche">🖨️ Fiche</button>
+<div class="xp-pop" id="xpPop"></div>
+
+<script src="lb.js"></script>
+<script src="progress.js"></script>
+<script>
+const SUBJECT_KEY = 'Fiscalité du Particulier';
+
+/* ===================== ÉTAT ===================== */
+const LESSONS = [
+  {id:'l1',  t:"L'article 1 A",            ch:1},
+  {id:'l2',  t:'Les 7 caractéristiques',    ch:1},
+  {id:'l3',  t:'La territorialité',         ch:1},
+  {id:'l4',  t:'Le domicile fiscal',        ch:1},
+  {id:'l5',  t:'Le foyer fiscal',           ch:2},
+  {id:'l6',  t:'Les PAC de droit',          ch:2},
+  {id:'l7',  t:'Le rattachement',           ch:2},
+  {id:'l8',  t:"Les dates d'appréciation",  ch:2},
+  {id:'l9',  t:'Le nombre de parts',        ch:2},
+  {id:'l10', t:'Veufs et invalidité',       ch:2},
+  {id:'l11', t:'Du RG au RNGI',             ch:3}
+];
+const SAVE = (window.P ? P.etat() : {done:{},xp:0,last:null});
+const state = { xp: SAVE.xp||0, done: Object.assign({}, SAVE.done), view:'l1' };
+
+/* ===================== NAVIGATION ===================== */
+function buildNav(){
+  [1,2,3].forEach(ch=>{
+    const nav = document.getElementById('navList'+ch);
+    if(!nav) return;
+    nav.innerHTML = '';
+    LESSONS.forEach((l,i)=>{
+      if(l.ch!==ch) return;
+      const d = document.createElement('div');
+      d.className = 'nav-item' + (state.done[l.id]?' done':'');
+      d.dataset.view = l.id;
+      d.onclick = ()=>go(l.id);
+      d.innerHTML = '<span class="num">'+(state.done[l.id]?'✓':(i+1))+'</span><span class="lab">'+l.t+'</span>';
+      nav.appendChild(d);
+    });
+  });
+  highlightNav();
+}
+function highlightNav(){
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.dataset.view===state.view));
+}
+function go(view){
+  state.view = view;
+  if(window.P && /^l\d+$/.test(view)) P.derniereLecon(view);
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active', v.dataset.view===view));
+  highlightNav();
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(window.innerWidth<=880) closeSidebar();
+}
+function imprimerFiche(){ window.print(); }
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+/* ===================== XP ===================== */
+function addXp(n){
+  state.xp += n;
+  if(window.P) P.ajouterXp(n);
+  document.getElementById('xpVal').textContent = state.xp;
+  popXp('+'+n+' XP');
+}
+function popXp(txt){
+  const p = document.getElementById('xpPop');
+  p.textContent = '★ '+txt;
+  p.classList.add('show');
+  clearTimeout(p._t);
+  p._t = setTimeout(()=>p.classList.remove('show'),1400);
+}
+function updateProgress(){
+  const pct = Math.round(Object.keys(state.done).length/LESSONS.length*100);
+  document.getElementById('progFill').style.width = pct+'%';
+  document.getElementById('progPct').textContent = pct+' %';
+}
+
+/* ===================== MINI-QUIZ ===================== */
+function pick(btn){
+  const quiz = btn.closest('.quiz');
+  if(quiz.classList.contains('answered')) return;
+  quiz.classList.add('answered');
+  const correct = btn.dataset.correct === 'true';
+  quiz.querySelectorAll('.opt').forEach(o=>{
+    o.disabled = true;
+    if(o.dataset.correct === 'true') o.classList.add('right');
+  });
+  if(!correct) btn.classList.add('wrong');
+  const fb = quiz.querySelector('.feedback');
+  if(fb) fb.hidden = false;
+  if(window.P){
+    const sec = quiz.closest('.view');
+    const lec = sec ? sec.dataset.view : '?';
+    const rang = sec ? [...sec.querySelectorAll('.quiz')].indexOf(quiz) : 0;
+    P.noterReponse('quiz:'+lec+':'+rang, correct, 'Leçon '+lec.replace('l',''));
+  }
+  if(correct) addXp(10);
+}
+function validate(id, quizCount){
+  const sec = document.querySelector('.view[data-view="'+id+'"]');
+  const answered = sec.querySelectorAll('.quiz.answered').length;
+  if(answered < quizCount){
+    popXp("Réponds aux "+quizCount+" quiz d'abord");
+    sec.querySelectorAll('.quiz:not(.answered)').forEach(q=>{ q.style.boxShadow='0 0 0 2px var(--plum)'; setTimeout(()=>q.style.boxShadow='',1200); });
+    return;
+  }
+  if(!state.done[id]){ state.done[id]=true; if(window.P) P.marquerLecon(id); addXp(50); buildNav(); updateProgress(); }
+  const idx = LESSONS.findIndex(l=>l.id===id);
+  const next = LESSONS[idx+1];
+  if(next) go(next.id); else go('annales');
+}
+
+/* ===================== TEST FINAL ===================== */
+const TEST = [
+  {ch:'Principes', lesson:'l1', type:'qcm',
+   q:"Sur quelle base l'impôt sur le revenu est-il établi, selon l'article 1 A du CGI ?",
+   opts:["Le revenu brut encaissé","Le revenu net global du contribuable","Chaque revenu catégoriel séparément","Le revenu disponible après impôt"], correct:1,
+   ex:"L'article 1 A dispose que l'impôt « frappe le revenu net global du contribuable ». Les catégories servent à le construire."},
+  {ch:'Principes', lesson:'l1', type:'num',
+   q:"Combien de catégories de revenus l'article 1 A énumère-t-il ?",
+   answer:8, tol:0, unit:"catégories",
+   ex:"Huit : revenus fonciers, BIC, rémunérations de dirigeants, BA, traitements et salaires, BNC, RCM et plus-values."},
+  {ch:'Principes', lesson:'l1', type:'qcm',
+   q:"Les loyers d'un appartement loué meublé relèvent de quelle catégorie ?",
+   opts:["Revenus fonciers","Bénéfices industriels et commerciaux","Revenus de capitaux mobiliers","Bénéfices non commerciaux"], correct:1,
+   ex:"La location meublée relève des BIC. Seule la location nue donne des revenus fonciers."},
+  {ch:'Principes', lesson:'l2', type:'qcm',
+   q:"Le prélèvement à la source, entré en vigueur le 1er janvier 2019, a-t-il supprimé le caractère déclaratif de l'IR ?",
+   opts:["Oui, totalement","Non, la déclaration reste obligatoire","Oui, sauf pour les revenus fonciers","Oui, pour les seuls salariés"], correct:1,
+   ex:"Le prélèvement à la source change le moment du paiement, pas la nature déclarative de l'impôt."},
+  {ch:'Principes', lesson:'l2', type:'qcm',
+   q:"Un revenu est imposable lorsqu'il est :",
+   opts:["Acquis","Perçu","Disponible","Déclaré"], correct:2,
+   ex:"Seuls les revenus disponibles sont imposables : ceux dont la perception ne dépend plus que de la volonté du bénéficiaire."},
+  {ch:'Principes', lesson:'l2', type:'qcm',
+   q:"Quelle affirmation est fausse ? L'impôt sur le revenu est :",
+   opts:["Un impôt d'État","Un impôt progressif par tranches","Un impôt proportionnel à taux unique","Un impôt global et synthétique"], correct:2,
+   ex:"L'IR est progressif par tranches, pas proportionnel. C'est la flat tax qui est proportionnelle, et elle ne concerne que certains revenus du capital."},
+  {ch:'Principes', lesson:'l2', type:'qcm',
+   q:"Sur quelle page de la déclaration n° 2042 porte-t-on les personnes à charge ?",
+   opts:["La 1re","La 2e","La 3e","La 4e"], correct:1,
+   ex:"Page 2 : situation familiale et personnes à charge. Page 3 : traitements, RCM, revenus fonciers. Page 4 : charges déductibles, réductions et crédits."},
+
+  {ch:'Territorialité', lesson:'l3', type:'qcm',
+   q:"Une personne domiciliée fiscalement en France est imposable :",
+   opts:["Sur ses seuls revenus de source française","Sur l'ensemble de ses revenus","Sur ses revenus français et la moitié des étrangers","Uniquement si elle est de nationalité française"], correct:1,
+   ex:"Article 4 A : domicile en France ⇒ imposition sur l'ensemble des revenus, sous réserve des conventions internationales."},
+  {ch:'Territorialité', lesson:'l3', type:'qcm',
+   q:"Lequel de ces territoires n'entre pas dans la France au sens de l'IR ?",
+   opts:["La Corse","Mayotte","La Polynésie française","La Guyane"], correct:2,
+   ex:"Seuls la France continentale, la Corse, les îles du littoral et les cinq DOM (Guadeloupe, Martinique, Réunion, Guyane, Mayotte) sont inclus."},
+  {ch:'Territorialité', lesson:'l3', type:'qcm',
+   q:"Quelle combinaison échappe à l'impôt sur le revenu français ?",
+   opts:["Domicile en France, revenu de source étrangère","Domicile hors de France, revenu de source française","Domicile hors de France, revenu de source étrangère","Aucune : tout est imposable"], correct:2,
+   ex:"Une seule case sur quatre : domicile hors de France ET revenu de source étrangère."},
+  {ch:'Territorialité', lesson:'l3', type:'qcm',
+   q:"Quelle déclaration un résident français encaissant des revenus étrangers doit-il souscrire en annexe de la 2042 ?",
+   opts:["La 2044","La 2047","La 2042-C","La 2031"], correct:1,
+   ex:"La déclaration n° 2047, annexée à la déclaration d'ensemble n° 2042."},
+  {ch:'Territorialité', lesson:'l4', type:'num',
+   q:"Au-delà de combien de jours de présence en France le critère du séjour principal est-il rempli ?",
+   answer:183, tol:0, unit:"jours",
+   ex:"Plus de 183 jours. Un séjour de 165 jours ne suffit donc pas."},
+  {ch:'Territorialité', lesson:'l4', type:'qcm',
+   q:"Les critères de l'article 4 B s'apprécient :",
+   opts:["De manière cumulative","De manière alternative, dans un ordre successif","Dans l'ordre choisi par le contribuable","Uniquement sur le critère économique"], correct:1,
+   ex:"Alternatifs quant à la conséquence — un seul suffit — mais successifs quant à la méthode : personnels, puis professionnel, puis économique."},
+  {ch:'Territorialité', lesson:'l4', type:'qcm',
+   q:"Un couple vivant à l'étranger y exploite son entreprise et passe 165 jours par an dans un appartement français habituellement loué. Son domicile fiscal est :",
+   opts:["En France, par le critère du foyer","En France, par le critère économique","Hors de France : aucun critère n'est rempli","En France, par le critère professionnel"], correct:2,
+   ex:"Cas EBREL. Résidence habituelle à l'étranger, moins de 183 jours, activité et intérêts économiques à l'étranger : aucun des quatre critères."},
+  {ch:'Territorialité', lesson:'l4', type:'qcm',
+   q:"Quel service gère les dossiers des personnes domiciliées à l'étranger percevant des revenus français ?",
+   opts:["Le SIE","Le SIPNR","La DGFiP centrale","Le centre des impôts du lieu de l'immeuble"], correct:1,
+   ex:"Le Service des Impôts des Particuliers des Non Résidents, quelle que soit la nationalité du contribuable."},
+
+  {ch:'Foyer fiscal', lesson:'l5', type:'qcm',
+   q:"Deux concubins avec deux enfants communs mineurs forment :",
+   opts:["Un foyer fiscal","Deux foyers fiscaux","Trois foyers fiscaux","Un ou deux, au choix"], correct:1,
+   ex:"Le concubinage n'est pas reconnu fiscalement. Deux foyers ; les enfants sont rattachés à l'un ou à l'autre."},
+  {ch:'Foyer fiscal', lesson:'l5', type:'qcm',
+   q:"À partir de quel événement une personne physique devient-elle contribuable de plein droit ?",
+   opts:["À 16 ans","À la majorité civile à 18 ans ou par le mariage","À la fin des études","Au premier emploi"], correct:1,
+   ex:"Majorité civile à 18 ans, ou mariage."},
+  {ch:'Foyer fiscal', lesson:'l6', type:'num',
+   q:"Quel taux d'invalidité la carte doit-elle constater pour qu'une personne vivant sous le toit soit à charge ? (en %)",
+   answer:80, tol:0, unit:"%",
+   ex:"Au moins 80 % — à ne pas confondre avec les 40 % de la pension qui ouvre une demi-part supplémentaire."},
+  {ch:'Foyer fiscal', lesson:'l6', type:'qcm',
+   q:"Un enfant infirme de 34 ans vivant chez ses parents, sans carte d'invalidité :",
+   opts:["N'est pas à charge","Est à charge de droit, sans demi-part supplémentaire","Est à charge et ouvre droit à une demi-part","Doit demander son rattachement"], correct:1,
+   ex:"L'infirmité rend l'enfant à charge de droit à tout âge, mais « l'état d'infirmité ne permet pas de bénéficier d'une demi-part supplémentaire »."},
+  {ch:'Foyer fiscal', lesson:'l6', type:'qcm',
+   q:"La mère d'un contribuable, 74 ans, sans ressources, vit à son foyer. Elle est :",
+   opts:["Personne à charge de droit","Personne à charge par rattachement","Pas à charge : ascendant valide","À charge si elle le demande"], correct:2,
+   ex:"Un ascendant valide n'est jamais une personne à charge. À plus de 75 ans, seuls les frais d'accueil deviennent déductibles."},
+  {ch:'Foyer fiscal', lesson:'l6', type:'qcm',
+   q:"Un enfant mineur recueilli est à charge de droit à condition que le contribuable assume une charge :",
+   opts:["Partielle","Effective et exclusive","Majoritaire","Simplement matérielle"], correct:1,
+   ex:"Charge effective ET exclusive, matérielle comme éducative, et l'enfant doit vivre au foyer."},
+  {ch:'Foyer fiscal', lesson:'l7', type:'num',
+   q:"Jusqu'à quel âge, apprécié au 1er janvier, un enfant majeur qui poursuit ses études peut-il demander son rattachement ?",
+   answer:25, tol:0, unit:"ans (exclus)",
+   ex:"Moins de 25 ans au 1er janvier. Sans condition d'études, le plafond est de moins de 21 ans."},
+  {ch:'Foyer fiscal', lesson:'l7', type:'qcm',
+   q:"La demande de rattachement d'un enfant majeur est :",
+   opts:["Annuelle et révocable","Annuelle et en principe irrévocable","Définitive jusqu'à 25 ans","Automatique s'il vit au foyer"], correct:1,
+   ex:"Annuelle et en principe irrévocable. Vivre au foyer ne vaut jamais rattachement."},
+  {ch:'Foyer fiscal', lesson:'l7', type:'qcm',
+   q:"Un enfant majeur marié et chargé de famille se rattache. Qui bascule dans le foyer des parents ?",
+   opts:["Lui seul","Lui et ses enfants","Lui, son conjoint et ses enfants à charge","Lui et son conjoint, sans les enfants"], correct:2,
+   ex:"C'est le rattachement global : tout le foyer de l'enfant concerné."},
+  {ch:'Foyer fiscal', lesson:'l8', type:'qcm',
+   q:"Un enfant naît le 13 septembre de l'année N. Pour l'année N, il :",
+   opts:["Ne compte pas","Compte pour une majoration entière","Compte au prorata des mois","Compte pour une demi-majoration"], correct:1,
+   ex:"L'augmentation des charges de famille fait apprécier la situation au 31 décembre : majoration entière dès l'année N."},
+  {ch:'Foyer fiscal', lesson:'l8', type:'qcm',
+   q:"En cas de divorce en cours d'année N, combien de déclarations sont souscrites au titre de N ?",
+   opts:["Une seule, commune","Deux, pour l'année entière chacune","Une commune puis deux séparées","Trois"], correct:1,
+   ex:"Deux déclarations séparées couvrant l'année entière. Le découpage en deux périodes concerne le décès."},
+  {ch:'Foyer fiscal', lesson:'l8', type:'qcm',
+   q:"En cas de décès du conjoint en cours d'année, la situation retenue pour le calcul de l'impôt est celle :",
+   opts:["Du 31 décembre","Du 1er janvier de l'année d'imposition","De la date du décès","Au choix du survivant"], correct:1,
+   ex:"« En cas de décès la situation retenue est celle du 1er janvier de l'année d'imposition » — à la différence du mariage ou du divorce, appréciés au 31 décembre."},
+
+  {ch:'Nombre de parts', lesson:'l9', type:'num',
+   q:"Un couple pacsé avec quatre enfants mineurs : combien de parts ?",
+   answer:5, tol:0, unit:"parts",
+   ex:"2 + 0,5 + 0,5 + 1 + 1 = 5 parts. Les deux premiers enfants valent une demi-part, les suivants une part entière."},
+  {ch:'Nombre de parts', lesson:'l9', type:'num',
+   q:"Un parent divorcé vivant seul, avec deux enfants à sa charge exclusive : combien de parts ?",
+   answer:2.5, tol:0, unit:"parts",
+   ex:"1 + 0,5 + 0,5 (case T sur la 1re PAC) + 0,5 (2e PAC) = 2,5 parts."},
+  {ch:'Nombre de parts', lesson:'l9', type:'num',
+   q:"Elena, divorcée, vit seule avec son fils de 6 ans en résidence alternée : combien de parts ?",
+   answer:1.25, tol:0, unit:"parts",
+   ex:"1 + (0,5 ÷ 2) = 1,25 part. La résidence alternée divise les majorations par deux et exclut la case T, la charge n'étant pas assumée seul."},
+  {ch:'Nombre de parts', lesson:'l9', type:'qcm',
+   q:"La demi-part de la case T bénéficie :",
+   opts:["À chaque personne à charge","À la première personne à charge seulement","Aux veufs également","Aux parents en résidence alternée"], correct:1,
+   ex:"Elle ne joue qu'une fois, sur la première PAC. Elle est exclue en résidence alternée et ne concerne pas les veufs."},
+  {ch:'Nombre de parts', lesson:'l10', type:'num',
+   q:"Une veuve élevant seule un enfant mineur : combien de parts ?",
+   answer:2.5, tol:0, unit:"parts",
+   ex:"1 + 1,5 = 2,5 parts, soit le niveau d'un couple avec un enfant. Les veufs n'ont pas droit à la case T."},
+  {ch:'Nombre de parts', lesson:'l10', type:'num',
+   q:"Quel taux de pension d'invalidité ouvre droit à une demi-part supplémentaire ? (en %)",
+   answer:40, tol:0, unit:"%",
+   ex:"Au moins 40 %. Les 80 % sont le seuil de la carte qui fait d'une personne sous le toit une personne à charge."},
+  {ch:'Nombre de parts', lesson:'l10', type:'num',
+   q:"M. LAFONT, célibataire vivant seul, pension d'invalidité à 42 %, a recueilli son neveu de 12 ans : combien de parts ?",
+   answer:2.5, tol:0, unit:"parts",
+   ex:"1 + 0,5 (1re PAC) + 0,5 (case T) + 0,5 (pension ≥ 40 %) = 2,5 parts."},
+
+  {ch:"Base d'imposition", lesson:'l11', type:'num',
+   q:"Sur combien d'années un déficit global est-il reportable ?",
+   answer:6, tol:0, unit:"années",
+   ex:"Les six années suivantes, en commençant l'imputation par les déficits les plus anciens."},
+  {ch:"Base d'imposition", lesson:'l11', type:'qcm',
+   q:"Quel est l'ordre correct des quatre étapes ?",
+   opts:["RG → charges → déficits antérieurs → abattements","RG → déficits antérieurs → charges → abattements","RG → abattements → déficits antérieurs → charges","RG → déficits antérieurs → abattements → charges"], correct:1,
+   ex:"Revenu global, revenu brut global (− déficits antérieurs), revenu net global (− charges), revenu net global imposable (− abattements)."},
+  {ch:"Base d'imposition", lesson:'l11', type:'qcm',
+   q:"Laquelle de ces charges n'est pas déductible du revenu brut global ?",
+   opts:["Les pensions alimentaires","Les cotisations PERP","Les frais d'accueil d'une personne de plus de 75 ans","Les dons ouvrant droit à réduction d'impôt"], correct:3,
+   ex:"Les réductions et crédits d'impôt s'appliquent sur l'impôt calculé, jamais sur la base imposable."},
+  {ch:"Base d'imposition", lesson:'l11', type:'num',
+   q:"Micro-foncier : 6 200 € de loyers encaissés. Quel est le revenu foncier net, en euros ?",
+   answer:4340, tol:0, unit:"€",
+   ex:"Abattement forfaitaire de 30 % : 6 200 × 0,70 = 4 340 €."},
+  {ch:"Base d'imposition", lesson:'l11', type:'num',
+   q:"Un traitement de 40 600 € brut imposable, déduction forfaitaire de 10 % : quel revenu net catégoriel, en euros ?",
+   answer:36540, tol:0, unit:"€",
+   ex:"40 600 × 0,90 = 36 540 €. La déduction de 4 060 € reste bien en deçà du plafond annuel."},
+  {ch:"Base d'imposition", lesson:'l11', type:'num',
+   q:"Revenu global 16 340 €, déficit global antérieur de 1 400 € : quel revenu brut global, en euros ?",
+   answer:14940, tol:0, unit:"€",
+   ex:"16 340 − 1 400 = 14 940 € (cas GAONAC'H)."},
+  {ch:"Base d'imposition", lesson:'l11', type:'qcm',
+   q:"Au-delà de quel montant de recettes le régime micro-foncier cesse-t-il de s'appliquer ?",
+   opts:["10 000 €","15 000 €","23 000 €","32 900 €"], correct:1,
+   ex:"Au-delà de 15 000 € de recettes, le régime réel devient obligatoire."},
+  {ch:"Base d'imposition", lesson:'l11', type:'qcm',
+   q:"Les charges déductibles du revenu brut global peuvent-elles créer un déficit global ?",
+   opts:["Oui, sans limite","Oui, dans la limite de 10 700 €","Non, elles ne peuvent ni créer ni augmenter un déficit global","Oui, si elles sont justifiées"], correct:2,
+   ex:"Elles diminuent le revenu brut global mais ne peuvent ni créer ni augmenter un déficit global."}
+];
+
+function renderTest(){
+  const c = document.getElementById('testQuestions');
+  c.innerHTML = '';
+  TEST.forEach((q,i)=>{
+    const div = document.createElement('div');
+    div.className = 'test-q'; div.id = 'tq'+i;
+    let body = '';
+    if(q.type==='qcm'){
+      body = '<div class="topt">' + q.opts.map((o,j)=>
+        '<button onclick="selOpt('+i+','+j+')" id="tq'+i+'o'+j+'">'+o+'</button>').join('') + '</div>';
+    } else {
+      body = '<input type="number" step="any" class="num-input" id="tq'+i+'in" placeholder="…"><span class="unit">'+(q.unit||'')+'</span>';
+    }
+    div.innerHTML =
+      '<div class="tq-head"><span class="tq-num">Question '+(i+1)+'/'+TEST.length+'</span><span class="tq-chap">'+q.ch+'</span></div>'+
+      '<div class="tq-q">'+q.q+'</div>'+ body +
+      '<div class="remed" id="tq'+i+'rem"><div class="rt">⚠️ À revoir</div><div class="ra" id="tq'+i+'ra"></div>'+
+      '<div class="remed-btns"><button class="btn" onclick="go(\''+q.lesson+'\')">📖 Revoir la leçon</button>'+
+      '<button class="btn primary" onclick="dismissRemed('+i+')">Continuer →</button></div></div>';
+    c.appendChild(div);
+  });
+  document.getElementById('testResult').classList.remove('show');
+  document.getElementById('testSubmitRow').style.display = 'flex';
+  document.getElementById('floatRetry').classList.remove('show');
+  TEST._answers = {};
+}
+function selOpt(qi, oi){
+  if(document.getElementById('tq'+qi).classList.contains('graded')) return;
+  TEST._answers = TEST._answers || {};
+  TEST._answers[qi] = oi;
+  TEST[qi].opts.forEach((_,j)=>document.getElementById('tq'+qi+'o'+j).classList.toggle('sel', j===oi));
+}
+function gradeTest(){
+  TEST._answers = TEST._answers || {};
+  let score = 0; const chap = {};
+  TEST.forEach((q,i)=>{
+    const box = document.getElementById('tq'+i);
+    box.classList.add('graded');
+    let ok = false;
+    if(q.type==='qcm'){
+      ok = TEST._answers[i] === q.correct;
+      q.opts.forEach((_,j)=>{ const b=document.getElementById('tq'+i+'o'+j); b.disabled=true;
+        if(j===q.correct) b.classList.add('sel'); });
+    } else {
+      const val = parseFloat(document.getElementById('tq'+i+'in').value);
+      ok = !isNaN(val) && Math.abs(val - q.answer) <= (q.tol||0);
+      document.getElementById('tq'+i+'in').disabled = true;
+    }
+    if(window.P) P.noterReponse('test:'+i, ok, q.ch);
+    chap[q.ch] = chap[q.ch] || {ok:0,tot:0};
+    chap[q.ch].tot++;
+    if(ok){ score++; chap[q.ch].ok++; box.classList.add('ok'); }
+    else { box.classList.add('ko');
+      document.getElementById('tq'+i+'ra').innerHTML = q.ex;
+      document.getElementById('tq'+i+'rem').classList.add('show'); }
+  });
+  showResult(score, chap);
+}
+function dismissRemed(i){ document.getElementById('tq'+i+'rem').classList.remove('show'); }
+function showResult(score, chap){
+  document.getElementById('testSubmitRow').style.display = 'none';
+  document.getElementById('scoreBig').textContent = score+'/'+TEST.length;
+  let msg, col; const pct = score/TEST.length*100;
+  if(pct>=90){ msg="Excellent — le module 1 est acquis."; col=getCss('--teal'); }
+  else if(pct>=70){ msg="Très bon niveau. Revois les chapitres en orange ci-dessous."; col=getCss('--teal'); }
+  else if(pct>=50){ msg="Bon début. Concentre tes révisions sur les chapitres faibles."; col=getCss('--amber'); }
+  else { msg="Il reste du travail. Reprends les leçons signalées, puis réessaie."; col=getCss('--rust'); }
+  document.getElementById('scoreBig').style.color = col;
+  document.getElementById('scoreMsg').textContent = msg;
+  const bars = document.getElementById('chapBars');
+  bars.innerHTML = '';
+  Object.keys(chap).forEach(name=>{
+    const c = chap[name];
+    const p = Math.round(c.ok/c.tot*100);
+    const bc = p>=67?getCss('--teal'):p>=34?getCss('--amber'):getCss('--rust');
+    bars.innerHTML += '<div class="chapbar"><div class="cbl"><span>'+name+'</span><span>'+c.ok+'/'+c.tot+'</span></div>'+
+      '<div class="cbt"><div class="cbf" style="width:0;background:'+bc+'" data-w="'+p+'"></div></div></div>';
+  });
+  document.getElementById('testResult').classList.add('show');
+  document.getElementById('floatRetry').classList.add('show');
+  setTimeout(()=>document.querySelectorAll('.cbf').forEach(b=>b.style.width=b.dataset.w+'%'),120);
+  addXp(score*20);
+  if(window.P) P.meilleurScore('Test final', score, TEST.length);
+  document.getElementById('testResult').scrollIntoView({behavior:'smooth'});
+  if(window.LB){ try{ LB.record({subject:SUBJECT_KEY, mode:'Test final', correct:score, total:TEST.length, xp:state.xp}); }catch(e){} }
+}
+function resetTest(){ renderTest(); go('test'); }
+function getCss(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+
+/* ===================== APPLICATIONS ===================== */
+function toggleCorrige(btn){
+  const cor = btn.nextElementSibling;
+  const open = cor.classList.toggle('show');
+  btn.textContent = open ? 'Masquer le corrigé' : 'Voir le corrigé';
+}
+
+/* ===================== INIT ===================== */
+buildNav();
+updateProgress();
+renderTest();
+go((window.P && SAVE.last && document.querySelector('.view[data-view="'+SAVE.last+'"]')) ? SAVE.last : 'l1');
+try{ document.getElementById('lb-id-slot').appendChild(LB.idButton()); }catch(e){}
+</script>
+<script src="banque.js"></script>
+<script src="ui.js"></script>
+</body>
+</html>

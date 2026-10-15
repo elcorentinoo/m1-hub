@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ressourcerie — M1 MBAF</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --card:#fff; --card2:#fbf9f5;
+  --paper:#faf6ef; --paper2:#f3ece0; --ink:#22201b; --ink2:#4a4640;
+  --muted:#8a8378; --line:#e3d9c8; --line2:#d4c7b0;
+  --teal:#1b6b5e; --teal-l:#e4f0ed; --teal-d:#0f4a40;
+  --amber:#c87a12; --amber-l:#fbf0db;
+  --rust:#a8432a; --rust-l:#f7e6df;
+  --plum:#6b3a73; --plum-l:#f0e7f2;
+  --navy:#241C15; --navy-l:#e3ebf4;
+  --gold:#b8860b;
+  --shadow:0 1px 3px rgba(34,32,27,.08), 0 8px 24px rgba(34,32,27,.06);
+  --shadow-lg:0 4px 12px rgba(34,32,27,.12), 0 20px 48px rgba(34,32,27,.1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);line-height:1.6;
+  background-image:radial-gradient(var(--line) .5px, transparent .5px);background-size:22px 22px;
+}
+::-webkit-scrollbar{width:9px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--line2);border-radius:5px}
+
+#topbar{position:sticky;top:0;z-index:50;background:rgba(250,246,239,.94);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+#topbar .logo{font-family:'Fraunces',serif;font-weight:900;font-size:18px;color:var(--navy);white-space:nowrap}
+#topbar .logo span{color:var(--amber)}
+#topbar .hub{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);text-decoration:none;
+  padding:5px 10px;border-radius:8px;border:1px solid var(--line);transition:.15s;white-space:nowrap}
+#topbar .hub:hover{color:var(--navy);border-color:var(--line2);background:var(--card)}
+.spacer{flex:1}
+
+main{max-width:900px;margin:0 auto;padding:36px 24px 100px}
+.hero-tag{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:1px;text-transform:uppercase;
+  color:var(--amber);font-weight:500;display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.hero-tag::before{content:'';width:24px;height:2px;background:var(--amber)}
+h1{font-family:'Fraunces',serif;font-weight:900;font-size:2.3rem;line-height:1.08;letter-spacing:-1px;margin-bottom:10px}
+h1 .acc{color:var(--amber)}
+.sub{font-size:16.5px;color:var(--ink2);margin-bottom:28px;max-width:60ch}
+
+.btn{font-family:'DM Sans';font-weight:600;font-size:.95rem;padding:11px 20px;border-radius:11px;cursor:pointer;
+  border:1.5px solid var(--line2);background:var(--card);color:var(--ink);transition:.15s;display:inline-flex;align-items:center;gap:8px}
+.btn:hover{border-color:var(--navy);transform:translateY(-1px)}
+.btn.primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn.primary:hover{background:var(--teal-d)}
+.btn.navy{background:var(--navy);color:#fff;border-color:var(--navy)}
+.btn.navy:hover{background:#3A2E23}
+.btn.ghost{background:transparent}
+.btn.danger{color:var(--rust);border-color:#e2b2ab}
+.btn.danger:hover{background:var(--rust-l);border-color:var(--rust)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.btn.sm{padding:7px 13px;font-size:.85rem;border-radius:9px}
+
+/* ===== ZONE DE DÉPÔT ===== */
+.drop{border:2px dashed var(--line2);border-radius:18px;background:var(--card);padding:36px 26px;text-align:center;
+  transition:.2s;cursor:pointer;margin-bottom:26px}
+.drop:hover,.drop.over{border-color:var(--teal);background:var(--teal-l)}
+.drop .ico{font-size:40px;margin-bottom:10px}
+.drop h3{font-family:'Fraunces',serif;font-size:1.25rem;color:var(--navy);margin-bottom:6px;font-weight:700}
+.drop p{color:var(--ink2);font-size:14px;margin-bottom:4px}
+.drop .fmt{font-family:'DM Mono',monospace;font-size:11.5px;color:var(--muted);margin-top:10px}
+#fileInput{display:none}
+
+/* ===== ANALYSE ===== */
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px 26px;box-shadow:var(--shadow);margin-bottom:22px;display:none}
+.panel.show{display:block;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.panel h3{font-family:'Fraunces',serif;font-size:1.2rem;color:var(--navy);margin-bottom:4px;font-weight:700}
+.panel .phint{font-size:13.5px;color:var(--muted);margin-bottom:18px}
+.filechip{display:inline-flex;align-items:center;gap:9px;background:var(--paper2);border:1px solid var(--line);
+  border-radius:10px;padding:9px 14px;font-family:'DM Mono',monospace;font-size:12.5px;color:var(--ink2);margin-bottom:18px}
+.filechip .x{cursor:pointer;color:var(--rust);font-weight:700}
+.field{margin-bottom:16px}
+.field label{display:block;font-family:'DM Mono',monospace;font-size:11.5px;text-transform:uppercase;
+  letter-spacing:1px;color:var(--muted);margin-bottom:6px}
+.field input,.field textarea,.field select{width:100%;padding:11px 14px;border:1.5px solid var(--line2);border-radius:10px;
+  font-size:15px;font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);resize:vertical}
+.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--teal);background:var(--card)}
+.field textarea{min-height:110px;line-height:1.55}
+.field .cnt{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-align:right;margin-top:4px}
+.kw{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.kw span{background:var(--navy-l);color:var(--navy);border:1px solid #c3d2e2;border-radius:20px;
+  padding:3px 11px;font-size:12px;font-family:'DM Mono',monospace}
+.analysing{display:flex;align-items:center;gap:12px;color:var(--ink2);font-size:14.5px;padding:8px 0}
+.spin{width:18px;height:18px;border:2.5px solid var(--line2);border-top-color:var(--teal);border-radius:50%;
+  animation:sp .8s linear infinite;flex-shrink:0}
+@keyframes sp{to{transform:rotate(360deg)}}
+.note{background:var(--amber-l);border:1px solid #e6cf9e;border-left:4px solid var(--amber);border-radius:10px;
+  padding:12px 15px;font-size:13.5px;color:#5e3a06;margin-bottom:18px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+
+/* ===== BARRE DE FILTRES ===== */
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:20px}
+.toolbar input[type=search]{flex:1;min-width:190px;padding:10px 14px;border:1.5px solid var(--line2);
+  border-radius:11px;font-size:14.5px;font-family:'DM Sans';background:var(--card)}
+.toolbar input[type=search]:focus{outline:none;border-color:var(--teal)}
+.chip{padding:8px 15px;border-radius:22px;border:1.5px solid var(--line2);background:var(--card);color:var(--ink2);
+  font-weight:600;font-size:13px;cursor:pointer;font-family:'DM Sans';white-space:nowrap}
+.chip:hover{border-color:var(--navy)}
+.chip.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+/* ===== LISTE ===== */
+.doc{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:20px 22px;margin-bottom:14px;
+  box-shadow:var(--shadow);transition:.18s}
+.doc:hover{box-shadow:var(--shadow-lg);border-color:var(--line2)}
+.doc-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:10px}
+.doc-ico{width:44px;height:44px;border-radius:11px;display:grid;place-items:center;font-size:20px;flex-shrink:0}
+.i-pdf{background:var(--rust-l)} .i-doc{background:var(--navy-l)} .i-ppt{background:var(--amber-l)}
+.i-xls{background:var(--teal-l)} .i-img{background:var(--plum-l)} .i-txt{background:var(--paper2)}
+.doc-t{flex:1;min-width:0}
+.doc-t h4{font-family:'Fraunces',serif;font-size:1.13rem;color:var(--ink);font-weight:700;line-height:1.25;margin-bottom:3px}
+.doc-meta{font-family:'DM Mono',monospace;font-size:11.5px;color:var(--muted)}
+.doc-res{font-size:14.5px;color:var(--ink2);line-height:1.6;margin-bottom:12px}
+.doc-file{font-family:'DM Mono',monospace;font-size:11.5px;color:var(--muted);margin-bottom:12px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.doc-act{display:flex;gap:10px;margin-bottom:6px}
+.bigbtn{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:13px 18px;border-radius:12px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:14.5px;
+  cursor:pointer;border:1.5px solid transparent;text-decoration:none;transition:.15s}
+.bigbtn.voir{background:var(--navy);color:#fff;border-color:var(--navy)}
+.bigbtn.voir:hover{background:#3A2E23;transform:translateY(-1px)}
+.bigbtn.dl{background:var(--teal);color:#fff;border-color:var(--teal)}
+.bigbtn.dl:hover{background:var(--teal-d);transform:translateY(-1px)}
+@media(max-width:560px){.doc-act{flex-direction:column}}
+
+.vue-ov{position:fixed;inset:0;background:rgba(10,9,7,.72);backdrop-filter:blur(3px);z-index:800;
+  display:flex;flex-direction:column;padding:16px;animation:fade .2s}
+.vue-bar{display:flex;align-items:center;gap:12px;color:#fff;padding:4px 4px 12px;flex-wrap:wrap}
+.vue-bar b{font-family:'Fraunces',serif;font-size:1.05rem;flex:1;min-width:0;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vue-bar a,.vue-bar button{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);
+  color:#fff;padding:8px 15px;border-radius:10px;font-family:'DM Sans';font-weight:600;font-size:13px;
+  cursor:pointer;text-decoration:none;white-space:nowrap}
+.vue-bar a:hover,.vue-bar button:hover{background:rgba(255,255,255,.28)}
+.vue-cadre{flex:1;background:#fff;border-radius:14px;overflow:hidden;min-height:0}
+.vue-cadre iframe,.vue-cadre img{width:100%;height:100%;border:none;display:block;object-fit:contain;background:#fff}
+.vue-non{display:flex;align-items:center;justify-content:center;height:100%;text-align:center;
+  padding:30px;color:var(--ink2);font-size:15px;line-height:1.6}
+.doc-foot{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding-top:12px;border-top:1px solid var(--paper2)}
+.badge{font-size:11px;font-family:'DM Mono',monospace;padding:3px 10px;border-radius:20px;background:var(--paper2);color:var(--ink2)}
+.badge.mat{background:var(--teal-l);color:var(--teal-d)}
+.empty{text-align:center;padding:50px 20px;color:var(--muted);font-size:15px}
+.empty .big{font-size:40px;margin-bottom:12px}
+.diag{background:var(--card);border:1px solid #e7c4b8;border-left:5px solid var(--rust);border-radius:14px;padding:20px 22px}
+.diag h4{font-family:'Fraunces',serif;color:var(--rust);font-size:1.05rem;margin-bottom:9px;font-weight:700}
+.diag p{font-size:14px;line-height:1.6;color:var(--ink)}
+.diag code{background:var(--paper2);padding:2px 6px;border-radius:5px;font-family:'DM Mono',monospace;font-size:12.5px}
+
+h2.sec{font-family:'Fraunces',serif;font-size:1.5rem;color:var(--ink);margin:36px 0 6px;font-weight:700}
+h2.sec+p{color:var(--ink2);font-size:14.5px;margin-bottom:18px}
+
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--teal);
+  color:#fff;font-weight:600;padding:13px 24px;border-radius:26px;box-shadow:var(--shadow-lg);opacity:0;
+  pointer-events:none;transition:.35s;z-index:300;font-size:14.5px;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.err{background:var(--rust)}
+
+@media(max-width:700px){
+  main{padding:26px 16px 90px}
+  h1{font-size:1.75rem}
+  .drop{padding:28px 18px}
+}
+</style>
+<link rel="stylesheet" href="ui.css">
+<link rel="stylesheet" href="theme.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#F7F8FA">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="M1 MBAF">
+</head>
+<body>
+
+<div id="topbar">
+  <div class="logo">Ressource<span>rie</span></div>
+  <span id="nav-slot"></span>
+  <div class="spacer"></div>
+  <span id="lb-id-slot"></span>
+</div>
+
+<main>
+  <div class="hero-tag">Documents partagés · M1 MBAF</div>
+  <h1>La bibliothèque <span class="acc">de la promo</span></h1>
+  <p class="sub">Dépose tes supports de cours, annales et fiches : le document est analysé sur ton appareil pour proposer un titre, un résumé et des mots-clés, que tu peux corriger avant publication.</p>
+
+  <!-- DÉPÔT -->
+  <div class="drop" id="drop" onclick="document.getElementById('fileInput').click()">
+    <div class="ico">📥</div>
+    <h3>Déposer un document</h3>
+    <p>Glisse un fichier ici, ou clique pour le choisir</p>
+    <div class="fmt">PDF · Word · PowerPoint · Excel · images · texte — 20 Mo maximum</div>
+  </div>
+  <input type="file" id="fileInput" accept=".pdf,.docx,.doc,.pptx,.ppt,.xlsx,.xls,.txt,.md,.csv,.png,.jpg,.jpeg,.webp">
+
+  <!-- ANALYSE + FORMULAIRE -->
+  <div class="panel" id="panel">
+    <h3>Vérifier avant publication</h3>
+    <div class="phint">L'analyse propose, tu corriges. Un bon titre et un résumé clair font gagner du temps à toute la promo.</div>
+    <div id="fileChipWrap"></div>
+    <div id="analysing" class="analysing"><div class="spin"></div><span id="analysingTxt">Lecture du document…</span></div>
+    <div id="form" style="display:none">
+      <div class="note" id="analyseNote"></div>
+      <div class="field">
+        <label>Titre</label>
+        <input type="text" id="fTitre" maxlength="120" placeholder="Titre du document">
+      </div>
+      <div class="field">
+        <label>Résumé</label>
+        <textarea id="fResume" maxlength="320" placeholder="En une ou deux phrases : de quoi parle ce document ?"></textarea>
+        <div class="cnt"><span id="cntResume">0</span>/320</div>
+      </div>
+      <div class="field">
+        <label>Matière</label>
+        <select id="fMatiere"></select>
+      </div>
+      <div class="field">
+        <label>Mots-clés détectés</label>
+        <input type="text" id="fKw" placeholder="séparés par des virgules">
+        <div class="kw" id="kwPreview"></div>
+      </div>
+      <div class="actions">
+        <button class="btn primary" id="btnPublish" onclick="publish()">Publier dans la ressourcerie</button>
+        <button class="btn ghost" onclick="resetForm()">Annuler</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LISTE -->
+  <h2 class="sec">Les documents partagés</h2>
+  <p id="countLine">Chargement…</p>
+
+  <div class="toolbar">
+    <input type="search" id="search" placeholder="Rechercher un titre, un mot-clé…" oninput="renderDocs()">
+    <div id="matChips"></div>
+  </div>
+
+  <div id="docList"></div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="lb.js"></script>
+<script>
+/* ════════════════════════════════════════════════════════════
+   CONFIGURATION — reprend le projet Supabase défini dans lb.js
+   ════════════════════════════════════════════════════════════ */
+const BUCKET = 'ressources';
+const TABLE  = 'ressources';
+const MAX_MO = 20;
+
+const MATIERES = ['Marché des Particuliers','Produits Dérivés','Marketing Numérique','Méthodologie','Annales','Autre'];
+
+/* ---------- accès Supabase (mêmes identifiants que le classement) ---------- */
+function supaCfg(){
+  // lb.js définit SUPA en portée de module ; on relit les valeurs via une balise du script
+  return window.__SUPA__ || null;
+}
+let SUPA_URL = null, SUPA_KEY = null;
+(function initSupa(){
+  // lb.js expose LB ; on récupère l'URL/clé depuis son propre code source chargé
+  const scripts = [...document.querySelectorAll('script[src]')].map(s=>s.src);
+  fetch(scripts.find(s=>s.endsWith('lb.js')))
+    .then(r=>r.text())
+    .then(t=>{
+      const u = t.match(/url:\s*'([^']+)'/), k = t.match(/key:\s*'([^']+)'/);
+      if(u&&k){ SUPA_URL=u[1]; SUPA_KEY=k[1]; }
+      loadDocs();
+    })
+    .catch(()=>{ SUPA_URL=null; loadDocs(); });
+})();
+const H = ()=>({'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY});
+
+/* ════════════════════════════════════════════════════════════
+   1. LECTURE DU FICHIER — extraction du texte selon le type
+   ════════════════════════════════════════════════════════════ */
+let CURRENT = null;
+
+if(window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc =
+  'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+async function extractText(file){
+  const ext = file.name.split('.').pop().toLowerCase();
+  if(ext==='pdf')  return await extractPdf(file);
+  if(ext==='docx') return await extractDocx(file);
+  if(['txt','md','csv'].includes(ext)) return {text: await file.text(), meta:{}};
+  return {text:'', meta:{}, unsupported:true};
+}
+async function extractPdf(file){
+  const buf = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({data:buf}).promise;
+  const meta = await pdf.getMetadata().catch(()=>null);
+  const nb = Math.min(pdf.numPages, 12);           // 12 premières pages : suffisant pour résumer
+  let out = [];
+  for(let i=1;i<=nb;i++){
+    setAnalysing('Lecture de la page '+i+' sur '+nb+'…');
+    const page = await pdf.getPage(i);
+    const c = await page.getTextContent();
+    out.push(c.items.map(it=>it.str).join(' '));
+  }
+  return {
+    text: out.join('\n'),
+    meta: {
+      titre: meta && meta.info && meta.info.Title ? String(meta.info.Title).trim() : '',
+      pages: pdf.numPages
+    }
+  };
+}
+async function extractDocx(file){
+  const buf = await file.arrayBuffer();
+  const res = await mammoth.extractRawText({arrayBuffer:buf});
+  return {text: res.value || '', meta:{}};
+}
+
+/* ════════════════════════════════════════════════════════════
+   2. ANALYSE — titre, résumé extractif, mots-clés
+   ════════════════════════════════════════════════════════════ */
+const STOP = new Set(('le la les un une des du de d des au aux à a ou et en dans par pour sur avec sans sous ce cet cette ces son sa ses leur leurs il elle ils elles on nous vous je tu qui que quoi dont où est sont être avoir fait faire plus moins très peu tout tous toute toutes autre autres même aussi ainsi donc car mais or ni si non oui comme entre vers chez depuis pendant avant après lors selon afin alors quand tandis puis déjà encore bien peut peuvent doit doivent sera seront été étant cela celui celle ceux notamment exemple cas type partie chapitre page cours slide auteur date université')
+  .split(/\s+/));
+
+function normalize(s){
+  return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+}
+function splitSentences(text){
+  return text
+    .replace(/\s+/g,' ')
+    .split(/(?<=[.!?])\s+(?=[A-ZÀ-ÜÉÈÊ0-9«"])/)
+    .map(s=>s.trim())
+    .filter(s=>s.length>=45 && s.length<=420 && /[a-zà-ü]{3}/i.test(s));
+}
+function wordFreq(text){
+  const f = {};
+  normalize(text).replace(/[^a-z0-9àâçéèêëîïôûùüÿñ\s-]/g,' ').split(/\s+/).forEach(w=>{
+    if(w.length<4 || STOP.has(w) || /^\d+$/.test(w)) return;
+    f[w] = (f[w]||0)+1;
+  });
+  return f;
+}
+function summarize(text, nbPhrases){
+  const sentences = splitSentences(text);
+  if(!sentences.length) return {resume:'', phrases:0};
+  const freq = wordFreq(text);
+  const max = Math.max(1, ...Object.values(freq));
+  const scored = sentences.map((s,i)=>{
+    const words = normalize(s).replace(/[^a-z0-9àâçéèêëîïôûùüÿñ\s-]/g,' ').split(/\s+/).filter(w=>w.length>=4 && !STOP.has(w));
+    if(!words.length) return {s,i,score:0};
+    let sc = words.reduce((a,w)=>a+(freq[w]||0)/max, 0) / Math.sqrt(words.length);
+    if(i < sentences.length*0.25) sc *= 1.18;       // les premières phrases cadrent souvent le sujet
+    if(/\d/.test(s)) sc *= 1.06;                    // les phrases chiffrées sont informatives
+    return {s,i,score:sc};
+  });
+  const top = scored.slice().sort((a,b)=>b.score-a.score).slice(0, nbPhrases)
+                    .sort((a,b)=>a.i-b.i).map(o=>o.s);
+  return {resume: top.join(' '), phrases: sentences.length};
+}
+function keywords(text, n){
+  const f = wordFreq(text);
+  return Object.entries(f).sort((a,b)=>b[1]-a[1]).slice(0,n).map(e=>e[0]);
+}
+function guessTitle(text, meta, filename){
+  const bad = /^(untitled|document|microsoft word|présentation|presentation|diapositive|sans titre)/i;
+  if(meta.titre && meta.titre.length>3 && !bad.test(meta.titre)) return meta.titre.slice(0,120);
+  const lines = text.split('\n').map(l=>l.replace(/\s+/g,' ').trim()).filter(Boolean);
+  for(const l of lines.slice(0,8)){
+    if(l.length>=8 && l.length<=90 && !/^(page|\d+$)/i.test(l)) return l.slice(0,120);
+  }
+  return filename.replace(/\.[^.]+$/,'').replace(/[_-]+/g,' ').replace(/\s+/g,' ').trim().slice(0,120);
+}
+function guessMatiere(text){
+  const t = normalize(text);
+  const rules = [
+    ['Produits Dérivés', ['cambiste','cours de change','devise','spread','arbitrage','forex','cotation','marche des changes']],
+    ['Marketing Numérique', ['marketing','segmentation','positionnement','swot','pestel','porter','mix','consommateur']],
+    ['Marché des Particuliers', ['livret','epargne','credit','assurance vie','pea','fiscalite','banque de detail','emprunteur']]
+  ];
+  let best = null, bestN = 0;
+  rules.forEach(([mat, kws])=>{
+    const n = kws.filter(k=>t.includes(k)).length;
+    if(n>bestN){ bestN=n; best=mat; }
+  });
+  return bestN>=2 ? best : 'Autre';
+}
+
+/* ════════════════════════════════════════════════════════════
+   3. INTERFACE DE DÉPÔT
+   ════════════════════════════════════════════════════════════ */
+const drop = document.getElementById('drop');
+['dragenter','dragover'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.add('over')}));
+['dragleave','drop'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.remove('over')}));
+drop.addEventListener('drop',ev=>{ if(ev.dataTransfer.files[0]) handleFile(ev.dataTransfer.files[0]); });
+document.getElementById('fileInput').addEventListener('change',ev=>{ if(ev.target.files[0]) handleFile(ev.target.files[0]); });
+
+function setAnalysing(txt){ const e=document.getElementById('analysingTxt'); if(e) e.textContent = txt; }
+function icoFor(name){
+  const x = name.split('.').pop().toLowerCase();
+  if(x==='pdf') return ['📕','i-pdf'];
+  if(['doc','docx'].includes(x)) return ['📘','i-doc'];
+  if(['ppt','pptx'].includes(x)) return ['📙','i-ppt'];
+  if(['xls','xlsx','csv'].includes(x)) return ['📗','i-xls'];
+  if(['png','jpg','jpeg','webp'].includes(x)) return ['🖼️','i-img'];
+  return ['📄','i-txt'];
+}
+function humanSize(b){
+  if(b<1024) return b+' o';
+  if(b<1048576) return (b/1024).toFixed(0)+' Ko';
+  return (b/1048576).toFixed(1)+' Mo';
+}
+
+async function handleFile(file){
+  if(file.size > MAX_MO*1024*1024){ toast('Fichier trop lourd : '+humanSize(file.size)+' (max '+MAX_MO+' Mo)', true); return; }
+  if(!LB.pseudo()){ LB.identityModal(()=>handleFile(file)); return; }
+
+  CURRENT = {file};
+  const [ico,cls] = icoFor(file.name);
+  document.getElementById('fileChipWrap').innerHTML =
+    `<div class="filechip">${ico} ${esc(file.name)} · ${humanSize(file.size)} <span class="x" onclick="resetForm()">✕</span></div>`;
+  document.getElementById('panel').classList.add('show');
+  document.getElementById('form').style.display='none';
+  document.getElementById('analysing').style.display='flex';
+  setAnalysing('Lecture du document…');
+  document.getElementById('panel').scrollIntoView({behavior:'smooth',block:'nearest'});
+
+  let res;
+  try{ res = await extractText(file); }
+  catch(e){ res = {text:'', meta:{}, failed:true}; }
+
+  setAnalysing('Analyse du contenu…');
+  await new Promise(r=>setTimeout(r,120));
+
+  const text = (res.text||'').trim();
+  let note, titre, resume, kws, mat;
+
+  if(text.length < 200){
+    note = res.unsupported
+      ? "Ce format ne permet pas d'extraire le texte automatiquement (PowerPoint, Excel et images ne sont pas lus ici). Renseigne le titre et le résumé à la main — le fichier sera partagé normalement."
+      : "Trop peu de texte a pu être extrait (document scanné ou protégé). Renseigne le titre et le résumé à la main.";
+    titre = file.name.replace(/\.[^.]+$/,'').replace(/[_-]+/g,' ').trim();
+    resume = ''; kws = []; mat = 'Autre';
+  } else {
+    const s = summarize(text, 2);
+    titre  = guessTitle(text, res.meta||{}, file.name);
+    resume = s.resume;
+    if(resume.length > 320){                      // on coupe à la phrase, pas au milieu d'un mot
+      const c = resume.slice(0,320);
+      const p = Math.max(c.lastIndexOf('. '), c.lastIndexOf('! '), c.lastIndexOf('? '));
+      resume = (p > 140 ? c.slice(0, p+1) : c.slice(0, c.lastIndexOf(' ')) + '…');
+    }
+    kws    = keywords(text, 8);
+    mat    = guessMatiere(text);
+    note = "Analyse terminée sur "+(res.meta && res.meta.pages ? res.meta.pages+" page(s), "+s.phrases : s.phrases)+" phrases repérées. Le résumé retient les phrases les plus représentatives — deux suffisent pour présenter le document. Reformule si besoin.";
+  }
+
+  document.getElementById('analyseNote').textContent = note;
+  document.getElementById('fTitre').value  = titre;
+  document.getElementById('fResume').value = resume;
+  document.getElementById('fKw').value     = kws.join(', ');
+  renderKw();
+  document.getElementById('fMatiere').innerHTML = MATIERES.map(m=>
+    `<option value="${m}"${m===mat?' selected':''}>${m}</option>`).join('');
+  document.getElementById('cntResume').textContent = resume.length;
+  document.getElementById('analysing').style.display='none';
+  document.getElementById('form').style.display='block';
+}
+
+document.getElementById('fResume').addEventListener('input',e=>{
+  document.getElementById('cntResume').textContent = e.target.value.length;
+});
+document.getElementById('fKw').addEventListener('input',renderKw);
+function renderKw(){
+  const v = document.getElementById('fKw').value.split(',').map(s=>s.trim()).filter(Boolean);
+  document.getElementById('kwPreview').innerHTML = v.map(k=>`<span>${esc(k)}</span>`).join('');
+}
+function resetForm(){
+  CURRENT = null;
+  document.getElementById('panel').classList.remove('show');
+  document.getElementById('fileInput').value = '';
+}
+
+/* ════════════════════════════════════════════════════════════
+   4. PUBLICATION — envoi du fichier puis de la fiche
+   ════════════════════════════════════════════════════════════ */
+async function publish(){
+  if(!CURRENT){ return; }
+  if(!SUPA_URL){ toast("Stockage non configuré — vérifie lb.js", true); return; }
+  const titre = document.getElementById('fTitre').value.trim();
+  if(titre.length < 3){ toast('Donne un titre au document', true); return; }
+
+  const btn = document.getElementById('btnPublish');
+  btn.disabled = true; btn.textContent = 'Envoi en cours…';
+
+  const file = CURRENT.file;
+  const safe = file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+  const path = Date.now()+'_'+Math.random().toString(16).slice(2,8)+'_'+safe;
+
+  try{
+    const up = await fetch(SUPA_URL+'/storage/v1/object/'+BUCKET+'/'+encodeURIComponent(path),{
+      method:'POST',
+      headers:Object.assign(H(),{'Content-Type': file.type || 'application/octet-stream'}),
+      body:file
+    });
+    if(!up.ok){
+      const t = await up.text().catch(()=> '');
+      throw new Error('Stockage ('+up.status+') '+t.slice(0,160));
+    }
+
+    const row = {
+      titre, resume: document.getElementById('fResume').value.trim(),
+      matiere: document.getElementById('fMatiere').value,
+      mots_cles: document.getElementById('fKw').value.trim(),
+      pseudo: LB.pseudo(),
+      fichier_nom: file.name, fichier_path: path,
+      fichier_type: file.type || '', fichier_taille: file.size
+    };
+    const ins = await fetch(SUPA_URL+'/rest/v1/'+TABLE,{
+      method:'POST',
+      headers:Object.assign(H(),{'Content-Type':'application/json','Prefer':'return=minimal'}),
+      body:JSON.stringify(row)
+    });
+    if(!ins.ok){
+      const t = await ins.text().catch(()=> '');
+      throw new Error('Fiche ('+ins.status+') '+t.slice(0,160));
+    }
+
+    toast('Document publié — merci !');
+    resetForm();
+    loadDocs();
+  }catch(e){
+    toast(String(e.message||e), true);
+  }finally{
+    btn.disabled = false; btn.textContent = 'Publier dans la ressourcerie';
+  }
+}
+
+/* ════════════════════════════════════════════════════════════
+   5. LISTE DES DOCUMENTS
+   ════════════════════════════════════════════════════════════ */
+let DOCS = [], FILTRE = 'Toutes';
+
+async function loadDocs(){
+  const host = document.getElementById('docList');
+  if(!SUPA_URL){
+    document.getElementById('countLine').textContent = '';
+    host.innerHTML = diagBox("Le stockage n'est pas configuré.",
+      "Impossible de lire l'URL et la clé Supabase depuis <code>lb.js</code>. Vérifie que le fichier est bien déployé à côté de cette page.");
+    return;
+  }
+  host.innerHTML = '<div class="empty">Chargement…</div>';
+  try{
+    const r = await fetch(SUPA_URL+'/rest/v1/'+TABLE+'?select=*&order=created_at.desc&limit=500',{headers:H()});
+    if(!r.ok){
+      const body = await r.text().catch(()=> '');
+      let msg;
+      if(r.status===404) msg = "La table <code>ressources</code> n'existe pas encore dans ton projet Supabase. Lance le script SQL fourni dans le lisez-moi.";
+      else if(r.status===401) msg = "Clé refusée (401) : elle a probablement été régénérée.";
+      else if(r.status===403) msg = "Lecture interdite (403) : il manque une policy SELECT pour le rôle anonyme.";
+      else msg = "Erreur HTTP "+r.status+". "+esc(body.slice(0,200));
+      document.getElementById('countLine').textContent='';
+      host.innerHTML = diagBox("La ressourcerie n'a pas pu être chargée", msg);
+      return;
+    }
+    DOCS = await r.json();
+    renderChips(); renderDocs();
+  }catch(e){
+    document.getElementById('countLine').textContent='';
+    host.innerHTML = diagBox("Impossible de joindre le stockage",
+      "La requête n'est jamais arrivée. Le projet Supabase est peut-être en pause, ou tu es hors connexion.");
+  }
+}
+function diagBox(t,p){ return `<div class="diag"><h4>⚠️ ${t}</h4><p>${p}</p></div>`; }
+
+function renderChips(){
+  const mats = ['Toutes', ...MATIERES.filter(m=>DOCS.some(d=>d.matiere===m))];
+  document.getElementById('matChips').innerHTML = mats.map(m=>
+    `<button class="chip${FILTRE===m?' on':''}" onclick="setFiltre('${m.replace(/'/g,"\\'")}')">${m}</button>`
+  ).join(' ');
+}
+function setFiltre(m){ FILTRE = m; renderChips(); renderDocs(); }
+
+function renderDocs(){
+  const q = normalize(document.getElementById('search').value.trim());
+  let list = DOCS.slice();
+  if(FILTRE!=='Toutes') list = list.filter(d=>d.matiere===FILTRE);
+  if(q) list = list.filter(d=>normalize([d.titre,d.resume,d.mots_cles,d.pseudo,d.fichier_nom].join(' ')).includes(q));
+
+  document.getElementById('countLine').textContent =
+    DOCS.length===0 ? 'Aucun document pour le moment.'
+    : list.length+' document'+(list.length>1?'s':'')+' affiché'+(list.length>1?'s':'')+' sur '+DOCS.length+'.';
+
+  const host = document.getElementById('docList');
+  if(!list.length){
+    host.innerHTML = DOCS.length
+      ? '<div class="empty"><div class="big">🔍</div>Aucun document ne correspond à cette recherche.</div>'
+      : '<div class="empty"><div class="big">📚</div>La ressourcerie est vide.<br>Sois le premier à déposer un document !</div>';
+    return;
+  }
+  const me = LB.pseudo();
+  host.innerHTML = list.map(d=>{
+    const [ico,cls] = icoFor(d.fichier_nom||'');
+    const url = SUPA_URL+'/storage/v1/object/public/'+BUCKET+'/'+encodeURIComponent(d.fichier_path);
+    const kws = (d.mots_cles||'').split(',').map(s=>s.trim()).filter(Boolean).slice(0,5);
+    const dt = d.created_at ? new Date(d.created_at).toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'numeric'}) : '';
+    return `<div class="doc">
+      <div class="doc-head">
+        <div class="doc-ico ${cls}">${ico}</div>
+        <div class="doc-t">
+          <h4>${esc(d.titre||d.fichier_nom)}</h4>
+          <div class="doc-meta">${esc(d.pseudo||'?')} · ${dt} · ${humanSize(d.fichier_taille||0)}</div>
+        </div>
+      </div>
+      ${d.resume?`<div class="doc-res">${esc(d.resume)}</div>`:''}
+      <div class="doc-file">📎 ${esc(d.fichier_nom||'')}</div>
+      <div class="doc-act">
+        <button class="bigbtn voir" onclick="voirDoc('${encodeURIComponent(url)}','${esc((d.fichier_nom||'').replace(/'/g,''))}','${esc(d.titre||'')}')">👁️ Voir</button>
+        <a class="bigbtn dl" href="${url}?download=${encodeURIComponent(d.fichier_nom||'document')}">⬇️ Télécharger</a>
+      </div>
+      <div class="doc-foot">
+        ${d.matiere?`<span class="badge mat">${esc(d.matiere)}</span>`:''}
+        ${kws.map(k=>`<span class="badge">${esc(k)}</span>`).join('')}
+        ${me && me===d.pseudo ? `<button class="btn sm danger" style="margin-left:auto" onclick="removeDoc(${d.id},'${esc(d.fichier_path)}')">Supprimer</button>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function voirDoc(urlEnc, nom, titre){
+  const url = decodeURIComponent(urlEnc);
+  const ext = (nom.split('.').pop()||'').toLowerCase();
+  let contenu;
+  if(ext==='pdf'){
+    contenu = `<iframe src="${url}#view=FitH" title="Aperçu"></iframe>`;
+  } else if(['png','jpg','jpeg','webp','gif','svg'].includes(ext)){
+    contenu = `<img src="${url}" alt="${esc(titre)}">`;
+  } else {
+    contenu = `<div class="vue-non">Ce format ne s'affiche pas dans le navigateur.<br>
+      Télécharge le fichier pour l'ouvrir avec l'application adaptée.</div>`;
+  }
+  const ov = document.createElement('div');
+  ov.className = 'vue-ov';
+  ov.innerHTML = `<div class="vue-bar">
+      <b>${esc(titre||nom)}</b>
+      <a href="${url}?download=${encodeURIComponent(nom)}">⬇️ Télécharger</a>
+      <a href="${url}" target="_blank" rel="noopener">↗ Nouvel onglet</a>
+      <button onclick="this.closest('.vue-ov').remove()">✕ Fermer</button>
+    </div><div class="vue-cadre">${contenu}</div>`;
+  ov.addEventListener('click', e=>{ if(e.target===ov) ov.remove(); });
+  document.body.appendChild(ov);
+  const esc2 = e=>{ if(e.key==='Escape'){ ov.remove(); document.removeEventListener('keydown', esc2); } };
+  document.addEventListener('keydown', esc2);
+}
+
+async function removeDoc(id, path){
+  if(!confirm('Supprimer définitivement ce document ?')) return;
+  try{
+    await fetch(SUPA_URL+'/storage/v1/object/'+BUCKET+'/'+encodeURIComponent(path),{method:'DELETE',headers:H()});
+    const r = await fetch(SUPA_URL+'/rest/v1/'+TABLE+'?id=eq.'+id,{method:'DELETE',headers:H()});
+    if(!r.ok) throw new Error('Suppression refusée ('+r.status+')');
+    toast('Document supprimé');
+    loadDocs();
+  }catch(e){ toast(String(e.message||e), true); }
+}
+
+/* ---------- utilitaires ---------- */
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function toast(msg, err){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show'+(err?' err':'');
+  clearTimeout(t._t);
+  t._t = setTimeout(()=>t.className='toast'+(err?' err':''), 3600);
+}
+try{ document.getElementById('lb-id-slot').appendChild(LB.idButton()); }catch(e){}
+</script>
+<script src="banque.js"></script>
+<script src="ui.js"></script>
+</body>
+</html>

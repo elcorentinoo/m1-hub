@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hub M1 MBAF — Conseiller Patrimoine Agence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+/* Le hub n'a plus de barre à lui : ui.js pose la même en-tête partout.
+   Tout le reste vient de theme.css (direction PRISME) ; ici, seules les
+   pièces propres à la page d'accueil : portail, tableau de bord,
+   registre des matières, fil du semestre, panneau de reprise. */
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{overflow-x:hidden}
+
+/* ════════ PORTAIL PSEUDO ════════ */
+#login{
+  position:fixed; inset:0; z-index:200; display:flex; align-items:center; justify-content:center; padding:24px;
+  background:var(--canevas);
+}
+#login.hidden{display:none}
+.login-card{
+  position:relative; z-index:2; width:100%; max-width:410px; padding:28px 26px;
+  background:var(--surface); border:1px solid var(--stroke); border-radius:var(--r-lg);
+  box-shadow:var(--shadow-lg); overflow:hidden;
+}
+.login-card::before{ content:''; position:absolute; left:0; right:0; top:0; height:2px; background:var(--spectre); }
+.login-card .mk{
+  width:26px; height:26px; border-radius:var(--r-s); background:var(--spectre); display:inline-block;
+  margin-bottom:16px; box-shadow:0 2px 8px -2px rgba(79,45,219,.55);
+}
+.login-card h1{font-size:1.22rem; margin-bottom:8px; letter-spacing:-.03em}
+.login-card p{color:var(--txt2); font-size:13.5px; margin-bottom:20px}
+.login-field label{ display:block; font-size:12.5px; font-weight:500; color:var(--txt2); margin-bottom:6px }
+.login-field input{width:100%; padding:12px 14px; font-size:15px}
+.login-btn{width:100%; margin-top:14px; padding:13px; cursor:pointer; font-size:14px}
+.login-err{display:none; margin-top:10px; color:var(--bad); font-size:13px}
+.login-err.show{display:block}
+.login-foot{ margin-top:16px; color:var(--txt3); font-size:11.5px; font-family:'IBM Plex Mono',monospace }
+
+#app{opacity:0; transition:opacity .3s}
+#app.ready{opacity:1}
+
+/* ════════ ENVELOPPE ════════ */
+main{ padding:0 20px 40px; max-width:1200px; margin:0 auto }
+.sec{ margin-top:52px }
+.sec-note{ color:var(--txt2); font-size:14px; margin:-10px 0 20px; max-width:72ch }
+
+/* ════════ TABLEAU DE BORD ════════ */
+.tdb{
+  max-width:1200px; margin:0 auto; padding:30px 20px 20px;
+  display:flex; align-items:flex-end; justify-content:space-between; gap:20px; flex-wrap:wrap;
+}
+.tdb h1{ margin-bottom:5px }
+.tdb .sous{ color:var(--txt2); font-size:14.5px }
+.tdb .actes{ display:flex; gap:9px; flex-wrap:wrap }
+.sur-t{
+  display:flex; align-items:center; gap:9px; font-family:'IBM Plex Mono',monospace;
+  font-size:.68rem; font-weight:500; letter-spacing:.09em; text-transform:uppercase; color:var(--txt3);
+  margin-bottom:11px;
+}
+.sur-t::before{ content:''; width:16px; height:2px; border-radius:2px; background:var(--spectre); flex:none }
+
+.metriques{
+  max-width:1200px; margin:0 auto; padding:0 20px;
+  display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px;
+}
+.metrique{
+  background:var(--surface); border:1px solid var(--stroke); border-radius:var(--r-lg);
+  padding:15px 16px; box-shadow:var(--ombre1); display:flex; flex-direction:column; gap:8px; min-width:0;
+}
+.metrique .lab{
+  font-family:'IBM Plex Mono',monospace; font-size:.64rem; font-weight:500;
+  letter-spacing:.09em; text-transform:uppercase; color:var(--txt3);
+}
+.metrique .val{ font-size:1.8rem; font-weight:600; letter-spacing:-.045em; line-height:1; display:flex; align-items:baseline; gap:4px }
+.metrique .val sup{ font-size:.68rem; font-weight:500; color:var(--txt3); letter-spacing:0; vertical-align:baseline }
+.metrique .sv{ font-size:.74rem; color:var(--txt3) }
+
+/* ════════ REGISTRE DES MATIÈRES ════════ */
+.grid{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px }
+.mcard{
+  display:flex; flex-direction:column; text-decoration:none; color:var(--txt); overflow:hidden;
+  border:1px solid var(--stroke); border-radius:var(--r-lg); background:var(--surface);
+  box-shadow:var(--ombre1); min-width:0;
+  transition:transform .26s var(--ressort), box-shadow .26s var(--ressort), border-color .26s var(--ressort);
+}
+.mcard:hover{ transform:translateY(-2px); box-shadow:var(--shadow); border-color:var(--stroke2) }
+.mcard .bo{ padding:16px 17px 15px; display:flex; flex-direction:column; gap:10px; flex:1 }
+.mcard .tete{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px }
+.mcard h3{ font-size:1.04rem; letter-spacing:-.025em; min-width:0 }
+.mcard .pc{ font-family:'IBM Plex Mono',monospace; font-size:.94rem; font-weight:600; letter-spacing:-.02em; flex:none }
+.mcard .pc.done{ color:var(--ok) }
+.mcard .pc.nul{ color:var(--txt3) }
+.mcard .desc{ font-size:13.5px; color:var(--txt2); flex:1; line-height:1.5 }
+.bar{ height:5px; border-radius:999px; background:var(--surface3); overflow:hidden }
+.bar i{ display:block; height:100%; border-radius:999px; background:var(--spectre); transition:width .8s var(--ressort) }
+.bar.ok i{ background:linear-gradient(90deg,#047857,#2BB38A) }
+.mcard .stats{ display:flex; border-top:1px solid var(--stroke); background:var(--surface2) }
+.mcard .stats div{ flex:1; padding:9px 14px; border-right:1px solid var(--stroke); min-width:0 }
+.mcard .stats div:last-child{ border-right:0 }
+.mcard .stats b{ display:block; font-family:'IBM Plex Mono',monospace; font-size:.86rem; font-weight:600; letter-spacing:-.02em }
+.mcard .stats small{ display:block; font-size:.66rem; color:var(--txt3); margin-top:1px }
+
+/* ════════ FIL DU SEMESTRE ════════ */
+.piste{
+  background:var(--surface); border:1px solid var(--stroke); border-radius:var(--r-lg);
+  padding:20px 22px 0; box-shadow:var(--ombre1); overflow:hidden;
+}
+.piste-h{ display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap }
+.piste-h .bornes{ font-family:'IBM Plex Mono',monospace; font-size:.72rem; color:var(--txt3) }
+.piste-r{ position:relative; height:3px; border-radius:2px; background:var(--surface3); margin:36px 8px 88px }
+.piste-r > i{ position:absolute; inset:0 auto 0 0; border-radius:2px; background:var(--spectre) }
+.jalon{ position:absolute; top:50%; transform:translate(-50%,-50%) }
+.jalon.debut{ transform:translate(0,-50%) }
+.jalon.bout{ transform:translate(-100%,-50%) }
+.jalon .pt{ display:block; width:11px; height:11px; border-radius:50%; background:var(--surface); border:2.5px solid var(--acc); box-shadow:var(--ombre1) }
+.jalon.futur .pt{ border-color:var(--stroke2) }
+.jalon .haut, .jalon .bas{ position:absolute; left:50%; transform:translateX(-50%); width:150px; text-align:center }
+.jalon.debut .haut, .jalon.debut .bas{ left:0; transform:none; text-align:left }
+.jalon.bout .haut, .jalon.bout .bas{ left:auto; right:0; transform:none; text-align:right }
+.jalon .haut{ bottom:20px; font-family:'IBM Plex Mono',monospace; font-size:.68rem; color:var(--txt2); white-space:nowrap }
+.jalon .bas{ top:20px; font-size:.78rem; font-weight:500; line-height:1.3 }
+.jalon .bas small{ display:block; font-family:'IBM Plex Mono',monospace; font-size:.66rem; color:var(--txt3); font-weight:400 }
+.ech-tab{ width:100%; border-collapse:collapse; font-size:13.5px; margin:0 -22px; width:calc(100% + 44px) }
+.ech-tab th{
+  text-align:left; font-family:'IBM Plex Mono',monospace; font-size:.64rem; font-weight:600;
+  letter-spacing:.09em; text-transform:uppercase; color:var(--txt3);
+  padding:9px 22px; background:var(--surface2); border-top:1px solid var(--stroke);
+  border-bottom:1px solid var(--stroke); white-space:nowrap;
+}
+.ech-tab td{ padding:12px 22px; border-bottom:1px solid var(--stroke); vertical-align:top }
+.ech-tab tr:last-child td{ border-bottom:0 }
+.ech-tab .n{ font-family:'IBM Plex Mono',monospace; text-align:right; white-space:nowrap }
+.ech-tab .quand{ font-size:12px; color:var(--txt3); display:block; margin-top:2px }
+.ech-tab .go{ display:inline-block; color:var(--acc); text-decoration:none; font-size:12.5px; font-weight:500; margin-top:5px }
+.ech-tab .go:hover{ text-decoration:underline }
+
+/* ════════ CE QUI EST INCLUS ════════ */
+.inc{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px }
+.ic{
+  border:1px solid var(--stroke); border-radius:var(--r-lg); padding:17px; text-decoration:none; color:var(--txt);
+  background:var(--surface); box-shadow:var(--ombre1);
+  transition:transform .26s var(--ressort), box-shadow .26s var(--ressort), border-color .26s var(--ressort);
+}
+.ic:hover{ transform:translateY(-2px); box-shadow:var(--shadow); border-color:var(--stroke2) }
+.ic .ih{ display:flex; align-items:center; gap:9px; margin-bottom:9px }
+.ic h3{ font-size:.98rem; letter-spacing:-.025em }
+.ic p{ color:var(--txt2); font-size:13px; line-height:1.5 }
+.ic .n{ font-family:'IBM Plex Mono',monospace; font-size:.7rem; color:var(--txt3); display:block; margin-top:10px }
+.ic svg{ flex:none; color:var(--acc) }
+
+/* ════════ PANNEAU DE REPRISE ════════ */
+.reprise{
+  position:relative; background:var(--surface); border:1px solid var(--stroke); border-radius:var(--r-lg);
+  padding:22px 24px; box-shadow:var(--shadow); overflow:hidden;
+  display:flex; gap:24px; align-items:center; flex-wrap:wrap; margin-top:52px;
+}
+.reprise::before{ content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--spectre) }
+.reprise .cc{ flex:1; min-width:240px }
+.reprise h2{ margin:6px 0; font-size:1.3rem }
+.reprise p{ color:var(--txt2); font-size:13.5px; margin-bottom:14px }
+.reprise .rows{ display:flex; gap:24px; flex-wrap:wrap }
+.reprise .row span{ display:block; font-family:'IBM Plex Mono',monospace; font-size:.64rem;
+  letter-spacing:.09em; text-transform:uppercase; color:var(--txt3) }
+.reprise .row b{ font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:1.1rem; letter-spacing:-.02em }
+.reprise .go{
+  flex:none; display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  padding:12px 20px; border-radius:var(--r); text-decoration:none; font-size:14px; font-weight:500; min-height:44px;
+  background:linear-gradient(180deg,#5E3CE8,var(--acc)); color:#fff;
+  box-shadow:0 1px 2px rgba(13,17,23,.12), 0 4px 14px -6px rgba(79,45,219,.55), inset 0 1px 0 rgba(255,255,255,.22);
+}
+.reprise .go:hover{ background:linear-gradient(180deg,#5330E4,#4425CC); color:#fff }
+
+/* ════════ BARRE BASSE MOBILE ════════ */
+.tabbar{
+  position:fixed; left:0; right:0; bottom:0; z-index:70; display:none; gap:2px; padding:5px 5px 11px;
+  background:var(--surface); border-top:1px solid var(--stroke);
+}
+.tabbar a{
+  flex:1; min-height:46px; display:flex; align-items:center; justify-content:center;
+  border-radius:var(--r-s); color:var(--txt3); text-decoration:none; font-size:12px; font-weight:500;
+}
+.tabbar a.on{ background:var(--acc-soft); color:var(--acc) }
+
+@media(max-width:1080px){
+  .metriques{ grid-template-columns:repeat(2,minmax(0,1fr)) }
+  .inc{ grid-template-columns:repeat(2,minmax(0,1fr)) }
+}
+@media(max-width:760px){
+  main{ padding:0 14px 40px }
+  .tdb{ padding:22px 14px 16px }
+  .metriques{ padding:0 14px }
+  .sec{ margin-top:40px }
+  .grid, .inc{ grid-template-columns:1fr }
+  .piste-r{ display:none }
+  .piste{ padding:16px 0 0 }
+  .piste-h{ padding:0 16px 14px }
+  .ech-tab{ margin:0; width:100% }
+  .ech-tab th, .ech-tab td{ padding-inline:16px }
+  .reprise{ margin-top:40px; padding:18px }
+  .reprise .go{ width:100% }
+  .tabbar{ display:flex }
+  body.ds-ready{ padding-bottom:70px }
+}
+@media print{
+  #login, .tabbar, .reprise .go{ display:none !important }
+  .piste-r{ display:none }
+  #app{ opacity:1 !important }
+}
+</style>
+<link rel="stylesheet" href="ui.css">
+<link rel="stylesheet" href="theme.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#F7F8FA">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="M1 MBAF">
+</head>
+<body>
+
+<!-- ════════ PORTAIL PSEUDO ════════ -->
+<div id="login">
+  <div class="login-card">
+    <span class="mk"></span>
+    <h1>M1 Monnaie Banque Assurance Finance</h1>
+    <p>Conseiller Patrimoine Agence. Un pseudo suffit : il sert au classement et à la synchronisation de ta progression entre tes appareils.</p>
+    <div class="login-field">
+      <label for="pseudoInput">Ton pseudo</label>
+      <input type="text" id="pseudoInput" maxlength="24" placeholder="2 caractères minimum" autocomplete="off" onkeydown="if(event.key==='Enter')submitPseudo()">
+    </div>
+    <button class="login-btn" onclick="submitPseudo()">Entrer dans le hub</button>
+    <div class="login-err" id="loginErr">Choisis un pseudo (2 caractères minimum).</div>
+    <div class="login-foot">aucun mot de passe · aucune adresse courriel</div>
+  </div>
+</div>
+
+<!-- ════════ APPLICATION ════════ -->
+<div id="app">
+  <span id="hub-id" hidden></span>
+
+  <header class="tdb">
+    <div>
+      <div class="sur-t">Semestre 1 · 2026 – 2027</div>
+      <h1 id="salut">Le hub</h1>
+      <p class="sous" id="sous">Quatre matières suivies.</p>
+    </div>
+    <div class="actes">
+      <a class="btn" href="revision.html" id="ctaRevision">Série de révision</a>
+      <a class="btn primary" href="#matieres" id="ctaReprendre">Reprendre</a>
+    </div>
+  </header>
+
+  <div class="metriques" id="metriques"></div>
+
+  <main>
+
+    <section class="sec" id="matieres">
+      <div class="ds-rule"><h2>Mes cours</h2></div>
+      <p class="sec-note">Chaque parcours contient les leçons expliquées, les quiz, le test final adaptatif et les applications corrigées.</p>
+      <div class="grid" id="grid-matieres"></div>
+    </section>
+
+    <section class="sec" id="entrainement">
+      <div class="ds-rule"><h2>Entraînement</h2></div>
+      <p class="sec-note">Des exercices générés à l'infini, séparés des cours : nouveaux chiffres à chaque tirage, aides à la demande et correction détaillée immédiate. Trois modes — par notion, en série chronométrée, ou en cas complet.</p>
+      <div class="grid" id="grid-entrainement"></div>
+    </section>
+
+    <section class="sec">
+      <div class="ds-rule"><h2>Le calendrier</h2></div>
+      <p class="sec-note">Les partiels annoncés, et ce qu'il faut avoir révisé avant.</p>
+      <div class="piste" id="piste"></div>
+    </section>
+
+    <section class="sec">
+      <div class="ds-rule"><h2>Ce qui est inclus</h2></div>
+      <div class="inc">
+        <a class="ic" href="revision.html">
+          <div class="ih"><svg width="19" height="19" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 6a6 6 0 1 1 .8 9M4 6V2.6M4 6h3.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><h3>Révision espacée</h3></div>
+          <p>Les questions ratées reviennent le lendemain, celles que tu maîtrises s'espacent — 1, 3, 7, 16, 35 puis 75 jours.</p>
+          <span class="n" id="incRev">— questions en banque</span>
+        </a>
+        <a class="ic" href="#entrainement">
+          <div class="ih"><svg width="19" height="19" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 15l4.5-5 3 3L17 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><h3>Calculs à l'infini</h3></div>
+          <p>Deux générateurs séparés des cours — change et impôt sur le revenu — avec indice, méthode et correction ciblée à chaque question.</p>
+          <span class="n">22 notions · séries · cas complets</span>
+        </a>
+        <a class="ic" href="glossaire.html">
+          <div class="ih"><svg width="19" height="19" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 3h7a3 3 0 0 1 3 3v11H7a3 3 0 0 0-3 3V3z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><h3>Glossaire</h3></div>
+          <p>Chaque sigle du Master, son développé, une définition courte et le lien vers la leçon qui l'explique.</p>
+          <span class="n" id="incGlo">— termes</span>
+        </a>
+        <a class="ic" href="ressourcerie.html">
+          <div class="ih"><svg width="19" height="19" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v9m0 0l-3.4-3.4M10 12l3.4-3.4M3.5 14v2.5h13V14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><h3>Ressourcerie</h3></div>
+          <p>Les documents de la promo : dépôt, résumé automatique, consultation et téléchargement.</p>
+          <span class="n">PDF · Word · diapositives</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="reprise" id="panelReprendre"></section>
+
+  </main>
+
+  <nav class="tabbar">
+    <a class="on" href="#matieres">Cours</a>
+    <a href="#entrainement">Entraînement</a>
+    <a href="revision.html">Révision</a>
+    <a href="stats.html">Progression</a>
+  </nav>
+</div>
+
+<script src="lb.js"></script>
+<script src="progress.js"></script>
+<script src="banque.js"></script>
+<script>
+/* ════════ PORTAIL PSEUDO ════════ */
+function switchPseudo(){ if(window.LB) LB.identityModal(()=>renderTout()); }
+function submitPseudo(){
+  const inp=document.getElementById('pseudoInput'), err=document.getElementById('loginErr');
+  const v=inp.value.trim();
+  if(v.length<2){ err.classList.add('show'); inp.focus(); return; }
+  if(window.LB) LB.setIdentity(v);
+  document.getElementById('login').classList.add('hidden');
+  document.getElementById('app').classList.add('ready');
+  renderTout();
+}
+function bootGate(){
+  if(window.LB && LB.pseudo()){
+    document.getElementById('login').classList.add('hidden');
+    document.getElementById('app').classList.add('ready');
+  } else {
+    setTimeout(()=>{ const i=document.getElementById('pseudoInput'); if(i) i.focus(); },150);
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   MATIÈRES — ajoute un objet ici à chaque nouveau cours.
+   `soon:true` grise la carte. `stats` : trois chiffres du pied de carte.
+   ════════════════════════════════════════════════════════════════ */
+const MATIERES = [
+  {
+    file:"marche_des_particuliers.html", sid:"marche-particuliers", nb:11,
+    badge:"QCM + mini-cas",
+    title:"Le Marché des Particuliers", court:"Marché des Particuliers",
+    desc:"Panorama du marché, crédit, épargne réglementée, assurance vie, PER, gestion de portefeuille, responsabilité civile.",
+    meta:"11 leçons · test · 5 mini-cas",
+    stats:[["11","leçons"],["5","mini-cas"],["1","test final"]]
+  },
+  {
+    file:"produits_derives.html", sid:"produits-derives", nb:15,
+    badge:"QCM · oral · écrit",
+    title:"Produits Dérivés I — Forward", court:"Produits Dérivés",
+    desc:"Le marché des changes, le comptant puis le terme : report et déport, points de swap, eurodevises, cours à terme.",
+    meta:"15 leçons · calculs ∞ · 11 applications",
+    stats:[["15","leçons"],["11","applications"],["∞","calculs"]]
+  },
+  {
+    file:"marketing_numerique.html", sid:"marketing-numerique", nb:11,
+    badge:"écrit 2 h",
+    title:"Marketing Numérique", court:"Marketing Numérique",
+    desc:"Données, CRM et DMP, la démarche complète (PESTEL, Porter, SWOT, segmentation, positionnement, mix 4P), puis le parcours client et le RGPD.",
+    meta:"11 leçons · méthode · 4 cas",
+    stats:[["11","leçons"],["4","cas"],["1","méthode"]]
+  },
+  {
+    file:"es_banque.html", sid:"es-banque", nb:14,
+    badge:"patrimoine & assurance",
+    title:"ES Banque — Patrimoine", court:"ES Banque",
+    desc:"Relation client, succession, assurance vie et règle des 70 ans, IARD, crédit, LCB-FT, et un simulateur fiscal.",
+    meta:"14 leçons · simulateur · test",
+    stats:[["14","leçons"],["1","simulateur"],["1","test final"]]
+  },
+  {
+    file:"fiscalite_particulier.html", sid:"fiscalite-particulier", nb:11,
+    badge:"IR & prélèvements sociaux",
+    title:"Fiscalité du Particulier", court:"Fiscalité",
+    desc:"Module 1 : principes et raisonnement en matière d'impôt sur le revenu — territorialité, domicile fiscal, foyer fiscal, nombre de parts, et le passage du revenu global au revenu net global imposable.",
+    meta:"11 leçons · 6 applications · test",
+    stats:[["11","leçons"],["6","applications"],["1","test final"]]
+  },
+];
+
+/* Les entraînements générés à l'infini — une entrée par générateur. */
+const ENTRAINEMENTS = [
+  {
+    file:"entrainement_changes.html", badge:"mode entraînement",
+    title:"Marché des changes", matiere:"Produits Dérivés I",
+    desc:"Treize notions générées à l'infini, du comptant au terme : cotations, arbitrages, points de swap, cours à terme. Indice, méthode et correction ciblée à chaque question.",
+    stats:[["13","notions"],["∞","exercices"],["3","modes"]]
+  },
+  {
+    file:"entrainement_fiscal.html", badge:"mode entraînement",
+    title:"Impôt sur le revenu", matiere:"Fiscalité du Particulier",
+    desc:"Neuf notions générées à l'infini : composition du foyer, personnes à charge, nombre de parts, domicile fiscal, micro-foncier, traitements, déficits antérieurs et enchaînement jusqu'au RNGI.",
+    stats:[["9","notions"],["∞","exercices"],["3","modes"]]
+  }
+];
+
+const completion = m => (m.sid && window.P && P.completion) ? P.completion(m.sid, m.nb) : null;
+function lienMatiere(m){
+  if(!m.sid || !window.P) return m.file;
+  const e = P.etat(m.sid);
+  return e.last ? m.file+'#'+e.last : m.file;
+}
+
+/* ── cartes matières ── */
+function carteMatiere(m){
+  const c=completion(m), fini=c&&c.pct>=100, nul=!c||c.pct===0;
+  const pc = c ? c.pct+' %' : '—';
+  const cls = fini?' done':(nul?' nul':'');
+  const stats = (m.stats||[]).map(s=>`<div><b>${s[0]}</b><small>${s[1]}</small></div>`).join('');
+  const corps=`
+    <div class="bo">
+      <div class="tete"><h3>${m.title}</h3><span class="pc${cls}">${pc}</span></div>
+      ${c?`<div class="bar${fini?' ok':''}" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${c.pct}" aria-label="Complétion ${m.title}"><i style="width:${c.pct}%"></i></div>`:''}
+      <p class="desc">${m.desc}</p>
+      <span class="tag">${m.badge}</span>
+    </div>
+    <div class="stats">${stats}</div>`;
+  return m.soon ? `<div class="mcard" style="opacity:.55">${corps}</div>`
+                : `<a class="mcard" href="${lienMatiere(m)}">${corps}</a>`;
+}
+function renderMatieres(){
+  document.getElementById('grid-matieres').innerHTML = MATIERES.map(carteMatiere).join('');
+  let pts=0, tot=0;
+  MATIERES.forEach(m=>{ const c=completion(m); if(c){ pts+=c.pct*m.nb; tot+=100*m.nb; } });
+  return tot? Math.floor(pts/tot*100) : 0;
+}
+
+/* ── cartes d'entraînement ── */
+function renderEntrainements(){
+  const host = document.getElementById('grid-entrainement'); if(!host) return;
+  host.innerHTML = ENTRAINEMENTS.map(e=>{
+    const stats = (e.stats||[]).map(s=>`<div><b>${s[0]}</b><small>${s[1]}</small></div>`).join('');
+    return `<a class="mcard" href="${e.file}">
+      <div class="bo">
+        <div class="tete"><h3>${e.title}</h3><span class="pc">∞</span></div>
+        <p class="desc">${e.desc}</p>
+        <span class="tag">${e.badge} · ${e.matiere}</span>
+      </div>
+      <div class="stats">${stats}</div>
+    </a>`;
+  }).join('');
+}
+
+/* ════════════════════════════════════════════════════════════════
+   ÉCHÉANCES — une ligne par partiel. Mois en base 0 (janvier = 0).
+   Heure de Paris en hiver = UTC+1 → 9h Paris = 8h00 UTC.
+   ════════════════════════════════════════════════════════════════ */
+const DEBUT_SEMESTRE = Date.UTC(2026,8,1,8,0,0);     /* 1er septembre 2026 */
+const ECHEANCES = [
+  {end:Date.UTC(2026,10,18,8,0,0), label:"18 novembre 2026", court:"18 nov.",
+   matiere:"produits_derives.html", entrainement:"entrainement_changes.html",
+   sid:"produits-derives", nb:15,
+   titre:"Produits Dérivés I", bref:"Produits Dérivés I", format:"QCM · calcul à l'oral · écrit",
+   desc:"Le cours va jusqu'au marché à terme. L'entraînement couvre les treize notions de calcul, dont le forward."},
+  {end:Date.UTC(2027,0,15,8,0,0), label:"15 janvier 2027", court:"15 janv.",
+   matiere:"marche_des_particuliers.html", provisoire:true,
+   sid:"marche-particuliers", nb:11,
+   titre:"Le Marché des Particuliers", bref:"Marché Particuliers", format:"QCM + mini-cas · 1 h",
+   desc:"Date encore indicative, en attente de confirmation."},
+  {end:Date.UTC(2027,0,15,8,0,0), label:"15 janvier 2027", court:"15 janv.",
+   matiere:"fiscalite_particulier.html", entrainement:"entrainement_fiscal.html", provisoire:true,
+   sid:"fiscalite-particulier", nb:11,
+   titre:"Fiscalité du Particulier", bref:"Fiscalité", format:"à préciser",
+   desc:"Même session que le Marché des Particuliers, en attente de confirmation. Le cours couvre pour l'instant le module 1 sur 5."},
+];
+
+function jours(ms){ return Math.max(0, Math.ceil((ms-Date.now())/8.64e7)); }
+
+function renderPiste(){
+  const host=document.getElementById('piste'); if(!host) return;
+  const der = ECHEANCES[ECHEANCES.length-1];
+  const span = der.end - DEBUT_SEMESTRE;
+  const pos = ms => Math.min(100, Math.max(0, (ms-DEBUT_SEMESTRE)/span*100));
+  const aujd = pos(Date.now());
+
+  let jalons = `<div class="jalon debut" style="left:${aujd}%">
+       <span class="haut">aujourd'hui</span><span class="pt"></span>
+       <span class="bas">Aujourd'hui<small>J+0</small></span></div>`;
+  /* plusieurs partiels peuvent tomber le même jour : un seul jalon par date */
+  const parDate = [];
+  ECHEANCES.forEach(e=>{
+    const g = parDate.find(g=>g.end===e.end);
+    if(g) g.items.push(e); else parDate.push({end:e.end, court:e.court, items:[e]});
+  });
+  jalons += parDate.map((g,i)=>{
+    const dernier = i === parDate.length-1;
+    const futur = g.end > Date.now() + 60*8.64e7;
+    const bref = g.items.length>1 ? g.items.length+' partiels' : g.items[0].bref;
+    const prov = g.items.every(e=>e.provisoire) ? ' · provisoire' : '';
+    return `<div class="jalon${futur?' futur':''}${dernier?' bout':''}" style="left:${pos(g.end)}%">
+       <span class="haut">${g.court}</span><span class="pt"></span>
+       <span class="bas">${bref}<small>J−${jours(g.end)}${prov}</small></span></div>`;
+  }).join('');
+
+  const lignes = ECHEANCES.map(e=>{
+    const c = (window.P && P.completion) ? P.completion(e.sid, e.nb) : null;
+    return `<tr>
+      <td><strong>${e.titre}</strong><span class="quand">${e.label}${e.provisoire?' · provisoire':''}</span>
+        <a class="go" href="${e.matiere}">Ouvrir le cours →</a>
+        ${e.entrainement?`<br><a class="go" href="${e.entrainement}">S'entraîner aux calculs →</a>`:''}</td>
+      <td>${e.format}<span class="quand">${e.desc}</span></td>
+      <td class="n">${c?c.pct+' %':'—'}</td>
+      <td class="n">${jours(e.end)} j</td>
+    </tr>`;
+  }).join('');
+
+  host.innerHTML =
+    `<div class="piste-h"><span class="sur-t" style="margin:0">Fil du semestre</span>
+       <span class="bornes">1<sup>er</sup> sept. 2026 → ${der.court} 2027</span></div>
+     <div class="piste-r"><i style="width:${aujd}%"></i>${jalons}</div>
+     <table class="ech-tab">
+       <tr><th>Échéance</th><th>Format</th><th class="n">Préparation</th><th class="n">Reste</th></tr>
+       ${lignes}
+     </table>`;
+}
+
+/* ── tableau de bord ── */
+function derniereMatiere(){
+  if(!window.P) return null;
+  let best=null;
+  MATIERES.forEach(m=>{ const e=P.etat(m.sid); if(e && e.vu && (!best || e.vu>best.vu)) best={m, vu:e.vu, last:e.last}; });
+  return best;
+}
+function aRevoir(){
+  if(!(window.P && P.aReviser && window.BANQUE)) return 0;
+  try{ const r=P.aReviser(window.BANQUE.map(q=>q.id)); return r && r.dus ? r.dus.length : 0; }catch(e){ return 0; }
+}
+function renderMetriques(g){
+  const host=document.getElementById('metriques'); if(!host) return;
+  let faites=0, total=0;
+  MATIERES.forEach(m=>{ const c=completion(m); total+=m.nb; if(c) faites+=c.lecons.n; });
+  const q=(window.BANQUE||[]).length;
+  host.innerHTML = `
+    <div class="metrique"><span class="lab">Progression globale</span>
+      <span class="val">${g}<sup>%</sup></span>
+      <div class="bar"><i style="width:${g}%"></i></div></div>
+    <div class="metrique"><span class="lab">Leçons validées</span>
+      <span class="val">${faites}<sup>/ ${total}</sup></span>
+      <span class="sv">sur quatre matières</span></div>
+    <div class="metrique"><span class="lab">À revoir aujourd'hui</span>
+      <span class="val">${aRevoir()}</span>
+      <span class="sv">${q} questions en banque</span></div>
+    <div class="metrique"><span class="lab">Prochain partiel</span>
+      <span class="val">${jours(ECHEANCES[0].end)}<sup>jours</sup></span>
+      <span class="sv">${ECHEANCES[0].titre}</span></div>`;
+}
+function renderEntete(){
+  const p = (window.LB && LB.pseudo) ? LB.pseudo() : null;
+  const mot = new Date().getHours() < 18 ? 'Bonjour' : 'Bonsoir';
+  document.getElementById('salut').textContent = p ? mot+', '+p+'.' : 'Le hub';
+  document.getElementById('sous').textContent =
+    'Quatre matières suivies · prochaine échéance dans '+jours(ECHEANCES[0].end)+' jours.';
+}
+
+/* ── panneau « reprendre » ── */
+function renderPanel(g){
+  const host=document.getElementById('panelReprendre'); if(!host) return;
+  const b=derniereMatiere();
+  const m = b? b.m : MATIERES[1];
+  const c = completion(m) || {lecons:{n:0,tot:m.nb}};
+  const num = b&&b.last ? parseInt(String(b.last).replace('l',''),10) : c.lecons.n+1;
+  const serie = (window.P && P.serie) ? P.serie() : 0;
+  host.innerHTML = `
+    <div class="cc">
+      <div class="sur-t" style="margin-bottom:0">${b?'Reprendre':'Commencer'}</div>
+      <h2>${m.title}</h2>
+      <p>${b?`Tu t'es arrêté à la leçon ${num||1}. Reprends exactement là.`:'Ouvre la première leçon et lance-toi.'}</p>
+      <div class="rows">
+        <div class="row"><span>Complétion</span><b>${g} %</b></div>
+        <div class="row"><span>À revoir</span><b>${aRevoir()}</b></div>
+        <div class="row"><span>Série</span><b>${serie} j</b></div>
+      </div>
+    </div>
+    <a class="go" href="${lienMatiere(m)}">${b?'Continuer la leçon':'Ouvrir le parcours'} →</a>`;
+  const cta=document.getElementById('ctaReprendre');
+  if(cta){ cta.href = lienMatiere(m); cta.textContent = b ? 'Reprendre la leçon '+(num||1) : 'Commencer'; }
+}
+
+/* ── chiffres des cartes « inclus » ── */
+function renderChiffres(){
+  const q=(window.BANQUE||[]).length, cartes=(window.CARTES||[]).length;
+  const r=document.getElementById('incRev'), gl=document.getElementById('incGlo');
+  if(r) r.textContent = q ? q+' questions en banque' : 'questions en banque';
+  if(gl) gl.textContent = cartes ? cartes+' termes du Master' : 'termes du Master';
+  const n=aRevoir(), cta=document.getElementById('ctaRevision');
+  if(cta && n>0) cta.textContent = 'Réviser '+n+' question'+(n>1?'s':'');
+}
+
+function renderTout(){
+  const g = renderMatieres();
+  renderEntrainements();
+  renderEntete(); renderMetriques(g); renderPiste(); renderPanel(g); renderChiffres();
+}
+bootGate();
+renderTout();
+</script>
+<script src="ui.js"></script>
+</body>
+</html>

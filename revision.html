@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Révision du jour — M1 MBAF</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --card:#fff; --card2:#fbf9f5;
+  --paper:#faf6ef; --paper2:#f3ece0; --ink:#22201b; --ink2:#4a4640;
+  --muted:#8a8378; --line:#e3d9c8; --line2:#d4c7b0;
+  --teal:#1b6b5e; --teal-l:#e4f0ed; --teal-d:#0f4a40;
+  --amber:#c87a12; --amber-l:#fbf0db;
+  --rust:#a8432a; --rust-l:#f7e6df;
+  --plum:#6b3a73; --plum-l:#f0e7f2;
+  --navy:#241C15; --navy-l:#e3ebf4; --gold:#b8860b;
+  --shadow:0 1px 3px rgba(34,32,27,.08), 0 8px 24px rgba(34,32,27,.06);
+  --shadow-lg:0 4px 12px rgba(34,32,27,.12), 0 20px 48px rgba(34,32,27,.1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);line-height:1.6;
+  background-image:radial-gradient(var(--line) .5px, transparent .5px);background-size:22px 22px}
+::-webkit-scrollbar{width:9px}::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--line2);border-radius:5px}
+
+#topbar{position:sticky;top:0;z-index:50;background:color-mix(in srgb, var(--paper) 94%, transparent);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 24px;
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+#topbar .logo{font-family:'Fraunces',serif;font-weight:900;font-size:18px;color:var(--navy)}
+#topbar .logo span{color:var(--amber)}
+.spacer{flex:1}
+
+main{max-width:760px;margin:0 auto;padding:32px 24px 100px}
+.hero-tag{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:1px;text-transform:uppercase;
+  color:var(--amber);font-weight:500;display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.hero-tag::before{content:'';width:24px;height:2px;background:var(--amber)}
+h1{font-family:'Fraunces',serif;font-weight:900;font-size:2.1rem;line-height:1.1;letter-spacing:-1px;margin-bottom:10px}
+h1 .acc{color:var(--amber)}
+.sub{font-size:16px;color:var(--ink2);margin-bottom:24px;max-width:58ch}
+
+.btn{font-family:'DM Sans';font-weight:600;font-size:.95rem;padding:11px 20px;border-radius:11px;
+  cursor:pointer;border:1.5px solid var(--line2);background:var(--card);color:var(--ink);transition:.15s;
+  display:inline-flex;align-items:center;gap:8px}
+.btn:hover{border-color:var(--navy);transform:translateY(-1px)}
+.btn.primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn.primary:hover{background:var(--teal-d)}
+.btn.navy{background:var(--navy);color:#fff;border-color:var(--navy)}
+.btn.amber{background:var(--amber);color:#fff;border-color:var(--amber)}
+.btn.ko{background:var(--rust-l);color:var(--rust);border-color:#e2b2ab}
+.btn.ko:hover{background:var(--rust);color:#fff;border-color:var(--rust)}
+.btn.ok{background:var(--teal-l);color:var(--teal-d);border-color:#bcdcd4}
+.btn.ok:hover{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.btn.big{padding:14px 26px;font-size:1rem}
+
+/* bilan */
+.bilan{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:10px;margin-bottom:22px}
+.bx{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:15px 12px;
+  text-align:center;box-shadow:var(--shadow)}
+.bx .n{font-family:'Fraunces',serif;font-size:1.7rem;font-weight:900;line-height:1}
+.bx .l{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600;margin-top:5px}
+.n-due{color:var(--rust)} .n-new{color:var(--navy)} .n-cur{color:var(--amber)} .n-ok{color:var(--teal)}
+
+/* choix du mode */
+.modes{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+.mode{flex:1;min-width:150px;background:var(--card);border:1.5px solid var(--line2);border-radius:14px;
+  padding:16px;cursor:pointer;transition:.15s;text-align:left}
+.mode:hover{border-color:var(--navy);transform:translateY(-2px);box-shadow:var(--shadow)}
+.mode.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.mode b{display:block;font-family:'Fraunces',serif;font-size:1.02rem;margin-bottom:3px}
+.mode span{font-size:12.5px;opacity:.8}
+
+.filtres{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:22px}
+.chip{padding:7px 14px;border-radius:22px;border:1.5px solid var(--line2);background:var(--card);
+  color:var(--ink2);font-weight:600;font-size:12.5px;cursor:pointer;font-family:'DM Sans'}
+.chip:hover{border-color:var(--navy)}
+.chip.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+/* séance */
+.prog{height:7px;background:var(--paper2);border-radius:5px;overflow:hidden;border:1px solid var(--line);margin-bottom:18px}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,var(--teal),#2a8a78);transition:width .4s}
+.qcard{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px;
+  box-shadow:var(--shadow-lg);margin-bottom:16px;animation:in .3s ease}
+@keyframes in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.qmeta{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.qmeta .src{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);
+  background:var(--paper2);padding:3px 10px;border-radius:20px}
+.qmeta .cnt{font-family:'DM Mono',monospace;font-size:11.5px;color:var(--muted)}
+.qtxt{font-size:1.2rem;font-weight:600;line-height:1.4;margin-bottom:18px}
+.qtxt.gros{font-family:'DM Mono',monospace;font-size:2rem;font-weight:500;color:var(--navy);text-align:center;padding:14px 0}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opts button{text-align:left;background:var(--paper);border:1.5px solid var(--line2);border-radius:11px;
+  padding:13px 16px;cursor:pointer;font-family:'DM Sans';font-size:.98rem;color:var(--ink);transition:.15s}
+.opts button:hover:not(:disabled){border-color:var(--navy);background:var(--card)}
+.opts button:disabled{cursor:default}
+.opts button.good{background:var(--teal-l);border-color:var(--teal);color:var(--teal-d);font-weight:600}
+.opts button.bad{background:var(--rust-l);border-color:var(--rust);color:var(--rust)}
+.numrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.numrow input{font-family:'DM Mono';font-size:1.05rem;padding:12px 15px;border:1.5px solid var(--line2);
+  border-radius:11px;width:190px;background:var(--paper);color:var(--ink)}
+.numrow input:focus{outline:none;border-color:var(--teal)}
+.reveal{background:var(--paper2);border-radius:13px;padding:18px 20px;margin-top:16px;animation:in .3s}
+.reveal .rt{font-family:'Fraunces',serif;font-weight:700;font-size:1.05rem;margin-bottom:7px}
+.reveal .rd{font-size:1.05rem;color:var(--ink);margin-bottom:8px;font-weight:600}
+.reveal p{font-size:14.8px;color:var(--ink2);line-height:1.6}
+.reveal.ok .rt{color:var(--teal-d)} .reveal.ko .rt{color:var(--rust)}
+.autoeval{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.autoeval .btn{flex:1;min-width:130px;justify-content:center}
+.actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.lienlec{font-size:12.5px;color:var(--navy);text-decoration:none;font-weight:600;
+  border:1px solid var(--line);border-radius:8px;padding:5px 12px}
+.lienlec:hover{background:var(--navy);color:#fff}
+
+.fin{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:32px;
+  text-align:center;box-shadow:var(--shadow-lg)}
+.fin .big{font-size:46px;margin-bottom:10px}
+.fin h3{font-family:'Fraunces',serif;font-size:1.5rem;margin-bottom:8px;font-weight:700}
+.fin p{color:var(--ink2);margin-bottom:20px}
+.fin .sc{font-family:'Fraunces',serif;font-size:2.6rem;font-weight:900;color:var(--teal);line-height:1}
+.empty{text-align:center;padding:44px 20px;color:var(--muted);font-size:15px;
+  background:var(--card);border:1px dashed var(--line2);border-radius:16px}
+.empty .big{font-size:40px;margin-bottom:12px}
+.note{background:var(--amber-l);border:1px solid #e6cf9e;border-left:4px solid var(--amber);
+  border-radius:11px;padding:12px 15px;font-size:13.5px;color:#5e3a06;margin-top:20px}
+:root[data-theme="dark"] .note{color:var(--amber-deep)}
+
+@media(max-width:700px){main{padding:24px 16px 90px}h1{font-size:1.7rem}.qcard{padding:20px}}
+</style>
+<link rel="stylesheet" href="ui.css">
+<link rel="stylesheet" href="theme.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#F7F8FA">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="M1 MBAF">
+</head>
+<body>
+
+<div id="topbar">
+  <div class="logo">Révi<span>sion</span></div>
+  <div class="spacer"></div>
+  <span id="nav-slot"></span>
+</div>
+
+<main>
+  <div id="accueil">
+    <div class="hero-tag">Entraînement du jour</div>
+    <h1>Réviser <span class="acc">au bon moment</span></h1>
+    <p class="sub">Les questions ratées reviennent le lendemain, celles que tu maîtrises s'espacent — 1 jour, 3, 7, 16, 35, 75. Plus tu réponds juste, moins elles reviennent.</p>
+    <div id="bilan"></div>
+    <div class="modes" id="modes"></div>
+    <div class="filtres" id="filtres"></div>
+    <div id="lancer"></div>
+    <div class="note">Le planning est enregistré <b>sur cet appareil</b> : il ne suit pas d'un téléphone à l'autre.</div>
+  </div>
+  <div id="seance" style="display:none"></div>
+</main>
+
+<script src="progress.js"></script>
+<script src="banque.js"></script>
+<script>
+const LAB = {'marche-particuliers':'Marché des Particuliers','produits-derives':'Produits Dérivés','marketing-numerique':'Marketing Numérique','es-banque':'ES Banque','fiscalite-particulier':'Fiscalité du Particulier'};
+const FICH = {'marche-particuliers':'marche_des_particuliers.html','produits-derives':'produits_derives.html','marketing-numerique':'marketing_numerique.html','es-banque':'es_banque.html','fiscalite-particulier':'fiscalite_particulier.html'};
+let MODE = 'espacee', MAT = 'Toutes', SESSION = null;
+const TAILLE = 15;
+
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function pool(){
+  const tout = MODE==='flash' ? window.CARTES : window.BANQUE;
+  return MAT==='Toutes' ? tout : tout.filter(x=>LAB[x.m]===MAT);
+}
+
+function renderAccueil(){
+  document.getElementById('modes').innerHTML = `
+    <button class="mode${MODE==='espacee'?' on':''}" onclick="setMode('espacee')">
+      <b>🔁 Révision espacée</b><span>Les questions dues aujourd'hui, ratées en priorité</span></button>
+    <button class="mode${MODE==='flash'?' on':''}" onclick="setMode('flash')">
+      <b>🃏 Flashcards</b><span>Sigles et définitions, tu t'auto-évalues</span></button>
+    <button class="mode${MODE==='libre'?' on':''}" onclick="setMode('libre')">
+      <b>🎲 Au hasard</b><span>Piocher sans tenir compte du planning</span></button>`;
+
+  const mats = ['Toutes', ...Object.values(LAB)];
+  document.getElementById('filtres').innerHTML = mats.map(m=>
+    `<button class="chip${MAT===m?' on':''}" onclick="setMat('${m.replace(/'/g,"\\'")}')">${m}</button>`).join('');
+
+  const ids = pool().map(x=>x.id);
+  const b = P.bilanPlan(ids);
+  document.getElementById('bilan').innerHTML = `<div class="bilan">
+    <div class="bx"><div class="n n-due">${b.aRevoir}</div><div class="l">À revoir</div></div>
+    <div class="bx"><div class="n n-new">${b.neufs}</div><div class="l">Jamais vues</div></div>
+    <div class="bx"><div class="n n-cur">${b.encours}</div><div class="l">En cours</div></div>
+    <div class="bx"><div class="n n-ok">${b.acquis}</div><div class="l">Acquises</div></div>
+  </div>`;
+
+  const dispo = MODE==='libre' ? ids.length : (b.aRevoir + b.neufs);
+  document.getElementById('lancer').innerHTML = dispo
+    ? `<button class="btn primary big" onclick="demarrer()">Commencer — ${Math.min(TAILLE,dispo)} question${Math.min(TAILLE,dispo)>1?'s':''} →</button>`
+    : `<div class="empty"><div class="big">✅</div>Rien à réviser pour l'instant dans cette sélection.<br>
+       Les questions reviendront à leur échéance — ou choisis « Au hasard » pour t'entraîner quand même.</div>`;
+}
+function setMode(m){ MODE=m; renderAccueil(); }
+function setMat(m){ MAT=m; renderAccueil(); }
+
+function demarrer(){
+  const p = pool();
+  const {dus, neufs} = P.aReviser(p.map(x=>x.id));
+  let ids;
+  if(MODE==='libre'){ ids = melange(p.map(x=>x.id)); }
+  else { ids = dus.concat(melange(neufs)); }   // les dus d'abord, puis du neuf
+  ids = ids.slice(0, TAILLE);
+  if(!ids.length) return;
+  const byId = {}; p.forEach(x=>byId[x.id]=x);
+  SESSION = {items: ids.map(i=>byId[i]), i:0, ok:0, ko:0};
+  document.getElementById('accueil').style.display='none';
+  document.getElementById('seance').style.display='block';
+  afficher();
+}
+function melange(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+
+function afficher(){
+  const S = SESSION, host = document.getElementById('seance');
+  if(S.i >= S.items.length) return terminer();
+  const q = S.items[S.i];
+  const pct = Math.round(S.i/S.items.length*100);
+  const plan = P.etatPlan(q.id);
+  const statut = !plan ? 'Nouvelle' : (plan.niv===0 ? 'À consolider' : 'Palier '+plan.niv);
+
+  let corps;
+  if(q.type==='carte'){
+    corps = `<div class="qtxt gros">${esc(q.q)}</div>
+      <div class="actions"><button class="btn navy big" style="width:100%;justify-content:center" onclick="reveler()">Afficher la réponse</button></div>`;
+  } else if(q.type==='num'){
+    corps = `<div class="qtxt">${esc(q.q)}</div>
+      <div class="numrow"><input type="number" step="any" id="rep" placeholder="ta réponse"
+        onkeydown="if(event.key==='Enter')valider()"><span style="font-family:DM Mono;color:var(--muted)">${esc(q.unit||'')}</span>
+        <button class="btn primary" onclick="valider()">Vérifier</button></div>`;
+  } else {
+    corps = `<div class="qtxt">${esc(q.q)}</div><div class="opts">`+
+      q.opts.map((o,j)=>`<button onclick="repondre(${j})" id="o${j}">${esc(o)}</button>`).join('')+`</div>`;
+  }
+
+  host.innerHTML = `<div class="prog"><i style="width:${pct}%"></i></div>
+    <div class="qcard">
+      <div class="qmeta">
+        <span class="src">${esc(LAB[q.m]||'')} · ${esc(q.ch)}</span>
+        <span class="cnt">${S.i+1}/${S.items.length} · ${statut}</span>
+      </div>
+      ${corps}
+      <div id="fb"></div>
+    </div>`;
+  const inp = document.getElementById('rep'); if(inp) inp.focus();
+}
+
+function finQuestion(ok, html){
+  const S=SESSION, q=S.items[S.i];
+  P.planifier(q.id, ok);
+  P.noterReponse(q.id, ok, q.ch, q.m);
+  if(ok) S.ok++; else S.ko++;
+  const plan = P.etatPlan(q.id);
+  const revoir = plan.niv===0 ? "à revoir dès aujourd'hui" : 'revient dans '+P.PALIERS[plan.niv-1]+' jour'+(P.PALIERS[plan.niv-1]>1?'s':'');
+  document.getElementById('fb').innerHTML = html + `
+    <div class="actions">
+      <a class="lienlec" href="${FICH[q.m]}#${q.l}">📖 Voir la leçon</a>
+      <span style="flex:1"></span>
+      <button class="btn primary" onclick="suivante()">${S.i+1>=S.items.length?'Terminer':'Suivante →'}</button>
+    </div>
+    <div style="font-family:DM Mono;font-size:11px;color:var(--muted);margin-top:9px">↻ ${revoir}</div>`;
+}
+
+function repondre(j){
+  const q = SESSION.items[SESSION.i];
+  const ok = j === q.correct;
+  q.opts.forEach((_,k)=>{
+    const b=document.getElementById('o'+k); b.disabled=true;
+    if(k===q.correct) b.classList.add('good');
+    else if(k===j) b.classList.add('bad');
+  });
+  finQuestion(ok, `<div class="reveal ${ok?'ok':'ko'}"><div class="rt">${ok?'✅ Juste':'❌ Raté'}</div><p>${esc(q.ex||'')}</p></div>`);
+}
+function valider(){
+  const q = SESSION.items[SESSION.i];
+  const v = parseFloat(String(document.getElementById('rep').value).replace(',','.'));
+  if(isNaN(v)) return;
+  const ok = Math.abs(v - q.answer) <= (q.tol||0);
+  document.getElementById('rep').disabled = true;
+  finQuestion(ok, `<div class="reveal ${ok?'ok':'ko'}"><div class="rt">${ok?'✅ Juste':'❌ Raté — attendu : '+q.answer+' '+esc(q.unit||'')}</div><p>${esc(q.ex||'')}</p></div>`);
+}
+function reveler(){
+  const q = SESSION.items[SESSION.i];
+  document.getElementById('fb').innerHTML = `
+    <div class="reveal"><div class="rd">${esc(q.d||'')}</div><p>${esc(q.ex||'')}</p></div>
+    <div class="autoeval">
+      <button class="btn ko" onclick="autoEval(false)">Je ne savais pas</button>
+      <button class="btn ok" onclick="autoEval(true)">Je savais</button>
+    </div>`;
+}
+function autoEval(ok){
+  const q = SESSION.items[SESSION.i];
+  finQuestion(ok, `<div class="reveal ${ok?'ok':'ko'}"><div class="rd">${esc(q.d||'')}</div><p>${esc(q.ex||'')}</p></div>`);
+}
+function suivante(){ SESSION.i++; afficher(); }
+
+function terminer(){
+  const S = SESSION;
+  const pct = S.items.length ? Math.round(S.ok/S.items.length*100) : 0;
+  let msg;
+  if(pct>=90) msg="Excellent — ces notions sont solides, elles reviendront rarement.";
+  else if(pct>=70) msg="Bon travail. Les questions ratées reviendront demain.";
+  else if(pct>=50) msg="Continue : c'est en les revoyant qu'elles rentrent.";
+  else msg="Séance difficile — raison de plus pour recommencer demain.";
+  document.getElementById('seance').innerHTML = `<div class="fin">
+    <div class="big">${pct>=70?'🎉':'💪'}</div>
+    <div class="sc">${S.ok}/${S.items.length}</div>
+    <h3 style="margin-top:10px">Séance terminée</h3>
+    <p>${msg}</p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="btn primary" onclick="retour()">Nouvelle séance</button>
+      <a class="btn" href="stats.html">Voir ma progression</a>
+    </div></div>`;
+}
+function retour(){
+  SESSION=null;
+  document.getElementById('seance').style.display='none';
+  document.getElementById('accueil').style.display='block';
+  renderAccueil();
+}
+renderAccueil();
+</script>
+<script src="ui.js"></script>
+</body>
+</html>

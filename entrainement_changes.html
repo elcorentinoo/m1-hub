@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="fr" subject-id="produits-derives">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entraînement — Marché des changes · M1 MBAF</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --card:#fff; --card2:#fbf9f5;
+  --paper:#faf6ef; --paper2:#f3ece0; --ink:#22201b; --ink2:#4a4640; --muted:#8a8378;
+  --line:#e3d9c8; --line2:#d4c7b0;
+  --teal:#1b6b5e; --teal-l:#e4f0ed; --teal-d:#0f4a40;
+  --amber:#c87a12; --amber-l:#fbf0db;
+  --rust:#a8432a; --rust-l:#f7e6df;
+  --plum:#6b3a73; --plum-l:#f0e7f2;
+  --navy:#241C15; --navy-l:#e3ebf4;
+  --gold:#b8860b;
+  --shadow:0 1px 3px rgba(34,32,27,.08), 0 8px 24px rgba(34,32,27,.06);
+  --shadow-lg:0 4px 12px rgba(34,32,27,.12), 0 24px 56px rgba(34,32,27,.14);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+code,.mono{font-family:'DM Mono',monospace}
+button{font-family:inherit}
+
+/* ---------- barre du haut ---------- */
+.topbar{position:sticky;top:0;z-index:50;background:var(--paper);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:0 20px;height:62px}
+.brand{display:flex;align-items:center;gap:11px;font-family:'Fraunces',serif;font-weight:600;font-size:1.08rem;color:var(--navy);min-width:0}
+.brand .logo{width:36px;height:36px;border-radius:9px;background:var(--amber);color:#fff;display:grid;place-items:center;font-size:1.1rem;flex-shrink:0;box-shadow:var(--shadow)}
+.brand small{display:block;font-family:'DM Sans';font-weight:500;font-size:.64rem;letter-spacing:.09em;color:var(--amber);text-transform:uppercase}
+.brand .t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-space{flex:1}
+.cd-chip{font-family:'DM Mono',monospace;font-size:.74rem;padding:6px 11px;border-radius:20px;background:var(--navy);color:#fff;white-space:nowrap;text-decoration:none}
+.cd-chip b{color:#f3c969;font-weight:500}
+
+.wrap{max-width:900px;margin:0 auto;padding:28px 18px 70px}
+
+/* ---------- en-tête ---------- */
+.hero{background:linear-gradient(140deg,#2A1A0C,#5A3208 55%,#241C15);color:#F6EEE4;border-radius:22px;padding:30px 28px;position:relative;overflow:hidden;box-shadow:var(--shadow-lg)}
+.hero::after{content:'';position:absolute;right:-60px;top:-60px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(200,122,18,.35),transparent 70%)}
+.eyebrow{font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:#f3c969;margin-bottom:8px}
+.hero h1{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.6rem,4.6vw,2.3rem);line-height:1.12;letter-spacing:-.5px}
+.hero h1 em{font-style:normal;color:#f3c969}
+.hero p{margin-top:10px;color:#c9d6e4;font-size:.95rem;max-width:600px;position:relative;z-index:1}
+.hero-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px;position:relative;z-index:1}
+.partiel{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:14px;padding:12px 16px;min-width:210px}
+.partiel .l{font-family:'DM Mono',monospace;font-size:.66rem;letter-spacing:1.4px;text-transform:uppercase;color:#a9c3e0}
+.partiel .m{font-family:'Fraunces',serif;font-weight:700;font-size:1.25rem;color:#fff}
+.hero a.back{align-self:center;color:#fff;font-weight:600;font-size:.88rem;text-decoration:none;border:1px solid rgba(255,255,255,.3);padding:9px 15px;border-radius:22px}
+.hero a.back:hover{background:rgba(255,255,255,.1)}
+
+/* ---------- onglets de mode ---------- */
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:24px 0 16px}
+.mode{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:14px 14px 12px;text-align:left;cursor:pointer;transition:.15s;color:var(--ink)}
+.mode:hover{border-color:var(--line2);transform:translateY(-2px)}
+.mode.on{border-color:var(--navy);box-shadow:0 0 0 3px var(--navy-l)}
+.mode .i{font-size:1.3rem}
+.mode .t{display:block;font-weight:700;font-size:.95rem;margin-top:4px}
+.mode .s{display:block;font-size:.78rem;color:var(--muted);line-height:1.4;margin-top:2px}
+
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:var(--shadow);margin-bottom:18px}
+.panel h3{font-family:'Fraunces',serif;font-size:1.05rem;color:var(--navy);margin-bottom:10px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:8px 13px;border-radius:22px;border:1.5px solid var(--line);background:var(--card);color:var(--ink2);font-weight:600;font-size:.86rem;cursor:pointer;transition:.15s}
+.chip:hover{border-color:var(--line2)}
+.chip.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.row{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:14px}
+.toggle{display:inline-flex;align-items:center;gap:9px;font-size:.9rem;color:var(--ink2);cursor:pointer;user-select:none}
+.toggle input{width:18px;height:18px;accent-color:var(--amber)}
+.help{font-size:.82rem;color:var(--muted);margin-top:8px;line-height:1.5}
+.sess{display:flex;gap:18px;font-family:'DM Mono',monospace;font-size:.78rem;color:var(--muted);margin-left:auto}
+.sess b{color:var(--ink);font-weight:500}
+
+.btn{font-family:'DM Sans';font-weight:600;font-size:.94rem;padding:11px 20px;border-radius:11px;cursor:pointer;border:1.5px solid var(--line);background:var(--card);color:var(--ink);transition:.16s;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
+.btn:hover{border-color:var(--line2);transform:translateY(-1px)}
+.btn.primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn.primary:hover{background:#155a4f}
+.btn.navy{background:var(--navy);color:#fff;border-color:var(--navy)}
+.btn.small{padding:7px 12px;font-size:.84rem;border-radius:9px}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+
+/* ---------- exercice ---------- */
+.ex{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+.ex-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:14px 20px;border-bottom:1px solid var(--line);background:var(--card2)}
+.tag{font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.6px;text-transform:uppercase;padding:4px 10px;border-radius:20px;background:var(--amber-l);color:var(--amber)}
+.tag.navy{background:var(--navy-l);color:var(--navy)}
+.ex-head .prog{margin-left:auto;font-family:'DM Mono',monospace;font-size:.78rem;color:var(--muted)}
+.ex-body{padding:20px}
+.ctx{font-size:.98rem;line-height:1.65}
+.ctx b{color:var(--navy)}
+table.data{width:100%;border-collapse:collapse;margin:14px 0 4px;font-size:.92rem}
+table.data th{text-align:left;font-weight:600;font-size:.74rem;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);padding:6px 10px;border-bottom:1.5px solid var(--line)}
+table.data td{padding:8px 10px;border-bottom:1px solid var(--line)}
+table.data td.v{font-family:'DM Mono',monospace;white-space:nowrap}
+table.data td.v i{font-style:normal;color:var(--muted);margin:0 6px}
+
+.q{border-top:1px dashed var(--line);margin-top:18px;padding-top:16px;animation:fade .35s both}
+.q-top{display:flex;gap:10px;align-items:flex-start}
+.qn{flex:none;width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-family:'DM Mono',monospace;font-size:.78rem;margin-top:1px}
+.q.ok .qn{background:var(--teal)} .q.ko .qn{background:var(--rust)} .q.saved .qn{background:var(--muted)}
+.qp{font-size:.98rem;line-height:1.55;flex:1}
+.qp .nt{display:block;font-family:'DM Mono',monospace;font-size:.66rem;letter-spacing:.8px;text-transform:uppercase;color:var(--amber);margin-bottom:2px}
+.ans{margin:12px 0 0 38px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ans input{font-family:'DM Mono',monospace;font-size:1rem;padding:10px 12px;border-radius:10px;border:1.5px solid var(--line2);background:var(--card);color:var(--ink);width:210px;max-width:100%}
+.ans input:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px var(--navy-l)}
+.ans .unit{font-family:'DM Mono',monospace;font-size:.86rem;color:var(--muted)}
+.opts{margin:12px 0 0 38px;display:grid;gap:8px}
+.opt{text-align:left;padding:11px 14px;border-radius:11px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font-size:.93rem;cursor:pointer;transition:.14s;line-height:1.45}
+.opt:hover:not(:disabled){border-color:var(--navy)}
+.opt:disabled{cursor:default}
+.opt.pick{border-color:var(--navy);background:var(--navy-l)}
+.opt.good{border-color:var(--teal);background:var(--teal-l)}
+.opt.bad{border-color:var(--rust);background:var(--rust-l)}
+.aids{margin:10px 0 0 38px;display:flex;flex-wrap:wrap;gap:6px}
+.aid{font-size:.8rem;padding:5px 11px;border-radius:18px;border:1px solid var(--line);background:var(--paper2);color:var(--ink2);cursor:pointer;font-weight:600}
+.aid:hover:not(:disabled){border-color:var(--line2);color:var(--navy)}
+.aid:disabled{opacity:.5;cursor:default}
+.box{margin:10px 0 0 38px;border-radius:12px;padding:12px 14px;font-size:.9rem;line-height:1.6}
+.box.hint{background:var(--amber-l);border-left:3px solid var(--amber)}
+.box.meth{background:var(--navy-l);border-left:3px solid var(--navy)}
+.box.fb{border:1px solid var(--line);background:var(--card2)}
+.box.fb.ok{border-color:rgba(27,107,94,.35);background:var(--teal-l)}
+.box.fb.ko{border-color:rgba(168,67,42,.35);background:var(--rust-l)}
+.box.fb.saved{background:var(--paper2)}
+.fb-h{font-weight:700;margin-bottom:4px}
+.fb-msg{margin-bottom:6px}
+.yours{font-family:'DM Mono',monospace;font-size:.82rem;color:var(--ink2);margin-bottom:8px}
+.steps{display:grid;gap:7px;margin-top:6px}
+.st{display:flex;gap:9px}
+.st .sn{flex:none;width:20px;height:20px;border-radius:50%;background:var(--card);border:1px solid var(--line2);font-family:'DM Mono',monospace;font-size:.68rem;display:grid;place-items:center;margin-top:2px}
+.st .sc code,.box code{font-family:'DM Mono',monospace;font-size:.86rem;background:rgba(127,127,127,.12);padding:1px 5px;border-radius:5px;white-space:nowrap}
+details.more{margin-top:6px} details.more summary{cursor:pointer;font-size:.84rem;color:var(--navy);font-weight:600}
+table.mini{border-collapse:collapse;font-size:.84rem;margin:6px 0;width:100%}
+table.mini td,table.mini th{border:1px solid rgba(127,127,127,.25);padding:4px 7px;text-align:left}
+table.mini th{font-size:.72rem;text-transform:uppercase;letter-spacing:.4px}
+.ex-foot{padding:14px 20px;border-top:1px solid var(--line);display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:var(--card2)}
+.ex-foot .sp{flex:1}
+.timer{font-family:'DM Mono',monospace;font-size:.8rem;color:var(--muted)}
+
+/* ---------- bilan ---------- */
+.bilan-score{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.ring{width:110px;height:110px;border-radius:50%;display:grid;place-items:center;font-family:'Fraunces',serif;font-weight:900;font-size:1.7rem;color:var(--navy)}
+.bars{display:grid;gap:8px;margin-top:16px}
+.bar-l{display:flex;justify-content:space-between;font-size:.84rem}
+.bar{height:8px;border-radius:5px;background:var(--paper2);border:1px solid var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--teal)}
+.bar.low i{background:var(--rust)} .bar.mid i{background:var(--amber)}
+.corr{border-top:1px dashed var(--line);padding-top:12px;margin-top:12px}
+.corr h4{font-size:.92rem;margin-bottom:4px}
+
+/* ---------- aide-mémoire ---------- */
+details.memo{margin-top:22px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 18px;box-shadow:var(--shadow)}
+details.memo summary{cursor:pointer;font-family:'Fraunces',serif;font-weight:700;color:var(--navy)}
+details.memo .in{margin-top:10px;font-size:.9rem;line-height:1.6}
+details.memo .in p{margin:8px 0}
+
+.hidden{display:none!important}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(max-width:640px){
+  .modes{grid-template-columns:1fr}
+  .mode{display:flex;gap:10px;align-items:center}.mode .t{margin-top:0}
+  .ans,.opts,.aids,.box{margin-left:0}
+  .brand small{display:none}
+  .brand .t{display:none}
+  .sess{margin-left:0;width:100%}
+  .topbar{padding:0 12px;gap:10px}
+}
+@media(prefers-reduced-motion:reduce){.q{animation:none}}
+</style>
+<link rel="stylesheet" href="ui.css">
+<link rel="stylesheet" href="theme.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#F7F8FA">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="logo">🎯</span>
+    <span class="t">Entraînement · Changes<small>M1 MBAF · Produits Dérivés I</small></span>
+  </div>
+  <span class="tb-space"></span>
+  <a class="cd-chip" id="cdChip" href="#partiel">⏳ Partiel</a>
+  <span id="nav-slot"></span>
+</div>
+
+<div class="wrap">
+
+  <header class="hero" id="partiel">
+    <div class="eyebrow">Mode entraînement · séparé du cours</div>
+    <h1>Les calculs de change,<br><em>à l'infini</em>.</h1>
+    <p>Treize notions, du marché au comptant au marché à terme : chaque exercice est tiré au hasard — nouvelles devises, nouvelles cotations, nouveaux taux d'intérêt, nouveaux montants. Tu réponds question par question, avec des aides si tu bloques, et la correction arrive tout de suite, avec le détail de ton erreur.</p>
+    <div class="hero-row">
+      <div class="partiel">
+        <div class="l">⏳ Partiel Produits Dérivés · <span id="cdDate">18 novembre 2026</span></div>
+        <div class="m" id="cdMain">—</div>
+      </div>
+      <a class="back" href="produits_derives.html">📖 Revoir le cours →</a>
+    </div>
+  </header>
+
+  <div class="modes" role="tablist">
+    <button class="mode on" data-mode="notion" onclick="setMode('notion')"><span class="i">🧩</span><span><span class="t">Par notion</span><span class="s">Un type de calcul, à la chaîne</span></span></button>
+    <button class="mode" data-mode="serie" onclick="setMode('serie')"><span class="i">🔟</span><span><span class="t">Série</span><span class="s">5 ou 10 exercices mélangés, avec un bilan</span></span></button>
+    <button class="mode" data-mode="cas" onclick="setMode('cas')"><span class="i">📝</span><span><span class="t">Cas complet</span><span class="s">Un sujet entier, du début à la fin</span></span></button>
+  </div>
+
+  <!-- réglages de chaque mode -->
+  <div class="panel" id="pNotion">
+    <h3>Choisis une notion</h3>
+    <div class="chips" id="chips"></div>
+    <div class="row">
+      <button class="btn navy" onclick="startNotion()">Nouvel exercice →</button>
+      <div class="sess">Faits <b id="sDone">0</b> · Justes <b id="sOk">0</b> · Série <b id="sStreak">0</b></div>
+    </div>
+  </div>
+
+  <div class="panel hidden" id="pSerie">
+    <h3>Série mélangée</h3>
+    <div class="chips" id="serieLen">
+      <button class="chip on" data-n="5" onclick="setLen(5)">5 exercices</button>
+      <button class="chip" data-n="10" onclick="setLen(10)">10 exercices</button>
+    </div>
+    <div class="row">
+      <label class="toggle"><input type="checkbox" id="partielSerie"> Conditions de partiel</label>
+      <button class="btn navy" onclick="startSerie()">Lancer la série →</button>
+    </div>
+    <p class="help">En conditions de partiel : chronomètre, aucune aide, et tu ne vois si tu as juste qu'à la fin. Toutes les corrections sont regroupées dans le bilan.</p>
+  </div>
+
+  <div class="panel hidden" id="pCas">
+    <h3>Cas complet, format sujet d'examen</h3>
+    <p class="help" style="margin-top:0">Un sujet tiré au sort parmi deux familles. <b>Le cas comptant</b> : une entreprise fictive, ses créances et ses dettes en devises, plusieurs banques et le marché interbancaire — position de change, spread, cotation réciproque, conversion, arbitrage géographique, ordre à cours limité, cours croisé, arbitrage triangulaire et commission maximale, une vingtaine de questions enchaînées. <b>Le cas couverture à terme</b> : une créance en devises à couvrir sur le marché forward — position, sens de la couverture, calcul du cours à terme, montant encaissé et comparaison avec une position non couverte.</p>
+    <div class="row">
+      <label class="toggle"><input type="checkbox" id="partielCas"> Conditions de partiel</label>
+      <button class="btn navy" onclick="startCas()">Commencer le cas →</button>
+    </div>
+  </div>
+
+  <div id="stage"></div>
+
+  <details class="memo">
+    <summary>📌 Aide-mémoire : la règle qui débloque tout</summary>
+    <div class="in">
+      <p>Une cotation <code>L/R = acheteur – vendeur</code> se lit « 1 L coûte … R ». La devise de gauche est la <b>marchandise</b>, celle de droite est l'<b>argent</b>. Les cours sont ceux de la banque : acheteur = le prix auquel <b>elle</b> achète, donc celui auquel <b>tu</b> vends.</p>
+      <table class="mini">
+        <tr><th>Je donne…</th><th>Donc</th><th>Cours</th><th>Calcul</th></tr>
+        <tr><td>la devise de <b>gauche</b></td><td>je la vends</td><td>acheteur (le plus bas)</td><td>× cours</td></tr>
+        <tr><td>la devise de <b>droite</b></td><td>j'achète celle de gauche</td><td>vendeur (le plus haut)</td><td>÷ cours</td></tr>
+      </table>
+      <p><b>Test anti-panique :</b> calcule avec les deux cours et garde le résultat qui t'arrange le moins. La banque ne fait jamais de cadeau.</p>
+      <p><b>Réciproque :</b> on inverse et on croise, <code>(R/L)ᴬ = 1 / (L/R)ⱽ</code> et <code>(R/L)ⱽ = 1 / (L/R)ᴬ</code>.</p>
+      <p><b>Arbitrage :</b> il existe dès que les fourchettes ne se chevauchent pas. On achète là où le vendeur est le plus bas, on revend là où l'acheteur est le plus haut.</p>
+      <p><b>Spread :</b> en points, <code>(V − A) ÷ 0,0001</code> ; en %, <code>(V − A) ÷ A × 100</code>. Si la calculatrice affiche 0,0499, c'est déjà 0,0499 %.</p>
+    </div>
+  </details>
+</div>
+
+<script src="lb.js"></script>
+<script src="progress.js"></script>
+<script>
+const SUBJECT_KEY = 'Produits Dérivés I';
+/* Date du partiel : 18 novembre 2026, 9 h à Paris (heure d'hiver, UTC+1 → 8 h UTC).
+   Garde la même date que dans ECHEANCES (index.html). */
+const PARTIEL = {end: Date.UTC(2026,10,18,8,0,0), label:'18 novembre 2026'};
+
+/* ════════════════════ OUTILS ════════════════════ */
+const rnd=(a,b,d)=>+(a+Math.random()*(b-a)).toFixed(d);
+const ri=(a,b)=>Math.floor(a+Math.random()*(b-a+1));
+const pick=arr=>arr[ri(0,arr.length-1)];
+const shuffle=arr=>{const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=ri(0,i);[a[i],a[j]]=[a[j],a[i]];}return a;};
+const pt=d=>Math.pow(10,-d);
+const r=(v,d)=>+v.toFixed(d);
+const fmt=(v,d)=>Number(v).toLocaleString('fr-FR',{minimumFractionDigits:d,maximumFractionDigits:d});
+const f4=v=>fmt(v,4);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function parseNum(s){
+  s=String(s).trim().replace(/[\s  ]/g,'').replace(/[a-zA-Z€%]/g,'').replace(',', '.');
+  if(!/^[-+]?\d*\.?\d+(e[-+]?\d+)?$/i.test(s)) return NaN;
+  return parseFloat(s);
+}
+
+/* Devises : niveau de l'euro (EUR/X) et nom */
+const CUR={
+  USD:{lo:1.07,hi:1.18,n:'dollars américains'}, GBP:{lo:0.835,hi:0.885,n:'livres sterling'},
+  CHF:{lo:0.925,hi:0.975,n:'francs suisses'},   CAD:{lo:1.46,hi:1.62,n:'dollars canadiens'},
+  SEK:{lo:10.9,hi:11.6,n:'couronnes suédoises'}, NOK:{lo:11.2,hi:11.9,n:'couronnes norvégiennes'},
+  AUD:{lo:1.60,hi:1.76,n:'dollars australiens'}, JPY:{lo:158,hi:176,n:'yens'}
+};
+const NOJPY=['USD','GBP','CHF','CAD','SEK','NOK','AUD'];
+const decFor=lvl=>lvl>=50?2:4;
+function mid(X){ const c=CUR[X]; return c.lo+Math.random()*(c.hi-c.lo); }
+/* fabrique une fourchette : acheteur arrondi, vendeur = acheteur + spread.
+   bp = spread en centièmes de pourcent du cours (5 ≈ 0,05 %, soit 8 points sur 1,60) */
+const ptsFor=(m,d,bp)=>Math.max(2,Math.round(m*bp/1e4/pt(d)));
+function quote(L,R,m,bp){ const d=decFor(m); const a=r(m,d), sp=ptsFor(m,d,bp); return {L,R,a,v:r(a+sp*pt(d),d),d,sp}; }
+const qStr=p=>`${fmt(p.a,p.d)} – ${fmt(p.v,p.d)}`;
+const pair=p=>`${p.L}/${p.R}`;
+const others=(ex,list)=>list.filter(x=>!ex.includes(x));
+
+const SOCIETES=['Armor Composites','Kerlan Industries','Océane Aéro','Menhir Systems','Nautilia','Brocéliande Textiles','Ker Avel Énergie','Iroise Marine','Goëlo Robotique'];
+const BANQUES=['BNP Paribas','HSBC','Société Générale','Natixis','Crédit Agricole CIB','Barclays','Deutsche Bank'];
+const PAYS={USD:'des États-Unis',GBP:'du Royaume-Uni',CHF:'de Suisse',CAD:'du Canada',SEK:'de Suède',NOK:'de Norvège',AUD:"d'Australie",JPY:'du Japon'};
+
+/* ════════════════════ NOTIONS ════════════════════ */
+const NOTIONS={
+  position:{ico:'📍',lab:'Position de change'},
+  conversion:{ico:'🔁',lab:'Conversion & choix du cours'},
+  spread:{ico:'↔️',lab:'Spread'},
+  recip:{ico:'🔄',lab:'Cotation réciproque'},
+  geo:{ico:'🌍',lab:'Arbitrage géographique'},
+  cross:{ico:'✖️',lab:'Cours croisé'},
+  tri:{ico:'🔺',lab:'Arbitrage triangulaire'},
+  ordre:{ico:'🎯',lab:'Ordre à cours limité'},
+  comm:{ico:'💸',lab:'Commission maximale'},
+  terme:{ico:'📅',lab:'Report & déport'},
+  swappts:{ico:'➕',lab:'Points de swap'},
+  forward:{ico:'🏦',lab:'Cours à terme'},
+  parite:{ico:'⚖️',lab:'Parité couverte'}
+};
+
+/* Méthodes (2e niveau d'aide) */
+const REGLE=`<table class="mini"><tr><th>Je donne…</th><th>Donc</th><th>Cours</th><th>Calcul</th></tr>
+<tr><td>la devise de gauche</td><td>je la vends</td><td>acheteur</td><td>×</td></tr>
+<tr><td>la devise de droite</td><td>j'achète celle de gauche</td><td>vendeur</td><td>÷</td></tr></table>`;
+const METH={
+  position:`Créance = argent qui va <b>rentrer</b> → <b>+</b>. Dette = argent qui va <b>sortir</b> → <b>−</b>. On ne garde que les opérations dans la devise demandée.<br>Solde &gt; 0 : position <b>longue</b> (elle craint une <b>baisse</b> de la devise). Solde &lt; 0 : <b>courte</b> (elle craint une <b>hausse</b>). Solde nul : <b>fermée</b>.`,
+  conversion:`Dans <code>L/R</code>, achat et vente se disent toujours de la devise de <b>gauche</b>. Repère la devise que le client <b>donne</b> :${REGLE}Test anti-panique : calcule avec les deux cours, la banque te donne toujours le moins.`,
+  spread:`En points : <code>(V − A) ÷ 1 point</code>, avec 1 point = 0,0001 (ou 0,01 si le cours a 2 décimales).<br>En % (convention du cours) : <code>(V − A) ÷ A × 100</code>. Ne multiplie par 100 qu'<b>une seule fois</b>.`,
+  recip:`On inverse (1 ÷ …) <b>et on croise</b> : <code>(R/L)ᴬ = 1 ÷ (L/R)ⱽ</code> et <code>(R/L)ⱽ = 1 ÷ (L/R)ᴬ</code>.<br>Vérification : le nouveau vendeur doit rester supérieur au nouvel acheteur.`,
+  geo:`L'opportunité existe si le <b>vendeur le plus bas</b> d'une banque est <b>inférieur</b> à l'<b>acheteur le plus haut</b> de l'autre (fourchettes qui ne se chevauchent pas).<br>1) Acheter la devise de gauche là où le vendeur est le plus bas (÷). 2) La revendre là où l'acheteur est le plus haut (×). 3) Gain = RF − RI.`,
+  cross:`Fais le trajet étape par étape en appliquant la règle, ou utilise la chaîne :<br><code>(EUR/Y) = (EUR/X) × (X/Y)</code>. Si on te donne Y/X, il faut d'abord le retourner : <code>(X/Y)ᴬ = 1 ÷ (Y/X)ⱽ</code>, <code>(X/Y)ⱽ = 1 ÷ (Y/X)ᴬ</code>.<br>Donc <code>(EUR/Y)ᴬ = (EUR/X)ᴬ ÷ (Y/X)ⱽ</code> et <code>(EUR/Y)ⱽ = (EUR/X)ⱽ ÷ (Y/X)ᴬ</code>.`,
+  tri:`1) Calcule la fourchette synthétique (via la devise tierce) et compare-la à la cotation directe. 2) Achète l'euro là où il est le moins cher, revends-le là où on te le reprend le plus cher. 3) Démarre la boucle avec la devise que tu as en poche, et applique la règle à chaque étape :${REGLE}Rendement = gain ÷ richesse initiale × 100.`,
+  ordre:`Écris ce que rapporte 1 € par le détour, en gardant le cours inconnu <code>V</code>, puis la condition <code>≥ limite</code>.<br>Pour isoler <code>V</code> au dénominateur : on multiplie par <code>V</code>, puis on divise par la limite. Le sens de l'inégalité s'inverse : <code>V ≤ …</code>.`,
+  terme:`Points = <code>|f − S|</code>, comptés en points de base (1 pb = 0,0001, ou 0,01 si le cours a 2 décimales).<br><code>f &gt; S</code> : <b>report</b> de la devise de gauche · <code>f &lt; S</code> : <b>déport</b>.<br>Taux annualisé : <code>(f − S)/S × 12/n × 100</code> — le <b>12/n</b> est ce qu'on oublie le plus souvent.`,
+  swappts:`<code>PS<sup>A</sup> &lt; PS<sup>V</sup></code> ⟹ report ⟹ on <b>additionne</b>. <code>PS<sup>A</sup> &gt; PS<sup>V</sup></code> ⟹ déport ⟹ on <b>soustrait</b>.<br>Acheteur avec acheteur, vendeur avec vendeur. Contrôle final : le spread à terme doit être <b>plus large</b> qu'au comptant.`,
+  forward:`La banque emprunte la monnaie qu'elle devra livrer et prête celle qu'elle recevra.<br><code>f<sup>A</sup> = S<sup>A</sup> × (1 + r<sub>B</sub><sup>emp</sup> × n/12) ÷ (1 + r<sub>A</sub><sup>prêt</sup> × n/12)</code><br><code>f<sup>V</sup> = S<sup>V</sup> × (1 + r<sub>B</sub><sup>prêt</sup> × n/12) ÷ (1 + r<sub>A</sub><sup>emp</sup> × n/12)</code><br>La devise dont le taux est le plus élevé est en <b>déport</b>.`,
+  parite:`Deux chemins pour le même argent : placer sur place, ou acheter la devise au comptant (cours <b>vendeur</b>), la placer (taux <b>emprunteur</b>), puis la revendre au cours à terme acheteur.<br>Cours d'équilibre : <code>f* = S × (1 + r<sub>monnaie</sub> × n/12) ÷ (1 + r<sub>devise</sub> × n/12)</code>. Si le marché cote au-dessus, le placement en devise couvert l'emporte.`,
+  comm:`À chaque opération il te reste <code>(1 − x)</code>. Avec n opérations : <code>g × (1 − x)ⁿ ≥ 1</code>, où g = richesse finale ÷ richesse initiale.<br>Donc <code>x ≤ 1 − (1 ÷ g)^(1/n)</code>. Tape tout <b>en une seule ligne</b> sur la calculatrice pour ne rien arrondir.`
+};
+
+/* ════════════════════ CONSTRUCTEURS DE QUESTIONS ════════════════════ */
+function tolQ(d){ return {tol:1.05*pt(d), tolA:3.05*pt(d)}; }
+function tolAmt(ans){ return {tol:Math.max(0.06,Math.abs(ans)*1e-8), tolA:Math.max(1,Math.abs(ans)*5e-5)}; }
+function tolGain(g){ return {tol:Math.max(0.06,Math.abs(g)*0.004), tolA:Math.abs(g)*0.03}; }
+function num(o){
+  const q = Object.assign({kind:'num', traps:[]}, o);
+  /* un piège qui tombe sur la bonne réponse (cas dégénéré : taux égaux, écart nul…) est retiré */
+  q.traps = (q.traps||[]).filter(t=>!isFinite(t.v) || Math.abs(t.v-q.ans) > (q.tol||0));
+  return q;
+}
+function choice(o){ return Object.assign({kind:'choice'}, o); }
+
+/* Position de change */
+function qsPosition(soc, X, ops){
+  const net = ops.filter(o=>o.cur===X).reduce((s,o)=>s+o.m,0);
+  const tout = ops.reduce((s,o)=>s+o.m,0);
+  const pos = net>0?'longue':(net<0?'courte':'fermée');
+  const lignes = ops.map(o=>`<code>${o.cur===X?(o.m>0?'+':'−')+' '+fmt(Math.abs(o.m),0):'(ignorée : '+o.cur+')'}</code>`).join(' ');
+  return [
+    num({n:'position', prompt:`Détermine la <b>position de change nette</b> de ${soc} en <b>${X}</b>.`, unit:'millions de '+X, ans:net, dec:1,
+      tol:0.001, tolA:0.001,
+      traps:[{v:tout, msg:`Tu as inclus une opération qui n'est pas en ${X}. On ne garde que les flux dans la devise étudiée.`, skip:tout===net},
+             {v:-net, msg:`Signe inversé : une créance (argent qui rentre) se compte en +, une dette (argent qui sort) en −.`, skip:net===0}],
+      hint:`Repère seulement les opérations en ${X}. Qu'est-ce qui va rentrer (+) et qu'est-ce qui va sortir (−) ?`,
+      steps:[`On garde les opérations en ${X} : créances en +, dettes en −. ${lignes}`,
+             `Position nette = <b>${net>0?'+':''}${fmt(net,0)} M ${X}</b>.`]}),
+    choice({n:'position', prompt:`Cette position est-elle longue, courte ou fermée ?`,
+      opts:[{t:'Longue',ok:pos==='longue'},{t:'Courte',ok:pos==='courte'},{t:'Fermée',ok:pos==='fermée'}], fixed:true,
+      hint:`Le solde est-il positif, négatif ou nul ?`,
+      steps:[`Solde ${net>0?'positif':net<0?'négatif':'nul'} (${fmt(net,0)} M ${X}) : position <b>${pos}</b>.`,
+             `Longue = plus de créances que de dettes ; courte = l'inverse ; fermée = équilibre.`]}),
+    choice({n:'position', prompt:`Quelle évolution du ${X} face à l'euro ferait perdre de l'argent à ${soc} ?`,
+      opts:[{t:`Une baisse du ${X}`,ok:pos==='longue'},{t:`Une hausse du ${X}`,ok:pos==='courte'},{t:`Aucune : la position ne l'expose pas au risque de change`,ok:pos==='fermée'}], fixed:true,
+      hint:`Si ${soc} doit ${net>=0?'recevoir':'payer'} des ${X}, que vaudront-ils en euros si le ${X} baisse ?`,
+      steps:[ pos==='longue'?`Position longue : ${soc} va toucher ${fmt(net,0)} M ${X}. Si le ${X} baisse, ils vaudront moins d'euros à la conversion → risque de <b>baisse</b>.`
+             :pos==='courte'?`Position courte : ${soc} doit ${fmt(-net,0)} M ${X}. Si le ${X} monte, il faudra plus d'euros pour les payer → risque de <b>hausse</b>.`
+             :`Position fermée : les ${X} reçus paient exactement les ${X} dus, une variation du cours ne change rien.`]})
+  ];
+}
+
+/* Signification d'un cours */
+function qSens(p, bank){
+  return choice({n:'conversion', prompt:`Que signifie le cours <b>${fmt(p.a,p.d)}</b> dans la cotation ${pair(p)} = ${qStr(p)} de ${bank} ?`,
+    opts:shuffle([
+      {t:`${bank} achète 1 ${p.L} et paie ${fmt(p.a,p.d)} ${p.R}`,ok:true},
+      {t:`${bank} vend 1 ${p.L} contre ${fmt(p.a,p.d)} ${p.R}`,ok:false,why:`C'est le rôle du cours vendeur (${fmt(p.v,p.d)}), le plus haut.`},
+      {t:`Le client achète 1 ${p.L} en payant ${fmt(p.a,p.d)} ${p.R}`,ok:false,why:`Le cours affiché est celui de la banque. Quand la banque achète, c'est le client qui vend.`},
+      {t:`${bank} achète 1 ${p.R} et paie ${fmt(p.a,p.d)} ${p.L}`,ok:false,why:`On lit « 1 ${p.L} = … ${p.R} » : la devise de gauche est la marchandise.`}]),
+    hint:`Le cours affiché est toujours celui de la banque. Le plus bas des deux, c'est le prix auquel elle achète… quoi ?`,
+    steps:[`<code>${pair(p)}</code> se lit « 1 ${p.L} = … ${p.R} » : on parle du prix du ${p.L}.`,
+           `Le cours acheteur (${fmt(p.a,p.d)}) est le prix auquel <b>la banque achète</b> 1 ${p.L}, donc celui auquel le client le vend. Le vendeur (${fmt(p.v,p.d)}) est le prix auquel elle le vend.`]});
+}
+
+/* Conversion d'un montant : G = devise donnée, K = montant */
+function qsConversion(p, G, K, qui, bank, opts={}){
+  const gauche = G===p.L, autre = gauche?p.R:p.L;
+  const rate = gauche?p.a:p.v, wrong = gauche?p.v:p.a;
+  const ans = gauche?K*rate:K/rate;
+  const ansWrongRate = gauche?K*wrong:K/wrong;
+  const ansWrongOp = gauche?K/rate:K*rate;
+  const out=[];
+  if(!opts.noPos) out.push(choice({n:'conversion', prompt:`${qui} donne des <b>${G}</b> pour obtenir des ${autre}. Dans la cotation ${pair(p)}, que fait-il ?`,
+    opts:[{t:`Le ${G} est à gauche : il <b>vend</b> des ${p.L}`,ok:gauche,why:gauche?'':`Regarde bien : dans ${pair(p)}, le ${G} est à droite.`},
+          {t:`Le ${G} est à droite : il <b>achète</b> des ${p.L}`,ok:!gauche,why:!gauche?'':`Dans ${pair(p)}, le ${G} est à gauche : il est la marchandise qu'on vend.`}], fixed:true,
+    hint:`Achat et vente se disent toujours de la devise de gauche. Où est le ${G} ?`,
+    steps:[`Dans <code>${pair(p)}</code>, le ${p.L} est la marchandise (gauche) et le ${p.R} est l'argent (droite).`,
+           gauche?`${qui} donne la marchandise : il <b>vend des ${p.L}</b>.`:`${qui} paie avec l'argent pour obtenir la marchandise : il <b>achète des ${p.L}</b>.`]}));
+  out.push(choice({n:'conversion', prompt:`Quel cours de ${bank} s'applique ?`,
+    opts:[{t:`Le cours acheteur : ${fmt(p.a,p.d)}`,ok:gauche,why:gauche?'':`La banque vend des ${p.L} au client : c'est son cours vendeur.`},
+          {t:`Le cours vendeur : ${fmt(p.v,p.d)}`,ok:!gauche,why:!gauche?'':`La banque achète les ${p.L} du client : c'est son cours acheteur.`}], fixed:true,
+    hint:`${gauche?'Le client vend des '+p.L+' : la banque les lui achète.':'Le client achète des '+p.L+' : la banque les lui vend.'} Quel est le cours de la banque dans ce cas ?`,
+    steps:[gauche?`La banque <b>achète</b> les ${p.L} : cours <b>acheteur</b> ${fmt(p.a,p.d)} (le plus bas, celui qui arrange le moins le client).`
+                 :`La banque <b>vend</b> des ${p.L} : cours <b>vendeur</b> ${fmt(p.v,p.d)} (le plus haut, celui qui arrange le moins le client).`]}));
+  const d = autre==='JPY'?0:2;
+  out.push(num({n:'conversion', prompt:`Combien de <b>${autre}</b> ${qui} obtient-il pour ses ${fmt(K,0)} ${G} ?`, unit:autre, ans, dec:d,
+    ...tolAmt(ans),
+    traps:[{v:ansWrongRate,msg:`Bonne opération, mais mauvais côté de la fourchette : tu as pris ${fmt(wrong,p.d)}. Test anti-panique : avec l'autre cours tu obtiens ${fmt(ans,d)}, et la banque te donne toujours le moins.`},
+           {v:ansWrongOp,msg:`Tu as ${gauche?'divisé':'multiplié'} au lieu de ${gauche?'multiplier':'diviser'}. Tu donnes la devise de ${gauche?'gauche (la marchandise) : marchandise × prix = argent':"droite (l'argent) : argent ÷ prix = marchandise"}.`}],
+    hint:`${gauche?`Tu vends de la marchandise : quantité × prix.`:`Tu paies avec l'argent : combien de ${p.L} avec ${fmt(K,0)} ${p.R} ? Argent ÷ prix.`}`,
+    steps:[`${G} ${gauche?'à gauche → vente au cours acheteur → on <b>multiplie</b>':'à droite → achat au cours vendeur → on <b>divise</b>'}.`,
+           `<code>${fmt(K,0)} ${gauche?'×':'÷'} ${fmt(rate,p.d)} = ${fmt(ans,d)} ${autre}</code>`,
+           `Test anti-panique : avec ${fmt(wrong,p.d)} on trouverait ${fmt(ansWrongRate,d)}. La banque garde le montant le moins favorable au client, donc <b>${fmt(ans,d)} ${autre}</b>.`]}));
+  return out;
+}
+
+/* Spread */
+function qsSpread(p){
+  const pts = Math.round((p.v-p.a)/pt(p.d));
+  const pct = (p.v-p.a)/p.a*100, pctV=(p.v-p.a)/p.v*100;
+  return [
+    num({n:'spread', prompt:`Calcule le <b>spread en points</b> de la cotation ${pair(p)} = ${qStr(p)}.`, unit:'points', ans:pts, dec:0, tol:0.01, tolA:0.01,
+      traps:[{v:p.v-p.a,msg:`Tu as donné l'écart brut (${fmt(p.v-p.a,p.d)}). En points, on le divise par 1 point = ${fmt(pt(p.d),p.d)}.`}],
+      hint:`Regarde les derniers chiffres des deux cours : de combien d'unités diffèrent-ils ?`,
+      steps:[`<code>${fmt(p.v,p.d)} − ${fmt(p.a,p.d)} = ${fmt(p.v-p.a,p.d)}</code>`,
+             `1 point = ${fmt(pt(p.d),p.d)}, soit <b>${pts} points</b>.`]}),
+    num({n:'spread', prompt:`Exprime ce spread <b>en pourcentage</b> (convention du cours : rapporté au cours acheteur).`, unit:'%', ans:pct, dec:4,
+      tol:Math.max(0.00006,pct*0.002), tolA:pct*0.03,
+      traps:[{v:pctV,ok:true,msg:`Tu as divisé par le cours vendeur. Le cours rapporte au cours acheteur, mais le résultat arrondi est quasi identique : c'est accepté.`},
+             {v:pct*100,msg:`Résultat 100 fois trop grand : tu as multiplié par 100 deux fois. Si la calculatrice affiche ${fmt(pct,4)}, c'est déjà le pourcentage.`},
+             {v:pct/100,msg:`Tu as oublié le × 100 : ${fmt(pct/100,6)} est un taux, pas un pourcentage.`},
+             {v:pts,msg:`Ça, c'est le spread en points. En % : écart ÷ cours acheteur × 100.`}],
+      hint:`Écart ÷ cours acheteur, puis × 100. Garde 4 décimales, le résultat est très petit.`,
+      steps:[`<code>(${fmt(p.v,p.d)} − ${fmt(p.a,p.d)}) ÷ ${fmt(p.a,p.d)} × 100</code>`,
+             `<code>= ${fmt(p.v-p.a,p.d)} ÷ ${fmt(p.a,p.d)} × 100 ≈ ${fmt(pct,4)} %</code>`,
+             `Ordre de grandeur : sur le marché des changes, les spreads se comptent en centièmes de pourcent.`]})
+  ];
+}
+
+/* Cotation réciproque */
+function qsRecip(p){
+  const A=1/p.v, V=1/p.a, d=A<0.1?6:4;
+  return [
+    num({n:'recip', prompt:`Calcule le <b>cours acheteur</b> de la cotation réciproque <b>${p.R}/${p.L}</b>.`, unit:`${p.L} pour 1 ${p.R}`, ans:A, dec:d, ...tolQ(d),
+      traps:[{v:1/p.a,msg:`Tu n'as pas croisé : 1 ÷ ${fmt(p.a,p.d)} donne le <b>vendeur</b> de ${p.R}/${p.L}. L'acheteur vient du vendeur de ${pair(p)}.`},{v:p.a,msg:`Tu as recopié le cours sans l'inverser.`}],
+      hint:`On inverse (1 ÷ …), mais un des deux cours n'est pas celui qu'on croit : quand la banque achète des ${p.R}, elle vend des ${p.L}…`,
+      steps:[`Quand la banque achète des ${p.R}, elle vend des ${p.L} : son acheteur ${p.R}/${p.L} vient de son <b>vendeur</b> ${pair(p)}.`,
+             `<code>(${p.R}/${p.L})ᴬ = 1 ÷ (${pair(p)})ⱽ = 1 ÷ ${fmt(p.v,p.d)} = ${fmt(A,d)}</code>`]}),
+    num({n:'recip', prompt:`Et le <b>cours vendeur</b> de ${p.R}/${p.L} ?`, unit:`${p.L} pour 1 ${p.R}`, ans:V, dec:d, ...tolQ(d),
+      traps:[{v:1/p.v,msg:`Pas croisé : 1 ÷ ${fmt(p.v,p.d)} donne l'acheteur. Le vendeur ${p.R}/${p.L} vient de l'acheteur ${pair(p)}.`}],
+      hint:`Même logique, dans l'autre sens.`,
+      steps:[`<code>(${p.R}/${p.L})ⱽ = 1 ÷ (${pair(p)})ᴬ = 1 ÷ ${fmt(p.a,p.d)} = ${fmt(V,d)}</code>`,
+             `Fourchette : <b>${fmt(A,d)} – ${fmt(V,d)}</b>. Vérification : le vendeur est bien au-dessus de l'acheteur.`]})
+  ];
+}
+
+/* Arbitrage géographique entre deux banques (cotations L/R, capital K en R) */
+function qsGeo(b1,p1,b2,p2,K,qui){
+  const lo = p1.v<p2.v?{b:b1,p:p1}:{b:b2,p:p2}, hi = lo.b===b1?{b:b2,p:p2}:{b:b1,p:p1};
+  const existe = lo.p.v < hi.p.a;
+  const L=p1.L,R=p1.R,d=p1.d;
+  const out=[choice({n:'geo', prompt:`Existe-t-il une opportunité d'<b>arbitrage géographique</b> entre ${b1} et ${b2} ?`,
+    opts:[{t:'Oui',ok:existe},{t:'Non',ok:!existe}], fixed:true,
+    hint:`Compare le cours vendeur le plus bas avec le cours acheteur le plus haut.`,
+    steps:[`Vendeur le plus bas : ${lo.b}, ${fmt(lo.p.v,d)}. Acheteur le plus haut : ${hi.b}, ${fmt(hi.p.a,d)}.`,
+           existe?`${fmt(lo.p.v,d)} &lt; ${fmt(hi.p.a,d)} : les fourchettes ne se chevauchent pas, il y a <b>arbitrage</b> (${Math.round((hi.p.a-lo.p.v)/pt(d))} points par ${L}).`
+                 :`${fmt(lo.p.v,d)} ≥ ${fmt(hi.p.a,d)} : les fourchettes se chevauchent, <b>pas d'arbitrage</b>. Acheter puis revendre ferait perdre le spread.`]})];
+  if(!existe) return out;
+  const e=K/lo.p.v, fin=e*hi.p.a, gain=fin-K;
+  out.push(choice({n:'geo', prompt:`Quelle opération réalise l'arbitrage ?`,
+    opts:shuffle([{t:`Acheter des ${L} chez ${lo.b} à ${fmt(lo.p.v,d)}, les revendre chez ${hi.b} à ${fmt(hi.p.a,d)}`,ok:true},
+          {t:`Acheter des ${L} chez ${hi.b} à ${fmt(hi.p.v,d)}, les revendre chez ${lo.b} à ${fmt(lo.p.a,d)}`,ok:false,why:`Tu achèterais cher et revendrais bon marché : perte assurée.`},
+          {t:`Acheter des ${L} chez ${lo.b} à ${fmt(lo.p.a,d)}, les revendre chez ${hi.b} à ${fmt(hi.p.v,d)}`,ok:false,why:`Côtés inversés : on achète au cours vendeur de la banque, on revend à son cours acheteur.`}]),
+    hint:`On achète au cours vendeur de la banque, on revend à son cours acheteur. Où le vendeur est-il le plus bas ?`,
+    steps:[`Acheter là où le vendeur est le plus bas (${lo.b}, ${fmt(lo.p.v,d)}), revendre là où l'acheteur est le plus haut (${hi.b}, ${fmt(hi.p.a,d)}).`]}));
+  out.push(num({n:'geo', prompt:`${qui} dispose de <b>${fmt(K,0)} ${R}</b>. Combien de <b>${L}</b> achète-t-il chez ${lo.b} ?`, unit:L, ans:e, dec:2,
+    tol:Math.max(0.06,e*2e-7), tolA:e*3e-5,
+    traps:[{v:K*lo.p.v,msg:`Tu donnes des ${R} (à droite) pour acheter des ${L} : on <b>divise</b> par le cours vendeur.`},{v:K/lo.p.a,msg:`Mauvais côté : pour acheter des ${L} à la banque, c'est son cours vendeur ${fmt(lo.p.v,d)}.`}],
+    hint:`Argent ÷ prix = quantité de marchandise.`,
+    steps:[`<code>${fmt(K,0)} ÷ ${fmt(lo.p.v,d)} = ${fmt(e,2)} ${L}</code>`]}));
+  out.push(num({n:'geo', prompt:`Il revend aussitôt ces ${L} chez ${hi.b}. Quel est son <b>gain</b>, en ${R} ?`, unit:R, ans:gain, dec:2, ...tolGain(gain),
+    traps:[{v:-gain,msg:`Gain = RF − RI (richesse finale moins richesse initiale), pas l'inverse.`},{v:fin,msg:`Ça, c'est la richesse finale. Retire les ${fmt(K,0)} ${R} de départ.`},{v:K*(hi.p.a-lo.p.v),msg:`L'écart de points s'applique aux ${L} achetés (${fmt(e,2)}), pas au capital en ${R}.`}],
+    hint:`Revente : ${L} (à gauche) × cours acheteur de ${hi.b}. Puis gain = RF − RI.`,
+    steps:[`<code>${fmt(e,2)} × ${fmt(hi.p.a,d)} = ${fmt(fin,2)} ${R}</code>`,
+           `Gain : <code>${fmt(fin,2)} − ${fmt(K,0)} = ${fmt(gain,2)} ${R}</code>`,
+           `Vérification : ${fmt(e,2)} ${L} × ${fmt(hi.p.a-lo.p.v,d)} d'écart ≈ ${fmt(e*(hi.p.a-lo.p.v),2)} ${R}.`]}));
+  return out;
+}
+
+/* Cours croisé EUR/Y à partir de EUR/X et Y/X (forme division) ou EUR/USD et USD/Y (forme produit) */
+function crossDiv(p1,p2){ const d=decFor(p1.a/p2.a); return {A:p1.a/p2.v, V:p1.v/p2.a, d}; }
+function qsCross(p1,p2,form){
+  const Y = form==='div'?p2.L:p2.R, X=p1.R;
+  let A,V,d,stA,stV,trA,trV;
+  if(form==='div'){
+    ({A,V,d}=crossDiv(p1,p2));
+    stA=[`EUR → ${X} : tu donnes des EUR, à gauche dans ${pair(p1)} → vente au cours acheteur <code>${fmt(p1.a,p1.d)}</code>, on multiplie.`,
+         `${X} → ${Y} : tu donnes des ${X}, à droite dans ${pair(p2)} → achat de ${Y} au cours vendeur <code>${fmt(p2.v,p2.d)}</code>, on divise.`,
+         `<code>(EUR/${Y})ᴬ = ${fmt(p1.a,p1.d)} ÷ ${fmt(p2.v,p2.d)} = ${fmt(A,d)}</code>`];
+    stV=[`Même trajet vu du côté vendeur : on croise les deux cours.`,
+         `<code>(EUR/${Y})ⱽ = (EUR/${X})ⱽ ÷ (${Y}/${X})ᴬ = ${fmt(p1.v,p1.d)} ÷ ${fmt(p2.a,p2.d)} = ${fmt(V,d)}</code>`];
+    trA=[{v:p1.a/p2.a,msg:`Tu n'as pas croisé : pour retourner ${pair(p2)}, l'acheteur de ${X}/${Y} vient du <b>vendeur</b> ${fmt(p2.v,p2.d)}.`},
+         {v:p1.a*p2.v,msg:`${pair(p2)} est à l'envers pour la chaîne : il faut <b>diviser</b> par ce cours (ou multiplier par son inverse).`},
+         {v:p1.v/p2.a,msg:`Ça, c'est le cours <b>vendeur</b> du cross.`}];
+    trV=[{v:p1.v/p2.v,msg:`Tu n'as pas croisé : le vendeur du cross se calcule avec l'<b>acheteur</b> ${pair(p2)} (${fmt(p2.a,p2.d)}).`},
+         {v:p1.a/p2.a,msg:`Tu as pris l'acheteur de EUR/${X} : pour un cours vendeur, il faut le vendeur ${fmt(p1.v,p1.d)}.`},
+         {v:p1.a/p2.v,msg:`Ça, c'est le cours <b>acheteur</b> du cross.`}];
+  } else {
+    A=p1.a*p2.a; V=p1.v*p2.v; d=decFor(A);
+    stA=[`Chaîne par le pivot : <code>(EUR/${Y}) = (EUR/USD) × (USD/${Y})</code>, les USD « s'annulent ».`,
+         `Les acheteurs se multiplient entre eux : <code>${fmt(p1.a,p1.d)} × ${fmt(p2.a,p2.d)} = ${fmt(A,d)}</code>`];
+    stV=[`Les vendeurs entre eux : <code>${fmt(p1.v,p1.d)} × ${fmt(p2.v,p2.d)} = ${fmt(V,d)}</code>`];
+    trA=[{v:p1.a*p2.v,msg:`On ne mélange pas : acheteur × acheteur.`},{v:p1.a/p2.a,msg:`Les deux cotations s'enchaînent (EUR→USD→${Y}) : on multiplie.`},{v:V,msg:`Ça, c'est le vendeur.`}];
+    trV=[{v:p1.v*p2.a,msg:`On ne mélange pas : vendeur × vendeur.`},{v:A,msg:`Ça, c'est l'acheteur.`}];
+  }
+  return [
+    num({n:'cross', prompt:`Calcule le <b>cours acheteur</b> du cours croisé <b>EUR/${Y}</b>.`, unit:`${Y} pour 1 EUR`, ans:A, dec:d, ...tolQ(d), traps:trA,
+      hint: form==='div'?`Fais le trajet EUR → ${X} → ${Y} pour 1 €, en te demandant à chaque étape quelle devise tu donnes et où elle est.`:`EUR → USD → ${Y} : les deux cotations s'enchaînent dans le bon sens.`,
+      steps:stA}),
+    num({n:'cross', prompt:`Calcule le <b>cours vendeur</b> de EUR/${Y}.`, unit:`${Y} pour 1 EUR`, ans:V, dec:d, ...tolQ(d), traps:trV,
+      hint:`Le vendeur du cross utilise ${form==='div'?'le vendeur EUR/'+X+' et l\'acheteur '+pair(p2):'les deux cours vendeurs'}.`,
+      steps:stV.concat([`Fourchette croisée : <b>${fmt(A,d)} – ${fmt(V,d)}</b>.`])})
+  ];
+}
+
+/* Arbitrage triangulaire : p1 EUR/X, p2 Y/X, p3 EUR/Y (direct), capital K en Y */
+function triCalc(p1,p2,p3,K,dir){
+  if(dir==='A'){ const x=K*p2.a, e=x/p1.v, f=e*p3.a; return {x,e,f}; }
+  const e=K/p3.v, x=e*p1.a, f=x/p2.v; return {e,x,f};
+}
+function qsTri(p1,p2,p3,K,dir,qui){
+  const X=p1.R, Y=p2.L, {A:sA,V:sV,d}=crossDiv(p1,p2);
+  const c=triCalc(p1,p2,p3,K,dir), co=triCalc(p1,p2,p3,K,dir==='A'?'B':'A');
+  const gain=c.f-K, rend=gain/K*100;
+  const cirA=`${Y} → ${X} → EUR → ${Y}`, cirB=`${Y} → EUR → ${X} → ${Y}`;
+  const stepsA=[
+    `1. ${Y} → ${X} (${pair(p2)}) : tu donnes des ${Y}, à gauche → vente au cours acheteur. <code>${fmt(K,0)} × ${fmt(p2.a,p2.d)} = ${fmt(c.x,2)} ${X}</code>`,
+    `2. ${X} → EUR (${pair(p1)}) : tu donnes des ${X}, à droite → achat d'EUR au cours vendeur. <code>${fmt(c.x,2)} ÷ ${fmt(p1.v,p1.d)} = ${fmt(c.e,2)} EUR</code>`,
+    `3. EUR → ${Y} (${pair(p3)}) : tu donnes des EUR, à gauche → vente au cours acheteur. <code>${fmt(c.e,2)} × ${fmt(p3.a,p3.d)} = ${fmt(c.f,2)} ${Y}</code>`];
+  const stepsB=[
+    `1. ${Y} → EUR (${pair(p3)}) : tu donnes des ${Y}, à droite → achat d'EUR au cours vendeur. <code>${fmt(K,0)} ÷ ${fmt(p3.v,p3.d)} = ${fmt(c.e,2)} EUR</code>`,
+    `2. EUR → ${X} (${pair(p1)}) : tu donnes des EUR, à gauche → vente au cours acheteur. <code>${fmt(c.e,2)} × ${fmt(p1.a,p1.d)} = ${fmt(c.x,2)} ${X}</code>`,
+    `3. ${X} → ${Y} (${pair(p2)}) : tu donnes des ${X}, à droite → achat de ${Y} au cours vendeur. <code>${fmt(c.x,2)} ÷ ${fmt(p2.v,p2.d)} = ${fmt(c.f,2)} ${Y}</code>`];
+  return [
+    choice({n:'tri', prompt:`La fourchette synthétique EUR/${Y} via le ${X} vaut <b>${fmt(sA,d)} – ${fmt(sV,d)}</b>, la cotation directe <b>${qStr(p3)}</b>. Où l'euro est-il <b>le moins cher</b> à acheter ?`,
+      opts:[{t:`Via le ${X} (vendeur synthétique ${fmt(sV,d)})`,ok:dir==='A'},{t:`Sur le marché direct EUR/${Y} (vendeur ${fmt(p3.v,p3.d)})`,ok:dir==='B'}], fixed:true,
+      hint:`Compare les deux cours vendeurs, puis vérifie que le vendeur le plus bas est sous l'acheteur de l'autre fourchette.`,
+      steps:[dir==='A'?`Vendeur synthétique ${fmt(sV,d)} &lt; acheteur direct ${fmt(p3.a,p3.d)} : on achète l'euro via le ${X} et on le revend en direct (${Math.round((p3.a-sV)/pt(d))} point(s) d'écart).`
+                     :`Vendeur direct ${fmt(p3.v,p3.d)} &lt; acheteur synthétique ${fmt(sA,d)} : on achète l'euro en direct et on le revend via le ${X} (${Math.round((sA-p3.v)/pt(d))} point(s) d'écart).`]}),
+    choice({n:'tri', prompt:`${qui} part de <b>${fmt(K,0)} ${Y}</b>. Dans quel sens doit-il faire le circuit ?`,
+      opts:[{t:cirA,ok:dir==='A'},{t:cirB,ok:dir==='B'}], fixed:true,
+      hint:`Il démarre avec des ${Y}. Pour acheter l'euro ${dir==='A'?'via le '+X:'en direct'}, quelle devise doit-il obtenir en premier ?`,
+      steps:[`Il faut ${dir==='A'?`acheter l'euro via le ${X} puis le revendre contre ${Y} en direct`:`acheter l'euro en direct avec ses ${Y}, puis le revendre via le ${X}`} : <b>${dir==='A'?cirA:cirB}</b>.`]}),
+    num({n:'tri', prompt:`Calcule sa <b>richesse finale</b> en ${Y}.`, unit:Y, ans:c.f, dec:2,
+      tol:Math.max(0.06,c.f*1e-7), tolA:Math.abs(gain)*0.04,
+      traps:[{v:co.f,msg:`Circuit fait dans le mauvais sens : tu finis avec moins que ta mise (${fmt(co.f,2)}). L'autre sens est le bon.`},{v:gain,msg:`Ça, c'est le gain. On te demande la richesse finale.`}],
+      hint:`Trois étapes. À chacune : quelle devise tu donnes, à gauche ou à droite ?`,
+      steps:dir==='A'?stepsA:stepsB}),
+    num({n:'tri', prompt:`Quel est le <b>gain</b> de l'arbitrage ?`, unit:Y, ans:gain, dec:2, ...tolGain(gain),
+      traps:[{v:-gain,msg:`Gain = RF − RI, pas l'inverse.`}],
+      hint:`RF − RI.`,
+      steps:[`<code>${fmt(c.f,2)} − ${fmt(K,0)} = ${fmt(gain,2)} ${Y}</code>`]}),
+    num({n:'tri', prompt:`Et le <b>rendement</b> de l'opération ?`, unit:'%', ans:rend, dec:4, tol:Math.max(0.00006,rend*0.004), tolA:rend*0.04,
+      traps:[{v:rend*100,msg:`100 fois trop grand : tu as multiplié par 100 deux fois.`},{v:rend/100,msg:`Tu as oublié le × 100 : c'est un taux, pas un pourcentage.`}],
+      hint:`Gain ÷ richesse initiale × 100. Garde 4 décimales.`,
+      steps:[`<code>${fmt(gain,2)} ÷ ${fmt(K,0)} × 100 ≈ ${fmt(rend,4)} %</code>`,`Très faible, mais sans risque et instantané : sur de gros montants répétés, ça compte.`]})
+  ];
+}
+
+/* Ordre à cours limité : qui veut au moins L unités de Y pour 1 EUR */
+function qsOrdre(p1,p2,p3,Lim,qui){
+  const X=p1.R, Y=p2.L, d=p3.d;
+  const sA=p1.a/p2.v, Vmax=p1.a/Lim;
+  const Vmax4=Math.floor(Vmax/pt(p2.d)+1e-9)*pt(p2.d);
+  const baisse=Math.round((p2.v-Vmax4)/pt(p2.d));
+  return [
+    choice({n:'ordre', prompt:`${qui} veut vendre des euros contre des ${Y} et exige au moins <b>${fmt(Lim,d)} ${Y} pour 1 €</b>. Sur la cotation directe ${pair(p3)} = ${qStr(p3)}, l'ordre peut-il être exécuté ?`,
+      opts:[{t:`Oui`,ok:p3.a>=Lim},{t:`Non`,ok:p3.a<Lim}], fixed:true,
+      hint:`${qui} donne des euros, à gauche dans ${pair(p3)} : quel cours s'applique ?`,
+      steps:[`Il vend des EUR (à gauche) : cours acheteur <code>${fmt(p3.a,d)}</code>.`,
+             p3.a>=Lim?`${fmt(p3.a,d)} ≥ ${fmt(Lim,d)} : l'ordre passe.`:`${fmt(p3.a,d)} &lt; ${fmt(Lim,d)} : il manque ${Math.round((Lim-p3.a)/pt(d))} point(s), l'ordre <b>ne passe pas</b>.`]}),
+    num({n:'ordre', prompt:`En passant par le ${X} (EUR → ${X} → ${Y}) avec ${pair(p1)} = ${qStr(p1)} et ${pair(p2)} = ${qStr(p2)}, combien de ${Y} obtient-il aujourd'hui pour 1 € ?`, unit:Y, ans:sA, dec:d, ...tolQ(d),
+      traps:[{v:p1.a/p2.a,msg:`À l'étape ${X} → ${Y}, tu donnes des ${X} (à droite) : tu achètes des ${Y} au cours <b>vendeur</b> ${fmt(p2.v,p2.d)}.`},{v:p1.v/p2.v,msg:`À l'étape EUR → ${X}, tu vends des euros : cours <b>acheteur</b> ${fmt(p1.a,p1.d)}.`},{v:p1.a*p2.v,msg:`À l'étape ${X} → ${Y}, tu donnes la devise de droite : on divise.`}],
+      hint:`1 € → ${X} : combien ? Puis ces ${X} → ${Y} : ${X} à droite dans ${pair(p2)}.`,
+      steps:[`EUR → ${X} : <code>1 × ${fmt(p1.a,p1.d)} = ${fmt(p1.a,p1.d)} ${X}</code>`,
+             `${X} → ${Y} : <code>${fmt(p1.a,p1.d)} ÷ ${fmt(p2.v,p2.d)} = ${fmt(sA,d)} ${Y}</code>`,
+             `C'est le cours acheteur synthétique EUR/${Y}. ${sA<Lim?`Il reste sous ${fmt(Lim,d)} : ça ne passe pas non plus.`:`Il atteint ${fmt(Lim,d)} : ça passerait.`}`]}),
+    choice({n:'ordre', prompt:`On note V le cours vendeur ${pair(p2)}. La condition d'exécution via le ${X} s'écrit :`,
+      opts:[{t:`V ≤ ${fmt(p1.a,p1.d)} ÷ ${fmt(Lim,d)}`,ok:true},{t:`V ≥ ${fmt(p1.a,p1.d)} ÷ ${fmt(Lim,d)}`,ok:false,why:`V est au dénominateur : plus la ${Y} est chère, moins on en obtient. Il faut donc un V assez <b>bas</b>.`},{t:`V ≤ ${fmt(Lim,d)} ÷ ${fmt(p1.a,p1.d)}`,ok:false,why:`Fraction retournée : pars de ${fmt(p1.a,p1.d)} ÷ V ≥ ${fmt(Lim,d)}.`}],
+      hint:`Pars de ${fmt(p1.a,p1.d)} ÷ V ≥ ${fmt(Lim,d)}. Multiplie par V, puis divise par ${fmt(Lim,d)}.`,
+      steps:[`<code>${fmt(p1.a,p1.d)} ÷ V ≥ ${fmt(Lim,d)}</code>`,`× V : <code>${fmt(p1.a,p1.d)} ≥ ${fmt(Lim,d)} × V</code>`,`÷ ${fmt(Lim,d)} : <code>V ≤ ${fmt(p1.a,p1.d)} ÷ ${fmt(Lim,d)}</code>`]}),
+    num({n:'ordre', prompt:`Calcule ce <b>cours vendeur maximal</b> de ${pair(p2)}.`, unit:`${X} pour 1 ${Y}`, ans:Vmax, dec:p2.d, ...tolQ(p2.d),
+      traps:[{v:Lim/p1.a,msg:`Fraction retournée : c'est ${fmt(p1.a,p1.d)} ÷ ${fmt(Lim,d)}.`},{v:p1.a*Lim,msg:`On divise par la limite, on ne multiplie pas.`}],
+      hint:`${fmt(p1.a,p1.d)} ÷ ${fmt(Lim,d)}.`,
+      steps:[`<code>V ≤ ${fmt(p1.a,p1.d)} ÷ ${fmt(Lim,d)} = ${fmt(Vmax,p2.d+1)}</code>, soit V ≤ <b>${fmt(Vmax4,p2.d)}</b>.`,
+             `Vérification : ${fmt(p1.a,p1.d)} ÷ ${fmt(Vmax4,p2.d)} ≈ ${fmt(p1.a/Vmax4,d)}, on atteint bien la limite.`]}),
+    num({n:'ordre', prompt:`De combien de <b>points</b> le cours vendeur ${pair(p2)} (${fmt(p2.v,p2.d)}) doit-il baisser, au minimum ?`, unit:'points', ans:baisse, dec:0, tol:1.01, tolA:1.01,
+      traps:[{v:p2.v-Vmax4,msg:`Exprime-le en points : divise l'écart par ${fmt(pt(p2.d),p2.d)}.`}],
+      hint:`Écart entre ${fmt(p2.v,p2.d)} et ton V maximal, en points.`,
+      steps:[`<code>${fmt(p2.v,p2.d)} − ${fmt(Vmax4,p2.d)} = ${fmt(p2.v-Vmax4,p2.d)}</code>, soit <b>${baisse} points</b>.`]})
+  ];
+}
+
+/* Commission maximale : g = RF/RI, n opérations */
+function qsComm(K,F,n,Y,lab){
+  const g=F/K, x=(1-Math.pow(K/F,1/n))*100, rr=(g-1)*100;
+  const dx=Math.max(4, Math.ceil(-Math.log10(x))+2);
+  const xArr=(1-r(Math.pow(r(K/F,4),1/n),4))*100;
+  return [
+    num({n:'comm', prompt:`Ramène le résultat à <b>1 ${Y}</b> engagé : quel est le coefficient multiplicateur g du circuit ?`, unit:'', ans:g, dec:7, tol:2e-7+g*2e-8, tolA:1.5e-6,
+      traps:[{v:rr,msg:`Ça, c'est le rendement en %. Le coefficient, c'est RF ÷ RI (un peu plus de 1).`},{v:g-1,msg:`Presque : c'est RF ÷ RI, sans retirer 1 (${fmt(g,7)}).`}],
+      hint:`${fmt(F,2)} ÷ ${fmt(K,0)}.`,
+      steps:[`<code>g = ${fmt(F,2)} ÷ ${fmt(K,0)} = ${fmt(g,7)}</code> : chaque ${Y} engagé en rend ${fmt(g,7)}.`]}),
+    num({n:'comm', prompt:`${lab} compte <b>${n} opérations</b>, chacune taxée d'une commission de x %. Quelle est la <b>commission maximale</b> qui laisse l'arbitrage rentable ?`, unit:'% par opération', ans:x, dec:dx,
+      tol:x*0.012, tolA:x*0.04,
+      traps:[{v:xArr,msg:`Tu as arrondi trop tôt : avec 4 décimales à chaque étape, (1 − x) vaut 0,9999… et l'information utile disparaît. Garde toutes les décimales jusqu'au bout.`, skip:Math.abs(xArr-x)<x*0.05},{v:rr,msg:`Tu as oublié la racine ${n===3?'cubique':'carrée'} : il y a ${n} commissions, pas une seule. La marge de ${fmt(rr,4)} % se partage entre les ${n} opérations.`},
+             {v:x/100,msg:`Tu as donné un taux (${fmt(x/100,7)}). En pourcentage, multiplie par 100.`},
+             {v:x*100,msg:`100 fois trop grand : un × 100 de trop.`},
+             {v:(1+Math.pow(K/F,1/n))*100,msg:`Erreur de signe en isolant x : de 1 − x ≥ … on passe à −x ≥ … − 1, puis on multiplie par −1 en retournant l'inégalité.`}],
+      hint:`g × (1 − x)^${n} ≥ 1. Divise par g, prends la racine ${n===3?'cubique (^(1/3))':'carrée'}, isole x. Ne rien arrondir avant la fin.`,
+      steps:[`<code>${fmt(g,7)} × (1 − x)^${n} ≥ 1</code>`,
+             `<code>(1 − x)^${n} ≥ 1 ÷ ${fmt(g,7)} = ${fmt(K/F,8)}</code>`,
+             `<code>1 − x ≥ ${fmt(Math.pow(K/F,1/n),8)}</code>`,
+             `<code>−x ≥ ${fmt(Math.pow(K/F,1/n)-1,8)}</code> → on multiplie par −1 et on retourne : <code>x ≤ ${fmt(x/100,8)}</code>`,
+             `Soit <b>x ≤ ${fmt(x,dx)} %</b> par opération. Intuition : ${fmt(rr,4)} % ÷ ${n} ≈ ${fmt(rr/n,4)} %.`,
+             `Astuce : tape <code>1 − (1 ÷ ${fmt(g,7)})^(1/${n})</code> en une ligne.`]})
+  ];
+}
+
+/* ════════════════════ GÉNÉRATEURS D'EXERCICES ════════════════════ */
+
+/* marché : EUR/X, EUR/Y, Y/X cohérents (avec petites fourchettes) */
+function marche(X,Y){
+  let mX=mid(X), mY=mid(Y);
+  if(mX/mY<0.5){ [X,Y]=[Y,X]; [mX,mY]=[mY,mX]; }   // Y/X présenté à l'endroit (cours ≥ 0,5)
+  const p1=quote('EUR',X,mX,ri(4,7));
+  const p2=quote(Y,X,mX/mY,ri(5,8));
+  const p3=quote('EUR',Y,mY,ri(4,6));
+  return {X,Y,p1,p2,p3};
+}
+
+const GEN={
+  position(){
+    const soc=pick(SOCIETES), X=pick(NOJPY), Z=pick(others([X],NOJPY));
+    const c1=ri(3,14), d1=ri(1,12);
+    const ops=[{lib:`Créance client ${PAYS[X]}`,cur:X,m:c1},{lib:`Dette fournisseur ${PAYS[X]}`,cur:X,m:-d1}];
+    if(Math.random()<0.45) ops.push(Math.random()<0.5?{lib:`Deuxième facture à encaisser ${PAYS[X]}`,cur:X,m:ri(1,6)}:{lib:`Emprunt à rembourser en ${X}`,cur:X,m:-ri(1,6)});
+    if(Math.random()<0.18){ const net=ops.reduce((s,o)=>s+o.m,0); ops[1].m-=net; if(ops[1].m>=0){ops[1].m=-c1; ops.length=2;} }
+    ops.push(Math.random()<0.5?{lib:`Paiement à un sous-traitant ${PAYS[Z]}`,cur:Z,m:-ri(1,9)}:{lib:`Vente encaissée ${PAYS[Z]}`,cur:Z,m:ri(1,9)});
+    const ord=shuffle(ops);
+    return {n:'position', ctx:`<b>${soc}</b> exporte et s'approvisionne à l'international. Sa trésorerie doit gérer les opérations suivantes, toutes à la même échéance :`,
+      thead:['Opération','Montant'],
+      rows:ord.map(o=>[o.lib, `${o.m>0?'à recevoir':'à payer'} : <b>${fmt(Math.abs(o.m),0)} M ${o.cur}</b>`]),
+      qs:qsPosition(soc,X,ord)};
+  },
+  conversion(){
+    const soc=pick(SOCIETES), bank=pick(BANQUES);
+    let p;
+    if(Math.random()<0.7){ const X=pick(Object.keys(CUR)); p=quote('EUR',X,mid(X),ri(3,8)); }
+    else { const m=marche(...shuffle(NOJPY).slice(0,2)); p=m.p2; }
+    const G = Math.random()<0.5?p.L:p.R;
+    const K = G==='JPY'?ri(20,400)*1e6:ri(4,95)*1e5;
+    const qs=[]; if(Math.random()<0.45) qs.push(qSens(p,bank));
+    const autre=G===p.L?p.R:p.L;
+    return {n:'conversion', ctx:`<b>${soc}</b> ${G==='EUR'?`doit convertir ${fmt(K,0)} EUR en ${autre} pour régler un fournisseur`:`encaisse ${fmt(K,0)} ${G} et veut les convertir en ${autre}`}. ${bank} affiche :`,
+      thead:['Cotation','Acheteur – vendeur'], rows:[[pair(p),`${fmt(p.a,p.d)}<i>–</i>${fmt(p.v,p.d)}`]],
+      qs:qs.concat(qsConversion(p,G,K,soc,bank))};
+  },
+  spread(){
+    const bank=pick(BANQUES), X=pick(Object.keys(CUR));
+    let p; if(Math.random()<0.75) p=quote('EUR',X,mid(X),ri(2,25)); else { const m=marche(...shuffle(NOJPY).slice(0,2)); p=quote(m.Y,m.X,m.p2.a,ri(3,25)); }
+    return {n:'spread', ctx:`${bank} affiche la cotation suivante :`, thead:['Cotation','Acheteur – vendeur'],
+      rows:[[pair(p),`${fmt(p.a,p.d)}<i>–</i>${fmt(p.v,p.d)}`]], qs:qsSpread(p)};
+  },
+  recip(){
+    const bank=pick(BANQUES), X=pick(Object.keys(CUR));
+    const p=quote('EUR',X,mid(X),ri(3,12));
+    return {n:'recip', ctx:`${bank} cote l'euro à Paris. Un client ${PAYS[X]} veut lire le prix de sa devise, c'est-à-dire la cotation <b>${X}/EUR</b>.`,
+      thead:['Cotation','Acheteur – vendeur'], rows:[[pair(p),`${fmt(p.a,p.d)}<i>–</i>${fmt(p.v,p.d)}`]], qs:qsRecip(p)};
+  },
+  geo(){
+    const [b1,b2]=shuffle(BANQUES).slice(0,2), X=pick(NOJPY), m=mid(X);
+    const p1=quote('EUR',X,m,ri(4,7)), sp1=p1.sp, sp2=ptsFor(m,p1.d,ri(4,7));
+    const ecart = Math.random()<0.2 ? -ri(1,sp1) : ri(1,Math.max(3,Math.round(sp1/2)));   // < 0 : chevauchement, pas d'arbitrage
+    const d=p1.d, a2=r(p1.v+ecart*pt(d),d);
+    const p2={L:'EUR',R:X,a:a2,v:r(a2+sp2*pt(d),d),d};
+    const [q1,q2]=Math.random()<0.5?[p1,p2]:[p2,p1], [n1,n2]=[b1,b2];
+    const K=ri(1,9)*1e6;
+    return {n:'geo', ctx:`Un cambiste observe au même instant les cotations EUR/${X} de deux banques.`,
+      thead:['Banque','EUR/'+X+' acheteur – vendeur'],
+      rows:[[n1,`${fmt(q1.a,d)}<i>–</i>${fmt(q1.v,d)}`],[n2,`${fmt(q2.a,d)}<i>–</i>${fmt(q2.v,d)}`]],
+      qs:qsGeo(n1,q1,n2,q2,K,'Le cambiste')};
+  },
+  cross(){
+    if(Math.random()<0.6){
+      const {Y,p1,p2}=marche(...shuffle(NOJPY).slice(0,2));
+      return {n:'cross', ctx:`Le cours <b>EUR/${Y}</b> n'est pas coté. On le reconstitue à partir de :`,
+        thead:['Cotation','Acheteur – vendeur'], rows:[[pair(p1),`${fmt(p1.a,p1.d)}<i>–</i>${fmt(p1.v,p1.d)}`],[pair(p2),`${fmt(p2.a,p2.d)}<i>–</i>${fmt(p2.v,p2.d)}`]],
+        qs:qsCross(p1,p2,'div')};
+    }
+    const Y=pick(others(['USD'],Object.keys(CUR))), mU=mid('USD'), p1=quote('EUR','USD',mU,ri(3,6)), p2=quote('USD',Y,mid(Y)/mU,ri(4,8));
+    return {n:'cross', ctx:`Le cours <b>EUR/${Y}</b> n'est pas coté directement. La banque le fabrique via le dollar :`,
+      thead:['Cotation','Acheteur – vendeur'], rows:[[pair(p1),`${fmt(p1.a,p1.d)}<i>–</i>${fmt(p1.v,p1.d)}`],[pair(p2),`${fmt(p2.a,p2.d)}<i>–</i>${fmt(p2.v,p2.d)}`]],
+      qs:qsCross(p1,p2,'mul')};
+  },
+  tri(){
+    const {Y,p1,p2}=marche(...shuffle(NOJPY).slice(0,2)), dir=Math.random()<0.55?'A':'B';
+    const p3=triDirect(p1,p2,dir,ri(1,4),ri(4,6));
+    const K=ri(1,9)*1e6;
+    return {n:'tri', ctx:`Un cambiste détient <b>${fmt(K,0)} ${Y}</b> et observe les cotations suivantes :`,
+      thead:['Cotation','Acheteur – vendeur'], rows:[[pair(p1),`${fmt(p1.a,p1.d)}<i>–</i>${fmt(p1.v,p1.d)}`],[pair(p2),`${fmt(p2.a,p2.d)}<i>–</i>${fmt(p2.v,p2.d)}`],[pair(p3)+' (direct)',`${fmt(p3.a,p3.d)}<i>–</i>${fmt(p3.v,p3.d)}`]],
+      qs:qsTri(p1,p2,p3,K,dir,'Le cambiste')};
+  },
+  ordre(){
+    const {Y,p1,p2,p3}=marche(...shuffle(NOJPY).slice(0,2)), soc=pick(SOCIETES);
+    const sA=p1.a/p2.v, d=p3.d;
+    const Lim=r(Math.max(p3.a,sA)+ri(1,6)*pt(d),d);
+    return {n:'ordre', ctx:`Le trésorier de <b>${soc}</b> doit acheter des ${Y} avec des euros. Il passe un ordre à cours limité : au moins <b>${fmt(Lim,d)} ${Y} pour 1 €</b>. Il observe :`,
+      thead:['Cotation','Acheteur – vendeur'], rows:[[pair(p3)+' (direct)',`${fmt(p3.a,d)}<i>–</i>${fmt(p3.v,d)}`],[pair(p1),`${fmt(p1.a,p1.d)}<i>–</i>${fmt(p1.v,p1.d)}`],[pair(p2),`${fmt(p2.a,p2.d)}<i>–</i>${fmt(p2.v,p2.d)}`]],
+      qs:qsOrdre(p1,p2,p3,Lim,'Le trésorier')};
+  },
+  comm(){
+    const {X,Y,p1,p2}=marche(...shuffle(NOJPY).slice(0,2)), dir=Math.random()<0.55?'A':'B';
+    const K=ri(1,9)*1e6;
+    if(Math.random()<0.65){
+      const p3=triDirect(p1,p2,dir,ri(1,4),ri(4,6)); const F=triCalc(p1,p2,p3,K,dir).f;
+      return {n:'comm', ctx:`Un cambiste réalise un <b>arbitrage triangulaire</b> (${dir==='A'?`${Y} → ${X} → EUR → ${Y}`:`${Y} → EUR → ${X} → ${Y}`}). Parti de <b>${fmt(K,0)} ${Y}</b>, il termine avec <b>${fmt(F,2)} ${Y}</b>, sans frais.`,
+        thead:null, rows:[], qs:qsComm(K,F,3,Y,'Le circuit')};
+    }
+    const F=K*(1+ri(8,40)/1e5);
+    return {n:'comm', ctx:`Un cambiste réalise un <b>arbitrage géographique</b> entre deux banques (achat puis revente). Parti de <b>${fmt(K,0)} ${X}</b>, il termine avec <b>${fmt(F,2)} ${X}</b>, sans frais.`,
+      thead:null, rows:[], qs:qsComm(K,F,2,X,"L'arbitrage")};
+  }
+};
+/* cotation directe EUR/Y placée pour créer un arbitrage dans le sens voulu */
+function triDirect(p1,p2,dir,k,bp){
+  const {A:sA,V:sV,d}=crossDiv(p1,p2); const sp=ptsFor(sA,d,bp);
+  if(dir==='A'){ const a=r(Math.ceil(sV/pt(d)-1e-9)*pt(d)+k*pt(d),d); return {L:'EUR',R:p2.L,a,v:r(a+sp*pt(d),d),d}; }
+  const v=r(Math.floor(sA/pt(d)+1e-9)*pt(d)-k*pt(d),d); return {L:'EUR',R:p2.L,a:r(v-sp*pt(d),d),v,d};
+}
+
+/* Cas complet type partiel (sur le modèle du sujet travaillé en TD) */
+function genCas(){
+  const soc=pick(SOCIETES), [bA,bB]=shuffle(BANQUES).slice(0,2);
+  const mk=marche(...shuffle(NOJPY).slice(0,2)), X=mk.X, Y=mk.Y;
+  const pA=mk.p1, d=pA.d, p2=mk.p2;
+  const a2=r(pA.v+ri(1,Math.max(3,Math.round(pA.sp/2)))*pt(d),d), pB={L:'EUR',R:X,a:a2,v:r(a2+ptsFor(pA.a,d,ri(4,7))*pt(d),d),d};
+  const p3=triDirect(pA,p2,'A',ri(1,4),ri(4,6));
+  const sA=pA.a/p2.v, Lim=r(Math.max(p3.a,sA)+ri(1,6)*pt(p3.d),p3.d);
+  const c=ri(5,14), dt=ri(1,c-1), pay=ri(1,6), K=c-dt;   // position longue garantie
+  const KG=ri(1,5)*1e6, KY=ri(1,5)*1e6;
+  const ops=[{lib:`Créance sur un client ${PAYS[X]}`,cur:X,m:c},{lib:`Dette envers un fournisseur ${PAYS[X]}`,cur:X,m:-dt},{lib:`Paiement prochain à un fournisseur ${PAYS[Y]}`,cur:Y,m:-pay}];
+  const conv=qsConversion(pA,X,K*1e6,soc,bA,{noPos:true});
+  const eurA=K*1e6/pA.v, eurB=K*1e6/pB.v;
+  const tri=qsTri(pA,p2,p3,KY,'A','Le cambiste');
+  const Ftri=triCalc(pA,p2,p3,KY,'A').f;
+  const qs=[].concat(
+    qsPosition(soc,X,ops),
+    [qSens(pA,bA)],
+    qsSpread(pA),
+    qsRecip(pA).slice(0,1),
+    conv.slice(0,1).map(q=>Object.assign(q,{prompt:`${soc} veut convertir son solde de <b>${fmt(K,0)} M ${X}</b> en euros chez ${bA}. Quel cours s'applique ?`})),
+    conv.slice(1),
+    [num({n:'conversion', prompt:`Chez ${bB} (${qStr(pB)}), combien d'euros ${soc} aurait-il obtenu ? Donne le <b>manque à gagner</b> par rapport à ${bA}, en euros.`, unit:'EUR', ans:eurA-eurB, dec:2, ...tolGain(eurA-eurB),
+      traps:[{v:eurB-eurA,msg:`Signe inversé : ${bA} est plus avantageux, le manque à gagner est positif.`},{v:K*1e6/pB.a,msg:`Chez ${bB} aussi, on achète des euros au cours vendeur.`}],
+      hint:`Même opération chez ${bB} (cours vendeur ${fmt(pB.v,d)}), puis fais la différence.`,
+      steps:[`Chez ${bB} : <code>${fmt(K*1e6,0)} ÷ ${fmt(pB.v,d)} = ${fmt(eurB,2)} EUR</code>`,`Manque à gagner : <code>${fmt(eurA,2)} − ${fmt(eurB,2)} = ${fmt(eurA-eurB,2)} EUR</code>. Il vaut mieux passer par ${bA}.`]})],
+    qsGeo(bA,pA,bB,pB,KG,'Un cambiste'),
+    qsOrdre(pA,p2,p3,Lim,'Le trésorier').filter((q,i)=>i!==2),
+    qsCross(pA,p2,'div'),
+    tri,
+    qsComm(KY,Ftri,3,Y,'Le circuit').slice(1)
+  );
+  const ctx=`<b>${soc}</b> réalise une grande partie de son chiffre d'affaires ${PAYS[X]} et s'approvisionne ${PAYS[Y]}. Sa trésorerie doit gérer : une créance de <b>${c} M ${X}</b>, une dette de <b>${dt} M ${X}</b> et un paiement prochain de <b>${pay} M ${Y}</b>. Le trésorier consulte deux banques et le marché interbancaire. Pour l'arbitrage géographique, un cambiste dispose de <b>${fmt(KG,0)} ${X}</b> ; pour l'arbitrage triangulaire, de <b>${fmt(KY,0)} ${Y}</b>. Pour l'ordre à cours limité, le trésorier exige au moins <b>${fmt(Lim,p3.d)} ${Y} pour 1 €</b>.`;
+  return {n:'cas', titre:'Cas complet', ctx,
+    thead:['Cotation','Acheteur – vendeur'],
+    rows:[[`${bA} · EUR/${X}`,`${fmt(pA.a,d)}<i>–</i>${fmt(pA.v,d)}`],[`${bB} · EUR/${X}`,`${fmt(pB.a,d)}<i>–</i>${fmt(pB.v,d)}`],[`Interbancaire · ${pair(p2)}`,`${fmt(p2.a,p2.d)}<i>–</i>${fmt(p2.v,p2.d)}`],[`Interbancaire · ${pair(p3)}`,`${fmt(p3.a,p3.d)}<i>–</i>${fmt(p3.v,p3.d)}`]],
+    qs};
+}
+
+
+/* ════════════════════ FORWARD — chapitre 3 ════════════════════ */
+const MOIS=[1,2,3,6,12];
+/* pour les cotations X/EUR, on garde les devises proches de l'euro : sinon le cours tombe à 0,08… et les 4 décimales ne suffisent plus */
+const FWDCUR=['USD','GBP','CHF','CAD','AUD'];
+const TAUX=[[1.75,3.25],[2,3.5],[2.5,4],[3,4.5],[3.5,5],[4,5.5],[1.25,2.75]];
+function fracTx(){ /* taux en 1/8 ou 1/16, comme sur le marché des eurodevises */
+  const base=pick([1,2,3,4]), h=pick([0,1/8,1/4,3/8,1/2,5/8,3/4,7/8]);
+  const emp=+(base+h).toFixed(4), sp=pick([1/8,1/16,1/4]);
+  return {emp, pret:+(emp+sp).toFixed(4), sp};
+}
+const pctFmt=v=>fmt(v,4).replace(/,?0+$/,'')||'0';
+function txStr(t){ return `${pctFmt(t.emp)} % – ${pctFmt(t.pret)} %`; }
+function capital(tx,n){ return 1+tx/100*n/12; }
+
+/* ---- Report / déport à partir d'un spot et d'un cours à terme ---- */
+function qsTerme(p, f, n, sens, pts){
+  const d=p.d, S=p.a;
+  const taux=(f-S)/S*12/n*100;
+  const tauxFaux=(f-S)/S*100;
+  return [
+    choice({n:'terme', prompt:`À ${n} mois, le ${p.L} est-il en report ou en déport par rapport au ${p.R} ?`,
+      opts:[{t:`En report (premium)`,ok:sens>0},{t:`En déport (discount)`,ok:sens<0},{t:`Au pair (square)`,ok:false,why:`Au pair signifie f = S, ce qui n'est pas le cas ici.`}], fixed:true,
+      hint:`Compare simplement le cours à terme (${fmt(f,d)}) au cours au comptant (${fmt(S,d)}).`,
+      steps:[`<code>f = ${fmt(f,d)}</code> et <code>S = ${fmt(S,d)}</code>.`,
+             sens>0?`f &gt; S : le ${p.L} est en <b>report</b> par rapport au ${p.R}.`:`f &lt; S : le ${p.L} est en <b>déport</b> par rapport au ${p.R}.`]}),
+    num({n:'terme', prompt:`Combien de points de ${sens>0?'report':'déport'} ?`, unit:'points de base', ans:pts, dec:0,
+      tol:0.6, tolA:1.2,
+      traps:[{v:-pts, msg:`Les points s'expriment en valeur absolue : c'est le sens (report ou déport) qui porte le signe.`},
+             {v:pts/10, msg:`Attention au décalage : 1 point de base = ${d===4?'0,0001':'0,01'} sur ce cours.`}],
+      hint:`Fais la différence entre les deux cours, puis compte-la en points (1 point = ${d===4?'0,0001':'0,01'}).`,
+      steps:[`<code>|${fmt(f,d)} − ${fmt(S,d)}| = ${fmt(Math.abs(f-S),d)}</code>`,
+             `Soit <b>${pts} points de base</b> de ${sens>0?'report':'déport'}.`]}),
+    num({n:'terme', prompt:`Quel est le taux de ${sens>0?'report':'déport'} <b>annualisé</b> ? (signe compris)`, unit:'%', ans:+taux.toFixed(4), dec:2,
+      tol:0.015, tolA:0.05,
+      traps:[{v:+tauxFaux.toFixed(4), msg:`Tu as oublié d'annualiser : il faut multiplier par 12/n, ici 12/${n}.`},
+             {v:+(-taux).toFixed(4), msg:`Bonne valeur, mauvais signe : un déport est négatif, un report positif.`}],
+      hint:`<code>(f − S)/S × 12/n × 100</code>, avec n = ${n} mois.`,
+      steps:[`<code>(${fmt(f,d)} − ${fmt(S,d)}) ÷ ${fmt(S,d)} = ${(f-S)/S>=0?'':'−'}${fmt(Math.abs((f-S)/S),6)}</code>`,
+             `Annualisation : <code>× 12/${n} × 100 = ${fmt(taux,2)} %</code>`,
+             `Le signe ${taux>=0?'positif confirme le report':'négatif confirme le déport'}.`]})
+  ];
+}
+
+/* ---- Points de swap : reconstituer le cours à terme complet ---- */
+function qsSwapPts(p, psA, psV, n){
+  const d=p.d, rep=psA<psV, sgn=rep?1:-1;
+  const fa=r(p.a+sgn*psA*pt(d),d), fv=r(p.v+sgn*psV*pt(d),d);
+  const spotSp=Math.round((p.v-p.a)/pt(d)), termeSp=Math.round((fv-fa)/pt(d));
+  const faFaux=r(p.a-sgn*psA*pt(d),d);
+  return [
+    choice({n:'swappts', prompt:`Points de swap à ${n} mois : <b>${psA} – ${psV}</b>. Que faut-il faire ?`,
+      opts:[{t:`Les ajouter au comptant : report du ${p.L}`,ok:rep},
+            {t:`Les retrancher du comptant : déport du ${p.L}`,ok:!rep},
+            {t:`Ajouter le premier et retrancher le second`,ok:false,why:`Les deux points vont toujours dans le même sens : c'est leur ordre qui donne ce sens.`}], fixed:true,
+      hint:`Compare les deux points. Le spread à terme doit finir <b>plus large</b> que le spread au comptant.`,
+      steps:[`<code>PS<sup>A</sup> = ${psA}</code> et <code>PS<sup>V</sup> = ${psV}</code> : ${rep?'PS<sup>A</sup> &lt; PS<sup>V</sup>':'PS<sup>A</sup> &gt; PS<sup>V</sup>'}.`,
+             rep?`Points acheteurs inférieurs aux vendeurs ⟹ <b>report</b> du ${p.L} contre le ${p.R} ⟹ on <b>additionne</b>.`
+                :`Points acheteurs supérieurs aux vendeurs ⟹ <b>déport</b> du ${p.L} contre le ${p.R} ⟹ on <b>soustrait</b>.`]}),
+    num({n:'swappts', prompt:`Quel est le cours à terme <b>acheteur</b> à ${n} mois ?`, unit:'', ans:fa, dec:d, ...tolQ(d),
+      traps:[{v:faFaux, msg:`Mauvais sens : ici les points se ${rep?'ajoutent':'retranchent'}. Contrôle en vérifiant que le spread s'élargit.`},
+             {v:r(p.a+sgn*psV*pt(d),d), msg:`Tu as utilisé les points vendeurs sur le cours acheteur. Acheteur avec acheteur, vendeur avec vendeur.`}],
+      hint:`Cours comptant acheteur ${fmt(p.a,d)} ${rep?'+':'−'} ${psA} points.`,
+      steps:[`<code>${fmt(p.a,d)} ${rep?'+':'−'} ${fmt(psA*pt(d),d)} = ${fmt(fa,d)}</code>`]}),
+    num({n:'swappts', prompt:`Et le cours à terme <b>vendeur</b> ?`, unit:'', ans:fv, dec:d, ...tolQ(d),
+      traps:[{v:r(p.v-sgn*psV*pt(d),d), msg:`Mauvais sens de nouveau : vérifie l'ordre des points de swap.`}],
+      hint:`Même logique sur le cours vendeur, avec les points vendeurs.`,
+      steps:[`<code>${fmt(p.v,d)} ${rep?'+':'−'} ${fmt(psV*pt(d),d)} = ${fmt(fv,d)}</code>`,
+             `Cotation à terme : <b>${fmt(fa,d)} – ${fmt(fv,d)}</b>.`]}),
+    num({n:'swappts', prompt:`Contrôle : quel est le spread <b>à terme</b>, en points ?`, unit:'points', ans:termeSp, dec:0, tol:0.6, tolA:1.2,
+      traps:[{v:spotSp, msg:`C'est le spread au comptant. Le spread à terme doit être plus large.`}],
+      hint:`Différence entre tes deux cours à terme, comptée en points.`,
+      steps:[`<code>${fmt(fv,d)} − ${fmt(fa,d)} = ${termeSp} points</code>, contre ${spotSp} points au comptant.`,
+             `Le spread s'élargit avec l'échéance : le calcul est validé.`]})
+  ];
+}
+
+/* ---- Cours à terme calculés à partir des taux d'intérêt ---- */
+function qsForward(p, tA, tB, n, soc){
+  const d=p.d, A=p.L, B=p.R;
+  const fa=r(p.a*capital(tB.emp,n)/capital(tA.pret,n), d);
+  const fv=r(p.v*capital(tB.pret,n)/capital(tA.emp,n), d);
+  const faInv=r(p.a*capital(tB.pret,n)/capital(tA.emp,n), d);
+  const fvInv=r(p.v*capital(tB.emp,n)/capital(tA.pret,n), d);
+  const rep=fa>p.a;
+  return [
+    choice({n:'forward', prompt:`<b>${soc}</b> encaissera des ${A} dans ${n} mois et veut les vendre à terme. Quel cours la banque calcule-t-elle ?`,
+      opts:[{t:`Le cours à terme acheteur`,ok:true},{t:`Le cours à terme vendeur`,ok:false,why:`Le cours vendeur est calculé pour un client qui <b>achète</b> la devise à terme : un importateur ou un débiteur en devises.`}], fixed:true,
+      hint:`Le client vend la devise : que fait la banque en face ?`,
+      steps:[`Le client est créancier en ${A} : il vend ses ${A} à terme.`,
+             `La banque les <b>achète</b> : elle calcule son <b>cours à terme acheteur</b> f<sup>A</sup>.`]}),
+    num({n:'forward', prompt:`Calcule le cours à terme <b>acheteur</b> ${A}/${B} à ${n} mois.`, unit:'', ans:fa, dec:d, ...tolQ(d),
+      traps:[{v:faInv, msg:`Les deux taux sont inversés. Pour le cours acheteur : taux <b>emprunteur de ${B}</b> au numérateur, taux <b>prêteur de ${A}</b> au dénominateur.`},
+             {v:r(p.v*capital(tB.emp,n)/capital(tA.pret,n),d), msg:`Bonne formule, mais avec le cours comptant vendeur. Le cours acheteur se construit sur S<sup>A</sup> = ${fmt(p.a,d)}.`},
+             {v:r(p.a*capital(tA.pret,n)/capital(tB.emp,n),d), msg:`Fraction à l'envers : le placement en ${B} est au numérateur, l'emprunt en ${A} au dénominateur.`}],
+      hint:`<code>f<sup>A</sup> = S<sup>A</sup> × (1 + r<sub>${B}</sub><sup>emp</sup> × n/12) ÷ (1 + r<sub>${A}</sub><sup>prêt</sup> × n/12)</code>`,
+      steps:[`La banque emprunte des ${A} (au taux prêteur du marché, ${pctFmt(tA.pret)} %), les vend au comptant et place les ${B} (au taux emprunteur, ${pctFmt(tB.emp)} %).`,
+             `<code>${fmt(p.a,d)} × (1 + ${pctFmt(tB.emp)}/100 × ${n}/12) ÷ (1 + ${pctFmt(tA.pret)}/100 × ${n}/12) = ${fmt(fa,d)}</code>`,
+             `Le ${A} est donc en <b>${rep?'report':'déport'}</b> face au ${B}, ce qui est logique : son taux d'intérêt est le ${rep?'plus faible':'plus élevé'}.`]}),
+    num({n:'forward', prompt:`Calcule maintenant le cours à terme <b>vendeur</b>, celui que paierait un importateur.`, unit:'', ans:fv, dec:d, ...tolQ(d),
+      traps:[{v:fvInv, msg:`Taux inversés : pour le cours vendeur, taux <b>prêteur de ${B}</b> au numérateur et taux <b>emprunteur de ${A}</b> au dénominateur.`},
+             {v:fa, msg:`C'est le cours acheteur. Le vendeur part du comptant vendeur ${fmt(p.v,d)} et inverse les deux taux.`}],
+      hint:`<code>f<sup>V</sup> = S<sup>V</sup> × (1 + r<sub>${B}</sub><sup>prêt</sup> × n/12) ÷ (1 + r<sub>${A}</sub><sup>emp</sup> × n/12)</code>`,
+      steps:[`<code>${fmt(p.v,d)} × (1 + ${pctFmt(tB.pret)}/100 × ${n}/12) ÷ (1 + ${pctFmt(tA.emp)}/100 × ${n}/12) = ${fmt(fv,d)}</code>`,
+             `Cotation à terme complète : <b>${fmt(fa,d)} – ${fmt(fv,d)}</b>, spread ${Math.round((fv-fa)/pt(d))} points contre ${Math.round((p.v-p.a)/pt(d))} au comptant.`]})
+  ];
+}
+
+/* ---- Parité des taux couverte : où placer ? ---- */
+function qsParite(p, tA, tB, n, f, K, soc){
+  const d=p.d, A=p.L, B=p.R;
+  const local=K*capital(tB.emp,n);                  // placement en B (monnaie de l'entreprise)
+  const devise=K/p.v*capital(tA.emp,n)*f;           // achat de A au comptant vendeur, placement, revente au cours à terme acheteur
+  const theo=r(p.v*capital(tB.emp,n)/capital(tA.emp,n), d);
+  const mieux=devise>local;
+  return [
+    num({n:'parite', prompt:`Combien ${soc} obtient-il en plaçant ses <b>${fmt(K,0)} ${B}</b> sur place pendant ${n} mois ?`, unit:B, ans:+local.toFixed(2), dec:2, ...tolAmt(local),
+      traps:[{v:+(K*capital(tB.pret,n)).toFixed(2), msg:`Le client <b>prête</b> à sa banque : il reçoit le taux emprunteur de la banque (${pctFmt(tB.emp)} %), le plus bas.`}],
+      hint:`Un placement est rémunéré au taux emprunteur de la banque, ici ${pctFmt(tB.emp)} %.`,
+      steps:[`<code>${fmt(K,0)} × (1 + ${pctFmt(tB.emp)}/100 × ${n}/12) = ${fmt(local,2)} ${B}</code>`]}),
+    num({n:'parite', prompt:`Et en plaçant en <b>${A}</b>, couvert à terme dès le départ ?`, unit:B, ans:+devise.toFixed(2), dec:2, ...tolAmt(devise),
+      traps:[{v:+(K/p.a*capital(tA.emp,n)*f).toFixed(2), msg:`Pour acheter des ${A}, la banque les vend : c'est le cours comptant <b>vendeur</b> ${fmt(p.v,d)} qui s'applique.`},
+             {v:+(K/p.v*capital(tA.pret,n)*f).toFixed(2), msg:`Le placement en ${A} est rémunéré au taux emprunteur (${pctFmt(tA.emp)} %), pas au taux prêteur.`}],
+      hint:`Trois étapes : acheter des ${A} au comptant (cours vendeur), les placer ${n} mois, puis les revendre au cours à terme acheteur ${fmt(f,d)}.`,
+      steps:[`Achat : <code>${fmt(K,0)} ÷ ${fmt(p.v,d)} = ${fmt(K/p.v,2)} ${A}</code>`,
+             `Placement : <code>× (1 + ${pctFmt(tA.emp)}/100 × ${n}/12) = ${fmt(K/p.v*capital(tA.emp,n),2)} ${A}</code>`,
+             `Revente à terme : <code>× ${fmt(f,d)} = ${fmt(devise,2)} ${B}</code>`]}),
+    choice({n:'parite', prompt:`Quel placement retenir ?`,
+      opts:[{t:`Placer en ${B}, sur place`,ok:!mieux},{t:`Placer en ${A}, couvert à terme`,ok:mieux}], fixed:true,
+      hint:`Compare simplement les deux richesses finales, exprimées dans la même monnaie.`,
+      steps:[`<code>${fmt(local,2)} ${B}</code> contre <code>${fmt(devise,2)} ${B}</code>.`,
+             `Écart : <b>${fmt(Math.abs(devise-local),2)} ${B}</b> en faveur du placement ${mieux?`en ${A} couvert`:`local en ${B}`}.`]}),
+    num({n:'parite', prompt:`Quel cours à terme rendrait les deux placements équivalents (parité des taux couverte) ?`, unit:'', ans:theo, dec:d, ...tolQ(d),
+      traps:[{v:r(p.v*capital(tA.emp,n)/capital(tB.emp,n),d), msg:`Fraction inversée : au numérateur le taux de la monnaie cotée à droite (${B}), au dénominateur celui de la devise (${A}).`}],
+      hint:`<code>f* = S × (1 + r<sub>${B}</sub> × n/12) ÷ (1 + r<sub>${A}</sub> × n/12)</code>, avec les taux utilisés dans les deux placements.`,
+      steps:[`<code>${fmt(p.v,d)} × (1 + ${pctFmt(tB.emp)}/100 × ${n}/12) ÷ (1 + ${pctFmt(tA.emp)}/100 × ${n}/12) = ${fmt(theo,d)}</code>`,
+             `Le marché cote ${fmt(f,d)} : ${f>theo?`au-dessus du cours d'équilibre, le placement en ${A} couvert devient gagnant`:`en dessous du cours d'équilibre, le placement local reste gagnant`}.`]})
+  ];
+}
+
+/* ---- Générateurs ---- */
+const GEN_FWD={
+  terme(){
+    const X=pick(NOJPY), bank=pick(BANQUES), m=mid(X), d=decFor(m), S=r(m,d);
+    const n=pick(MOIS), pts=ri(8,140), sens=Math.random()<0.5?1:-1;
+    const f=r(S+sens*pts*pt(d),d);
+    const p={L:'EUR',R:X,a:S,v:S,d};
+    return {n:'terme', ctx:`${bank} publie ses cours <b>EUR/${X}</b> au comptant et à terme (cours moyens).`,
+      thead:['Échéance','Cours EUR/'+X],
+      rows:[['Comptant',fmt(S,d)],[`À ${n} mois`,fmt(f,d)]],
+      qs:qsTerme(p,f,n,sens,pts)};
+  },
+  swappts(){
+    const X=pick(NOJPY), bank=pick(BANQUES), p=quote('EUR',X,mid(X),ri(3,8)), n=pick(MOIS);
+    const rep=Math.random()<0.5; let psA,psV;
+    if(rep){ psA=ri(4,60); psV=psA+ri(3,45); } else { psV=ri(4,60); psA=psV+ri(3,45); }
+    return {n:'swappts', ctx:`${bank} ne communique pas le cours à terme complet : elle donne le comptant et les <b>points de swap</b> à ${n} mois.`,
+      thead:['Ligne','Acheteur – vendeur'],
+      rows:[[`Comptant EUR/${X}`,`${fmt(p.a,p.d)}<i>–</i>${fmt(p.v,p.d)}`],[`Points de swap ${n} mois`,`${psA}<i>–</i>${psV}`]],
+      qs:qsSwapPts(p,psA,psV,n)};
+  },
+  forward(){
+    const X=pick(FWDCUR), soc=pick(SOCIETES), bank=pick(BANQUES);
+    const p=quote(X,'EUR',1/mid(X),ri(3,8)), n=pick(MOIS);
+    const tA=fracTx(), tB=fracTx();
+    return {n:'forward', ctx:`<b>${soc}</b> exporte ${PAYS[X]} et sera payée en ${X} dans ${n} mois. ${bank} lui communique les conditions de marché suivantes :`,
+      thead:['Donnée','Valeur'],
+      rows:[[`Comptant ${X}/EUR`,`${fmt(p.a,p.d)}<i>–</i>${fmt(p.v,p.d)}`],
+            [`Taux ${X} à ${n} mois (emprunteur – prêteur)`,txStr(tA)],
+            [`Taux EUR à ${n} mois (emprunteur – prêteur)`,txStr(tB)]],
+      qs:qsForward(p,tA,tB,n,soc)};
+  },
+  parite(){
+    const X=pick(FWDCUR), soc=pick(SOCIETES);
+    const p=quote(X,'EUR',1/mid(X),ri(3,8)), n=pick(MOIS);
+    const tA=fracTx(), tB=fracTx(), K=ri(2,40)*1e6;
+    const theo=p.v*capital(tB.emp,n)/capital(tA.emp,n);
+    const f=r(theo+(Math.random()<0.5?1:-1)*ri(10,160)*pt(p.d), p.d);
+    return {n:'parite', ctx:`<b>${soc}</b> dispose d'un excédent de trésorerie de <b>${fmt(K,0)} EUR</b> pendant ${n} mois et hésite à le placer en ${X}, mieux ou moins bien rémunéré, en se couvrant à terme.`,
+      thead:['Donnée','Valeur'],
+      rows:[[`Comptant ${X}/EUR`,`${fmt(p.a,p.d)}<i>–</i>${fmt(p.v,p.d)}`],
+            [`Cours à terme acheteur ${n} mois`,fmt(f,p.d)],
+            [`Taux ${X} à ${n} mois`,txStr(tA)],
+            [`Taux EUR à ${n} mois`,txStr(tB)]],
+      qs:qsParite(p,tA,tB,n,f,K,soc)};
+  }
+};
+
+/* ---- Cas complet « couverture à terme », type partiel ---- */
+function genCasForward(){
+  const X=pick(FWDCUR), soc=pick(SOCIETES), bank=pick(BANQUES);
+  const p=quote(X,'EUR',1/mid(X),ri(3,8)), n=pick([3,6,12]);
+  const tA=fracTx(), tB=fracTx(), K=ri(3,25)*1e5;
+  const d=p.d;
+  const fa=r(p.a*capital(tB.emp,n)/capital(tA.pret,n), d);
+  const encaisse=K*fa;
+  const S2=r(p.a*(1+(Math.random()<0.5?1:-1)*ri(8,45)/1000), d);
+  const sans=K*S2, ecart=encaisse-sans;
+  const qs=[
+    choice({n:'position', prompt:`Quelle est la position de change de <b>${soc}</b> en ${X} à ${n} mois ?`,
+      opts:[{t:`Longue : elle craint une baisse du ${X}`,ok:true},
+            {t:`Courte : elle craint une hausse du ${X}`,ok:false,why:`Une position courte correspond à une dette en devises, pas à une créance.`},
+            {t:`Fermée : aucun risque`,ok:false,why:`Il faudrait une dette de même montant, même devise et même échéance.`}], fixed:true,
+      hint:`Créance en ${X} : l'argent va rentrer. Que se passe-t-il si le ${X} baisse d'ici l'échéance ?`,
+      steps:[`Créance de ${fmt(K,0)} ${X} sans dette en face : <b>position longue</b>.`,
+             `Si le ${X} se déprécie, la créance vaudra moins d'euros : risque de <b>baisse</b>.`]}),
+    choice({n:'forward', prompt:`Comment se couvre-t-elle sur le marché forward ?`,
+      opts:[{t:`En vendant ses ${X} à terme`,ok:true},
+            {t:`En achetant des ${X} à terme`,ok:false,why:`Acheter à terme, c'est la couverture de l'importateur, qui doit des devises.`}], fixed:true,
+      hint:`Elle va recevoir des devises dont elle veut fixer le prix de revente.`,
+      steps:[`L'exportateur <b>vend à terme</b> les devises correspondant au montant de sa créance : la banque calcule son cours acheteur.`]})
+  ].concat(qsForward(p,tA,tB,n,soc).slice(1,2)).concat([
+    num({n:'forward', prompt:`Combien <b>${soc}</b> encaissera-t-elle en euros à l'échéance ?`, unit:'EUR', ans:+encaisse.toFixed(2), dec:2, ...tolAmt(encaisse),
+      traps:[{v:+(K*p.a).toFixed(2), msg:`Tu as utilisé le cours au comptant : la couverture fixe le cours <b>à terme</b> ${fmt(fa,d)}.`}],
+      hint:`Montant de la créance × cours à terme acheteur.`,
+      steps:[`<code>${fmt(K,0)} × ${fmt(fa,d)} = ${fmt(encaisse,2)} EUR</code>, montant connu dès aujourd'hui.`]}),
+    num({n:'forward', prompt:`À l'échéance, le comptant ${X}/EUR vaut finalement <b>${fmt(S2,d)}</b>. Quel est le gain (+) ou le manque à gagner (−) de la couverture ?`, unit:'EUR', ans:+ecart.toFixed(2), dec:2, ...tolGain(Math.abs(ecart)||1),
+      traps:[{v:+(-ecart).toFixed(2), msg:`Signe inversé : compare ce que la couverture rapporte (${fmt(encaisse,2)}) à ce qu'aurait donné le comptant (${fmt(sans,2)}).`}],
+      hint:`Calcule ce qu'aurait donné une absence de couverture, puis fais la différence.`,
+      steps:[`Sans couverture : <code>${fmt(K,0)} × ${fmt(S2,d)} = ${fmt(sans,2)} EUR</code>`,
+             `Écart : <code>${fmt(encaisse,2)} − ${fmt(sans,2)} = ${fmt(ecart,2)} EUR</code>`,
+             ecart>=0?`La couverture a protégé l'entreprise : le ${X} a baissé.`:`Le ${X} a monté : la couverture coûte ce manque à gagner — c'est le prix de la certitude, connu et accepté d'avance.`]})
+  ]);
+  return {n:'cas', titre:'Cas complet — couverture à terme',
+    ctx:`<b>${soc}</b> exporte ${PAYS[X]} et détient une créance de <b>${fmt(K,0)} ${X}</b> à <b>${n} mois</b>. Sa politique est de couvrir systématiquement ses positions sur le marché forward. ${bank} lui communique les conditions suivantes.`,
+    thead:['Donnée','Valeur'],
+    rows:[[`Comptant ${X}/EUR`,`${fmt(p.a,d)}<i>–</i>${fmt(p.v,d)}`],
+          [`Taux ${X} à ${n} mois`,txStr(tA)],
+          [`Taux EUR à ${n} mois`,txStr(tB)]],
+    qs};
+}
+
+/* ════════════════════ CORRECTION ════════════════════ */
+const near=(a,b,t)=>Math.abs(a-b)<=t;
+function grade(q,val){
+  if(near(val,q.ans,q.tol)) return {ok:true};
+  for(const t of (q.traps||[])){
+    if(t.skip || !isFinite(t.v)) continue;
+    const tt=Math.max(q.tol, Math.abs(t.v)*2e-6);
+    if(near(val,t.v,tt) && !near(t.v,q.ans,q.tol)) return {ok:!!t.ok, msg:t.msg};
+  }
+  if(q.tolA && near(val,q.ans,q.tolA)) return {ok:true, msg:`Juste à un arrondi près. Garde plus de décimales en cours de calcul (ou tape tout en une ligne) pour tomber pile sur ${fmt(q.ans,q.dec)}.`};
+  if(q.ans!==0){
+    const k=val/q.ans;
+    if(near(k,100,2)) return {ok:false,msg:`Ton résultat est 100 fois trop grand : un × 100 en trop ?`};
+    if(near(k,0.01,0.0002)) return {ok:false,msg:`Ton résultat est 100 fois trop petit : pourcentage oublié ?`};
+    if(near(k,-1,0.001)) return {ok:false,msg:`Bonne valeur, mauvais signe.`};
+    if(q.n==='comm' && k>0.4 && k<2.5) return {ok:false,msg:`Bon ordre de grandeur, mais pas le bon résultat : as-tu arrondi trop tôt ? Garde toutes les décimales, ou tape tout en une ligne : 1 − (1 ÷ g)^(1/n).`};
+    if(Math.abs(k-1)<0.02) return {ok:false,msg:`Proche, mais l'écart dépasse un simple arrondi : vérifie le cours utilisé (acheteur ou vendeur ?) et n'arrondis pas trop tôt.`};
+  }
+  return {ok:false,msg:`Écart important. Reprends la méthode (🧭) étape par étape.`};
+}
+
+/* ════════════════════ ÉTAT & AFFICHAGE ════════════════════ */
+const S={mode:'notion', notion:'mix', len:5, partiel:false, queue:[], exIdx:0, ex:null, qi:0, res:[], t0:0, tick:null,
+         sess:{done:0,ok:0,streak:0}, xp:0};
+const K_NOTION='entr_changes_notion';
+try{ const n=localStorage.getItem(K_NOTION); if(n && (n==='mix'||NOTIONS[n])) S.notion=n; }catch(e){}
+
+function buildChips(){
+  const h=document.getElementById('chips');
+  h.innerHTML=Object.entries(NOTIONS).map(([k,v])=>`<button class="chip${S.notion===k?' on':''}" onclick="setNotion('${k}')">${v.ico} ${v.lab}</button>`).join('')
+    +`<button class="chip${S.notion==='mix'?' on':''}" onclick="setNotion('mix')">🎲 Au hasard</button>`;
+}
+function setNotion(k){ S.notion=k; try{localStorage.setItem(K_NOTION,k);}catch(e){} buildChips(); startNotion(); }
+function setLen(n){ S.len=n; document.querySelectorAll('#serieLen .chip').forEach(b=>b.classList.toggle('on',+b.dataset.n===n)); }
+function setMode(m){
+  S.mode=m;
+  document.querySelectorAll('.mode').forEach(b=>b.classList.toggle('on',b.dataset.mode===m));
+  document.getElementById('pNotion').classList.toggle('hidden',m!=='notion');
+  document.getElementById('pSerie').classList.toggle('hidden',m!=='serie');
+  document.getElementById('pCas').classList.toggle('hidden',m!=='cas');
+  stopTimer(); document.getElementById('stage').innerHTML='';
+}
+
+Object.assign(GEN, GEN_FWD);
+function makeEx(n){ return (GEN[n]||GEN.position)(); }
+function startNotion(){
+  S.partiel=false; S.queue=null; S.res=[];
+  const n = S.notion==='mix' ? pick(Object.keys(NOTIONS)) : S.notion;
+  loadEx(makeEx(n));
+}
+function startSerie(){
+  S.partiel=document.getElementById('partielSerie').checked;
+  const keys=Object.keys(NOTIONS); let bag=[];
+  while(bag.length<S.len) bag=bag.concat(shuffle(keys));
+  S.queue=bag.slice(0,S.len).map(makeEx); S.exIdx=0; S.res=[]; S.t0=Date.now();
+  loadEx(S.queue[0]); startTimer();
+}
+function startCas(){
+  S.partiel=document.getElementById('partielCas').checked;
+  S.queue=[Math.random()<0.5?genCas():genCasForward()]; S.exIdx=0; S.res=[]; S.t0=Date.now();
+  loadEx(S.queue[0]); startTimer();
+}
+
+function loadEx(ex){
+  S.ex=ex; S.qi=0; ex.qs.forEach(q=>{q.state='todo'; q.aids=0;});
+  const lab = ex.n==='cas' ? '📝 Cas complet' : `${NOTIONS[ex.n].ico} ${NOTIONS[ex.n].lab}`;
+  const progr = S.queue && S.queue.length>1 ? `Exercice ${S.exIdx+1} / ${S.queue.length}` : '';
+  const table = ex.rows && ex.rows.length ? `<table class="data">${ex.thead?`<tr>${ex.thead.map(t=>`<th>${t}</th>`).join('')}</tr>`:''}${ex.rows.map(rw=>`<tr><td>${rw[0]}</td><td class="v">${rw[1]}</td></tr>`).join('')}</table>` : '';
+  document.getElementById('stage').innerHTML=`<article class="ex" id="ex">
+    <div class="ex-head"><span class="tag">${lab}</span>${S.partiel?'<span class="tag navy">Conditions de partiel</span>':''}<span class="prog" id="exProg">${progr}</span></div>
+    <div class="ex-body"><div class="ctx">${ex.ctx}</div>${table}<div id="qs"></div></div>
+    <div class="ex-foot" id="exFoot"><span class="timer" id="timer"></span><span class="sp"></span><span class="mono" style="font-size:.8rem;color:var(--muted)">${ex.qs.length} question${ex.qs.length>1?'s':''}</span></div>
+  </article>`;
+  renderQ(0);
+  document.getElementById('ex').scrollIntoView({behavior:'smooth',block:'start'});
+  if(S.tick) updTimer();
+}
+
+function renderQ(i){
+  const q=S.ex.qs[i]; const host=document.getElementById('qs');
+  const div=document.createElement('div'); div.className='q'; div.id='q'+i;
+  const nt = S.ex.n==='cas' ? `<span class="nt">${NOTIONS[q.n].lab}</span>` : '';
+  let ans;
+  if(q.kind==='num'){
+    ans=`<div class="ans"><input type="text" inputmode="decimal" id="in${i}" autocomplete="off" placeholder="ta réponse" onkeydown="if(event.key==='Enter')validate(${i})"><span class="unit">${q.unit||''}</span><button class="btn primary small" id="ok${i}" onclick="validate(${i})">Valider</button></div>`;
+  } else {
+    ans=`<div class="opts">${q.opts.map((o,j)=>`<button class="opt" id="o${i}_${j}" onclick="validate(${i},${j})">${o.t}</button>`).join('')}</div>`;
+  }
+  const aids = S.partiel ? '' : `<div class="aids" id="aids${i}">
+      <button class="aid" onclick="aid(${i},1)">💡 Indice</button>
+      <button class="aid" onclick="aid(${i},2)">🧭 Méthode</button>
+      <button class="aid" onclick="aid(${i},3)">✅ Voir la correction</button></div>`;
+  div.innerHTML=`<div class="q-top"><span class="qn">${i+1}</span><div class="qp">${nt}${q.prompt}</div></div>${ans}${aids}<div id="aidbox${i}"></div><div id="fb${i}"></div>`;
+  host.appendChild(div);
+  const inp=document.getElementById('in'+i); if(inp) setTimeout(()=>inp.focus({preventScroll:true}),60);
+  if(i>0) div.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function aid(i,lvl){
+  const q=S.ex.qs[i]; if(q.state!=='todo') return;
+  const box=document.getElementById('aidbox'+i);
+  if(lvl===3){ q.aids=3; finish(i,{ok:false, revealed:true}, null); return; }
+  q.aids=Math.max(q.aids,lvl);
+  if(lvl===1 && !box.querySelector('.hint')) box.insertAdjacentHTML('beforeend',`<div class="box hint">💡 ${q.hint||'Relis bien la cotation : quelle devise donnes-tu ?'}</div>`);
+  if(lvl===2 && !box.querySelector('.meth')) box.insertAdjacentHTML('beforeend',`<div class="box meth">🧭 ${METH[q.n]}</div>`);
+}
+
+function validate(i,j){
+  const q=S.ex.qs[i]; if(q.state!=='todo') return;
+  let g, shown;
+  if(q.kind==='num'){
+    const inp=document.getElementById('in'+i); const val=parseNum(inp.value);
+    if(isNaN(val)){ inp.focus(); inp.style.borderColor='var(--rust)'; setTimeout(()=>inp.style.borderColor='',900); return; }
+    g=grade(q,val); shown=inp.value.trim();
+  } else {
+    const o=q.opts[j]; g={ok:!!o.ok, msg:o.ok?'':(o.why||''), pick:j}; shown=o.t.replace(/<[^>]+>/g,'');
+  }
+  finish(i,g,shown);
+}
+
+function expected(q){
+  if(q.kind==='num') return `${fmt(q.ans,q.dec)} ${q.unit||''}`;
+  const o=q.opts.find(o=>o.ok); return o?o.t.replace(/<[^>]+>/g,''):'';
+}
+function stepsHtml(q){ return `<div class="steps">${q.steps.map((s,k)=>`<div class="st"><span class="sn">${k+1}</span><div class="sc">${s}</div></div>`).join('')}</div>`; }
+
+function finish(i,g,shown){
+  const q=S.ex.qs[i];
+  q.state = g.revealed?'ko':(g.ok?'ok':'ko'); q.shown=shown; q.msg=g.msg||'';
+  // verrouillage
+  const inp=document.getElementById('in'+i); if(inp) inp.disabled=true;
+  const okb=document.getElementById('ok'+i); if(okb) okb.disabled=true;
+  document.querySelectorAll(`#q${i} .opt`).forEach((b,k)=>{ b.disabled=true;
+    if(!S.partiel){ if(q.opts[k].ok) b.classList.add('good'); else if(k===g.pick) b.classList.add('bad'); }
+    else if(k===g.pick) b.classList.add('pick'); });
+  document.querySelectorAll(`#aids${i} .aid`).forEach(b=>b.disabled=true);
+  // score & mémoire
+  const ok = q.state==='ok';
+  S.res.push({n:q.n, ok, q, shown});
+  if(S.queue===null){ S.sess.done++; if(ok){S.sess.ok++; S.sess.streak++;} else S.sess.streak=0; majSess(); }
+  const gainXp = ok ? (q.aids?8:15) : 0; S.xp+=gainXp;
+  if(window.P){ try{ P.noterReponse('entr:'+q.n, ok, 'Entraînement — '+NOTIONS[q.n].lab); if(gainXp) P.ajouterXp(gainXp); }catch(e){} }
+  // retour
+  const fb=document.getElementById('fb'+i); const div=document.getElementById('q'+i);
+  if(S.partiel){
+    div.classList.add('saved');
+    fb.innerHTML=`<div class="box fb saved">Réponse enregistrée. La correction t'attend dans le bilan.</div>`;
+  } else {
+    div.classList.add(ok?'ok':'ko');
+    const head = g.revealed ? '📖 Correction' : ok ? (q.aids?'✅ Juste (avec aide)':'✅ Juste') : '❌ Pas tout à fait';
+    const yours = (!ok && !g.revealed && q.kind==='num') ? `<div class="yours">Ta réponse : ${shown} · attendu : ${expected(q)}</div>` : '';
+    const detail = ok && !g.msg ? `<details class="more"><summary>Voir le détail</summary>${stepsHtml(q)}</details>` : stepsHtml(q);
+    fb.innerHTML=`<div class="box fb ${g.revealed?'':(ok?'ok':'ko')}"><div class="fb-h">${head}</div>${g.msg?`<div class="fb-msg">${g.msg}</div>`:''}${yours}${detail}</div>`;
+  }
+  // suite
+  if(i+1<S.ex.qs.length){ S.qi=i+1; renderQ(i+1); }
+  else endEx();
+}
+
+function endEx(){
+  const foot=document.getElementById('exFoot');
+  const nOk=S.ex.qs.filter(q=>q.state==='ok').length, tot=S.ex.qs.length;
+  const recap = S.partiel ? '' : `<span class="mono" style="font-size:.85rem">${nOk} / ${tot} juste${nOk>1?'s':''}</span>`;
+  let btn;
+  if(S.queue===null) btn=`<button class="btn navy" onclick="startNotion()">Exercice suivant →</button>`;
+  else if(S.exIdx+1<S.queue.length) btn=`<button class="btn navy" onclick="nextEx()">Exercice suivant (${S.exIdx+2}/${S.queue.length}) →</button>`;
+  else btn=`<button class="btn navy" onclick="bilan()">Voir le bilan →</button>`;
+  foot.innerHTML=`<span class="timer" id="timer"></span>${recap}<span class="sp"></span>${btn}`;
+  if(S.tick) updTimer();
+  foot.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function nextEx(){ S.exIdx++; loadEx(S.queue[S.exIdx]); }
+
+function bilan(){
+  stopTimer();
+  const tot=S.res.length, ok=S.res.filter(x=>x.ok).length, pc=tot?Math.round(ok/tot*100):0;
+  const secs=Math.round((Date.now()-S.t0)/1000);
+  const par={}; S.res.forEach(x=>{ par[x.n]=par[x.n]||{t:0,o:0}; par[x.n].t++; if(x.ok) par[x.n].o++; });
+  const bars=Object.entries(par).map(([k,v])=>{ const p=Math.round(v.o/v.t*100); return `<div><div class="bar-l"><span>${NOTIONS[k].ico} ${NOTIONS[k].lab}</span><span class="mono">${v.o}/${v.t}</span></div><div class="bar ${p<50?'low':p<80?'mid':''}"><i style="width:${p}%"></i></div></div>`; }).join('');
+  const faibles=Object.entries(par).filter(([k,v])=>v.o/v.t<0.67).map(([k])=>k);
+  const conseil = faibles.length ? `À retravailler en mode « Par notion » : ${faibles.map(k=>`<button class="chip" onclick="setMode('notion');setNotion('${k}')">${NOTIONS[k].ico} ${NOTIONS[k].lab}</button>`).join(' ')}` : `Rien de faible dans cette série. Tente le cas complet en conditions de partiel.`;
+  const col = pc>=80?'var(--teal)':pc>=50?'var(--amber)':'var(--rust)';
+  const corrs = S.res.map((x,k)=>{ if(!S.partiel && x.ok) return ''; return `<div class="corr"><h4>${k+1}. ${NOTIONS[x.n].ico} ${x.q.prompt} ${x.ok?'✅':'❌'}</h4>${x.shown!=null?`<div class="yours">Ta réponse : ${esc(x.shown)} · attendu : ${expected(x.q)}</div>`:`<div class="yours">Correction demandée · attendu : ${expected(x.q)}</div>`}${x.q.msg?`<div class="fb-msg">${x.q.msg}</div>`:''}${stepsHtml(x.q)}</div>`; }).join('');
+  document.getElementById('stage').innerHTML=`<article class="ex" id="ex">
+    <div class="ex-head"><span class="tag">🏁 Bilan</span>${S.partiel?'<span class="tag navy">Conditions de partiel</span>':''}<span class="prog">${Math.floor(secs/60)} min ${String(secs%60).padStart(2,'0')} s</span></div>
+    <div class="ex-body">
+      <div class="bilan-score"><div class="ring" style="background:conic-gradient(${col} ${pc*3.6}deg, var(--paper2) 0)"><span style="background:var(--card);width:84px;height:84px;border-radius:50%;display:grid;place-items:center">${pc}%</span></div>
+        <div><div style="font-family:'Fraunces',serif;font-weight:700;font-size:1.3rem">${ok} / ${tot} réponses justes</div><div class="help" style="margin-top:2px">+${S.xp} XP · ${pc>=80?'Prêt pour le partiel sur ces notions.':pc>=50?'Bonne base, quelques réflexes à consolider.':'On reprend les règles, ça va venir.'}</div></div></div>
+      <div class="bars">${bars}</div>
+      <p class="help" style="margin-top:14px">${conseil}</p>
+      ${corrs?`<h3 style="font-family:'Fraunces',serif;color:var(--navy);margin-top:22px">${S.partiel?'Toutes les corrections':'Tes erreurs, corrigées'}</h3>${corrs}`:''}
+    </div>
+    <div class="ex-foot"><span class="sp"></span><button class="btn" onclick="${S.mode==='cas'?'startCas()':'startSerie()'}">Recommencer ↻</button></div>
+  </article>`;
+  document.getElementById('ex').scrollIntoView({behavior:'smooth',block:'start'});
+  if(window.P){ try{ P.meilleurScore(S.mode==='cas'?'Entraînement — cas complet':'Entraînement — série', ok, tot); }catch(e){} }
+  if(window.LB){ try{ LB.record({subject:SUBJECT_KEY, mode:S.mode==='cas'?'Entraînement cas complet':'Entraînement série', correct:ok, total:tot, xp:S.xp}); }catch(e){} }
+}
+
+function majSess(){
+  document.getElementById('sDone').textContent=S.sess.done;
+  document.getElementById('sOk').textContent=S.sess.ok;
+  document.getElementById('sStreak').textContent=S.sess.streak;
+  if(window.LB && S.sess.done && S.sess.done%10===0){ try{ LB.record({subject:SUBJECT_KEY, mode:'Entraînement par notion', correct:S.sess.ok, total:S.sess.done, xp:S.xp}); }catch(e){} }
+}
+function startTimer(){ stopTimer(); S.tick=setInterval(updTimer,1000); updTimer(); }
+function stopTimer(){ if(S.tick) clearInterval(S.tick); S.tick=null; }
+function updTimer(){ const el=document.getElementById('timer'); if(!el||!S.t0) return; const s=Math.round((Date.now()-S.t0)/1000); el.textContent='⏱ '+Math.floor(s/60)+' min '+String(s%60).padStart(2,'0')+' s'; }
+
+/* ════════════════════ COMPTE À REBOURS ════════════════════ */
+function cd(){
+  const left=PARTIEL.end-Date.now(), chip=document.getElementById('cdChip'), main=document.getElementById('cdMain');
+  if(left<=0){ chip.innerHTML='✅ Partiel passé'; main.textContent='Partiel passé'; return; }
+  const d=Math.floor(left/8.64e7), h=Math.floor(left%8.64e7/3.6e6), m=Math.floor(left%3.6e6/6e4), s=Math.floor(left%6e4/1000), p=n=>String(n).padStart(2,'0');
+  chip.innerHTML=`⏳ Partiel <b>J-${Math.ceil(left/8.64e7)}</b>`;
+  main.textContent=`${d}j ${p(h)}h ${p(m)}m ${p(s)}s`;
+}
+document.getElementById('cdDate').textContent=PARTIEL.label;
+cd(); setInterval(cd,1000);
+
+buildChips();
+</script>
+<script src="ui.js"></script>
+</body>
+</html>

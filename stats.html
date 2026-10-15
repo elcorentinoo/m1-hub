@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ma progression — M1 MBAF</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --card:#fff; --card2:#fbf9f5;
+  --paper:#faf6ef; --paper2:#f3ece0; --ink:#22201b; --ink2:#4a4640;
+  --muted:#8a8378; --line:#e3d9c8; --line2:#d4c7b0;
+  --teal:#1b6b5e; --teal-l:#e4f0ed; --teal-d:#0f4a40;
+  --amber:#c87a12; --amber-l:#fbf0db;
+  --rust:#a8432a; --rust-l:#f7e6df;
+  --plum:#6b3a73; --plum-l:#f0e7f2;
+  --navy:#241C15; --navy-l:#e3ebf4;
+  --gold:#b8860b;
+  --shadow:0 1px 3px rgba(34,32,27,.08), 0 8px 24px rgba(34,32,27,.06);
+  --shadow-lg:0 4px 12px rgba(34,32,27,.12), 0 20px 48px rgba(34,32,27,.1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);line-height:1.6;
+  background-image:radial-gradient(var(--line) .5px, transparent .5px);background-size:22px 22px}
+::-webkit-scrollbar{width:9px}::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--line2);border-radius:5px}
+
+#topbar{position:sticky;top:0;z-index:50;background:color-mix(in srgb, var(--paper) 94%, transparent);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 24px;
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+#topbar .logo{font-family:'Fraunces',serif;font-weight:900;font-size:18px;color:var(--navy)}
+#topbar .logo span{color:var(--amber)}
+.spacer{flex:1}
+
+main{max-width:880px;margin:0 auto;padding:36px 24px 100px}
+.hero-tag{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:1px;text-transform:uppercase;
+  color:var(--amber);font-weight:500;display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.hero-tag::before{content:'';width:24px;height:2px;background:var(--amber)}
+h1{font-family:'Fraunces',serif;font-weight:900;font-size:2.3rem;line-height:1.08;letter-spacing:-1px;margin-bottom:10px}
+h1 .acc{color:var(--amber)}
+.sub{font-size:16.5px;color:var(--ink2);margin-bottom:28px;max-width:60ch}
+
+h2{font-family:'Fraunces',serif;font-size:1.4rem;color:var(--ink);margin:34px 0 4px;font-weight:700}
+h2+.h2s{color:var(--muted);font-size:14px;margin-bottom:16px}
+
+/* bandeau de chiffres */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:8px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 16px;
+  box-shadow:var(--shadow);text-align:center}
+.kpi .n{font-family:'Fraunces',serif;font-size:2rem;font-weight:900;line-height:1;color:var(--navy)}
+.kpi .n.teal{color:var(--teal)} .kpi .n.amber{color:var(--amber)} .kpi .n.gold{color:var(--gold)}
+.kpi .l{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);
+  font-weight:600;margin-top:6px}
+
+/* carte matière */
+.mat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px;
+  margin-bottom:13px;box-shadow:var(--shadow)}
+.mat-h{display:flex;align-items:center;gap:13px;margin-bottom:13px}
+.mat-ico{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:21px;
+  background:var(--navy-l);flex-shrink:0}
+.mat-t{flex:1;min-width:0}
+.mat-t h3{font-family:'Fraunces',serif;font-size:1.13rem;font-weight:700;line-height:1.25}
+.mat-t .s{font-family:'DM Mono',monospace;font-size:11.5px;color:var(--muted);margin-top:2px}
+.bar{height:11px;background:var(--paper2);border-radius:7px;overflow:hidden;border:1px solid var(--line)}
+.bar i{display:block;height:100%;border-radius:7px;background:linear-gradient(90deg,var(--teal),#2a8a78);
+  transition:width .8s cubic-bezier(.4,0,.2,1);width:0}
+.mat-f{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:13px}
+.tag{font-family:'DM Mono',monospace;font-size:11px;padding:3px 10px;border-radius:20px;
+  background:var(--paper2);color:var(--ink2)}
+.tag.ok{background:var(--teal-l);color:var(--teal-d)}
+.tag.warn{background:var(--amber-l);color:var(--amber)}
+.go{margin-left:auto;font-size:12.5px;color:var(--navy);text-decoration:none;font-weight:600;
+  border:1px solid var(--line);border-radius:8px;padding:5px 12px;transition:.15s}
+.go:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+/* points faibles */
+.weak{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 18px;
+  margin-bottom:10px;box-shadow:var(--shadow);display:flex;align-items:center;gap:14px}
+.weak .pct{font-family:'Fraunces',serif;font-weight:900;font-size:1.3rem;min-width:52px;text-align:center}
+.p-hi{color:var(--rust)} .p-mid{color:var(--amber)} .p-lo{color:var(--teal)}
+.weak .wt{flex:1;min-width:0}
+.weak .wt b{display:block;font-size:14.8px;font-weight:600}
+.weak .wt span{font-family:'DM Mono',monospace;font-size:11.5px;color:var(--muted)}
+.weak .wbar{width:74px;height:7px;background:var(--paper2);border-radius:5px;overflow:hidden;flex-shrink:0}
+.weak .wbar i{display:block;height:100%;background:var(--rust);border-radius:5px}
+
+.empty{text-align:center;padding:44px 20px;color:var(--muted);font-size:15px;
+  background:var(--card);border:1px dashed var(--line2);border-radius:16px}
+.empty .big{font-size:40px;margin-bottom:12px}
+.empty a{color:var(--navy);font-weight:600}
+.note{background:var(--amber-l);border:1px solid #e6cf9e;border-left:4px solid var(--amber);
+  border-radius:11px;padding:13px 16px;font-size:13.8px;color:#5e3a06;margin-top:22px}
+:root[data-theme="dark"] .note{color:var(--amber-deep)}
+.danger{margin-top:30px;padding-top:20px;border-top:1px solid var(--line)}
+.btn{font-family:'DM Sans';font-weight:600;font-size:.9rem;padding:9px 16px;border-radius:10px;
+  cursor:pointer;border:1.5px solid var(--line2);background:var(--card);color:var(--ink2);transition:.15s}
+.btn:hover{border-color:var(--rust);color:var(--rust)}
+
+@media(max-width:700px){main{padding:26px 16px 90px}h1{font-size:1.75rem}}
+</style>
+<link rel="stylesheet" href="ui.css">
+<link rel="stylesheet" href="theme.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#F7F8FA">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="M1 MBAF">
+</head>
+<body>
+
+<div id="topbar">
+  <div class="logo">Ma pro<span>gression</span></div>
+  <div class="spacer"></div>
+  <span id="nav-slot"></span>
+</div>
+
+<main>
+  <div class="hero-tag">Tableau de bord</div>
+  <h1>Où tu en es <span class="acc">vraiment</span></h1>
+  <p class="sub">Ta progression par matière, et surtout les notions que tu rates le plus souvent — de quoi cibler tes révisions plutôt que tout relire.</p>
+
+  <div id="body"></div>
+</main>
+
+<script src="progress.js"></script>
+<script>
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+const NB_LECONS = {'marche-particuliers':11,'produits-derives':15,'marketing-numerique':11,'es-banque':14,'fiscalite-particulier':11};
+
+function render(){
+  const host = document.getElementById('body');
+  if(!P.disponible()){
+    host.innerHTML = `<div class="empty"><div class="big">🔒</div>
+      Ton navigateur bloque le stockage local.<br>La progression ne peut pas être enregistrée
+      (navigation privée ou réglage de confidentialité).</div>`;
+    return;
+  }
+  const st = P.stats(), serie = P.serie();
+
+  if(st.global.reponses === 0 && st.global.lecons === 0){
+    host.innerHTML = `<div class="empty"><div class="big">🌱</div>
+      Rien à afficher pour l'instant.<br>
+      Valide une leçon ou passe un test, et tes statistiques apparaîtront ici.<br><br>
+      <a href="index.html">Choisir une matière →</a></div>`;
+    return;
+  }
+
+  let h = '';
+
+  /* --- chiffres clés --- */
+  h += `<div class="kpis">
+    <div class="kpi"><div class="n teal">${st.global.lecons}</div><div class="l">Leçons validées</div></div>
+    <div class="kpi"><div class="n amber">${st.global.xp}</div><div class="l">XP cumulés</div></div>
+    <div class="kpi"><div class="n">${st.global.taux!==null?Math.round(st.global.taux)+'%':'—'}</div><div class="l">Taux de réussite</div></div>
+    <div class="kpi"><div class="n gold">${serie}</div><div class="l">Jour${serie>1?'s':''} d'affilée</div></div>
+  </div>`;
+
+  /* --- par matière --- */
+  h += `<h2>Matière par matière</h2><div class="h2s">Progression, meilleur score au test final et taux de réussite.</div>`;
+  Object.keys(P.MATIERES).forEach(id=>{
+    const m = st.parMatiere[id];
+    const tot = NB_LECONS[id] || 1;
+    const pct = Math.min(100, Math.round(m.lecons/tot*100));
+    const best = m.best['Test final'];
+    h += `<div class="mat">
+      <div class="mat-h">
+        <div class="mat-ico">${m.ico}</div>
+        <div class="mat-t">
+          <h3>${esc(m.lab)}</h3>
+          <div class="s">${m.lecons}/${tot} leçons · ${pct}%</div>
+        </div>
+      </div>
+      <div class="bar"><i data-w="${pct}"></i></div>
+      <div class="mat-f">
+        ${best?`<span class="tag ok">Meilleur test : ${best.correct}/${best.total}</span>`:`<span class="tag">Test non passé</span>`}
+        ${m.reponses?`<span class="tag ${m.taux>=70?'ok':(m.taux>=50?'warn':'')}">${m.justes}/${m.reponses} réponses justes</span>`:''}
+        ${m.xp?`<span class="tag">${m.xp} XP</span>`:''}
+        <a class="go" href="${m.f}${m.last?'#'+m.last:''}">${m.last?'Reprendre':'Commencer'} →</a>
+      </div>
+    </div>`;
+  });
+
+  /* --- points faibles --- */
+  h += `<h2>À retravailler en priorité</h2>`;
+  if(!st.faiblesses.length){
+    h += `<div class="h2s">Pas encore assez de réponses pour dégager une tendance — il en faut au moins deux sur un même chapitre.</div>`;
+  } else {
+    h += `<div class="h2s">Les chapitres où tu te trompes le plus, du plus problématique au moins.</div>`;
+    st.faiblesses.slice(0,10).forEach(f=>{
+      const cls = f.taux>=60?'p-hi':(f.taux>=35?'p-mid':'p-lo');
+      h += `<div class="weak">
+        <div class="pct ${cls}">${Math.round(f.taux)}%</div>
+        <div class="wt"><b>${esc(f.chap)}</b><span>${esc(f.lab)} · ${f.ko} erreur${f.ko>1?'s':''} sur ${f.tot}</span></div>
+        <div class="wbar"><i style="width:${Math.round(f.taux)}%"></i></div>
+      </div>`;
+    });
+  }
+
+  h += `<div class="note">Ces chiffres sont enregistrés <b>uniquement sur cet appareil</b>. Ils ne partent sur aucun serveur et ne sont visibles que par toi — contrairement au classement, qui lui est partagé.</div>`;
+
+  h += `<div class="danger"><button class="btn" onclick="raz()">Effacer toute ma progression</button></div>`;
+
+  host.innerHTML = h;
+  setTimeout(()=>document.querySelectorAll('.bar i').forEach(b=>b.style.width=b.dataset.w+'%'),120);
+}
+
+function raz(){
+  if(!confirm("Effacer définitivement ta progression, tes XP et ton historique de réponses ?\n\nCette action est irréversible.")) return;
+  P.reinitialiser();
+  render();
+}
+render();
+</script>
+<script src="banque.js"></script>
+<script src="ui.js"></script>
+</body>
+</html>

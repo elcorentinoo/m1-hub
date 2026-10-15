@@ -1,0 +1,1794 @@
+<!DOCTYPE html>
+<html lang="fr" subject-id="es-banque">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ES Banque — Patrimoine & Assurance — M1 MBAF</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --card:#fff; --card2:#fbf9f5;
+  --paper:#faf6ef; --paper2:#f3ece0; --ink:#22201b; --line:#e3d9c8;
+  --teal:#1b6b5e; --amber:#c87a12; --rust:#a8432a; --plum:#6b3a73; --navy:#241C15;
+  --teal-soft:#e3efec; --amber-soft:#f6ead4; --rust-soft:#f3e0da; --plum-soft:#ece3ef; --navy-soft:#dde6f0;
+  --shadow:0 2px 14px rgba(34,32,27,.07); --shadow-lg:0 8px 30px rgba(34,32,27,.13);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-track{background:var(--paper2)}
+::-webkit-scrollbar-thumb{background:#cdbfa6;border-radius:6px;border:2px solid var(--paper2)}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:62px;z-index:50;background:var(--paper);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:18px;padding:0 22px}
+.brand{display:flex;align-items:center;gap:11px;font-family:'Fraunces',serif;font-weight:600;font-size:1.12rem;color:var(--navy)}
+.brand .logo{width:36px;height:36px;border-radius:9px;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:1.15rem;flex-shrink:0;box-shadow:var(--shadow)}
+.brand small{display:block;font-family:'DM Sans';font-weight:500;font-size:.66rem;letter-spacing:.09em;color:var(--amber);text-transform:uppercase}
+.progress-wrap{flex:1;max-width:280px;display:flex;flex-direction:column;gap:3px}
+.progress-wrap .lab{font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:#8a8170;font-weight:600;display:flex;justify-content:space-between}
+.progress-bar{height:8px;background:var(--paper2);border-radius:5px;overflow:hidden;border:1px solid var(--line)}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),#2a8a78);transition:width .5s cubic-bezier(.4,0,.2,1)}
+.xp{margin-left:auto;display:flex;align-items:center;gap:7px;background:var(--amber-soft);border:1px solid #e6cf9e;color:var(--amber);font-weight:700;padding:7px 14px;border-radius:30px;font-size:.9rem}
+.burger{display:none;background:none;border:1px solid var(--line);border-radius:8px;padding:7px 10px;cursor:pointer;font-size:1.1rem;color:var(--ink)}
+
+.shell{display:flex;padding-top:62px}
+.sidebar{position:fixed;top:62px;bottom:0;left:0;width:290px;background:var(--paper2);border-right:1px solid var(--line);overflow-y:auto;padding:20px 14px 50px;z-index:40;transition:transform .3s}
+.sidebar h4{font-family:'Fraunces',serif;font-size:.72rem;letter-spacing:.11em;text-transform:uppercase;color:#8a8170;margin:16px 10px 8px;font-weight:600}
+.sidebar h4:first-child{margin-top:0}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:10px;cursor:pointer;font-size:.89rem;color:var(--ink);border:1px solid transparent;transition:.16s;margin-bottom:3px}
+.nav-item:hover{background:#ece3d3}
+.nav-item.active{background:var(--card);border-color:var(--line);box-shadow:var(--shadow);font-weight:600;color:var(--navy)}
+.nav-item .num{width:24px;height:24px;border-radius:50%;background:var(--card);border:1.5px solid var(--line);flex-shrink:0;display:grid;place-items:center;font-size:.74rem;font-weight:700;font-family:'DM Mono';color:#8a8170;transition:.16s}
+.nav-item.active .num,.nav-item.done .num{background:var(--teal);color:#fff;border-color:var(--teal)}
+.nav-item .lab{flex:1;line-height:1.25}
+.nav-item.special{background:var(--plum-soft);border-color:#d8c5dc;color:var(--plum);font-weight:600}
+.nav-item.special.active{background:var(--plum);color:#fff}
+.nav-item.special3{background:var(--amber-soft);border-color:#e6cf9e;color:var(--amber);font-weight:600}
+.nav-item.special3.active{background:var(--amber);color:#fff}
+.nav-item .ico{font-size:1.02rem}
+
+.main{flex:1;margin-left:290px;padding:40px 6vw 120px;max-width:920px}
+.view{display:none;animation:fadeIn .45s ease}
+.view.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.tag{display:inline-block;font-family:'DM Mono';font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;background:var(--navy-soft);color:var(--navy);padding:5px 12px;border-radius:20px;font-weight:500;margin-bottom:16px}
+h1.lesson-title{font-family:'Fraunces',serif;font-size:2.3rem;line-height:1.12;font-weight:600;margin-bottom:10px;letter-spacing:-.01em}
+.subtitle{font-size:1.1rem;color:#6f6757;margin-bottom:28px;max-width:62ch}
+.main p{margin-bottom:15px;font-size:1.03rem;max-width:68ch}
+.main h2{font-family:'Fraunces',serif;font-size:1.45rem;font-weight:600;color:var(--navy);margin:34px 0 13px}
+.main strong{font-weight:600;color:var(--ink)}
+.main ul{margin:0 0 15px 22px;font-size:1.02rem}
+.main ul li{margin-bottom:5px}
+
+.callout{border-radius:14px;padding:17px 20px;margin:22px 0;border-left:5px solid;font-size:1rem}
+.callout .ct{font-weight:700;font-family:'Fraunces',serif;font-size:1.01rem;display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.callout p{margin:0;max-width:none}
+.c-analogy{background:var(--amber-soft);border-color:var(--amber);color:#5e3a06}
+.c-analogy .ct{color:var(--amber)}
+.c-retenir{background:var(--teal-soft);border-color:var(--teal);color:#0f3d36}
+.c-retenir .ct{color:var(--teal)}
+.c-piege{background:var(--rust-soft);border-color:var(--rust);color:#5e2317}
+.c-piege .ct{color:var(--rust)}
+.c-maj{background:var(--navy-soft);border-color:var(--navy);color:#2A2018}
+.c-maj .ct{color:var(--navy)}
+:root[data-theme="dark"] .c-analogy{color:var(--amber-deep)}
+:root[data-theme="dark"] .c-retenir{color:var(--teal-deep)}
+:root[data-theme="dark"] .c-piege{color:var(--rust-deep)}
+:root[data-theme="dark"] .c-maj{color:var(--navy-deep)}
+
+.rulebox{background:#1c1a16;color:#f3ece0;border-radius:14px;padding:21px 23px;margin:24px 0;font-family:'DM Mono';box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
+.rulebox::before{content:'REPÈRE';position:absolute;top:13px;right:18px;font-size:.62rem;letter-spacing:.2em;color:#7d7566}
+.rulebox.loi::before{content:'TEXTE'}
+.rulebox.formule::before{content:'FORMULE'}
+.rulebox .rb-main{font-size:1.15rem;font-weight:500;line-height:1.5;color:#fff}
+.rulebox .rb-sub{font-size:.85rem;color:#b8af9d;margin-top:9px;line-height:1.55}
+.rulebox em{color:var(--amber);font-style:normal;font-weight:500}
+
+.tbl{width:100%;border-collapse:collapse;margin:20px 0;font-size:.95rem;background:var(--card);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line)}
+.tbl th{background:var(--navy);color:#fff;text-align:left;padding:10px 14px;font-weight:600;font-size:.85rem}
+.tbl td{padding:10px 14px;border-top:1px solid var(--line);vertical-align:top}
+.tbl tr:nth-child(even) td{background:var(--paper)}
+.tbl td:first-child{font-weight:600;color:var(--navy);white-space:nowrap}
+.tbl.wrap td:first-child{white-space:normal}
+.tbl.num td:not(:first-child){font-family:'DM Mono';font-size:.93rem}
+
+.example{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:21px 23px;margin:24px 0;box-shadow:var(--shadow)}
+.example .ex-head{font-family:'Fraunces',serif;font-weight:600;color:var(--plum);font-size:1.06rem;margin-bottom:13px;display:flex;align-items:center;gap:8px}
+.step{display:flex;gap:13px;margin-bottom:13px}
+.step:last-child{margin-bottom:0}
+.step .sn{width:26px;height:26px;border-radius:50%;background:var(--plum);color:#fff;flex-shrink:0;display:grid;place-items:center;font-family:'DM Mono';font-weight:500;font-size:.83rem}
+.step .sc{flex:1;padding-top:1px}
+.step .sc b{color:var(--navy)}
+.step .sc code{background:var(--paper2);padding:2px 7px;border-radius:5px;font-family:'DM Mono';font-size:.89rem;color:var(--teal)}
+.ex-result{margin-top:6px;background:var(--teal-soft);border:1px solid #bcdcd4;border-radius:10px;padding:11px 15px;font-weight:600;color:#0f3d36}
+:root[data-theme="dark"] .ex-result{color:var(--teal-deep)}
+
+.quiz{background:var(--plum-soft);border:1px solid #d8c5dc;border-radius:14px;padding:19px 21px;margin:22px 0}
+.quiz .qhead{font-family:'DM Mono';font-size:.67rem;letter-spacing:.14em;text-transform:uppercase;color:var(--plum);font-weight:500;margin-bottom:9px}
+.quiz .q{font-weight:600;font-size:1.04rem;margin-bottom:13px}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{text-align:left;background:var(--card);border:1.5px solid #d8c5dc;border-radius:10px;padding:11px 15px;cursor:pointer;font-family:'DM Sans';font-size:.97rem;color:var(--ink);transition:.15s}
+.opt:hover:not(:disabled){border-color:var(--plum)}
+.opt:disabled{cursor:default}
+.opt.right{background:var(--teal-soft);border-color:var(--teal);color:#0f3d36;font-weight:600}
+.opt.right::after{content:' ✓';color:var(--teal);font-weight:700}
+.opt.wrong{background:var(--rust-soft);border-color:var(--rust);color:#5e2317}
+.opt.wrong::after{content:' ✗';color:var(--rust);font-weight:700}
+.feedback{margin-top:12px;padding:12px 15px;border-radius:10px;background:var(--card);border:1px dashed #cbb9cf;font-size:.94rem;color:#5a4d5d}
+.feedback b{color:var(--plum)}
+:root[data-theme="dark"] .feedback{color:var(--ink2)}
+
+.lesson-nav{display:flex;justify-content:space-between;gap:14px;margin-top:44px;padding-top:24px;border-top:1px solid var(--line)}
+.btn{font-family:'DM Sans';font-weight:600;font-size:.97rem;padding:12px 21px;border-radius:11px;cursor:pointer;border:1.5px solid var(--line);background:var(--card);color:var(--ink);transition:.16s;display:inline-flex;align-items:center;gap:8px}
+.btn:hover{border-color:#bbac90;transform:translateY(-1px)}
+.btn.primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn.primary:hover{background:#155a4f}
+.btn.plum{background:var(--plum);color:#fff;border-color:var(--plum)}
+.btn.amber{background:var(--amber);color:#fff;border-color:var(--amber)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.xp-pop{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--amber);color:#fff;font-weight:700;padding:13px 26px;border-radius:30px;box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:.4s;z-index:200}
+.xp-pop.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.print-fab{position:fixed;bottom:26px;left:26px;z-index:110;background:var(--card);color:#6f6757;border:1.5px solid var(--line);font-weight:600;padding:10px 16px;border-radius:24px;cursor:pointer;font-family:'DM Sans';font-size:.85rem;box-shadow:var(--shadow)}
+.print-fab:hover{border-color:var(--navy);color:var(--navy)}
+
+/* ===== SIMULATEUR ===== */
+.simu{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:var(--shadow);margin-bottom:20px}
+.simu h3{font-family:'Fraunces',serif;font-size:1.15rem;color:var(--navy);margin-bottom:5px;font-weight:700}
+.simu .sh{font-size:13.5px;color:#8a8170;margin-bottom:18px}
+.frow{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:16px}
+.f label{display:block;font-family:'DM Mono';font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#8a8170;margin-bottom:5px}
+.f input,.f select{width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;font-family:'DM Mono';font-size:1rem;background:var(--paper);color:var(--ink)}
+.f input:focus,.f select:focus{outline:none;border-color:var(--teal)}
+.f .hint{font-size:11px;color:#8a8170;margin-top:4px;font-family:'DM Sans'}
+.res{margin-top:20px;border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+.res-h{background:var(--navy);color:#fff;padding:12px 18px;font-family:'Fraunces',serif;font-weight:600;font-size:1.02rem;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.res-h span{font-family:'DM Mono';font-size:.86rem;font-weight:400;color:#c3d4e8}
+.res-b{background:var(--card);padding:0}
+.li{display:flex;justify-content:space-between;gap:12px;padding:11px 18px;border-bottom:1px solid var(--paper2);font-size:14.5px}
+.li:last-child{border-bottom:none}
+.li .k{color:#6f6757}
+.li .v{font-family:'DM Mono';font-weight:500;white-space:nowrap}
+.li.tot{background:var(--teal-soft);font-weight:700}
+.li.tot .v{color:#0f3d36;font-size:1.05rem}
+.li.neg .v{color:var(--rust)}
+.li.ind{padding-left:34px;font-size:13.5px;color:#8a8170}
+.li.ind .v{color:#8a8170}
+:root[data-theme="dark"] .li.tot .v{color:var(--teal-deep)}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px}
+@media(max-width:700px){.cmp{grid-template-columns:1fr}}
+.verdict{margin-top:18px;border-radius:12px;padding:15px 18px;font-size:14.5px;line-height:1.6;
+  background:var(--amber-soft);border-left:4px solid var(--amber);color:#5e3a06}
+:root[data-theme="dark"] .verdict{color:var(--amber-deep)}
+.verdict b{font-weight:700}
+
+.intro-card{background:var(--navy);color:#f3ece0;border-radius:16px;padding:22px 24px;margin-bottom:24px}
+.intro-card h2{color:#fff;margin:0 0 8px;font-family:'Fraunces',serif;font-size:1.35rem}
+.intro-card p{color:#cdd8e6;max-width:none;margin:0;font-size:.98rem}
+.intro-card.amber{background:#7a4c08}
+.intro-card.amber p{color:#f2e0c0}
+
+.test-q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:21px 23px;margin-bottom:17px;box-shadow:var(--shadow)}
+.test-q .tq-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px;gap:10px}
+.test-q .tq-num{font-family:'DM Mono';color:var(--navy);font-size:.88rem}
+.test-q .tq-chap{font-size:.69rem;letter-spacing:.08em;text-transform:uppercase;color:#8a8170;font-weight:600;background:var(--paper2);padding:4px 10px;border-radius:20px;text-align:right}
+.test-q .tq-q{font-weight:600;font-size:1.06rem;margin-bottom:13px}
+.topt{display:flex;flex-direction:column;gap:8px}
+.topt button{text-align:left;background:var(--paper);border:1.5px solid var(--line);border-radius:10px;padding:11px 15px;cursor:pointer;font-family:'DM Sans';font-size:.97rem;color:var(--ink);transition:.15s}
+.topt button:hover{border-color:var(--teal)}
+.topt button.sel{background:var(--teal-soft);border-color:var(--teal);font-weight:600;color:#0f3d36}
+.num-input{font-family:'DM Mono';font-size:1.03rem;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;width:180px;background:var(--paper);color:var(--ink)}
+.unit{font-family:'DM Mono';color:#8a8170;margin-left:9px}
+.remed{margin-top:13px;border-radius:11px;border-left:5px solid var(--rust);background:var(--rust-soft);padding:14px 17px;display:none}
+.remed.show{display:block}
+.remed .rt{font-weight:700;color:var(--rust);font-family:'Fraunces',serif;margin-bottom:5px}
+.remed .ra{font-size:.94rem;color:#5e2317;margin-bottom:10px}
+:root[data-theme="dark"] .remed .ra{color:var(--rust-deep)}
+.remed-btns{display:flex;gap:10px;flex-wrap:wrap}
+.remed-btns .btn{padding:8px 15px;font-size:.86rem}
+.test-q.ok{border-color:var(--teal)}
+.test-q.ko{border-color:var(--rust)}
+.float-retry{position:fixed;bottom:26px;right:26px;z-index:120;display:none;background:var(--plum);color:#fff;border:none;font-weight:700;padding:14px 24px;border-radius:30px;box-shadow:var(--shadow-lg);cursor:pointer;font-family:'DM Sans'}
+.float-retry.show{display:inline-flex}
+.result{display:none;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:32px;box-shadow:var(--shadow-lg);text-align:center}
+.result.show{display:block}
+.result .score-big{font-family:'Fraunces',serif;font-size:3.6rem;font-weight:700;line-height:1;color:var(--teal)}
+.result .score-lab{color:#8a8170;font-weight:600;margin-bottom:8px}
+.result .msg{font-size:1.1rem;margin:14px auto 26px;max-width:46ch}
+.chapbars{text-align:left;max-width:560px;margin:0 auto}
+.chapbar{margin-bottom:13px}
+.chapbar .cbl{display:flex;justify-content:space-between;font-size:.88rem;font-weight:600;margin-bottom:5px}
+.chapbar .cbl span:last-child{font-family:'DM Mono';color:#8a8170}
+.cbt{height:12px;background:var(--paper2);border-radius:7px;overflow:hidden;border:1px solid var(--line)}
+.cbf{height:100%;border-radius:7px;transition:width .8s}
+
+.hint{font-size:.84rem;color:#8a8170;font-style:italic;margin-top:8px}
+.overlay{display:none;position:fixed;inset:62px 0 0 0;background:rgba(34,32,27,.4);z-index:35}
+@media(max-width:880px){
+  .main{margin-left:0;padding:30px 20px 110px}
+  .sidebar{transform:translateX(-100%);box-shadow:var(--shadow-lg)}
+  .sidebar.open{transform:translateX(0)}
+  .overlay.show{display:block}
+  .burger{display:block}
+  .progress-wrap{max-width:none}
+  .brand small{display:none}
+  h1.lesson-title{font-size:1.75rem}
+  .xp{padding:6px 11px;font-size:.82rem}
+}
+@media(max-width:560px){.progress-wrap{display:none}}
+</style>
+<link rel="stylesheet" href="ui.css">
+<link rel="stylesheet" href="theme.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#F7F8FA">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+</head>
+<body>
+
+<div class="topbar">
+  <button class="burger" onclick="toggleSidebar()">☰</button>
+  <div class="brand">
+    <span class="logo">🏛️</span>
+    <span>ES Banque<small>M1 MBAF · Patrimoine & Assurance</small></span>
+  </div>
+  <div class="progress-wrap">
+    <div class="lab"><span>Progression</span><span id="progPct">0 %</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+  </div>
+  <div class="xp"><span>★</span><span id="xpVal">0</span> XP</div>
+  <span id="nav-slot"></span>
+  <span id="lb-id-slot"></span>
+</div>
+
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <h4>I · Environnement bancaire</h4><div id="nav1"></div>
+    <h4>II · Patrimoine & succession</h4><div id="nav2"></div>
+    <h4>III · Assurances de personnes</h4><div id="nav3"></div>
+    <h4>IV · Assurances dommages</h4><div id="nav4"></div>
+    <h4>V · Crédit</h4><div id="nav5"></div>
+    <h4>VI · Déontologie & PAC</h4><div id="nav6"></div>
+    <h4>S'entraîner</h4>
+    <div class="nav-item special3" data-view="simu" onclick="go('simu')">
+      <span class="ico">🧮</span><span class="lab">Simulateur transmission</span>
+    </div>
+    <div class="nav-item special" data-view="test" onclick="go('test')">
+      <span class="ico">🎯</span><span class="lab">Test final adaptatif</span>
+    </div>
+  </aside>
+
+  <main class="main" id="main">
+
+    <!-- ══════ L1 ══════ -->
+    <section class="view" data-view="l1">
+      <span class="tag">Leçon 1 · Banque à distance</span>
+      <h1 class="lesson-title">Banque à distance, preuve et secret professionnel</h1>
+      <p class="subtitle">Trois fondations juridiques de la relation bancaire moderne.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Le secret bancaire n'est pas un coffre-fort hermétique : c'est une porte avec une liste de clés. Certains détenteurs entrent toujours, d'autres seulement munis d'un mandat précis. Connaître qui possède quelle clé, c'est tout l'enjeu.</p>
+      </div>
+
+      <h2>La banque à distance</h2>
+      <p>La banque en ligne permet l'accès aux services sans déplacement et en temps réel. <strong>Trois acteurs</strong> se partagent le marché : les banques traditionnelles dotées d'une offre à distance, les <strong>Pure Players</strong> (100 % en ligne) et les <strong>néobanques</strong>.</p>
+
+      <div class="rulebox loi">
+        <div class="rb-main">Loi du <em>14 mars 2000</em> — l'écrit électronique a la même valeur qu'un écrit papier à deux conditions.</div>
+        <div class="rb-sub">1. L'auteur est dûment <em>identifié</em>. 2. L'<em>intégrité</em> du document est garantie. Ces deux conditions sont cumulatives.</div>
+      </div>
+
+      <h2>Le secret professionnel</h2>
+      <p>Il s'impose à <strong>tout le personnel</strong> de la banque : conseil, direction, employés. Il s'articule avec la loi Informatique et Libertés de 1978 et le <strong>RGPD</strong> (25 mai 2018).</p>
+
+      <table class="tbl wrap">
+        <tr><th>Qui peut lever le secret</th><th>Dans quelles conditions</th></tr>
+        <tr><td>ACPR et Banque de France</td><td>Toujours</td></tr>
+        <tr><td>Autorité judiciaire</td><td>Dans le cadre d'une procédure pénale</td></tr>
+        <tr><td>Police, gendarmerie, douane, fisc</td><td>Uniquement sur réquisition judiciaire ou commission rogatoire précise</td></tr>
+      </table>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Les échanges d'informations <strong>générales</strong> entre banquiers (par exemple sur l'honorabilité d'un client) sont autorisés. Mais <strong>jamais</strong> les soldes ni le détail du compte. La violation est sanctionnée par l'article <strong>226-13 du Code pénal</strong> : 1 an d'emprisonnement et 15 000 € d'amende.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>3 acteurs de la banque à distance · loi du 14/03/2000 = identification + intégrité · secret opposable à tous les salariés · ACPR et BDF toujours, justice en pénal, police/fisc sur réquisition · art. 226-13 : 1 an + 15 000 €.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Quelles sont les deux conditions de validité de l'écrit électronique ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">Identification de l'auteur et garantie d'intégrité</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Signature manuscrite scannée et horodatage</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Accord du client et archivage 5 ans</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Loi du 14 mars 2000 : les deux conditions sont cumulatives.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">La police peut-elle obtenir le solde d'un compte ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Oui, sur simple demande</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Uniquement sur réquisition judiciaire ou commission rogatoire</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Jamais, en aucun cas</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Seules l'ACPR et la Banque de France y accèdent sans condition.</div>
+      </div>
+
+      <div class="lesson-nav"><span></span><button class="btn primary" onclick="validate('l1',2)">Valider et continuer →</button></div>
+    </section>
+
+    <!-- ══════ L2 ══════ -->
+    <section class="view" data-view="l2">
+      <span class="tag">Leçon 2 · Accès au compte</span>
+      <h1 class="lesson-title">Droit au compte, inclusion bancaire et convention</h1>
+      <p class="subtitle">Le compte bancaire comme service quasi universel, et le contrat qui l'encadre.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Le droit au compte fonctionne comme un service public déguisé : la banque peut refuser un client, mais elle ne peut pas empêcher qu'il soit bancarisé. Si tout le monde refuse, l'État désigne d'office — personne ne reste à la porte.</p>
+      </div>
+
+      <div class="rulebox loi">
+        <div class="rb-main">Loi du <em>24 janvier 1984</em> — droit au compte pour toute personne physique ou morale domiciliée en France sans compte, y compris interdits bancaires et surendettés.</div>
+        <div class="rb-sub">Le banquier n'a pas à se justifier de son refus, mais il remet une <em>attestation</em>. Le client saisit alors la <em>Banque de France</em>, qui désigne d'office un établissement. Les services bancaires de base sont fournis <em>gratuitement</em>.</div>
+      </div>
+
+      <table class="tbl wrap">
+        <tr><th>Élément</th><th>Règle</th></tr>
+        <tr><td>Clôture par la banque</td><td>Notification motivée à la BDF et au client, préavis de <strong>2 mois</strong> (compte ouvert sur désignation)</td></tr>
+        <tr><td>Inclusion bancaire (lois 1998 et 2013)</td><td>Détection obligatoire des clients en fragilité financière · plafonnement spécifique des commissions d'intervention · charte d'inclusion bancaire</td></tr>
+      </table>
+
+      <h2>La convention de compte</h2>
+      <div class="rulebox loi">
+        <div class="rb-main">Loi <em>MURCEF</em> — 11 décembre 2001 : convention de compte écrite <em>obligatoire</em> pour tout compte de dépôt de particulier.</div>
+        <div class="rb-sub">Elle précise les engagements réciproques, les tarifs, les moyens de paiement et les règles de découvert. MURCEF impose également la <em>médiation</em> en cas de litige.</div>
+      </div>
+
+      <table class="tbl wrap">
+        <tr><th>Obligation</th><th>Modalité</th></tr>
+        <tr><td>Document d'Information Tarifaire (DIT)</td><td>Obligatoire depuis juillet 2019</td></tr>
+        <tr><td>Modification tarifaire</td><td>Information écrite <strong>2 mois</strong> à l'avance — le silence vaut acceptation tacite</td></tr>
+        <tr><td>Clôture à l'initiative de la banque</td><td>Préavis maximum <strong>30 jours</strong> (compte ordinaire)</td></tr>
+      </table>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Ne confondez pas les deux préavis : <strong>2 mois</strong> pour une modification tarifaire ou la clôture d'un compte ouvert sur désignation de la BDF, <strong>30 jours</strong> pour la clôture d'un compte ordinaire à l'initiative de la banque.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Loi 1984 = droit au compte, attestation puis désignation d'office par la BDF, services de base gratuits · lois 1998 et 2013 = inclusion bancaire, détection de la fragilité, plafonnement des commissions · MURCEF 2001 = convention écrite + médiation · DIT depuis juillet 2019.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Un client se voit refuser l'ouverture d'un compte. Que doit lui remettre la banque ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Une lettre motivant le refus</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Une attestation de refus, pour saisir la Banque de France</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Rien, le refus est discrétionnaire</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> La banque n'a pas à se justifier, mais l'attestation ouvre la procédure de désignation d'office.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Quelle loi impose la convention de compte écrite ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">La loi de 1984</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">La loi MURCEF de 2001</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">La loi Lagarde de 2010</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> MURCEF impose aussi la médiation en cas de litige.</div>
+      </div>
+
+      <div class="lesson-nav"><button class="btn" onclick="go('l1')">← Précédent</button><button class="btn primary" onclick="validate('l2',2)">Valider et continuer →</button></div>
+    </section>
+
+    <!-- ══════ L3 ══════ -->
+    <section class="view" data-view="l3">
+      <span class="tag">Leçon 3 · KYC</span>
+      <h1 class="lesson-title">Connaissance client et clients protégés</h1>
+      <p class="subtitle">Ce qu'il faut vérifier à l'entrée en relation, et comment traiter les clients sous protection.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Le KYC est un équilibre délicat : surveiller sans s'immiscer. Le banquier doit repérer l'anormal, mais il n'a pas à juger les dépenses de son client ni à devenir son comptable.</p>
+      </div>
+
+      <h2>À l'ouverture du compte</h2>
+      <p>Pièce d'identité en cours de validité et justificatif de domicile récent, en <strong>originaux</strong>.</p>
+
+      <table class="tbl wrap">
+        <tr><th>Fichier</th><th>Consultation</th></tr>
+        <tr><td>FCC — Fichier Central des Chèques</td><td>Systématique et <strong>obligatoire</strong></td></tr>
+        <tr><td>FICP — Incidents de remboursement des Crédits aux Particuliers</td><td><strong>Recommandée</strong> à l'ouverture (obligatoire avant tout octroi de crédit)</td></tr>
+      </table>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>FCC et FICP n'ont pas le même statut à l'ouverture : le <strong>FCC est obligatoire</strong>, le <strong>FICP seulement recommandé</strong>. C'est une question classique.</p>
+      </div>
+
+      <h2>Les clients spécifiques</h2>
+      <table class="tbl wrap">
+        <tr><th>Situation</th><th>Règle</th></tr>
+        <tr><td>Mineur</td><td>Représentant légal obligatoire. Livret Jeune : retraits seul dès <strong>16 ans</strong>, sauf opposition du représentant</td></tr>
+        <tr><td>Tutelle</td><td>Incapacité totale. Le tuteur <strong>représente</strong>. Actes de disposition soumis à l'accord du juge des tutelles</td></tr>
+        <tr><td>Curatelle</td><td>Le curateur <strong>assiste</strong> (co-signature) — il ne remplace pas le client</td></tr>
+        <tr><td>Sauvegarde de justice</td><td>Mesure temporaire : le client <strong>conserve l'exercice de ses droits</strong>, sauf exceptions</td></tr>
+      </table>
+
+      <div class="rulebox">
+        <div class="rb-main">Tutelle = <em>représenter</em> · Curatelle = <em>assister</em> · Sauvegarde = <em>protéger sans priver</em>.</div>
+        <div class="rb-sub">Trois verbes, trois degrés. C'est la distinction la plus demandée en examen.</div>
+      </div>
+
+      <h2>Le suivi du compte</h2>
+      <ul>
+        <li>Surveiller les anomalies (blanchiment) sans engager sa responsabilité</li>
+        <li>Ne pas s'immiscer dans les affaires du client ni juger ses dépenses</li>
+        <li>Ne jamais minimiser une difficulté : provoquer une rencontre</li>
+      </ul>
+
+      <table class="tbl wrap">
+        <tr><th>Type de compte</th><th>Fonctionnement</th></tr>
+        <tr><td>Compte joint</td><td>Chaque cotitulaire assume la pleine responsabilité</td></tr>
+        <tr><td>Compte unipersonnel</td><td>Sous la seule signature du titulaire</td></tr>
+        <tr><td>Compte indivis</td><td>Chaque opération exige l'accord de <strong>tous</strong> les coindivisaires</td></tr>
+      </table>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Originaux exigés · FCC obligatoire, FICP recommandé · Livret Jeune : retrait seul à 16 ans · tutelle représente / curatelle assiste / sauvegarde conserve les droits · joint = pleine responsabilité de chacun, indivis = accord de tous.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">En curatelle, le curateur…</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Représente le client et agit à sa place</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Assiste le client par co-signature</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">N'a aucun pouvoir bancaire</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> C'est le tuteur qui représente ; le curateur assiste seulement.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Quelle consultation est obligatoire à l'ouverture d'un compte ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">Le FCC</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le FICP</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Les deux sont facultatives</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> FCC obligatoire, FICP recommandé à l'ouverture — mais obligatoire avant un octroi de crédit.</div>
+      </div>
+
+      <div class="lesson-nav"><button class="btn" onclick="go('l2')">← Précédent</button><button class="btn primary" onclick="validate('l3',2)">Valider et continuer →</button></div>
+    </section>
+
+    <!-- ══════ L4 ══════ -->
+    <section class="view" data-view="l4">
+      <span class="tag">Leçon 4 · Patrimoine</span>
+      <h1 class="lesson-title">Épargne et régimes matrimoniaux</h1>
+      <p class="subtitle">Les quatre critères de tout placement, et le régime qui détermine à qui appartient quoi.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Avant de conseiller un placement, il faut savoir de qui est l'argent. Le régime matrimonial répond à cette question — et se tromper dessus, c'est faire signer la mauvaise personne.</p>
+      </div>
+
+      <div class="rulebox">
+        <div class="rb-main">Les 4 critères d'un placement : <em>Liquidité</em> · <em>Rentabilité</em> · <em>Sécurité</em> · <em>Fiscalité</em>.</div>
+        <div class="rb-sub">Le taux d'épargne des ménages a connu une hausse forte à <em>21,3 %</em> en 2020, sous l'effet de la crise sanitaire.</div>
+      </div>
+
+      <table class="tbl wrap">
+        <tr><th>Régime</th><th>Principe</th></tr>
+        <tr><td>Communauté réduite aux acquêts<br><span style="font-weight:400;font-size:.9em">Loi du 1<sup>er</sup> février 1966</span></td><td>Régime <strong>légal par défaut</strong> (environ 80 % des couples). Biens antérieurs au mariage et héritages = <strong>propres</strong>. Biens acquis pendant le mariage = <strong>communs</strong></td></tr>
+        <tr><td>Séparation de biens</td><td>Patrimoines totalement indépendants, sauf la protection de la résidence familiale</td></tr>
+        <tr><td>PACS</td><td>Assimilé à la séparation de biens, sauf convention d'indivision contraire</td></tr>
+      </table>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>En communauté réduite aux acquêts, un <strong>héritage reçu pendant le mariage reste un bien propre</strong>. Seuls les biens acquis à titre onéreux pendant l'union tombent en communauté. C'est contre-intuitif et très souvent raté.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>4 critères : liquidité, rentabilité, sécurité, fiscalité · pic d'épargne à 21,3 % en 2020 · communauté réduite aux acquêts = régime légal (loi 1966), héritages propres · séparation de biens = indépendance, sauf résidence familiale · PACS assimilé séparation sauf convention.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">En communauté réduite aux acquêts, un héritage reçu pendant le mariage est…</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Un bien commun</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Un bien propre</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Un bien indivis à parts égales</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Les héritages et les biens antérieurs restent propres ; seuls les acquêts sont communs.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">À quoi le PACS est-il assimilé par défaut ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">À la communauté réduite aux acquêts</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">À la séparation de biens</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">À la communauté universelle</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Sauf convention d'indivision contraire signée par les partenaires.</div>
+      </div>
+
+      <div class="lesson-nav"><button class="btn" onclick="go('l3')">← Précédent</button><button class="btn primary" onclick="validate('l4',2)">Valider et continuer →</button></div>
+    </section>
+
+    <!-- ══════ L5 ══════ -->
+    <section class="view" data-view="l5">
+      <span class="tag">Leçon 5 · Succession</span>
+      <h1 class="lesson-title">Dévolution, réserve et droits de succession</h1>
+      <p class="subtitle">Qui hérite, dans quel ordre, et combien l'État prélève — barème 2026.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>La dévolution légale fonctionne par cercles concentriques : tant qu'il reste quelqu'un dans le premier cercle, les suivants n'existent pas. Un seul enfant suffit à écarter définitivement parents, frères et sœurs.</p>
+      </div>
+
+      <h2>La dévolution légale</h2>
+      <table class="tbl wrap">
+        <tr><th>Ordre</th><th>Héritiers</th></tr>
+        <tr><td>Ordre 1</td><td>Enfants et descendants</td></tr>
+        <tr><td>Ordre 2</td><td>Parents, frères et sœurs</td></tr>
+        <tr><td>Ordre 3</td><td>Autres ascendants</td></tr>
+        <tr><td>Ordre 4</td><td>Collatéraux</td></tr>
+      </table>
+
+      <div class="rulebox">
+        <div class="rb-main">Un ordre présent <em>élimine</em> tous les ordres suivants. À l'intérieur d'un ordre, le degré le plus proche hérite en priorité.</div>
+        <div class="rb-sub">Représentation : le petit-fils hérite à la place de son père prédécédé. En l'absence de descendance et de fratrie, division <em>50/50</em> entre branches paternelle et maternelle.</div>
+      </div>
+
+      <table class="tbl wrap">
+        <tr><th>Notion</th><th>Définition</th></tr>
+        <tr><td>Réserve héréditaire</td><td>Part légalement réservée aux enfants — intouchable</td></tr>
+        <tr><td>Quotité disponible</td><td>Part dont on peut librement disposer par testament ou donation</td></tr>
+        <tr><td>Loi du 3 décembre 2001</td><td>Renforce les droits du conjoint survivant, supprime la discrimination des enfants adultérins</td></tr>
+        <tr><td>Loi TEPA — 22 août 2007</td><td>Conjoint survivant et partenaire de PACS : <strong>exonération totale</strong> de droits de succession</td></tr>
+      </table>
+
+      <h2>Les droits de succession en ligne directe — barème 2026</h2>
+      <p>Chaque héritier bénéficie d'un abattement personnel, puis le barème progressif s'applique <strong>part par part</strong>, jamais sur la masse globale.</p>
+
+      <table class="tbl num">
+        <tr><th>Fraction de part nette taxable</th><th>Taux</th></tr>
+        <tr><td>Jusqu'à 8 072 €</td><td>5 %</td></tr>
+        <tr><td>De 8 072 à 12 109 €</td><td>10 %</td></tr>
+        <tr><td>De 12 109 à 15 932 €</td><td>15 %</td></tr>
+        <tr><td>De 15 932 à 552 324 €</td><td>20 %</td></tr>
+        <tr><td>De 552 324 à 902 838 €</td><td>30 %</td></tr>
+        <tr><td>De 902 838 à 1 805 677 €</td><td>40 %</td></tr>
+        <tr><td>Au-delà de 1 805 677 €</td><td>45 %</td></tr>
+      </table>
+
+      <div class="rulebox">
+        <div class="rb-main">Abattements : <em>100 000 €</em> par enfant (art. 779 CGI) · <em>15 932 €</em> frère/sœur · <em>7 967 €</em> neveu/nièce · <em>1 594 €</em> à défaut · conjoint et PACS <em>exonérés</em>.</div>
+        <div class="rb-sub">Barème inchangé depuis 2011, seuils gelés. L'abattement se reconstitue tous les <em>15 ans</em> en donation.</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">📂 Exemple résolu</div>
+        <div class="step"><div class="sn">1</div><div class="sc">Un enfant hérite de <b>250 000 €</b>. <b>Quels droits doit-il acquitter ?</b></div></div>
+        <div class="step"><div class="sn">2</div><div class="sc">Abattement : <code>250 000 − 100 000 = 150 000 €</code> de part nette taxable.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc">Barème tranche par tranche : <code>8 072 × 5 % = 403 €</code> · <code>4 037 × 10 % = 404 €</code> · <code>3 823 × 15 % = 573 €</code> · <code>134 068 × 20 % = 26 814 €</code>.</div></div>
+        <div class="ex-result">Total ≈ 28 194 € — soit un taux effectif de 11,3 % seulement sur les 250 000 € reçus.</div>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Le barème est <strong>progressif par tranches</strong> : on n'applique jamais 20 % à la totalité. Et il se calcule <strong>par héritier</strong> : un patrimoine de 800 000 € partagé entre trois enfants ne place aucun d'eux dans la tranche à 30 %.</p>
+      </div>
+
+      <h2>Les outils de transmission</h2>
+      <ul>
+        <li><strong>La donation</strong> : acte notarié, immédiat et irrévocable, abattements rechargeables tous les 15 ans</li>
+        <li><strong>La donation-partage</strong> : fige la valeur au jour de la donation, évite les conflits, non rapportable à la succession</li>
+        <li><strong>La donation entre époux</strong> : augmente la part du conjoint (usufruit total ou quotité élargie)</li>
+      </ul>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>4 ordres, un ordre élimine les suivants · réserve vs quotité disponible · TEPA 2007 = conjoint et PACS exonérés · abattement 100 000 € par enfant · barème 5 à 45 %, progressif et par part · donation-partage fige la valeur.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Quel est l'abattement en ligne directe parent-enfant ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">152 500 €</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">100 000 €</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">30 500 €</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> 152 500 € est l'abattement d'assurance vie avant 70 ans, 30 500 € celui après 70 ans — trois montants à ne jamais confondre.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Depuis la loi TEPA de 2007, le conjoint survivant…</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Bénéficie d'un abattement de 100 000 €</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Est totalement exonéré de droits de succession</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Paie 20 % au-delà de 152 500 €</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Exonération totale, également applicable au partenaire de PACS.</div>
+      </div>
+
+      <div class="lesson-nav"><button class="btn" onclick="go('l4')">← Précédent</button><button class="btn primary" onclick="validate('l5',2)">Valider et continuer →</button></div>
+    </section>
+
+    <!-- ══════ L6 ══════ -->
+    <section class="view" data-view="l6">
+      <span class="tag">Leçon 6 · Assurance vie</span>
+      <h1 class="lesson-title">L'assurance vie et la règle des 70 ans</h1>
+      <p class="subtitle">Le produit central de la transmission patrimoniale — et sa fiscalité à jour 2026.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Les 70 ans agissent comme un aiguillage : les primes versées avant partent sur une voie très favorable, celles versées après basculent sur la voie des droits de succession. Ce n'est pas l'âge au décès qui compte, mais l'âge <em>au moment de chaque versement</em>.</p>
+      </div>
+
+      <h2>Les fondamentaux</h2>
+      <ul>
+        <li>Immatriculation <strong>ORIAS</strong> obligatoire pour le distributeur</li>
+        <li>Produits gérés par les compagnies d'assurance, régis par le <strong>Code des assurances</strong></li>
+        <li>Principe : transfert d'un risque aléatoire vers une mutualité contre paiement d'une prime</li>
+        <li>Souscription impossible : mineur de moins de 12 ans, majeur sous tutelle (sans autorisation), personne hospitalisée en psychiatrie</li>
+        <li>Délai de renonciation : <strong>30 jours calendaires</strong></li>
+      </ul>
+
+      <table class="tbl wrap">
+        <tr><th>Support</th><th>Caractéristique</th></tr>
+        <tr><td>Fonds en euros</td><td>Capital garanti, sécurité maximale</td></tr>
+        <tr><td>Unités de compte (UC)</td><td>Pas de garantie en capital, potentiel de rendement supérieur</td></tr>
+      </table>
+
+      <div class="callout c-maj">
+        <div class="ct">🆕 Mise à jour 2026 — LFSS</div>
+        <p>La <strong>LFSS 2026</strong> a relevé la CSG sur les revenus du capital de 9,2 % à 10,6 %, portant les prélèvements sociaux de 17,2 % à <strong>18,6 %</strong> et le PFU à <strong>31,4 %</strong>. L'<strong>assurance vie fait partie des exceptions explicites</strong> : ses gains restent à <strong>17,2 %</strong>, donc une flat-tax à 30 %. Le PEA, le compte-titres et le PER, eux, passent bien à 18,6 %.</p>
+      </div>
+
+      <h2>La fiscalité en cas de décès</h2>
+      <p>Deux régimes distincts coexistent, selon l'âge de l'assuré <strong>au moment du versement de chaque prime</strong>.</p>
+
+      <table class="tbl wrap">
+        <tr><th></th><th>Primes versées AVANT 70 ans<br><span style="font-weight:400">Art. 990 I CGI</span></th><th>Primes versées APRÈS 70 ans<br><span style="font-weight:400">Art. 757 B CGI</span></th></tr>
+        <tr><td>Abattement</td><td><strong>152 500 €</strong> par bénéficiaire</td><td><strong>30 500 €</strong> global, tous bénéficiaires et tous contrats confondus, réparti au prorata</td></tr>
+        <tr><td>Assiette</td><td>Capital décès reçu (primes + gains)</td><td><strong>Primes seules</strong> — les gains sont totalement exonérés</td></tr>
+        <tr><td>Taxation</td><td>20 % sur la fraction taxable jusqu'à 700 000 €, puis <strong>31,25 %</strong></td><td>Barème des droits de succession selon le lien de parenté (art. 777)</td></tr>
+        <tr><td>Conjoint / PACS</td><td colspan="2">Toujours <strong>exonérés</strong> (loi TEPA)</td></tr>
+      </table>
+
+      <div class="rulebox formule">
+        <div class="rb-main">990 I : la bascule à 31,25 % intervient à <em>852 500 €</em> reçus par bénéficiaire (152 500 d'abattement + 700 000 de fraction taxable à 20 %).</div>
+        <div class="rb-sub">757 B : l'exonération des <em>gains</em> est l'atout majeur — sur un versement tardif à horizon long, seules les primes sont taxées.</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">📂 Exemple résolu — avant 70 ans</div>
+        <div class="step"><div class="sn">1</div><div class="sc">Un contrat de <b>400 000 €</b>, alimenté avant 70 ans, est partagé entre <b>2 enfants</b>.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc">Chacun reçoit <code>200 000 €</code>, puis déduit son abattement : <code>200 000 − 152 500 = 47 500 €</code> taxables.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc">Taxation : <code>47 500 × 20 % = 9 500 €</code> par enfant.</div></div>
+        <div class="ex-result">Total : 19 000 € pour 400 000 € transmis, soit 4,75 % — hors succession et hors barème progressif.</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">📂 Exemple résolu — après 70 ans</div>
+        <div class="step"><div class="sn">1</div><div class="sc">Un contrat vaut <b>150 000 €</b> au décès, dont <b>90 000 €</b> de primes versées après 70 ans. Bénéficiaire unique : un enfant, dont l'abattement successoral de 100 000 € est déjà consommé.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc">Assiette : les <b>primes seules</b>. <code>150 000 − 90 000 = 60 000 €</code> de gains, totalement <b>exonérés</b>.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc">Abattement 757 B : <code>90 000 − 30 500 = 59 500 €</code> soumis au barème successoral.</div></div>
+        <div class="step"><div class="sn">4</div><div class="sc">Barème ligne directe : <code>403 + 404 + 573 + (59 500 − 15 932) × 20 % = 10 094 €</code> environ.</div></div>
+        <div class="ex-result">≈ 10 094 € pour 150 000 € transmis. Les 60 000 € de gains passent en totale franchise.</div>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Trois erreurs classiques. D'abord, l'abattement de 152 500 € est <strong>par bénéficiaire</strong>, celui de 30 500 € est <strong>global</strong>. Ensuite, après 70 ans seules les <strong>primes</strong> sont taxées, pas le capital reçu. Enfin, le 757 B renvoie au <strong>barème progressif</strong> des successions, pas à un taux forfaitaire de 20 %.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>ORIAS, Code des assurances, renonciation 30 jours · fonds € garanti vs UC non garanties · avant 70 ans = art. 990 I, 152 500 € par bénéficiaire, 20 % puis 31,25 % au-delà de 852 500 € reçus · après 70 ans = art. 757 B, 30 500 € global, primes seules taxées au barème successoral, gains exonérés · conjoint et PACS toujours exonérés · PS maintenus à 17,2 % en 2026.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Pour les primes versées après 70 ans, quelle est l'assiette taxable ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">La totalité du capital décès</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Les primes versées seules, les gains étant exonérés</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Les gains seuls, les primes étant exonérées</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> C'est l'atout du 757 B : l'exonération totale des produits générés par le contrat.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">En 2026, quel taux de prélèvements sociaux s'applique aux gains d'une assurance vie ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">17,2 % — l'assurance vie est exclue de la hausse</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">18,6 % comme tous les revenus du capital</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">0 %, elle est exonérée</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> La LFSS 2026 a porté les PS à 18,6 % pour le PEA, le CTO et le PER, mais l'assurance vie figure dans les exceptions et reste à 17,2 %.</div>
+      </div>
+
+      <div class="lesson-nav"><button class="btn" onclick="go('l5')">← Précédent</button><button class="btn amber" onclick="go('simu')">Essayer le simulateur 🧮</button></div>
+    </section>
+
+    <!-- ══════ L7 ══════ -->
+    <section class="view" data-view="l7">
+      <span class="tag">Leçon 7 · Prévoyance</span>
+      <h1 class="lesson-title">Prévoyance, santé et retraite</h1>
+      <p class="subtitle">Les contrats qui protègent la personne plutôt que le patrimoine.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>La complémentaire santé obéit au principe indemnitaire : elle rembourse un frais réel, jamais davantage. On ne s'enrichit pas d'une maladie — c'est la différence fondamentale avec un capital décès, qui est forfaitaire.</p>
+      </div>
+
+      <table class="tbl wrap">
+        <tr><th>Dispositif</th><th>Règle</th></tr>
+        <tr><td>Complémentaire santé</td><td><strong>Principe indemnitaire</strong> : remboursement des frais réels en complément de la Sécurité sociale, sans enrichissement</td></tr>
+        <tr><td>Loi Évin (1989)</td><td>Contrat viager : interdiction de résilier pour raison de santé</td></tr>
+        <tr><td>ANI (2016)</td><td>Mutuelle obligatoire pour tous les salariés, financée à <strong>50 %</strong> par l'employeur</td></tr>
+        <tr><td>Résiliation infra-annuelle (2019)</td><td>Résiliation possible à tout moment sans frais après 1 an de contrat</td></tr>
+        <tr><td>GAV</td><td>Garantie des accidents de la vie : couvre la vie privée (domestique, loisirs, médical, agression, catastrophe). <strong>Exclut la route et le travail</strong></td></tr>
+        <tr><td>PER — loi PACTE (2019)</td><td>Versements déductibles à l'entrée, fiscalisés à la sortie. Sortie en rente <strong>ou</strong> en capital, au choix</td></tr>
+      </table>
+
+      <div class="callout c-maj">
+        <div class="ct">🆕 Mise à jour 2026</div>
+        <p>Le <strong>PER ne figure pas</strong> dans les exceptions de la LFSS 2026 : les prélèvements sociaux sur ses gains passent de 17,2 % à <strong>18,6 %</strong>, portant le PFU applicable en sortie en capital à <strong>31,4 %</strong>. Une différence notable avec l'assurance vie, restée à 17,2 %.</p>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>La <strong>GAV exclut les accidents de la route et du travail</strong> — ils relèvent respectivement de l'assurance auto et de la législation professionnelle. C'est l'exclusion la plus souvent oubliée.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Principe indemnitaire en santé · loi Évin 1989 = pas de résiliation pour raison de santé · ANI 2016 = mutuelle obligatoire, 50 % employeur · résiliation infra-annuelle après 1 an · GAV : vie privée oui, route et travail non · PER loi PACTE, PS à 18,6 % depuis 2026.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Que la GAV exclut-elle ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Les accidents domestiques</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Les accidents de la route et du travail</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Les agressions</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> La GAV couvre la vie privée ; route et travail relèvent d'autres régimes.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Quelle part de la mutuelle l'employeur finance-t-il depuis l'ANI ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">30 %</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">50 %</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">100 %</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> La mutuelle est obligatoire pour tous les salariés, financée au minimum à moitié par l'employeur.</div>
+      </div>
+
+      <div class="lesson-nav"><button class="btn" onclick="go('l6')">← Précédent</button><button class="btn primary" onclick="validate('l7',2)">Valider et continuer →</button></div>
+    </section>
+
+    <!-- ══════ L8 ══════ -->
+    <section class="view" data-view="l8">
+      <span class="tag">Leçon 8 · IARD</span>
+      <h1 class="lesson-title">Principes généraux et sinistres</h1>
+      <p class="subtitle">Le principe indemnitaire, ses sanctions, et les délais à connaître par cœur.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>L'assurance dommages remet en état, elle n'enrichit pas. Si vous assurez pour 50 000 € un bien qui en vaut 100 000, vous n'êtes pas assuré à moitié pour chaque sinistre : vous êtes indemnisé au prorata, même sur un petit dégât. C'est la règle proportionnelle.</p>
+      </div>
+
+      <div class="rulebox">
+        <div class="rb-main">L'assurance ne doit <em>jamais</em> être source de profit : indemnité ≤ valeur du bien, vétusté déduite.</div>
+      </div>
+
+      <table class="tbl wrap">
+        <tr><th>Situation</th><th>Conséquence</th></tr>
+        <tr><td>Sous-assurance</td><td>Valeur assurée &lt; valeur réelle → <strong>règle proportionnelle</strong> : indemnité réduite au prorata</td></tr>
+        <tr><td>Sur-assurance avec fraude</td><td><strong>Nullité</strong> du contrat</td></tr>
+        <tr><td>Sur-assurance sans fraude</td><td>Plafonnement au réel</td></tr>
+      </table>
+
+      <h2>Les délais de déclaration</h2>
+      <table class="tbl wrap">
+        <tr><th>Sinistre</th><th>Délai</th></tr>
+        <tr><td>Cas général</td><td><strong>5 jours ouvrés</strong></td></tr>
+        <tr><td>Vol</td><td><strong>2 jours ouvrés</strong> + dépôt de plainte</td></tr>
+        <tr><td>Catastrophe naturelle</td><td><strong>10 jours</strong> après publication de l'arrêté interministériel</td></tr>
+      </table>
+
+      <p>L'avis d'échéance est envoyé <strong>15 jours</strong> avant la date limite de résiliation. La résiliation est possible à tout moment après la première année pour l'auto et la MRH.</p>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Les trois délais de déclaration (5 / 2 / 10) sont systématiquement demandés. Retenez la logique : le vol est le plus court parce qu'il faut agir vite, la catastrophe naturelle le plus long parce qu'elle dépend d'un arrêté publié.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Principe indemnitaire, vétusté déduite · sous-assurance = règle proportionnelle · sur-assurance frauduleuse = nullité · 5 jours ouvrés, 2 pour le vol, 10 pour la catastrophe naturelle · avis d'échéance 15 jours avant.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Quel est le délai de déclaration d'un vol ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">2 jours ouvrés + dépôt de plainte</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">5 jours ouvrés</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">10 jours</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> 5 jours pour le cas général, 10 jours pour la catastrophe naturelle après l'arrêté.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Une sur-assurance avec intention frauduleuse entraîne…</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Un plafonnement au réel</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">La nullité du contrat</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">La règle proportionnelle</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Sans fraude, l'indemnité est simplement plafonnée à la valeur réelle.</div>
+      </div>
+
+      <div class="lesson-nav"><button class="btn" onclick="go('l7')">← Précédent</button><button class="btn primary" onclick="validate('l8',2)">Valider et continuer →</button></div>
+    </section>
+
+    <!-- ══════ L9 ══════ -->
+    <section class="view" data-view="l9">
+      <span class="tag">Leçon 9 · Auto & habitation</span>
+      <h1 class="lesson-title">Assurance automobile et multirisque habitation</h1>
+      <p class="subtitle">Les deux contrats les plus vendus en agence, et le mécanisme du bonus-malus.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>La responsabilité civile auto protège tout le monde <em>sauf</em> celui qui a causé l'accident. Le conducteur responsable est le seul que son assurance obligatoire n'indemnise pas — d'où l'intérêt de la garantie du conducteur.</p>
+      </div>
+
+      <h2>L'assurance automobile (VTM)</h2>
+      <ul>
+        <li>Seule la <strong>responsabilité civile</strong> est obligatoire</li>
+        <li>Elle couvre les dommages causés aux tiers, y compris les passagers</li>
+        <li>Elle ne couvre <strong>jamais</strong> les dommages corporels du conducteur responsable — d'où la garantie du conducteur, indispensable</li>
+        <li>Vol non retrouvé : remboursement après <strong>30 jours</strong></li>
+        <li>Convention IRSA : indemnisation directe par sa propre compagnie, avec recours ultérieur contre l'assureur adverse</li>
+      </ul>
+
+      <table class="tbl num">
+        <tr><th>Coefficient de réduction-majoration</th><th>Valeur</th></tr>
+        <tr><td>Départ</td><td>1,00</td></tr>
+        <tr><td>Année sans sinistre</td><td>× 0,95 (−5 %)</td></tr>
+        <tr><td>Sinistre responsable</td><td>× 1,25 (+25 %)</td></tr>
+        <tr><td>Bonus maximum</td><td>0,50</td></tr>
+        <tr><td>Malus maximum</td><td>3,50</td></tr>
+      </table>
+
+      <div class="example">
+        <div class="ex-head">📂 Exemple résolu</div>
+        <div class="step"><div class="sn">1</div><div class="sc">Un conducteur au coefficient <b>0,80</b> cause un sinistre responsable, puis roule deux ans sans accident. <b>Où en est-il ?</b></div></div>
+        <div class="step"><div class="sn">2</div><div class="sc">Après le sinistre : <code>0,80 × 1,25 = 1,00</code>.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc">Première année sans sinistre : <code>1,00 × 0,95 = 0,95</code>. Deuxième : <code>0,95 × 0,95 = 0,9025</code>, arrondi à <b>0,90</b>.</div></div>
+        <div class="ex-result">Il lui faudra encore plusieurs années sans sinistre pour retrouver son 0,80 : un accident se paie longtemps.</div>
+      </div>
+
+      <h2>La multirisque habitation (MRH)</h2>
+      <ul>
+        <li>Couvre la responsabilité civile, les risques locatifs et le recours des voisins</li>
+        <li>Garanties : incendie, dégât des eaux, vol, catastrophes naturelles</li>
+        <li><strong>Réajustement automatique annuel</strong> des capitaux et cotisations, pour éviter la sous-assurance liée à l'inflation</li>
+        <li>Protège la solvabilité de l'emprunteur lorsque le bien est financé par un crédit</li>
+      </ul>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Seule la RC est obligatoire en auto · elle exclut le conducteur responsable · bonus −5 %, malus +25 %, bornes 0,50 et 3,50 · vol : remboursement après 30 jours · MRH : RC + risques locatifs + recours des voisins, réajustement annuel contre la sous-assurance.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Quel est le coefficient minimum de bonus ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">0,25</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">0,50</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">0,75</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Le bonus plafonne à 0,50 et le malus à 3,50.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">La RC auto obligatoire couvre-t-elle les dommages corporels du conducteur responsable ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Oui, intégralement</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Non, jamais</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Oui, mais avec une franchise</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> C'est précisément pour cela que la garantie du conducteur est indispensable.</div>
+      </div>
+
+      <div class="lesson-nav"><button class="btn" onclick="go('l8')">← Précédent</button><button class="btn primary" onclick="validate('l9',2)">Valider et continuer →</button></div>
+    </section>
+
+    <!-- ══════ L10 ══════ -->
+    <section class="view" data-view="l10">
+      <span class="tag">Leçon 10 · ADE</span>
+      <h1 class="lesson-title">L'assurance des emprunteurs</h1>
+      <p class="subtitle">Un cadre légal qui a été bouleversé trois fois en douze ans — à connaître par cœur.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>L'ADE est une assurance décès temporaire, limitée à la durée du prêt, dont le vrai bénéficiaire n'est pas l'emprunteur mais la banque. Le législateur a passé quinze ans à rendre ce marché contestable — d'où l'empilement Lagarde, Hamon, Bourquin puis Lemoine.</p>
+      </div>
+
+      <ul>
+        <li>Nature : assurance vie « en cas de décès » <strong>temporaire</strong>, limitée à la durée du prêt</li>
+        <li>Bénéficiaire : l'organisme prêteur</li>
+        <li>Objet : garantir le remboursement du solde restant dû en cas de décès ou de défaillance</li>
+      </ul>
+
+      <table class="tbl wrap">
+        <tr><th>Formule</th><th>Contenu</th></tr>
+        <tr><td>Contrat groupe (bancassurance)</td><td>Solution standardisée proposée par la banque, souvent via sa propre filiale d'assurance</td></tr>
+        <tr><td>Délégation d'assurance</td><td>Droit de refuser le contrat groupe pour choisir un assureur individuel à <strong>garanties équivalentes</strong></td></tr>
+      </table>
+
+      <div class="rulebox loi">
+        <div class="rb-main">Le cadre légal en quatre textes</div>
+        <div class="rb-sub"><em>Lagarde (2010)</em> : instaure le droit à la délégation, interdit à la banque de modifier le taux en sanction. <em>Lemoine (2022)</em> : résiliation infra-annuelle à tout moment et sans frais · <em>questionnaire médical supprimé</em> si la part assurée est inférieure à 200 000 € et que le prêt s'achève avant les 60 ans de l'emprunteur · <em>droit à l'oubli</em> réduit à 5 ans après guérison (anciens cancers, hépatite C).</div>
+      </div>
+
+      <p>La <strong>convention AERAS</strong> facilite l'accès à l'assurance pour les personnes présentant un risque aggravé de santé, par écrêtement des surprimes ou exclusions spécifiques.</p>
+
+      <h2>La gestion de l'invalidité</h2>
+      <ul>
+        <li>L'assureur demande généralement le taux retenu par la Sécurité sociale, mais reste <strong>maître de sa décision</strong></li>
+        <li>Une contre-expertise par un médecin au choix de l'assuré est possible, généralement à ses frais</li>
+      </ul>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Les deux conditions de suppression du questionnaire médical sont <strong>cumulatives</strong> : part assurée inférieure à 200 000 € <strong>et</strong> fin du prêt avant le 60<sup>e</sup> anniversaire. Une seule des deux ne suffit pas.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Assurance décès temporaire au bénéfice du prêteur · contrat groupe vs délégation à garanties équivalentes · Lagarde 2010 = droit à la délégation · Lemoine 2022 = résiliation à tout moment, questionnaire supprimé sous 200 k€ et avant 60 ans, droit à l'oubli à 5 ans · AERAS pour les risques aggravés.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Quelle loi permet de résilier son assurance emprunteur à tout moment sans frais ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">La loi Lagarde (2010)</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">La loi Lemoine (2022)</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">La convention AERAS</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Lagarde avait instauré le droit à la délégation ; Lemoine y ajoute la résiliation infra-annuelle.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">À combien la loi Lemoine a-t-elle réduit le droit à l'oubli ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">10 ans</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">5 ans après guérison</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">2 ans</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> 5 ans après la fin du protocole thérapeutique, pour les anciens cancers et l'hépatite C.</div>
+      </div>
+
+      <div class="lesson-nav"><button class="btn" onclick="go('l9')">← Précédent</button><button class="btn primary" onclick="validate('l10',2)">Valider et continuer →</button></div>
+    </section>
+
+    <!-- ══════ L11 ══════ -->
+    <section class="view" data-view="l11">
+      <span class="tag">Leçon 11 · Crédit conso</span>
+      <h1 class="lesson-title">Taux, crédit à la consommation et renouvelable</h1>
+      <p class="subtitle">Les délais, les seuils et les risques du crédit aux particuliers.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Le crédit renouvelable est une réserve qui se reconstitue toute seule : commode, mais on oublie qu'elle existe. D'où les quatre risques que le législateur a voulu encadrer — jusqu'à imposer une résiliation automatique après deux ans d'inactivité.</p>
+      </div>
+
+      <h2>Les taux d'intérêt</h2>
+      <p>Le taux est la rémunération d'un prêt d'argent — pour Keynes, la <strong>récompense de la renonciation à la liquidité</strong>. Les taux directeurs sont fixés par la <strong>BCE</strong> et déterminent le loyer de l'argent auquel les banques se refinancent.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Les <em>3 taux directeurs</em> de la BCE : rémunération des dépôts · facilité marginale · refinancement.</div>
+        <div class="rb-sub">Les taux négatifs sont un phénomène apparu en zone euro, dans une stratégie de stimulation de l'inflation et du crédit.</div>
+      </div>
+
+      <h2>Le crédit à la consommation</h2>
+      <table class="tbl wrap">
+        <tr><th>Élément</th><th>Règle</th></tr>
+        <tr><td>Textes protecteurs</td><td>Scrivener 1, Neiertz, Lagarde — protègent l'emprunteur non professionnel</td></tr>
+        <tr><td>Validité de l'offre</td><td><strong>15 jours</strong>, avec tous les éléments financiers et le bordereau de rétractation</td></tr>
+        <tr><td>Rétractation</td><td><strong>14 jours</strong> — aucun décaissement avant</td></tr>
+        <tr><td>Taux d'endettement</td><td>Norme usuelle ≤ <strong>30 à 35 %</strong> des ressources</td></tr>
+        <tr><td>Revenus retenus</td><td>Uniquement les revenus <strong>réguliers et sûrs</strong> : exclure remboursements de frais, acomptes, primes exceptionnelles</td></tr>
+        <tr><td>Découvert &gt; 3 mois</td><td>Assimilé à un crédit à la consommation → offre obligatoire avec plafond défini</td></tr>
+        <tr><td>Sanction du formalisme</td><td>Déchéance du droit aux intérêts + amende jusqu'à <strong>1 500 €</strong></td></tr>
+      </table>
+
+      <h2>Le crédit renouvelable</h2>
+      <table class="tbl wrap">
+        <tr><th>Élément</th><th>Règle</th></tr>
+        <tr><td>Définition</td><td>Réserve d'argent réutilisable, reconstituée au fil des remboursements. Contrat valable 1 an, renouvelé tacitement</td></tr>
+        <tr><td>Montant maximum usuel</td><td>≤ <strong>75 000 €</strong></td></tr>
+        <tr><td>Durée de remboursement</td><td>&lt; 3 000 € → maximum <strong>3 ans</strong> · &gt; 3 000 € → maximum <strong>5 ans</strong></td></tr>
+        <tr><td>Déblocage des fonds</td><td><strong>7 jours</strong> après acceptation</td></tr>
+        <tr><td>Non-utilisation 2 ans</td><td>Récapitulatif envoyé au client ; sans retour de sa part, résiliation <strong>de plein droit</strong></td></tr>
+        <tr><td>Contrôles (loi Lagarde)</td><td>FICP consulté <strong>tous les ans</strong>, solvabilité vérifiée <strong>tous les 3 ans</strong></td></tr>
+      </table>
+
+      <p>Les <strong>4 risques spécifiques</strong> : externalisation de la relation client, surendettement, perte de contrôle de l'utilisation, empilement de crédits oubliés.</p>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Trois délais cohabitent et se confondent facilement : <strong>15 jours</strong> de validité de l'offre, <strong>14 jours</strong> de rétractation, <strong>7 jours</strong> avant déblocage des fonds. Ils ne mesurent pas la même chose.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>3 taux directeurs BCE · Scrivener/Neiertz/Lagarde · offre 15 jours, rétractation 14 jours, déblocage 7 jours · endettement 30-35 % · revenus réguliers et sûrs seulement · renouvelable ≤ 75 000 €, 3 ou 5 ans selon le seuil de 3 000 € · FICP annuel, solvabilité triennale · sanction conso 1 500 €.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Un crédit renouvelable de 2 000 € doit être remboursé en…</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">Moins de 3 ans</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Moins de 5 ans</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Moins de 7 ans</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Le seuil est 3 000 € : en dessous 3 ans maximum, au-dessus 5 ans.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">À quelle fréquence le FICP est-il consulté sur un crédit renouvelable ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">Tous les ans</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Tous les 3 ans</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Une seule fois, à l'octroi</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> FICP tous les ans, vérification de solvabilité tous les 3 ans (loi Lagarde).</div>
+      </div>
+
+      <div class="lesson-nav"><button class="btn" onclick="go('l10')">← Précédent</button><button class="btn primary" onclick="validate('l11',2)">Valider et continuer →</button></div>
+    </section>
+
+    <!-- ══════ L12 ══════ -->
+    <section class="view" data-view="l12">
+      <span class="tag">Leçon 12 · Crédit immobilier</span>
+      <h1 class="lesson-title">Financement immobilier, garanties et surendettement</h1>
+      <p class="subtitle">Les produits, les sûretés, et la procédure quand tout se dégrade.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Une garantie n'est pas ce qui décide d'accorder un crédit : c'est la ceinture de sécurité, pas le moteur. Un dossier qui ne tient que par sa garantie est un dossier qu'il ne fallait pas financer.</p>
+      </div>
+
+      <h2>Le formalisme</h2>
+      <table class="tbl wrap">
+        <tr><th>Élément</th><th>Règle</th></tr>
+        <tr><td>Taux d'endettement</td><td>≈ <strong>33 %</strong> des ressources, nouvel emprunt inclus</td></tr>
+        <tr><td>FISE</td><td>Fiche d'Information Standardisée Européenne, remise pour comparer les offres</td></tr>
+        <tr><td>Offre préalable</td><td>Envoyée par <strong>voie postale</strong>, contient le TAEG</td></tr>
+        <tr><td>Délai de réflexion</td><td><strong>10 jours</strong> — l'offre ne peut être acceptée avant</td></tr>
+        <tr><td>Maintien des conditions</td><td><strong>30 jours minimum</strong></td></tr>
+        <tr><td>Mise en place</td><td><strong>4 mois</strong> après acceptation</td></tr>
+        <tr><td>Sanction du formalisme</td><td>Déchéance du droit aux intérêts + amende jusqu'à <strong>30 000 €</strong></td></tr>
+      </table>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>En conso, l'emprunteur dispose d'un délai de <strong>rétractation</strong> de 14 jours <em>après</em> avoir accepté. En immobilier, il s'agit d'un délai de <strong>réflexion</strong> de 10 jours <em>avant</em> de pouvoir accepter. Deux logiques opposées, souvent confondues.</p>
+      </div>
+
+      <h2>Les produits de financement</h2>
+      <table class="tbl wrap">
+        <tr><th>Produit</th><th>Caractéristiques</th></tr>
+        <tr><td>PTH — Prêt Tout Habitat</td><td>Taux fixe (stable), variable (indexé Euribor) ou modulable (c'est la <strong>durée</strong> qui varie, pas le taux)</td></tr>
+        <tr><td>Prêt relais</td><td>Finance un achat en attendant une vente. Montant limité à <strong>80 %</strong> du prix de vente (parfois 70 ou 60 % selon le marché), encours déduit. Amortissement <strong>in fine</strong></td></tr>
+        <tr><td>PTZ</td><td>Primo-accédants uniquement (non propriétaire de sa résidence principale depuis 2 ans), résidence principale, plafonds de ressources et zones. Prêts complémentaires obligatoires. Entre dans le calcul de l'endettement</td></tr>
+        <tr><td>Éco-PTZ</td><td>Rénovation thermique, 3 options de travaux non cumulatives, travaux à réaliser sous 3 ans. Gratuit pour l'emprunteur : l'État compense par un crédit d'impôt sur l'IS de la banque</td></tr>
+      </table>
+
+      <h2>Les garanties</h2>
+      <ul>
+        <li><strong>Garanties réelles</strong> : hypothèque, IPPD (inscription de privilège de prêteur de deniers), gage sur véhicule, nantissement de titres</li>
+        <li><strong>Sûretés personnelles</strong> : cautionnement par une personne physique ou morale (société de cautionnement mutuel)</li>
+        <li><strong>Garanties annexes</strong> : domiciliation de salaire, assurance décès-invalidité, assurance chômage</li>
+      </ul>
+
+      <h2>Le client surendetté</h2>
+      <table class="tbl wrap">
+        <tr><th>Étape</th><th>Règle</th></tr>
+        <tr><td>Commission départementale</td><td>Décide de la recevabilité sous <strong>3 mois</strong>. Dossier recevable → suspension des procédures d'exécution (max <strong>2 ans</strong>)</td></tr>
+        <tr><td>Phase amiable</td><td>Rééchelonnement ≤ <strong>7 ans</strong>, réduction du taux, suspension de l'exigibilité ≤ 2 ans</td></tr>
+        <tr><td>Rétablissement personnel</td><td>Procédure judiciaire : effacement des dettes, sauf dettes alimentaires. Inscription FICP <strong>5 ans</strong></td></tr>
+        <tr><td>FICP</td><td>Durée maximale 5 ans, radiation anticipée si régularisation</td></tr>
+      </table>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Endettement ≈ 33 %, FISE, offre postale, réflexion 10 jours, maintien 30 jours, mise en place 4 mois, sanction 30 000 € · modulable = la durée varie · relais à 80 % in fine · PTZ primo-accédant · réelles vs personnelles · surendettement : 3 mois, rééchelonnement 7 ans, FICP 5 ans.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Dans un prêt à taux modulable, qu'est-ce qui varie ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Le taux</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">La durée</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le capital emprunté</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Le taux reste inchangé, c'est la durée qui s'ajuste. Le taux variable, lui, est indexé sur l'Euribor.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Quel est le délai de réflexion sur une offre de prêt immobilier ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">10 jours avant de pouvoir accepter</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">14 jours de rétractation après acceptation</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">15 jours de validité</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> C'est l'inverse du crédit conso, où l'on se rétracte après avoir accepté.</div>
+      </div>
+
+      <div class="lesson-nav"><button class="btn" onclick="go('l11')">← Précédent</button><button class="btn primary" onclick="validate('l12',2)">Valider et continuer →</button></div>
+    </section>
+
+    <!-- ══════ L13 ══════ -->
+    <section class="view" data-view="l13">
+      <span class="tag">Leçon 13 · Conformité</span>
+      <h1 class="lesson-title">Déontologie, conformité et lutte anti-blanchiment</h1>
+      <p class="subtitle">Les obligations qui engagent personnellement le collaborateur.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>La déclaration de soupçon à TRACFIN est à sens unique : on déclare, et on se tait. Prévenir le client de la déclaration est une infraction en soi — c'est le seul secret que le banquier doit garder <em>contre</em> son client.</p>
+      </div>
+
+      <table class="tbl wrap">
+        <tr><th>Notion</th><th>Définition</th></tr>
+        <tr><td>Déontologie</td><td>Ensemble des devoirs et obligations de la profession bancaire</td></tr>
+        <tr><td>Conformité (compliance)</td><td>Veiller au respect des règles établies dans l'établissement</td></tr>
+        <tr><td>Éthique</td><td>Comportements, valeurs et conduite professionnelle appropriés</td></tr>
+      </table>
+
+      <h2>Les devoirs de l'établissement</h2>
+      <ul>
+        <li><strong>Devoir de conseil</strong> : produit adapté, primauté de l'intérêt du client sur celui de la banque</li>
+        <li><strong>Devoir d'information</strong> : caractéristiques et risques avant souscription</li>
+        <li><strong>Devoir KYC</strong> : activités, patrimoine et engagements dès l'entrée en relation</li>
+        <li><strong>MIF</strong> (novembre 2007) puis <strong>MIF II</strong> (3 janvier 2018) : profil investisseur adapté, communication claire, validation dans le temps</li>
+        <li>Trois catégories de clients : professionnels, contreparties éligibles, <strong>non-professionnels</strong> (protection maximale)</li>
+      </ul>
+
+      <h2>Le blanchiment (LCB-FT)</h2>
+      <div class="rulebox">
+        <div class="rb-main">Les 3 étapes : <em>placement</em> → <em>conversion</em> → <em>dissimulation</em>.</div>
+        <div class="rb-sub">Signaux d'alerte : versements d'espèces fractionnés, virements fréquents, anonymat recherché, fonds arrivant de façon anormale. Conduite : interroger le client → si non justifié, alerter la hiérarchie → déclaration de soupçon à <em>TRACFIN</em>.</div>
+      </div>
+
+      <table class="tbl wrap">
+        <tr><th>Élément</th><th>Règle</th></tr>
+        <tr><td>TRACFIN</td><td>Cellule de renseignement financier — bénéficie de la levée du secret lors d'une déclaration de soupçon</td></tr>
+        <tr><td>Confidentialité</td><td>La banque ne doit <strong>jamais</strong> divulguer la déclaration de soupçon pendant l'enquête, sous peine d'amende</td></tr>
+        <tr><td>Peine (blanchiment aggravé)</td><td><strong>10 ans</strong> d'emprisonnement + <strong>750 000 €</strong> d'amende</td></tr>
+        <tr><td>Conservation des documents</td><td><strong>5 ans</strong> minimum</td></tr>
+        <tr><td>GAFI</td><td>Organisme intergouvernemental : si le destinataire d'un transfert relève d'un pays non coopératif, informer le correspondant anti-blanchiment</td></tr>
+      </table>
+
+      <p>Autres interdits : le <strong>délit d'initié</strong> (révéler une information précise non publique susceptible d'influencer les marchés, art. 621-1 AMF) et la <strong>corruption</strong> — cadeaux ou rémunérations interdits, loi <strong>SAPIN 2</strong> créant l'Agence Française Anticorruption (AFA), SAPIN 3 étendant ces obligations aux acteurs publics.</p>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Deux sanctions à ne pas mélanger : <strong>1 an + 15 000 €</strong> pour la violation du secret professionnel (art. 226-13), <strong>10 ans + 750 000 €</strong> pour le blanchiment aggravé.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Déontologie / conformité / éthique · devoirs de conseil, d'information, KYC · MIF 2007 et MIF II 2018, 3 catégories de clients · placement-conversion-dissimulation · TRACFIN et confidentialité absolue · 10 ans + 750 000 € · conservation 5 ans · GAFI · SAPIN 2 et l'AFA.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Quelles sont les trois étapes du blanchiment ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">Placement, conversion, dissimulation</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Dépôt, transfert, retrait</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Collecte, fractionnement, investissement</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Trois étapes à restituer dans cet ordre.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Peut-on informer le client d'une déclaration de soupçon le concernant ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Oui, par obligation de transparence</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Jamais, pendant toute la durée de l'investigation</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Uniquement si le client le demande</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> La confidentialité est absolue et sa violation est sanctionnée.</div>
+      </div>
+
+      <div class="lesson-nav"><button class="btn" onclick="go('l12')">← Précédent</button><button class="btn primary" onclick="validate('l13',2)">Valider et continuer →</button></div>
+    </section>
+
+    <!-- ══════ L14 ══════ -->
+    <section class="view" data-view="l14">
+      <span class="tag">Leçon 14 · PAC</span>
+      <h1 class="lesson-title">Le Plan d'Action Commercial en agence</h1>
+      <p class="subtitle">La démarche qui transforme un diagnostic d'agence en plan d'action mesurable.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Le PAC, c'est le marketing stratégique appliqué à une seule agence. Mêmes outils qu'en grande entreprise — SWOT, planification, indicateurs — mais à l'échelle d'un fonds de commerce local.</p>
+      </div>
+
+      <div class="rulebox">
+        <div class="rb-main">Les 4 phases : <em>analyse/diagnostic</em> → <em>décisions stratégiques</em> → <em>mise en œuvre des moyens</em> → <em>contrôle des résultats</em>.</div>
+        <div class="rb-sub">Déroulé détaillé en agence : analyse de situation → diagnostic → orientation stratégique → durée, budget et validation → mise en œuvre → bilan → voies d'amélioration.</div>
+      </div>
+
+      <table class="tbl wrap">
+        <tr><th>Élément</th><th>Contenu</th></tr>
+        <tr><td>Outils</td><td>SWOT (forces/faiblesses internes, opportunités/menaces externes) · matrice de choix stratégiques · planification stratégique</td></tr>
+        <tr><td>Leviers d'action</td><td>Distribution · communication · planification · force de vente et animation</td></tr>
+        <tr><td>Indicateurs de suivi</td><td>Part de marché · taux de détention · part contributive de l'agence · coût du risque</td></tr>
+        <tr><td>Analyse externe</td><td>Connaître l'environnement et le marché local</td></tr>
+        <tr><td>Analyse interne</td><td>Typologie de la clientèle et fonds de commerce de l'agence</td></tr>
+      </table>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Le <strong>coût du risque</strong> figure parmi les indicateurs de suivi du PAC : une agence qui gagne des parts de marché en dégradant la qualité de son risque n'a pas réussi son plan. C'est un indicateur souvent oublié dans les copies.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>4 phases : analyse → décisions → mise en œuvre → contrôle · outils : SWOT, matrice de choix, planification · 4 leviers : distribution, communication, planification, force de vente · 4 indicateurs : part de marché, taux de détention, part contributive, coût du risque.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Quel indicateur mesure la qualité du développement, au-delà du volume ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">La part de marché</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Le coût du risque</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le taux de détention</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Il permet de vérifier que la croissance ne se fait pas au prix d'une dégradation du risque.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Quelle est la dernière phase du PAC ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">La mise en œuvre des moyens</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Le contrôle des résultats</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Les décisions stratégiques</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Le contrôle boucle la démarche et alimente les voies d'amélioration.</div>
+      </div>
+
+      <div class="lesson-nav"><button class="btn" onclick="go('l13')">← Précédent</button><button class="btn plum" onclick="go('test')">Passer au test final 🎯</button></div>
+    </section>
+
+    <!-- ══════ SIMULATEUR ══════ -->
+    <section class="view" data-view="simu">
+      <span class="tag">Calculs</span>
+      <h1 class="lesson-title">Simulateur de transmission</h1>
+      <p class="subtitle">Calcul progressif de l'imposition, avant et après 70 ans, avec le détail tranche par tranche.</p>
+
+      <div class="intro-card amber">
+        <h2>🧮 Comment l'utiliser</h2>
+        <p>Renseigne un contrat, le simulateur applique les deux régimes en parallèle : l'article 990 I pour les primes versées avant 70 ans et l'article 757 B pour celles versées après. Chaque calcul est détaillé ligne par ligne, tranche par tranche — c'est ce détail qu'un correcteur attend dans une copie.</p>
+      </div>
+
+      <div class="simu">
+        <h3>Paramètres du contrat</h3>
+        <div class="sh">Les montants sont en euros. Le simulateur suppose des bénéficiaires à parts égales.</div>
+        <div class="frow">
+          <div class="f"><label>Capital décès total</label>
+            <input type="number" id="sCapital" value="400000" min="0" step="1000" oninput="calculer()">
+            <div class="hint">Primes + gains, à la date du décès</div></div>
+          <div class="f"><label>Primes versées avant 70 ans</label>
+            <input type="number" id="sAvant" value="250000" min="0" step="1000" oninput="calculer()">
+            <div class="hint">Régime de l'article 990 I</div></div>
+          <div class="f"><label>Primes versées après 70 ans</label>
+            <input type="number" id="sApres" value="90000" min="0" step="1000" oninput="calculer()">
+            <div class="hint">Régime de l'article 757 B</div></div>
+        </div>
+        <div class="frow">
+          <div class="f"><label>Nombre de bénéficiaires</label>
+            <input type="number" id="sNb" value="2" min="1" max="20" step="1" oninput="calculer()">
+            <div class="hint">Hors conjoint et partenaire de PACS, toujours exonérés</div></div>
+          <div class="f"><label>Lien de parenté</label>
+            <select id="sLien" onchange="calculer()">
+              <option value="ld">Enfant (ligne directe)</option>
+              <option value="fs">Frère ou sœur</option>
+              <option value="nn">Neveu ou nièce</option>
+              <option value="tiers">Sans lien de parenté</option>
+              <option value="conj">Conjoint ou PACS</option>
+            </select>
+            <div class="hint">Détermine le barème du 757 B</div></div>
+          <div class="f"><label>Abattement successoral</label>
+            <select id="sAbat" onchange="calculer()">
+              <option value="0">Déjà consommé par la succession</option>
+              <option value="1">Encore disponible en totalité</option>
+            </select>
+            <div class="hint">S'applique aux primes du 757 B</div></div>
+        </div>
+        <div id="simuRes"></div>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Les hypothèses du simulateur</div>
+        <p>Répartition à parts égales entre bénéficiaires · abattement de 30 500 € réparti au prorata des parts · pour le 757 B, l'abattement personnel n'est appliqué que si tu le déclares disponible, puisqu'en pratique la succession le consomme en premier · les prélèvements sociaux sur les gains d'UC non encore prélevés ne sont pas intégrés. Un cas d'examen précise toujours ces éléments : lis l'énoncé avant de te fier au résultat.</p>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l6')">← Revoir la leçon</button>
+        <button class="btn plum" onclick="go('test')">Test final 🎯</button>
+      </div>
+    </section>
+
+    <!-- ══════ TEST ══════ -->
+    <section class="view" data-view="test">
+      <span class="tag">Évaluation</span>
+      <h1 class="lesson-title">Test final adaptatif</h1>
+      <p class="subtitle">24 questions sur l'ensemble du programme, calculs fiscaux compris.</p>
+      <div id="testQuestions"></div>
+      <div class="lesson-nav" id="testSubmitRow">
+        <button class="btn" onclick="go('l1')">← Revoir le cours</button>
+        <button class="btn plum" onclick="gradeTest()">Valider mes réponses ✓</button>
+      </div>
+      <div class="result" id="testResult">
+        <div class="score-lab">Ton score</div>
+        <div class="score-big" id="scoreBig">0</div>
+        <div class="msg" id="scoreMsg"></div>
+        <div class="chapbars" id="chapBars"></div>
+        <div style="margin-top:26px"><button class="btn plum" onclick="resetTest()">↻ Reprendre le test</button></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<button class="print-fab" onclick="imprimerFiche()" title="Imprimer cette leçon">🖨️ Fiche</button>
+<button class="float-retry" id="floatRetry" onclick="resetTest()">↻ Reprendre</button>
+<div class="xp-pop" id="xpPop"></div>
+
+<script src="lb.js"></script>
+<script src="progress.js"></script>
+<script>
+const SUBJECT_KEY = 'ES Banque';
+
+const LESSONS = [
+  {id:'l1',  t:'Banque à distance & secret', p:1},
+  {id:'l2',  t:'Droit au compte & convention', p:1},
+  {id:'l3',  t:'KYC & clients protégés', p:1},
+  {id:'l4',  t:'Épargne & régimes matrimoniaux', p:2},
+  {id:'l5',  t:'Succession & droits', p:2},
+  {id:'l6',  t:'Assurance vie & 70 ans', p:3},
+  {id:'l7',  t:'Prévoyance, santé, retraite', p:3},
+  {id:'l8',  t:'IARD : principes & sinistres', p:4},
+  {id:'l9',  t:'Auto & habitation', p:4},
+  {id:'l10', t:"Assurance emprunteur", p:4},
+  {id:'l11', t:'Taux & crédit conso', p:5},
+  {id:'l12', t:'Immobilier & garanties', p:5},
+  {id:'l13', t:'Déontologie & LCB-FT', p:6},
+  {id:'l14', t:"Plan d'Action Commercial", p:6}
+];
+const SAVE = (window.P ? P.etat() : {done:{},xp:0,last:null});
+const state = { xp: SAVE.xp||0, done: Object.assign({}, SAVE.done), view:'l1' };
+
+/* ═══════ NAVIGATION ═══════ */
+function buildNav(){
+  [1,2,3,4,5,6].forEach(p=>{
+    const nav = document.getElementById('nav'+p);
+    if(!nav) return;
+    nav.innerHTML = '';
+    LESSONS.forEach((l,i)=>{
+      if(l.p!==p) return;
+      const d = document.createElement('div');
+      d.className = 'nav-item' + (state.done[l.id]?' done':'');
+      d.dataset.view = l.id;
+      d.onclick = ()=>go(l.id);
+      d.innerHTML = '<span class="num">'+(state.done[l.id]?'✓':(i+1))+'</span><span class="lab">'+l.t+'</span>';
+      nav.appendChild(d);
+    });
+  });
+  highlightNav();
+}
+function highlightNav(){ document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.dataset.view===state.view)); }
+function go(view){
+  state.view = view;
+  if(window.P && /^l\d+$/.test(view)) P.derniereLecon(view);
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active', v.dataset.view===view));
+  highlightNav();
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(view==='simu') calculer();
+  if(window.innerWidth<=880) closeSidebar();
+}
+function imprimerFiche(){ window.print(); }
+function toggleSidebar(){ document.getElementById('sidebar').classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
+function closeSidebar(){ document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
+function addXp(n){ state.xp += n; if(window.P) P.ajouterXp(n); document.getElementById('xpVal').textContent = state.xp; popXp('+'+n+' XP'); }
+function popXp(t){ const p=document.getElementById('xpPop'); p.textContent='★ '+t; p.classList.add('show'); clearTimeout(p._t); p._t=setTimeout(()=>p.classList.remove('show'),1400); }
+function updateProgress(){ const pct=Math.round(Object.keys(state.done).length/LESSONS.length*100);
+  document.getElementById('progFill').style.width=pct+'%'; document.getElementById('progPct').textContent=pct+' %'; }
+function pick(btn){
+  const quiz=btn.closest('.quiz'); if(quiz.classList.contains('answered')) return;
+  quiz.classList.add('answered');
+  const ok=btn.dataset.correct==='true';
+  quiz.querySelectorAll('.opt').forEach(o=>{ o.disabled=true; if(o.dataset.correct==='true') o.classList.add('right'); });
+  if(!ok) btn.classList.add('wrong');
+  const fb=quiz.querySelector('.feedback'); if(fb) fb.hidden=false;
+  if(window.P){
+    const sec=quiz.closest('.view'), lec=sec?sec.dataset.view:'?';
+    const rang=sec?[...sec.querySelectorAll('.quiz')].indexOf(quiz):0;
+    P.noterReponse('quiz:'+lec+':'+rang, ok, 'Leçon '+lec.replace('l',''));
+  }
+  if(ok) addXp(10);
+}
+function validate(id,n){
+  const sec=document.querySelector('.view[data-view="'+id+'"]');
+  if(sec.querySelectorAll('.quiz.answered').length < n){
+    popXp('Réponds aux '+n+' quiz d\'abord');
+    sec.querySelectorAll('.quiz:not(.answered)').forEach(q=>{q.style.boxShadow='0 0 0 2px var(--plum)';setTimeout(()=>q.style.boxShadow='',1200);});
+    return;
+  }
+  if(!state.done[id]){ state.done[id]=true; if(window.P) P.marquerLecon(id); addXp(50); buildNav(); updateProgress(); }
+  const i=LESSONS.findIndex(l=>l.id===id), next=LESSONS[i+1];
+  if(next) go(next.id); else go('simu');
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MOTEUR FISCAL — barèmes vérifiés, à jour 2026
+   ═══════════════════════════════════════════════════════════ */
+/* Art. 777 CGI — barème progressif des droits de mutation */
+const BAREMES = {
+  ld:   {lab:'Ligne directe', abat:100000, tr:[[8072,.05],[12109,.10],[15932,.15],[552324,.20],[902838,.30],[1805677,.40],[Infinity,.45]]},
+  fs:   {lab:'Frère ou sœur', abat:15932,  tr:[[24430,.35],[Infinity,.45]]},
+  nn:   {lab:'Neveu ou nièce',abat:7967,   tr:[[Infinity,.55]]},
+  tiers:{lab:'Sans lien',     abat:1594,   tr:[[Infinity,.60]]},
+  conj: {lab:'Conjoint/PACS', abat:0,      tr:[[Infinity,0]], exonere:true}
+};
+const ABAT_990I = 152500, SEUIL_990I = 700000, T1_990I = .20, T2_990I = .3125;
+const ABAT_757B = 30500;
+
+/* Calcul progressif détaillé : renvoie le total ET le détail par tranche */
+function progressif(base, tranches){
+  let total = 0, prec = 0; const detail = [];
+  for(const [plafond, taux] of tranches){
+    if(base <= prec) break;
+    const haut = Math.min(base, plafond);
+    const assiette = haut - prec;
+    const montant = assiette * taux;
+    total += montant;
+    detail.push({de:prec, a:haut, assiette, taux, montant});
+    prec = plafond;
+  }
+  return {total, detail};
+}
+function eur(n){ return n.toLocaleString('fr-FR',{minimumFractionDigits:0,maximumFractionDigits:0})+' €'; }
+function eur2(n){ return n.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' €'; }
+function pct(n){ return n.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' %'; }
+
+function calculer(){
+  const capital = Math.max(0, +document.getElementById('sCapital').value || 0);
+  const avant   = Math.max(0, +document.getElementById('sAvant').value   || 0);
+  const apres   = Math.max(0, +document.getElementById('sApres').value   || 0);
+  const nb      = Math.max(1, Math.min(20, +document.getElementById('sNb').value || 1));
+  const lien    = document.getElementById('sLien').value;
+  const abatDispo = document.getElementById('sAbat').value === '1';
+  const B = BAREMES[lien];
+  const host = document.getElementById('simuRes');
+
+  const primes = avant + apres;
+  if(primes > capital){
+    host.innerHTML = `<div class="verdict" style="background:var(--rust-soft);border-left-color:var(--rust);color:var(--rust)">
+      <b>Incohérence :</b> les primes versées (${eur(primes)}) dépassent le capital décès (${eur(capital)}).
+      Le capital doit au moins égaler les primes — sauf moins-value, cas non traité ici.</div>`;
+    return;
+  }
+  const gains = capital - primes;
+
+  /* ── Part de chaque régime dans le capital ──
+     Convention retenue : le capital se répartit entre les deux régimes
+     au prorata des primes versées, les gains suivant leurs primes. */
+  const partAvant = primes ? capital * (avant/primes) : 0;   // relève du 990 I
+  const partApres = capital - partAvant;                      // relève du 757 B
+  const gainsApres = Math.max(0, partApres - apres);          // exonérés
+
+  let html = '';
+
+  /* ═══ 990 I ═══ */
+  const capParBenef = partAvant / nb;
+  const taxable990 = Math.max(0, capParBenef - ABAT_990I);
+  let t990 = 0, det990 = [];
+  if(!B.exonere){
+    if(taxable990 <= SEUIL_990I){
+      t990 = taxable990 * T1_990I;
+      if(taxable990>0) det990.push({lab:'20 % sur '+eur(taxable990), m:t990});
+    } else {
+      const a = SEUIL_990I * T1_990I, b = (taxable990 - SEUIL_990I) * T2_990I;
+      t990 = a + b;
+      det990.push({lab:'20 % sur '+eur(SEUIL_990I), m:a});
+      det990.push({lab:'31,25 % sur '+eur(taxable990-SEUIL_990I), m:b});
+    }
+  }
+  const total990 = t990 * nb;
+
+  html += `<div class="res"><div class="res-h">Avant 70 ans — article 990 I <span>par bénéficiaire</span></div><div class="res-b">
+    <div class="li"><span class="k">Capital relevant de ce régime</span><span class="v">${eur(partAvant)}</span></div>
+    <div class="li"><span class="k">Part de chaque bénéficiaire (÷ ${nb})</span><span class="v">${eur(capParBenef)}</span></div>
+    <div class="li"><span class="k">Abattement par bénéficiaire</span><span class="v">− ${eur(ABAT_990I)}</span></div>
+    <div class="li"><span class="k">Fraction taxable</span><span class="v">${eur(taxable990)}</span></div>`;
+  if(B.exonere){
+    html += `<div class="li"><span class="k">Conjoint ou partenaire de PACS</span><span class="v">exonéré (loi TEPA)</span></div>`;
+  } else {
+    det990.forEach(d=>{ html += `<div class="li ind"><span class="k">${d.lab}</span><span class="v">${eur2(d.m)}</span></div>`; });
+    if(!det990.length) html += `<div class="li ind"><span class="k">Sous l'abattement</span><span class="v">0 €</span></div>`;
+  }
+  html += `<div class="li"><span class="k">Taxe par bénéficiaire</span><span class="v">${eur2(t990)}</span></div>
+    <div class="li tot"><span class="k">Total 990 I (${nb} bénéficiaire${nb>1?'s':''})</span><span class="v">${eur2(total990)}</span></div>
+  </div></div>`;
+
+  /* ═══ 757 B ═══ */
+  const primesParBenef = apres / nb;
+  const abat757ParBenef = ABAT_757B / nb;          // réparti au prorata (parts égales)
+  const abatPerso = abatDispo ? B.abat : 0;
+  const base757 = Math.max(0, primesParBenef - abat757ParBenef - abatPerso);
+  const calc757 = B.exonere ? {total:0, detail:[]} : progressif(base757, B.tr);
+  const total757 = calc757.total * nb;
+
+  html += `<div class="res" style="margin-top:16px"><div class="res-h">Après 70 ans — article 757 B <span>${B.lab}</span></div><div class="res-b">
+    <div class="li"><span class="k">Capital relevant de ce régime</span><span class="v">${eur(partApres)}</span></div>
+    <div class="li"><span class="k">dont gains — <b>exonérés</b></span><span class="v">${eur(gainsApres)}</span></div>
+    <div class="li"><span class="k">Primes taxables</span><span class="v">${eur(apres)}</span></div>
+    <div class="li"><span class="k">Primes par bénéficiaire (÷ ${nb})</span><span class="v">${eur(primesParBenef)}</span></div>
+    <div class="li"><span class="k">Abattement 757 B au prorata</span><span class="v">− ${eur2(abat757ParBenef)}</span></div>`;
+  if(abatPerso) html += `<div class="li"><span class="k">Abattement personnel (${B.lab})</span><span class="v">− ${eur(abatPerso)}</span></div>`;
+  html += `<div class="li"><span class="k">Base taxable par bénéficiaire</span><span class="v">${eur2(base757)}</span></div>`;
+  if(B.exonere){
+    html += `<div class="li"><span class="k">Conjoint ou partenaire de PACS</span><span class="v">exonéré (loi TEPA)</span></div>`;
+  } else if(!calc757.detail.length){
+    html += `<div class="li ind"><span class="k">Sous les abattements</span><span class="v">0 €</span></div>`;
+  } else {
+    calc757.detail.forEach(d=>{
+      html += `<div class="li ind"><span class="k">${(d.taux*100).toLocaleString('fr-FR')} % sur ${eur(d.assiette)} (de ${eur(d.de)} à ${eur(d.a)})</span><span class="v">${eur2(d.montant)}</span></div>`;
+    });
+  }
+  html += `<div class="li"><span class="k">Droits par bénéficiaire</span><span class="v">${eur2(calc757.total)}</span></div>
+    <div class="li tot"><span class="k">Total 757 B (${nb} bénéficiaire${nb>1?'s':''})</span><span class="v">${eur2(total757)}</span></div>
+  </div></div>`;
+
+  /* ═══ SYNTHÈSE ═══ */
+  const totalDu = total990 + total757;
+  const net = capital - totalDu;
+  const tauxEff = capital ? totalDu/capital*100 : 0;
+  html += `<div class="res" style="margin-top:16px"><div class="res-h">Synthèse</div><div class="res-b">
+    <div class="li"><span class="k">Capital transmis</span><span class="v">${eur(capital)}</span></div>
+    <div class="li neg"><span class="k">Imposition totale</span><span class="v">− ${eur2(totalDu)}</span></div>
+    <div class="li tot"><span class="k">Net perçu par les bénéficiaires</span><span class="v">${eur2(net)}</span></div>
+    <div class="li"><span class="k">Taux effectif d'imposition</span><span class="v">${pct(tauxEff)}</span></div>
+  </div></div>`;
+
+  /* ═══ LECTURE ═══ */
+  let lecture;
+  if(B.exonere){
+    lecture = `Le conjoint survivant et le partenaire de PACS sont <b>totalement exonérés</b> depuis la loi TEPA du 22 août 2007, quels que soient les montants et l'âge des versements.`;
+  } else {
+    const marg990 = taxable990 > SEUIL_990I ? '31,25 %' : '20 %';
+    lecture = `Chaque bénéficiaire atteint une tranche marginale de <b>${marg990}</b> sur le régime des versements avant 70 ans. `;
+    if(apres > 0){
+      lecture += gainsApres > 0
+        ? `Sur les versements après 70 ans, <b>${eur(gainsApres)} de gains échappent entièrement à l'impôt</b> : seules les primes sont taxées. `
+        : `Sur les versements après 70 ans, seules les primes sont taxées. `;
+    }
+    if(nb > 1 && partAvant > 0) lecture += `Multiplier les bénéficiaires multiplie l'abattement de 152 500 € — c'est le premier levier d'optimisation. `;
+    if(!abatDispo && apres > 0) lecture += `L'abattement personnel n'est pas appliqué ici : tu l'as déclaré consommé par la succession.`;
+  }
+  html += `<div class="verdict">${lecture}</div>`;
+
+  host.innerHTML = html;
+}
+
+/* ═══════ TEST FINAL ═══════ */
+const TEST = [
+  {ch:'Banque à distance', lesson:'l1', type:'qcm', q:"Quelles conditions rendent l'écrit électronique valable (loi du 14 mars 2000) ?",
+   opts:["Signature scannée et archivage","Identification de l'auteur et intégrité du document","Accord écrit du client","Horodatage certifié"], correct:1,
+   ex:"Les deux conditions sont cumulatives : identification de l'auteur et garantie d'intégrité."},
+  {ch:'Banque à distance', lesson:'l1', type:'qcm', q:"Qui peut obtenir une levée du secret bancaire sans condition particulière ?",
+   opts:["La police","Le fisc","L'ACPR et la Banque de France","Les huissiers"], correct:2,
+   ex:"L'ACPR et la BDF toujours ; la justice en procédure pénale ; police et fisc sur réquisition seulement."},
+  {ch:'Droit au compte', lesson:'l2', type:'qcm', q:"Quelle loi fonde le droit au compte ?",
+   opts:["La loi du 24 janvier 1984","La loi MURCEF de 2001","La loi Lagarde de 2010","La loi TEPA de 2007"], correct:0,
+   ex:"Loi du 24 janvier 1984 : attestation de refus, puis désignation d'office par la Banque de France."},
+  {ch:'Droit au compte', lesson:'l2', type:'num', q:"Combien de mois de préavis pour une modification tarifaire ?",
+   answer:2, tol:0, unit:"mois",
+   ex:"2 mois d'information écrite préalable ; le silence du client vaut acceptation tacite."},
+  {ch:'KYC', lesson:'l3', type:'qcm', q:"En tutelle, le tuteur…",
+   opts:["Assiste le client par co-signature","Représente le client","N'intervient pas sur les comptes","Doit obtenir l'accord du client"], correct:1,
+   ex:"Tutelle = représenter. Curatelle = assister. Sauvegarde = le client conserve ses droits."},
+  {ch:'KYC', lesson:'l3', type:'qcm', q:"À quel âge un titulaire de Livret Jeune peut-il retirer seul ?",
+   opts:["12 ans","14 ans","16 ans","18 ans"], correct:2,
+   ex:"Dès 16 ans, sauf opposition du représentant légal."},
+  {ch:'Patrimoine', lesson:'l4', type:'qcm', q:"En communauté réduite aux acquêts, un héritage reçu pendant le mariage est…",
+   opts:["Commun","Propre","Indivis","Commun après 5 ans"], correct:1,
+   ex:"Les héritages et les biens antérieurs restent propres ; seuls les acquêts sont communs."},
+  {ch:'Succession', lesson:'l5', type:'num', q:"Abattement en ligne directe parent-enfant, en euros ?",
+   answer:100000, tol:0, unit:"€",
+   ex:"100 000 € par enfant et par parent (art. 779 CGI), rechargeable tous les 15 ans en donation."},
+  {ch:'Succession', lesson:'l5', type:'qcm', q:"Un enfant hérite de 250 000 €. Quels droits environ ?",
+   opts:["Environ 15 000 €","Environ 28 200 €","Environ 30 000 €","Environ 50 000 €"], correct:1,
+   ex:"250 000 − 100 000 = 150 000 € taxables → 403 + 404 + 573 + 26 814 ≈ 28 194 €."},
+  {ch:'Succession', lesson:'l5', type:'qcm', q:"Depuis la loi TEPA de 2007, le partenaire de PACS est…",
+   opts:["Taxé à 60 %","Totalement exonéré","Abattu de 80 724 €","Taxé comme un frère"], correct:1,
+   ex:"Exonération totale de droits de succession, au même titre que le conjoint survivant."},
+  {ch:'Assurance vie', lesson:'l6', type:'num', q:"Abattement par bénéficiaire pour les primes versées avant 70 ans ?",
+   answer:152500, tol:0, unit:"€",
+   ex:"152 500 € par bénéficiaire (art. 990 I), puis 20 % et 31,25 % au-delà de 852 500 € reçus."},
+  {ch:'Assurance vie', lesson:'l6', type:'num', q:"Abattement global pour les primes versées après 70 ans ?",
+   answer:30500, tol:0, unit:"€",
+   ex:"30 500 € global, tous bénéficiaires et tous contrats confondus (art. 757 B), réparti au prorata."},
+  {ch:'Assurance vie', lesson:'l6', type:'qcm', q:"Après 70 ans, quelle est l'assiette taxable ?",
+   opts:["Le capital décès total","Les primes versées seules","Les gains seuls","La moitié du capital"], correct:1,
+   ex:"Seules les primes sont taxées ; les gains générés sont totalement exonérés de droits de succession."},
+  {ch:'Assurance vie', lesson:'l6', type:'num', q:"Contrat de 400 000 € versé avant 70 ans, 2 enfants. Total des droits en euros ?",
+   answer:19000, tol:50, unit:"€",
+   ex:"200 000 − 152 500 = 47 500 € taxables par enfant, × 20 % = 9 500 €, soit 19 000 € au total."},
+  {ch:'Assurance vie', lesson:'l6', type:'qcm', q:"En 2026, les prélèvements sociaux sur les gains d'assurance vie sont de…",
+   opts:["17,2 % — exception maintenue","18,6 % comme le PEA","0 %","30 %"], correct:0,
+   ex:"La LFSS 2026 a porté les PS à 18,6 % pour le PEA, le CTO et le PER, mais l'assurance vie est explicitement exclue et reste à 17,2 %."},
+  {ch:'Prévoyance', lesson:'l7', type:'qcm', q:"Que la GAV exclut-elle ?",
+   opts:["Les accidents domestiques","Les agressions","Les accidents de la route et du travail","Les accidents médicaux"], correct:2,
+   ex:"La GAV couvre la vie privée ; route et travail relèvent d'autres régimes."},
+  {ch:'IARD', lesson:'l8', type:'num', q:"Délai de déclaration d'un vol, en jours ouvrés ?",
+   answer:2, tol:0, unit:"jours",
+   ex:"2 jours ouvrés et dépôt de plainte. 5 jours pour le cas général, 10 jours pour la catastrophe naturelle."},
+  {ch:'IARD', lesson:'l8', type:'qcm', q:"La sous-assurance entraîne…",
+   opts:["La nullité du contrat","La règle proportionnelle","Un plafonnement au réel","Une majoration de prime"], correct:1,
+   ex:"Indemnité réduite au prorata. La nullité sanctionne la sur-assurance frauduleuse."},
+  {ch:'Auto & MRH', lesson:'l9', type:'qcm', q:"Quel coefficient s'applique après un sinistre responsable ?",
+   opts:["× 0,95","× 1,25","× 1,50","× 3,50"], correct:1,
+   ex:"+25 % par sinistre responsable, −5 % par année sans sinistre, bornes 0,50 et 3,50."},
+  {ch:'ADE', lesson:'l10', type:'qcm', q:"Sous quelles conditions le questionnaire médical est-il supprimé (loi Lemoine) ?",
+   opts:["Part assurée < 200 k€ seulement","Fin du prêt avant 60 ans seulement","Les deux conditions réunies","Dès 50 ans"], correct:2,
+   ex:"Les deux conditions sont cumulatives : moins de 200 000 € assurés ET fin du prêt avant le 60e anniversaire."},
+  {ch:'Crédit conso', lesson:'l11', type:'num', q:"Délai de rétractation d'un crédit à la consommation, en jours ?",
+   answer:14, tol:0, unit:"jours",
+   ex:"14 jours de rétractation, à distinguer des 15 jours de validité de l'offre et des 7 jours avant déblocage."},
+  {ch:'Crédit immobilier', lesson:'l12', type:'qcm', q:"Dans un prêt modulable, qu'est-ce qui varie ?",
+   opts:["Le taux","La durée","Le capital","L'assurance"], correct:1,
+   ex:"Le taux reste fixe, c'est la durée qui s'ajuste. Le taux variable est indexé sur l'Euribor."},
+  {ch:'Déontologie', lesson:'l13', type:'qcm', q:"Quelle est la peine encourue pour blanchiment aggravé ?",
+   opts:["1 an et 15 000 €","5 ans et 375 000 €","10 ans et 750 000 €","3 ans et 45 000 €"], correct:2,
+   ex:"10 ans et 750 000 €. La violation du secret professionnel, elle, coûte 1 an et 15 000 € (art. 226-13)."},
+  {ch:'PAC', lesson:'l14', type:'qcm', q:"Quel indicateur du PAC mesure la qualité du développement ?",
+   opts:["La part de marché","Le taux de détention","Le coût du risque","La part contributive"], correct:2,
+   ex:"Le coût du risque : une croissance obtenue en dégradant le risque n'est pas une réussite."}
+];
+
+function renderTest(){
+  const c=document.getElementById('testQuestions'); c.innerHTML='';
+  TEST.forEach((q,i)=>{
+    const d=document.createElement('div'); d.className='test-q'; d.id='tq'+i;
+    const body = q.type==='qcm'
+      ? '<div class="topt">'+q.opts.map((o,j)=>'<button onclick="selOpt('+i+','+j+')" id="tq'+i+'o'+j+'">'+o+'</button>').join('')+'</div>'
+      : '<input type="number" step="any" class="num-input" id="tq'+i+'in" placeholder="…"><span class="unit">'+(q.unit||'')+'</span>';
+    d.innerHTML='<div class="tq-head"><span class="tq-num">Question '+(i+1)+'/'+TEST.length+'</span><span class="tq-chap">'+q.ch+'</span></div>'+
+      '<div class="tq-q">'+q.q+'</div>'+body+
+      '<div class="remed" id="tq'+i+'rem"><div class="rt">⚠️ À revoir</div><div class="ra" id="tq'+i+'ra"></div>'+
+      '<div class="remed-btns"><button class="btn" onclick="go(\''+q.lesson+'\')">📖 Revoir la leçon</button>'+
+      '<button class="btn primary" onclick="dismissRemed('+i+')">Continuer →</button></div></div>';
+    c.appendChild(d);
+  });
+  document.getElementById('testResult').classList.remove('show');
+  document.getElementById('testSubmitRow').style.display='flex';
+  document.getElementById('floatRetry').classList.remove('show');
+  TEST._answers={};
+}
+function selOpt(qi,oi){
+  if(document.getElementById('tq'+qi).classList.contains('graded')) return;
+  TEST._answers=TEST._answers||{}; TEST._answers[qi]=oi;
+  TEST[qi].opts.forEach((_,j)=>document.getElementById('tq'+qi+'o'+j).classList.toggle('sel', j===oi));
+}
+function gradeTest(){
+  TEST._answers=TEST._answers||{}; let score=0; const chap={};
+  TEST.forEach((q,i)=>{
+    const box=document.getElementById('tq'+i); box.classList.add('graded');
+    let ok=false;
+    if(q.type==='qcm'){
+      ok=TEST._answers[i]===q.correct;
+      q.opts.forEach((_,j)=>{const b=document.getElementById('tq'+i+'o'+j); b.disabled=true; if(j===q.correct) b.classList.add('sel');});
+    } else {
+      const v=parseFloat(document.getElementById('tq'+i+'in').value);
+      ok=!isNaN(v)&&Math.abs(v-q.answer)<=(q.tol||0);
+      document.getElementById('tq'+i+'in').disabled=true;
+    }
+    if(window.P) P.noterReponse('test:'+i, ok, q.ch);
+    chap[q.ch]=chap[q.ch]||{ok:0,tot:0}; chap[q.ch].tot++;
+    if(ok){ score++; chap[q.ch].ok++; box.classList.add('ok'); }
+    else { box.classList.add('ko'); document.getElementById('tq'+i+'ra').innerHTML=q.ex; document.getElementById('tq'+i+'rem').classList.add('show'); }
+  });
+  showResult(score,chap);
+}
+function dismissRemed(i){ document.getElementById('tq'+i+'rem').classList.remove('show'); }
+function showResult(score,chap){
+  document.getElementById('testSubmitRow').style.display='none';
+  document.getElementById('scoreBig').textContent=score+'/'+TEST.length;
+  const p=score/TEST.length*100; let msg,col;
+  if(p>=90){msg="Excellent — le programme est acquis.";col=getCss('--teal');}
+  else if(p>=70){msg="Très bon niveau. Revois les chapitres en orange.";col=getCss('--teal');}
+  else if(p>=50){msg="Bon début. Concentre-toi sur les chapitres faibles.";col=getCss('--amber');}
+  else {msg="Il reste du travail. Reprends les leçons signalées.";col=getCss('--rust');}
+  document.getElementById('scoreBig').style.color=col;
+  document.getElementById('scoreMsg').textContent=msg;
+  const bars=document.getElementById('chapBars'); bars.innerHTML='';
+  Object.keys(chap).forEach(n=>{
+    const c=chap[n], q=Math.round(c.ok/c.tot*100);
+    const bc=q>=67?getCss('--teal'):q>=34?getCss('--amber'):getCss('--rust');
+    bars.innerHTML+='<div class="chapbar"><div class="cbl"><span>'+n+'</span><span>'+c.ok+'/'+c.tot+'</span></div>'+
+      '<div class="cbt"><div class="cbf" style="width:0;background:'+bc+'" data-w="'+q+'"></div></div></div>';
+  });
+  document.getElementById('testResult').classList.add('show');
+  document.getElementById('floatRetry').classList.add('show');
+  setTimeout(()=>document.querySelectorAll('.cbf').forEach(b=>b.style.width=b.dataset.w+'%'),120);
+  addXp(score*20);
+  if(window.P) P.meilleurScore('Test final', score, TEST.length);
+  document.getElementById('testResult').scrollIntoView({behavior:'smooth'});
+  if(window.LB){ try{ LB.record({subject:SUBJECT_KEY, mode:'Test final', correct:score, total:TEST.length, xp:state.xp}); }catch(e){} }
+}
+function resetTest(){ renderTest(); go('test'); }
+function getCss(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+
+buildNav();
+updateProgress();
+renderTest();
+go((window.P && SAVE.last && document.querySelector('.view[data-view="'+SAVE.last+'"]')) ? SAVE.last : 'l1');
+try{ document.getElementById('lb-id-slot').appendChild(LB.idButton()); }catch(e){}
+</script>
+<script src="banque.js"></script>
+<script src="ui.js"></script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+# ════════════════════════════════════════════════════════════
+#  Configuration Netlify du hub M1 MBAF
+#
+#  Site statique : aucune étape de construction. Netlify publie
+#  simplement le contenu du dépôt tel quel.
+#
+#  Les règles d'en-têtes ci-dessous sont importantes : sans elles,
+#  le navigateur peut servir un ancien sw.js depuis son cache et
+#  ignorer une nouvelle version du site, malgré le changement de
+#  numéro de version.
+# ════════════════════════════════════════════════════════════
+
+[build]
+  publish = "."
+
+# Le service worker et les pages ne doivent jamais être servis
+# depuis le cache sans revalidation.
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/manifest.webmanifest"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Les scripts et la feuille de style changent de contenu à chaque
+# version mais gardent leur nom : même traitement.
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Les images et les icônes peuvent être mises en cache longtemps.
+[[headers]]
+  for = "/img/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/icons/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"

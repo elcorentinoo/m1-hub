@@ -1,0 +1,23 @@
+{
+  "name": "Mon Espace Révisions — M1 MBAF",
+  "short_name": "M1 MBAF",
+  "description": "Hub de révisions du M1 Monnaie Banque Assurance Finance : cours, quiz, tests adaptatifs, glossaire et ressourcerie.",
+  "start_url": "index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#F7F8FA",
+  "theme_color": "#F7F8FA",
+  "lang": "fr",
+  "categories": ["education"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Révision du jour", "url": "revision.html", "description": "Entraînement en révision espacée" },
+    { "name": "Glossaire", "url": "glossaire.html", "description": "Tous les sigles du Master" },
+    { "name": "Ma progression", "url": "stats.html", "description": "Où tu en es" }
+  ]
+}

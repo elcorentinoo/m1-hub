@@ -1,0 +1,1786 @@
+<!DOCTYPE html>
+<html lang="fr" subject-id="marche-particuliers">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marché des Particuliers — M1 MBAF</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --card:#fff; --card2:#fbf9f5;
+  --paper:#faf6ef; --paper2:#f3ece0; --ink:#22201b; --line:#e3d9c8;
+  --teal:#1b6b5e; --amber:#c87a12; --rust:#a8432a; --plum:#6b3a73; --navy:#241C15;
+  --teal-soft:#e3efec; --amber-soft:#f6ead4; --rust-soft:#f3e0da; --plum-soft:#ece3ef; --navy-soft:#dde6f0;
+  --shadow:0 2px 14px rgba(34,32,27,.07); --shadow-lg:0 8px 30px rgba(34,32,27,.13);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans',sans-serif; background:var(--paper); color:var(--ink);
+  line-height:1.6; -webkit-font-smoothing:antialiased;
+}
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-track{background:var(--paper2)}
+::-webkit-scrollbar-thumb{background:#cdbfa6;border-radius:6px;border:2px solid var(--paper2)}
+::-webkit-scrollbar-thumb:hover{background:var(--amber)}
+
+/* ===== TOP BAR ===== */
+.topbar{
+  position:fixed;top:0;left:0;right:0;height:62px;z-index:50;
+  background:var(--paper); border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:18px;padding:0 22px;
+}
+.brand{display:flex;align-items:center;gap:11px;font-family:'Fraunces',serif;font-weight:600;font-size:1.12rem;color:var(--navy)}
+.brand .logo{
+  width:36px;height:36px;border-radius:9px;background:var(--navy);color:#fff;
+  display:grid;place-items:center;font-size:1.15rem;flex-shrink:0;box-shadow:var(--shadow);
+}
+.brand small{display:block;font-family:'DM Sans';font-weight:500;font-size:.66rem;letter-spacing:.09em;color:var(--amber);text-transform:uppercase}
+.progress-wrap{flex:1;max-width:340px;display:flex;flex-direction:column;gap:3px}
+.progress-wrap .lab{font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:#8a8170;font-weight:600;display:flex;justify-content:space-between}
+.progress-bar{height:8px;background:var(--paper2);border-radius:5px;overflow:hidden;border:1px solid var(--line)}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),#2a8a78);transition:width .5s cubic-bezier(.4,0,.2,1)}
+.xp{
+  margin-left:auto;display:flex;align-items:center;gap:7px;background:var(--amber-soft);
+  border:1px solid #e6cf9e;color:var(--amber);font-weight:700;padding:7px 14px;border-radius:30px;font-size:.9rem;
+}
+.xp .star{font-size:1rem}
+.burger{display:none;background:none;border:1px solid var(--line);border-radius:8px;padding:7px 10px;cursor:pointer;font-size:1.1rem;color:var(--ink)}
+.hublink{font-family:'DM Mono';font-size:.72rem;color:#8a8170;text-decoration:none;padding:5px 10px;border-radius:8px;border:1px solid var(--line);white-space:nowrap;transition:.15s}
+.hublink:hover{color:var(--navy);border-color:#c9bca3;background:var(--card)}
+
+/* ===== LAYOUT ===== */
+.shell{display:flex;padding-top:62px}
+.sidebar{
+  position:fixed;top:62px;bottom:0;left:0;width:282px;background:var(--paper2);
+  border-right:1px solid var(--line);overflow-y:auto;padding:20px 14px 50px;z-index:40;transition:transform .3s;
+}
+.sidebar h4{font-family:'Fraunces',serif;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:#8a8170;margin:18px 10px 9px;font-weight:600}
+.sidebar h4:first-child{margin-top:0}
+.nav-item{
+  display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;cursor:pointer;
+  font-size:.92rem;color:var(--ink);border:1px solid transparent;transition:.16s;margin-bottom:3px;
+}
+.nav-item:hover{background:#ece3d3}
+.nav-item.active{background:var(--card);border-color:var(--line);box-shadow:var(--shadow);font-weight:600;color:var(--navy)}
+.nav-item .num{
+  width:25px;height:25px;border-radius:50%;background:var(--card);border:1.5px solid var(--line);flex-shrink:0;
+  display:grid;place-items:center;font-size:.78rem;font-weight:700;font-family:'DM Mono';color:#8a8170;transition:.16s;
+}
+.nav-item.active .num{background:var(--teal);color:#fff;border-color:var(--teal)}
+.nav-item.done .num{background:var(--teal);color:#fff;border-color:var(--teal)}
+.nav-item .lab{flex:1;line-height:1.25}
+.nav-item.special{background:var(--plum-soft);border-color:#d8c5dc;color:var(--plum);font-weight:600}
+.nav-item.special.active{background:var(--plum);color:#fff}
+.nav-item.special .ico{font-size:1.05rem}
+.nav-item.special2{background:var(--navy-soft);border-color:#c3d2e2;color:var(--navy);font-weight:600}
+.nav-item.special2.active{background:var(--navy);color:#fff}
+
+.main{flex:1;margin-left:282px;padding:40px 6vw 120px;max-width:920px}
+
+/* ===== LESSON CONTENT ===== */
+.view{display:none;animation:fadeIn .45s ease}
+.view.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.tag{
+  display:inline-block;font-family:'DM Mono';font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+  background:var(--navy-soft);color:var(--navy);padding:5px 12px;border-radius:20px;font-weight:500;margin-bottom:16px;
+}
+h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;font-weight:600;color:var(--ink);margin-bottom:10px;letter-spacing:-.01em}
+.subtitle{font-size:1.12rem;color:#6f6757;margin-bottom:30px;max-width:62ch}
+.main p{margin-bottom:16px;font-size:1.04rem;max-width:68ch}
+.main h2{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:600;color:var(--navy);margin:38px 0 14px;letter-spacing:-.01em}
+.main strong{font-weight:600;color:var(--ink)}
+
+/* callouts */
+.callout{border-radius:14px;padding:18px 20px 18px 22px;margin:24px 0;border-left:5px solid;position:relative;font-size:1rem}
+.callout .ct{font-weight:700;font-family:'Fraunces',serif;font-size:1.02rem;display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.callout p{margin:0;max-width:none}
+.c-analogy{background:var(--amber-soft);border-color:var(--amber);color:#5e3a06}
+.c-analogy .ct{color:var(--amber)}
+.c-retenir{background:var(--teal-soft);border-color:var(--teal);color:#0f3d36}
+.c-retenir .ct{color:var(--teal)}
+.c-piege{background:var(--rust-soft);border-color:var(--rust);color:#5e2317}
+.c-piege .ct{color:var(--rust)}
+.c-maj{background:var(--navy-soft);border-color:var(--navy);color:#2A2018}
+.c-maj .ct{color:var(--navy)}
+:root[data-theme="dark"] .c-maj{color:var(--navy-deep)}
+
+/* black rule box */
+.rulebox{
+  background:#1c1a16;color:#f3ece0;border-radius:14px;padding:22px 24px;margin:26px 0;
+  font-family:'DM Mono';box-shadow:var(--shadow-lg);position:relative;overflow:hidden;
+}
+.rulebox::before{content:'REPÈRE';position:absolute;top:13px;right:18px;font-size:.62rem;letter-spacing:.2em;color:#7d7566}
+.rulebox .rb-main{font-size:1.18rem;font-weight:500;line-height:1.5;color:#fff}
+.rulebox .rb-sub{font-size:.86rem;color:#b8af9d;margin-top:10px;line-height:1.55}
+.rulebox em{color:var(--amber);font-style:normal;font-weight:500}
+
+/* tables */
+.tbl{width:100%;border-collapse:collapse;margin:22px 0;font-size:.96rem;background:var(--card);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line)}
+.tbl th{background:var(--navy);color:#fff;text-align:left;padding:11px 15px;font-weight:600;font-size:.86rem;letter-spacing:.02em}
+.tbl td{padding:11px 15px;border-top:1px solid var(--line);vertical-align:top}
+.tbl tr:nth-child(even) td{background:var(--paper)}
+.tbl td:first-child{font-weight:600;color:var(--navy);white-space:nowrap}
+.tbl.wrap td:first-child{white-space:normal}
+
+/* worked example */
+.example{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:26px 0;box-shadow:var(--shadow)}
+.example .ex-head{font-family:'Fraunces',serif;font-weight:600;color:var(--plum);font-size:1.08rem;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.step{display:flex;gap:14px;margin-bottom:14px}
+.step:last-child{margin-bottom:0}
+.step .sn{width:27px;height:27px;border-radius:50%;background:var(--plum);color:#fff;flex-shrink:0;display:grid;place-items:center;font-family:'DM Mono';font-weight:500;font-size:.85rem}
+.step .sc{flex:1;padding-top:1px}
+.step .sc b{color:var(--navy)}
+.ex-result{margin-top:6px;background:var(--teal-soft);border:1px solid #bcdcd4;border-radius:10px;padding:12px 16px;font-weight:600;color:#0f3d36}
+
+/* schema */
+.schema{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin:26px 0;box-shadow:var(--shadow);text-align:center}
+.schema .scap{font-size:.82rem;color:#8a8170;margin-top:12px;font-style:italic}
+.schema svg{max-width:100%;height:auto}
+
+/* mini quiz */
+.quiz{background:var(--plum-soft);border:1px solid #d8c5dc;border-radius:14px;padding:20px 22px;margin:24px 0}
+.quiz .qhead{font-family:'DM Mono';font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--plum);font-weight:500;margin-bottom:9px}
+.quiz .q{font-weight:600;font-size:1.05rem;margin-bottom:14px;color:var(--ink)}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{
+  text-align:left;background:var(--card);border:1.5px solid #d8c5dc;border-radius:10px;padding:11px 15px;
+  cursor:pointer;font-family:'DM Sans';font-size:.98rem;color:var(--ink);transition:.15s;
+}
+.opt:hover:not(:disabled){border-color:var(--plum);background:#fbf8fc}
+.opt:disabled{cursor:default}
+.opt.right{background:var(--teal-soft);border-color:var(--teal);color:#0f3d36;font-weight:600}
+.opt.right::after{content:' ✓';color:var(--teal);font-weight:700}
+.opt.wrong{background:var(--rust-soft);border-color:var(--rust);color:#5e2317}
+.opt.wrong::after{content:' ✗';color:var(--rust);font-weight:700}
+.feedback{margin-top:13px;padding:12px 15px;border-radius:10px;background:var(--card);border:1px dashed #cbb9cf;font-size:.95rem;color:#5a4d5d}
+.feedback b{color:var(--plum)}
+
+/* nav buttons */
+.lesson-nav{display:flex;justify-content:space-between;gap:14px;margin-top:46px;padding-top:26px;border-top:1px solid var(--line)}
+.btn{
+  font-family:'DM Sans';font-weight:600;font-size:.98rem;padding:12px 22px;border-radius:11px;cursor:pointer;
+  border:1.5px solid var(--line);background:var(--card);color:var(--ink);transition:.16s;display:inline-flex;align-items:center;gap:8px;
+}
+.btn:hover{border-color:#bbac90;transform:translateY(-1px)}
+.btn.primary{background:var(--teal);color:#fff;border-color:var(--teal);box-shadow:var(--shadow)}
+.btn.primary:hover{background:#155a4f}
+.btn.plum{background:var(--plum);color:#fff;border-color:var(--plum)}
+.btn.plum:hover{background:#592f60}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.xp-pop{
+  position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--amber);color:#fff;font-weight:700;padding:13px 26px;border-radius:30px;
+  box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:.4s;z-index:200;font-size:1rem;
+}
+.xp-pop.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ===== TEST ===== */
+.test-q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:18px;box-shadow:var(--shadow);transition:.3s}
+.test-q .tq-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.test-q .tq-num{font-family:'DM Mono';font-weight:500;color:var(--navy);font-size:.9rem}
+.test-q .tq-chap{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:#8a8170;font-weight:600;background:var(--paper2);padding:4px 10px;border-radius:20px}
+.test-q .tq-q{font-weight:600;font-size:1.08rem;margin-bottom:14px}
+.test-q .num-input{font-family:'DM Mono';font-size:1.05rem;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;width:170px;background:var(--paper)}
+.test-q .num-input:focus{outline:none;border-color:var(--teal)}
+.test-q .unit{font-family:'DM Mono';color:#8a8170;margin-left:9px}
+.topt{display:flex;flex-direction:column;gap:8px}
+.topt button{text-align:left;background:var(--paper);border:1.5px solid var(--line);border-radius:10px;padding:11px 15px;cursor:pointer;font-family:'DM Sans';font-size:.98rem;transition:.15s}
+.topt button:hover{border-color:var(--teal)}
+.topt button.sel{background:var(--teal-soft);border-color:var(--teal);font-weight:600;color:#0f3d36}
+.remed{margin-top:14px;border-radius:11px;border-left:5px solid var(--rust);background:var(--rust-soft);padding:15px 18px;display:none}
+.remed.show{display:block;animation:fadeIn .35s}
+.remed .rt{font-weight:700;color:var(--rust);font-family:'Fraunces',serif;margin-bottom:5px;display:flex;align-items:center;gap:7px}
+.remed .ra{font-size:.95rem;color:#5e2317;margin-bottom:11px}
+.remed .ra b{color:#7a2d1c}
+.remed-btns{display:flex;gap:10px;flex-wrap:wrap}
+.remed-btns .btn{padding:8px 16px;font-size:.88rem}
+.test-q.ok{border-color:var(--teal);background:#fbfdfc}
+.test-q.ko{border-color:var(--rust)}
+.float-retry{
+  position:fixed;bottom:26px;right:26px;z-index:120;display:none;
+  background:var(--plum);color:#fff;border:none;font-weight:700;padding:14px 24px;border-radius:30px;
+  box-shadow:var(--shadow-lg);cursor:pointer;font-family:'DM Sans';font-size:.98rem;align-items:center;gap:9px;
+}
+.float-retry.show{display:inline-flex;animation:fadeIn .4s}
+.float-retry:hover{background:#592f60}
+
+/* result */
+.result{display:none;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:34px;box-shadow:var(--shadow-lg);text-align:center;animation:fadeIn .5s}
+.result.show{display:block}
+.result .score-big{font-family:'Fraunces',serif;font-size:4rem;font-weight:700;line-height:1;color:var(--teal)}
+.result .score-lab{color:#8a8170;font-weight:600;margin-bottom:8px}
+.result .msg{font-size:1.12rem;margin:14px auto 28px;max-width:46ch;color:var(--ink)}
+.chapbars{text-align:left;max-width:560px;margin:0 auto}
+.chapbar{margin-bottom:14px}
+.chapbar .cbl{display:flex;justify-content:space-between;font-size:.9rem;font-weight:600;margin-bottom:5px}
+.chapbar .cbl span:last-child{font-family:'DM Mono';color:#8a8170}
+.cbt{height:13px;background:var(--paper2);border-radius:7px;overflow:hidden;border:1px solid var(--line)}
+.cbf{height:100%;border-radius:7px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+
+/* annales / mini-cas */
+.annale{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px 26px;margin-bottom:22px;box-shadow:var(--shadow)}
+.annale .an-tag{font-family:'DM Mono';font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);font-weight:500}
+.annale h3{font-family:'Fraunces',serif;font-size:1.32rem;color:var(--navy);margin:6px 0 14px;font-weight:600}
+.annale .enonce{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:16px 19px;font-size:1rem;color:#3a352c}
+.annale .enonce .qlist{margin:10px 0 0 4px}
+.annale .enonce .qlist li{margin-bottom:5px;list-style:none;padding-left:22px;position:relative}
+.annale .enonce .qlist li::before{content:'▸';position:absolute;left:0;color:var(--amber);font-weight:700}
+.corrige{margin-top:14px;display:none;animation:fadeIn .4s}
+.corrige.show{display:block}
+.corrige-head{font-family:'Fraunces',serif;font-weight:600;color:var(--teal);margin-bottom:12px;display:flex;align-items:center;gap:8px;font-size:1.06rem}
+
+.intro-card{background:var(--navy);color:#f3ece0;border-radius:16px;padding:24px 26px;margin-bottom:26px}
+.intro-card h2{color:#fff;margin:0 0 8px;font-family:'Fraunces',serif;font-size:1.4rem}
+.intro-card p{color:#cdd8e6;max-width:none;margin:0}
+
+.hint{font-size:.85rem;color:#8a8170;font-style:italic;margin-top:8px}
+
+/* mobile */
+.overlay{display:none;position:fixed;inset:62px 0 0 0;background:rgba(34,32,27,.4);z-index:35}
+@media(max-width:880px){
+  .main{margin-left:0;padding:30px 22px 110px}
+  .sidebar{transform:translateX(-100%);box-shadow:var(--shadow-lg)}
+  .sidebar.open{transform:translateX(0)}
+  .overlay.show{display:block}
+  .burger{display:block}
+  .progress-wrap{max-width:none}
+  .brand small{display:none}
+  h1.lesson-title{font-size:1.8rem}
+  .xp{padding:6px 11px;font-size:.82rem}
+}
+@media(max-width:560px){
+  .progress-wrap{display:none}
+  .topbar{gap:12px}
+}
+</style>
+<link rel="stylesheet" href="ui.css">
+<link rel="stylesheet" href="theme.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#F7F8FA">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="M1 MBAF">
+</head>
+<body>
+
+<!-- ===== TOP BAR ===== -->
+<div class="topbar">
+  <button class="burger" onclick="toggleSidebar()">☰</button>
+  <div class="brand">
+    <span class="logo">🏦</span>
+    <span>Marché des Particuliers<small>M1 MBAF · Conseiller Patrimoine Agence</small></span>
+  </div>
+  <span id="nav-slot"></span>
+  <div class="progress-wrap">
+    <div class="lab"><span>Progression</span><span id="progPct">0 %</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+  </div>
+  <div class="xp"><span class="star">★</span><span id="xpVal">0</span> XP</div>
+  <span id="lb-id-slot"></span>
+</div>
+
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<div class="shell">
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar" id="sidebar">
+    <h4>Leçons</h4>
+    <div id="navList"></div>
+    <h4>Évaluation</h4>
+    <div class="nav-item special" data-view="test" onclick="go('test')">
+      <span class="ico">🎯</span><span class="lab">Test final adaptatif</span>
+    </div>
+    <div class="nav-item special2" data-view="annales" onclick="go('annales')">
+      <span class="ico">📋</span><span class="lab">Mini-cas d'entraînement</span>
+    </div>
+  </aside>
+
+  <main class="main" id="main">
+
+    <!-- ============ LEÇON 1 ============ -->
+    <section class="view" data-view="l1">
+      <span class="tag">Leçon 1 · Panorama</span>
+      <h1 class="lesson-title">La banque des particuliers aujourd'hui</h1>
+      <p class="subtitle">Comprendre le poids économique du secteur, ses quatre grandes activités, et ce que révèlent les études sur le comportement des clients.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Pensez à la banque comme à un grand magasin à rayons : rayon épargne, rayon crédit, rayon assurance, rayon placements mobiliers. Le client ne fréquente pas forcément tous les rayons, mais l'enseigne doit être capable de répondre à chacun de ses besoins, en agence comme en ligne.</p>
+      </div>
+
+      <p>La banque moderne ne se limite plus à la gestion d'un compte : elle couvre quatre grands pôles d'activité qui structurent toute la relation client — l'<strong>épargne et le placement</strong>, les <strong>crédits</strong> aux différents publics, l'<strong>assurance</strong>, et la <strong>filière mobilière</strong> (bourse, gestion de portefeuille).</p>
+
+      <div class="schema">
+        <svg viewBox="0 0 620 170" xmlns="http://www.w3.org/2000/svg">
+          <g font-family="DM Sans" font-size="13">
+            <rect x="15" y="55" width="140" height="60" rx="12" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="2"/>
+            <text x="85" y="80" text-anchor="middle" font-weight="700" fill="var(--teal)">Épargne</text>
+            <text x="85" y="99" text-anchor="middle" font-size="11" fill="var(--teal-deep)">& placement</text>
+            <rect x="170" y="55" width="140" height="60" rx="12" fill="var(--navy-soft)" stroke="var(--navy)" stroke-width="2"/>
+            <text x="240" y="80" text-anchor="middle" font-weight="700" fill="var(--navy)">Crédits</text>
+            <text x="240" y="99" text-anchor="middle" font-size="11" fill="var(--navy-deep)">tous publics</text>
+            <rect x="325" y="55" width="140" height="60" rx="12" fill="var(--amber-soft)" stroke="var(--amber)" stroke-width="2"/>
+            <text x="395" y="80" text-anchor="middle" font-weight="700" fill="var(--amber-deep)">Assurances</text>
+            <text x="395" y="99" text-anchor="middle" font-size="11" fill="var(--amber-deep)">biens · personnes</text>
+            <rect x="480" y="55" width="140" height="60" rx="12" fill="var(--plum-soft)" stroke="var(--plum)" stroke-width="2"/>
+            <text x="550" y="80" text-anchor="middle" font-weight="700" fill="var(--plum)">Filière</text>
+            <text x="550" y="99" text-anchor="middle" font-size="11" fill="var(--plum-deep)">mobilière</text>
+            <text x="310" y="28" text-anchor="middle" font-family="Fraunces" font-size="16" font-weight="600" fill="var(--ink)">Les 4 pôles de la banque de détail</text>
+          </g>
+        </svg>
+        <div class="scap">Une même agence, quatre familles de besoins à couvrir pour un même client.</div>
+      </div>
+
+      <h2>Un secteur qui pèse lourd</h2>
+      <table class="tbl wrap">
+        <tr><th>Indicateur</th><th>Valeur</th></tr>
+        <tr><td>Taux de bancarisation</td><td>Plus de 99 %</td></tr>
+        <tr><td>Taux d'utilisation Web / App</td><td>94 %</td></tr>
+        <tr><td>Taux de satisfaction (bonne image)</td><td>89 %</td></tr>
+        <tr><td>Points de distribution d'espèces</td><td>71 500</td></tr>
+        <tr><td>Part des agences européennes en France</td><td>1 sur 3</td></tr>
+        <tr><td>Banques françaises dans le Top 10 Europe</td><td>5</td></tr>
+        <tr><td>Recrutements du secteur en 2023</td><td>44 500</td></tr>
+      </table>
+
+      <div class="rulebox">
+        <div class="rb-main">France : <em>+ de 99 %</em> de bancarisation, <em>94 %</em> d'usage digital, <em>89 %</em> de bonne image.</div>
+        <div class="rb-sub">Le secteur reste un poids lourd du recrutement (44 500 en 2023) et du maillage territorial (1 agence sur 3 en Europe est française).</div>
+      </div>
+
+      <h2>Ce que dit l'étude IFOP sur le client bancaire</h2>
+      <p>Les études IFOP dessinent le portrait d'un client <strong>partiellement multi-bancarisé</strong>, de plus en plus digital, mais qui reste attaché à un contact humain sur les sujets importants.</p>
+
+      <div class="example">
+        <div class="ex-head">📂 Cas pratique</div>
+        <div class="step"><div class="sn">1</div><div class="sc">63 % des clients n'ont qu'une seule banque, 29 % en ont deux. <b>Que peut en déduire un conseiller sur la fidélité client ?</b></div></div>
+        <div class="step"><div class="sn">2</div><div class="sc">La banque principale reste très majoritaire, mais un tiers des clients environ ont déjà ouvert un second compte ailleurs — souvent pour une offre ou un taux plus avantageux.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc">Le canal de contact principal est le <b>mail</b>, l'agence reste fréquentée de façon <b>physique et web</b> combinés ; 13 % des clients n'y vont jamais, un tiers y va une fois par an.</div></div>
+        <div class="step"><div class="sn">4</div><div class="sc">78 % des Français veulent une banque qui répond à la fois en ligne <b>et</b> en agence : le modèle "phygital" reste la norme attendue.</div></div>
+        <div class="ex-result">Conclusion : la fidélité de façade (63 % mono-bancarisés) coexiste avec une exigence forte de réactivité multicanale.</div>
+      </div>
+
+      <div class="rulebox">
+        <div class="rb-main">Comportements clés : 56 % sans crédit · 66 % jamais à découvert (mais 1/3 parfois) · 13 % 100 % agence physique · 9 % 100 % digital.</div>
+        <div class="rb-sub">Épargne : 52 % préfèrent un produit peu risqué quitte à moins rapporter · 20 % veulent que l'épargne serve le territoire · 15 % acceptent le risque pour le rendement · 14 % des fonds sont ESG.</div>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Quatre pôles d'activité (épargne, crédit, assurance, mobilier) · client majoritairement mono-bancarisé mais exigeant sur le multicanal · aversion au risque dominante en épargne (52 %) · écart fort entre <strong>notoriété</strong> et <strong>confiance</strong> des innovations (paiement sans contact par téléphone 93 % → 55 %, chatbots 80 % → 50 %).</p>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Ne confondez pas <strong>notoriété</strong> (le client connaît le produit) et <strong>confiance</strong> (il est prêt à l'utiliser). Le paiement sans contact par téléphone est connu à 93 % mais utilisé en confiance par seulement 55 % : c'est cet écart qui freine l'adoption, pas le manque d'information.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Quel est le principal canal de contact des clients avec leur banque, selon l'étude IFOP ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Le téléphone</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Le mail</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le courrier</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Le mail est le principal mode de contact, l'agence restant fréquentée en physique et en web.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Quelle part des Français veut une banque qui répond à la fois en ligne et en agence ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">13 %</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">52 %</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">78 %</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> 78 % des Français attendent un modèle phygital ; seuls 13 % veulent une agence uniquement physique et 9 % une banque 100 % digitale.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <span></span>
+        <button class="btn primary" onclick="validate('l1',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 2 ============ -->
+    <section class="view" data-view="l2">
+      <span class="tag">Leçon 2 · Crédit</span>
+      <h1 class="lesson-title">Le financement et le crédit</h1>
+      <p class="subtitle">Sur quelle base la banque prête-t-elle, et que disent les chiffres sur le marché du crédit aux particuliers ?</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Accorder un crédit, c'est un peu comme prêter sa voiture à un ami : on ne le fait pas les yeux fermés. La banque vérifie d'abord la <em>capacité de remboursement</em>, puis s'entoure de garanties — un peu comme demander une caution avant de lâcher les clés.</p>
+      </div>
+
+      <p>En France, un crédit est accordé sur la base des <strong>capacités de remboursement</strong> de l'emprunteur, et il est presque toujours assorti d'une <strong>garantie</strong> pour la banque (caution, assurance). Résultat : seuls <strong>1,1 %</strong> des crédits finissent en sinistralité, alors que <strong>42 %</strong> des Français détiennent un crédit.</p>
+
+      <table class="tbl wrap">
+        <tr><th>Indicateur</th><th>Valeur</th></tr>
+        <tr><td>Taux de crédit (2021)</td><td>Entre 0 et 1 %</td></tr>
+        <tr><td>Taux de crédit (aujourd'hui)</td><td>Entre 3,80 % et 3,90 %</td></tr>
+        <tr><td>Français détenteurs d'un crédit immo</td><td>29,7 % (97 % à taux fixe)</td></tr>
+        <tr><td>Durée moyenne d'un crédit immo</td><td>250 mois</td></tr>
+        <tr><td>Part de primo-accédants</td><td>51,9 %</td></tr>
+        <tr><td>Français détenteurs d'un crédit conso</td><td>19,1 %</td></tr>
+        <tr><td>Encours total du crédit</td><td>1 535 Mds €</td></tr>
+        <tr><td>Taux de sinistralité</td><td>1,1 %</td></tr>
+      </table>
+
+      <div class="rulebox">
+        <div class="rb-main">Taux de crédit actuel : <em>3,80 % à 3,90 %</em>, très loin des 0-1 % de 2021.</div>
+        <div class="rb-sub">42 % des Français ont un crédit, mais la sinistralité reste faible (1,1 %) grâce à la sélection sur capacité de remboursement et aux garanties.</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">📂 Cas pratique</div>
+        <div class="step"><div class="sn">1</div><div class="sc">Un couple de primo-accédants vous consulte pour un crédit immobilier. <b>Quels réflexes le conseiller doit-il avoir avant d'instruire le dossier ?</b></div></div>
+        <div class="step"><div class="sn">2</div><div class="sc">Vérifier la <b>capacité de remboursement</b> (revenus, charges, reste à vivre) — c'est la base légale de tout octroi de crédit en France.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc">Envisager les <b>garanties</b> disponibles : caution (type Crédit Logement) ou hypothèque, plus l'assurance emprunteur obligatoire de fait.</div></div>
+        <div class="step"><div class="sn">4</div><div class="sc">Se situer dans la moyenne du marché : à titre de repère, la durée moyenne d'un prêt immo est de 250 mois (environ 20 ans et 10 mois), et 97 % des prêts sont à taux fixe.</div></div>
+        <div class="ex-result">Conclusion : le crédit se construit sur la capacité de remboursement d'abord, la garantie ensuite — jamais l'inverse.</div>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Octroi fondé sur la capacité de remboursement + garanties · taux actuel ≈ 3,80-3,90 % contre 0-1 % en 2021 · 29,7 % des Français ont un crédit immo (97 % taux fixe, 250 mois en moyenne) contre 19,1 % un crédit conso · sinistralité globale très faible (1,1 %).</p>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Ne confondez pas le <strong>taux de détention</strong> d'un crédit (29,7 % pour l'immo) avec le <strong>taux de sinistralité</strong> (1,1 % sur l'ensemble des crédits) : le premier mesure la diffusion du produit, le second sa qualité de remboursement — deux notions très différentes qui tombent souvent en piège de QCM.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Sur quelle base la banque accorde-t-elle un crédit en France ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Sur la seule ancienneté bancaire du client</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Sur la capacité de remboursement de l'emprunteur</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Sur la valeur du bien financé uniquement</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> C'est la capacité de remboursement qui fonde l'octroi ; les garanties (caution, assurance) viennent en complément.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Quelle est la part de crédits immobiliers à taux fixe en France ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">51,9 %</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">97 %</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">29,7 %</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> 97 % des crédits immo sont à taux fixe ; 51,9 % concernent des primo-accédants et 29,7 % des Français détiennent un crédit immo.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l1')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l2',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 3 ============ -->
+    <section class="view" data-view="l3">
+      <span class="tag">Leçon 3 · Épargne</span>
+      <h1 class="lesson-title">L'épargne : les fondamentaux</h1>
+      <p class="subtitle">Pourquoi la banque a besoin de collecter avant de prêter, et quels sont les besoins bancaires du quotidien.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Une banque, c'est un peu un réservoir : avant de pouvoir distribuer du crédit (le carburant qui sort), il faut avoir fait le plein (la collecte qui entre). Ce plein se fait soit auprès des clients (dépôts, livrets), soit directement sur les marchés financiers.</p>
+      </div>
+
+      <p>Le <strong>taux d'épargne</strong> des Français s'élève à <strong>18 %</strong>, dont un <strong>taux d'épargne financière</strong> de <strong>9 %</strong>. Le <strong>revenu disponible brut</strong> se définit comme la somme des revenus primaires (salaires, revenus des professions indépendantes, revenus du patrimoine) et des prestations sociales, moins l'impôt sur le revenu (IR) et les prélèvements sociaux (PS). Ce qu'il en reste constitue l'argent épargné.</p>
+
+      <div class="schema">
+        <svg viewBox="0 0 620 150" xmlns="http://www.w3.org/2000/svg">
+          <g font-family="DM Sans" font-size="13">
+            <rect x="30" y="30" width="250" height="50" rx="11" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="2"/>
+            <text x="155" y="60" text-anchor="middle" font-weight="700" fill="var(--teal)">Collecte auprès des clients</text>
+            <rect x="340" y="30" width="250" height="50" rx="11" fill="var(--navy-soft)" stroke="var(--navy)" stroke-width="2"/>
+            <text x="465" y="60" text-anchor="middle" font-weight="700" fill="var(--navy)">Refinancement sur les marchés</text>
+            <text x="310" y="115" text-anchor="middle" font-family="Fraunces" font-size="15" font-weight="600" fill="var(--ink)">DAV · Livrets · Épargne moyen terme · Épargne long terme</text>
+            <text x="310" y="135" text-anchor="middle" font-size="11.5" fill="var(--muted2)">4 canaux de collecte auprès des particuliers</text>
+          </g>
+        </svg>
+        <div class="scap">Deux sources de ressources pour la banque, avant de pouvoir prêter.</div>
+      </div>
+
+      <h2>Les besoins bancaires du quotidien</h2>
+      <table class="tbl wrap">
+        <tr><th>Besoin</th><th>Concrètement</th></tr>
+        <tr><td>DAV</td><td>Dépôt à vue : compte individuel, joint ou indivis</td></tr>
+        <tr><td>Découvert</td><td>Découvert autorisé</td></tr>
+        <tr><td>Moyens de paiement</td><td>Chéquier, carte bancaire (immédiate ou différée)</td></tr>
+        <tr><td>Assurances des moyens de paiement</td><td>Perte, vol, clés, maroquinerie</td></tr>
+        <tr><td>Protection achats</td><td>Assurance des achats par carte bancaire sur internet</td></tr>
+        <tr><td>Accès aux comptes</td><td>Gestion et accès sur internet</td></tr>
+      </table>
+
+      <div class="rulebox">
+        <div class="rb-main">Taux d'épargne des Français : <em>18 %</em> · taux d'épargne financière : <em>9 %</em>.</div>
+        <div class="rb-sub"><em>ESTER</em> = taux interbancaire à 1 jour · <em>Euribor</em> = taux interbancaire de 1 mois à 1 an · <em>OAT</em> = obligation assimilable du Trésor, finance la dette de l'État (≈ 4 %).</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">📂 Cas pratique</div>
+        <div class="step"><div class="sn">1</div><div class="sc">Un client ouvre un DAV, demande une carte bancaire à débit différé et souscrit un Livret A. <b>Lesquels de ces éléments relèvent des besoins "au quotidien" et lesquels relèvent de la collecte d'épargne ?</b></div></div>
+        <div class="step"><div class="sn">2</div><div class="sc">Le DAV et la carte bancaire répondent aux <b>besoins du quotidien</b> (encaissement, paiement, gestion courante).</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc">Le Livret A relève de la <b>collecte d'épargne</b> : c'est de la ressource que la banque va pouvoir remployer pour financer des crédits.</div></div>
+        <div class="ex-result">Conclusion : un même rendez-vous client mêle souvent gestion du quotidien et collecte d'épargne — deux logiques à bien distinguer pour le conseil.</div>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Le revenu disponible brut n'est pas le seul salaire : il inclut aussi les revenus du patrimoine et les prestations sociales, diminués de l'IR et des PS · la collecte se fait via 4 canaux (DAV, livrets, épargne moyen terme, épargne long terme) · taux de référence : ESTER (1 jour), Euribor (1 mois à 1 an), OAT (dette de l'État, ≈ 4 %).</p>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Ne confondez pas le <strong>taux d'épargne</strong> global (18 %) et le <strong>taux d'épargne financière</strong> (9 %) : le premier inclut l'épargne "logement" (remboursement de capital immobilier notamment), le second ne porte que sur les placements financiers proprement dits.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Quel est le taux d'épargne financière des Français ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">18 %</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">9 %</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">4 %</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Le taux d'épargne global est de 18 %, dont 9 % de taux d'épargne financière.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Que désigne l'Euribor ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Le taux interbancaire à 1 jour</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Le taux interbancaire de 1 mois à 1 an</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le taux des obligations d'État</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> L'ESTER couvre le 1 jour, l'Euribor le 1 mois à 1 an, l'OAT finance la dette de l'État.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l2')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l3',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 4 ============ -->
+    <section class="view" data-view="l4">
+      <span class="tag">Leçon 4 · Livrets</span>
+      <h1 class="lesson-title">Les livrets réglementés et leur fiscalité</h1>
+      <p class="subtitle">Le calcul des intérêts par quinzaine, les principaux livrets réglementés, et la fiscalité de l'épargne à court terme.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>La quinzaine, c'est un métronome : l'argent ne "compte" que s'il est resté en place au moins 15 jours pleins. Déposer la veille de la quinzaine ou le lendemain ne change rien pour vous... sauf que dans le second cas, vous perdez une quinzaine entière d'intérêts.</p>
+      </div>
+
+      <p>Les livrets se caractérisent par des <strong>fonds disponibles</strong> à tout moment, sans durée définie de détention. Les intérêts sont calculés <strong>par quinzaine</strong> et arrêtés au 31/12. Il existe deux quinzaines par mois : du 1<sup>er</sup> au 15, et du 16 au 30/31.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Calcul d'une quinzaine = <em>k × taux d'intérêt annuel × 1/24</em></div>
+        <div class="rb-sub">Condition : les fonds doivent être déposés à <em>J-1</em> de la quinzaine (au plus tard le 15 pour bénéficier de la quinzaine du 16 au 30/31).</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">📂 Exemple résolu</div>
+        <div class="step"><div class="sn">1</div><div class="sc">Un client dépose <b>10 000 €</b> sur un livret rémunéré à <b>1,70 %</b>. Quel est le montant d'intérêts pour une quinzaine ?</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc">On applique la formule : <b>k × taux annuel × 1/24</b>.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc">10 000 × 1,70 % × 1/24 = 10 000 × 0,017 × 1/24 = <b>7,08 €</b>.</div></div>
+        <div class="ex-result">Réponse : 7,08 € d'intérêts pour cette quinzaine.</div>
+      </div>
+
+      <h2>Le tableau des grands livrets réglementés</h2>
+      <table class="tbl">
+        <tr><th></th><th>Livret A</th><th>LDDS</th><th>PEL</th><th>LEP</th></tr>
+        <tr><td>Nb en millions</td><td>58</td><td>27</td><td>8,2</td><td>12,1</td></tr>
+        <tr><td>Encours en Mds €</td><td>439,6</td><td>164,9</td><td>201,1</td><td>83,7</td></tr>
+        <tr><td>Taux de détention</td><td>83 %</td><td>48,5 %</td><td>11,8 %</td><td>38 %</td></tr>
+        <tr><td>Taux de rémunération</td><td>1,7 % net</td><td>1,7 % net</td><td>2,0 % brut</td><td>2,5 % net</td></tr>
+        <tr><td>Plafond</td><td>22 950 €</td><td>12 000 €</td><td>61 300 €</td><td>10 000 €</td></tr>
+      </table>
+      <p class="hint">Progression constante des encours Livret A et LDDS (léger tassement au 1<sup>er</sup> semestre 2026). Le PEL est en chute (taux peu attractif), avec 32 % des PEL ayant un taux supérieur à 7 % (multi-détention possible en cas de donation ou succession). Le LEP connaît au contraire une explosion de la détention et de l'encours.</p>
+
+      <h2>Les autres livrets réglementés</h2>
+      <table class="tbl wrap">
+        <tr><th>Livret</th><th>Particularité</th></tr>
+        <tr><td>Livret A</td><td>Finance le logement social et la politique de la ville</td></tr>
+        <tr><td>LEP</td><td>Fonds gérés par les banques elles-mêmes</td></tr>
+        <tr><td>LDDS</td><td>Finance les entreprises (PME)</td></tr>
+        <tr><td>LJ</td><td>Livret Jeune</td></tr>
+        <tr><td>CEL</td><td>Prêt maxi de 23 000 €. Les CEL ouverts avant 2018 sont nets d'impôt mais soumis aux prélèvements sociaux</td></tr>
+        <tr><td>LEE</td><td>Livret Épargne Entreprise</td></tr>
+      </table>
+
+      <h2>La fiscalité de l'épargne à court terme</h2>
+      <p>Les revenus mobiliers sont soumis à la <strong>Flat-Tax</strong>, décomposée en <strong>12,8 %</strong> d'imposition (PFU) et en prélèvements sociaux. Une option pour le <strong>barème progressif de l'IR</strong> reste possible, de façon annuelle et globale.</p>
+
+      <div class="callout c-maj">
+        <div class="ct">🆕 Mise à jour 2026 — LFSS</div>
+        <p>La <strong>LFSS 2026</strong> a porté la CSG sur les revenus du capital de 9,2 % à 10,6 %. Les prélèvements sociaux passent donc de 17,2 % à <strong>18,6 %</strong> et la flat-tax à <strong>31,4 %</strong> pour la plupart des revenus mobiliers : intérêts de livrets fiscalisés, DAT, comptes-titres, dividendes, plus-values, PEA et PER.<br>
+        Restent à <strong>17,2 %</strong>, par exception explicite : l'<strong>assurance vie</strong>, le <strong>PEL</strong>, le <strong>CEL</strong>, le <strong>PEP</strong>, les revenus fonciers et les plus-values immobilières — leur flat-tax demeure à 30 %. Livret A, LDDS, LEP et Livret Jeune restent totalement exonérés.</p>
+      </div>
+
+      <div class="rulebox">
+        <div class="rb-main">Deux taux coexistent depuis 2026 : <em>31,4 %</em> (12,8 + 18,6) au cas général · <em>30 %</em> (12,8 + 17,2) pour l'assurance vie, le PEL, le CEL et le PEP.</div>
+        <div class="rb-sub"><em>Case 2OP</em> : si le client n'est pas imposable sur le revenu, il coche cette case pour déclarer les intérêts à l'IR au même titre que ses autres revenus. <em>Dispense d'acompte</em> : à demander avant le 30 novembre si le client ne sera pas imposable l'année n+1 — il ne paie alors que les 17,2 % de PS, sans avance de 12,8 % à se faire rembourser ensuite.</div>
+      </div>
+
+      <p>Le <strong>DAT</strong> (dépôt à terme) a une durée variable selon les banques (souvent 5 à 7 ans), avec retrait possible à tout moment (total ou partiel) mais sans rémunération si la durée est inférieure à 1 mois. La rémunération peut être fixe ou progressive, et le PFU appliqué est de <strong>31,4 %</strong>.</p>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Quinzaine = k × taux annuel × 1/24, dépôt à J-1 · Livret A (83 % de détention, plafond 22 950 €) reste le plus détenu, loin devant le PEL (11,8 %, en chute) · Flat-tax 31,4 % au cas général (12,8 + 18,6), 30 % pour l'assurance vie, le PEL, le CEL et le PEP · case 2OP et dispense d'acompte pour les foyers non imposables.</p>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Ne confondez pas la <strong>case 2OP</strong> (déclarer les revenus à l'IR après coup) et la <strong>dispense d'acompte</strong> (éviter le prélèvement de 12,8 % en amont) : la première agit sur la déclaration, la seconde sur le prélèvement à la source. Un foyer non imposable a intérêt à la dispense d'acompte, demandée avant le 30 novembre.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Un client dépose 6 000 € sur un livret à 2,00 %. Quel est le montant d'une quinzaine d'intérêts ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">10,00 €</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">5,00 €</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">2,50 €</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> 6 000 × 2,00 % × 1/24 = 5,00 €.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">En 2026, quelle est la flat-tax applicable aux intérêts d'un DAT ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">30 % (12,8 + 17,2)</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">31,4 % (12,8 + 18,6)</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">17,2 % seulement</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Depuis la LFSS 2026, les PS sont à 18,6 % au cas général. Seuls l'assurance vie, le PEL, le CEL et le PEP restent à 17,2 %, donc à 30 % de flat-tax.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l3')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l4',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 5 ============ -->
+    <section class="view" data-view="l5">
+      <span class="tag">Leçon 5 · Placements</span>
+      <h1 class="lesson-title">L'épargne à moyen et long terme</h1>
+      <p class="subtitle">PEL, PEP, CTO, PEA : quatre enveloppes, quatre logiques de plafond, de fiscalité et de durée.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Si les livrets sont des tiroirs qu'on ouvre tous les jours, le PEL, le PEA ou le CTO sont plutôt des coffres à horizon : on y range de l'argent pour plus tard, avec des règles de sortie et une fiscalité qui récompensent la patience.</p>
+      </div>
+
+      <table class="tbl wrap">
+        <tr><th>Produit</th><th>Caractéristiques clés</th></tr>
+        <tr><td>PEL</td><td>Toute personne physique · taux fixe · versement initial 225 € · capital maxi 61 200 € · prime d'État supprimée pour les PEL ouverts après le 01/01/2018 · prêt maxi 92 000 € (taux du prêt = taux de rémunération + 1,20 %)</td></tr>
+        <tr><td>PEL à versement unique</td><td>Formule associant un PEL et des DAT qui l'alimentent · durée 4 à 8 ans selon les banques · permet la valorisation d'un capital ou une rente · nom commercial différent selon l'enseigne</td></tr>
+        <tr><td>PEP</td><td>Personne physique majeure · taux fixe ou révisable (plancher = taux du Livret A + 1,50 %) · minimum 30 € / plafond de versement 92 000 € · durée conseillée 8 ans · retraits partiels possibles · transférable entre banques · commercialisation arrêtée en 2003</td></tr>
+        <tr><td>CTO</td><td>Fiscalité sur les revenus d'obligations, les dividendes et la cession de valeurs mobilières</td></tr>
+        <tr><td>PEA</td><td>2 enveloppes (compte espèces + compte titres) · un seul PEA par contribuable, à partir de 18 ans · plafond 150 000 € · titres possibles : actions, ETF, OPC (pas d'obligations) · transférable entre banques · <strong>durée de détention minimum : 5 ans</strong> (si achat avant clôture)</td></tr>
+        <tr><td>FCPI / OPCI</td><td>Pierre-papier : quote-part d'une valeur immobilière · l'OPCI investit 60 % en immobilier et 40 % en actions foncières cotées · fiscalité : PS à 17,2 % pour les SCPI · durée d'investissement conseillée 8 ans · s'investit via un CTO ou une assurance vie</td></tr>
+      </table>
+
+      <div class="rulebox">
+        <div class="rb-main">Le PEL à versement unique change de nom selon la banque : <em>Solidi Transitions</em> au Crédit Mutuel, <em>Carré vert / bleu</em> au Crédit Agricole, <em>Capital Plus</em> au CIC, <em>Moisson / Messidor</em> à la Banque Populaire, <em>Quadretto</em> à la Caisse d'Épargne.</div>
+        <div class="rb-sub">Un même produit, un vocabulaire différent par réseau — un repère utile pour ne pas se perdre entre les appellations commerciales.</div>
+      </div>
+
+      <div class="rulebox">
+        <div class="rb-main">Comparatif des plafonds : Livret A <em>22 950 €</em> · LDDS <em>12 000 €</em> · LEP <em>10 000 €</em> · PEL <em>61 300 €</em> (détention) / capital maxi 61 200 € · PEP <em>92 000 €</em> · PEA <em>150 000 €</em> (+ PEA-PME 75 000 €).</div>
+        <div class="rb-sub">Le PEA reste l'enveloppe au plafond le plus élevé, et le seul à donner accès aux marchés actions avec une fiscalité avantageuse.</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">📂 Cas pratique</div>
+        <div class="step"><div class="sn">1</div><div class="sc">Un client de 25 ans souhaite investir en actions sur le long terme, avec une fiscalité optimisée. <b>Quelle enveloppe lui proposer en priorité, et pourquoi pas le CTO ?</b></div></div>
+        <div class="step"><div class="sn">2</div><div class="sc">Le <b>PEA</b> est adapté : il a 18 ans révolus, un seul PEA par contribuable, plafond 150 000 € (+ 75 000 € en PEA-PME), et une fiscalité de cession avantageuse après 5 ans.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc">Le <b>CTO</b> reste possible mais moins optimisé fiscalement : les dividendes et plus-values y sont imposés dès la réalisation, sans le régime de faveur du PEA.</div></div>
+        <div class="ex-result">Conclusion : PEA en priorité pour un investisseur actions long terme éligible, CTO en complément une fois le PEA saturé.</div>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>PEL : capital maxi 61 200 €, prime d'État supprimée après 2018 · PEP : plus commercialisé depuis 2003 mais toujours détenu par certains clients · PEA : 150 000 € (+ 75 000 € PEA-PME), un seul par contribuable dès 18 ans, pas d'obligations éligibles · CTO : fiscalité de droit commun sur obligations, dividendes, cessions.</p>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Ne confondez pas le plafond du <strong>PEA</strong> (150 000 €) et celui du <strong>PEA-PME</strong> (75 000 €) : ce sont deux enveloppes distinctes mais cumulables, pour un total possible de 225 000 €.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Depuis quand la prime d'État n'existe-t-elle plus sur les nouveaux PEL ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">2003</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">01/01/2018</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">2021</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Les PEL ouverts après le 1er janvier 2018 n'ouvrent plus droit à la prime d'État.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Quel est le plafond de versement du PEA, hors PEA-PME ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">75 000 €</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">150 000 €</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">92 000 €</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> 150 000 € pour le PEA classique, 75 000 € en complément pour le PEA-PME.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l4')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l5',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 6 ============ -->
+    <section class="view" data-view="l6">
+      <span class="tag">Leçon 6 · Assurance vie</span>
+      <h1 class="lesson-title">L'assurance vie, le couteau suisse du patrimoine</h1>
+      <p class="subtitle">Deux fiscalités, une clause bénéficiaire libre, et un choix de supports qui fait toute la différence entre deux contrats.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>L'assurance vie, c'est une enveloppe à double sortie : une porte "de mon vivant" (je récupère mon épargne) et une porte "après moi" (mes bénéficiaires reçoivent un capital). Chaque porte a ses propres règles fiscales — c'est ce qui rend le produit si souple, et si souvent mal expliqué.</p>
+      </div>
+
+      <p>L'assurance vie est une forme d'épargne où l'assureur verse à l'assuré, <strong>en cas de vie</strong>, un capital ou une rente à l'échéance du contrat ; et, <strong>en cas de décès</strong>, un capital aux bénéficiaires désignés. Elle possède donc <strong>deux fiscalités distinctes</strong>, et la <strong>clause bénéficiaire est libre</strong> — c'est l'un de ses atouts majeurs en transmission.</p>
+
+      <div class="schema">
+        <svg viewBox="0 0 620 180" xmlns="http://www.w3.org/2000/svg">
+          <g font-family="DM Sans" font-size="13">
+            <rect x="215" y="12" width="190" height="42" rx="11" fill="var(--navy-soft)" stroke="var(--navy)" stroke-width="2"/>
+            <text x="310" y="38" text-anchor="middle" font-weight="700" fill="var(--navy)">Contrat d'assurance vie</text>
+            <path d="M270 54 L150 88" stroke="var(--muted2)" stroke-width="1.5" fill="none"/>
+            <path d="M350 54 L470 88" stroke="var(--muted2)" stroke-width="1.5" fill="none"/>
+            <rect x="30" y="88" width="240" height="72" rx="11" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="2"/>
+            <text x="150" y="112" text-anchor="middle" font-weight="700" fill="var(--teal)">En cas de VIE</text>
+            <text x="150" y="131" text-anchor="middle" font-size="11" fill="var(--teal-deep)">Avant 8 ans → PFU</text>
+            <text x="150" y="148" text-anchor="middle" font-size="11" fill="var(--teal-deep)">Après 8 ans → abattement + 7,5 %</text>
+            <rect x="350" y="88" width="240" height="72" rx="11" fill="var(--rust-soft)" stroke="var(--rust)" stroke-width="2"/>
+            <text x="470" y="112" text-anchor="middle" font-weight="700" fill="var(--rust)">En cas de DÉCÈS</text>
+            <text x="470" y="131" text-anchor="middle" font-size="11" fill="var(--rust-deep)">152 500 € exonérés / bénéficiaire</text>
+            <text x="470" y="148" text-anchor="middle" font-size="11" fill="var(--rust-deep)">puis 20 %, puis 31,25 %</text>
+          </g>
+        </svg>
+        <div class="scap">Un seul contrat, deux régimes fiscaux selon la porte de sortie.</div>
+      </div>
+
+      <h2>La fiscalité en cas de décès</h2>
+      <table class="tbl wrap">
+        <tr><th>Tranche</th><th>Taxation</th></tr>
+        <tr><td>Jusqu'à 152 500 €</td><td>Exonéré</td></tr>
+        <tr><td>De 152 500 € à 852 500 €</td><td>20 %</td></tr>
+        <tr><td>Au-delà de 852 500 €</td><td>31,25 %</td></tr>
+      </table>
+
+      <h2>La fiscalité en cas de vie</h2>
+      <table class="tbl wrap">
+        <tr><th>Situation</th><th>Taxation</th></tr>
+        <tr><td>Avant 8 ans</td><td>PFU</td></tr>
+        <tr><td>Après 8 ans — encours &lt; 150 k€</td><td>Abattement de 4 600 € par personne, puis 7,5 % + PS</td></tr>
+        <tr><td>Après 8 ans — encours &gt; 150 k€</td><td>PFU</td></tr>
+      </table>
+
+      <div class="rulebox">
+        <div class="rb-main">Décès : <em>152 500 €</em> exonérés · <em>20 %</em> jusqu'à 852 500 € · <em>31,25 %</em> au-delà. Vie : <em>8 ans</em> est la date-pivot.</div>
+        <div class="rb-sub">Après 8 ans, l'abattement annuel de 4 600 € par personne (9 200 € pour un couple) s'applique avant le taux de 7,5 %, à condition que l'encours reste sous 150 k€.</div>
+      </div>
+
+      <h2>Le contrat multisupport</h2>
+      <table class="tbl wrap">
+        <tr><th>Support</th><th>Caractéristiques</th></tr>
+        <tr><td>Fonds en euros (F€)</td><td>Indexé sur les emprunts d'État · niveau 1/7 sur l'échelle du risque · prélèvements sociaux prélevés au 31/12</td></tr>
+        <tr><td>Unités de compte (UC)</td><td>Actions, obligations, OPC, SCPI, FAF, ETF · prélèvements sociaux prélevés à la sortie ou au rachat</td></tr>
+      </table>
+
+      <div class="rulebox">
+        <div class="rb-main">FGAP : la garantie des dépôts en assurance vie s'élève à <em>70 000 €</em> par assuré et par compagnie.</div>
+        <div class="rb-sub">À comparer aux 100 000 € du FGDR pour les dépôts bancaires : ce n'est pas le même fonds ni le même montant.</div>
+      </div>
+
+      <h2>Ce qui distingue deux compagnies d'assurance</h2>
+      <p>À produit apparemment identique, les écarts se jouent sur : le <strong>ticket d'entrée</strong>, les <strong>frais</strong>, la <strong>rémunération du fonds en euros</strong>, le <strong>nombre d'UC</strong> disponibles, la présence d'<strong>UC de filiale</strong> (asset management maison), et le nombre d'<strong>options financières</strong> proposées — stop loss relatif, sécurisation des plus-values, investissement progressif, dynamisation des performances.</p>
+
+      <div class="example">
+        <div class="ex-head">📂 Cas pratique</div>
+        <div class="step"><div class="sn">1</div><div class="sc">M. Guillou, 62 ans, a ouvert son contrat il y a 12 ans. Il détient 120 000 € et souhaite racheter 10 000 € de plus-values. <b>Quelle fiscalité s'applique ?</b></div></div>
+        <div class="step"><div class="sn">2</div><div class="sc">Le contrat a <b>plus de 8 ans</b> : le régime de faveur s'applique.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc">L'encours (120 000 €) est <b>inférieur à 150 k€</b> : on reste dans le régime abattement + 7,5 %.</div></div>
+        <div class="step"><div class="sn">4</div><div class="sc">L'abattement de <b>4 600 €</b> s'applique sur les plus-values : il reste 10 000 - 4 600 = <b>5 400 €</b> taxés à 7,5 %, plus les prélèvements sociaux.</div></div>
+        <div class="ex-result">Réponse : 5 400 € × 7,5 % = 405 € d'impôt, auxquels s'ajoutent les PS sur l'intégralité des plus-values.</div>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Deux fiscalités (vie / décès) · clause bénéficiaire libre · 8 ans = date-pivot en cas de vie · 152 500 € exonérés par bénéficiaire en cas de décès · FGAP à 70 000 € · fonds € : PS au 31/12 ; UC : PS à la sortie.</p>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Le moment du <strong>prélèvement des PS</strong> diffère selon le support : chaque 31/12 sur le fonds en euros, mais seulement à la sortie ou au rachat sur les UC. C'est une question de QCM classique, et une vraie différence d'effet de capitalisation pour le client.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Quel montant est exonéré par bénéficiaire en cas de décès ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">70 000 €</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">152 500 €</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">852 500 €</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> 152 500 € exonérés, puis 20 % jusqu'à 852 500 €, puis 31,25 %. Les 70 000 € correspondent au FGAP.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Sur un fonds en euros, quand les prélèvements sociaux sont-ils prélevés ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">Chaque année au 31/12</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">À la sortie ou au rachat</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Au bout de 8 ans</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Fonds € : PS au 31/12 chaque année. UC : PS à la sortie ou au rachat.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l5')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l6',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 7 ============ -->
+    <section class="view" data-view="l7">
+      <span class="tag">Leçon 7 · Retraite</span>
+      <h1 class="lesson-title">Le PER : déduire aujourd'hui, être imposé demain</h1>
+      <p class="subtitle">Le mécanisme de déductibilité, les deux modes de sortie et leur fiscalité respective.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Le PER, c'est un report d'impôt plus qu'une exonération : on décale la fiscalité du moment où l'on gagne bien sa vie (et où l'on est fortement imposé) vers la retraite (où le taux marginal baisse souvent). Le gain vient de l'écart entre les deux taux, pas d'un cadeau fiscal.</p>
+      </div>
+
+      <p>Le PER permet de verser jusqu'à <strong>10 % du revenu imposable</strong> en versements volontaires déductibles, avec la possibilité de revenir sur les <strong>5 dernières années</strong> pour les versements non utilisés. Il comporte <strong>6 cas de déblocage</strong> anticipé.</p>
+
+      <h2>La fiscalité selon le mode de sortie</h2>
+      <table class="tbl wrap">
+        <tr><th>Sortie</th><th>Fiscalité (versements volontaires déductibles)</th></tr>
+        <tr><td>En capital</td><td>Sur le capital versé : IR sans abattement · sur les plus-values : PFU à 31,4 %</td></tr>
+        <tr><td>En rente viagère</td><td>Rente soumise à l'IR après abattement, plus 18,6 % de prélèvements sociaux</td></tr>
+      </table>
+
+      <div class="rulebox">
+        <div class="rb-main">Plafond de versement déductible : <em>10 %</em> du revenu imposable, avec rattrapage possible sur les <em>5 dernières années</em>.</div>
+        <div class="rb-sub">La contrepartie de la déduction à l'entrée est l'imposition à la sortie : sur le capital versé, l'IR s'applique <em>sans abattement</em>.</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">📂 Cas pratique</div>
+        <div class="step"><div class="sn">1</div><div class="sc">Mme Rio déclare 48 000 € de revenu imposable. <b>Quel montant peut-elle verser sur son PER en déduction cette année ?</b></div></div>
+        <div class="step"><div class="sn">2</div><div class="sc">Le plafond annuel est de <b>10 % du revenu imposable</b> : 48 000 × 10 % = <b>4 800 €</b>.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc">Si elle n'a rien versé les années précédentes, elle peut mobiliser les plafonds non utilisés des <b>5 dernières années</b> et verser bien davantage.</div></div>
+        <div class="ex-result">Réponse : 4 800 € au titre de l'année en cours, majorés des plafonds non consommés antérieurs.</div>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>6 cas de déblocage · versement déductible plafonné à 10 % du revenu imposable · rattrapage sur 5 ans · sortie en capital : IR sans abattement sur le capital + PFU 31,4 % sur les plus-values · sortie en rente : IR après abattement + 18,6 % de PS.</p>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Ne confondez pas les deux taux de prélèvements sociaux qui circulent dans ce cours : <strong>17,2 %</strong> (revenus mobiliers classiques, flat-tax à 30 %) et <strong>18,6 %</strong> (rentes du PER, flat-tax à 31,4 %). Le PFU du DAT et des plus-values de PER est bien de 31,4 %, pas de 30 %.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Quel pourcentage du revenu imposable peut-on verser en déduction sur un PER ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">5 %</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">10 %</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">20 %</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> 10 % du revenu imposable, avec possibilité de rattrapage sur les 5 dernières années.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">En cas de sortie en rente viagère, quel taux de prélèvements sociaux s'applique ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">17,2 %</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">18,6 %</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">31,4 %</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> La rente est soumise à l'IR après abattement, plus 18,6 % de PS. Les 31,4 % correspondent au PFU sur les plus-values en sortie capital.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l6')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l7',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 8 ============ -->
+    <section class="view" data-view="l8">
+      <span class="tag">Leçon 8 · Gestion</span>
+      <h1 class="lesson-title">Gestion individualisée ou collective ?</h1>
+      <p class="subtitle">Mandat, conseil, OPC : qui décide quoi, et sous quelle forme juridique.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Gestion sous mandat, c'est confier le volant à un chauffeur. Gestion conseillée, c'est garder le volant avec un copilote qui indique la route. Gestion collective, c'est monter dans un bus déjà en circulation avec d'autres passagers : on ne choisit pas l'itinéraire, on choisit le bus.</p>
+      </div>
+
+      <h2>La gestion individualisée</h2>
+      <p>Elle s'adresse aux entreprises, aux investisseurs institutionnels et aux clients privés disposant de <strong>gros capitaux</strong>. Elle prend deux formes.</p>
+
+      <table class="tbl wrap">
+        <tr><th>Forme</th><th>Fonctionnement</th></tr>
+        <tr><td>Gestion sous mandat</td><td>Mandat donné par le client à une société de gestion · gestion en fonction du profil du client · envoi d'un reporting régulier</td></tr>
+        <tr><td>Gestion conseillée</td><td>Aide à la gestion d'un portefeuille titres · propositions d'investissement selon le profil du client et l'anticipation des marchés · le client reste libre d'accepter ou non les recommandations</td></tr>
+      </table>
+
+      <div class="rulebox">
+        <div class="rb-main">Sous mandat : la société de gestion <em>décide</em>. Conseillée : la société <em>propose</em>, le client <em>décide</em>.</div>
+        <div class="rb-sub">C'est la ligne de partage à retenir — elle détermine qui porte la responsabilité de l'arbitrage.</div>
+      </div>
+
+      <h2>La gestion collective</h2>
+      <p>Elle permet d'investir par l'intermédiaire d'un <strong>OPC</strong>, c'est-à-dire indirectement dans des actions, obligations et autres valeurs mobilières. Un OPC est un <strong>portefeuille (ou panier) de valeurs</strong>.</p>
+
+      <table class="tbl wrap">
+        <tr><th>Forme juridique</th><th>Nature</th></tr>
+        <tr><td>SICAV</td><td>Société anonyme</td></tr>
+        <tr><td>FCP</td><td>Copropriété de valeurs mobilières, sans personnalité morale</td></tr>
+      </table>
+
+      <div class="rulebox">
+        <div class="rb-main">Classification des OPC selon l'AMF : <em>fonds à formule</em> · <em>fonds alternatifs</em> · <em>actions</em> · <em>obligations</em> · <em>monétaires</em>.</div>
+        <div class="rb-sub">Cinq catégories à connaître dans l'ordre — un grand classique de QCM.</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">📂 Cas pratique</div>
+        <div class="step"><div class="sn">1</div><div class="sc">Un client au patrimoine modeste souhaite s'exposer aux actions sans gérer lui-même ses lignes. <b>Vers quel type de gestion l'orienter ?</b></div></div>
+        <div class="step"><div class="sn">2</div><div class="sc">La <b>gestion individualisée</b> (mandat ou conseillée) suppose de gros capitaux : elle n'est pas adaptée ici.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc">La <b>gestion collective</b> via un OPC actions permet une exposition diversifiée dès de faibles montants, sous forme de SICAV ou de FCP.</div></div>
+        <div class="ex-result">Conclusion : gestion collective via un OPC actions, logeable dans un PEA, un CTO ou une assurance vie en UC.</div>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Individualisée = gros capitaux, sous mandat (la société décide) ou conseillée (le client décide) · collective = OPC, panier de valeurs · SICAV = société anonyme, FCP = copropriété sans personnalité morale · 5 classes AMF.</p>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>La différence entre <strong>SICAV</strong> et <strong>FCP</strong> n'est pas une question de stratégie mais de <strong>forme juridique</strong> : la SICAV est une société anonyme (l'investisseur est actionnaire), le FCP est une copropriété sans personnalité morale (l'investisseur est copropriétaire de parts).</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Dans une gestion conseillée, qui prend la décision finale d'investissement ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">La société de gestion</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Le client</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">L'AMF</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> En gestion conseillée, la société propose, le client reste libre d'accepter ou non. Sous mandat, c'est la société qui décide.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Quelle est la forme juridique d'un FCP ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Une société anonyme</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Une copropriété de valeurs mobilières sans personnalité morale</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Une association</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Le FCP est une copropriété sans personnalité morale ; c'est la SICAV qui est une société anonyme.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l7')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l8',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 9 ============ -->
+    <section class="view" data-view="l9">
+      <span class="tag">Leçon 9 · Crédit</span>
+      <h1 class="lesson-title">Le cadre légal du crédit</h1>
+      <p class="subtitle">Quatre lois, deux taux de référence et deux montages spécifiques qui structurent toute la distribution du crédit.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Le crédit est un terrain de jeu très balisé : chaque loi a posé une ligne blanche. Neiertz protège du surendettement, Lagarde informe l'emprunteur, la VTS vérifie qu'il tient toujours debout, Hamon l'empêche d'être piégé par un contrat dormant.</p>
+      </div>
+
+      <h2>Les quatre lois à connaître</h2>
+      <table class="tbl wrap">
+        <tr><th>Loi</th><th>Objet et contenu</th></tr>
+        <tr><td>Loi Neiertz</td><td>Lutter contre le surendettement, avec 3 orientations : développer la prévention, organiser une procédure de règlement du surendettement des familles, responsabiliser davantage prêteurs et emprunteurs</td></tr>
+        <tr><td>Loi Lagarde (LCC)</td><td>Améliorer l'information et la protection du consommateur · concerne les prêts consentis à titre privé à des personnes physiques · crédit conso = entre 200 € et 75 000 € · rétractation de 14 jours à compter de l'acceptation · mise à disposition des fonds à partir du 8<sup>e</sup> jour (délai de 7 jours) · en cas de rétractation, l'emprunteur restitue les fonds</td></tr>
+        <tr><td>VTS</td><td>Vérification triennale de solvabilité : vérifier que les emprunteurs sont toujours solvables · préalable au renouvellement du contrat · obligatoire pour les contrats de 3 ans et plus</td></tr>
+        <tr><td>Loi Hamon</td><td>Le client doit être informé de la possibilité de ne pas reconduire un contrat à durée déterminée comportant une clause de reconduction tacite · les contrats inactifs depuis 12 mois sont suspendus 12 mois (soit 24 au total) puis résiliés automatiquement, sauf reconduction acceptée (crédit renouvelable)</td></tr>
+      </table>
+
+      <div class="rulebox">
+        <div class="rb-main">Loi Lagarde : crédit conso entre <em>200 €</em> et <em>75 000 €</em> · rétractation <em>14 jours</em> · fonds disponibles au <em>8<sup>e</sup> jour</em>.</div>
+        <div class="rb-sub">Trois chiffres qui tombent très souvent en QCM. Ne pas confondre les 14 jours de rétractation et les 7 jours de mise à disposition des fonds : ce sont deux délais distincts qui courent en parallèle.</div>
+      </div>
+
+      <h2>Les deux taux de référence</h2>
+      <table class="tbl wrap">
+        <tr><th>Taux</th><th>Définition</th></tr>
+        <tr><td>TAEG</td><td>Taux annuel effectif global : taux nominal + frais de dossier + frais de garantie + assurance · instrument de mesure légal permettant de comparer d'une banque à l'autre · doit figurer dans toute publicité ou offre de crédit</td></tr>
+        <tr><td>Taux d'usure</td><td>Taux maximum auquel il est possible de prêter à un client · c'est le TAEG à ne pas dépasser · calculé chaque trimestre par la Banque de France</td></tr>
+      </table>
+
+      <div class="rulebox">
+        <div class="rb-main">TAEG = taux nominal + <em>frais de dossier</em> + <em>frais de garantie</em> + <em>assurance</em>.</div>
+        <div class="rb-sub">Le taux d'usure est le plafond de ce TAEG, recalculé chaque trimestre par la Banque de France.</div>
+      </div>
+
+      <h2>Deux montages spécifiques</h2>
+      <table class="tbl wrap">
+        <tr><th>Montage</th><th>Usage</th></tr>
+        <tr><td>Prêt relais</td><td>Financer l'achat ou la construction d'un bien dans l'attente de la vente d'un autre bien</td></tr>
+        <tr><td>Crédit revente</td><td>Éviter à l'emprunteur le cumul des charges avant la vente effective du bien, en rachetant le bien existant</td></tr>
+      </table>
+
+      <div class="example">
+        <div class="ex-head">📂 Cas pratique</div>
+        <div class="step"><div class="sn">1</div><div class="sc">Un client signe une offre de crédit conso de 12 000 € le 3 du mois. <b>Quels délais s'appliquent ?</b></div></div>
+        <div class="step"><div class="sn">2</div><div class="sc">Le montant (12 000 €) est bien dans la fourchette de la <b>loi Lagarde</b> : entre 200 € et 75 000 €.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc">Il dispose de <b>14 jours</b> de rétractation à compter de son acceptation, soit jusqu'au 17.</div></div>
+        <div class="step"><div class="sn">4</div><div class="sc">Les fonds sont mis à disposition à partir du <b>8<sup>e</sup> jour</b>, soit le 11. S'il se rétracte ensuite, il doit restituer les fonds.</div></div>
+        <div class="ex-result">Conclusion : les fonds peuvent arriver avant la fin du délai de rétractation — d'où l'obligation de restitution en cas de renonciation.</div>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Neiertz = surendettement (3 orientations) · Lagarde = information du consommateur (200-75 000 €, 14 j, 8<sup>e</sup> jour) · VTS = solvabilité, contrats de 3 ans et plus · Hamon = reconduction tacite et contrats dormants (12 + 12 mois) · TAEG = outil de comparaison · taux d'usure = plafond trimestriel Banque de France.</p>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Le <strong>TAEG</strong> n'est pas le taux nominal : il intègre les frais de dossier, les frais de garantie et l'assurance. Un crédit affiché à 3,50 % nominal peut dépasser 4 % en TAEG — c'est justement pour cela que seul le TAEG permet une comparaison honnête entre deux banques.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Quelle est la fourchette d'un crédit à la consommation au sens de la loi Lagarde ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">De 0 à 50 000 €</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">De 200 € à 75 000 €</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">De 1 000 € à 100 000 €</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Le crédit conso est compris entre 200 € et 75 000 € au sens de la LCC.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Qui calcule le taux d'usure, et à quelle fréquence ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">L'AMF, chaque année</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">La Banque de France, chaque trimestre</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">La BCE, chaque mois</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Le taux d'usure est calculé trimestriellement par la Banque de France : c'est le TAEG maximum autorisé.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l8')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l9',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 10 ============ -->
+    <section class="view" data-view="l10">
+      <span class="tag">Leçon 10 · Garanties</span>
+      <h1 class="lesson-title">Les garanties du crédit</h1>
+      <p class="subtitle">Personnelles ou réelles : sur qui — ou sur quoi — la banque se retourne en cas de défaut.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Une garantie personnelle, c'est quelqu'un qui lève la main et dit "s'il ne paie pas, je paierai". Une garantie réelle, c'est un bien qu'on met sur la table : la banque ne compte pas sur une personne, mais sur une chose qu'elle pourra saisir et revendre.</p>
+      </div>
+
+      <table class="tbl wrap">
+        <tr><th>Type</th><th>Mécanisme</th></tr>
+        <tr><td>Garantie personnelle : la caution</td><td>Engagement de payer à la place du débiteur défaillant</td></tr>
+        <tr><td>Garantie réelle : hypothèque et PPD</td><td>Droit de saisir le bien remis en garantie en cas de non-paiement et de le revendre (PPD = hypothèque légale spéciale du prêteur de deniers)</td></tr>
+        <tr><td>Garantie réelle : le nantissement</td><td>Permet à un débiteur de garantir par convention une dette auprès d'un créancier, en lui cédant en garantie un bien, un fonds ou une valeur dont il est propriétaire, <strong>sans en être dépossédé</strong></td></tr>
+      </table>
+
+      <div class="rulebox">
+        <div class="rb-main">Garantie <em>personnelle</em> = on se retourne contre quelqu'un. Garantie <em>réelle</em> = on se retourne contre un bien.</div>
+        <div class="rb-sub">Le nantissement se distingue du gage classique : le débiteur conserve la jouissance du bien nanti, il n'en est pas dépossédé.</div>
+      </div>
+
+      <h2>Les dispositifs complémentaires</h2>
+      <table class="tbl wrap">
+        <tr><th>Dispositif</th><th>Contenu</th></tr>
+        <tr><td>Cautionnement mutuel</td><td>Crédit Logement, CAMCA Assurance, cautions « mutuelles »</td></tr>
+        <tr><td>Les assurances</td><td>ADE (assurance décès-emprunteur), assurance chômage</td></tr>
+        <tr><td>FGAS</td><td>Fonds de garantie de l'accession sociale</td></tr>
+      </table>
+
+      <div class="rulebox">
+        <div class="rb-main">Deux types de prêts : le crédit <em>amortissable</em> et le crédit <em>renouvelable</em>.</div>
+        <div class="rb-sub">Le crédit renouvelable est celui visé par la loi Hamon sur les contrats inactifs (12 + 12 mois avant résiliation automatique).</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">📂 Cas pratique</div>
+        <div class="step"><div class="sn">1</div><div class="sc">Un client finance sa résidence principale et hésite entre une hypothèque et une caution Crédit Logement. <b>Comment qualifier juridiquement ces deux garanties ?</b></div></div>
+        <div class="step"><div class="sn">2</div><div class="sc">L'<b>hypothèque</b> est une garantie <b>réelle</b> : elle porte sur le bien, que la banque pourra saisir et revendre.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc">La caution Crédit Logement relève du <b>cautionnement mutuel</b>, donc d'une garantie <b>personnelle</b> : un organisme s'engage à payer à la place du débiteur défaillant.</div></div>
+        <div class="ex-result">Conclusion : même objectif de sécurisation, deux logiques juridiques opposées — sur le bien d'un côté, sur un engagement de paiement de l'autre.</div>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Personnelles : caution · réelles : hypothèque, PPD, nantissement (sans dépossession) · cautionnement mutuel : Crédit Logement, CAMCA · assurances : ADE, chômage · FGAS pour l'accession sociale · 2 types de prêts : amortissable et renouvelable.</p>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Attention à ne pas confondre le <strong>FGAS</strong> (fonds de garantie de l'accession sociale, côté crédit) et le <strong>FGAP</strong> (garantie de 70 000 € en assurance vie, vu en leçon 6). Deux sigles voisins, deux mondes différents.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Le nantissement se caractérise par…</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">La dépossession immédiate du bien</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Une garantie sur un bien dont le débiteur n'est pas dépossédé</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Un engagement d'un tiers de payer à la place du débiteur</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Le nantissement laisse le bien à la disposition du débiteur ; la troisième proposition décrit la caution.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Que signifie PPD ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">Hypothèque légale spéciale du prêteur de deniers</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Prêt à paiement différé</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Plan de prévention des dettes</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Le PPD est l'hypothèque légale spéciale du prêteur de deniers, une garantie réelle.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l9')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l10',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 11 ============ -->
+    <section class="view" data-view="l11">
+      <span class="tag">Leçon 11 · Assurances</span>
+      <h1 class="lesson-title">Les assurances et la responsabilité civile</h1>
+      <p class="subtitle">Assurances de biens, assurances de personnes, et le mécanisme juridique qui fonde toute indemnisation.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>La responsabilité civile fonctionne comme une chaîne à trois maillons : une faute, un lien de causalité, un dommage. Si un maillon manque, la chaîne ne tient pas et l'indemnisation ne peut pas être réclamée.</p>
+      </div>
+
+      <h2>Les deux familles d'assurances</h2>
+      <table class="tbl wrap">
+        <tr><th>Famille</th><th>Produits</th></tr>
+        <tr><td>Assurances de biens</td><td>Habitation · véhicules terrestres à moteur · bateau · responsabilités civiles diverses</td></tr>
+        <tr><td>Assurances de personnes</td><td>Dépendance · GAV (garantie des accidents de la vie) · capital décès · obsèques</td></tr>
+      </table>
+
+      <h2>La responsabilité civile</h2>
+      <p>L'article <strong>1240 du Code civil</strong> pose le principe : tout fait quelconque de l'homme qui cause à autrui un dommage oblige celui par la faute duquel il est arrivé à le réparer.</p>
+
+      <div class="rulebox">
+        <div class="rb-main"><em>Faute</em> ⟶ <em>lien de causalité</em> ⟶ <em>dommage</em></div>
+        <div class="rb-sub">Pour faire jouer la responsabilité civile, retenir le moyen mnémotechnique <em>D.U.C.</em> : Direction · Usage · Contrôle.</div>
+      </div>
+
+      <div class="schema">
+        <svg viewBox="0 0 620 120" xmlns="http://www.w3.org/2000/svg">
+          <g font-family="DM Sans" font-size="13">
+            <rect x="20" y="40" width="160" height="50" rx="11" fill="var(--rust-soft)" stroke="var(--rust)" stroke-width="2"/>
+            <text x="100" y="70" text-anchor="middle" font-weight="700" fill="var(--rust)">Faute</text>
+            <path d="M185 65 L225 65" stroke="var(--muted2)" stroke-width="2" marker-end="url(#ar)"/>
+            <rect x="230" y="40" width="160" height="50" rx="11" fill="var(--amber-soft)" stroke="var(--amber)" stroke-width="2"/>
+            <text x="310" y="70" text-anchor="middle" font-weight="700" fill="var(--amber-deep)">Lien de causalité</text>
+            <path d="M395 65 L435 65" stroke="var(--muted2)" stroke-width="2" marker-end="url(#ar)"/>
+            <rect x="440" y="40" width="160" height="50" rx="11" fill="var(--navy-soft)" stroke="var(--navy)" stroke-width="2"/>
+            <text x="520" y="70" text-anchor="middle" font-weight="700" fill="var(--navy)">Dommage</text>
+            <text x="310" y="22" text-anchor="middle" font-family="Fraunces" font-size="15" font-weight="600" fill="var(--ink)">Les 3 conditions cumulatives</text>
+            <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="var(--muted2)"/></marker></defs>
+          </g>
+        </svg>
+        <div class="scap">Aucune indemnisation sans les trois maillons réunis.</div>
+      </div>
+
+      <p>La responsabilité civile peut être <strong>contractuelle</strong> ou <strong>extracontractuelle</strong>. À distinguer de la <strong>responsabilité pénale</strong>, qui suppose une infraction pénale.</p>
+
+      <table class="tbl wrap">
+        <tr><th>Origine du dommage</th><th>Exemples</th></tr>
+        <tr><td>Fait personnel</td><td>Le dommage causé par soi-même</td></tr>
+        <tr><td>Fait d'autrui</td><td>Le dommage causé par son enfant</td></tr>
+        <tr><td>Fait des choses</td><td>Les choses dont on a la garde</td></tr>
+        <tr><td>Fait des animaux</td><td>Le dommage causé par son animal</td></tr>
+        <tr><td>Fait des bâtiments</td><td>Le dommage causé par un bâtiment dont on est propriétaire</td></tr>
+      </table>
+
+      <div class="rulebox">
+        <div class="rb-main">Les 3 cas d'exonération : <em>force majeure</em> (imprévisible, irrésistible, extérieure) · <em>fait d'un tiers</em> · <em>faute de la victime</em>.</div>
+        <div class="rb-sub">La force majeure n'est retenue que si les trois caractères sont réunis simultanément — un seul manquant suffit à l'écarter.</div>
+      </div>
+
+      <p>La <strong>loi Badinter</strong> vise à améliorer l'indemnisation des victimes d'accidents de la circulation. Sous son régime, la faute de la victime n'est que <strong>rarement admise</strong> : pour le dommage corporel, les piétons, cyclistes et passagers sont quasiment toujours indemnisés.</p>
+
+      <div class="example">
+        <div class="ex-head">📂 Cas pratique</div>
+        <div class="step"><div class="sn">1</div><div class="sc">Le chien d'un client mord un passant sur la voie publique. <b>La responsabilité du client peut-elle être engagée ?</b></div></div>
+        <div class="step"><div class="sn">2</div><div class="sc">Les trois conditions sont à vérifier : <b>faute</b> (défaut de garde), <b>lien de causalité</b>, <b>dommage</b> (la morsure).</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc">Il s'agit d'un dommage causé par le <b>fait des animaux</b>, cas expressément prévu de responsabilité civile.</div></div>
+        <div class="step"><div class="sn">4</div><div class="sc">Le client pourrait s'exonérer en démontrant une <b>faute de la victime</b> (provocation), le <b>fait d'un tiers</b> ou la <b>force majeure</b>.</div></div>
+        <div class="ex-result">Conclusion : responsabilité civile engagée au titre du fait des animaux, sauf cause d'exonération démontrée.</div>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Assurances de biens vs de personnes · article 1240 du Code civil · faute → lien de causalité → dommage · D.U.C. (Direction, Usage, Contrôle) · 5 origines du dommage · 3 cas d'exonération · loi Badinter : faute de la victime rarement admise pour le corporel.</p>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Ne confondez pas responsabilité <strong>civile</strong> (réparer un dommage causé à autrui) et responsabilité <strong>pénale</strong> (sanctionner une infraction). Un même fait peut engager les deux, mais les conditions et les conséquences sont totalement distinctes.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Que recouvre le moyen mnémotechnique D.U.C. ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Dommage, Usage, Causalité</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Direction, Usage, Contrôle</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Défaut, Utilisation, Charge</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Direction, Usage, Contrôle : les trois éléments permettant de faire jouer la responsabilité civile.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Quels sont les trois caractères de la force majeure ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Grave, soudain, coûteux</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Imprévisible, irrésistible, extérieur</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Volontaire, direct, réparable</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Les trois caractères doivent être réunis simultanément pour que la force majeure exonère.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l10')">← Précédent</button>
+        <button class="btn plum" onclick="go('test')">Passer au test final 🎯</button>
+      </div>
+    </section>
+
+    <!-- ============ TEST FINAL ============ -->
+    <section class="view" data-view="test">
+      <span class="tag">Évaluation</span>
+      <h1 class="lesson-title">Test final adaptatif</h1>
+      <p class="subtitle">19 questions sur l'ensemble du cours, au format proche du partiel de janvier (QCM + calcul). En cas d'erreur, une remédiation te renvoie à la bonne leçon.</p>
+
+      <div class="intro-card">
+        <h2>🎯 Format d'examen : QCM + Mini-cas (1h)</h2>
+        <p>Le partiel de janvier mêle QCM et mini-cas pratiques. Ce test s'entraîne surtout sur la partie QCM ; pour la partie mini-cas, direction la section "Mini-cas d'entraînement" ci-contre.</p>
+      </div>
+
+      <div id="testQuestions"></div>
+
+      <div class="lesson-nav" id="testSubmitRow">
+        <button class="btn" onclick="go('l11')">← Revoir le cours</button>
+        <button class="btn plum" onclick="gradeTest()">Valider mes réponses ✓</button>
+      </div>
+
+      <div class="result" id="testResult">
+        <div class="score-lab">Ton score</div>
+        <div class="score-big" id="scoreBig">0</div>
+        <div class="msg" id="scoreMsg"></div>
+        <div class="chapbars" id="chapBars"></div>
+        <div style="margin-top:28px"><button class="btn plum" onclick="resetTest()">↻ Reprendre le test</button></div>
+      </div>
+    </section>
+
+    <!-- ============ MINI-CAS ============ -->
+    <section class="view" data-view="annales">
+      <span class="tag">Mini-cas</span>
+      <h1 class="lesson-title">Mini-cas d'entraînement</h1>
+      <p class="subtitle">Trois situations client type examen, construites à partir de ce cours. Essaie de répondre seul, puis déroule le corrigé étape par étape.</p>
+
+      <div class="intro-card">
+        <h2>📋 Mode révision active</h2>
+        <p>Lis l'énoncé, rédige ta réponse au brouillon, <strong>puis seulement</strong> affiche le corrigé. Ces mini-cas sont construits à partir de ton cours — à remplacer par tes vraies annales dès que tu les auras.</p>
+      </div>
+
+      <!-- Cas 1 -->
+      <div class="annale">
+        <div class="an-tag">Cas 1 · Épargne de précaution</div>
+        <h3>Où placer 15 000 € disponibles ?</h3>
+        <div class="enonce">
+          Mme Le Goff, cliente depuis 3 ans, dispose de 15 000 € qu'elle souhaite placer sans risque, avec une disponibilité totale. Elle a déjà un Livret A ouvert mais n'y a jamais versé plus de 5 000 €. Elle dépose les fonds le 10 du mois.
+          <ul class="qlist">
+            <li>Quel(s) produit(s) lui proposer en priorité, et pourquoi ?</li>
+            <li>Le plafond du Livret A est-il un frein ici ?</li>
+            <li>À partir de quand ses fonds déposés le 10 commencent-ils à produire des intérêts ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Produit à privilégier :</b> le <b>Livret A</b> (défiscalisé, disponible à tout moment, 1,7 % net) reste le premier réflexe pour de l'épargne de précaution. En complément, le <b>LDDS</b> (plafond 12 000 €) peut absorber le reste.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Plafond :</b> non, ce n'est pas un frein. Mme Le Goff n'a versé que 5 000 € sur un plafond de 22 950 € : il reste 17 950 € de marge, largement suffisant pour les 15 000 €.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Quinzaine :</b> déposés le 10, les fonds sont bien avant le J-1 (le 15) de la quinzaine du 16-30/31 : ils commencent donc à produire des intérêts dès la quinzaine du <b>16</b>. Une quinzaine d'intérêts représenterait 15 000 × 1,70 % × 1/24 = <b>10,63 €</b>.</div></div>
+          <div class="ex-result">Conclusion : Livret A en priorité, dépôt du 10 rentable dès la quinzaine suivante — aucun frein de plafond à ce stade.</div>
+        </div>
+      </div>
+
+      <!-- Cas 2 -->
+      <div class="annale">
+        <div class="an-tag">Cas 2 · Investissement long terme</div>
+        <h3>Un jeune actif veut investir en bourse</h3>
+        <div class="enonce">
+          M. Quéré, 26 ans, salarié, souhaite investir 8 000 € en actions européennes avec un horizon de 10 ans. Il hésite entre un compte-titres ordinaire (CTO) et un autre produit dont il a entendu parler sans le connaître précisément.
+          <ul class="qlist">
+            <li>Quelle enveloppe lui recommander en priorité ?</li>
+            <li>Pourquoi le CTO n'est-il pas le meilleur choix ici ?</li>
+            <li>Quelles sont les limites de cette enveloppe recommandée ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Enveloppe recommandée :</b> le <b>PEA</b>. M. Quéré a 26 ans (> 18 ans requis), n'a pas encore ouvert de PEA, et son horizon de 10 ans correspond bien à la logique de détention longue du produit.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Limite du CTO :</b> les dividendes et plus-values y sont fiscalisés au fil de l'eau (Flat-Tax 30 %), sans le régime de faveur du PEA après 5 ans de détention.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Limites du PEA :</b> plafond de versement 150 000 €, un seul PEA par contribuable, et seuls actions, ETF et OPC sont éligibles — pas d'obligations.</div></div>
+          <div class="ex-result">Conclusion : PEA en priorité pour ce profil, CTO réservé au surplus une fois le PEA (et le PEA-PME) saturés.</div>
+        </div>
+      </div>
+
+      <!-- Cas 3 -->
+      <div class="annale">
+        <div class="an-tag">Cas 3 · Fiscalité de l'épargne</div>
+        <h3>Un client non imposable ouvre un DAT</h3>
+        <div class="enonce">
+          M. Cariou, retraité non imposable sur le revenu, ouvre un DAT de 20 000 € rémunéré. Il vous demande comment éviter d'avancer de l'argent au fisc qu'il devrait ensuite se faire rembourser.
+          <ul class="qlist">
+            <li>Quelle démarche lui proposer, et avant quelle date ?</li>
+            <li>Quel est l'effet concret de cette démarche sur son prélèvement ?</li>
+            <li>Que se passe-t-il s'il ne fait rien ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Démarche :</b> la <b>dispense d'acompte</b>, à demander avant le <b>30 novembre</b> de l'année précédente.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Effet :</b> M. Cariou ne paiera que les <b>17,2 %</b> de prélèvements sociaux sur ses intérêts, sans les 12,8 % de PFU qu'il devrait sinon avancer.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Sans démarche :</b> il subit le prélèvement forfaitaire de 30 % (12,8 % + 17,2 %) à la source, puis doit demander le remboursement des 12,8 % lors de sa déclaration de revenus l'année suivante — une avance de trésorerie inutile pour un foyer non imposable.</div></div>
+          <div class="ex-result">Conclusion : la dispense d'acompte évite une avance de trésorerie à un client non imposable — un réflexe de conseil à proposer systématiquement à ce profil.</div>
+        </div>
+      </div>
+
+      <!-- Cas 4 -->
+      <div class="annale">
+        <div class="an-tag">Cas 4 · Assurance vie & transmission</div>
+        <h3>Transmettre 400 000 € à deux enfants</h3>
+        <div class="enonce">
+          M. Le Bihan, 71 ans, détient un contrat d'assurance vie de 400 000 €, ouvert il y a 15 ans, avec ses deux enfants désignés à parts égales dans la clause bénéficiaire. Il envisage aussi un rachat partiel de 12 000 € de plus-values pour financer des travaux.
+          <ul class="qlist">
+            <li>Quelle fiscalité s'appliquera aux bénéficiaires à son décès ?</li>
+            <li>Quelle fiscalité s'applique à son rachat partiel de son vivant ?</li>
+            <li>Quel est l'intérêt de la clause bénéficiaire dans ce montage ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>En cas de décès :</b> chaque enfant reçoit 200 000 €. L'abattement de <b>152 500 € par bénéficiaire</b> s'applique : il reste 47 500 € taxés à <b>20 %</b> pour chacun, soit 9 500 € d'imposition par enfant.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>En cas de vie :</b> le contrat a plus de 8 ans, mais l'encours (400 000 €) dépasse 150 k€ : le <b>PFU</b> s'applique sur les plus-values rachetées, sans le régime abattement + 7,5 %.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Clause bénéficiaire :</b> elle est <b>libre</b>. Elle permet de transmettre hors succession, avec un abattement par bénéficiaire — d'où l'intérêt de désigner plusieurs personnes plutôt qu'une seule.</div></div>
+          <div class="ex-result">Conclusion : 9 500 € d'imposition par enfant au décès ; PFU sur le rachat de son vivant du fait de l'encours supérieur à 150 k€.</div>
+        </div>
+      </div>
+
+      <!-- Cas 5 -->
+      <div class="annale">
+        <div class="an-tag">Cas 5 · Crédit & garanties</div>
+        <h3>Un crédit conso et une offre immobilière</h3>
+        <div class="enonce">
+          Mme Tanguy signe le 5 du mois une offre de crédit à la consommation de 18 000 € pour changer de véhicule. Elle prépare en parallèle un achat immobilier et compare deux propositions de banques, l'une affichant un taux nominal de 3,40 %, l'autre un TAEG de 3,75 %.
+          <ul class="qlist">
+            <li>De quels délais dispose-t-elle sur le crédit conso, et jusqu'à quelle date ?</li>
+            <li>Les deux propositions immobilières sont-elles comparables en l'état ?</li>
+            <li>Quelles garanties la banque peut-elle exiger sur le prêt immobilier ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Délais :</b> 18 000 € entre dans le champ de la <b>loi Lagarde</b> (200 € à 75 000 €). Elle dispose de <b>14 jours</b> de rétractation, soit jusqu'au 19. Les fonds sont mis à disposition à partir du <b>8<sup>e</sup> jour</b> (le 13) ; en cas de rétractation ultérieure, elle devra les restituer.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Comparabilité :</b> non. Le <b>taux nominal</b> n'intègre ni frais de dossier, ni frais de garantie, ni assurance — contrairement au <b>TAEG</b>, seul instrument légal de comparaison. Il faut exiger le TAEG de la première banque.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Garanties possibles :</b> une garantie <b>réelle</b> (hypothèque ou PPD) ou une garantie <b>personnelle</b> via le cautionnement mutuel (Crédit Logement, CAMCA), assortie de l'<b>ADE</b>. Le TAEG retenu ne devra pas dépasser le <b>taux d'usure</b> du trimestre.</div></div>
+          <div class="ex-result">Conclusion : rétractation jusqu'au 19 ; comparaison impossible sans TAEG des deux côtés ; garanties réelles ou cautionnement mutuel, dans la limite du taux d'usure.</div>
+        </div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('test')">← Test final</button>
+        <button class="btn" onclick="go('l1')">Revoir les leçons →</button>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<button class="float-retry" id="floatRetry" onclick="resetTest()">↻ Reprendre le test</button>
+<button class="print-fab" onclick="imprimerFiche()" title="Imprimer cette leçon en fiche">🖨️ Fiche</button>
+<div class="xp-pop" id="xpPop"></div>
+
+<script src="lb.js"></script>
+<script src="progress.js"></script>
+<script>
+/* ===================== IDENTITÉ / CLASSEMENT ===================== */
+const SUBJECT_KEY = 'Marché des Particuliers';
+
+/* ===================== ÉTAT (en mémoire) ===================== */
+const LESSONS = [
+  {id:'l1', t:'Panorama du marché'},
+  {id:'l2', t:'Financement & crédit'},
+  {id:'l3', t:'Épargne : fondamentaux'},
+  {id:'l4', t:'Livrets & fiscalité'},
+  {id:'l5', t:'Épargne moyen/long terme'},
+  {id:'l6', t:"L'assurance vie"},
+  {id:'l7', t:'Le PER'},
+  {id:'l8', t:'Gestion de portefeuille'},
+  {id:'l9', t:'Le crédit : cadre légal'},
+  {id:'l10', t:'Les garanties'},
+  {id:'l11', t:'Assurances & RC'}
+];
+const SAVE = (window.P ? P.etat() : {done:{},xp:0,last:null});
+const state = { xp: SAVE.xp||0, done: Object.assign({}, SAVE.done), view:'l1' };
+
+/* ===================== NAVIGATION ===================== */
+function buildNav(){
+  const nav = document.getElementById('navList');
+  nav.innerHTML = '';
+  LESSONS.forEach((l,i)=>{
+    const d = document.createElement('div');
+    d.className = 'nav-item' + (state.done[l.id]?' done':'');
+    d.dataset.view = l.id;
+    d.onclick = ()=>go(l.id);
+    d.innerHTML = '<span class="num">'+(state.done[l.id]?'✓':(i+1))+'</span><span class="lab">'+l.t+'</span>';
+    nav.appendChild(d);
+  });
+  highlightNav();
+}
+function highlightNav(){
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.dataset.view===state.view));
+}
+function go(view){
+  state.view = view;
+  if(window.P && /^l\d+$/.test(view)) P.derniereLecon(view);
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active', v.dataset.view===view));
+  highlightNav();
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(window.innerWidth<=880) closeSidebar();
+}
+function imprimerFiche(){ window.print(); }
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+/* ===================== XP & PROGRESSION ===================== */
+function addXp(n){
+  state.xp += n;
+  if(window.P) P.ajouterXp(n);
+  document.getElementById('xpVal').textContent = state.xp;
+  popXp('+'+n+' XP');
+}
+function popXp(txt){
+  const p = document.getElementById('xpPop');
+  p.textContent = '★ '+txt;
+  p.classList.add('show');
+  clearTimeout(p._t);
+  p._t = setTimeout(()=>p.classList.remove('show'),1400);
+}
+function updateProgress(){
+  const total = LESSONS.length;
+  const n = Object.keys(state.done).length;
+  const pct = Math.round(n/total*100);
+  document.getElementById('progFill').style.width = pct+'%';
+  document.getElementById('progPct').textContent = pct+' %';
+}
+
+/* ===================== MINI-QUIZ ===================== */
+function pick(btn){
+  const quiz = btn.closest('.quiz');
+  if(quiz.classList.contains('answered')) return;
+  quiz.classList.add('answered');
+  const correct = btn.dataset.correct === 'true';
+  quiz.querySelectorAll('.opt').forEach(o=>{
+    o.disabled = true;
+    if(o.dataset.correct === 'true') o.classList.add('right');
+  });
+  if(!correct) btn.classList.add('wrong');
+  const fb = quiz.querySelector('.feedback');
+  if(fb) fb.hidden = false;
+  if(window.P){
+    const sec = quiz.closest('.view');
+    const lec = sec ? sec.dataset.view : '?';
+    const rang = sec ? [...sec.querySelectorAll('.quiz')].indexOf(quiz) : 0;
+    P.noterReponse('quiz:'+lec+':'+rang, correct, 'Leçon '+lec.replace('l',''));
+  }
+  if(correct) addXp(10);
+}
+
+/* ===================== VALIDATION LEÇON ===================== */
+function validate(id, quizCount){
+  const sec = document.querySelector('.view[data-view="'+id+'"]');
+  const answered = sec.querySelectorAll('.quiz.answered').length;
+  if(answered < quizCount){
+    popXp("Réponds aux "+quizCount+" quiz d'abord");
+    sec.querySelectorAll('.quiz:not(.answered)').forEach(q=>{ q.style.boxShadow='0 0 0 2px var(--plum)'; setTimeout(()=>q.style.boxShadow='',1200); });
+    return;
+  }
+  if(!state.done[id]){
+    state.done[id] = true;
+    if(window.P) P.marquerLecon(id);
+    addXp(50);
+    buildNav();
+    updateProgress();
+  }
+  const idx = LESSONS.findIndex(l=>l.id===id);
+  const next = LESSONS[idx+1];
+  if(next) go(next.id); else go('test');
+}
+
+/* ===================== TEST FINAL ===================== */
+const TEST = [
+  {ch:'Panorama', lesson:'l1', type:'qcm',
+   q:"Quel est le taux de bancarisation en France ?",
+   opts:["Environ 80 %","Environ 90 %","Plus de 99 %","Environ 70 %"], correct:2,
+   ex:"Le taux de bancarisation dépasse 99 % en France, l'un des plus élevés au monde."},
+  {ch:'Panorama', lesson:'l1', type:'qcm',
+   q:"Quel écart illustre le mieux la différence entre notoriété et confiance dans l'étude IFOP ?",
+   opts:["Le paiement sans contact par téléphone : 93 % → 55 %","Le Livret A : 83 % → 83 %","Le crédit immo : 29,7 % → 29,7 %","Le DAV : 100 % → 100 %"], correct:0,
+   ex:"Le paiement sans contact par téléphone est connu à 93 % mais utilisé en confiance par seulement 55 % des Français."},
+  {ch:'Crédit', lesson:'l2', type:'num',
+   q:"Quelle part de sinistralité concerne les crédits accordés en France ? (en %)",
+   answer:1.1, tol:0.1, unit:"%",
+   ex:"Seuls 1,1 % des crédits sont en sinistralité, malgré 42 % des Français endettés."},
+  {ch:'Crédit', lesson:'l2', type:'qcm',
+   q:"Quel est le niveau actuel des taux de crédit, contre 0-1 % en 2021 ?",
+   opts:["Entre 1 % et 2 %","Entre 2 % et 3 %","Entre 3,80 % et 3,90 %","Plus de 5 %"], correct:2,
+   ex:"Les taux de crédit se situent aujourd'hui entre 3,80 % et 3,90 %, contre 0-1 % en 2021."},
+  {ch:'Épargne : fondamentaux', lesson:'l3', type:'qcm',
+   q:"Le revenu disponible brut inclut…",
+   opts:["Uniquement le salaire net","Salaires + revenus du patrimoine + prestations sociales, moins IR et PS","Uniquement les prestations sociales","Le seul patrimoine financier"], correct:1,
+   ex:"Le revenu disponible brut = revenus primaires (salaires, indépendants, patrimoine) + prestations sociales - IR - PS."},
+  {ch:'Livrets & fiscalité', lesson:'l4', type:'num',
+   q:"Un client dépose 8 000 € à 1,70 %. Montant d'une quinzaine d'intérêts ? (en €, 2 décimales)",
+   answer:5.67, tol:0.05, unit:"€",
+   ex:"8 000 × 1,70 % × 1/24 = 5,67 €. Formule : k × taux annuel × 1/24."},
+  {ch:'Livrets & fiscalité', lesson:'l4', type:'qcm',
+   q:"Quel est le plafond du Livret A ?",
+   opts:["10 000 €","12 000 €","22 950 €","61 300 €"], correct:2,
+   ex:"Le plafond du Livret A est de 22 950 €. LDDS : 12 000 €, LEP : 10 000 €, PEL : 61 300 €."},
+  {ch:'Livrets & fiscalité', lesson:'l4', type:'qcm',
+   q:"Avant quelle date faut-il demander une dispense d'acompte ?",
+   opts:["Le 31 décembre","Le 30 novembre","Le 15 mai","Le 1er janvier"], correct:1,
+   ex:"La dispense d'acompte doit être demandée avant le 30 novembre pour s'appliquer l'année suivante."},
+  {ch:'Épargne moyen/long terme', lesson:'l5', type:'qcm',
+   q:"Quel est le plafond de versement du PEA (hors PEA-PME) ?",
+   opts:["75 000 €","92 000 €","150 000 €","225 000 €"], correct:2,
+   ex:"150 000 € pour le PEA classique, 75 000 € en complément pour le PEA-PME (225 000 € au total)."},
+  {ch:'Épargne moyen/long terme', lesson:'l5', type:'qcm',
+   q:"Depuis quand le PEP n'est-il plus commercialisé ?",
+   opts:["2003","2010","2018","2021"], correct:0,
+   ex:"Le PEP (plan d'épargne populaire) a cessé d'être commercialisé en 2003."},
+  {ch:'Assurance vie', lesson:'l6', type:'num',
+   q:"Montant exonéré par bénéficiaire en cas de décès (en €)",
+   answer:152500, tol:0, unit:"€",
+   ex:"152 500 € sont exonérés par bénéficiaire, puis 20 % jusqu'à 852 500 €, puis 31,25 % au-delà."},
+  {ch:'Assurance vie', lesson:'l6', type:'qcm',
+   q:"Après 8 ans et sous 150 k€ d'encours, quel est l'abattement annuel par personne ?",
+   opts:["3 000 €","4 600 €","9 200 €","152 500 €"], correct:1,
+   ex:"4 600 € par personne (9 200 € pour un couple), puis 7,5 % + PS."},
+  {ch:'Le PER', lesson:'l7', type:'qcm',
+   q:"En sortie en capital, comment est imposé le capital versé (versements déductibles) ?",
+   opts:["PFU 31,4 %","IR sans abattement","Exonéré","IR après abattement"], correct:1,
+   ex:"Le capital versé est soumis à l'IR sans abattement ; ce sont les plus-values qui subissent le PFU à 31,4 %."},
+  {ch:'Gestion de portefeuille', lesson:'l8', type:'qcm',
+   q:"La SICAV est juridiquement…",
+   opts:["Une copropriété sans personnalité morale","Une société anonyme","Une association","Un mandat de gestion"], correct:1,
+   ex:"La SICAV est une société anonyme. Le FCP, lui, est une copropriété de valeurs mobilières sans personnalité morale."},
+  {ch:'Le crédit : cadre légal', lesson:'l9', type:'num',
+   q:"Délai de rétractation d'un crédit à la consommation (en jours)",
+   answer:14, tol:0, unit:"jours",
+   ex:"14 jours de rétractation à compter de l'acceptation de l'offre. À ne pas confondre avec les 7 jours de mise à disposition des fonds."},
+  {ch:'Le crédit : cadre légal', lesson:'l9', type:'qcm',
+   q:"Quelle loi vise à lutter contre le surendettement ?",
+   opts:["La loi Hamon","La loi Lagarde","La loi Neiertz","La loi Badinter"], correct:2,
+   ex:"La loi Neiertz lutte contre le surendettement selon 3 orientations : prévention, procédure de règlement, responsabilisation."},
+  {ch:'Les garanties', lesson:'l10', type:'qcm',
+   q:"L'hypothèque est une garantie…",
+   opts:["Personnelle","Réelle","Mutuelle","Assurantielle"], correct:1,
+   ex:"L'hypothèque (comme le PPD et le nantissement) est une garantie réelle : elle porte sur un bien. La caution est personnelle."},
+  {ch:'Assurances & RC', lesson:'l11', type:'qcm',
+   q:"Quels sont les trois caractères de la force majeure ?",
+   opts:["Grave, soudain, coûteux","Imprévisible, irrésistible, extérieur","Direct, certain, personnel","Volontaire, fautif, réparable"], correct:1,
+   ex:"Imprévisible, irrésistible et extérieur — les trois doivent être réunis simultanément pour exonérer."},
+  {ch:'Assurances & RC', lesson:'l11', type:'qcm',
+   q:"La loi Badinter concerne…",
+   opts:["Le surendettement des ménages","L'indemnisation des victimes d'accidents de la circulation","La reconduction tacite des contrats","Le taux d'usure"], correct:1,
+   ex:"La loi Badinter améliore l'indemnisation des victimes d'accidents de la circulation ; la faute de la victime y est rarement admise."}
+];
+
+function renderTest(){
+  const c = document.getElementById('testQuestions');
+  c.innerHTML = '';
+  TEST.forEach((q,i)=>{
+    const div = document.createElement('div');
+    div.className = 'test-q';
+    div.id = 'tq'+i;
+    let body = '';
+    if(q.type==='qcm'){
+      body = '<div class="topt">' + q.opts.map((o,j)=>
+        '<button onclick="selOpt('+i+','+j+')" id="tq'+i+'o'+j+'">'+o+'</button>').join('') + '</div>';
+    } else {
+      body = '<input type="number" step="any" class="num-input" id="tq'+i+'in" placeholder="…"><span class="unit">'+(q.unit||'')+'</span>';
+    }
+    div.innerHTML =
+      '<div class="tq-head"><span class="tq-num">Question '+(i+1)+'/'+TEST.length+'</span><span class="tq-chap">'+q.ch+'</span></div>'+
+      '<div class="tq-q">'+q.q+'</div>'+ body +
+      '<div class="remed" id="tq'+i+'rem"><div class="rt">⚠️ À revoir</div><div class="ra" id="tq'+i+'ra"></div>'+
+      '<div class="remed-btns"><button class="btn" onclick="go(\''+q.lesson+'\')">📖 Revoir la leçon</button>'+
+      '<button class="btn primary" onclick="dismissRemed('+i+')">Continuer →</button></div></div>';
+    c.appendChild(div);
+  });
+  document.getElementById('testResult').classList.remove('show');
+  document.getElementById('testSubmitRow').style.display = 'flex';
+  document.getElementById('floatRetry').classList.remove('show');
+  document.getElementById('testQuestions').style.display = 'block';
+  TEST._answers = {};
+}
+function selOpt(qi, oi){
+  if(document.getElementById('tq'+qi).classList.contains('graded')) return;
+  TEST._answers = TEST._answers || {};
+  TEST._answers[qi] = oi;
+  TEST[qi].opts.forEach((_,j)=>document.getElementById('tq'+qi+'o'+j).classList.toggle('sel', j===oi));
+}
+function gradeTest(){
+  TEST._answers = TEST._answers || {};
+  let score = 0;
+  const chap = {};
+  TEST.forEach((q,i)=>{
+    const box = document.getElementById('tq'+i);
+    box.classList.add('graded');
+    let ok = false;
+    if(q.type==='qcm'){
+      ok = TEST._answers[i] === q.correct;
+      q.opts.forEach((_,j)=>{ const b=document.getElementById('tq'+i+'o'+j); b.disabled=true;
+        if(j===q.correct) b.classList.add('sel'); });
+    } else {
+      const val = parseFloat(document.getElementById('tq'+i+'in').value);
+      ok = !isNaN(val) && Math.abs(val - q.answer) <= (q.tol||0);
+      document.getElementById('tq'+i+'in').disabled = true;
+    }
+    if(window.P) P.noterReponse('test:'+i, ok, q.ch);
+    chap[q.ch] = chap[q.ch] || {ok:0,tot:0};
+    chap[q.ch].tot++;
+    if(ok){ score++; chap[q.ch].ok++; box.classList.add('ok'); }
+    else {
+      box.classList.add('ko');
+      document.getElementById('tq'+i+'ra').innerHTML = q.ex;
+      document.getElementById('tq'+i+'rem').classList.add('show');
+    }
+  });
+  showResult(score, chap);
+}
+function dismissRemed(i){ document.getElementById('tq'+i+'rem').classList.remove('show'); }
+
+function showResult(score, chap){
+  document.getElementById('testSubmitRow').style.display = 'none';
+  document.getElementById('scoreBig').textContent = score+'/'+TEST.length;
+  let msg, col;
+  const pctScore = score/TEST.length*100;
+  if(pctScore>=90){ msg="Excellent — le marché des particuliers est acquis. Prêt(e) pour le partiel."; col=getCss('--teal'); }
+  else if(pctScore>=70){ msg="Très bon niveau. Revois juste les chapitres en orange ci-dessous."; col=getCss('--teal'); }
+  else if(pctScore>=50){ msg="Bon début. Concentre tes révisions sur les chapitres faibles."; col=getCss('--amber'); }
+  else { msg="Il reste du travail. Reprends les leçons signalées, puis réessaie."; col=getCss('--rust'); }
+  document.getElementById('scoreBig').style.color = col;
+  document.getElementById('scoreMsg').textContent = msg;
+  const bars = document.getElementById('chapBars');
+  bars.innerHTML = '';
+  Object.keys(chap).forEach(name=>{
+    const c = chap[name];
+    const pct = Math.round(c.ok/c.tot*100);
+    let bc = pct>=67?getCss('--teal'):pct>=34?getCss('--amber'):getCss('--rust');
+    bars.innerHTML += '<div class="chapbar"><div class="cbl"><span>'+name+'</span><span>'+c.ok+'/'+c.tot+'</span></div>'+
+      '<div class="cbt"><div class="cbf" style="width:0;background:'+bc+'" data-w="'+pct+'"></div></div></div>';
+  });
+  document.getElementById('testResult').classList.add('show');
+  document.getElementById('floatRetry').classList.add('show');
+  setTimeout(()=>document.querySelectorAll('.cbf').forEach(b=>b.style.width=b.dataset.w+'%'),120);
+  addXp(score*20);
+  if(window.P) P.meilleurScore('Test final', score, TEST.length);
+  document.getElementById('testResult').scrollIntoView({behavior:'smooth'});
+  if(window.LB){ try{ LB.record({subject:SUBJECT_KEY, mode:'Test final', correct:score, total:TEST.length, xp:state.xp}); }catch(e){} }
+}
+function resetTest(){ renderTest(); go('test'); }
+function getCss(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+
+/* ===================== MINI-CAS ===================== */
+function toggleCorrige(btn){
+  const cor = btn.nextElementSibling;
+  const open = cor.classList.toggle('show');
+  btn.textContent = open ? 'Masquer le corrigé' : 'Voir le corrigé';
+}
+
+/* ===================== INIT ===================== */
+buildNav();
+updateProgress();
+renderTest();
+go((window.P && SAVE.last && document.querySelector('.view[data-view="'+SAVE.last+'"]')) ? SAVE.last : 'l1');
+try{ document.getElementById('lb-id-slot').appendChild(LB.idButton()); }catch(e){}
+</script>
+<script src="banque.js"></script>
+<script src="ui.js"></script>
+</body>
+</html>
