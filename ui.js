@@ -10,7 +10,7 @@
 
   /* ---------- 0. VERSION ---------- */
   /* Doit rester identique à VERSION en haut de sw.js. */
-  const VERSION_APP = '4.2.0';
+  const VERSION_APP = '4.2.1';
   const NOM_VERSION = 'Sesterce';
   window.APP_VERSION = VERSION_APP;
 

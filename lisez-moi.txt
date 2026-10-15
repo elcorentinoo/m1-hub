@@ -254,6 +254,13 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  4.2.1  CORRECTIF : publication automatique rétablie.
+                   Netlify bloquait les envois faits depuis Claude
+                   (dépôt privé + plan gratuit = un seul contributeur
+                   reconnu). Le dépôt GitHub est passé en public : chaque
+                   envoi sur main est de nouveau publié automatiquement.
+                   En cas de blocage : Netlify → Deploys → Trigger
+                   deploy → Deploy project.
   4.2.0  NOUVELLE MATIÈRE : CARACTÉRISTIQUES DES DROITS DES
                    PARTICULIERS (droit des personnes).
                    Partie 1 du cours, « L'existence juridique du
