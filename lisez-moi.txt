@@ -22,11 +22,15 @@ CONTENU DE CE DOSSIER
                                          données, démarche, parcours client, RGPD)
   • es_banque.html ..................... ES Banque — Patrimoine & Assurance (14 leçons,
                                          simulateur fiscal 990 I / 757 B)
+  • fiscalite_particulier.html ......... Fiscalité du Particulier, module 1 (11 leçons)
+  • droits_particuliers.html ........... Caractéristiques des droits des particuliers,
+                                         partie 1 (10 leçons, 10 questions rédigées
+                                         corrigées automatiquement, 6 cas pratiques)
   • ressourcerie.html .................. Dépôt et partage de documents (analyse locale)
-  • glossaire.html ..................... 93 sigles des 3 matières, liés aux leçons
+  • glossaire.html ..................... 119 sigles et notions, liés aux leçons
   • ui.css / ui.js ..................... Socle commun : navigation, thème, recherche
   • progress.js ........................ Progression, XP, historique, révision espacée
-  • banque.js .......................... 213 questions et fiches (fichier GÉNÉRÉ)
+  • banque.js .......................... 344 questions et 119 fiches (fichier GÉNÉRÉ)
   • revision.html ...................... Entraînement du jour + flashcards
   • stats.html ......................... Tableau de bord de progression
   • sw.js .............................. Fonctionnement hors ligne
@@ -250,6 +254,38 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  4.2.0  NOUVELLE MATIÈRE : CARACTÉRISTIQUES DES DROITS DES
+                   PARTICULIERS (droit des personnes).
+                   Partie 1 du cours, « L'existence juridique du
+                   particulier et ses éléments d'identification »,
+                   d'après une prise de notes de 7 pages.
+                   droits_particuliers.html — 10 leçons en 2 chapitres
+                   (la personnalité juridique : naissance, infans
+                   conceptus, décès, ce qui survit au décès, absence,
+                   disparition · l'identification : nom, prénom et
+                   sexe, domicile et nationalité), 20 mini-quiz,
+                   40 questions de test final, 6 cas pratiques
+                   corrigés et une nouveauté : 10 QUESTIONS RÉDIGÉES
+                   CORRIGÉES AUTOMATIQUEMENT. L'étudiant rédige, la
+                   page repère les notions-clés présentes, liste celles
+                   qui manquent et affiche une réponse modèle.
+                   ⚠️ Les notes ne contiennent AUCUN exercice : questions,
+                   cas et corrigés sont rédigés par le site, et le
+                   signalent. Toutes les dates (période de conception,
+                   délais d'absence, domaine public) sont calculées et
+                   vérifiées par ordinateur.
+                   ⚠️ Les notes comportaient des erreurs (exemple du
+                   petit Grégory, définition du domicile, nationalité
+                   par mariage, « arrêt de 2005 » sur le nom…) : la page
+                   les corrige, avec un encadré à chaque fois, et une
+                   vue « Ce qui diffère de tes notes » les récapitule.
+                   Branchements : carte du hub, menu, mode hors ligne,
+                   glossaire (8 notions), banque de révision (60
+                   questions), statistiques. Recherche Ctrl+K : les
+                   leçons de Fiscalité, jusqu'ici renvoyées vers le hub,
+                   ouvrent désormais la bonne page.
+                   Le hub compte les matières au lieu d'afficher
+                   « Quatre matières » en dur.
   4.1.0  NOUVELLE MATIÈRE : FISCALITÉ DU PARTICULIER.
                    Module 1 du cours de Patrick Morisseaux (IAE Vannes,
                    M1 CPA 2026-27) : principes et raisonnement en

@@ -74,6 +74,7 @@ h1 .acc{color:var(--amber)}
 .m-pd{background:var(--plum-l);color:var(--plum)}
 .m-mk{background:var(--amber-l);color:var(--amber)}
 .m-fp{background:var(--rust-l);color:var(--rust)}
+.m-dp{background:var(--acc-soft);color:var(--acc)}
 .e-lien{font-size:12.5px;color:var(--navy);text-decoration:none;font-weight:600;
   border:1px solid var(--line);border-radius:8px;padding:4px 11px;transition:.15s}
 .e-lien:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
@@ -113,7 +114,7 @@ mark{background:var(--amber-l);color:inherit;padding:0 2px;border-radius:3px;fon
 <main>
   <div class="hero-tag">Tous les sigles du Master</div>
   <h1>Le décodeur <span class="acc">du M1</span></h1>
-  <p class="sub">Chaque sigle rencontré dans les trois matières, avec son développé, une définition courte et un lien direct vers la leçon qui l'explique. Les sigles qui se ressemblent sont signalés entre eux.</p>
+  <p class="sub">Chaque sigle ou notion rencontré dans les matières du Master, avec son développé, une définition courte et un lien direct vers la leçon qui l'explique. Les sigles qui se ressemblent sont signalés entre eux.</p>
 
   <div class="toolbar">
     <input type="search" id="q" placeholder="Chercher un sigle, un mot, une définition…" autocomplete="off">
@@ -135,7 +136,8 @@ const F = {
   mp:{f:'marche_des_particuliers.html', lab:'Marché des Particuliers', cls:'m-mp'},
   pd:{f:'produits_derives.html',        lab:'Produits Dérivés',        cls:'m-pd'},
   mk:{f:'marketing_numerique.html',     lab:'Marketing Numérique',     cls:'m-mk'},
-  fp:{f:'fiscalite_particulier.html',   lab:'Fiscalité du Particulier', cls:'m-fp'}
+  fp:{f:'fiscalite_particulier.html',   lab:'Fiscalité du Particulier', cls:'m-fp'},
+  dp:{f:'droits_particuliers.html',     lab:'Droits des Particuliers',  cls:'m-dp'}
 };
 
 const G = [
@@ -255,7 +257,17 @@ const G = [
 {s:'CMI', d:'Carte Mobilité Inclusion', m:'fp', l:'l6', t:"Mention « invalidité » : elle rend à charge une personne vivant sous le toit, et ouvre une <b>demi-part supplémentaire</b>.", c:"le simple <b>état d'infirmité</b>, qui rend l'enfant à charge à tout âge mais n'ouvre aucune demi-part."},
 {s:'Rattachement', d:'Option des enfants majeurs', m:'fp', l:'l7', t:"Demande <b>annuelle</b> et en principe <b>irrévocable</b>. Moins de 21 ans, ou moins de 25 ans si études, apprécié au <b>1er janvier</b>. Cases J ou N de la 2042."},
 {s:'DOM', d:"Départements d'outre-mer", m:'fp', l:'l3', t:"Guadeloupe, Martinique, Réunion, Guyane et Mayotte : ils font partie de la France au sens de l'IR.", c:"les <b>collectivités</b> d'outre-mer (Polynésie, Nouvelle-Calédonie…), qui n'en font pas partie."},
-{s:'CGA', d:'Centre de Gestion Agréé', m:'fp', l:'l11', t:"La majoration de 25 % du bénéfice des non-adhérents a été progressivement réduite puis <b>supprimée à compter de l'imposition des revenus 2023</b>."}
+{s:'CGA', d:'Centre de Gestion Agréé', m:'fp', l:'l11', t:"La majoration de 25 % du bénéfice des non-adhérents a été progressivement réduite puis <b>supprimée à compter de l'imposition des revenus 2023</b>."},
+
+/* ---------- DROITS DES PARTICULIERS ---------- */
+{s:'Infans conceptus', d:"L'enfant conçu est tenu pour né", m:'dp', l:'l3', t:"L'enfant simplement conçu est réputé né chaque fois qu'il y va de son intérêt, s'il naît <b>vivant et viable</b>. Conception présumée du <b>300e au 180e jour</b> avant la naissance (art. 311 C. civ.)."},
+{s:'Personnalité juridique', d:'Aptitude à avoir des droits et des obligations', m:'dp', l:'l1', t:"Reconnue à tout être humain né <b>vivant et viable</b> ; elle prend fin au décès."},
+{s:'Enfant sans vie', d:"Mort-né ou né non viable", m:'dp', l:'l2', t:"Acte d'enfant sans vie : prénoms et, depuis 2021, nom de famille possibles, mais <b>aucun effet juridique</b>.", c:"l'enfant né vivant et viable puis décédé, qui reçoit un acte de naissance <b>et</b> un acte de décès."},
+{s:'RC', d:'Répertoire civil', m:'dp', l:'l6', t:"Registre tenu par le tribunal où est inscrite la présomption d'absence ; la mention « RC » figure en marge de l'acte de naissance."},
+{s:"Présomption d'absence", d:"Première étape de l'absence", m:'dp', l:'l6', t:"Constatée par le <b>juge des contentieux de la protection</b>. L'absent est <b>présumé vivant</b> : mariage maintenu, un représentant gère ses biens."},
+{s:"Jugement déclaratif d'absence", d:"Seconde étape de l'absence", m:'dp', l:'l6', t:"10 ans après la présomption, ou 20 ans sans nouvelles ; au moins 1 an après publication. Produit les effets d'un <b>décès</b>. Si l'absent revient, son mariage <b>reste dissous</b>.", c:"le jugement déclaratif de <b>décès</b>, réservé à la disparition."},
+{s:'Jugement déclaratif de décès', d:'Issue de la disparition', m:'dp', l:'l7', t:"Corps non retrouvé, mort quasi certaine (naufrage, crash, catastrophe) : le tribunal judiciaire peut être saisi <b>immédiatement</b>."},
+{s:'Droit moral', d:"Volet perpétuel du droit d'auteur", m:'dp', l:'l5', t:"Paternité et respect de l'œuvre, <b>perpétuel</b> et transmis aux héritiers.", c:"le droit <b>patrimonial</b>, limité à l'année du décès + 70 ans."}
 ];
 
 /* ---------- rendu ---------- */

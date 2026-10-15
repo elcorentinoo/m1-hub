@@ -13,7 +13,7 @@
    ⚠️ Cette valeur doit rester IDENTIQUE à VERSION_APP,
       en haut de ui.js.
    ════════════════════════════════════════════════════════════ */
-const VERSION = '4.1.0';        // « Sesterce »
+const VERSION = '4.2.0';        // « Sesterce »
 const CACHE_APP  = 'm1-app-'+VERSION;      // les fichiers du site
 const CACHE_EXT  = 'm1-ext-'+VERSION;      // polices et bibliothèques externes
 
@@ -26,6 +26,7 @@ const FICHIERS = [
   'entrainement_changes.html',
   'entrainement_fiscal.html',
   'fiscalite_particulier.html',
+  'droits_particuliers.html',
   'marketing_numerique.html',
   'es_banque.html',
   'glossaire.html',

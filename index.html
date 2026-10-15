@@ -245,7 +245,7 @@ main{ padding:0 20px 40px; max-width:1200px; margin:0 auto }
     <div>
       <div class="sur-t">Semestre 1 · 2026 – 2027</div>
       <h1 id="salut">Le hub</h1>
-      <p class="sous" id="sous">Quatre matières suivies.</p>
+      <p class="sous" id="sous">Six matières suivies.</p>
     </div>
     <div class="actes">
       <a class="btn" href="revision.html" id="ctaRevision">Série de révision</a>
@@ -381,6 +381,14 @@ const MATIERES = [
     desc:"Module 1 : principes et raisonnement en matière d'impôt sur le revenu — territorialité, domicile fiscal, foyer fiscal, nombre de parts, et le passage du revenu global au revenu net global imposable.",
     meta:"11 leçons · 6 applications · test",
     stats:[["11","leçons"],["6","applications"],["1","test final"]]
+  },
+  {
+    file:"droits_particuliers.html", sid:"droits-particuliers", nb:10,
+    badge:"droit des personnes",
+    title:"Caractéristiques des droits des particuliers", court:"Droits des particuliers",
+    desc:"Partie 1 : l'existence juridique du particulier — naissance, infans conceptus, décès, absence et disparition — puis ce qui l'identifie : nom, prénom, sexe, domicile, nationalité.",
+    meta:"10 leçons · 10 rédigées · 6 cas · test",
+    stats:[["10","leçons"],["6","cas"],["10","rédigées"]]
   },
 ];
 
@@ -542,7 +550,7 @@ function renderMetriques(g){
       <div class="bar"><i style="width:${g}%"></i></div></div>
     <div class="metrique"><span class="lab">Leçons validées</span>
       <span class="val">${faites}<sup>/ ${total}</sup></span>
-      <span class="sv">sur quatre matières</span></div>
+      <span class="sv">sur ${MATIERES.length} matières</span></div>
     <div class="metrique"><span class="lab">À revoir aujourd'hui</span>
       <span class="val">${aRevoir()}</span>
       <span class="sv">${q} questions en banque</span></div>
@@ -550,12 +558,13 @@ function renderMetriques(g){
       <span class="val">${jours(ECHEANCES[0].end)}<sup>jours</sup></span>
       <span class="sv">${ECHEANCES[0].titre}</span></div>`;
 }
+const MOTS_NB = {4:"Quatre",5:"Cinq",6:"Six",7:"Sept",8:"Huit",9:"Neuf",10:"Dix"};
 function renderEntete(){
   const p = (window.LB && LB.pseudo) ? LB.pseudo() : null;
   const mot = new Date().getHours() < 18 ? 'Bonjour' : 'Bonsoir';
   document.getElementById('salut').textContent = p ? mot+', '+p+'.' : 'Le hub';
   document.getElementById('sous').textContent =
-    'Quatre matières suivies · prochaine échéance dans '+jours(ECHEANCES[0].end)+' jours.';
+    MOTS_NB[MATIERES.length]+' matières suivies · prochaine échéance dans '+jours(ECHEANCES[0].end)+' jours.';
 }
 
 /* ── panneau « reprendre » ── */

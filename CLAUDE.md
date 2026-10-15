@@ -48,7 +48,8 @@ composité pris en compte. À vérifier après toute modification de couleur.
   `ENTRAINEMENTS` et `ECHEANCES` en tête du script sont les seuls endroits à
   modifier pour ajouter un contenu.
 - Pages de cours (`marche_des_particuliers`, `produits_derives`,
-  `marketing_numerique`, `es_banque`, `fiscalite_particulier`) — même squelette :
+  `marketing_numerique`, `es_banque`, `fiscalite_particulier`,
+  `droits_particuliers`) — même squelette :
   `topbar`, `sidebar` à chapitres, sections `.view` par leçon, mini-quiz,
   applications corrigées, test final adaptatif. L'attribut `subject-id` sur
   `<html>` identifie la matière pour `progress.js`.

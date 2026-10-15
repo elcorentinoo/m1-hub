@@ -1,0 +1,1672 @@
+<!DOCTYPE html>
+<html lang="fr" subject-id="droits-particuliers">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Droits des Particuliers — M1 MBAF</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+:root{
+  --card:#fff; --card2:#fbf9f5;
+  --paper:#faf6ef; --paper2:#f3ece0; --ink:#22201b; --line:#e3d9c8;
+  --teal:#1b6b5e; --amber:#c87a12; --rust:#a8432a; --plum:#6b3a73; --navy:#241C15;
+  --teal-soft:#e3efec; --amber-soft:#f6ead4; --rust-soft:#f3e0da; --plum-soft:#ece3ef; --navy-soft:#dde6f0;
+  --shadow:0 2px 14px rgba(34,32,27,.07); --shadow-lg:0 8px 30px rgba(34,32,27,.13);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-track{background:var(--paper2)}
+::-webkit-scrollbar-thumb{background:#cdbfa6;border-radius:6px;border:2px solid var(--paper2)}
+::-webkit-scrollbar-thumb:hover{background:var(--amber)}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:62px;z-index:50;background:var(--paper);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:18px;padding:0 22px}
+.brand{display:flex;align-items:center;gap:11px;font-family:'Fraunces',serif;font-weight:600;font-size:1.12rem;color:var(--navy)}
+.brand .logo{width:36px;height:36px;border-radius:9px;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:1.15rem;flex-shrink:0;box-shadow:var(--shadow)}
+.brand small{display:block;font-family:'DM Sans';font-weight:500;font-size:.66rem;letter-spacing:.09em;color:var(--amber);text-transform:uppercase}
+.hublink{font-family:'DM Mono';font-size:.72rem;color:#8a8170;text-decoration:none;padding:5px 10px;border-radius:8px;border:1px solid var(--line);white-space:nowrap;transition:.15s}
+.hublink:hover{color:var(--navy);border-color:#c9bca3;background:var(--card)}
+.progress-wrap{flex:1;max-width:300px;display:flex;flex-direction:column;gap:3px}
+.progress-wrap .lab{font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:#8a8170;font-weight:600;display:flex;justify-content:space-between}
+.progress-bar{height:8px;background:var(--paper2);border-radius:5px;overflow:hidden;border:1px solid var(--line)}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),#2a8a78);transition:width .5s cubic-bezier(.4,0,.2,1)}
+.xp{margin-left:auto;display:flex;align-items:center;gap:7px;background:var(--amber-soft);border:1px solid #e6cf9e;color:var(--amber);font-weight:700;padding:7px 14px;border-radius:30px;font-size:.9rem}
+.burger{display:none;background:none;border:1px solid var(--line);border-radius:8px;padding:7px 10px;cursor:pointer;font-size:1.1rem;color:var(--ink)}
+
+.shell{display:flex;padding-top:62px}
+.sidebar{position:fixed;top:62px;bottom:0;left:0;width:282px;background:var(--paper2);border-right:1px solid var(--line);overflow-y:auto;padding:20px 14px 50px;z-index:40;transition:transform .3s}
+.sidebar h4{font-family:'Fraunces',serif;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:#8a8170;margin:18px 10px 9px;font-weight:600}
+.sidebar h4:first-child{margin-top:0}
+.nav-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;cursor:pointer;font-size:.92rem;color:var(--ink);border:1px solid transparent;transition:.16s;margin-bottom:3px}
+.nav-item:hover{background:#ece3d3}
+.nav-item.active{background:var(--card);border-color:var(--line);box-shadow:var(--shadow);font-weight:600;color:var(--navy)}
+.nav-item .num{width:25px;height:25px;border-radius:50%;background:var(--card);border:1.5px solid var(--line);flex-shrink:0;display:grid;place-items:center;font-size:.78rem;font-weight:700;font-family:'DM Mono';color:#8a8170;transition:.16s}
+.nav-item.active .num,.nav-item.done .num{background:var(--teal);color:#fff;border-color:var(--teal)}
+.nav-item .lab{flex:1;line-height:1.25}
+.nav-item.special{background:var(--plum-soft);border-color:#d8c5dc;color:var(--plum);font-weight:600}
+.nav-item.special.active{background:var(--plum);color:#fff}
+.nav-item.special2{background:var(--navy-soft);border-color:#c3d2e2;color:var(--navy);font-weight:600}
+.nav-item.special2.active{background:var(--navy);color:#fff}
+.nav-item.special3{background:var(--amber-soft);border-color:#e6cf9e;color:var(--amber);font-weight:600}
+.nav-item.special3.active{background:var(--amber);color:#fff}
+.nav-item .ico{font-size:1.05rem}
+
+.main{flex:1;margin-left:282px;padding:40px 6vw 120px;max-width:920px}
+.view{display:none;animation:fadeIn .45s ease}
+.view.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.tag{display:inline-block;font-family:'DM Mono';font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;background:var(--navy-soft);color:var(--navy);padding:5px 12px;border-radius:20px;font-weight:500;margin-bottom:16px}
+h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;font-weight:600;color:var(--ink);margin-bottom:10px;letter-spacing:-.01em}
+.subtitle{font-size:1.12rem;color:#6f6757;margin-bottom:30px;max-width:62ch}
+.main p{margin-bottom:16px;font-size:1.04rem;max-width:68ch}
+.main h2{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:600;color:var(--navy);margin:38px 0 14px;letter-spacing:-.01em}
+.main strong{font-weight:600;color:var(--ink)}
+
+.callout{border-radius:14px;padding:18px 20px 18px 22px;margin:24px 0;border-left:5px solid;position:relative;font-size:1rem}
+.callout .ct{font-weight:700;font-family:'Fraunces',serif;font-size:1.02rem;display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.callout p{margin:0;max-width:none}
+.c-analogy{background:var(--amber-soft);border-color:var(--amber);color:#5e3a06}
+.c-analogy .ct{color:var(--amber)}
+.c-retenir{background:var(--teal-soft);border-color:var(--teal);color:#0f3d36}
+.c-retenir .ct{color:var(--teal)}
+.c-piege{background:var(--rust-soft);border-color:var(--rust);color:#5e2317}
+.c-piege .ct{color:var(--rust)}
+
+.rulebox{background:#1c1a16;color:#f3ece0;border-radius:14px;padding:22px 24px;margin:26px 0;font-family:'DM Mono';box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
+.rulebox::before{content:'REPÈRE';position:absolute;top:13px;right:18px;font-size:.62rem;letter-spacing:.2em;color:#7d7566}
+.rulebox.formule::before{content:'FORMULE'}
+.rulebox .rb-main{font-size:1.18rem;font-weight:500;line-height:1.5;color:#fff}
+.rulebox .rb-sub{font-size:.86rem;color:#b8af9d;margin-top:10px;line-height:1.55}
+.rulebox em{color:var(--amber);font-style:normal;font-weight:500}
+
+.tbl{width:100%;border-collapse:collapse;margin:22px 0;font-size:.96rem;background:var(--card);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line)}
+.tbl th{background:var(--navy);color:#fff;text-align:left;padding:11px 15px;font-weight:600;font-size:.86rem}
+.tbl td{padding:11px 15px;border-top:1px solid var(--line);vertical-align:top}
+.tbl tr:nth-child(even) td{background:var(--paper)}
+.tbl td:first-child{font-weight:600;color:var(--navy);white-space:nowrap}
+.tbl.wrap td:first-child{white-space:normal}
+.tbl.num td{font-family:'DM Mono';font-size:.94rem}
+.tbl.num td:first-child{font-family:'DM Sans'}
+
+.example{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:26px 0;box-shadow:var(--shadow)}
+.example .ex-head{font-family:'Fraunces',serif;font-weight:600;color:var(--plum);font-size:1.08rem;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.step{display:flex;gap:14px;margin-bottom:14px}
+.step:last-child{margin-bottom:0}
+.step .sn{width:27px;height:27px;border-radius:50%;background:var(--plum);color:#fff;flex-shrink:0;display:grid;place-items:center;font-family:'DM Mono';font-weight:500;font-size:.85rem}
+.step .sc{flex:1;padding-top:1px}
+.step .sc b{color:var(--navy)}
+.step .sc code{background:var(--paper2);padding:2px 7px;border-radius:5px;font-family:'DM Mono';font-size:.9rem;color:var(--teal)}
+.ex-result{margin-top:6px;background:var(--teal-soft);border:1px solid #bcdcd4;border-radius:10px;padding:12px 16px;font-weight:600;color:#0f3d36}
+
+.schema{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin:26px 0;box-shadow:var(--shadow);text-align:center}
+.schema .scap{font-size:.82rem;color:#8a8170;margin-top:12px;font-style:italic}
+.schema svg{max-width:100%;height:auto}
+
+.quiz{background:var(--plum-soft);border:1px solid #d8c5dc;border-radius:14px;padding:20px 22px;margin:24px 0}
+.quiz .qhead{font-family:'DM Mono';font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--plum);font-weight:500;margin-bottom:9px}
+.quiz .q{font-weight:600;font-size:1.05rem;margin-bottom:14px;color:var(--ink)}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{text-align:left;background:var(--card);border:1.5px solid #d8c5dc;border-radius:10px;padding:11px 15px;cursor:pointer;font-family:'DM Sans';font-size:.98rem;color:var(--ink);transition:.15s}
+.opt:hover:not(:disabled){border-color:var(--plum);background:#fbf8fc}
+.opt:disabled{cursor:default}
+.opt.right{background:var(--teal-soft);border-color:var(--teal);color:#0f3d36;font-weight:600}
+.opt.right::after{content:' ✓';color:var(--teal);font-weight:700}
+.opt.wrong{background:var(--rust-soft);border-color:var(--rust);color:#5e2317}
+.opt.wrong::after{content:' ✗';color:var(--rust);font-weight:700}
+.feedback{margin-top:13px;padding:12px 15px;border-radius:10px;background:var(--card);border:1px dashed #cbb9cf;font-size:.95rem;color:#5a4d5d}
+.feedback b{color:var(--plum)}
+
+.lesson-nav{display:flex;justify-content:space-between;gap:14px;margin-top:46px;padding-top:26px;border-top:1px solid var(--line)}
+.btn{font-family:'DM Sans';font-weight:600;font-size:.98rem;padding:12px 22px;border-radius:11px;cursor:pointer;border:1.5px solid var(--line);background:var(--card);color:var(--ink);transition:.16s;display:inline-flex;align-items:center;gap:8px}
+.btn:hover{border-color:#bbac90;transform:translateY(-1px)}
+.btn.primary{background:var(--teal);color:#fff;border-color:var(--teal);box-shadow:var(--shadow)}
+.btn.primary:hover{background:#155a4f}
+.btn.plum{background:var(--plum);color:#fff;border-color:var(--plum)}
+.btn.plum:hover{background:#592f60}
+.btn.amber{background:var(--amber);color:#fff;border-color:var(--amber)}
+.btn.amber:hover{background:#a86610}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.print-fab{position:fixed;bottom:26px;left:26px;z-index:110;background:var(--card);color:var(--ink2);border:1.5px solid var(--line2);font-weight:600;padding:10px 16px;border-radius:24px;cursor:pointer;font-family:'DM Sans';font-size:.85rem;box-shadow:var(--shadow);transition:.15s}
+.print-fab:hover{border-color:var(--navy);color:var(--navy);transform:translateY(-1px)}
+@media(max-width:880px){.print-fab{bottom:20px;left:16px;padding:9px 13px;font-size:.8rem}}
+.xp-pop{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--amber);color:#fff;font-weight:700;padding:13px 26px;border-radius:30px;box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:.4s;z-index:200;font-size:1rem}
+.xp-pop.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.test-q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:18px;box-shadow:var(--shadow);transition:.3s}
+.test-q .tq-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px}
+.test-q .tq-num{font-family:'DM Mono';font-weight:500;color:var(--navy);font-size:.9rem}
+.test-q .tq-chap{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:#8a8170;font-weight:600;background:var(--paper2);padding:4px 10px;border-radius:20px;text-align:right}
+.test-q .tq-q{font-weight:600;font-size:1.08rem;margin-bottom:14px}
+.num-input{font-family:'DM Mono';font-size:1.05rem;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;width:190px;background:var(--paper)}
+.num-input:focus{outline:none;border-color:var(--teal)}
+.unit{font-family:'DM Mono';color:#8a8170;margin-left:9px}
+.topt{display:flex;flex-direction:column;gap:8px}
+.topt button{text-align:left;background:var(--paper);border:1.5px solid var(--line);border-radius:10px;padding:11px 15px;cursor:pointer;font-family:'DM Sans';font-size:.98rem;transition:.15s}
+.topt button:hover{border-color:var(--teal)}
+.topt button.sel{background:var(--teal-soft);border-color:var(--teal);font-weight:600;color:#0f3d36}
+.remed{margin-top:14px;border-radius:11px;border-left:5px solid var(--rust);background:var(--rust-soft);padding:15px 18px;display:none}
+.remed.show{display:block;animation:fadeIn .35s}
+.remed .rt{font-weight:700;color:var(--rust);font-family:'Fraunces',serif;margin-bottom:5px;display:flex;align-items:center;gap:7px}
+.remed .ra{font-size:.95rem;color:#5e2317;margin-bottom:11px}
+.remed-btns{display:flex;gap:10px;flex-wrap:wrap}
+.remed-btns .btn{padding:8px 16px;font-size:.88rem}
+.test-q.ok{border-color:var(--teal);background:#fbfdfc}
+.test-q.ko{border-color:var(--rust)}
+.float-retry{position:fixed;bottom:26px;right:26px;z-index:120;display:none;background:var(--plum);color:#fff;border:none;font-weight:700;padding:14px 24px;border-radius:30px;box-shadow:var(--shadow-lg);cursor:pointer;font-family:'DM Sans';font-size:.98rem;align-items:center;gap:9px}
+.float-retry.show{display:inline-flex;animation:fadeIn .4s}
+
+.result{display:none;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:34px;box-shadow:var(--shadow-lg);text-align:center;animation:fadeIn .5s}
+.result.show{display:block}
+.result .score-big{font-family:'Fraunces',serif;font-size:4rem;font-weight:700;line-height:1;color:var(--teal)}
+.result .score-lab{color:#8a8170;font-weight:600;margin-bottom:8px}
+.result .msg{font-size:1.12rem;margin:14px auto 28px;max-width:46ch;color:var(--ink)}
+.chapbars{text-align:left;max-width:560px;margin:0 auto}
+.chapbar{margin-bottom:14px}
+.chapbar .cbl{display:flex;justify-content:space-between;font-size:.9rem;font-weight:600;margin-bottom:5px}
+.chapbar .cbl span:last-child{font-family:'DM Mono';color:#8a8170}
+.cbt{height:13px;background:var(--paper2);border-radius:7px;overflow:hidden;border:1px solid var(--line)}
+.cbf{height:100%;border-radius:7px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+
+.annale{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px 26px;margin-bottom:22px;box-shadow:var(--shadow)}
+.annale .an-tag{font-family:'DM Mono';font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);font-weight:500}
+.annale h3{font-family:'Fraunces',serif;font-size:1.32rem;color:var(--navy);margin:6px 0 14px;font-weight:600}
+.annale .enonce{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:16px 19px;font-size:1rem;color:#3a352c}
+.annale .enonce .qlist{margin:10px 0 0 4px}
+.annale .enonce .qlist li{margin-bottom:5px;list-style:none;padding-left:22px;position:relative}
+.annale .enonce .qlist li::before{content:'▸';position:absolute;left:0;color:var(--amber);font-weight:700}
+.corrige{margin-top:14px;display:none;animation:fadeIn .4s}
+.corrige.show{display:block}
+.corrige-head{font-family:'Fraunces',serif;font-weight:600;color:var(--teal);margin-bottom:12px;display:flex;align-items:center;gap:8px;font-size:1.06rem}
+
+.intro-card{background:var(--navy);color:#f3ece0;border-radius:16px;padding:24px 26px;margin-bottom:26px}
+.intro-card h2{color:#fff;margin:0 0 8px;font-family:'Fraunces',serif;font-size:1.4rem}
+.intro-card p{color:#cdd8e6;max-width:none;margin:0}
+.intro-card.amber{background:#7a4c08}
+.intro-card.amber p{color:#f2e0c0}
+.intro-card.plum{background:#4a2750}
+.intro-card.plum p{color:#e6d5ea}
+
+.hint{font-size:.85rem;color:#8a8170;font-style:italic;margin-top:8px}
+.overlay{display:none;position:fixed;inset:62px 0 0 0;background:rgba(34,32,27,.4);z-index:35}
+@media(max-width:880px){
+  .main{margin-left:0;padding:30px 22px 110px}
+  .sidebar{transform:translateX(-100%);box-shadow:var(--shadow-lg)}
+  .sidebar.open{transform:translateX(0)}
+  .overlay.show{display:block}
+  .burger{display:block}
+  .progress-wrap{max-width:none}
+  .brand small{display:none}
+  h1.lesson-title{font-size:1.8rem}
+  .xp{padding:6px 11px;font-size:.82rem}
+  .gen-data .dl{min-width:0;display:block}
+}
+@media(max-width:560px){
+  .progress-wrap,.hublink{display:none}
+  .topbar{gap:12px}
+}
+/* ===== QUESTIONS RÉDIGÉES — couleurs uniquement par variables de theme.css ===== */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.redac textarea{display:block;width:100%;min-height:130px;margin-top:4px;padding:12px 14px;border:1.5px solid var(--line2);border-radius:10px;background:var(--card);color:var(--ink);font:inherit;font-size:1rem;line-height:1.55;resize:vertical}
+.redac textarea:focus{outline:none;border-color:var(--acc)}
+.redac-btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.redac-score{font-weight:700;padding:10px 14px;border-radius:10px;margin-bottom:10px;border:1px solid var(--line)}
+.redac-score.ok{background:var(--teal-soft);color:var(--teal-d)}
+.redac-score.mid{background:var(--amber-soft);color:var(--amber)}
+.redac-score.ko{background:var(--rust-soft);color:var(--rust)}
+.crit{list-style:none;margin:0 0 16px;padding:0}
+.crit li{padding:6px 0;border-bottom:1px solid var(--line);font-size:.96rem}
+.crit li.ok{color:var(--teal-d)}
+.crit li.ko{color:var(--rust)}
+.crit li i{color:var(--ink2)}
+.modele{background:var(--paper2);border:1px solid var(--line);border-radius:10px;padding:14px 16px;max-width:none !important}
+/* lisibilité et contraste : étiquettes grises reprises sur les variables de theme.css */
+.test-q .tq-chap,.unit,.hint,.result .score-lab,.chapbar .cbl span:last-child{color:var(--txt3)}
+.main{min-width:0}
+.tbl-scroll{overflow-x:auto;margin:22px 0}
+.tbl-scroll .tbl{margin:0}
+.tbl td,.tbl th{hyphens:auto;overflow-wrap:anywhere}
+@media(max-width:560px){.tbl th,.tbl td{padding:9px 10px;font-size:.88rem}}
+</style>
+<link rel="stylesheet" href="ui.css">
+<link rel="stylesheet" href="theme.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#F7F8FA">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+</head>
+<body>
+
+<div class="topbar">
+  <button class="burger" onclick="toggleSidebar()">☰</button>
+  <div class="brand">
+    <span class="logo">⚖</span>
+    <span>Droits des Particuliers<small>M1 MBAF · droit des personnes</small></span>
+  </div>
+  <span id="nav-slot"></span>
+  <div class="progress-wrap">
+    <div class="lab"><span>Progression</span><span id="progPct">0 %</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+  </div>
+  <div class="xp"><span class="star">★</span><span id="xpVal">0</span> XP</div>
+  <span id="lb-id-slot"></span>
+</div>
+
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <h4>Chapitre 1 · La personnalité juridique</h4>
+    <div id="navList1"></div>
+    <h4>Chapitre 2 · Identifier le particulier</h4>
+    <div id="navList2"></div>
+    <h4>S'entraîner</h4>
+    <div class="nav-item special3" data-view="redac" onclick="go('redac')">
+      <span class="ico">✍️</span><span class="lab">Questions rédigées</span>
+    </div>
+    <div class="nav-item special2" data-view="annales" onclick="go('annales')">
+      <span class="ico">📐</span><span class="lab">Cas pratiques corrigés</span>
+    </div>
+    <div class="nav-item special" data-view="test" onclick="go('test')">
+      <span class="ico">🎯</span><span class="lab">Test final adaptatif</span>
+    </div>
+    <h4>À savoir</h4>
+    <div class="nav-item" data-view="ecarts" onclick="go('ecarts')">
+      <span class="ico">⚠️</span><span class="lab">Ce qui diffère de tes notes</span>
+    </div>
+  </aside>
+
+  <main class="main" id="main">
+
+    <!-- ============ LEÇON 1 ============ -->
+    <section class="view" data-view="l1">
+      <span class="tag">Leçon 1 · Personnalité juridique</span>
+      <h1 class="lesson-title">Le particulier et la personnalité juridique</h1>
+      <p class="subtitle">Avant de parler de ses droits, il faut savoir qui est « le particulier » pour le droit — et à partir de quand on devient quelqu'un aux yeux de la loi.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>La personnalité juridique, c'est comme un compte ouvert au nom d'une personne : tant qu'il est ouvert, on peut y inscrire des droits (être propriétaire, hériter, être créancier) et des obligations (payer une dette, réparer un dommage). Sans compte, rien ne peut y être inscrit.</p>
+      </div>
+
+      <div class="rulebox">
+        <div class="rb-main">Un <em>particulier</em> est une personne physique qui agit pour son propre compte, à titre privé.</div>
+        <div class="rb-sub">La <strong>personnalité juridique</strong> est l'aptitude à être titulaire de droits et assujetti à des obligations. La loi la reconnaît à tout être humain vivant, et à égalité : mêmes droits, mêmes obligations.</div>
+      </div>
+
+      <h2>Personne physique, personne morale</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Notion</th><th>Ce que c'est</th><th>Exemples</th></tr>
+        <tr><td>Personne physique</td><td>Un être humain doté de la personnalité juridique.</td><td>Un client de l'agence, un enfant, un retraité.</td></tr>
+        <tr><td>Personne morale</td><td>Un groupement auquel la loi reconnaît une personnalité propre. <strong>Exclue</strong> de la notion de particulier.</td><td>Une SCI, une association, la banque elle-même.</td></tr>
+      </table>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 À retenir</div>
+        <p>Le cours suit la vie juridique du particulier en <strong>trois temps</strong> : le <strong>début</strong> de la personnalité (naître vivant et viable), sa <strong>fin</strong> (le décès), et <strong>deux situations d'incertitude</strong> (l'absence et la disparition). Le chapitre 2 traite ensuite de ce qui l'<strong>identifie</strong> : nom, prénom, sexe, domicile, nationalité.</p>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">Exemple bancaire — qui signe ?</div>
+        <p>Un client ouvre un compte personnel : il agit comme particulier. Le même client ouvre ensuite un compte au nom de sa SCI familiale : c'est la SCI, personne morale, qui devient titulaire. Le conseiller ne traite pas avec la même « personne », même si c'est le même être humain qui signe.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Qu'est-ce que la personnalité juridique ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Le fait d'avoir atteint la majorité</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">L'aptitude à être titulaire de droits et assujetti à des obligations</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le fait d'être inscrit sur une liste électorale</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Un nouveau-né a la personnalité juridique : il peut être propriétaire ou héritier. La majorité concerne la <em>capacité</em> d'exercer seul ses droits, pas leur titularité.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Une association qui ouvre un compte bancaire est-elle un « particulier » ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Oui, si elle n'a pas de but lucratif</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Non, c'est une personne morale</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Oui, si son président signe seul</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Le particulier est une personne <strong>physique</strong>. Une association, même sans but lucratif, est une personne morale.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('redac')">Questions rédigées</button>
+        <button class="btn primary" onclick="validate('l1',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 2 ============ -->
+    <section class="view" data-view="l2">
+      <span class="tag">Leçon 2 · Personnalité juridique</span>
+      <h1 class="lesson-title">Naître vivant et viable</h1>
+      <p class="subtitle">La personnalité juridique commence à la naissance, mais pas n'importe laquelle : trois conditions, cumulatives, et trois traductions possibles à l'état civil.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Trois conditions <em>cumulatives</em> : naître · vivant · viable.</div>
+        <div class="rb-sub">Une seule manque, et l'enfant n'acquiert pas la personnalité juridique.</div>
+      </div>
+
+      <h2>Les trois conditions</h2>
+      <table class="tbl wrap">
+        <tr><th>Condition</th><th>Ce qu'elle signifie</th></tr>
+        <tr><td>Naître</td><td>Être sorti du ventre de sa mère.</td></tr>
+        <tr><td>Vivant</td><td>Respirer, avoir un cœur qui bat.</td></tr>
+        <tr><td>Viable</td><td>Avoir une capacité naturelle à vivre de façon autonome, donc naître avec tous ses organes vitaux. Repère de l'OMS : <strong>22 semaines</strong> de grossesse <strong>ou</strong> un poids de plus de <strong>500 g</strong>.</td></tr>
+      </table>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Le piège</div>
+        <p>Avoir respiré ne suffit pas. Un enfant qui naît sans un organe vital est un <strong>enfant sans vie</strong> même s'il a respiré quelques instants, sauf si l'anomalie était opérable : il était alors viable.</p>
+      </div>
+
+      <h2>Ce que dit le médecin, ce qu'écrit la mairie</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Situation</th><th>Certificat médical</th><th>Acte d'état civil</th></tr>
+        <tr><td>Né vivant et viable</td><td>Certificat d'accouchement</td><td>Acte de naissance</td></tr>
+        <tr><td>Né vivant et viable, mais décédé avant la déclaration de naissance en mairie</td><td>Certificat unique : vivant et viable, avec date et heure de la naissance <strong>et</strong> du décès</td><td>Acte de naissance <strong>et</strong> acte de décès</td></tr>
+        <tr><td>Mort-né, ou né vivant mais non viable</td><td>Certificat d'accouchement d'un enfant sans vie</td><td>Acte d'enfant sans vie</td></tr>
+      </table>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 L'enfant sans vie</div>
+        <p>L'acte d'enfant sans vie <strong>n'emporte aucun effet juridique</strong> : l'enfant n'a jamais eu la personnalité juridique, il n'hérite pas et ne transmet rien. C'est une reconnaissance humaine : inscription sur les registres de la commune, prénoms, obsèques et sépulture. Depuis la loi du 6 décembre 2021, les parents peuvent aussi lui donner un <strong>nom de famille</strong>, toujours sans effet juridique.</p>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Le seuil des 15 semaines</div>
+        <p>Le certificat d'accouchement suppose un corps formé. Selon la circulaire du 19 juin 2009, les interruptions de grossesse — volontaires ou spontanées précoces — survenues <strong>avant la 15<sup>e</sup> semaine d'aménorrhée</strong> ne donnent en principe pas lieu à un acte d'enfant sans vie. Aucun seuil de poids ni de durée n'est en revanche exigé par la loi au-delà.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Un enfant naît vivant et viable puis décède deux heures plus tard, avant toute déclaration en mairie. Quel(s) acte(s) dresse-t-on ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Un acte d'enfant sans vie</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Un acte de naissance et un acte de décès</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Un acte de décès seulement</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Il est né vivant et viable : il a eu la personnalité juridique, même deux heures. On dresse donc les deux actes — et il a pu, pendant ce temps, hériter et transmettre.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Les trois conditions « naître, vivant, viable » sont :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Alternatives : une seule suffit</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Cumulatives : il les faut toutes</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Laissées à l'appréciation de l'officier d'état civil</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Les trois sont cumulatives. Un enfant vivant mais non viable n'acquiert pas la personnalité juridique.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l1')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l2',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 3 ============ -->
+    <section class="view" data-view="l3">
+      <span class="tag">Leçon 3 · Personnalité juridique</span>
+      <h1 class="lesson-title"><i>Infans conceptus</i> : l'enfant simplement conçu</h1>
+      <p class="subtitle">Une exception au principe : l'enfant peut faire remonter sa personnalité juridique au jour de sa conception, quand c'est dans son intérêt.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">« <em>Infans conceptus pro nato habetur quoties de commodis ejus agitur</em> » : l'enfant conçu est tenu pour né chaque fois qu'il y va de son intérêt.</div>
+        <div class="rb-sub">La règle vient du droit des successions : pour hériter, il faut exister au jour du décès. Elle protège les intérêts patrimoniaux de l'enfant.</div>
+      </div>
+
+      <h2>La période légale de conception</h2>
+      <div class="rulebox formule">
+        <div class="rb-main">Conception présumée : du <em>300<sup>e</sup></em> au <em>180<sup>e</sup></em> jour inclus avant la naissance.</div>
+        <div class="rb-sub">Code civil, art. 311. La conception est présumée avoir eu lieu à n'importe quel moment de cette période, au choix de l'intérêt de l'enfant. C'est une présomption <strong>simple</strong> : la preuve contraire est possible, par tout moyen — une grossesse plus longue ou plus courte.</div>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 Deux conditions pour en profiter</div>
+        <p>1. L'enfant doit <strong>naître vivant et viable</strong> : sinon, la règle ne joue pas. 2. Cela doit être <strong>dans son intérêt</strong> : on ne s'en sert jamais pour lui imposer une charge.</p>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">Calcul vérifié — le père décède pendant la grossesse</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Les faits.</b> Le père décède le <code>10/01/2026</code>. L'enfant naît vivant et viable le <code>20/09/2026</code>. Peut-il hériter de son père ?</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>La période légale.</b> 300<sup>e</sup> jour avant la naissance : <code>24/11/2025</code>. 180<sup>e</sup> jour avant : <code>24/03/2026</code>. On compte à rebours à partir du jour de la naissance, celui-ci non compris.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>La comparaison.</b> Le décès (10/01/2026) tombe <b>dans</b> la période : la naissance survient <code>253 jours</code> après le décès, moins de 300. L'enfant peut placer sa conception avant le décès, puisque c'est son intérêt.</div></div>
+        <div class="ex-result">Il était conçu au jour du décès : il hérite de son père.</div>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Le piège</div>
+        <p>Si l'enfant naît <strong>plus de 300 jours</strong> après le décès, la présomption ne lui permet plus de se dire conçu avant : il faudrait prouver une grossesse exceptionnellement longue. C'est l'objet du cas pratique n° 2.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Qui choisit la date de conception retenue dans la période légale ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Le médecin accoucheur</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Elle est placée selon l'intérêt de l'enfant</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le juge, toujours au 240<sup>e</sup> jour</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> La conception est présumée intervenue à n'importe quel moment de la période, « suivant ce qu'exige l'intérêt de l'enfant ».</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">La présomption de la période de conception est :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Irréfragable : aucune preuve contraire</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Simple : la preuve contraire est admise par tout moyen</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Réservée aux enfants de parents mariés</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Présomption simple : on peut prouver par tout moyen que la grossesse a été plus longue ou plus courte.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l2')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l3',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 4 ============ -->
+    <section class="view" data-view="l4">
+      <span class="tag">Leçon 4 · Personnalité juridique</span>
+      <h1 class="lesson-title">Constater le décès</h1>
+      <p class="subtitle">La personnalité juridique prend fin au décès : la personne ne peut plus exercer de droits ni contracter d'obligations. Encore faut-il fixer la date et l'heure de la mort.</p>
+
+      <h2>La mort constatée par un médecin</h2>
+      <div class="step"><div class="sn">1</div><div class="sc"><b>Le médecin</b> constate le décès et rédige un <b>certificat de décès</b> qui en mentionne la date et l'heure.</div></div>
+      <div class="step"><div class="sn">2</div><div class="sc"><b>L'officier d'état civil</b> de la commune où la mort est survenue dresse l'<b>acte de décès</b>, au vu de ce certificat.</div></div>
+      <div class="step"><div class="sn">3</div><div class="sc"><b>En cas de doute sur la cause</b> (mort violente ou suspecte), le médecin coche la case <b>« obstacle médico-légal »</b>. L'inhumation n'est alors possible qu'après qu'un <b>officier de police judiciaire</b>, assisté d'un médecin, a dressé un <b>procès-verbal</b> de l'état du corps. C'est toujours l'officier d'état civil qui établit l'acte de décès.</div></div>
+
+      <h2>La mort cérébrale</h2>
+      <p>Le cœur bat et la respiration est maintenue par des machines, mais le cerveau est détruit de façon totale et irréversible. La personne est juridiquement décédée si trois critères cliniques sont réunis.</p>
+      <table class="tbl wrap">
+        <tr><th>Critère clinique</th><th>Ce qu'on constate</th></tr>
+        <tr><td>1. Conscience</td><td>Absence totale de conscience et d'activité motrice spontanée.</td></tr>
+        <tr><td>2. Tronc cérébral</td><td>Abolition de tous les réflexes du tronc cérébral.</td></tr>
+        <tr><td>3. Respiration</td><td>Absence totale de ventilation spontanée.</td></tr>
+      </table>
+
+      <div class="rulebox">
+        <div class="rb-main">Confirmation : <em>deux EEG nuls et aréactifs</em>, de 30 minutes chacun, espacés d'au moins <em>4 heures</em> — <em>ou</em> une angiographie montrant l'arrêt de la circulation dans le cerveau.</div>
+        <div class="rb-sub">Code de la santé publique, art. R. 1232-1 et R. 1232-2. L'EEG (électroencéphalogramme) mesure l'activité électrique du cerveau. Tes notes ne mentionnent que les EEG : l'angiographie est l'autre voie prévue par le texte.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Qui dresse l'acte de décès ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Le médecin qui constate la mort</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">L'officier d'état civil de la commune du décès</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">L'officier de police judiciaire</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Le médecin rédige le <em>certificat</em>, l'officier d'état civil dresse l'<em>acte</em>. L'officier de police judiciaire n'intervient qu'en cas d'obstacle médico-légal, par un procès-verbal.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Quel intervalle minimal sépare les deux EEG confirmant une mort cérébrale ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">30 minutes</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">4 heures</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">24 heures</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> 30 minutes, c'est la durée de <em>chaque</em> enregistrement ; 4 heures, c'est l'intervalle minimal <em>entre</em> les deux.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l3')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l4',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 5 ============ -->
+    <section class="view" data-view="l5">
+      <span class="tag">Leçon 5 · Personnalité juridique</span>
+      <h1 class="lesson-title">Ce qui survit au décès</h1>
+      <p class="subtitle">La personnalité juridique s'éteint, mais le défunt laisse un patrimoine, un corps, une mémoire — et parfois une œuvre. Le droit continue de protéger chacun d'eux.</p>
+
+      <h2>Les conséquences du décès</h2>
+      <table class="tbl wrap">
+        <tr><th>Ce qui est touché</th><th>Ce qui se passe</th></tr>
+        <tr><td>Les contrats « personnels »</td><td>Ceux conclus en considération de la personne (<i>intuitu personae</i>) prennent fin.</td></tr>
+        <tr><td>Le couple</td><td>Le mariage est dissous, le PACS prend fin.</td></tr>
+        <tr><td>Le patrimoine</td><td>La <strong>succession s'ouvre</strong> : les droits patrimoniaux du défunt sont transmis à ses successeurs.</td></tr>
+      </table>
+
+      <div class="example">
+        <div class="ex-head">Exemple bancaire — le jour où l'agence apprend le décès</div>
+        <p>Les comptes individuels du client sont bloqués et basculent dans la succession, réglée avec le notaire. Le mandat confié à un proche (procuration) prend fin : c'était un contrat conclu en considération de la personne. Ce lien avec la succession sera approfondi dans les cours de patrimoine.</p>
+      </div>
+
+      <h2>La protection du cadavre</h2>
+      <p>Le corps et les restes du défunt doivent être traités avec <strong>dignité et respect</strong>. Les atteintes à l'intégrité du cadavre, la profanation de sépulture et les vols dans les cimetières sont des infractions pénales.</p>
+
+      <h2>La mémoire, la réputation et l'image du défunt</h2>
+      <p>Les successeurs peuvent agir en justice pour faire cesser une atteinte à la mémoire du défunt et obtenir des dommages et intérêts. Lors d'un événement d'actualité (les attentats du Bataclan, par exemple), l'image de victimes peut être montrée, mais dans le respect de leur dignité.</p>
+
+      <h2>Les droits d'auteur : un droit hybride</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Volet</th><th>Contenu</th><th>Durée</th></tr>
+        <tr><td>Droit moral</td><td>Être reconnu comme auteur, faire respecter l'intégrité de l'œuvre.</td><td><strong>Perpétuel</strong>, transmis aux héritiers.</td></tr>
+        <tr><td>Droit patrimonial</td><td>Autoriser l'exploitation de l'œuvre et être rémunéré.</td><td><strong>Temporaire</strong> : l'année du décès et les <strong>70 années civiles</strong> qui suivent.</td></tr>
+      </table>
+      </div>
+
+      <div class="rulebox formule">
+        <div class="rb-main">Entrée dans le domaine public : le <em>1<sup>er</sup> janvier</em> de l'année <em>décès + 71</em>.</div>
+        <div class="rb-sub">Un auteur mort en 1955 : protection jusqu'au 31/12/2025, domaine public le 01/01/2026. Hors cas particuliers des prorogations pour faits de guerre, que le cours n'aborde pas.</div>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Le piège</div>
+        <p>Une œuvre du domaine public est libre et gratuite, mais pas « libre de tout » : le <strong>droit moral</strong>, perpétuel, continue d'interdire de la dénaturer ou d'en taire l'auteur. C'est ce que tes notes résument par « à condition de ne pas modifier l'œuvre ».</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Un peintre meurt le 3 juin 1956. Quand son œuvre entre-t-elle dans le domaine public ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Le 3 juin 2026</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Le 1er janvier 2027</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le 1er janvier 2026</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Protection pendant 1956 puis les 70 années suivantes, donc jusqu'au 31/12/2026. Domaine public le 01/01/2027 (1956 + 71). On ne compte jamais à partir du jour exact du décès.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Lequel de ces contrats prend fin avec le décès du client ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">La procuration qu'il avait donnée à sa fille</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le droit de propriété sur son appartement, qui disparaît</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Aucun : tous passent aux héritiers à l'identique</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Le mandat est conclu en considération de la personne : il s'éteint. L'appartement, lui, ne disparaît pas : il entre dans la succession.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l4')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l5',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 6 ============ -->
+    <section class="view" data-view="l6">
+      <span class="tag">Leçon 6 · Absence et disparition</span>
+      <h1 class="lesson-title">L'absence : quand on ne sait pas</h1>
+      <p class="subtitle">Une personne quitte son domicile du jour au lendemain, sans nouvelles. Vivante ou morte ? Le droit organise une procédure en deux étapes qui ménage les deux hypothèses.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Est absente la personne qui <em>a cessé de paraître</em> à son domicile ou à sa résidence, <em>sans que l'on ait de ses nouvelles</em>.</div>
+        <div class="rb-sub">Deux conditions cumulatives. Le doute est total : on ne sait pas si elle est vivante ou morte.</div>
+      </div>
+
+      <h2>Étape 1 — La présomption d'absence</h2>
+      <div class="step"><div class="sn">1</div><div class="sc"><b>Qui saisit ?</b> Toute personne intéressée (conjoint, héritier, créancier) ou le ministère public, par requête.</div></div>
+      <div class="step"><div class="sn">2</div><div class="sc"><b>Quel juge ?</b> Le <b>juge des contentieux de la protection</b>, au tribunal judiciaire.</div></div>
+      <div class="step"><div class="sn">3</div><div class="sc"><b>Publicité.</b> La décision est inscrite au <b>répertoire civil</b>, tenu par le tribunal, et mentionnée en marge de l'acte de naissance de l'absent avec la mention <b>« RC »</b>.</div></div>
+
+      <table class="tbl wrap">
+        <tr><th>Effets de la présomption</th><th>Pourquoi</th></tr>
+        <tr><td>Personnalité juridique maintenue</td><td>L'absent est <strong>présumé vivant</strong>.</td></tr>
+        <tr><td>Un représentant est désigné</td><td>Il gère le patrimoine et les affaires de l'absent.</td></tr>
+        <tr><td>Mariage maintenu</td><td>Pas de dissolution : le conjoint ne peut pas se remarier.</td></tr>
+      </table>
+      <p><strong>S'il revient</strong> pendant cette période, il demande au juge de mettre fin à la présomption. Ses biens lui sont restitués, et il ne peut pas contester les actes de gestion courante faits par son représentant.</p>
+
+      <h2>Étape 2 — Le jugement déclaratif d'absence</h2>
+      <table class="tbl wrap num">
+        <tr><th>Point de départ</th><th>Délai</th></tr>
+        <tr><td>Jugement de présomption d'absence</td><td>10 ans écoulés</td></tr>
+        <tr><td>Dernières nouvelles, sans présomption prononcée</td><td>20 ans écoulés</td></tr>
+        <tr><td>Publication des extraits de la requête</td><td>Jugement au plus tôt 1 an après</td></tr>
+      </table>
+      <p>Tout intéressé saisit le tribunal judiciaire, avec un avocat. Des extraits de la requête sont publiés dans la presse (journaux d'annonces légales) pour que l'absent, s'il est vivant, se manifeste. Le tribunal ne peut statuer qu'<strong>un an au moins après cette publication</strong>.</p>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 Effets du jugement déclaratif</div>
+        <p>Il est transcrit sur les registres des décès : il produit <strong>tous les effets d'un décès</strong>. La succession s'ouvre, le mariage est dissous, le conjoint peut se remarier.</p>
+      </div>
+
+      <h2>Et si l'absent revient ?</h2>
+      <p>Le jugement est annulé à sa demande. Il retrouve ses biens <strong>dans l'état où ils se trouvent</strong>, le <strong>prix</strong> de ceux qui ont été vendus et les biens achetés avec ses capitaux. En revanche, son <strong>mariage reste dissous</strong> (Code civil, art. 132).</p>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Le piège classique</div>
+        <p>Pendant la <strong>présomption</strong>, le mariage tient. Après le <strong>jugement déclaratif</strong>, il est dissous — et définitivement, même si l'absent réapparaît.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Pendant la présomption d'absence, l'absent est considéré comme :</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">Vivant</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Décédé</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Ni l'un ni l'autre : sa personnalité est suspendue</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Présumé vivant : il garde sa personnalité juridique, son mariage tient, un représentant gère ses biens.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Après un jugement déclaratif d'absence, l'absent réapparaît. Son mariage :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Revit automatiquement</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Reste dissous</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Revit si le conjoint ne s'est pas remarié</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Article 132 du Code civil : le mariage reste dissous, même si le jugement déclaratif est annulé. Les biens, eux, sont récupérés.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l5')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l6',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 7 ============ -->
+    <section class="view" data-view="l7">
+      <span class="tag">Leçon 7 · Absence et disparition</span>
+      <h1 class="lesson-title">La disparition, et le tableau qui compare</h1>
+      <p class="subtitle">Ici, le doute est minime : la mort est quasi certaine, seul le corps manque. Pas de délai d'attente : on peut déclarer le décès tout de suite.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Le disparu est une personne dont le <em>corps n'a pas été retrouvé</em>, mais dont le décès est <em>quasi certain</em> au vu des circonstances.</div>
+        <div class="rb-sub">Circonstances de nature à mettre sa vie en danger : crash aérien, naufrage, catastrophe naturelle.</div>
+      </div>
+
+      <h2>La procédure</h2>
+      <div class="step"><div class="sn">1</div><div class="sc"><b>Qui saisit ?</b> Tout intéressé ou le procureur de la République, <b>immédiatement</b>.</div></div>
+      <div class="step"><div class="sn">2</div><div class="sc"><b>Quel tribunal ?</b> Le tribunal judiciaire du lieu de la mort ou de la disparition, ou celui du dernier domicile ; à défaut, celui du port d'attache du navire ou de l'avion ; à défaut, le tribunal de Paris.</div></div>
+      <div class="step"><div class="sn">3</div><div class="sc"><b>La décision.</b> Un <b>jugement déclaratif de décès</b>, qui fixe la date du décès et est transcrit sur les registres de l'état civil. La succession s'ouvre.</div></div>
+
+      <div class="example">
+        <div class="ex-head">Illustrations</div>
+        <p>Le tsunami de décembre 2004 en Asie : la justice a mis en place des procédures simplifiées de déclaration judiciaire de décès pour les victimes françaises jamais retrouvées. De même pour un crash en mer ou un naufrage, le Titanic étant l'exemple historique cité en cours.</p>
+      </div>
+
+      <h2>Absence ou disparition ?</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Critère</th><th>Absence</th><th>Disparition</th></tr>
+        <tr><td>Le doute</td><td>Total : vivant ou mort ?</td><td>Minime : mort quasi certaine</td></tr>
+        <tr><td>Circonstances</td><td>Départ sans nouvelles</td><td>Événement mettant la vie en danger</td></tr>
+        <tr><td>Procédure</td><td>Deux étapes : présomption, puis jugement déclaratif d'absence</td><td>Une étape : jugement déclaratif de décès</td></tr>
+        <tr><td>Délai</td><td>10 ans après la présomption (ou 20 ans sans nouvelles) + 1 an après publication</td><td>Aucun : saisine immédiate</td></tr>
+        <tr><td>Juge</td><td>Juge des contentieux de la protection, puis tribunal judiciaire</td><td>Tribunal judiciaire</td></tr>
+        <tr><td>Exemple</td><td>Xavier Dupont de Ligonnès, au sens courant (cité en cours)</td><td>Victimes du tsunami de 2004 jamais retrouvées</td></tr>
+      </table>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Correction de tes notes</div>
+        <p>Tes notes citent « le petit Grégory » comme exemple de disparition. C'est inexact : le corps de Grégory Villemin a été retrouvé dans la Vologne en 1984. Son décès n'a donc jamais posé de question de disparition — c'est une affaire criminelle. Ne le cite pas à l'examen.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Un bateau de pêche fait naufrage par gros temps ; un marin n'est jamais retrouvé. Quelle procédure ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Présomption d'absence, puis jugement déclaratif d'absence après 10 ans</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Jugement déclaratif de décès, sans délai</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Aucune : sans corps, pas de décès</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Circonstances mettant la vie en danger, corps introuvable : c'est une disparition. Le décès peut être déclaré immédiatement.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Combien d'étapes compte la procédure d'absence ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Une</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Deux</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Trois</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Présomption d'absence, puis jugement déclaratif d'absence. La disparition, elle, n'en compte qu'une.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l6')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l7',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 8 ============ -->
+    <section class="view" data-view="l8">
+      <span class="tag">Leçon 8 · Identification</span>
+      <h1 class="lesson-title">Le nom de famille</h1>
+      <p class="subtitle">Premier élément de l'état des personnes. Comme les autres, il est « indisponible » : on ne le change pas comme on veut — mais la loi ouvre plusieurs portes.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Éléments d'identification : <em>nom · prénom · sexe · domicile · nationalité · filiation</em>.</div>
+        <div class="rb-sub">Ils forment l'état des personnes. Ils sont <strong>indisponibles</strong> : on ne peut ni les vendre, ni les modifier librement.</div>
+      </div>
+
+      <h2>L'attribution du nom</h2>
+      <div class="step"><div class="sn">1</div><div class="sc"><b>La filiation d'abord.</b> Le nom de la mère sur l'acte de naissance établit la filiation maternelle. Côté père : s'il est marié à la mère, il est présumé être le père ; sinon, il doit <b>reconnaître</b> l'enfant.</div></div>
+      <div class="step"><div class="sn">2</div><div class="sc"><b>Le choix des parents</b> (filiation établie à l'égard des deux) : nom du père, nom de la mère, ou les deux accolés dans l'ordre qu'ils choisissent, <b>dans la limite d'un nom pour chacun</b>.</div></div>
+      <div class="step"><div class="sn">3</div><div class="sc"><b>Sans choix déclaré :</b> l'enfant prend le nom du parent à l'égard duquel la filiation a été établie en premier ; si elle l'a été en même temps, le nom du père.</div></div>
+      <div class="step"><div class="sn">4</div><div class="sc"><b>En cas de désaccord</b> signalé par un parent : les deux noms, accolés dans l'<b>ordre alphabétique</b>.</div></div>
+      <div class="step"><div class="sn">5</div><div class="sc"><b>La fratrie :</b> le nom choisi pour le premier enfant commun vaut pour <b>tous les suivants</b>.</div></div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Correction de tes notes</div>
+        <p>Tes notes parlent d'« un arrêt de 2005 ». Le choix du nom vient d'une <strong>loi</strong> (lois du 4 mars 2002 et du 18 juin 2003), entrée en vigueur le <strong>1<sup>er</sup> janvier 2005</strong>. Et un enfant au double nom ne transmettra lui-même, plus tard, qu'<strong>un</strong> de ses deux noms.</p>
+      </div>
+
+      <h2>Changer de nom : trois voies</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Voie</th><th>Pour quoi</th><th>Auprès de qui</th></tr>
+        <tr><td>Procédure simplifiée (loi du 2 mars 2022)</td><td>Un majeur peut, <strong>une fois dans sa vie</strong>, prendre ou ajouter le nom du parent qui ne lui a pas été transmis.</td><td>L'officier d'état civil, par formulaire, sans justifier de motif.</td></tr>
+        <tr><td>Déclaration conjointe des parents</td><td>Changer le nom d'un enfant, par exemple pour que toute la fratrie porte le même nom.</td><td>L'officier d'état civil.</td></tr>
+        <tr><td>Changement par décret</td><td>Justifier d'un <strong>intérêt légitime</strong> : nom ridicule ou déshonorant (parent criminel notoire), nom d'emprunt porté de longue date (résistants, personnalités), nom menacé d'extinction.</td><td>Le ministre de la Justice ; décret après publicité.</td></tr>
+      </table>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 La règle des 13 ans</div>
+        <p>Dès qu'un enfant a <strong>13 ans ou plus</strong>, tout changement de son nom suppose son <strong>consentement</strong> personnel.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Les parents ne s'entendent pas sur le nom : l'un saisit l'officier d'état civil. Quel nom porte l'enfant ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Le nom du père</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Les deux noms, dans l'ordre alphabétique</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le nom choisi par le juge aux affaires familiales</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Le désaccord signalé conduit aux deux noms accolés par ordre alphabétique. Le nom du père ne s'impose qu'en l'absence de toute déclaration, quand les filiations sont établies en même temps.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Une majeure veut porter le nom de sa mère, qui ne lui a pas été transmis. Que fait-elle ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Une requête au ministre de la Justice, avec un intérêt légitime</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Un formulaire en mairie, une fois dans sa vie, sans motif à justifier</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">C'est impossible : le nom est indisponible</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> C'est la procédure simplifiée de la loi du 2 mars 2022, absente de tes notes mais très probable à l'examen.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l7')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l8',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 9 ============ -->
+    <section class="view" data-view="l9">
+      <span class="tag">Leçon 9 · Identification</span>
+      <h1 class="lesson-title">Le prénom et le sexe</h1>
+      <p class="subtitle">Deux éléments que la loi a beaucoup assouplis : le prénom se choisit librement et se change en mairie ; le sexe à l'état civil se modifie sans condition médicale depuis 2016.</p>
+
+      <h2>Le prénom</h2>
+      <div class="step"><div class="sn">1</div><div class="sc"><b>Libre choix.</b> Les parents choisissent le prénom, et l'officier d'état civil l'inscrit.</div></div>
+      <div class="step"><div class="sn">2</div><div class="sc"><b>Le garde-fou.</b> Si le prénom paraît contraire à l'intérêt de l'enfant, l'officier d'état civil avise le <b>procureur de la République</b>, qui peut saisir le <b>juge aux affaires familiales</b>. Le juge peut ordonner sa suppression.</div></div>
+      <div class="step"><div class="sn">3</div><div class="sc"><b>Le changement.</b> Il se demande <b>en mairie</b>, à l'officier d'état civil, <b>gratuitement</b>, en justifiant d'un <b>intérêt légitime</b>. Consentement de l'enfant requis dès 13 ans. En cas de doute, l'officier saisit le procureur.</div></div>
+
+      <h2>Le sexe</h2>
+      <table class="tbl wrap">
+        <tr><th>Période</th><th>Conditions</th></tr>
+        <tr><td>Avant 2016</td><td>Construction des juges : syndrome transsexuel établi, apparence physique de l'autre sexe, traitements rendant la transformation <strong>irréversible</strong>.</td></tr>
+        <tr><td>Depuis la loi du 18 novembre 2016</td><td><strong>Plus aucune condition médicale</strong> : ne pas avoir subi de traitement, d'opération ou de stérilisation ne peut motiver un refus. Mais il faut prouver, par une <strong>réunion suffisante de faits</strong>, que l'on se présente et est connu sous l'autre sexe : présentation publique, connaissance par l'entourage, changement de prénom obtenu.</td></tr>
+      </table>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Correction de tes notes</div>
+        <p>« Depuis 2016, plus besoin de critères » est trop fort. Il n'y a plus de critère <strong>médical</strong>, mais la demande reste examinée par le <strong>tribunal judiciaire</strong>, sur la base de faits concrets. Elle est ouverte aux majeurs et aux mineurs émancipés.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Qui peut saisir le juge aux affaires familiales d'un prénom contraire à l'intérêt de l'enfant ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">L'officier d'état civil directement</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Le procureur de la République, avisé par l'officier d'état civil</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">N'importe quel membre de la famille</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> L'officier d'état civil ne refuse pas lui-même : il avise le procureur, qui décide de saisir ou non le juge aux affaires familiales.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Depuis 2016, pour changer la mention de son sexe à l'état civil, il faut :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Avoir subi une opération chirurgicale</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Rien : une simple déclaration en mairie suffit</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Prouver par une réunion suffisante de faits qu'on vit sous l'autre sexe</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Ni condition médicale, ni simple déclaration : le tribunal judiciaire examine des faits concrets.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l8')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l9',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 10 ============ -->
+    <section class="view" data-view="l10">
+      <span class="tag">Leçon 10 · Identification</span>
+      <h1 class="lesson-title">Le domicile et la nationalité</h1>
+      <p class="subtitle">Les deux sections les plus courtes de tes notes, et celles qui demandaient le plus de corrections. Voici les définitions exactes à restituer.</p>
+
+      <h2>Le domicile</h2>
+      <div class="rulebox">
+        <div class="rb-main">Le domicile est le lieu où la personne a son <em>principal établissement</em>.</div>
+        <div class="rb-sub">Code civil, art. 102. Ce n'est pas simplement « l'adresse donnée à l'administration » : c'est le lieu où l'on vit principalement, où se concentrent ses intérêts. On peut avoir plusieurs résidences, mais un seul domicile.</div>
+      </div>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Pour ne pas confondre</div>
+        <p>En fiscalité (module 1), tu as vu le <strong>domicile fiscal</strong>, défini par les quatre tests de l'article 4 B du CGI. Le <strong>domicile civil</strong> de l'article 102 est une autre notion, plus simple : le principal établissement.</p>
+      </div>
+
+      <h2>La nationalité : quatre voies</h2>
+      <table class="tbl wrap">
+        <tr><th>Voie</th><th>Principe</th></tr>
+        <tr><td>Droit du sang</td><td>Est français l'enfant dont <strong>au moins un parent</strong> est français, où qu'il naisse.</td></tr>
+        <tr><td>Droit du sol</td><td>Est français l'enfant né en France d'un parent lui-même né en France. Et l'enfant né en France de parents étrangers devient français <strong>à sa majorité</strong> s'il réside en France à cette date et y a résidé au moins <strong>5 ans depuis l'âge de 11 ans</strong>.</td></tr>
+        <tr><td>Mariage</td><td>Le conjoint étranger d'un Français peut acquérir la nationalité par <strong>déclaration</strong> après <strong>4 ans de mariage</strong>, avec communauté de vie (5 ans s'il ne justifie pas de 3 ans de résidence en France depuis le mariage).</td></tr>
+        <tr><td>Naturalisation</td><td>Décision de l'État, par <strong>décret</strong>, pour un étranger majeur résidant en France, en principe depuis au moins 5 ans.</td></tr>
+      </table>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Corrections de tes notes</div>
+        <p>1. Le mariage ne « donne » pas droit au regroupement familial : il ouvre la nationalité <strong>par déclaration</strong> après 4 ans. Le regroupement familial est une règle du droit des étrangers, sans rapport. 2. « Naturalisation à 18 ans si arrivé mineur depuis plus de 5 ans » mélange deux voies : l'acquisition à la majorité vise un enfant <strong>né en France</strong> ; la naturalisation est une décision de l'État.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 Ce qui manque encore</div>
+        <p>La <strong>filiation</strong>, annoncée dans la liste des éléments d'identification, n'est pas traitée dans tes notes. Elle viendra sans doute avec la partie 2 du cours.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Le domicile, au sens du Code civil, c'est :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">L'adresse indiquée à l'administration fiscale</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Le lieu du principal établissement</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le lieu où l'on a passé plus de 183 jours</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Article 102. Les 183 jours sont un critère du domicile <em>fiscal</em>, pas du domicile civil.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Le conjoint étranger d'une Française peut demander la nationalité par déclaration après :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">1 an de mariage</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">4 ans de mariage, avec communauté de vie</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">10 ans de résidence en France</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Quatre ans, porté à cinq s'il ne justifie pas de trois ans de résidence en France depuis le mariage.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l9')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l10',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ QUESTIONS RÉDIGÉES ============ -->
+    <section class="view" data-view="redac">
+      <span class="tag">S'entraîner</span>
+      <h1 class="lesson-title">Questions rédigées, corrigées automatiquement</h1>
+      <p class="subtitle">Rédige ta réponse comme à l'examen, puis demande la correction : le site repère les notions-clés présentes dans ton texte, te dit ce qui manque, et affiche une réponse modèle.</p>
+
+      <div class="intro-card">
+        <h2>✍️ Comment ça marche</h2>
+        <p>Ces questions ne figurent pas dans tes notes : elles ont été <strong>rédigées par le site</strong> à partir du cours, et chaque réponse modèle a été vérifiée contre les textes de loi. La correction automatique cherche des <strong>mots-clés</strong> : elle vérifie que les bonnes notions sont là, pas la qualité de ta rédaction. Relis toujours la réponse modèle.</p>
+      </div>
+
+      <div id="redacList"></div>
+    </section>
+
+    <!-- ============ CAS PRATIQUES ============ -->
+    <section class="view" data-view="annales">
+      <span class="tag">Applications</span>
+      <h1 class="lesson-title">Six cas pratiques, corrigés et vérifiés</h1>
+      <p class="subtitle">Raisonne au brouillon avant d'ouvrir le corrigé : faits, règle, application, conclusion. C'est la méthode attendue en droit.</p>
+
+      <div class="intro-card">
+        <h2>📐 Avant de commencer</h2>
+        <p>Tes notes ne contiennent <strong>aucun exercice</strong>. Les six cas ci-dessous ont été <strong>rédigés par le site</strong>, et toutes les dates ont été <strong>calculées et vérifiées par ordinateur</strong>. Confronte-les aux exercices de ton enseignant dès qu'il en distribue.</p>
+      </div>
+
+      <div class="annale">
+        <div class="an-tag">Cas 1 · Naissance et personnalité</div>
+        <h3>Les jumeaux de Mme LE GALL</h3>
+        <div class="enonce">
+          Mme LE GALL accouche de jumeaux. Le premier, Malo, naît vivant et viable puis décède trois heures plus tard, avant que la naissance soit déclarée en mairie. Le second, Nolan, naît vivant mais dépourvu de reins, une malformation non opérable ; il décède quelques minutes après.
+          <ul class="qlist">
+            <li>Quels actes d'état civil dresse-t-on pour chacun ?</li>
+            <li>Lequel des deux a eu la personnalité juridique ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>La règle.</b> La personnalité juridique suppose trois conditions cumulatives : naître, vivant, viable.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Malo.</b> Né vivant et viable : les trois conditions sont réunies. Décédé avant la déclaration, il fait l'objet d'un certificat médical unique (naissance et décès, avec dates et heures), puis d'un <b>acte de naissance et d'un acte de décès</b>. Il a eu la personnalité juridique.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Nolan.</b> Né vivant, mais <b>non viable</b> : il lui manque un organe vital et l'anomalie n'est pas opérable. Avoir respiré ne suffit pas. On dresse un <b>acte d'enfant sans vie</b>, sans effet juridique ; les parents peuvent lui donner prénoms et nom.</div></div>
+          <div class="step"><div class="sn">✓</div><div class="sc"><b>Conclusion.</b> Seul Malo a eu la personnalité juridique. Conséquence pratique : s'il avait hérité pendant ses trois heures de vie, ces biens seraient transmis à ses propres héritiers.</div></div>
+        </div>
+      </div>
+
+      <div class="annale">
+        <div class="an-tag">Cas 2 · Infans conceptus · calcul de dates</div>
+        <h3>L'héritage de M. RIOU</h3>
+        <div class="enonce">
+          M. RIOU décède le 1<sup>er</sup> février 2025. Sa compagne accouche d'une fille, Lina, née vivante et viable le 15 décembre 2025.
+          <ul class="qlist">
+            <li>Calculez la période légale de conception de Lina.</li>
+            <li>Lina peut-elle, grâce à la présomption, se dire conçue avant le décès de M. RIOU ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé — dates vérifiées par calcul</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>La règle.</b> Art. 311 du Code civil : conception présumée entre le 300<sup>e</sup> et le 180<sup>e</sup> jour inclus avant la naissance, au moment le plus favorable à l'enfant. Il faut naître vivant et viable : c'est le cas.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Le calcul.</b> Naissance le <code>15/12/2025</code>. 300 jours avant : <code>18/02/2025</code>. 180 jours avant : <code>18/06/2025</code>. Période légale : du 18/02/2025 au 18/06/2025.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>La comparaison.</b> Le décès (01/02/2025) est <b>antérieur</b> au début de la période : Lina naît <code>317 jours</code> après le décès, soit plus de 300.</div></div>
+          <div class="step"><div class="sn">✓</div><div class="sc"><b>Conclusion.</b> La présomption ne permet pas de la dire conçue avant le décès. Elle ne pourrait hériter qu'en apportant la <b>preuve contraire</b> — la présomption est simple — d'une grossesse de plus de 300 jours, ce qui est médicalement très improbable.</div></div>
+        </div>
+      </div>
+
+      <div class="annale">
+        <div class="an-tag">Cas 3 · Absence · calcul de dates</div>
+        <h3>La disparition de M. KERBRAT</h3>
+        <div class="enonce">
+          M. KERBRAT a quitté son domicile de Vannes sans laisser de nouvelles. À la demande de son épouse, le juge a constaté la présomption d'absence par un jugement du 3 mars 2014. Personne n'a eu de ses nouvelles depuis.
+          <ul class="qlist">
+            <li>À partir de quand la déclaration d'absence peut-elle être prononcée ?</li>
+            <li>Les extraits de la requête sont publiés le 2 mai 2024. À quelle date le tribunal peut-il statuer, au plus tôt ?</li>
+            <li>Mme KERBRAT pouvait-elle se remarier en 2020 ? Et après le jugement ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé — dates vérifiées par calcul</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Le délai de 10 ans.</b> Un jugement de présomption a été rendu : il faut que 10 ans se soient écoulés depuis. <code>03/03/2014 + 10 ans = 03/03/2024</code>.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Le délai d'un an.</b> Le jugement déclaratif est rendu un an au moins après la publication. <code>02/05/2024 + 1 an = 02/05/2025</code> : c'est la date la plus proche à laquelle le tribunal peut statuer.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Le mariage.</b> En 2020, la présomption d'absence est en cours : M. KERBRAT est <b>présumé vivant</b>, le mariage tient, Mme KERBRAT ne peut pas se remarier. Après la transcription du jugement déclaratif, qui produit les effets d'un décès, le mariage est dissous : elle peut se remarier.</div></div>
+          <div class="step"><div class="sn">⚠</div><div class="sc"><b>Et s'il revient en 2027 ?</b> Le jugement est annulé, il récupère ses biens dans leur état et le prix de ceux qui ont été vendus, mais <b>son mariage reste dissous</b> (art. 132).</div></div>
+        </div>
+      </div>
+
+      <div class="annale">
+        <div class="an-tag">Cas 4 · Absence ou disparition ?</div>
+        <h3>Trois dossiers à qualifier</h3>
+        <div class="enonce">
+          Pour chaque situation, dites s'il s'agit d'une absence ou d'une disparition, et quelle procédure engager.
+          <ul class="qlist">
+            <li><b>a.</b> Un randonneur est emporté par une avalanche ; les secours ne retrouvent pas son corps.</li>
+            <li><b>b.</b> Une femme de 40 ans ne rentre pas du travail un soir et ne donne plus aucune nouvelle ; aucun indice d'accident.</li>
+            <li><b>c.</b> Un passager figure sur la liste d'embarquement d'un avion qui s'est abîmé en mer ; son corps n'est pas retrouvé.</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Le critère.</b> Tout dépend de l'intensité du doute : total (vivant ou mort ?) → absence ; minime (mort quasi certaine, corps introuvable) → disparition.</div></div>
+          <div class="step"><div class="sn">a</div><div class="sc"><b>Disparition.</b> L'avalanche met la vie en danger, la mort est quasi certaine. Jugement déclaratif de décès, demandé immédiatement au tribunal judiciaire.</div></div>
+          <div class="step"><div class="sn">b</div><div class="sc"><b>Absence.</b> Rien n'indique un danger : le doute est total. Présomption d'absence devant le juge des contentieux de la protection, puis, 10 ans plus tard, jugement déclaratif d'absence.</div></div>
+          <div class="step"><div class="sn">c</div><div class="sc"><b>Disparition.</b> Crash en mer, présence à bord établie. Jugement déclaratif de décès ; à défaut d'autre tribunal compétent, celui du port d'attache de l'avion, ou à défaut Paris.</div></div>
+        </div>
+      </div>
+
+      <div class="annale">
+        <div class="an-tag">Cas 5 · Le nom</div>
+        <h3>La famille MORVAN–ABGRALL</h3>
+        <div class="enonce">
+          M. MORVAN et Mme ABGRALL, mariés, ont un premier enfant, Yann, né en 2015. Ils n'ont fait aucune déclaration de choix de nom. Une fille, Anna, naît en 2026 : ils voudraient qu'elle s'appelle « ABGRALL MORVAN ».
+          <ul class="qlist">
+            <li>Quel nom porte Yann ?</li>
+            <li>Les parents peuvent-ils donner à Anna le nom « ABGRALL MORVAN » ?</li>
+            <li>Yann, aujourd'hui âgé de 11 ans, pourra-t-il un jour porter le nom de sa mère ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Yann.</b> Parents mariés : filiation établie en même temps à l'égard des deux. Sans déclaration de choix, l'enfant prend le <b>nom du père</b> : Yann MORVAN.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Anna.</b> Le nom attribué au premier enfant commun vaut pour <b>tous les enfants suivants</b> du couple. Anna s'appellera donc MORVAN : les parents ne peuvent pas lui choisir un autre nom à la naissance.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Yann, plus tard.</b> Oui : à sa majorité, il pourra, <b>une fois dans sa vie</b>, prendre ou ajouter le nom de sa mère par simple formulaire en mairie (loi du 2 mars 2022). Avant cela, ses parents pourraient demander un changement de son nom — avec son consentement, puisqu'il aura 13 ans ou plus le moment venu.</div></div>
+        </div>
+      </div>
+
+      <div class="annale">
+        <div class="an-tag">Cas 6 · Droits d'auteur · calcul de dates</div>
+        <h3>La succession d'un photographe</h3>
+        <div class="enonce">
+          Un photographe breton meurt le 14 décembre 1956. Ses petits-enfants héritent de ses droits. Une maison d'édition veut publier ses clichés gratuitement dès le 1<sup>er</sup> juin 2026 et en recadrer certains sans le mentionner.
+          <ul class="qlist">
+            <li>Jusqu'à quelle date les droits patrimoniaux sont-ils protégés ?</li>
+            <li>L'éditeur peut-il publier gratuitement le 1<sup>er</sup> juin 2026 ? Et en 2027 ?</li>
+            <li>Peut-il recadrer les photos sans citer l'auteur ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé — dates vérifiées par calcul</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>La règle.</b> Les droits patrimoniaux durent l'année civile du décès et les 70 années civiles suivantes. On ne compte pas à partir du jour du décès.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Le calcul.</b> <code>1956 + 70 = 2026</code> : protection jusqu'au <b>31/12/2026</b>. Domaine public le <b>01/01/2027</b> (1956 + 71).</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Juin 2026.</b> Non : les droits patrimoniaux courent encore, l'éditeur doit l'accord des petits-enfants et les rémunérer. <b>En 2027</b>, l'œuvre est dans le domaine public : publication gratuite possible.</div></div>
+          <div class="step"><div class="sn">4</div><div class="sc"><b>Le recadrage.</b> Non, ni en 2026 ni après : le <b>droit moral</b> est perpétuel et transmis aux héritiers. Ils peuvent s'opposer à une dénaturation de l'œuvre et exiger que le nom de l'auteur soit cité.</div></div>
+        </div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('redac')">← Questions rédigées</button>
+        <button class="btn plum" onclick="go('test')">Passer le test final →</button>
+      </div>
+    </section>
+
+    <!-- ============ ÉCARTS AVEC LES NOTES ============ -->
+    <section class="view" data-view="ecarts">
+      <span class="tag">À savoir</span>
+      <h1 class="lesson-title">Ce qui diffère de tes notes</h1>
+      <p class="subtitle">Le document de cours est une prise de notes. Voici, en un seul endroit, chaque point où ce site s'en écarte — et pourquoi. Si ton enseignant a réellement dit ce que portent tes notes, suis-le à l'examen et signale-le pour qu'on corrige le site.</p>
+
+      <div class="tbl-scroll">
+
+      <table class="tbl wrap">
+        <tr><th>Sujet</th><th>Tes notes</th><th>Ce que retient le site</th></tr>
+        <tr><td>Disparition</td><td>Exemple : le petit Grégory.</td><td><strong>Erroné</strong> : son corps a été retrouvé en 1984. Exemple retenu : les victimes du tsunami de 2004.</td></tr>
+        <tr><td>Domicile</td><td>L'adresse transmise à l'administration.</td><td>Le lieu du <strong>principal établissement</strong> (art. 102).</td></tr>
+        <tr><td>Nationalité par mariage</td><td>Donne droit au regroupement familial.</td><td>Déclaration après <strong>4 ans</strong> de mariage avec communauté de vie (5 ans dans certains cas).</td></tr>
+        <tr><td>Naturalisation</td><td>À 18 ans si arrivé mineur depuis plus de 5 ans.</td><td>Deux voies distinctes : acquisition à la majorité pour l'enfant <strong>né en France</strong> (5 ans de résidence depuis 11 ans) ; naturalisation par <strong>décret</strong>.</td></tr>
+        <tr><td>Nom</td><td>« Un arrêt de 2005 », nom insécable.</td><td>Une <strong>loi</strong> (2002-2003), en vigueur en 2005 ; un nom par parent au maximum.</td></tr>
+        <tr><td>Mort cérébrale</td><td>Deux EEG seulement.</td><td>Deux EEG <strong>ou</strong> une angiographie (art. R. 1232-2 CSP).</td></tr>
+        <tr><td>Retour de l'absent</td><td>Non traité pour le mariage.</td><td>Le mariage <strong>reste dissous</strong> (art. 132).</td></tr>
+        <tr><td>Changement de sexe</td><td>Depuis 2016, plus besoin de critères.</td><td>Plus de critère <strong>médical</strong>, mais une réunion suffisante de faits, devant le tribunal.</td></tr>
+        <tr><td>Changement de prénom</td><td>Possible et gratuit.</td><td>Gratuit, en mairie, mais avec un <strong>intérêt légitime</strong>.</td></tr>
+        <tr><td>Changement de nom</td><td>Formulaire ou décret.</td><td>Ajout de la procédure simplifiée de la <strong>loi du 2 mars 2022</strong>.</td></tr>
+        <tr><td>Acte de décès et OPJ</td><td>Certificat de décès « dressé par l'OPJ ».</td><td>L'OPJ dresse un <strong>procès-verbal</strong> ; l'acte de décès reste l'œuvre de l'officier d'état civil.</td></tr>
+        <tr><td>Enfant sans vie</td><td>Nom et prénom.</td><td>Exact depuis la loi du 6 décembre 2021 pour le nom ; toujours <strong>sans effet juridique</strong>.</td></tr>
+        <tr><td>Absence</td><td>Exemple : Xavier Dupont de Ligonnès.</td><td>Conservé comme illustration du doute total, au sens courant ; le site ne prend pas position sur sa situation juridique exacte.</td></tr>
+        <tr><td>Filiation</td><td>Annoncée, non traitée.</td><td>Sans doute dans la partie 2 du cours.</td></tr>
+      </table>
+
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l1')">← Revoir le cours</button>
+        <button class="btn plum" onclick="go('test')">Passer le test final →</button>
+      </div>
+    </section>
+
+    <!-- ============ TEST FINAL ============ -->
+    <section class="view" data-view="test">
+      <span class="tag">Évaluation</span>
+      <h1 class="lesson-title">Test final adaptatif</h1>
+      <p class="subtitle">Quarante questions, toutes rédigées par le site à partir du cours et vérifiées, dans l'esprit d'un partiel de droit des personnes.</p>
+
+      <div class="intro-card">
+        <h2>🎯 Comment le lire</h2>
+        <p>Chaque erreur rouvre la leçon correspondante. Le bilan par chapitre, en bas, te dit où réviser en priorité : c'est lui qui vaut le plus, pas le score brut.</p>
+      </div>
+
+      <div id="testQuestions"></div>
+
+      <div class="lesson-nav" id="testSubmitRow">
+        <button class="btn" onclick="go('l1')">← Revoir le cours</button>
+        <button class="btn plum" onclick="gradeTest()">Valider mes réponses ✓</button>
+      </div>
+
+      <div class="result" id="testResult">
+        <div class="score-lab">Ton score</div>
+        <div class="score-big" id="scoreBig">0</div>
+        <div class="msg" id="scoreMsg"></div>
+        <div class="chapbars" id="chapBars"></div>
+        <div style="margin-top:28px"><button class="btn plum" onclick="resetTest()">↻ Reprendre le test</button></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<button class="float-retry" id="floatRetry" onclick="resetTest()">↻ Reprendre le test</button>
+<button class="print-fab" onclick="imprimerFiche()" title="Imprimer cette leçon en fiche">🖨️ Fiche</button>
+<div class="xp-pop" id="xpPop"></div>
+
+<script src="lb.js"></script>
+<script src="progress.js"></script>
+<script>
+const SUBJECT_KEY = 'Caractéristiques des droits des particuliers';
+
+/* ===================== ÉTAT ===================== */
+const LESSONS = [
+  {id:'l1',  t:'Personnalité juridique',   ch:1},
+  {id:'l2',  t:'Naître vivant et viable',  ch:1},
+  {id:'l3',  t:'Infans conceptus',         ch:1},
+  {id:'l4',  t:'Constater le décès',       ch:1},
+  {id:'l5',  t:'Ce qui survit au décès',   ch:1},
+  {id:'l6',  t:"L'absence",                ch:1},
+  {id:'l7',  t:'La disparition',           ch:1},
+  {id:'l8',  t:'Le nom de famille',        ch:2},
+  {id:'l9',  t:'Le prénom et le sexe',     ch:2},
+  {id:'l10', t:'Domicile et nationalité',  ch:2}
+];
+const SAVE = (window.P ? P.etat() : {done:{},xp:0,last:null});
+const state = { xp: SAVE.xp||0, done: Object.assign({}, SAVE.done), view:'l1' };
+
+/* ===================== NAVIGATION ===================== */
+function buildNav(){
+  [1,2].forEach(ch=>{
+    const nav = document.getElementById('navList'+ch);
+    if(!nav) return;
+    nav.innerHTML = '';
+    LESSONS.forEach((l,i)=>{
+      if(l.ch!==ch) return;
+      const d = document.createElement('div');
+      d.className = 'nav-item' + (state.done[l.id]?' done':'');
+      d.dataset.view = l.id;
+      d.onclick = ()=>go(l.id);
+      d.innerHTML = '<span class="num">'+(state.done[l.id]?'✓':(i+1))+'</span><span class="lab">'+l.t+'</span>';
+      nav.appendChild(d);
+    });
+  });
+  highlightNav();
+}
+function highlightNav(){
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.dataset.view===state.view));
+}
+function go(view){
+  state.view = view;
+  if(window.P && /^l\d+$/.test(view)) P.derniereLecon(view);
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active', v.dataset.view===view));
+  highlightNav();
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(window.innerWidth<=880) closeSidebar();
+}
+function imprimerFiche(){ window.print(); }
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+/* ===================== XP ===================== */
+function addXp(n){
+  state.xp += n;
+  if(window.P) P.ajouterXp(n);
+  document.getElementById('xpVal').textContent = state.xp;
+  popXp('+'+n+' XP');
+}
+function popXp(txt){
+  const p = document.getElementById('xpPop');
+  p.textContent = '★ '+txt;
+  p.classList.add('show');
+  clearTimeout(p._t);
+  p._t = setTimeout(()=>p.classList.remove('show'),1400);
+}
+function updateProgress(){
+  const pct = Math.round(Object.keys(state.done).length/LESSONS.length*100);
+  document.getElementById('progFill').style.width = pct+'%';
+  document.getElementById('progPct').textContent = pct+' %';
+}
+
+/* ===================== MINI-QUIZ ===================== */
+function pick(btn){
+  const quiz = btn.closest('.quiz');
+  if(quiz.classList.contains('answered')) return;
+  quiz.classList.add('answered');
+  const correct = btn.dataset.correct === 'true';
+  quiz.querySelectorAll('.opt').forEach(o=>{
+    o.disabled = true;
+    if(o.dataset.correct === 'true') o.classList.add('right');
+  });
+  if(!correct) btn.classList.add('wrong');
+  const fb = quiz.querySelector('.feedback');
+  if(fb) fb.hidden = false;
+  if(window.P){
+    const sec = quiz.closest('.view');
+    const lec = sec ? sec.dataset.view : '?';
+    const rang = sec ? [...sec.querySelectorAll('.quiz')].indexOf(quiz) : 0;
+    P.noterReponse('quiz:'+lec+':'+rang, correct, 'Leçon '+lec.replace('l',''));
+  }
+  if(correct) addXp(10);
+}
+function validate(id, quizCount){
+  const sec = document.querySelector('.view[data-view="'+id+'"]');
+  const answered = sec.querySelectorAll('.quiz.answered').length;
+  if(answered < quizCount){
+    popXp("Réponds aux "+quizCount+" quiz d'abord");
+    sec.querySelectorAll('.quiz:not(.answered)').forEach(q=>{ q.style.boxShadow='0 0 0 2px var(--plum)'; setTimeout(()=>q.style.boxShadow='',1200); });
+    return;
+  }
+  if(!state.done[id]){ state.done[id]=true; if(window.P) P.marquerLecon(id); addXp(50); buildNav(); updateProgress(); }
+  const idx = LESSONS.findIndex(l=>l.id===id);
+  const next = LESSONS[idx+1];
+  if(next) go(next.id); else go('redac');
+}
+
+/* ===================== QUESTIONS RÉDIGÉES =====================
+   Chaque critère est une notion attendue ; `k` liste les façons de
+   l'écrire (comparées sans accents ni majuscules). Un critère est
+   rempli dès qu'une de ses formes apparaît dans la réponse. */
+const REDAC = [
+  {lesson:'l2', q:"Quelles sont les conditions d'acquisition de la personnalité juridique ? Précisez leur nature.",
+   crit:[
+     {t:"Naître", k:['naitre','naissance','nait']},
+     {t:"Vivant", k:['vivant']},
+     {t:"Viable", k:['viable','viabilite']},
+     {t:"Conditions cumulatives", k:['cumulati','toutes les trois','les trois conditions','trois conditions']}
+   ],
+   modele:"La personnalité juridique s'acquiert par la naissance, à trois conditions <b>cumulatives</b> : l'enfant doit <b>naître</b> (être sorti du ventre de sa mère), <b>vivant</b> (respirer, cœur qui bat) et <b>viable</b> (doté des organes vitaux lui permettant de vivre de façon autonome ; repère OMS : 22 semaines de grossesse ou plus de 500 g). Si l'une manque, l'enfant n'a jamais eu la personnalité juridique : on dresse un acte d'enfant sans vie, sans effet juridique."},
+  {lesson:'l3', q:"Expliquez la règle infans conceptus et ses conditions d'application.",
+   crit:[
+     {t:"L'enfant conçu est réputé né", k:['concu','conception']},
+     {t:"Dans son intérêt", k:['interet']},
+     {t:"Naître vivant et viable", k:['viable']},
+     {t:"Période du 300e au 180e jour", k:['300','180','trois cent','cent quatre']},
+     {t:"Présomption simple", k:['presomption simple','preuve contraire','tout moyen']}
+   ],
+   modele:"Selon l'adage <i>infans conceptus</i>, l'enfant <b>simplement conçu</b> est tenu pour né chaque fois qu'il y va de <b>son intérêt</b>, notamment pour hériter. Il doit ensuite <b>naître vivant et viable</b>. La loi présume la conception entre le <b>300<sup>e</sup> et le 180<sup>e</sup> jour</b> avant la naissance (art. 311 C. civ.), au moment le plus favorable à l'enfant. C'est une <b>présomption simple</b> : la preuve contraire est admise par tout moyen."},
+  {lesson:'l4', q:"À quelles conditions une personne en état de mort cérébrale est-elle juridiquement décédée ?",
+   crit:[
+     {t:"Absence de conscience et d'activité motrice", k:['conscience']},
+     {t:"Abolition des réflexes du tronc cérébral", k:['reflexe','tronc']},
+     {t:"Absence de ventilation spontanée", k:['ventilation','respiration']},
+     {t:"Deux EEG nuls et aréactifs", k:['eeg','electroencephalogramme','encephalogramme']},
+     {t:"Intervalle de 4 heures", k:['4 h','4h','quatre heures','4 heures']}
+   ],
+   modele:"Trois critères cliniques cumulatifs : <b>absence totale de conscience</b> et d'activité motrice spontanée, <b>abolition de tous les réflexes du tronc cérébral</b>, <b>absence totale de ventilation spontanée</b>. Ils sont confirmés soit par <b>deux électroencéphalogrammes</b> nuls et aréactifs de 30 minutes, espacés d'au moins <b>4 heures</b>, soit par une <b>angiographie</b> montrant l'arrêt de la circulation encéphalique (art. R. 1232-1 et R. 1232-2 CSP)."},
+  {lesson:'l5', q:"Quelles sont les conséquences juridiques du décès ?",
+   crit:[
+     {t:"Fin de la personnalité juridique", k:['personnalite']},
+     {t:"Fin des contrats conclus en considération de la personne", k:['contrat','intuitu']},
+     {t:"Dissolution du mariage, fin du PACS", k:['mariage','pacs']},
+     {t:"Ouverture de la succession", k:['succession','heritier','successeur']},
+     {t:"Protection persistante (corps, mémoire, droits d'auteur)", k:['cadavre','dignite','memoire','auteur','depouille']}
+   ],
+   modele:"Le décès met fin à la <b>personnalité juridique</b> : le défunt ne peut plus avoir de droits ni d'obligations. Les <b>contrats conclus en considération de sa personne</b> prennent fin, le <b>mariage est dissous</b> et le <b>PACS</b> rompu, et la <b>succession s'ouvre</b> : ses droits patrimoniaux passent à ses successeurs. Le droit continue cependant de protéger son <b>corps</b> (dignité, sanctions pénales), sa <b>mémoire</b> et son image (action des successeurs), et son œuvre (droit moral perpétuel, droits patrimoniaux 70 ans après l'année du décès)."},
+  {lesson:'l5', q:"Pourquoi dit-on que le droit d'auteur est un droit « hybride » ?",
+   crit:[
+     {t:"Droit moral", k:['moral']},
+     {t:"Perpétuel", k:['perpetuel']},
+     {t:"Droit patrimonial", k:['patrimonial']},
+     {t:"70 ans", k:['70','soixante-dix','soixante dix']},
+     {t:"Domaine public", k:['domaine public']}
+   ],
+   modele:"Il combine deux droits de nature différente. Un <b>droit moral</b>, <b>perpétuel</b> et transmis aux héritiers : être reconnu comme auteur, faire respecter l'intégrité de l'œuvre. Un <b>droit patrimonial</b>, <b>temporaire</b> : autoriser l'exploitation et être rémunéré, pendant l'année du décès et les <b>70 années</b> suivantes. Ensuite l'œuvre tombe dans le <b>domaine public</b> : utilisation gratuite, sous réserve du droit moral."},
+  {lesson:'l6', q:"Décrivez les deux étapes de la procédure d'absence et leurs effets.",
+   crit:[
+     {t:"Présomption d'absence", k:['presomption']},
+     {t:"Juge des contentieux de la protection", k:['contentieux de la protection','juge des contentieux']},
+     {t:"Présumé vivant", k:['vivant']},
+     {t:"Jugement déclaratif d'absence", k:['declaratif']},
+     {t:"Délais : 10 ans (ou 20 ans)", k:['10 ans','dix ans','20 ans','vingt ans']},
+     {t:"Effets d'un décès, mariage dissous", k:['deces','dissous','dissolution']}
+   ],
+   modele:"<b>1. La présomption d'absence</b> : à la demande d'un intéressé ou du ministère public, le <b>juge des contentieux de la protection</b> constate que la personne a cessé de paraître sans donner de nouvelles. Elle est <b>présumée vivante</b> : personnalité maintenue, mariage maintenu, un représentant gère ses biens. <b>2. Le jugement déclaratif d'absence</b> : <b>10 ans</b> après la présomption (ou 20 ans après les dernières nouvelles sans présomption), le tribunal judiciaire, saisi avec avocat, statue au moins un an après la publication de la requête. Transcrit sur les registres des décès, il produit <b>tous les effets d'un décès</b> : succession ouverte, <b>mariage dissous</b>. Si l'absent revient, il récupère ses biens dans leur état, mais son mariage reste dissous."},
+  {lesson:'l7', q:"Distinguez l'absence de la disparition.",
+   crit:[
+     {t:"Absence : doute total sur la vie ou la mort", k:['doute','vivant ou mort','incertitude']},
+     {t:"Disparition : corps non retrouvé", k:['corps']},
+     {t:"Disparition : décès quasi certain / circonstances dangereuses", k:['certain','danger','circonstance']},
+     {t:"Jugement déclaratif de décès", k:['declaratif de deces']},
+     {t:"Pas de délai pour la disparition", k:['immediat','sans delai','aucun delai','tout de suite']}
+   ],
+   modele:"Dans l'<b>absence</b>, le <b>doute est total</b> : la personne a cessé de paraître sans nouvelles, on ignore si elle est vivante ou morte. La procédure est longue et en deux temps (présomption d'absence, puis jugement déclaratif d'absence après 10 ans). Dans la <b>disparition</b>, le <b>corps n'est pas retrouvé</b> mais le décès est <b>quasi certain</b>, car survenu dans des <b>circonstances</b> mettant la vie en danger (naufrage, crash). Le tribunal judiciaire peut être saisi <b>immédiatement</b> et rend un <b>jugement déclaratif de décès</b>."},
+  {lesson:'l8', q:"Comment le nom de famille est-il attribué à un enfant dont la filiation est établie à l'égard de ses deux parents ?",
+   crit:[
+     {t:"Choix : père, mère ou les deux", k:['choi','declaration conjointe']},
+     {t:"Un nom par parent au maximum", k:['un nom pour chacun','un seul nom','limite']},
+     {t:"Désaccord : ordre alphabétique", k:['alphabetique']},
+     {t:"Sans choix : nom du père (filiation simultanée)", k:['nom du pere','du pere']},
+     {t:"Même nom pour toute la fratrie", k:['fratrie','suivants','freres','meme nom']}
+   ],
+   modele:"Les parents <b>choisissent</b>, par déclaration conjointe, le nom du père, celui de la mère, ou les deux accolés dans l'ordre de leur choix, <b>dans la limite d'un nom pour chacun</b>. En cas de <b>désaccord</b> signalé à l'officier d'état civil, l'enfant porte les deux noms dans l'<b>ordre alphabétique</b>. Sans déclaration, il prend le nom du parent à l'égard duquel la filiation a été établie en premier, et, si elle l'a été simultanément, le <b>nom du père</b>. Le nom choisi pour le premier enfant commun s'impose à <b>tous les suivants</b>."},
+  {lesson:'l8', q:"Par quelles voies peut-on changer de nom ?",
+   crit:[
+     {t:"Procédure simplifiée en mairie (loi 2022)", k:['2022','une fois','simplifiee']},
+     {t:"Officier d'état civil", k:['officier','mairie']},
+     {t:"Décret", k:['decret']},
+     {t:"Intérêt légitime", k:['interet legitime','ridicule','deshonorant','mauvaise reputation']},
+     {t:"Consentement de l'enfant de 13 ans", k:['13 ans','treize']}
+   ],
+   modele:"Trois voies. <b>1.</b> La <b>procédure simplifiée</b> de la loi du <b>2 mars 2022</b> : tout majeur peut, <b>une fois dans sa vie</b>, prendre ou ajouter le nom du parent qui ne lui a pas été transmis, par formulaire auprès de l'<b>officier d'état civil</b>. <b>2.</b> La déclaration des parents auprès de l'officier d'état civil, par exemple pour harmoniser le nom d'une fratrie. <b>3.</b> Le changement par <b>décret</b>, demandé au ministre de la Justice, en justifiant d'un <b>intérêt légitime</b> : nom ridicule ou déshonorant, nom d'emprunt porté de longue date, nom menacé d'extinction. Dans tous les cas, un enfant de <b>13 ans</b> ou plus doit consentir."},
+  {lesson:'l10', q:"Définissez le domicile et présentez les modes d'acquisition de la nationalité française.",
+   crit:[
+     {t:"Principal établissement", k:['principal etablissement']},
+     {t:"Droit du sang", k:['sang']},
+     {t:"Droit du sol", k:['droit du sol','du sol']},
+     {t:"Mariage : déclaration après 4 ans", k:['4 ans','quatre ans']},
+     {t:"Naturalisation par décret", k:['naturalisation','decret']}
+   ],
+   modele:"Le <b>domicile</b> est le lieu où la personne a son <b>principal établissement</b> (art. 102 C. civ.), distinct d'une simple adresse. La nationalité s'acquiert par le <b>droit du sang</b> (un parent français), le <b>droit du sol</b> (né en France d'un parent né en France, ou né en France de parents étrangers et y résidant à la majorité après 5 ans de résidence depuis 11 ans), le <b>mariage</b> (déclaration après <b>4 ans</b> de mariage avec communauté de vie) et la <b>naturalisation</b>, accordée par <b>décret</b>."}
+];
+
+function sansAccent(s){ return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[’']/g,"'"); }
+function renderRedac(){
+  const host = document.getElementById('redacList');
+  host.innerHTML = REDAC.map((r,i)=>
+    '<div class="annale redac" id="rd'+i+'">'+
+      '<div class="an-tag">Question '+(i+1)+'/'+REDAC.length+' · '+LESSONS.find(l=>l.id===r.lesson).t+'</div>'+
+      '<h3>'+r.q+'</h3>'+
+      '<label class="sr" for="rd'+i+'in">Ta réponse</label>'+
+      '<textarea id="rd'+i+'in" rows="6" placeholder="Rédige ta réponse ici, en phrases complètes…"></textarea>'+
+      '<div class="redac-btns"><button class="btn primary" onclick="corrigerRedac('+i+')">Corriger ma réponse</button>'+
+      '<button class="btn" onclick="go(\''+r.lesson+'\')">📖 Revoir la leçon</button></div>'+
+      '<div class="corrige" id="rd'+i+'cor"></div>'+
+    '</div>').join('');
+}
+function corrigerRedac(i){
+  const r = REDAC[i];
+  const txt = ' '+sansAccent(document.getElementById('rd'+i+'in').value)+' ';
+  const cor = document.getElementById('rd'+i+'cor');
+  if(txt.trim().length < 15){ popXp('Rédige au moins une phrase'); return; }
+  let ok = 0;
+  const lignes = r.crit.map(c=>{
+    const trouve = c.k.some(k=>txt.indexOf(sansAccent(k))>=0);
+    if(trouve) ok++;
+    return '<li class="'+(trouve?'ok':'ko')+'"><span aria-hidden="true">'+(trouve?'✓':'✗')+'</span> '+c.t+(trouve?'':' — <i>absent de ta réponse</i>')+'</li>';
+  }).join('');
+  const pct = Math.round(ok/r.crit.length*100);
+  const verdict = pct>=80 ? 'Réponse complète' : pct>=50 ? 'Réponse partielle' : 'Réponse insuffisante';
+  cor.innerHTML =
+    '<div class="redac-score '+(pct>=80?'ok':pct>=50?'mid':'ko')+'">'+verdict+' : '+ok+'/'+r.crit.length+' notions-clés</div>'+
+    '<ul class="crit">'+lignes+'</ul>'+
+    '<div class="corrige-head">✅ Réponse modèle</div>'+
+    '<p class="modele">'+r.modele+'</p>';
+  cor.classList.add('show');
+  if(window.P) P.noterReponse('redac:'+i, pct>=80, 'Questions rédigées');
+  if(!corrigerRedac.fait) corrigerRedac.fait = {};
+  if(!corrigerRedac.fait[i]){ corrigerRedac.fait[i]=1; addXp(5+ok*3); }
+}
+
+/* ===================== TEST FINAL ===================== */
+const TEST = [
+  {ch:'Naissance', lesson:'l1', type:'qcm',
+   q:"La personnalité juridique est :",
+   opts:["La capacité d'exercer seul ses droits","L'aptitude à être titulaire de droits et d'obligations","Le fait d'être inscrit à l'état civil","Un statut réservé aux majeurs"], correct:1,
+   ex:"C'est l'aptitude à être titulaire de droits et assujetti à des obligations. Un nourrisson l'a ; la capacité d'exercice est une autre question."},
+  {ch:'Naissance', lesson:'l1', type:'qcm',
+   q:"Une SCI familiale qui emprunte auprès de la banque est :",
+   opts:["Un particulier","Une personne morale","Une personne physique","Un groupement sans personnalité"], correct:1,
+   ex:"Une société est une personne morale : elle est exclue de la notion de particulier, qui vise les seules personnes physiques."},
+  {ch:'Naissance', lesson:'l2', type:'qcm',
+   q:"Lequel de ces critères n'est PAS une condition de la personnalité juridique ?",
+   opts:["Naître","Être vivant","Être viable","Être déclaré en mairie"], correct:3,
+   ex:"Les trois conditions sont naître, vivant, viable. La déclaration en mairie constate la naissance, elle n'en est pas une condition."},
+  {ch:'Naissance', lesson:'l2', type:'num',
+   q:"Selon le repère de l'OMS cité en cours, à partir de combien de semaines de grossesse l'enfant est-il viable ?",
+   answer:22, tol:0, unit:"semaines",
+   ex:"22 semaines de grossesse, ou un poids de plus de 500 g."},
+  {ch:'Naissance', lesson:'l2', type:'qcm',
+   q:"Un enfant né vivant mais sans cœur fonctionnel, malformation non opérable, décède aussitôt. On dresse :",
+   opts:["Un acte de naissance et un acte de décès","Un acte d'enfant sans vie","Un acte de décès seul","Aucun acte"], correct:1,
+   ex:"Il est né vivant mais non viable : pas de personnalité juridique, acte d'enfant sans vie."},
+  {ch:'Naissance', lesson:'l2', type:'qcm',
+   q:"L'acte d'enfant sans vie :",
+   opts:["Permet à l'enfant d'hériter","N'emporte aucun effet juridique","Établit sa filiation successorale","Est interdit depuis 2021"], correct:1,
+   ex:"C'est une reconnaissance humaine (prénoms, nom depuis 2021, obsèques), sans effet juridique."},
+  {ch:'Naissance', lesson:'l3', type:'num',
+   q:"La période légale de conception commence à quel jour avant la naissance ?",
+   answer:300, tol:0, unit:"e jour",
+   ex:"Du 300e au 180e jour inclus avant la naissance (art. 311 C. civ.)."},
+  {ch:'Naissance', lesson:'l3', type:'qcm',
+   q:"Le père décède ; l'enfant naît vivant et viable 253 jours plus tard. Peut-il hériter ?",
+   opts:["Non, il n'existait pas au décès","Oui, il peut placer sa conception avant le décès","Seulement si ses parents étaient mariés","Seulement avec l'accord des autres héritiers"], correct:1,
+   ex:"253 jours < 300 : le décès tombe dans la période légale de conception. L'enfant, conçu au jour du décès, hérite."},
+  {ch:'Naissance', lesson:'l3', type:'qcm',
+   q:"La présomption de durée de grossesse est :",
+   opts:["Irréfragable","Simple","Réservée au juge","Applicable seulement en matière fiscale"], correct:1,
+   ex:"Présomption simple : preuve contraire admise par tout moyen."},
+
+  {ch:'Décès', lesson:'l4', type:'qcm',
+   q:"Le certificat de décès est rédigé par :",
+   opts:["L'officier d'état civil","Le médecin","Le notaire","La famille"], correct:1,
+   ex:"Le médecin rédige le certificat ; l'officier d'état civil dresse ensuite l'acte de décès."},
+  {ch:'Décès', lesson:'l4', type:'qcm',
+   q:"En cas de mort suspecte, le médecin coche la case :",
+   opts:["« Décès naturel »","« Obstacle médico-légal »","« Mort cérébrale »","« Disparition »"], correct:1,
+   ex:"L'obstacle médico-légal suspend l'inhumation jusqu'au procès-verbal d'un officier de police judiciaire assisté d'un médecin."},
+  {ch:'Décès', lesson:'l4', type:'num',
+   q:"Combien de minutes dure chaque EEG confirmant une mort cérébrale ?",
+   answer:30, tol:0, unit:"minutes",
+   ex:"30 minutes chacun, avec un intervalle minimal de 4 heures entre les deux."},
+  {ch:'Décès', lesson:'l4', type:'qcm',
+   q:"Lequel n'est PAS un critère clinique de la mort cérébrale ?",
+   opts:["Absence totale de conscience","Abolition des réflexes du tronc cérébral","Absence de ventilation spontanée","Arrêt du cœur"], correct:3,
+   ex:"Dans la mort cérébrale, le cœur peut battre encore : c'est précisément ce qui la distingue."},
+  {ch:'Décès', lesson:'l4', type:'qcm',
+   q:"À la place des deux EEG, quel examen permet aussi de confirmer la mort cérébrale ?",
+   opts:["Une radiographie du thorax","Une angiographie cérébrale","Une prise de sang","Un scanner abdominal"], correct:1,
+   ex:"L'angiographie montrant l'arrêt de la circulation encéphalique (art. R. 1232-2 CSP)."},
+  {ch:'Décès', lesson:'l5', type:'qcm',
+   q:"Au décès d'un partenaire pacsé, le PACS :",
+   opts:["Se poursuit avec les héritiers","Prend fin","Est suspendu un an","Devient un mariage"], correct:1,
+   ex:"Le décès dissout le mariage et met fin au PACS."},
+  {ch:'Décès', lesson:'l5', type:'qcm',
+   q:"Qui peut agir pour défendre la mémoire d'un défunt ?",
+   opts:["Personne : la personnalité a disparu","Ses successeurs","Le procureur seul","Uniquement le conjoint"], correct:1,
+   ex:"Les successeurs peuvent faire cesser l'atteinte et obtenir des dommages et intérêts."},
+  {ch:'Décès', lesson:'l5', type:'num',
+   q:"Un écrivain meurt en 1957. En quelle année son œuvre entre-t-elle dans le domaine public (au 1er janvier) ?",
+   answer:2028, tol:0, unit:"",
+   ex:"1957 + 70 = 2027 : protection jusqu'au 31/12/2027, domaine public le 01/01/2028."},
+  {ch:'Décès', lesson:'l5', type:'qcm',
+   q:"Le droit moral de l'auteur est :",
+   opts:["Temporaire, 70 ans","Perpétuel et transmis aux héritiers","Éteint au décès","Cessible à un éditeur"], correct:1,
+   ex:"Perpétuel. C'est le droit patrimonial qui est limité à 70 ans après l'année du décès."},
+
+  {ch:'Absence et disparition', lesson:'l6', type:'qcm',
+   q:"Quel juge constate la présomption d'absence ?",
+   opts:["Le juge aux affaires familiales","Le juge des contentieux de la protection","Le juge d'instruction","Le maire"], correct:1,
+   ex:"Le juge des contentieux de la protection, au tribunal judiciaire."},
+  {ch:'Absence et disparition', lesson:'l6', type:'qcm',
+   q:"La présomption d'absence est inscrite :",
+   opts:["Au casier judiciaire","Au répertoire civil, avec mention « RC » en marge de l'acte de naissance","Au fichier des personnes recherchées seulement","Nulle part"], correct:1,
+   ex:"Répertoire civil tenu par le tribunal, et mention RC à l'état civil de l'absent."},
+  {ch:'Absence et disparition', lesson:'l6', type:'num',
+   q:"Combien d'années après le jugement de présomption l'absence peut-elle être déclarée ?",
+   answer:10, tol:0, unit:"ans",
+   ex:"10 ans. Sans jugement de présomption, 20 ans depuis les dernières nouvelles."},
+  {ch:'Absence et disparition', lesson:'l6', type:'num',
+   q:"Sans jugement de présomption, combien d'années depuis les dernières nouvelles faut-il ?",
+   answer:20, tol:0, unit:"ans",
+   ex:"20 ans depuis les dernières nouvelles."},
+  {ch:'Absence et disparition', lesson:'l6', type:'qcm',
+   q:"Requête publiée le 2 mai 2024. Le tribunal peut déclarer l'absence au plus tôt le :",
+   opts:["2 mai 2024","2 novembre 2024","2 mai 2025","2 mai 2034"], correct:2,
+   ex:"Un an au moins après la publication : 02/05/2025."},
+  {ch:'Absence et disparition', lesson:'l6', type:'qcm',
+   q:"Pendant la présomption d'absence, le conjoint de l'absent :",
+   opts:["Peut se remarier","Ne peut pas se remarier : le mariage tient","Est automatiquement divorcé","Hérite de l'absent"], correct:1,
+   ex:"L'absent est présumé vivant : pas de dissolution du mariage, pas de succession."},
+  {ch:'Absence et disparition', lesson:'l6', type:'qcm',
+   q:"L'absent réapparaît après le jugement déclaratif. Il récupère :",
+   opts:["Rien","Ses biens dans leur état et le prix de ceux vendus, mais pas son mariage","Ses biens et son mariage","Uniquement son mariage"], correct:1,
+   ex:"Art. 130 et 132 : biens dans leur état, prix des biens aliénés ; le mariage reste dissous."},
+  {ch:'Absence et disparition', lesson:'l7', type:'qcm',
+   q:"La disparition suppose :",
+   opts:["Un doute total sur la vie ou la mort","Un corps introuvable et une mort quasi certaine","Un départ volontaire","Dix ans sans nouvelles"], correct:1,
+   ex:"Circonstances mettant la vie en danger, corps non retrouvé : la mort est quasi certaine."},
+  {ch:'Absence et disparition', lesson:'l7', type:'qcm',
+   q:"La disparition aboutit à :",
+   opts:["Un jugement déclaratif d'absence","Un jugement déclaratif de décès","Une présomption d'absence","Un acte d'enfant sans vie"], correct:1,
+   ex:"Jugement déclaratif de décès, transcrit sur les registres ; la succession s'ouvre."},
+  {ch:'Absence et disparition', lesson:'l7', type:'qcm',
+   q:"Lequel de ces exemples relève de la disparition ?",
+   opts:["Un homme parti un matin sans laisser d'adresse","Une victime du tsunami de 2004 jamais retrouvée","Un enfant dont le corps a été retrouvé dans une rivière","Un expatrié qui ne donne plus de nouvelles"], correct:1,
+   ex:"Catastrophe mettant la vie en danger, corps non retrouvé. Un corps retrouvé (cas de Grégory Villemin) n'est jamais une disparition."},
+
+  {ch:'Identification', lesson:'l8', type:'qcm',
+   q:"Les éléments d'identification sont dits « indisponibles », ce qui signifie :",
+   opts:["Qu'ils sont secrets","Qu'on ne peut pas les modifier ou les céder librement","Qu'ils disparaissent au décès","Qu'ils sont réservés aux majeurs"], correct:1,
+   ex:"On ne change pas son nom ou son état comme on veut : seules les procédures prévues par la loi le permettent."},
+  {ch:'Identification', lesson:'l8', type:'qcm',
+   q:"Parents mariés, aucune déclaration de choix, filiations établies en même temps. L'enfant porte :",
+   opts:["Le nom de la mère","Le nom du père","Les deux noms par ordre alphabétique","Le nom choisi par l'officier d'état civil"], correct:1,
+   ex:"À défaut de déclaration et de filiations simultanées : nom du père. L'ordre alphabétique vise le désaccord signalé."},
+  {ch:'Identification', lesson:'l8', type:'num',
+   q:"À partir de quel âge le consentement de l'enfant est-il requis pour changer son nom ?",
+   answer:13, tol:0, unit:"ans",
+   ex:"13 ans ou plus."},
+  {ch:'Identification', lesson:'l8', type:'qcm',
+   q:"Le changement de nom pour « nom ridicule ou déshonorant » relève :",
+   opts:["D'un formulaire en mairie","D'un décret, sur demande au ministre de la Justice","Du juge aux affaires familiales","Du préfet"], correct:1,
+   ex:"Changement par décret, en justifiant d'un intérêt légitime, après publicité."},
+  {ch:'Identification', lesson:'l8', type:'qcm',
+   q:"La loi du 2 mars 2022 permet à un majeur :",
+   opts:["De changer de nom librement chaque année","De prendre ou ajouter, une fois dans sa vie, le nom du parent non transmis","De choisir n'importe quel nom","De supprimer son nom"], correct:1,
+   ex:"Une fois dans sa vie, par formulaire auprès de l'officier d'état civil, sans motif à justifier."},
+  {ch:'Identification', lesson:'l9', type:'qcm',
+   q:"Un prénom paraît contraire à l'intérêt de l'enfant. L'officier d'état civil :",
+   opts:["Refuse de l'inscrire","Avise le procureur, qui peut saisir le JAF","Choisit un autre prénom","Saisit lui-même le JAF"], correct:1,
+   ex:"Il inscrit le prénom puis avise le procureur de la République, qui peut saisir le juge aux affaires familiales."},
+  {ch:'Identification', lesson:'l9', type:'qcm',
+   q:"Le changement de prénom :",
+   opts:["Est payant et passe par un décret","Se demande en mairie, gratuitement, avec un intérêt légitime","Est impossible après 18 ans","Relève du tribunal correctionnel"], correct:1,
+   ex:"En mairie, gratuit, sous réserve d'un intérêt légitime ; consentement de l'enfant dès 13 ans."},
+  {ch:'Identification', lesson:'l9', type:'qcm',
+   q:"Depuis la loi du 18 novembre 2016, le refus d'un changement de sexe à l'état civil peut-il se fonder sur l'absence d'opération ?",
+   opts:["Oui","Non","Seulement pour les mineurs","Seulement si l'entourage l'ignore"], correct:1,
+   ex:"Non : ne pas avoir subi de traitement, d'opération ou de stérilisation ne peut motiver un refus."},
+  {ch:'Identification', lesson:'l10', type:'qcm',
+   q:"Le domicile au sens de l'article 102 du Code civil est :",
+   opts:["L'adresse fiscale","Le lieu du principal établissement","Le lieu de naissance","Le lieu de travail"], correct:1,
+   ex:"Le lieu du principal établissement."},
+  {ch:'Identification', lesson:'l10', type:'num',
+   q:"Après combien d'années de mariage le conjoint étranger d'un Français peut-il en principe demander la nationalité par déclaration ?",
+   answer:4, tol:0, unit:"ans",
+   ex:"4 ans, avec communauté de vie ; 5 ans s'il ne justifie pas de 3 ans de résidence en France depuis le mariage."},
+  {ch:'Identification', lesson:'l10', type:'qcm',
+   q:"Un enfant né en France de parents étrangers devient français à sa majorité s'il réside en France et y a résidé :",
+   opts:["1 an","5 ans depuis l'âge de 11 ans","10 ans depuis sa naissance","Il ne le devient jamais sans naturalisation"], correct:1,
+   ex:"5 ans de résidence, continue ou non, depuis l'âge de 11 ans (art. 21-7 C. civ.)."},
+  {ch:'Identification', lesson:'l10', type:'qcm',
+   q:"La naturalisation est accordée :",
+   opts:["Automatiquement à 18 ans","Par décret","Par le maire","Par simple déclaration"], correct:1,
+   ex:"C'est une décision de l'État, par décret."}
+];
+
+function renderTest(){
+  const c = document.getElementById('testQuestions');
+  c.innerHTML = '';
+  TEST.forEach((q,i)=>{
+    const div = document.createElement('div');
+    div.className = 'test-q'; div.id = 'tq'+i;
+    let body = '';
+    if(q.type==='qcm'){
+      body = '<div class="topt">' + q.opts.map((o,j)=>
+        '<button onclick="selOpt('+i+','+j+')" id="tq'+i+'o'+j+'">'+o+'</button>').join('') + '</div>';
+    } else {
+      body = '<input type="number" step="any" class="num-input" id="tq'+i+'in" placeholder="…" aria-label="Ta réponse"><span class="unit">'+(q.unit||'')+'</span>';
+    }
+    div.innerHTML =
+      '<div class="tq-head"><span class="tq-num">Question '+(i+1)+'/'+TEST.length+'</span><span class="tq-chap">'+q.ch+'</span></div>'+
+      '<div class="tq-q">'+q.q+'</div>'+ body +
+      '<div class="remed" id="tq'+i+'rem"><div class="rt">⚠️ À revoir</div><div class="ra" id="tq'+i+'ra"></div>'+
+      '<div class="remed-btns"><button class="btn" onclick="go(\''+q.lesson+'\')">📖 Revoir la leçon</button>'+
+      '<button class="btn primary" onclick="dismissRemed('+i+')">Continuer →</button></div></div>';
+    c.appendChild(div);
+  });
+  document.getElementById('testResult').classList.remove('show');
+  document.getElementById('testSubmitRow').style.display = 'flex';
+  document.getElementById('floatRetry').classList.remove('show');
+  TEST._answers = {};
+}
+function selOpt(qi, oi){
+  if(document.getElementById('tq'+qi).classList.contains('graded')) return;
+  TEST._answers = TEST._answers || {};
+  TEST._answers[qi] = oi;
+  TEST[qi].opts.forEach((_,j)=>document.getElementById('tq'+qi+'o'+j).classList.toggle('sel', j===oi));
+}
+function gradeTest(){
+  TEST._answers = TEST._answers || {};
+  let score = 0; const chap = {};
+  TEST.forEach((q,i)=>{
+    const box = document.getElementById('tq'+i);
+    box.classList.add('graded');
+    let ok = false;
+    if(q.type==='qcm'){
+      ok = TEST._answers[i] === q.correct;
+      q.opts.forEach((_,j)=>{ const b=document.getElementById('tq'+i+'o'+j); b.disabled=true;
+        if(j===q.correct) b.classList.add('sel'); });
+    } else {
+      const val = parseFloat(document.getElementById('tq'+i+'in').value);
+      ok = !isNaN(val) && Math.abs(val - q.answer) <= (q.tol||0);
+      document.getElementById('tq'+i+'in').disabled = true;
+    }
+    if(window.P) P.noterReponse('test:'+i, ok, q.ch);
+    chap[q.ch] = chap[q.ch] || {ok:0,tot:0};
+    chap[q.ch].tot++;
+    if(ok){ score++; chap[q.ch].ok++; box.classList.add('ok'); }
+    else { box.classList.add('ko');
+      document.getElementById('tq'+i+'ra').innerHTML = q.ex;
+      document.getElementById('tq'+i+'rem').classList.add('show'); }
+  });
+  showResult(score, chap);
+}
+function dismissRemed(i){ document.getElementById('tq'+i+'rem').classList.remove('show'); }
+function showResult(score, chap){
+  document.getElementById('testSubmitRow').style.display = 'none';
+  document.getElementById('scoreBig').textContent = score+'/'+TEST.length;
+  let msg, col; const pct = score/TEST.length*100;
+  if(pct>=90){ msg="Excellent — la partie 1 est acquise."; col=getCss('--teal'); }
+  else if(pct>=70){ msg="Très bon niveau. Revois les chapitres en orange ci-dessous."; col=getCss('--teal'); }
+  else if(pct>=50){ msg="Bon début. Concentre tes révisions sur les chapitres faibles."; col=getCss('--amber'); }
+  else { msg="Il reste du travail. Reprends les leçons signalées, puis réessaie."; col=getCss('--rust'); }
+  document.getElementById('scoreBig').style.color = col;
+  document.getElementById('scoreMsg').textContent = msg;
+  const bars = document.getElementById('chapBars');
+  bars.innerHTML = '';
+  Object.keys(chap).forEach(name=>{
+    const c = chap[name];
+    const p = Math.round(c.ok/c.tot*100);
+    const bc = p>=67?getCss('--teal'):p>=34?getCss('--amber'):getCss('--rust');
+    bars.innerHTML += '<div class="chapbar"><div class="cbl"><span>'+name+'</span><span>'+c.ok+'/'+c.tot+'</span></div>'+
+      '<div class="cbt"><div class="cbf" style="width:0;background:'+bc+'" data-w="'+p+'"></div></div></div>';
+  });
+  document.getElementById('testResult').classList.add('show');
+  document.getElementById('floatRetry').classList.add('show');
+  setTimeout(()=>document.querySelectorAll('.cbf').forEach(b=>b.style.width=b.dataset.w+'%'),120);
+  addXp(score*20);
+  if(window.P) P.meilleurScore('Test final', score, TEST.length);
+  document.getElementById('testResult').scrollIntoView({behavior:'smooth'});
+  if(window.LB){ try{ LB.record({subject:SUBJECT_KEY, mode:'Test final', correct:score, total:TEST.length, xp:state.xp}); }catch(e){} }
+}
+function resetTest(){ renderTest(); go('test'); }
+function getCss(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+
+/* ===================== APPLICATIONS ===================== */
+function toggleCorrige(btn){
+  const cor = btn.nextElementSibling;
+  const open = cor.classList.toggle('show');
+  btn.textContent = open ? 'Masquer le corrigé' : 'Voir le corrigé';
+}
+
+/* ===================== INIT ===================== */
+buildNav();
+updateProgress();
+renderRedac();
+renderTest();
+go((window.P && SAVE.last && document.querySelector('.view[data-view="'+SAVE.last+'"]')) ? SAVE.last : 'l1');
+try{ document.getElementById('lb-id-slot').appendChild(LB.idButton()); }catch(e){}
+</script>
+<script src="banque.js"></script>
+<script src="ui.js"></script>
+</body>
+</html>
