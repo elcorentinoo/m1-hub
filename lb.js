@@ -20,6 +20,15 @@ const SUPA = {
    même table `scores`. Ne le change pas en cours d'année, sinon les
    anciens résultats disparaissent du classement. */
 const PROGRAM = 'M1';
+
+/* Les cours qui comptent dans le classement « qui complète le plus » :
+   identifiant de matière → nombre de leçons. Une nouvelle matière =
+   une ligne ici. */
+const COURS_M1 = {
+  'marche-particuliers':11, 'produits-derives':15, 'marketing-numerique':11,
+  'es-banque':14, 'fiscalite-particulier':11, 'droits-particuliers':10,
+  'etudes-marche':12
+};
 /* ════════════════════════════════════════════════════════════════════ */
 
 const LB = (function(){
@@ -139,9 +148,42 @@ const LB = (function(){
   }
   function record(data){
     if(!configured()) return;
-    const send=p=>doPost({pseudo:p, subject:tagSubject(data.subject), mode:data.mode||'?',
+    const send=p=>{ doPost({pseudo:p, subject:tagSubject(data.subject), mode:data.mode||'?',
       correct:data.correct|0, total:data.total|0, xp:data.xp|0});
+      setTimeout(syncProgression, 800); };
     ensureIdentity(send);
+  }
+
+  /* ---------- progression partagée (classement « qui complète le plus ») ----------
+     Pour chaque cours, on envoie le pourcentage de complétion calculé par
+     progress.js (leçons 50 % · mini-quiz 25 % · test 25 %) sous forme d'une
+     ligne mode « Progression » : correct = pourcentage, total = 100,
+     xp = leçons validées. On n'envoie que ce qui a changé depuis le dernier
+     envoi réussi, et jamais sans pseudo (pas de fenêtre surgissante). */
+  const MODE_PROG = 'Progression', K_PROG = 'lb_prog';
+  let _syncEnCours = null;
+  function syncProgression(){
+    if(_syncEnCours) return _syncEnCours;
+    if(!configured() || !pseudo() || !window.P || !P.completion || !window.BANQUE) return Promise.resolve(0);
+    let deja = {};
+    try{ deja = JSON.parse(localStorage.getItem(K_PROG)||'{}') || {}; }catch(e){}
+    const p = pseudo();
+    if(deja.__p !== p) deja = {__p:p};          // nouveau pseudo : on renvoie tout
+    const envois = [];
+    Object.keys(COURS_M1).forEach(sid=>{
+      const c = P.completion(sid, COURS_M1[sid]);
+      const cle = c.pct+'/'+c.lecons.n;
+      if(deja[sid] === cle || (c.pct === 0 && !deja[sid])) return;
+      envois.push(doPost({pseudo:p, subject:tagSubject(sid), mode:MODE_PROG, correct:c.pct, total:100, xp:c.lecons.n})
+        .then(ok=>{ if(ok) deja[sid] = cle; return ok; }));
+    });
+    if(!envois.length) return Promise.resolve(0);
+    _syncEnCours = Promise.all(envois).then(r=>{
+      try{ localStorage.setItem(K_PROG, JSON.stringify(deja)); }catch(e){}
+      _syncEnCours = null;
+      return r.filter(Boolean).length;
+    });
+    return _syncEnCours;
   }
 
   // ---------- récupération + agrégation (filtrée sur le programme) ----------
@@ -185,75 +227,47 @@ const LB = (function(){
     return (map[e.status] || ("<b>Erreur HTTP "+e.status+".</b>")) +
       (e.body ? "<br><span style='font-family:DM Mono,monospace;font-size:12px'>Réponse du serveur : "+esc(e.body)+"</span>" : "");
   }
+  /* Deux classements :
+     · complétion : moyenne, sur tous les cours du M1, du dernier
+       pourcentage envoyé pour chaque cours (un cours jamais ouvert compte 0) ;
+     · réussite : bonnes réponses ÷ questions, sur les tests et séries
+       enregistrés (20 questions minimum pour apparaître). */
+  const MIN_QUESTIONS = 20;
+  function cleP(s){ return String(s||'').trim().toLowerCase(); }
   function rankings(rows){
-    const u={};
+    const u={}, nbCours=Object.keys(COURS_M1).length;
     rows.forEach(r=>{
-      const key=r.pseudo||'?'; if(!u[key]) u[key]={pseudo:key,sessions:0,questions:0,correct:0,xp:0,subjects:{},last:''};
-      const o=u[key];
-      o.sessions++; o.questions+=r.total|0; o.correct+=r.correct|0; o.xp+=r.xp|0;
-      if(r.subject) o.subjects[cleanSubject(r.subject)]=1;
+      const nom=String(r.pseudo||'').trim(); if(!nom) return;
+      const key=cleP(nom);
+      if(!u[key]) u[key]={pseudo:nom,sessions:0,questions:0,correct:0,prog:{},subjects:{}};
+      const o=u[key], sub=cleanSubject(r.subject);
+      if(r.mode===MODE_PROG){
+        const t=r.created_at? Date.parse(r.created_at) : 0, d=o.prog[sub];
+        if(COURS_M1[sub] && (!d || t>=d.t)) o.prog[sub]={t, pct:Math.min(100,Math.max(0,r.correct|0)), lecons:r.xp|0};
+        return;
+      }
+      o.sessions++; o.questions+=r.total|0; o.correct+=r.correct|0;
+      if(sub) o.subjects[sub]=1;
     });
-    const arr=Object.values(u).map(x=>{ x.pct = x.questions? x.correct/x.questions*100 : 0; x.nbSub=Object.keys(x.subjects).length; return x; });
-    const assiduite=arr.slice().sort((a,b)=> b.questions-a.questions || b.sessions-a.sessions || b.xp-a.xp || a.pseudo.localeCompare(b.pseudo));
-    const notes=arr.filter(x=>x.questions>=10).slice().sort((a,b)=> b.pct-a.pct || b.questions-a.questions || a.pseudo.localeCompare(b.pseudo));
-    return {assiduite, notes, total:rows.length, users:arr.length};
+    const arr=Object.values(u).map(x=>{
+      const progs=Object.values(x.prog);
+      x.aProg = progs.length>0;
+      x.completion = progs.reduce((a,p)=>a+p.pct,0)/nbCours;
+      x.lecons = progs.reduce((a,p)=>a+p.lecons,0);
+      x.coursCommences = progs.filter(p=>p.pct>0).length;
+      x.pct = x.questions? x.correct/x.questions*100 : 0;
+      return x;
+    });
+    const parNom=(a,b)=>a.pseudo.localeCompare(b.pseudo,'fr',{sensitivity:'base'});
+    const completion=arr.filter(x=>x.aProg).sort((a,b)=> b.completion-a.completion || b.lecons-a.lecons || b.questions-a.questions || parNom(a,b));
+    const reussite=arr.filter(x=>x.questions>=MIN_QUESTIONS).sort((a,b)=> b.pct-a.pct || b.questions-a.questions || parNom(a,b));
+    const enAttente=arr.filter(x=>!x.aProg).sort(parNom);
+    return {completion, reussite, enAttente, total:rows.length, users:arr.length, nbCours, totalLecons:Object.values(COURS_M1).reduce((a,n)=>a+n,0)};
   }
 
-  // ---------- rendu de la page classement ----------
-  let _data=null, _tab='assiduite';
-  function medal(i){ return i===0?'🥇':i===1?'🥈':i===2?'🥉':('#'+(i+1)); }
-  function renderTable(){
-    const me=pseudo();
-    const list = _tab==='assiduite'? _data.assiduite : _data.notes;
-    if(!list.length){
-      return `<div class="lb-empty">Personne n'a encore ${_tab==='notes'?'assez joué pour apparaître ici (10 questions minimum)':'enregistré de session'}.<br>Lance un test depuis une matière, ton pseudo apparaîtra ici !</div>`;
-    }
-    let head, rows;
-    if(_tab==='assiduite'){
-      head=`<tr><th>#</th><th>Pseudo</th><th>Questions</th><th>Séries</th><th>Matières</th></tr>`;
-      rows=list.map((x,i)=>`<tr class="${x.pseudo===me?'lb-me':''}"><td class="lb-rank">${medal(i)}</td><td class="lb-name">${nm(x.pseudo)}</td><td class="lb-main">${x.questions}</td><td class="lb-sub">${x.sessions}</td><td class="lb-sub">${x.nbSub}</td></tr>`).join('');
-    }else{
-      head=`<tr><th>#</th><th>Pseudo</th><th>Réussite</th><th>Questions</th><th>Séries</th></tr>`;
-      rows=list.map((x,i)=>`<tr class="${x.pseudo===me?'lb-me':''}"><td class="lb-rank">${medal(i)}</td><td class="lb-name">${nm(x.pseudo)}</td><td class="lb-main">${x.pct.toFixed(1)} %</td><td class="lb-sub">${x.questions}</td><td class="lb-sub">${x.sessions}</td></tr>`).join('');
-    }
-    const note = _tab==='assiduite'
-      ? "Classé sur le nombre de questions travaillées (toutes matières du M1 confondues). Égalité départagée par le nombre de séries."
-      : "Moyenne de réussite sur toutes les séries du M1 (minimum 10 questions pour apparaître).";
-    return `<table class="lb-table">${head}${rows}</table><div class="lb-note">${note}</div>`;
-  }
   function esc(s){ return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
-  function nm(p){ return esc(p); }
+  /* le rendu du classement est dans classement.html */
 
-  async function renderLeaderboards(elId){
-    injectCSS();
-    const host=document.getElementById(elId); if(!host) return;
-    if(!configured()){
-      host.innerHTML=`<div class="lb-empty">⚙️ Le classement n'est pas encore configuré.<br>Renseigne ton projet Supabase en haut du fichier <code>lb.js</code>.</div>`; return;
-    }
-    host.innerHTML=`<div class="lb-empty">Chargement du classement…</div>`;
-    const rows=await fetchAll();
-    if(rows===null){
-      host.innerHTML=`<div class="lb-diag">
-        <div class="lb-diag-head">⚠️ Le classement n'a pas pu être chargé</div>
-        <div class="lb-diag-body">${diagnose()}</div>
-        <div class="lb-diag-foot">Projet interrogé : <code>${esc(SUPA.url)}</code></div>
-      </div>`;
-      return;
-    }
-    _data=rankings(rows);
-    const draw=()=>{
-      host.innerHTML=`
-        <div class="lb-tabs">
-          <button class="lb-tab ${_tab==='assiduite'?'active':''}" id="lbt-a">🔥 Les plus studieux</button>
-          <button class="lb-tab ${_tab==='notes'?'active':''}" id="lbt-n">🎯 Meilleures notes</button>
-        </div>
-        ${renderTable()}`;
-      host.querySelector('#lbt-a').onclick=()=>{_tab='assiduite';draw();};
-      host.querySelector('#lbt-n').onclick=()=>{_tab='notes';draw();};
-    };
-    draw();
-  }
-
-  return {pseudo,displayName,shortId,uid,setIdentity,identityModal,ensureIdentity,idButton,refreshIdButtons,record,fetchAll,rankings,renderLeaderboards,configured,PROGRAM,lastError,diagnose};
+  return {pseudo,displayName,shortId,uid,setIdentity,identityModal,ensureIdentity,idButton,refreshIdButtons,record,fetchAll,rankings,configured,PROGRAM,lastError,diagnose,syncProgression,COURS:COURS_M1,MIN_QUESTIONS};
 })();
 window.LB = LB;

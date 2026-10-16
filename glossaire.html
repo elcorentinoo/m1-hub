@@ -75,6 +75,7 @@ h1 .acc{color:var(--amber)}
 .m-mk{background:var(--amber-l);color:var(--amber)}
 .m-fp{background:var(--rust-l);color:var(--rust)}
 .m-dp{background:var(--acc-soft);color:var(--acc)}
+.m-em{background:var(--acc-soft);color:var(--acc)}
 .e-lien{font-size:12.5px;color:var(--navy);text-decoration:none;font-weight:600;
   border:1px solid var(--line);border-radius:8px;padding:4px 11px;transition:.15s}
 .e-lien:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
@@ -137,7 +138,8 @@ const F = {
   pd:{f:'produits_derives.html',        lab:'Produits Dérivés',        cls:'m-pd'},
   mk:{f:'marketing_numerique.html',     lab:'Marketing Numérique',     cls:'m-mk'},
   fp:{f:'fiscalite_particulier.html',   lab:'Fiscalité du Particulier', cls:'m-fp'},
-  dp:{f:'droits_particuliers.html',     lab:'Droits des Particuliers',  cls:'m-dp'}
+  dp:{f:'droits_particuliers.html',     lab:'Droits des Particuliers',  cls:'m-dp'},
+  em:{f:'etudes_de_marche.html',        lab:'Études de marché',         cls:'m-em'}
 };
 
 const G = [
@@ -267,7 +269,20 @@ const G = [
 {s:"Présomption d'absence", d:"Première étape de l'absence", m:'dp', l:'l6', t:"Constatée par le <b>juge des contentieux de la protection</b>. L'absent est <b>présumé vivant</b> : mariage maintenu, un représentant gère ses biens."},
 {s:"Jugement déclaratif d'absence", d:"Seconde étape de l'absence", m:'dp', l:'l6', t:"10 ans après la présomption, ou 20 ans sans nouvelles ; au moins 1 an après publication. Produit les effets d'un <b>décès</b>. Si l'absent revient, son mariage <b>reste dissous</b>.", c:"le jugement déclaratif de <b>décès</b>, réservé à la disparition."},
 {s:'Jugement déclaratif de décès', d:'Issue de la disparition', m:'dp', l:'l7', t:"Corps non retrouvé, mort quasi certaine (naufrage, crash, catastrophe) : le tribunal judiciaire peut être saisi <b>immédiatement</b>."},
-{s:'Droit moral', d:"Volet perpétuel du droit d'auteur", m:'dp', l:'l5', t:"Paternité et respect de l'œuvre, <b>perpétuel</b> et transmis aux héritiers.", c:"le droit <b>patrimonial</b>, limité à l'année du décès + 70 ans."}
+{s:'Droit moral', d:"Volet perpétuel du droit d'auteur", m:'dp', l:'l5', t:"Paternité et respect de l'œuvre, <b>perpétuel</b> et transmis aux héritiers.", c:"le droit <b>patrimonial</b>, limité à l'année du décès + 70 ans."},
+{s:'Population mère', d:"Qui interroger", m:'em', l:'l8', t:"« L'ensemble des personnes possédant les informations désirées pour répondre aux objectifs d'une étude ». On en tire un <b>échantillon</b> dont on généralise les résultats.", c:"l'<b>échantillon</b>, la partie de la population mère réellement interrogée."},
+{s:'Données secondaires', d:"Données qui existent déjà", m:'em', l:'l2', t:"Non produites pour l'étude : internes ou externes (dont les panels). Exploitées par l'<b>étude documentaire</b>.", c:"les données <b>primaires</b>, produites pour l'étude (études ad hoc)."},
+{s:'Insight', d:"Découverte marketing", m:'em', l:'l3', t:"Réalité <b>pertinente, concrète et jusque-là inexploitée</b> sur une cible, obtenue par une analyse subjective et approfondie des données."},
+{s:'Entretien semi-directif', d:"L'entretien le plus utilisé", m:'em', l:'l4', t:"Guide souple : l'interviewé développe ses idées dans l'ordre qu'il veut, l'enquêteur relance et recentre. Allie <b>cadre et spontanéité</b>.", c:"l'entretien <b>directif</b> (trame stricte) et le <b>non directif</b> (un thème, expression libre)."},
+{s:'Saturation', d:"Quand arrêter les entretiens", m:'em', l:'l4', t:"On s'arrête quand un nouvel entretien <b>n'apporte plus d'information nouvelle</b> (en pratique 10 à 20 personnes, 15 à 30 selon une diapositive)."},
+{s:'Phase de purge', d:"Mise en confiance", m:'em', l:'l5', t:"Début d'entretien où l'on lève les craintes du répondant pour le mettre en confiance, avant d'aborder les thèmes."},
+{s:'Focus group', d:"Réunion de groupe", m:'em', l:'l6', t:"<b>6 à 10 personnes</b> et un animateur. Deux groupes ≈ 30 entretiens individuels. Biais : prise de parole dominante, influence mutuelle."},
+{s:'Verbatim', d:"Citation du répondant", m:'em', l:'l7', t:"Phrase spontanée, citée <b>mot pour mot</b>, qui résume une opinion ou une perception fréquente."},
+{s:'Quotas', d:"Méthode d'échantillonnage empirique", m:'em', l:'l8', t:"Groupes fixés a priori selon des caractéristiques <b>connues</b> de la population (48 % d'hommes → 480 sur 1 000). Contrôle précis, mais biais de sélection.", c:"l'échantillonnage <b>aléatoire</b>, où chacun a une probabilité connue et égale d'être tiré."},
+{s:"Marge d'erreur", d:"Précision d'un sondage", m:'em', l:'l9', t:"<b>e = t × √(p × q ÷ n)</b>, avec t = 1,96 à 95 %. Pour 1 000 personnes et p = 50 % : ± 3,1 points. Diviser e par 2 exige 4 fois plus de répondants."},
+{s:'Biais de cadrage', d:"La formulation change la réponse", m:'em', l:'l10', t:"Tversky et Kahneman : le même programme est choisi par <b>72 %</b> en cadre positif (« 200 sauvées ») et <b>22 %</b> en cadre négatif (« 400 mourront »)."},
+{s:'Échelle de Likert', d:"Degré d'accord", m:'em', l:'l10', t:"De « pas du tout d'accord » à « tout à fait d'accord ». Éviter un « sans opinion » au milieu : il rompt l'échelle.", c:"le <b>différentiel sémantique</b>, entre deux adjectifs opposés."},
+{s:'Prétest', d:"Étape 3 de l'enquête", m:'em', l:'l12', t:"Questionnaire soumis en face à face à <b>une dizaine</b> de personnes de la population mère, qui commentent leurs choix à voix haute."}
 ];
 
 /* ---------- rendu ---------- */

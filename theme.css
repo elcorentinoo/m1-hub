@@ -61,7 +61,7 @@
   color-scheme: light;
 }
 
-/* ───────────── LES SIX MATIÈRES ─────────────
+/* ───────────── LES SEPT MATIÈRES ─────────────
    Une seule source : la couleur, l'emblème et la photo de chaque
    matière. Elles s'appliquent à la page du cours (subject-id) et à
    sa carte sur le hub (data-sid). Photos Unsplash, avec une copie
@@ -89,6 +89,14 @@
 :root[subject-id="marche-particuliers"], [data-sid="marche-particuliers"]{
   --m:#2D6E57; --m-soft:#E4F1EB; --m-clair:#9FD8C0; --emb:"€";
   --photo:url("https://images.unsplash.com/photo-1759428679273-11d914866394?auto=format&fit=crop&w=1800&q=70"),url("img/sujet-marche-particuliers.webp");
+}
+/* emblème dessiné (une silhouette) : aucun caractère ne la rend proprement
+   sur tous les appareils, d'où une petite image blanche */
+:root[subject-id="etudes-marche"], [data-sid="etudes-marche"]{
+  --m:#1F6F80; --m-soft:#E3F0F3; --m-clair:#9ED3DF;
+  --ph-lum:.8;   /* photo très claire (une esplanade) : assombrie pour garder 4,5:1 */
+  --emb:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='%23fff'%3E%3Ccircle cx='8' cy='4.6' r='3.2'/%3E%3Cpath d='M1.6 15.6c0-3.8 2.9-6.5 6.4-6.5s6.4 2.7 6.4 6.5z'/%3E%3C/svg%3E");
+  --photo:url("https://images.unsplash.com/photo-1684514570833-d7eaae2c169b?auto=format&fit=crop&w=1800&q=70"),url("img/sujet-etudes-marche.webp");
 }
 
 html{ background:var(--fond); }
@@ -324,7 +332,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
    matière : six photos très différentes forment une seule famille. */
 .ph{ position:absolute; inset:0; overflow:hidden; border-radius:inherit; background:var(--nuit); }
 .ph::before{ content:''; position:absolute; inset:0; background-image:var(--photo); background-size:cover; background-position:center;
-  filter:grayscale(1) contrast(1.08) brightness(1.08); }
+  filter:grayscale(1) contrast(1.08) brightness(var(--ph-lum,1.08)); }
 .ph::after{ content:''; position:absolute; inset:0; background:var(--m); mix-blend-mode:color; opacity:.78; }
 .voile-bas{ position:absolute; inset:0; background:linear-gradient(180deg, rgba(30,33,71,.58) 0%, rgba(30,33,71,.5) 40%, rgba(30,33,71,.66) 100%); }
 .voile-g{ position:absolute; inset:0; background:linear-gradient(90deg, rgba(30,33,71,.84) 0%, rgba(30,33,71,.62) 55%, rgba(30,33,71,.30) 100%); }
@@ -397,6 +405,36 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 #ds-rech{ width:auto; padding:0 14px; gap:8px; }
 #ds-rech::after{ content:'Rechercher'; font-size:13.5px; font-weight:500; color:var(--txt2); }
 @media(max-width:1180px){ #ds-rech::after{ display:none; } #ds-rech{ width:40px; padding:0; } }
+
+/* champ de recherche intégré à l'en-tête, sur grand écran : on tape
+   directement, les résultats s'ouvrent dessous. En dessous de 1181 px,
+   la loupe ouvre la fenêtre de recherche. */
+.ds-q{ display:none; position:relative; align-items:center; gap:8px; height:40px; padding:0 14px; border-radius:999px; background:var(--blanc); color:var(--txt2); }
+.ds-q:focus-within{ box-shadow:0 0 0 2px var(--nuit); }
+.ds-q input{
+  width:190px; border:none !important; outline:none; background:transparent !important; box-shadow:none !important; color:var(--txt);
+  font-size:13.5px; font-weight:500; padding:0 !important; min-height:0 !important; height:auto; border-radius:0 !important; -webkit-appearance:none; appearance:none;
+}
+.ds-q input::-webkit-search-cancel-button{ cursor:pointer; }
+.ds-q input::placeholder{ color:var(--txt2); opacity:1; }
+.ds-q-res{
+  position:absolute; top:calc(100% + 12px); right:-58px; width:min(440px, calc(100vw - 40px)); max-height:min(60vh, 460px); overflow-y:auto;
+  background:var(--blanc); border-radius:var(--r-lg); box-shadow:var(--shadow-lg); padding:8px; z-index:80;
+}
+.ds-q-res[hidden]{ display:none; }
+.ds-q-i{ display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:var(--r); text-decoration:none; color:var(--txt); }
+.ds-q-i .pi{ width:30px; flex:none; text-align:center; font-size:16px; }
+.ds-q-i .pt{ display:flex; flex-direction:column; min-width:0; font-size:14px; font-weight:500; line-height:1.3; }
+.ds-q-i .ps{ font-size:12px; font-weight:400; color:var(--txt3); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.ds-q-i.sel, .ds-q-i:hover{ background:var(--nuit); color:#fff; }
+.ds-q-i.sel .ps, .ds-q-i:hover .ps{ color:var(--sur-nuit); }
+.ds-q-v{ padding:14px; color:var(--txt3); font-size:14px; }
+@media(min-width:1181px){
+  .ds-q{ display:flex; }
+  #ds-rech{ display:none; }
+  /* la progression est déjà dans le cadre photo du cours : on libère la place */
+  body.ds-cours .ds-slot .progress-wrap{ display:none; }
+}
 
 /* les widgets récupérés dans l'en-tête */
 .ds-slot .progress-wrap{ min-width:120px; margin:0 6px; }

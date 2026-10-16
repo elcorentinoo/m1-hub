@@ -8,7 +8,7 @@ CONTENU DE CE DOSSIER
   • classement.html .................... le classement partagé
   • theme.css .......................... charte « Verre » (5.0) : couleur, emblème
                                          et photo de chaque matière, composants
-  • img/ ............................... les 7 images du site (WebP, 220 Ko)
+  • img/ ............................... les images de secours du site (WebP)
   • lb.js .............................. identité (pseudo) + classement Supabase
   • marche_des_particuliers.html ....... Le Marché des Particuliers (11 leçons)
   • produits_derives.html .............. Produits Dérivés I — Forward (ch. 1-3,
@@ -26,11 +26,14 @@ CONTENU DE CE DOSSIER
   • droits_particuliers.html ........... Caractéristiques des droits des particuliers,
                                          partie 1 (10 leçons, 10 questions rédigées
                                          corrigées automatiquement, 6 cas pratiques)
+  • etudes_de_marche.html .............. Études de marché (12 leçons : bases, quali,
+                                         quanti ; 16 questions rédigées, 8 cas
+                                         pratiques, calculatrice de marge d'erreur)
   • ressourcerie.html .................. Dépôt et partage de documents (analyse locale)
-  • glossaire.html ..................... 119 sigles et notions, liés aux leçons
+  • glossaire.html ..................... 132 sigles et notions, liés aux leçons
   • ui.css / ui.js ..................... Socle commun : navigation, thème, recherche
   • progress.js ........................ Progression, XP, historique, révision espacée
-  • banque.js .......................... 344 questions et 119 fiches (fichier GÉNÉRÉ)
+  • banque.js .......................... 408 questions et 132 fiches (fichier GÉNÉRÉ)
   • revision.html ...................... Entraînement du jour + flashcards
   • stats.html ......................... Tableau de bord de progression
   • sw.js .............................. Fonctionnement hors ligne
@@ -55,6 +58,15 @@ avec le préfixe "M1 · ", et le classement ne lit que ces lignes-là.
   → Le classement M1 n'affiche que les résultats M1.
   → Le classement LP (ancien site) continue d'afficher les siens.
   → Aucune modification de base de données nécessaire.
+
+Depuis la 5.1.0, deux classements :
+  • « Qui complète le plus » : chaque appareil envoie, pour chaque
+    cours, son pourcentage de complétion (lignes mode « Progression »,
+    correct = %, total = 100, xp = leçons validées), seulement quand il
+    change. Le classement fait la moyenne sur les cours listés dans
+    COURS_M1, en haut de lb.js — une nouvelle matière = une ligne là.
+  • « Meilleur taux de réussite » : bonnes réponses ÷ questions sur
+    les tests finaux et séries enregistrés (20 questions minimum).
 
 Si tu préfères un projet Supabase totalement dédié au Master,
 remplace simplement `url` et `key` en haut de lb.js.
@@ -254,6 +266,39 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  5.1.0            NOUVELLE MATIÈRE : ÉTUDES DE MARCHÉ. Le classement
+                   revient, la recherche s'écrit dans l'en-tête.
+                   · etudes_de_marche.html : 12 leçons en trois chapitres
+                     (les bases ; le qualitatif : entretiens, focus group,
+                     collage, analyse ; le quantitatif : échantillonnage,
+                     marge d'erreur, questionnaire, prétest, rapport),
+                     24 mini-quiz, 16 questions rédigées corrigées
+                     automatiquement (partiel de janvier : rédigé, 1 h 30),
+                     8 cas pratiques dont 5 inventés et signalés comme
+                     tels, test final de 40 questions, calculatrice de
+                     marge d'erreur et de taille d'échantillon, page
+                     « Mémo et points à vérifier » (coquilles et
+                     contradictions des supports). Tous les calculs
+                     vérifiés par ordinateur ; tailles d'échantillon
+                     arrondies à l'entier supérieur.
+                   · Identité : bleu canard #1F6F80, emblème silhouette
+                     (petite image blanche), photo Unsplash de FotoFlo
+                     (passants vus d'en haut), assombrie par la nouvelle
+                     variable --ph-lum pour tenir 4,5:1 sur téléphone.
+                   · Branchée partout : hub (carte + échéance de janvier),
+                     menu, recherche, révision, stats, glossaire
+                     (13 notions), banque.js (64 questions, 13 fiches),
+                     hors ligne.
+                   · Classement réécrit (fini la page « pas de
+                     classement ») : « Qui complète le plus » et
+                     « Meilleur taux de réussite », podium et liste.
+                     La progression de chacun est envoyée discrètement
+                     (lb.js, syncProgression), sans fenêtre surgissante.
+                   · Recherche : sur grand écran, un vrai champ dans
+                     l'en-tête, résultats en dessous ; la loupe reste
+                     sur tablette et téléphone. Ctrl+K y place le curseur.
+                   · Correctif : « Ma progression » ignorait la Fiscalité
+                     et les Droits des particuliers (progress.js).
   5.0.0 « Florin »  NOUVELLE DIRECTION ARTISTIQUE : « VERRE ».
                    Refonte visuelle complète, sur le modèle choisi par
                    Corentin : une grande photo par matière dans un cadre

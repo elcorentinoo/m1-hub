@@ -1,0 +1,2091 @@
+<!DOCTYPE html>
+<html lang="fr" subject-id="etudes-marche">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Études de marché — M1 MBAF</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+:root{
+  --card:#fff; --card2:#fbf9f5;
+  --paper:#faf6ef; --paper2:#f3ece0; --ink:#22201b; --line:#e3d9c8;
+  --teal:#1b6b5e; --amber:#c87a12; --rust:#a8432a; --plum:#6b3a73; --navy:#241C15;
+  --teal-soft:#e3efec; --amber-soft:#f6ead4; --rust-soft:#f3e0da; --plum-soft:#ece3ef; --navy-soft:#dde6f0;
+  --shadow:0 2px 14px rgba(34,32,27,.07); --shadow-lg:0 8px 30px rgba(34,32,27,.13);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-track{background:var(--paper2)}
+::-webkit-scrollbar-thumb{background:#cdbfa6;border-radius:6px;border:2px solid var(--paper2)}
+::-webkit-scrollbar-thumb:hover{background:var(--amber)}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:62px;z-index:50;background:var(--paper);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:18px;padding:0 22px}
+.brand{display:flex;align-items:center;gap:11px;font-family:'Fraunces',serif;font-weight:600;font-size:1.12rem;color:var(--navy)}
+.brand .logo{width:36px;height:36px;border-radius:9px;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:1.15rem;flex-shrink:0;box-shadow:var(--shadow)}
+.brand small{display:block;font-family:'DM Sans';font-weight:500;font-size:.66rem;letter-spacing:.09em;color:var(--amber);text-transform:uppercase}
+.hublink{font-family:'DM Mono';font-size:.72rem;color:#8a8170;text-decoration:none;padding:5px 10px;border-radius:8px;border:1px solid var(--line);white-space:nowrap;transition:.15s}
+.hublink:hover{color:var(--navy);border-color:#c9bca3;background:var(--card)}
+.progress-wrap{flex:1;max-width:300px;display:flex;flex-direction:column;gap:3px}
+.progress-wrap .lab{font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:#8a8170;font-weight:600;display:flex;justify-content:space-between}
+.progress-bar{height:8px;background:var(--paper2);border-radius:5px;overflow:hidden;border:1px solid var(--line)}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),#2a8a78);transition:width .5s cubic-bezier(.4,0,.2,1)}
+.xp{margin-left:auto;display:flex;align-items:center;gap:7px;background:var(--amber-soft);border:1px solid #e6cf9e;color:var(--amber);font-weight:700;padding:7px 14px;border-radius:30px;font-size:.9rem}
+.burger{display:none;background:none;border:1px solid var(--line);border-radius:8px;padding:7px 10px;cursor:pointer;font-size:1.1rem;color:var(--ink)}
+
+.shell{display:flex;padding-top:62px}
+.sidebar{position:fixed;top:62px;bottom:0;left:0;width:282px;background:var(--paper2);border-right:1px solid var(--line);overflow-y:auto;padding:20px 14px 50px;z-index:40;transition:transform .3s}
+.sidebar h4{font-family:'Fraunces',serif;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:#8a8170;margin:18px 10px 9px;font-weight:600}
+.sidebar h4:first-child{margin-top:0}
+.nav-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;cursor:pointer;font-size:.92rem;color:var(--ink);border:1px solid transparent;transition:.16s;margin-bottom:3px}
+.nav-item:hover{background:#ece3d3}
+.nav-item.active{background:var(--card);border-color:var(--line);box-shadow:var(--shadow);font-weight:600;color:var(--navy)}
+.nav-item .num{width:25px;height:25px;border-radius:50%;background:var(--card);border:1.5px solid var(--line);flex-shrink:0;display:grid;place-items:center;font-size:.78rem;font-weight:700;font-family:'DM Mono';color:#8a8170;transition:.16s}
+.nav-item.active .num,.nav-item.done .num{background:var(--teal);color:#fff;border-color:var(--teal)}
+.nav-item .lab{flex:1;line-height:1.25}
+.nav-item.special{background:var(--plum-soft);border-color:#d8c5dc;color:var(--plum);font-weight:600}
+.nav-item.special.active{background:var(--plum);color:#fff}
+.nav-item.special2{background:var(--navy-soft);border-color:#c3d2e2;color:var(--navy);font-weight:600}
+.nav-item.special2.active{background:var(--navy);color:#fff}
+.nav-item.special3{background:var(--amber-soft);border-color:#e6cf9e;color:var(--amber);font-weight:600}
+.nav-item.special3.active{background:var(--amber);color:#fff}
+.nav-item .ico{font-size:1.05rem}
+
+.main{flex:1;margin-left:282px;padding:40px 6vw 120px;max-width:920px}
+.view{display:none;animation:fadeIn .45s ease}
+.view.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.tag{display:inline-block;font-family:'DM Mono';font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;background:var(--navy-soft);color:var(--navy);padding:5px 12px;border-radius:20px;font-weight:500;margin-bottom:16px}
+h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;font-weight:600;color:var(--ink);margin-bottom:10px;letter-spacing:-.01em}
+.subtitle{font-size:1.12rem;color:#6f6757;margin-bottom:30px;max-width:62ch}
+.main p{margin-bottom:16px;font-size:1.04rem;max-width:68ch}
+.main h2{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:600;color:var(--navy);margin:38px 0 14px;letter-spacing:-.01em}
+.main strong{font-weight:600;color:var(--ink)}
+
+.callout{border-radius:14px;padding:18px 20px 18px 22px;margin:24px 0;border-left:5px solid;position:relative;font-size:1rem}
+.callout .ct{font-weight:700;font-family:'Fraunces',serif;font-size:1.02rem;display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.callout p{margin:0;max-width:none}
+.c-analogy{background:var(--amber-soft);border-color:var(--amber);color:#5e3a06}
+.c-analogy .ct{color:var(--amber)}
+.c-retenir{background:var(--teal-soft);border-color:var(--teal);color:#0f3d36}
+.c-retenir .ct{color:var(--teal)}
+.c-piege{background:var(--rust-soft);border-color:var(--rust);color:#5e2317}
+.c-piege .ct{color:var(--rust)}
+
+.rulebox{background:#1c1a16;color:#f3ece0;border-radius:14px;padding:22px 24px;margin:26px 0;font-family:'DM Mono';box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
+.rulebox::before{content:'REPÈRE';position:absolute;top:13px;right:18px;font-size:.62rem;letter-spacing:.2em;color:#7d7566}
+.rulebox.formule::before{content:'FORMULE'}
+.rulebox .rb-main{font-size:1.18rem;font-weight:500;line-height:1.5;color:#fff}
+.rulebox .rb-sub{font-size:.86rem;color:#b8af9d;margin-top:10px;line-height:1.55}
+.rulebox em{color:var(--amber);font-style:normal;font-weight:500}
+
+.tbl{width:100%;border-collapse:collapse;margin:22px 0;font-size:.96rem;background:var(--card);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line)}
+.tbl th{background:var(--navy);color:#fff;text-align:left;padding:11px 15px;font-weight:600;font-size:.86rem}
+.tbl td{padding:11px 15px;border-top:1px solid var(--line);vertical-align:top}
+.tbl tr:nth-child(even) td{background:var(--paper)}
+.tbl td:first-child{font-weight:600;color:var(--navy);white-space:nowrap}
+.tbl.wrap td:first-child{white-space:normal}
+.tbl.num td{font-family:'DM Mono';font-size:.94rem}
+.tbl.num td:first-child{font-family:'DM Sans'}
+
+.example{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:26px 0;box-shadow:var(--shadow)}
+.example .ex-head{font-family:'Fraunces',serif;font-weight:600;color:var(--plum);font-size:1.08rem;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.step{display:flex;gap:14px;margin-bottom:14px}
+.step:last-child{margin-bottom:0}
+.step .sn{width:27px;height:27px;border-radius:50%;background:var(--plum);color:#fff;flex-shrink:0;display:grid;place-items:center;font-family:'DM Mono';font-weight:500;font-size:.85rem}
+.step .sc{flex:1;padding-top:1px}
+.step .sc b{color:var(--navy)}
+.step .sc code{background:var(--paper2);padding:2px 7px;border-radius:5px;font-family:'DM Mono';font-size:.9rem;color:var(--teal)}
+.ex-result{margin-top:6px;background:var(--teal-soft);border:1px solid #bcdcd4;border-radius:10px;padding:12px 16px;font-weight:600;color:#0f3d36}
+
+.schema{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin:26px 0;box-shadow:var(--shadow);text-align:center}
+.schema .scap{font-size:.82rem;color:#8a8170;margin-top:12px;font-style:italic}
+.schema svg{max-width:100%;height:auto}
+
+.quiz{background:var(--plum-soft);border:1px solid #d8c5dc;border-radius:14px;padding:20px 22px;margin:24px 0}
+.quiz .qhead{font-family:'DM Mono';font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--plum);font-weight:500;margin-bottom:9px}
+.quiz .q{font-weight:600;font-size:1.05rem;margin-bottom:14px;color:var(--ink)}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{text-align:left;background:var(--card);border:1.5px solid #d8c5dc;border-radius:10px;padding:11px 15px;cursor:pointer;font-family:'DM Sans';font-size:.98rem;color:var(--ink);transition:.15s}
+.opt:hover:not(:disabled){border-color:var(--plum);background:#fbf8fc}
+.opt:disabled{cursor:default}
+.opt.right{background:var(--teal-soft);border-color:var(--teal);color:#0f3d36;font-weight:600}
+.opt.right::after{content:' ✓';color:var(--teal);font-weight:700}
+.opt.wrong{background:var(--rust-soft);border-color:var(--rust);color:#5e2317}
+.opt.wrong::after{content:' ✗';color:var(--rust);font-weight:700}
+.feedback{margin-top:13px;padding:12px 15px;border-radius:10px;background:var(--card);border:1px dashed #cbb9cf;font-size:.95rem;color:#5a4d5d}
+.feedback b{color:var(--plum)}
+
+.lesson-nav{display:flex;justify-content:space-between;gap:14px;margin-top:46px;padding-top:26px;border-top:1px solid var(--line)}
+.btn{font-family:'DM Sans';font-weight:600;font-size:.98rem;padding:12px 22px;border-radius:11px;cursor:pointer;border:1.5px solid var(--line);background:var(--card);color:var(--ink);transition:.16s;display:inline-flex;align-items:center;gap:8px}
+.btn:hover{border-color:#bbac90;transform:translateY(-1px)}
+.btn.primary{background:var(--teal);color:#fff;border-color:var(--teal);box-shadow:var(--shadow)}
+.btn.primary:hover{background:#155a4f}
+.btn.plum{background:var(--plum);color:#fff;border-color:var(--plum)}
+.btn.plum:hover{background:#592f60}
+.btn.amber{background:var(--amber);color:#fff;border-color:var(--amber)}
+.btn.amber:hover{background:#a86610}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.print-fab{position:fixed;bottom:26px;left:26px;z-index:110;background:var(--card);color:var(--ink2);border:1.5px solid var(--line2);font-weight:600;padding:10px 16px;border-radius:24px;cursor:pointer;font-family:'DM Sans';font-size:.85rem;box-shadow:var(--shadow);transition:.15s}
+.print-fab:hover{border-color:var(--navy);color:var(--navy);transform:translateY(-1px)}
+@media(max-width:880px){.print-fab{bottom:20px;left:16px;padding:9px 13px;font-size:.8rem}}
+.xp-pop{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--amber);color:#fff;font-weight:700;padding:13px 26px;border-radius:30px;box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:.4s;z-index:200;font-size:1rem}
+.xp-pop.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.test-q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:18px;box-shadow:var(--shadow);transition:.3s}
+.test-q .tq-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px}
+.test-q .tq-num{font-family:'DM Mono';font-weight:500;color:var(--navy);font-size:.9rem}
+.test-q .tq-chap{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:#8a8170;font-weight:600;background:var(--paper2);padding:4px 10px;border-radius:20px;text-align:right}
+.test-q .tq-q{font-weight:600;font-size:1.08rem;margin-bottom:14px}
+.num-input{font-family:'DM Mono';font-size:1.05rem;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;width:190px;background:var(--paper)}
+.num-input:focus{outline:none;border-color:var(--teal)}
+.unit{font-family:'DM Mono';color:#8a8170;margin-left:9px}
+.topt{display:flex;flex-direction:column;gap:8px}
+.topt button{text-align:left;background:var(--paper);border:1.5px solid var(--line);border-radius:10px;padding:11px 15px;cursor:pointer;font-family:'DM Sans';font-size:.98rem;transition:.15s}
+.topt button:hover{border-color:var(--teal)}
+.topt button.sel{background:var(--teal-soft);border-color:var(--teal);font-weight:600;color:#0f3d36}
+.remed{margin-top:14px;border-radius:11px;border-left:5px solid var(--rust);background:var(--rust-soft);padding:15px 18px;display:none}
+.remed.show{display:block;animation:fadeIn .35s}
+.remed .rt{font-weight:700;color:var(--rust);font-family:'Fraunces',serif;margin-bottom:5px;display:flex;align-items:center;gap:7px}
+.remed .ra{font-size:.95rem;color:#5e2317;margin-bottom:11px}
+.remed-btns{display:flex;gap:10px;flex-wrap:wrap}
+.remed-btns .btn{padding:8px 16px;font-size:.88rem}
+.test-q.ok{border-color:var(--teal);background:#fbfdfc}
+.test-q.ko{border-color:var(--rust)}
+.float-retry{position:fixed;bottom:26px;right:26px;z-index:120;display:none;background:var(--plum);color:#fff;border:none;font-weight:700;padding:14px 24px;border-radius:30px;box-shadow:var(--shadow-lg);cursor:pointer;font-family:'DM Sans';font-size:.98rem;align-items:center;gap:9px}
+.float-retry.show{display:inline-flex;animation:fadeIn .4s}
+
+.result{display:none;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:34px;box-shadow:var(--shadow-lg);text-align:center;animation:fadeIn .5s}
+.result.show{display:block}
+.result .score-big{font-family:'Fraunces',serif;font-size:4rem;font-weight:700;line-height:1;color:var(--teal)}
+.result .score-lab{color:#8a8170;font-weight:600;margin-bottom:8px}
+.result .msg{font-size:1.12rem;margin:14px auto 28px;max-width:46ch;color:var(--ink)}
+.chapbars{text-align:left;max-width:560px;margin:0 auto}
+.chapbar{margin-bottom:14px}
+.chapbar .cbl{display:flex;justify-content:space-between;font-size:.9rem;font-weight:600;margin-bottom:5px}
+.chapbar .cbl span:last-child{font-family:'DM Mono';color:#8a8170}
+.cbt{height:13px;background:var(--paper2);border-radius:7px;overflow:hidden;border:1px solid var(--line)}
+.cbf{height:100%;border-radius:7px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+
+.annale{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px 26px;margin-bottom:22px;box-shadow:var(--shadow)}
+.annale .an-tag{font-family:'DM Mono';font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);font-weight:500}
+.annale h3{font-family:'Fraunces',serif;font-size:1.32rem;color:var(--navy);margin:6px 0 14px;font-weight:600}
+.annale .enonce{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:16px 19px;font-size:1rem;color:#3a352c}
+.annale .enonce .qlist{margin:10px 0 0 4px}
+.annale .enonce .qlist li{margin-bottom:5px;list-style:none;padding-left:22px;position:relative}
+.annale .enonce .qlist li::before{content:'▸';position:absolute;left:0;color:var(--amber);font-weight:700}
+.corrige{margin-top:14px;display:none;animation:fadeIn .4s}
+.corrige.show{display:block}
+.corrige-head{font-family:'Fraunces',serif;font-weight:600;color:var(--teal);margin-bottom:12px;display:flex;align-items:center;gap:8px;font-size:1.06rem}
+
+.intro-card{background:var(--navy);color:#f3ece0;border-radius:16px;padding:24px 26px;margin-bottom:26px}
+.intro-card h2{color:#fff;margin:0 0 8px;font-family:'Fraunces',serif;font-size:1.4rem}
+.intro-card p{color:#cdd8e6;max-width:none;margin:0}
+.intro-card.amber{background:#7a4c08}
+.intro-card.amber p{color:#f2e0c0}
+.intro-card.plum{background:#4a2750}
+.intro-card.plum p{color:#e6d5ea}
+
+.hint{font-size:.85rem;color:#8a8170;font-style:italic;margin-top:8px}
+.overlay{display:none;position:fixed;inset:62px 0 0 0;background:rgba(34,32,27,.4);z-index:35}
+@media(max-width:880px){
+  .main{margin-left:0;padding:30px 22px 110px}
+  .sidebar{transform:translateX(-100%);box-shadow:var(--shadow-lg)}
+  .sidebar.open{transform:translateX(0)}
+  .overlay.show{display:block}
+  .burger{display:block}
+  .progress-wrap{max-width:none}
+  .brand small{display:none}
+  h1.lesson-title{font-size:1.8rem}
+  .xp{padding:6px 11px;font-size:.82rem}
+  .gen-data .dl{min-width:0;display:block}
+}
+@media(max-width:560px){
+  .progress-wrap,.hublink{display:none}
+  .topbar{gap:12px}
+}
+/* ===== QUESTIONS RÉDIGÉES — couleurs uniquement par variables de theme.css ===== */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.redac textarea{display:block;width:100%;min-height:130px;margin-top:4px;padding:12px 14px;border:1.5px solid var(--line2);border-radius:10px;background:var(--card);color:var(--ink);font:inherit;font-size:1rem;line-height:1.55;resize:vertical}
+.redac textarea:focus{outline:none;border-color:var(--acc)}
+.redac-btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.redac-score{font-weight:700;padding:10px 14px;border-radius:10px;margin-bottom:10px;border:1px solid var(--line)}
+.redac-score.ok{background:var(--teal-soft);color:var(--teal-d)}
+.redac-score.mid{background:var(--amber-soft);color:var(--amber)}
+.redac-score.ko{background:var(--rust-soft);color:var(--rust)}
+.crit{list-style:none;margin:0 0 16px;padding:0}
+.crit li{padding:6px 0;border-bottom:1px solid var(--line);font-size:.96rem}
+.crit li.ok{color:var(--teal-d)}
+.crit li.ko{color:var(--rust)}
+.crit li i{color:var(--ink2)}
+.modele{background:var(--paper2);border:1px solid var(--line);border-radius:10px;padding:14px 16px;max-width:none !important}
+/* lisibilité et contraste : étiquettes grises reprises sur les variables de theme.css */
+.test-q .tq-chap,.unit,.hint,.result .score-lab,.chapbar .cbl span:last-child{color:var(--txt3)}
+.main{min-width:0}
+.tbl-scroll{overflow-x:auto;margin:22px 0}
+.tbl-scroll .tbl{margin:0}
+.tbl td,.tbl th{hyphens:auto;overflow-wrap:break-word}
+@media(max-width:560px){.tbl-scroll .tbl{min-width:540px}}
+@media(max-width:560px){.tbl th,.tbl td{padding:9px 10px;font-size:.88rem}}
+/* ===== CALCULATRICE (leçon 9) ===== */
+.calc-row{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:12px}
+.calc-row label{display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:.92rem;color:var(--ink);flex:1 1 200px;min-width:0}
+.calc .num-input{width:100%}
+</style>
+<link rel="stylesheet" href="ui.css">
+<link rel="stylesheet" href="theme.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#ECEEF6">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+</head>
+<body>
+
+<div class="topbar">
+  <button class="burger" onclick="toggleSidebar()">☰</button>
+  <div class="brand">
+    <span class="logo">◉</span>
+    <span>Études de marché<small>M1 MBAF · quali &amp; quanti</small></span>
+  </div>
+  <span id="nav-slot"></span>
+  <div class="progress-wrap">
+    <div class="lab"><span>Progression</span><span id="progPct">0 %</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+  </div>
+  <div class="xp"><span class="star">★</span><span id="xpVal">0</span> XP</div>
+  <span id="lb-id-slot"></span>
+</div>
+
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <h4>Chapitre 1 · Les bases</h4>
+    <div id="navList1"></div>
+    <h4>Chapitre 2 · Le qualitatif</h4>
+    <div id="navList2"></div>
+    <h4>Chapitre 3 · Le quantitatif</h4>
+    <div id="navList3"></div>
+    <h4>S'entraîner</h4>
+    <div class="nav-item special3" data-view="redac" onclick="go('redac')">
+      <span class="ico">✍️</span><span class="lab">Questions rédigées</span>
+    </div>
+    <div class="nav-item special2" data-view="annales" onclick="go('annales')">
+      <span class="ico">📐</span><span class="lab">Cas pratiques corrigés</span>
+    </div>
+    <div class="nav-item special" data-view="test" onclick="go('test')">
+      <span class="ico">🎯</span><span class="lab">Test final adaptatif</span>
+    </div>
+    <h4>À savoir</h4>
+    <div class="nav-item" data-view="ecarts" onclick="go('ecarts')">
+      <span class="ico">⚠️</span><span class="lab">Mémo et points à vérifier</span>
+    </div>
+  </aside>
+
+  <main class="main" id="main">
+
+    <!-- ============ LEÇON 1 ============ -->
+    <section class="view" data-view="l1">
+      <span class="tag">Leçon 1 · Les bases</span>
+      <h1 class="lesson-title">À quoi sert une étude de marché ?</h1>
+      <p class="subtitle">Avant de lancer une offre, une banque comme une start-up a besoin d'informations fiables. L'étude de marché est l'outil qui les produit — dans un temps et un budget limités.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Objectif : générer des <em>informations pertinentes</em> pour <em>réduire l'incertitude</em> et ainsi aider la prise de décision.</div>
+        <div class="rb-sub">Toujours sous deux contraintes : le <strong>budget</strong> et le <strong>délai</strong>. On récolte des <strong>données</strong>, puis on les analyse pour les transformer en <strong>informations</strong>.</div>
+      </div>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Une donnée, c'est « 312 personnes ont coché oui ». Une information, c'est « 62 % des moins de 30 ans sont prêts à ouvrir un compte 100 % mobile ». L'étude transforme la première en la seconde.</p>
+      </div>
+
+      <h2>Trois objectifs, trois types d'étude</h2>
+      <table class="tbl wrap">
+        <tr><th>Objectif</th><th>Type d'étude</th><th>Question typique</th></tr>
+        <tr><td>Décrire</td><td>Descriptive</td><td>Qui sont mes clients ? Combien achètent ?</td></tr>
+        <tr><td>Comprendre</td><td>Exploratoire</td><td>Pourquoi préfèrent-ils telle marque ?</td></tr>
+        <tr><td>Expliquer</td><td>Causale</td><td>La campagne de pub a-t-elle fait monter les ventes ?</td></tr>
+      </table>
+
+      <h2>Trois méthodes de collecte</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Méthode</th><th>Principe</th><th>Exemples du cours</th></tr>
+        <tr><td>Observation</td><td>On observe les comportements d'achat et de consommation, ou les résultats de vente.</td><td>Audimètre, observation sur le lieu de vente, audit de magasin, panels distributeurs.</td></tr>
+        <tr><td>Interrogation</td><td>On pose des questions.</td><td>Entretiens, enquêtes (questionnaires).</td></tr>
+        <tr><td>Expérimentation</td><td>On contrôle des variables, puis on attribue les variations observées aux variables manipulées.</td><td>Tests de produits, tests de marché, tests de prix.</td></tr>
+      </table>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">Exemples d'études quantitatives (cours)</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Quantifier un comportement</b> : « Combien de fois venez-vous dans ce magasin par mois ? »</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Montrer un lien de causalité</b> : « Quelle est l'influence de l'exposition à la campagne de communication sur les ventes du produit ? »</div></div>
+      </div>
+
+      <h2>Le marché des études</h2>
+      <p>Selon Syntec (chiffres de <strong>2014</strong>, cités par le cours), les dépenses d'études marketing se répartissent ainsi : <strong>78 %</strong> d'études quantitatives, <strong>14 %</strong> d'études qualitatives, <strong>8 %</strong> d'autres études. Le recueil électronique et digital est en forte hausse.</p>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Chiffres datés</div>
+        <p>Ces chiffres ont plus de dix ans. Cite-les à l'examen avec leur source et leur date (« Syntec, 2014 »), sans les présenter comme actuels.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Une banque teste deux niveaux de frais sur deux agences comparables pour voir lequel attire le plus de clients. Quelle méthode de collecte utilise-t-elle ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">L'observation</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">L'interrogation</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">L'expérimentation</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Elle manipule une variable (le prix) et attribue l'écart de résultats à cette variable : c'est un test de prix, donc une expérimentation.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Une étude qui cherche à <em>comprendre</em> pourquoi les clients quittent la banque est :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Descriptive</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Exploratoire</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Causale</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Décrire → descriptive ; comprendre → exploratoire ; expliquer (une cause, un effet) → causale.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('redac')">Questions rédigées</button>
+        <button class="btn primary" onclick="validate('l1',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 2 ============ -->
+    <section class="view" data-view="l2">
+      <span class="tag">Leçon 2 · Les bases</span>
+      <h1 class="lesson-title">Où trouver les données ? L'étude documentaire</h1>
+      <p class="subtitle">Avant d'interroger qui que ce soit, on regarde ce qui existe déjà. C'est moins cher, plus rapide, et cela évite de payer pour une information disponible.</p>
+
+      <h2>Données secondaires, données primaires</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Type</th><th>Définition</th><th>Sous-catégories</th></tr>
+        <tr><td>Données secondaires</td><td>Elles <strong>existent déjà</strong> : elles n'ont pas été produites pour l'étude en cours.</td><td>Internes (fichier clients, ventes) ou externes (dont les <strong>panels</strong>).</td></tr>
+        <tr><td>Données primaires</td><td>Produites <strong>pour l'étude</strong> : on parle d'études <strong>ad hoc</strong>.</td><td>Qualitatives, ou quantitatives (dont <strong>enquêtes et expérimentations</strong>).</td></tr>
+      </table>
+      </div>
+
+      <div class="rulebox">
+        <div class="rb-main">L'étude documentaire consiste à <em>sélectionner, synthétiser et analyser</em> des données secondaires.</div>
+        <div class="rb-sub">Elle est accessible gratuitement (sur Internet) ou de façon payante (études sectorielles de cabinets). Source citée par le cours : Mercator, 13<sup>e</sup> édition, p. 127.</div>
+      </div>
+
+      <h2>Six pistes pour recueillir de l'information</h2>
+      <div class="example">
+        <div class="ex-head">Les pistes du cours</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Sonder ses clients existants</b> : par e-mail, sur son site ou via les réseaux sociaux.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Exploiter les groupes Facebook ou LinkedIn</b> : analyser ce que publie la communauté, voire y poser des questions si les modérateurs l'autorisent.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>Lire les forums</b> de la thématique : questions récurrentes, échanges, remarques.</div></div>
+        <div class="step"><div class="sn">4</div><div class="sc"><b>Consulter les études</b> consommateurs, sectorielles et de marché.</div></div>
+        <div class="step"><div class="sn">5</div><div class="sc"><b>Explorer les moteurs de recherche</b> : mots-clés les plus recherchés, questions fréquentes.</div></div>
+        <div class="step"><div class="sn">6</div><div class="sc"><b>Étudier les concurrents</b> (benchmark) : le plus simple est de lire les avis publiés sur eux.</div></div>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Le piège</div>
+        <p>Un sondage auprès de ses clients produit des données <strong>primaires</strong> (créées pour l'étude), même si le cours le range parmi les pistes de l'étude documentaire. À l'examen, distingue bien : <em>existe déjà</em> = secondaire ; <em>créé pour l'étude</em> = primaire.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Un rapport sectoriel acheté à un cabinet sur le marché du crédit à la consommation est une source de données :</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">Secondaires externes</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Secondaires internes</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Primaires quantitatives</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Le rapport existe déjà (secondaire) et vient de l'extérieur de l'entreprise (externe). Payant ou gratuit, cela ne change rien.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Dans le schéma du cours, les panels figurent parmi les données :</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">Secondaires externes</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Primaires qualitatives</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Internes</button>
+        </div>
+        <div class="feedback" hidden><b>Oui.</b> Le cours range les panels dans les données secondaires externes, et les enquêtes et expérimentations dans les données primaires quantitatives.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l1')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l2',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 3 ============ -->
+    <section class="view" data-view="l3">
+      <span class="tag">Leçon 3 · Les bases</span>
+      <h1 class="lesson-title">Quali ou quanti ? Et qu'est-ce qu'un insight ?</h1>
+      <p class="subtitle">Les deux grandes familles d'études ne s'opposent pas : elles répondent à deux questions différentes.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Le quanti dit <em>« combien »</em>, le quali explique <em>« pourquoi »</em>.</div>
+        <div class="rb-sub">Les deux approches sont complémentaires.</div>
+      </div>
+
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Critère</th><th>Quantitatif</th><th>Qualitatif</th></tr>
+        <tr><td>But</td><td>Mesurer, quantifier, <strong>vérifier des hypothèses</strong></td><td>Comprendre, interpréter, <strong>construire des propositions</strong></td></tr>
+        <tr><td>Échantillon</td><td>Large et représentatif</td><td>Restreint et diversifié</td></tr>
+        <tr><td>Outil</td><td>Questionnaire standardisé et fermé</td><td>Guide d'entretien souple, questions ouvertes</td></tr>
+        <tr><td>Analyse</td><td>Statistique</td><td>Interprétative (verbatims, thèmes récurrents)</td></tr>
+        <tr><td>Force</td><td>La <strong>représentativité</strong></td><td>L'<strong>explication en profondeur</strong></td></tr>
+      </table>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">L'exemple du cours</div>
+        <p style="margin:0">Une enquête quantitative révèle que <strong>35 %</strong> des personnes interrogées achètent la marque X, contre <strong>20 %</strong> pour la marque Y. L'étude qualitative cherche ensuite <strong>pourquoi</strong> X est préférée : quelles perceptions, valeurs ou besoins profonds influencent ce choix ?</p>
+      </div>
+
+      <h2>Ce que le quali permet de comprendre</h2>
+      <p><strong>Les ressorts psychologiques de l'achat</strong> : attentes profondes (conscientes ou non), valeurs, freins, émotions, habitudes. Exemples du cours : un adolescent achète un vêtement de marque pour s'intégrer à un groupe, pas pour sa qualité ; une entreprise choisit un prestataire moins innovant mais plus rassurant. Ces motivations ne ressortent pas d'un questionnaire fermé.</p>
+      <p><strong>Les leviers d'influence et de différenciation</strong> : ce qui crée la préférence, les objections et signaux faibles, la perception de la proposition de valeur. Exemple : vous pensiez être choisi pour votre technologie ; les entretiens révèlent que c'est en réalité le <strong>prix</strong>.</p>
+      <p>Le quali permet aussi de tester des messages ou des prototypes et d'<strong>éviter des erreurs de positionnement</strong> coûteuses.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Un <em>insight marché</em> est la découverte d'une réalité pertinente, concrète et jusque-là inexploitée sur un marché cible.</div>
+        <div class="rb-sub">On l'obtient par une analyse <strong>subjective et approfondie</strong> des données. Un bon insight sert les deux parties : il répond aux vrais besoins de la cible tout en créant de la valeur pour l'entreprise.</div>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 Quel ordre ?</div>
+        <p>Les supports se contredisent : le diaporama « Techniques » présente le quali comme un complément <strong>après</strong> le quanti ; le schéma classique fait l'inverse (on explore en quali, puis on mesure en quanti). Retiens que l'ordre dépend de l'objectif — et dis-le si la question tombe.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Quelle est la principale force d'une étude quantitative ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">L'explication en profondeur</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">La représentativité, qui permet de généraliser</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">La souplesse du guide d'entretien</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Le quanti vise la représentativité ; le quali, l'explication en profondeur.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Un insight marché s'obtient par :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Un calcul de marge d'erreur</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Une analyse subjective et approfondie des données</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">La lecture d'un rapport sectoriel</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> C'est une réalité concrète, pertinente et jusque-là inexploitée, révélée par une analyse subjective et approfondie.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l2')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l3',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 4 ============ -->
+    <section class="view" data-view="l4">
+      <span class="tag">Leçon 4 · Le qualitatif</span>
+      <h1 class="lesson-title">Les entretiens individuels</h1>
+      <p class="subtitle">Échanger avec une personne, selon une trame plus ou moins souple, pour recueillir ses perceptions, ses motivations et ses réactions.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Un bon entretien individuel dure entre <em>45 et 90 minutes</em>.</div>
+        <div class="rb-sub">Il peut aussi être mené à distance (Zoom, Teams, Google Meet), enrichi d'outils de transcription ou d'analyse.</div>
+      </div>
+
+      <h2>Quatre types d'entretien</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Type</th><th>Principe</th><th>Usage</th></tr>
+        <tr><td>Directif</td><td>Questions précises, ouvertes, dans un ordre structuré ; trame stricte.</td><td>Valider des hypothèses sur des thèmes définis.</td></tr>
+        <tr><td>Semi-directif</td><td>Guide souple ; l'interviewé développe ses idées dans l'ordre qui lui convient ; l'enquêteur relance et recentre.</td><td><strong>Le plus utilisé</strong> : il allie cadre et spontanéité.</td></tr>
+        <tr><td>Non directif</td><td>L'enquêteur propose un thème et laisse la personne s'exprimer librement.</td><td>Très riche, mais exige une grande écoute active et de l'expérience.</td></tr>
+        <tr><td>Mixte (observation accompagnée)</td><td>Entretien + mise en situation réelle (magasin, site e-commerce) ; l'interviewé explique ses gestes, choix et hésitations.</td><td>Très pertinent pour le comportement d'achat, mais plus long à mettre en place.</td></tr>
+      </table>
+      </div>
+
+      <h2>Qui et combien interroger ?</h2>
+      <div class="example">
+        <div class="ex-head">La méthodologie</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Échantillon restreint</b> : chaque entretien est très riche en informations.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Échantillon hétérogène</b> : technique de <b>variation maximale</b>, on fait varier au maximum le profil des répondants selon <b>2 à 3 critères</b>.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>De 10 à 20 personnes</b>, en s'arrêtant dès qu'un nouvel entretien n'apporte plus d'information nouvelle : c'est la <b>saturation</b>.</div></div>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Deux chiffres dans le cours</div>
+        <p>Une diapositive recommande <strong>15 à 30</strong> personnes, une autre <strong>10 à 20</strong>. À l'examen, cite le critère qui compte vraiment — la <strong>saturation</strong> — et donne la fourchette en précisant qu'elle varie selon les sources.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Quel type d'entretien est le plus utilisé, parce qu'il allie cadre et spontanéité ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Directif</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Semi-directif</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Non directif</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Le semi-directif : un guide souple, l'interviewé développe dans l'ordre qu'il veut, l'enquêteur relance et recentre.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">On arrête les entretiens individuels :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Dès qu'on atteint 30 personnes</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Quand un nouvel entretien n'apporte plus d'information nouvelle</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Quand l'échantillon est représentatif</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> C'est le principe de saturation. La représentativité est un objectif du quanti, pas du quali.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l3')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l4',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 5 ============ -->
+    <section class="view" data-view="l5">
+      <span class="tag">Leçon 5 · Le qualitatif</span>
+      <h1 class="lesson-title">Mener l'entretien sans influencer</h1>
+      <p class="subtitle">L'enquêteur doit faire parler sans jamais orienter. C'est tout l'art de l'entretien.</p>
+
+      <h2>Le déroulé</h2>
+      <div class="example">
+        <div class="ex-head">Réussir l'entretien individuel</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Présenter</b> les objectifs de l'étude et le déroulement de l'entretien.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>La phase de purge</b> : on s'assure que toutes les craintes du répondant sont levées, pour le mettre en confiance. Ensuite seulement commence l'entretien.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>Intervenir le moins possible</b> : aborder les thèmes et laisser le répondant en traiter seul le maximum. L'enquêteur reste <b>neutre et objectif</b> et ne donne <b>jamais son opinion</b>.</div></div>
+        <div class="step"><div class="sn">4</div><div class="sc"><b>Enregistrer</b> l'entretien et prendre des notes rapides pour pouvoir rebondir.</div></div>
+      </div>
+
+      <h2>La seule façon d'intervenir : reformuler</h2>
+      <table class="tbl wrap">
+        <tr><th>Reformulation</th><th>Exemple</th></tr>
+        <tr><td>De relance</td><td>« Et puis ? », « Mais encore ? »</td></tr>
+        <tr><td>De contrôle</td><td>« Si j'ai bien compris… »</td></tr>
+        <tr><td>D'approfondissement</td><td>« Peux-tu me réexpliquer ? »</td></tr>
+      </table>
+      <p>Ces techniques donnent l'<strong>illusion d'un dialogue</strong>, sans que cela en devienne un : pas de questions fermées, pas de questions orientées.</p>
+
+      <h2>Des questions non biaisées</h2>
+      <p>Une question biaisée oriente la réponse et fausse les résultats. Il faut des questions <strong>claires, précises et neutres</strong> : privilégier les questions ouvertes, éviter celles qui suggèrent une réponse, utiliser un langage compréhensible par tous. La formulation peut demander plusieurs révisions.</p>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Biaisée</th><th>Non biaisée</th></tr>
+        <tr><td>« Ne pensez-vous pas que notre produit est meilleur que celui de nos concurrents ? »</td><td>« Comment comparez-vous notre produit à celui de nos concurrents ? »</td></tr>
+      </table>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 À retenir (cours)</div>
+        <p>Privilégier le <strong>semi-directif</strong> ; préparer un <strong>guide d'entretien</strong> clair mais laisser place à l'écoute active ; adapter le format (individuel ou groupe) aux ressources, à la maturité du projet et aux informations recherchées ; utiliser le numérique pour enregistrer, transcrire et analyser.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">« Si j'ai bien compris, vous trouvez l'application trop compliquée ? » est une reformulation :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">De relance</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">De contrôle</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">D'approfondissement</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> « Si j'ai bien compris… » vérifie la compréhension de l'enquêteur : c'est une reformulation de contrôle.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">À quoi sert la « phase de purge » ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">À éliminer les questionnaires aberrants</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">À lever les craintes du répondant pour le mettre en confiance</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">À supprimer les questions biaisées du guide</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> La purge précède l'entretien proprement dit. L'élimination des questionnaires aberrants, elle, intervient à la saisie d'une enquête quanti.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l4')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l5',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 6 ============ -->
+    <section class="view" data-view="l6">
+      <span class="tag">Leçon 6 · Le qualitatif</span>
+      <h1 class="lesson-title">Le focus group et le collage</h1>
+      <p class="subtitle">Deux techniques de groupe : l'une fait discuter, l'autre fait créer avec des images.</p>
+
+      <h2>Le focus group</h2>
+      <div class="rulebox">
+        <div class="rb-main">Réunir un petit groupe de <em>6 à 10 personnes</em> pour discuter d'un sujet ou d'un concept, avec un animateur (facilitateur).</div>
+        <div class="rb-sub">Deux réunions de groupe d'une dizaine de personnes peuvent suffire là où il faudrait <strong>30 entretiens individuels</strong>.</div>
+      </div>
+
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Rubrique</th><th>Ce que dit le cours</th></tr>
+        <tr><td>Objectifs</td><td>Faire émerger opinions, critiques et suggestions ; observer les réactions croisées ; générer des idées ou détecter des signaux faibles.</td></tr>
+        <tr><td>Avantages</td><td>Informations variées obtenues rapidement ; format stimulant et créatif, utile en phase exploratoire (idée, nom, prototype).</td></tr>
+        <tr><td>Rôle de l'animateur</td><td>Assurer la participation de tous, <strong>éviter l'apparition de leaders</strong>, favoriser l'échange.</td></tr>
+        <tr><td>Points de vigilance</td><td>Animateur neutre et expérimenté ; biais (prise de parole dominante, influence mutuelle) ; logistique plus lourde ; plutôt pour des projets à fort potentiel ou avec budget.</td></tr>
+        <tr><td>À distance</td><td>Forums privés, plateformes collaboratives, Zoom, Teams, Livestorm ; Toluna Start, Testapic ou Ferpection pour tester des prototypes ; à petit budget, groupes Facebook, Discord ou son réseau.</td></tr>
+      </table>
+      </div>
+      <p>Le focus group est <strong>moins utilisé</strong> que l'entretien individuel, car plus difficile à mettre en place — mais plus stimulant et plus créatif.</p>
+
+      <h2>Le collage projectif</h2>
+      <div class="rulebox">
+        <div class="rb-main">Une technique <em>projective non verbale</em> : représenter une vision, un projet ou des idées uniquement avec des <em>images</em>.</div>
+        <div class="rb-sub">Il sert l'étape de <strong>divergence</strong> du processus créatif : confronter des réalités différentes et faire naître des idées de leurs rapprochements.</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">Les étapes d'un collage</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Matériel</b> : beaucoup de revues, des ciseaux, de la colle, de grands supports papier.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Chacun réalise seul</b> un collage qui exprime sa représentation du problème.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>Chacun présente</b> son collage.</div></div>
+        <div class="step"><div class="sn">4</div><div class="sc"><b>L'animateur note</b> les réactions au fur et à mesure.</div></div>
+        <div class="step"><div class="sn">5</div><div class="sc"><b>Les commentaires</b> des autres participants alimentent les axes de réflexion.</div></div>
+      </div>
+
+      <p><strong>Quand ?</strong> Très efficace en début de séance de créativité, pour la phase d'imprégnation du problème ; il peut aussi servir à présenter des idées, collage réalisé en direct. <strong>Conseils</strong> : empêcher l'autocensure, inviter à « se mettre à la place de… », prévoir des magazines très variés et éloignés du secteur ; l'animateur peut faire un mini-collage pour donner le ton. <strong>Avantages</strong> : facile, ludique, il libère l'imaginaire. <strong>Précaution</strong> : il peut « choquer » en entreprise, d'où le <strong>volontariat</strong>.</p>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Un participant monopolise la parole dans un focus group. Quel est le rôle de l'animateur ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Le laisser parler : il est représentatif</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Éviter l'apparition d'un leader et faire participer tout le monde</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Donner son propre avis pour rééquilibrer</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> La prise de parole dominante est un biais majeur du focus group. L'animateur reste neutre : il ne donne jamais son avis.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Le collage est une technique :</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">Projective et non verbale</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Quantitative et standardisée</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">D'observation accompagnée</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> On s'exprime uniquement par des images, ce qui sert la divergence créative.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l5')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l6',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 7 ============ -->
+    <section class="view" data-view="l7">
+      <span class="tag">Leçon 7 · Le qualitatif</span>
+      <h1 class="lesson-title">Exploiter les résultats qualitatifs</h1>
+      <p class="subtitle">Des heures d'enregistrement ne servent à rien sans analyse. Trois étapes transforment des échanges bruts en décisions.</p>
+
+      <div class="example">
+        <div class="ex-head">Les trois étapes</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Synthétiser les retours.</b> Regrouper les réponses par grands thèmes (prix, image, usage, freins à l'achat, attentes non satisfaites…). Repérer les <b>verbatims</b> marquants, les <b>divergences</b> d'avis et les <b>signaux faibles</b>.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Identifier les motivations et freins profonds.</b> Ce qui attire vraiment, ce qui rassure ou rebute, ce que les clients cherchent sans le trouver. C'est là que naissent les <b>insights</b>.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>Adapter concrètement le projet.</b> Positionnement (prix, valeur perçue, innovation), arguments commerciaux, stratégie de communication (canaux, messages, ton), fonctionnalités, packaging, canaux de vente.</div></div>
+      </div>
+
+      <div class="rulebox">
+        <div class="rb-main">Un <em>verbatim</em> est une phrase spontanée, citée telle quelle, qui résume une opinion ou une perception fréquente.</div>
+        <div class="rb-sub">Exemple du cours : « Je trouve que votre service a l'air intéressant, mais je ne comprends pas vraiment ce qu'il fait de différent des autres. »</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">Exemple du cours — de l'analyse à la décision</div>
+        <p style="margin:0">Les entretiens révèlent que les prospects cherchent avant tout de la <strong>simplicité</strong> et du <strong>gain de temps</strong>. On ajuste le produit en conséquence, et on met cet avantage en avant dans la communication.</p>
+      </div>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Application bancaire</div>
+        <p>Le verbatim ci-dessus, entendu plusieurs fois à propos d'une nouvelle offre de gestion pilotée, signale un problème de <strong>proposition de valeur</strong> : le conseiller doit savoir dire en une phrase ce qui la distingue.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Par quoi commence l'analyse d'une étude qualitative ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Le calcul d'une moyenne</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Le regroupement des réponses par grands thèmes</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le choix d'un nouveau packaging</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> On synthétise d'abord par thèmes, verbatims, divergences et signaux faibles ; l'adaptation du projet vient en dernier.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Un verbatim, c'est :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Le résumé écrit par l'enquêteur</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Une phrase spontanée du répondant, citée telle quelle</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Un pourcentage de réponses identiques</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> On le cite mot pour mot : c'est sa force dans un rapport qualitatif.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l6')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l7',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 8 ============ -->
+    <section class="view" data-view="l8">
+      <span class="tag">Leçon 8 · Le quantitatif</span>
+      <h1 class="lesson-title">L'enquête et l'échantillonnage</h1>
+      <p class="subtitle">Interroger tout le monde est impossible. On interroge donc un échantillon, en espérant qu'il réponde comme la population entière. Tout l'enjeu est de bien le choisir.</p>
+
+      <h2>Les 7 étapes d'une enquête</h2>
+      <div class="example">
+        <div class="ex-head">Comment réaliser une enquête ?</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Identifier la population</b> à interroger</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Rédiger</b> le questionnaire</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>Prétester</b> le questionnaire</div></div>
+        <div class="step"><div class="sn">4</div><div class="sc"><b>Administrer</b> (collecter les données)</div></div>
+        <div class="step"><div class="sn">5</div><div class="sc"><b>Saisir</b></div></div>
+        <div class="step"><div class="sn">6</div><div class="sc"><b>Traiter</b> les données</div></div>
+        <div class="step"><div class="sn">7</div><div class="sc"><b>Analyser</b> et rédiger le rapport</div></div>
+      </div>
+
+      <div class="rulebox">
+        <div class="rb-main">La <em>population mère</em> : « l'ensemble des personnes possédant les informations désirées pour répondre aux objectifs d'une étude ».</div>
+        <div class="rb-sub"><strong>Hypothèse de l'échantillonnage</strong> : un échantillon issu de la population mère aura sensiblement les mêmes réponses que la population entière. C'est ce qui permet de <strong>généraliser</strong> les résultats.</div>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 Le plan de sondage : trois questions</div>
+        <p><strong>Qui</strong> interroger (la population mère, puis l'échantillon) ? <strong>Comment</strong> les choisir (la méthode) ? <strong>Combien</strong> (la taille, leçon suivante) ?</p>
+      </div>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Le réflexe</div>
+        <p>Avant de choisir qui interroger, demande-toi <strong>qui possède l'information</strong> : l'acheteur, l'utilisateur ou le prescripteur ? Exemple du cours, Géant Casino et les jouets de Noël : ce sont surtout les acheteurs (parents, grands-parents…) qui savent ce qu'ils comptent acheter. Le corrigé complet est dans les cas pratiques.</p>
+      </div>
+
+      <h2>Deux familles de méthodes</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Aléatoires (probabilistes)</th><th>Empiriques (non probabilistes)</th></tr>
+        <tr><td>Aléatoire simple</td><td>De convenance</td></tr>
+        <tr><td>Systématique</td><td>De jugement (a priori)</td></tr>
+        <tr><td>Stratifié (proportionnel ou non)</td><td>Boule de neige</td></tr>
+        <tr><td>En grappes (1 ou 2 niveaux)</td><td>Par quotas</td></tr>
+      </table>
+      </div>
+      <p>Plus on va vers les méthodes aléatoires, plus le <strong>hasard</strong> joue un rôle ; les méthodes empiriques reposent sur des choix de l'enquêteur.</p>
+
+      <h2>Les quatre méthodes détaillées en cours</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Méthode</th><th>Principe</th><th>Bilan</th></tr>
+        <tr><td>Aléatoire simple</td><td>Tirage au sort respectant les lois du hasard (dés, table de nombres aléatoires). Chaque élément a une probabilité <strong>connue et égale</strong> d'être choisi.</td><td>L'échantillon est dit <strong>représentatif</strong>.</td></tr>
+        <tr><td>Convenance</td><td>Les répondants sont « au bon endroit au bon moment » : étudiants dans le couloir, passants, fichier client d'un magasin.</td><td>Facile, pas cher, mais <strong>fort biais de sélection</strong> : généralisation limitée.</td></tr>
+        <tr><td>Boule de neige</td><td>Un premier groupe est choisi, puis chaque répondant désigne d'autres personnes à interroger sur le sujet.</td><td>Pratique pour des profils rares (experts, B to B), mais long.</td></tr>
+        <tr><td>Quotas</td><td>On fixe a priori des groupes selon des caractéristiques <strong>connues</strong> de la population, puis on sélectionne les répondants, en général par convenance.</td><td>Contrôle précis, mais plus cher ; il faut les bons critères ; biais de sélection.</td></tr>
+      </table>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">Exemple du cours — les quotas</div>
+        <p style="margin:0">La population compte <strong>48 %</strong> d'hommes et <strong>52 %</strong> de femmes. Pour un échantillon de <strong>1 000</strong> personnes, on interroge <code>1 000 × 48 % = 480</code> hommes et <code>1 000 × 52 % = 520</code> femmes.</p>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Complément du site — méthodes seulement citées par le cours</div>
+        <p><strong>Systématique</strong> : on tire au sort un point de départ, puis on prend un individu tous les <em>k</em> dans une liste. <strong>Stratifié</strong> : on découpe la population en strates (âge, région…) et on tire au sort dans chacune. <strong>En grappes</strong> : on tire au sort des groupes entiers (agences, quartiers), puis on interroge tout ou partie de leurs membres. <strong>De jugement</strong> : l'enquêteur choisit les personnes qu'il juge représentatives. Ces définitions sont classiques mais ne figurent pas dans tes supports.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Une banque interroge les clients présents dans son agence un samedi matin. C'est un échantillonnage :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Aléatoire simple</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">De convenance</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Par quotas</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Ils sont « au bon endroit au bon moment ». Les clients qui viennent en agence le samedi ne ressemblent pas à tous les clients : biais de sélection.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Pour interroger des gérants de fortune indépendants, difficiles à trouver, la méthode la plus pratique est :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">L'aléatoire simple</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">La boule de neige</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">La convenance</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Chaque répondant en désigne d'autres : idéal pour des profils spécifiques (experts, B to B), même si c'est long.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l7')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l8',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 9 ============ -->
+    <section class="view" data-view="l9">
+      <span class="tag">Leçon 9 · Le quantitatif</span>
+      <h1 class="lesson-title">Taille de l'échantillon et marge d'erreur</h1>
+      <p class="subtitle">Combien de personnes interroger ? Cela dépend du temps, du budget, de la facilité d'accès à la population — et de la précision que l'on veut.</p>
+
+      <div class="rulebox formule">
+        <div class="rb-main">Marge d'erreur : <em>e = t × √( p × q ÷ n )</em><br>Taille d'échantillon : <em>n = t² × p × q ÷ e²</em></div>
+        <div class="rb-sub"><strong>n</strong> : taille de l'<strong>échantillon</strong> · <strong>e</strong> : marge d'erreur tolérée, le vrai résultat se situe dans [p − e ; p + e] · <strong>t</strong> : coefficient lié au niveau de confiance, <strong>t = 1,96 pour 95 %</strong> · <strong>p</strong> : proportion observée (ou attendue) · <strong>q = 1 − p</strong>.</div>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Coquille dans la diapositive</div>
+        <p>La diapositive écrit « n : taille de la <strong>population</strong> ». C'est la taille de l'<strong>échantillon</strong> : c'est le nombre de personnes interrogées qui entre dans la formule.</p>
+      </div>
+
+      <h2>L'application du cours : le référendum</h2>
+      <div class="example">
+        <div class="ex-head">52 % de OUI sur 500 personnes : peut-on conclure ?</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Données</b> : <code>p = 0,52</code>, <code>q = 0,48</code>, <code>n = 500</code>, <code>t = 1,96</code>.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Calcul</b> : <code>0,52 × 0,48 = 0,2496</code> ; <code>0,2496 ÷ 500 = 0,0004992</code> ; <code>√0,0004992 ≈ 0,02234</code> ; <code>e = 1,96 × 0,02234 ≈ 0,0438</code>, soit <b>± 4,4 points</b>.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>Intervalle</b> : <code>52 % − 4,4 = 47,6 %</code> et <code>52 % + 4,4 = 56,4 %</code>. Le cours arrondit à « 0,04 », d'où « entre 48 % et 56 % ».</div></div>
+        <div class="ex-result">L'intervalle contient 50 % : on ne peut rien conclure sur l'issue du référendum.</div>
+      </div>
+
+      <h2>Plus on interroge, plus c'est précis… mais de moins en moins vite</h2>
+      <div class="tbl-scroll">
+      <table class="tbl num">
+        <tr><th>On interroge</th><th>Marge d'erreur selon le cours</th><th>Valeur calculée (p = 50 %, 95 %)</th></tr>
+        <tr><td>10 personnes</td><td>± 30 %</td><td>± 31,0 points</td></tr>
+        <tr><td>100 personnes</td><td>± 10 %</td><td>± 9,8 points</td></tr>
+        <tr><td>1 000 personnes</td><td>± 3 %</td><td>± 3,1 points</td></tr>
+        <tr><td>10 000 personnes</td><td>± 1 %</td><td>± 0,98 point</td></tr>
+      </table>
+      </div>
+      <div class="callout c-retenir">
+        <div class="ct">📌 La règle à retenir</div>
+        <p>La marge d'erreur varie comme <strong>1 ÷ √n</strong> : pour la <strong>diviser par 2</strong>, il faut <strong>multiplier l'échantillon par 4</strong>. C'est pour cela que gagner un point de précision coûte de plus en plus cher. La marge est la plus grande quand <strong>p = 50 %</strong> : c'est l'hypothèse prudente quand on ne connaît pas p.</p>
+      </div>
+
+      <h2>Taille nécessaire selon la précision voulue</h2>
+      <div class="tbl-scroll">
+      <table class="tbl num">
+        <tr><th>Marge visée (p = 50 %, 95 %)</th><th>Calcul brut</th><th>Taille à retenir</th></tr>
+        <tr><td>± 1 point</td><td>9 604</td><td>9 604</td></tr>
+        <tr><td>± 2 points</td><td>2 401</td><td>2 401</td></tr>
+        <tr><td>± 3 points</td><td>1 067,1</td><td>1 068</td></tr>
+        <tr><td>± 4 points</td><td>600,25</td><td>601</td></tr>
+        <tr><td>± 5 points</td><td>384,16</td><td>385</td></tr>
+      </table>
+      </div>
+      <p class="hint">On arrondit toujours à l'entier <strong>supérieur</strong> : avec un répondant de moins, la marge dépasserait la cible. Ces valeurs ont été calculées par le site ; le graphique du cours en donne l'allure.</p>
+
+      <h2>Calculatrice</h2>
+      <div class="example calc">
+        <div class="ex-head">Marge d'erreur à partir d'un résultat</div>
+        <div class="calc-row">
+          <label>Personnes interrogées (n)<input class="num-input" id="cN" type="text" inputmode="decimal" autocomplete="off" value="500"></label>
+          <label>Résultat observé (p, en %)<input class="num-input" id="cP" type="text" inputmode="decimal" autocomplete="off" value="52"></label>
+        </div>
+        <div class="ex-result" id="cOut1" aria-live="polite"></div>
+      </div>
+      <div class="example calc">
+        <div class="ex-head">Taille d'échantillon pour une précision voulue</div>
+        <div class="calc-row">
+          <label>Marge visée (e, en points)<input class="num-input" id="cE" type="text" inputmode="decimal" autocomplete="off" value="3"></label>
+          <label>Proportion attendue (p, en %)<input class="num-input" id="cP2" type="text" inputmode="decimal" autocomplete="off" value="50"></label>
+        </div>
+        <div class="ex-result" id="cOut2" aria-live="polite"></div>
+      </div>
+      <p class="hint">Niveau de confiance 95 % (t = 1,96). Si tu ne connais pas la proportion attendue, laisse 50 % : c'est le cas le plus exigeant.</p>
+
+      <h2>En pratique : les tailles standard</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Type d'étude</th><th>Taille minimale</th><th>Taille classique</th></tr>
+        <tr><td>Évaluation d'une question (ex. taille du marché potentiel)</td><td>500 personnes</td><td>1 000 à 2 500</td></tr>
+        <tr><td>Résolution d'un problème (ex. fixation de prix)</td><td>200</td><td>300 à 500</td></tr>
+        <tr><td>Test produit (ex. nouvelle formulation)</td><td>200</td><td>300 à 500</td></tr>
+        <tr><td>Test de communication (ex. performance d'une publicité)</td><td>150</td><td>200 à 300</td></tr>
+        <tr><td>Marché-test</td><td>10 magasins</td><td>10 à 20 magasins</td></tr>
+      </table>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Avec 1 000 personnes, la marge d'erreur est d'environ 3 points. Combien faut-il en interroger pour une marge d'environ 1,5 point ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">2 000</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">4 000</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">1 500</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Diviser la marge par 2 impose de multiplier l'échantillon par 4. Vérification : 1,96 × √(0,25 ÷ 4 000) ≈ 0,0155, soit 1,55 point.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Dans la formule, t = 1,96 correspond à :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Une marge d'erreur de 1,96 %</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Un niveau de confiance de 95 %</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Un taux de réponse de 96 %</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> On retient en général 95 % de chances que la vraie valeur soit dans l'intervalle : t = 1,96.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l8')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l9',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 10 ============ -->
+    <section class="view" data-view="l10">
+      <span class="tag">Leçon 10 · Le quantitatif</span>
+      <h1 class="lesson-title">Rédiger un questionnaire</h1>
+      <p class="subtitle">La façon de poser une question change la réponse. Rédiger un questionnaire, c'est d'abord lutter contre ses propres biais.</p>
+
+      <div class="example">
+        <div class="ex-head">Les quatre temps de la rédaction</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Lister</b> tous les points que l'on veut mesurer.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Les traduire</b> en questions.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>Choisir</b> les modalités de réponse.</div></div>
+        <div class="step"><div class="sn">4</div><div class="sc"><b>Organiser</b> le questionnaire : ordre, thèmes, filtres.</div></div>
+      </div>
+
+      <h2>Questions ouvertes ou fermées ?</h2>
+      <p>En majorité des questions <strong>fermées</strong>.</p>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Avantages des questions fermées</th><th>Inconvénients</th></tr>
+        <tr><td>Codage et traitement faciles ; passation rapide.</td><td>Les réponses proposées <strong>influencent</strong> le répondant ; elles peuvent ne pas correspondre à son opinion réelle.</td></tr>
+      </table>
+      </div>
+
+      <h2>La formulation influence les réponses : le biais de cadrage</h2>
+      <p>Théorie des perspectives (Tversky et Kahneman). Une maladie doit faire <strong>600 victimes</strong> ; deux programmes sont proposés.</p>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Cadre</th><th>Programme A</th><th>Programme B</th><th>Choisissent A</th></tr>
+        <tr><td>Positif</td><td>200 personnes seront sauvées.</td><td>1 chance sur 3 que 600 soient sauvées, 2 sur 3 que personne ne le soit.</td><td><strong>72 %</strong></td></tr>
+        <tr><td>Négatif</td><td>400 personnes mourront.</td><td>1 chance sur 3 que personne ne meure, 2 sur 3 que 600 meurent.</td><td><strong>22 %</strong></td></tr>
+      </table>
+      </div>
+      <div class="callout c-retenir">
+        <div class="ct">📌 Pourquoi c'est frappant</div>
+        <p>Les deux versions sont <strong>identiques</strong> : sauver 200 personnes sur 600, c'est en laisser mourir 400. Seul le cadrage change, et pourtant le choix de A passe de 72 % à 22 %.</p>
+      </div>
+
+      <h2>Les modalités de réponse aux questions fermées</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Modalité</th><th>Exemple</th></tr>
+        <tr><td>Choix dichotomique</td><td>Oui / non, vrai / faux</td></tr>
+        <tr><td>Choix multiples</td><td>Plusieurs réponses possibles dans une liste</td></tr>
+        <tr><td>Échelle de Likert</td><td>De « pas du tout d'accord » à « tout à fait d'accord » — paire ou impaire ?</td></tr>
+        <tr><td>Différentiel sémantique</td><td>Entre deux adjectifs opposés : nécessaire ↔ inutile, pénible ↔ agréable</td></tr>
+        <tr><td>Échelle à icônes</td><td>Des smileys</td></tr>
+      </table>
+      </div>
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Le choix de la modalité influence aussi les réponses</div>
+        <p><strong>Likert</strong> : une modalité « sans opinion » placée au milieu <strong>rompt l'échelle</strong> — à éviter. <strong>Choix multiples</strong> (« Dans quels pays êtes-vous déjà allé ? ») : penser au traitement des données, et reformuler si besoin, par exemple une question par pays.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Dans l'expérience de Tversky et Kahneman, pourquoi le choix du programme A passe-t-il de 72 % à 22 % ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Parce que le programme A est moins efficace dans la seconde version</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Parce que la formulation passe d'un cadre positif à un cadre négatif</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Parce que l'échantillon a changé</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Les situations sont identiques ; seule la présentation change. C'est le biais de cadrage.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">« Votre conseiller est : disponible ↔ injoignable ». C'est une échelle :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">De Likert</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">À différentiel sémantique</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Dichotomique</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Deux adjectifs opposés aux extrémités : c'est le différentiel sémantique. Likert mesure un degré d'accord avec une affirmation.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l9')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l10',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 11 ============ -->
+    <section class="view" data-view="l11">
+      <span class="tag">Leçon 11 · Le quantitatif</span>
+      <h1 class="lesson-title">Les 10 pièges et la structure du questionnaire</h1>
+      <p class="subtitle">Une liste à connaître par cœur — c'est un grand classique des questions rédigées — puis l'ordre dans lequel poser les questions.</p>
+
+      <h2>Les 10 pièges à éviter</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Piège</th><th>Exemple du cours</th></tr>
+        <tr><td>1. Phrases de plusieurs lignes</td><td>« Il est bien connu que… Dans ces circonstances, on a pu noter que… Et vous, diriez-vous que… ? »</td></tr>
+        <tr><td>2. Mots complexes, jargon</td><td>« Lorsque vous achetez un savon, quel pH favorisez-vous ? »</td></tr>
+        <tr><td>3. Termes sujets à interprétation</td><td>« Allez-vous souvent à la piscine ? »</td></tr>
+        <tr><td>4. Formulations ambiguës</td><td>« Êtes-vous pour ou contre la culture ? »</td></tr>
+        <tr><td>5. Deux en un</td><td>« Pensez-vous que ce produit est utile et performant ? »</td></tr>
+        <tr><td>6. Doubles négations</td><td>« Les notices d'utilisation ne sont pas faciles à comprendre »</td></tr>
+        <tr><td>7. Questions trop personnelles ou gênantes</td><td>Compétence de son chef, verres d'alcool par jour, salaire mensuel</td></tr>
+        <tr><td>8. Questions qui suggèrent la réponse</td><td>« Achèteriez-vous cet ordinateur malgré sa faible capacité de mémoire ? »</td></tr>
+        <tr><td>9. Appel à la mémoire</td><td>« Combien de yaourts consommez-vous par an ? »</td></tr>
+        <tr><td>10. Trop de questions</td><td>Le répondant finit par répondre n'importe quoi pour s'en débarrasser.</td></tr>
+      </table>
+      </div>
+      <p class="hint">Source citée par le cours : <em>Études de marché</em>, Gianelloni et Vernette.</p>
+
+      <h2>La structure : un entonnoir</h2>
+      <div class="example">
+        <div class="ex-head">Du plus général au plus personnel</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Introduction</b> : but, durée, anonymat ou non, mode de remplissage — et préciser qu'il n'y a <b>ni bonne ni mauvaise réponse</b>.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Début</b> : questions générales et faciles ; éventuellement des <b>questions filtres</b> qui orientent vers une section.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>Corps</b> : questions <b>regroupées par thème</b>, pour que le répondant y trouve une cohérence.</div></div>
+        <div class="step"><div class="sn">4</div><div class="sc"><b>Fin</b> : questions <b>personnelles</b> (identification), pour ne pas heurter le répondant et le dissuader de continuer.</div></div>
+        <div class="step"><div class="sn">5</div><div class="sc"><b>Indicateur de progression</b> (% écoulé ou restant), idéalement, pour éviter l'abandon.</div></div>
+        <div class="step"><div class="sn">6</div><div class="sc"><b>Conclusion</b> : remerciements, éventuellement des coordonnées de contact.</div></div>
+      </div>
+
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Étape (Gianelloni et Vernette)</th><th>Forme</th><th>Contenu</th></tr>
+        <tr><td>Questions introductives</td><td>Ouvertes, très générales</td><td>Mettre en route</td></tr>
+        <tr><td>Questions qualifiantes</td><td>Fermées, dichotomiques</td><td>La personne a-t-elle l'information ?</td></tr>
+        <tr><td>Questions de mise en route</td><td>Fermées, choix multiples</td><td>Comportements, connaissances</td></tr>
+        <tr><td>Questions spécifiques</td><td>Fermées, échelles</td><td>Opinions, jugements</td></tr>
+        <tr><td>Identification du répondant</td><td>—</td><td>Caractéristiques psychologiques et sociodémographiques</td></tr>
+      </table>
+      </div>
+      <p>La complexité des questions <strong>augmente</strong> au fil du questionnaire.</p>
+
+      <h2>L'introduction du cours (IAE Vannes)</h2>
+      <div class="callout c-analogy">
+        <div class="ct">📝 Modèle</div>
+        <p>« Bonjour, dans le cadre d'une étude universitaire réalisée à l'IAE Vannes – Université Bretagne Sud, nous réalisons une enquête auprès de consommateurs sur leurs habitudes alimentaires. Nous vous serions reconnaissants de bien vouloir répondre au questionnaire suivant, d'une durée d'environ 8 minutes. Les réponses sont anonymes et traitées globalement. Il n'y a pas de bonne ni de mauvaise réponse : merci de répondre à chaque question en toute sincérité en sélectionnant parmi les options proposées celle qui décrit le plus fidèlement votre situation. Nous vous remercions de votre contribution. »</p>
+      </div>
+      <p>On y retrouve : le cadre (qui mène l'étude), le sujet, la durée, l'anonymat, le mode de remplissage, la mention « ni bonne ni mauvaise réponse » et les remerciements. Pour conclure, le cours propose soit d'envoyer les résultats, soit de laisser ses coordonnées pour être recontacté.</p>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">« Êtes-vous satisfait de la rapidité et de l'amabilité de votre conseiller ? » tombe dans le piège :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">De la double négation</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Du « deux en un »</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">De l'appel à la mémoire</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Deux notions dans une question : un client satisfait de l'amabilité mais pas de la rapidité ne peut pas répondre. Il faut deux questions.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Où placer la question « Quel est votre revenu mensuel ? » ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Au début, pour qualifier le répondant</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">À la fin, avec les questions d'identification</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Nulle part : c'est interdit</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Les questions personnelles vont à la fin pour ne pas heurter le répondant et le pousser à abandonner.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l10')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l11',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 12 ============ -->
+    <section class="view" data-view="l12">
+      <span class="tag">Leçon 12 · Le quantitatif</span>
+      <h1 class="lesson-title">Du prétest au rapport</h1>
+      <p class="subtitle">Les étapes 3 à 7 de l'enquête : tester, collecter, saisir, traiter, analyser. Et la morale du cours : « Garbage in, garbage out ».</p>
+
+      <h2>Étape 3 — le prétest</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Pourquoi ?</th><th>Comment ?</th></tr>
+        <tr><td>Repérer les questions <strong>ambiguës</strong>, identifier celles qui <strong>dérangent</strong>, évaluer la <strong>longueur</strong>. Et donc éviter une collecte coûteuse de données inexploitables, voire faussées, qui mèneraient à de mauvaises décisions.</td><td>Soumettre le questionnaire <strong>en face à face</strong> à une <strong>dizaine de personnes</strong> de la population mère, en <strong>conditions réelles</strong>, en leur faisant <strong>commenter leurs choix à haute voix</strong>.</td></tr>
+      </table>
+      </div>
+      <p>Le prétest permet de comprendre en profondeur comment le répondant utilise le questionnaire : c'est presque une petite étude qualitative.</p>
+
+      <h2>Étape 4 — l'administration</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Mode</th><th>Avantages</th><th>Inconvénients</th></tr>
+        <tr><td>Face à face (dans la rue, par téléphone)</td><td>Très fiable</td><td>Coûteux ; biais de sélection <strong>par l'enquêteur</strong></td></tr>
+        <tr><td>Auto-administré (courrier, sur le lieu étudié, internet)</td><td>Peu coûteux</td><td>Mauvaise compréhension possible ; biais de sélection <strong>par le média</strong> (ceux qui ont du temps) ; taux de retour assez faible</td></tr>
+      </table>
+      </div>
+      <p>Pour de courts questionnaires, des outils en ligne gratuits existent : SurveyMonkey, Google Forms.</p>
+
+      <h2>Étapes 5 à 7 — saisie, traitement, analyse</h2>
+      <div class="example">
+        <div class="ex-head">La saisie, sur Excel, SPSS ou Sphinx</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Préparer le masque de saisie.</b></div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Définir le codage</b> des données.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>Éliminer les questionnaires aberrants.</b></div></div>
+        <div class="step"><div class="sn">✓</div><div class="sc">Puis traitement des données, analyse et rédaction du rapport. Manuel de référence : <em>Analyse de données avec SPSS</em> (Porcher, Laporte, Sabri, Vuibert).</div></div>
+      </div>
+
+      <h2>Conclusion du cours</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Études quantitatives</th><th>Ce que dit le cours</th></tr>
+        <tr><td>Avantages</td><td>Possibilité de <strong>quantifier</strong> ; possibilité de <strong>généraliser</strong> (sous réserve…).</td></tr>
+        <tr><td>Inconvénients</td><td>Réponses pré-formatées : rigidité, moins de profondeur — il faut poser les bonnes questions ; biais.</td></tr>
+      </table>
+      </div>
+      <div class="rulebox">
+        <div class="rb-main">« <em>Garbage in, garbage out</em> » : de mauvaises données en entrée donnent de mauvais résultats en sortie.</div>
+        <div class="rb-sub">Avant toute étude, quanti ou quali : <strong>bien définir son objectif</strong>. Pendant l'analyse, toujours se demander « d'où viennent les chiffres ? » et « ont-ils du sens ? » — une moyenne de catégorie socioprofessionnelle ou de sexe n'en a aucun.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Une enquête en ligne n'est remplie que par des retraités disponibles. De quel biais s'agit-il ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Biais de sélection par l'enquêteur</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Biais de sélection par le média</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Biais de cadrage</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Le mode auto-administré attire ceux qui ont du temps : c'est le média qui sélectionne. Le biais « par l'enquêteur » concerne le face à face.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Le prétest se fait :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Par internet, auprès de 500 personnes</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">En face à face, auprès d'une dizaine de personnes de la population mère</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Auprès des membres de l'équipe d'étude</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Une dizaine de personnes de la cible, en conditions réelles, qui commentent leurs choix à voix haute.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l11')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l12',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ QUESTIONS RÉDIGÉES ============ -->
+    <section class="view" data-view="redac">
+      <span class="tag">S'entraîner</span>
+      <h1 class="lesson-title">Questions rédigées, corrigées automatiquement</h1>
+      <p class="subtitle">Ton partiel de janvier dure 1 h 30, en questions rédigées. Rédige comme à l'examen, puis demande la correction : le site repère les notions-clés, te dit ce qui manque et affiche une réponse modèle.</p>
+
+      <div class="intro-card">
+        <h2>✍️ Comment ça marche</h2>
+        <p>Tes supports ne contiennent pas de questions de partiel : celles-ci ont été <strong>rédigées par le site</strong> à partir du cours, et chaque réponse modèle a été relue contre les diapositives. La correction cherche des <strong>mots-clés</strong> : elle vérifie que les notions sont là, pas la qualité de ta rédaction. Relis toujours la réponse modèle. Compte environ 10 minutes par question pour tenir le rythme d'1 h 30.</p>
+      </div>
+
+      <div id="redacList"></div>
+    </section>
+
+    <!-- ============ CAS PRATIQUES ============ -->
+    <section class="view" data-view="annales">
+      <span class="tag">Applications</span>
+      <h1 class="lesson-title">Huit cas pratiques corrigés</h1>
+      <p class="subtitle">Cherche au brouillon avant d'ouvrir le corrigé. Les calculs suivent la formule du cours avec t = 1,96.</p>
+
+      <div class="intro-card">
+        <h2>📐 D'où viennent ces cas ?</h2>
+        <p>Les cas 1, 2 et 3 reprennent les exercices du cours (référendum, Géant Casino, les six questions). Le cours ne donne pas le corrigé des deux derniers : <strong>les corrigés sont rédigés par le site</strong>. Les cas 4 à 8 sont <strong>inventés par le site</strong>, et tous leurs calculs ont été <strong>vérifiés par ordinateur</strong>.</p>
+      </div>
+
+      <div class="annale">
+        <div class="an-tag">Cas 1 · Exercice du cours · calcul</div>
+        <h3>Le référendum (Application 2)</h3>
+        <div class="enonce">
+          52 % des personnes interrogées se déclarent en faveur du OUI à un référendum. 500 personnes représentatives ont été interrogées par téléphone.
+          <ul class="qlist">
+            <li>Calculez la marge d'erreur au niveau de confiance de 95 %.</li>
+            <li>Peut-on en déduire que la majorité de la population est en faveur du OUI ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé — calcul vérifié</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Formule.</b> <code>e = t × √(p × q ÷ n)</code> avec <code>t = 1,96</code>, <code>p = 0,52</code>, <code>q = 0,48</code>, <code>n = 500</code>.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Calcul.</b> <code>√(0,2496 ÷ 500) = √0,0004992 ≈ 0,02234</code> ; <code>e ≈ 1,96 × 0,02234 ≈ 0,0438</code>, soit <b>± 4,4 points</b>.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Intervalle.</b> De <code>47,6 %</code> à <code>56,4 %</code> (le cours arrondit à 48–56 %).</div></div>
+          <div class="step"><div class="sn">✓</div><div class="sc"><b>Conclusion.</b> L'intervalle contient 50 % : le NON pourrait être majoritaire. On ne peut rien conclure sur l'issue du référendum.</div></div>
+        </div>
+      </div>
+
+      <div class="annale">
+        <div class="an-tag">Cas 2 · Exercice du cours · population mère</div>
+        <h3>Géant Casino et les jouets de Noël</h3>
+        <div class="enonce">
+          Géant Casino veut connaître les attentes des Français en termes de jouets pour Noël.
+          <ul class="qlist">
+            <li>Quelle population interroger ?</li>
+            <li>Quelle méthode d'échantillonnage proposeriez-vous ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé proposé par le site (le cours laisse la question ouverte)</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>La règle.</b> La population mère est « l'ensemble des personnes possédant les informations désirées pour répondre aux objectifs de l'étude ». Il faut donc se demander qui possède l'information : acheteur, utilisateur, prescripteur ?</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Les acheteurs.</b> Les personnes résidant en France qui achètent des jouets pour Noël : parents, mais aussi grands-parents, oncles et tantes, amis. Ce sont eux qui connaissent leurs intentions d'achat.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Les enfants</b>, utilisateurs et prescripteurs (ils influencent le choix), peuvent compléter l'étude, mais via leurs parents ou avec des précautions éthiques.</div></div>
+          <div class="step"><div class="sn">4</div><div class="sc"><b>Le piège.</b> L'énoncé parle « des Français » : la population mère est plus large que la seule clientèle de Géant Casino. Se limiter aux clients du magasin serait un choix de l'enseigne, avec un biais.</div></div>
+          <div class="step"><div class="sn">5</div><div class="sc"><b>La méthode.</b> Par exemple des <b>quotas</b> sur l'âge, le sexe et la présence d'enfants dans le foyer, puis le calcul de la taille de l'échantillon.</div></div>
+        </div>
+      </div>
+
+      <div class="annale">
+        <div class="an-tag">Cas 3 · Exercice du cours · rédaction</div>
+        <h3>Pourquoi ces six questions posent-elles problème ?</h3>
+        <div class="enonce">
+          <ul class="qlist">
+            <li>1. Êtes-vous sensible au pH des cosmétiques que vous utilisez ?</li>
+            <li>2. Allez-vous souvent à la piscine ?</li>
+            <li>3. Pensez-vous que ce produit est utile et performant ?</li>
+            <li>4. Les notices d'utilisation ne sont pas faciles à comprendre.</li>
+            <li>5. Combien de verres d'alcool consommez-vous par an ?</li>
+            <li>6. Achèteriez-vous ce produit à ce prix avantageux ?</li>
+          </ul>
+          Identifiez le piège et proposez une reformulation.
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé (pièges selon la fiche ; reformulations proposées par le site)</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Jargon</b> (« pH »). → « Faites-vous attention à la douceur des cosmétiques pour votre peau ? »</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Terme sujet à interprétation</b> (« souvent »). → « Combien de fois êtes-vous allé à la piscine au cours du dernier mois ? » avec des tranches (0, 1–2, 3–5, plus de 5).</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Deux en un</b> (utile <i>et</i> performant). → Deux questions séparées.</div></div>
+          <div class="step"><div class="sn">4</div><div class="sc"><b>Double négation</b> (avec une échelle d'accord, « pas d'accord » avec « pas faciles » devient illisible). → « Les notices d'utilisation sont faciles à comprendre », de « pas du tout d'accord » à « tout à fait d'accord ».</div></div>
+          <div class="step"><div class="sn">5</div><div class="sc"><b>Appel à la mémoire</b> (sur un an) et <b>question gênante</b>. → Une période courte (« la semaine dernière ») et des tranches, placée en fin de questionnaire.</div></div>
+          <div class="step"><div class="sn">6</div><div class="sc"><b>Suggère la réponse</b> (« avantageux »). → « Ce produit coûte 12 €. L'achèteriez-vous ? » (certainement, probablement, probablement pas, certainement pas).</div></div>
+        </div>
+      </div>
+
+      <div class="annale">
+        <div class="an-tag">Cas 4 · Inventé par le site · calcul</div>
+        <h3>L'offre « jeunes actifs » d'une banque</h3>
+        <div class="enonce">
+          Une banque interroge 600 jeunes actifs choisis au hasard : 40 % se disent intéressés par une nouvelle offre de compte.
+          <ul class="qlist">
+            <li>Calculez la marge d'erreur à 95 % et l'intervalle de confiance.</li>
+            <li>La direction affirme : « au moins un tiers de la cible est intéressée ». Est-ce justifié ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé — calcul vérifié</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Calcul.</b> <code>0,40 × 0,60 = 0,24</code> ; <code>0,24 ÷ 600 = 0,0004</code> ; <code>√0,0004 = 0,02</code> ; <code>e = 1,96 × 0,02 = 0,0392</code>, soit <b>± 3,9 points</b>.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Intervalle.</b> <code>40 − 3,92 = 36,08 %</code> à <code>40 + 3,92 = 43,92 %</code>, soit environ <b>36,1 % à 43,9 %</b>.</div></div>
+          <div class="step"><div class="sn">✓</div><div class="sc"><b>Conclusion.</b> Un tiers, c'est 33,3 %. Même la borne basse (36,1 %) dépasse ce seuil : l'affirmation est justifiée, avec 95 % de confiance — à condition que l'échantillon soit bien tiré au hasard.</div></div>
+        </div>
+      </div>
+
+      <div class="annale">
+        <div class="an-tag">Cas 5 · Inventé par le site · calcul</div>
+        <h3>Combien de clients interroger ?</h3>
+        <div class="enonce">
+          Une enquête pilote laisse penser qu'environ 30 % des clients utiliseraient un service de conseil en visio. On veut une précision de ± 3 points à 95 %.
+          <ul class="qlist">
+            <li>Quelle taille d'échantillon faut-il ?</li>
+            <li>Et si l'on n'avait aucune idée de la proportion attendue ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé — calcul vérifié</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Formule.</b> <code>n = t² × p × q ÷ e²</code>.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Avec p = 30 %.</b> <code>1,96² = 3,8416</code> ; <code>0,30 × 0,70 = 0,21</code> ; <code>3,8416 × 0,21 = 0,806736</code> ; <code>0,03² = 0,0009</code> ; <code>0,806736 ÷ 0,0009 ≈ 896,4</code>, arrondi au-dessus : <b>897 clients</b>.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Sans idée de p</b>, on prend <code>p = 50 %</code>, le cas le plus exigeant : <code>3,8416 × 0,25 ÷ 0,0009 ≈ 1 067,1</code>, soit <b>1 068 clients</b>.</div></div>
+          <div class="step"><div class="sn">✓</div><div class="sc"><b>À retenir.</b> Connaître à peu près p fait économiser ici 171 questionnaires.</div></div>
+        </div>
+      </div>
+
+      <div class="annale">
+        <div class="an-tag">Cas 6 · Inventé par le site · quotas</div>
+        <h3>Un échantillon par quotas d'âge</h3>
+        <div class="enonce">
+          Les clients d'une agence se répartissent ainsi : 28 % ont 18–34 ans, 42 % ont 35–59 ans, 30 % ont 60 ans ou plus. On veut interroger 800 clients.
+          <ul class="qlist">
+            <li>Combien de personnes interroger dans chaque tranche ?</li>
+            <li>Quelle est la principale limite de cette méthode ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé — calcul vérifié</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Calcul.</b> <code>800 × 28 % = 224</code> ; <code>800 × 42 % = 336</code> ; <code>800 × 30 % = 240</code>. Contrôle : <code>224 + 336 + 240 = 800</code>.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Limite.</b> Dans chaque tranche, les répondants sont souvent choisis <b>par convenance</b> : il reste un <b>biais de sélection</b>. Il faut aussi avoir choisi les bons critères, et la méthode coûte plus cher.</div></div>
+        </div>
+      </div>
+
+      <div class="annale">
+        <div class="an-tag">Cas 7 · Inventé par le site · choisir sa méthode</div>
+        <h3>Trois besoins, trois études</h3>
+        <div class="enonce">
+          Pour chaque besoin, proposez une approche (quali ou quanti) et une technique.
+          <ul class="qlist">
+            <li><b>a.</b> Savoir quelle part des clients de 25–40 ans possède déjà une assurance emprunteur externe.</li>
+            <li><b>b.</b> Comprendre pourquoi des clients fortunés quittent la banque pour une banque privée.</li>
+            <li><b>c.</b> Trouver un nom et un univers visuel pour une nouvelle carte bancaire.</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé proposé par le site</div>
+          <div class="step"><div class="sn">a</div><div class="sc"><b>Quanti.</b> On veut un « combien » généralisable : enquête par questionnaire fermé sur un échantillon représentatif (aléatoire ou par quotas), taille calculée selon la précision voulue.</div></div>
+          <div class="step"><div class="sn">b</div><div class="sc"><b>Quali.</b> On cherche un « pourquoi » : entretiens individuels <b>semi-directifs</b> (sujet sensible et personnel, d'où l'individuel plutôt que le groupe), 10 à 20 clients au profil varié, jusqu'à saturation. Recrutement possible en <b>boule de neige</b>.</div></div>
+          <div class="step"><div class="sn">c</div><div class="sc"><b>Quali créatif.</b> Focus group de 6 à 10 personnes de la cible, ouvert par un <b>collage</b> pour la phase de divergence.</div></div>
+        </div>
+      </div>
+
+      <div class="annale">
+        <div class="an-tag">Cas 8 · Inventé par le site · critique d'un questionnaire</div>
+        <h3>Le questionnaire de satisfaction de l'agence</h3>
+        <div class="enonce">
+          Une agence envoie par e-mail ce questionnaire, qui commence ainsi :
+          <ul class="qlist">
+            <li>Q1. Quel est votre revenu net mensuel ?</li>
+            <li>Q2. Ne trouvez-vous pas que nos nouveaux horaires élargis sont plus pratiques ?</li>
+            <li>Q3. Êtes-vous satisfait de l'accueil et des conseils de votre agence ?</li>
+            <li>Q4. Combien de fois avez-vous contacté votre conseiller depuis l'ouverture de votre compte ?</li>
+          </ul>
+          Relevez les erreurs de structure et de formulation, et le biais lié au mode d'administration.
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé proposé par le site</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Structure.</b> Pas d'introduction (but, durée, anonymat, « ni bonne ni mauvaise réponse ») ; une question <b>personnelle</b> dès Q1 alors qu'elle doit aller à la fin.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Q2</b> suggère la réponse (« plus pratiques », tournure « ne trouvez-vous pas »). <b>Q3</b> est un deux en un (accueil <i>et</i> conseils). <b>Q4</b> fait appel à la mémoire sur une période indéterminée.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Administration.</b> Auto-administré par e-mail : peu coûteux, mais <b>biais de sélection par le média</b> (répondent ceux qui ont du temps), risque de mauvaise compréhension, taux de retour faible.</div></div>
+          <div class="step"><div class="sn">✓</div><div class="sc"><b>Et avant l'envoi</b> : un <b>prétest</b> auprès d'une dizaine de clients aurait repéré ces défauts.</div></div>
+        </div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('redac')">← Questions rédigées</button>
+        <button class="btn plum" onclick="go('test')">Passer le test final →</button>
+      </div>
+    </section>
+
+    <!-- ============ MÉMO ET POINTS À VÉRIFIER ============ -->
+    <section class="view" data-view="ecarts">
+      <span class="tag">À savoir</span>
+      <h1 class="lesson-title">Mémo des chiffres et points à vérifier</h1>
+      <p class="subtitle">Les chiffres à connaître, puis chaque endroit où les supports se contredisent, se trompent ou restent muets. Si ton enseignante dit autre chose en cours, c'est elle qui fait foi.</p>
+
+      <h2>Les chiffres à connaître</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Élément</th><th>Valeur</th></tr>
+        <tr><td>Entretien individuel</td><td>45 à 90 min ; 10 à 20 personnes (15 à 30 selon une diapositive) ; jusqu'à saturation</td></tr>
+        <tr><td>Focus group</td><td>6 à 10 personnes ; 2 groupes ≈ 30 entretiens</td></tr>
+        <tr><td>Prétest</td><td>Une dizaine de personnes de la population mère</td></tr>
+        <tr><td>Confiance 95 %</td><td>t = 1,96</td></tr>
+        <tr><td>1 000 personnes</td><td>Marge ≈ ± 3 points</td></tr>
+        <tr><td>Biais de cadrage</td><td>72 % contre 22 %</td></tr>
+        <tr><td>Quotas (cours)</td><td>48 % / 52 % → 480 / 520 pour 1 000</td></tr>
+        <tr><td>Dépenses d'études (Syntec 2014)</td><td>78 % quanti · 14 % quali · 8 % autres</td></tr>
+      </table>
+      </div>
+
+      <h2>Ce qui diffère des supports</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Sujet</th><th>Les supports</th><th>Ce que retient le site</th></tr>
+        <tr><td>Formule</td><td>« n : taille de la population »</td><td>n est la taille de l'<strong>échantillon</strong>.</td></tr>
+        <tr><td>Référendum</td><td>e = 0,04, résultat entre 48 et 56 %</td><td>Valeur exacte <strong>0,0438</strong>, soit 47,6 à 56,4 % ; même conclusion.</td></tr>
+        <tr><td>Marges par taille</td><td>± 30 / 10 / 3 / 1 %</td><td>Valeurs calculées : 31,0 / 9,8 / 3,1 / 0,98 points (p = 50 %).</td></tr>
+        <tr><td>Nombre d'entretiens</td><td>« 15 à 30 » et « 10 à 20 »</td><td>Les deux sont cités ; le vrai critère est la <strong>saturation</strong>.</td></tr>
+        <tr><td>Ordre quali / quanti</td><td>Le deck « Techniques » place le quali après le quanti</td><td>L'ordre dépend de l'objectif : explorer d'abord, ou expliquer un chiffre après coup.</td></tr>
+        <tr><td>« Application 2 »</td><td>Aucune « Application 1 » dans les supports</td><td>Probablement traitée à l'oral : à demander.</td></tr>
+        <tr><td>Méthodes d'échantillonnage</td><td>Systématique, stratifiée, en grappes, de jugement : citées seulement</td><td>Définitions classiques ajoutées (leçon 8), signalées comme complément.</td></tr>
+        <tr><td>Panels et expérimentations</td><td>Annoncés dans le périmètre de l'UE ERM</td><td>Aucun support fourni : non traités, hormis leur définition.</td></tr>
+        <tr><td>Partie quantitative du deck « Techniques »</td><td>Titre seul</td><td>Couverte par les deux autres diaporamas.</td></tr>
+        <tr><td>Marché des études</td><td>Chiffres Syntec 2014</td><td>Conservés, avec leur date.</td></tr>
+      </table>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l1')">← Revoir le cours</button>
+        <button class="btn plum" onclick="go('test')">Passer le test final →</button>
+      </div>
+    </section>
+
+    <!-- ============ TEST FINAL ============ -->
+    <section class="view" data-view="test">
+      <span class="tag">Évaluation</span>
+      <h1 class="lesson-title">Test final adaptatif</h1>
+      <p class="subtitle">Quarante questions rédigées par le site à partir du cours, dont quelques calculs vérifiés.</p>
+
+      <div class="intro-card">
+        <h2>🎯 Comment le lire</h2>
+        <p>Chaque erreur rouvre la leçon correspondante. Le bilan par chapitre, en bas, te dit où réviser en priorité. Pour les calculs, arrondis comme demandé dans la question.</p>
+      </div>
+
+      <div id="testQuestions"></div>
+
+      <div class="lesson-nav" id="testSubmitRow">
+        <button class="btn" onclick="go('l1')">← Revoir le cours</button>
+        <button class="btn plum" onclick="gradeTest()">Valider mes réponses ✓</button>
+      </div>
+
+      <div class="result" id="testResult">
+        <div class="score-lab">Ton score</div>
+        <div class="score-big" id="scoreBig">0</div>
+        <div class="msg" id="scoreMsg"></div>
+        <div class="chapbars" id="chapBars"></div>
+        <div style="margin-top:28px"><button class="btn plum" onclick="resetTest()">↻ Reprendre le test</button></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<button class="float-retry" id="floatRetry" onclick="resetTest()">↻ Reprendre le test</button>
+<button class="print-fab" onclick="imprimerFiche()" title="Imprimer cette leçon en fiche">🖨️ Fiche</button>
+<div class="xp-pop" id="xpPop"></div>
+
+<script src="lb.js"></script>
+<script src="progress.js"></script>
+<script>
+const SUBJECT_KEY = 'Études de marché';
+
+/* ===================== ÉTAT ===================== */
+const LESSONS = [
+  {id:'l1',  t:'À quoi sert une étude',     ch:1},
+  {id:'l2',  t:'Les sources de données',    ch:1},
+  {id:'l3',  t:'Quali, quanti, insight',    ch:1},
+  {id:'l4',  t:'Les entretiens individuels', ch:2},
+  {id:'l5',  t:"Mener l'entretien",          ch:2},
+  {id:'l6',  t:'Focus group et collage',     ch:2},
+  {id:'l7',  t:'Exploiter le quali',         ch:2},
+  {id:'l8',  t:"Enquête et échantillonnage", ch:3},
+  {id:'l9',  t:"Taille et marge d'erreur",   ch:3},
+  {id:'l10', t:'Rédiger le questionnaire',   ch:3},
+  {id:'l11', t:'10 pièges et structure',     ch:3},
+  {id:'l12', t:'Du prétest au rapport',      ch:3}
+];
+const SAVE = (window.P ? P.etat() : {done:{},xp:0,last:null});
+const state = { xp: SAVE.xp||0, done: Object.assign({}, SAVE.done), view:'l1' };
+
+/* ===================== NAVIGATION ===================== */
+function buildNav(){
+  [1,2,3].forEach(ch=>{
+    const nav = document.getElementById('navList'+ch);
+    if(!nav) return;
+    nav.innerHTML = '';
+    LESSONS.forEach((l,i)=>{
+      if(l.ch!==ch) return;
+      const d = document.createElement('div');
+      d.className = 'nav-item' + (state.done[l.id]?' done':'');
+      d.dataset.view = l.id;
+      d.onclick = ()=>go(l.id);
+      d.innerHTML = '<span class="num">'+(state.done[l.id]?'✓':(i+1))+'</span><span class="lab">'+l.t+'</span>';
+      nav.appendChild(d);
+    });
+  });
+  highlightNav();
+}
+function highlightNav(){
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.dataset.view===state.view));
+}
+function go(view){
+  state.view = view;
+  if(window.P && /^l\d+$/.test(view)) P.derniereLecon(view);
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active', v.dataset.view===view));
+  highlightNav();
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(window.innerWidth<=880) closeSidebar();
+}
+function imprimerFiche(){ window.print(); }
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+/* ===================== XP ===================== */
+function addXp(n){
+  state.xp += n;
+  if(window.P) P.ajouterXp(n);
+  document.getElementById('xpVal').textContent = state.xp;
+  popXp('+'+n+' XP');
+}
+function popXp(txt){
+  const p = document.getElementById('xpPop');
+  p.textContent = '★ '+txt;
+  p.classList.add('show');
+  clearTimeout(p._t);
+  p._t = setTimeout(()=>p.classList.remove('show'),1400);
+}
+function updateProgress(){
+  const pct = Math.round(Object.keys(state.done).length/LESSONS.length*100);
+  document.getElementById('progFill').style.width = pct+'%';
+  document.getElementById('progPct').textContent = pct+' %';
+}
+
+/* ===================== MINI-QUIZ ===================== */
+function pick(btn){
+  const quiz = btn.closest('.quiz');
+  if(quiz.classList.contains('answered')) return;
+  quiz.classList.add('answered');
+  const correct = btn.dataset.correct === 'true';
+  quiz.querySelectorAll('.opt').forEach(o=>{
+    o.disabled = true;
+    if(o.dataset.correct === 'true') o.classList.add('right');
+  });
+  if(!correct) btn.classList.add('wrong');
+  const fb = quiz.querySelector('.feedback');
+  if(fb) fb.hidden = false;
+  if(window.P){
+    const sec = quiz.closest('.view');
+    const lec = sec ? sec.dataset.view : '?';
+    const rang = sec ? [...sec.querySelectorAll('.quiz')].indexOf(quiz) : 0;
+    P.noterReponse('quiz:'+lec+':'+rang, correct, 'Leçon '+lec.replace('l',''));
+  }
+  if(correct) addXp(10);
+}
+function validate(id, quizCount){
+  const sec = document.querySelector('.view[data-view="'+id+'"]');
+  const answered = sec.querySelectorAll('.quiz.answered').length;
+  if(answered < quizCount){
+    popXp("Réponds aux "+quizCount+" quiz d'abord");
+    sec.querySelectorAll('.quiz:not(.answered)').forEach(q=>{ q.style.boxShadow='0 0 0 2px var(--plum)'; setTimeout(()=>q.style.boxShadow='',1200); });
+    return;
+  }
+  if(!state.done[id]){ state.done[id]=true; if(window.P) P.marquerLecon(id); addXp(50); buildNav(); updateProgress(); }
+  const idx = LESSONS.findIndex(l=>l.id===id);
+  const next = LESSONS[idx+1];
+  if(next) go(next.id); else go('redac');
+}
+
+/* ===================== CALCULATRICE (leçon 9) =====================
+   e = t × √(p(1−p)/n) et n = t² p(1−p) / e², t = 1,96 (95 %).
+   La taille est arrondie à l'entier supérieur. */
+const T95 = 1.96;
+function fr(x, d){ return x.toLocaleString('fr-FR',{minimumFractionDigits:d, maximumFractionDigits:d}); }
+function calcMarge(){
+  const n = lireNombre(document.getElementById('cN').value);
+  const p = lireNombre(document.getElementById('cP').value)/100;
+  const out = document.getElementById('cOut1');
+  if(!(n>=1) || !(p>=0 && p<=1)){ out.textContent = 'Saisis un nombre de personnes (au moins 1) et un pourcentage entre 0 et 100.'; return; }
+  const e = T95*Math.sqrt(p*(1-p)/n);
+  const bas = Math.max(0,(p-e)*100), haut = Math.min(100,(p+e)*100);
+  out.innerHTML = 'Marge d\'erreur : <b>± '+fr(e*100,1)+' points</b>. Le vrai résultat se situe entre <b>'+fr(bas,1)+' %</b> et <b>'+fr(haut,1)+' %</b> (confiance 95 %).'+
+    ((bas<50 && haut>50) ? ' L\'intervalle contient 50 % : impossible de dire de quel côté penche la majorité.' : '');
+}
+function calcTaille(){
+  const e = lireNombre(document.getElementById('cE').value)/100;
+  const p = lireNombre(document.getElementById('cP2').value)/100;
+  const out = document.getElementById('cOut2');
+  if(!(e>0 && e<1) || !(p>0 && p<1)){ out.textContent = 'Saisis une marge strictement positive et une proportion entre 0 et 100 (exclus).'; return; }
+  const brut = T95*T95*p*(1-p)/(e*e);
+  const n = Math.ceil(brut - 1e-9);
+  out.innerHTML = 'Il faut interroger <b>'+n.toLocaleString('fr-FR')+' personnes</b> (calcul brut : '+fr(brut,1)+', arrondi à l\'entier supérieur).';
+}
+
+/* ===================== QUESTIONS RÉDIGÉES =====================
+   Chaque critère est une notion attendue ; `k` liste les façons de
+   l'écrire (comparées sans accents ni majuscules). Un critère est
+   rempli dès qu'une de ses formes apparaît dans la réponse. */
+const REDAC = [
+  {lesson:'l1', q:"Quel est l'objectif d'une étude de marché ? Présentez les trois objectifs d'étude et les trois méthodes de collecte.",
+   crit:[
+     {t:"Réduire l'incertitude, aider la décision", k:['incertitude','decision']},
+     {t:"Sous contrainte de budget et de délai", k:['budget','delai','cout']},
+     {t:"Décrire / comprendre / expliquer", k:['decri','comprendre','expliqu']},
+     {t:"Descriptif / exploratoire / causal", k:['exploratoire','causal']},
+     {t:"Observation, interrogation, expérimentation", k:['observation','interrogation','experimentation']}
+   ],
+   modele:"L'étude de marché vise à <b>générer des informations pertinentes</b> pour <b>réduire l'incertitude</b> et ainsi <b>aider la prise de décision</b>, sous contrainte de <b>budget</b> et de <b>délai</b> : on récolte des données, puis on les analyse pour les transformer en informations. Elle peut viser trois objectifs : <b>décrire</b> (étude descriptive), <b>comprendre</b> (étude <b>exploratoire</b>) ou <b>expliquer</b> (étude <b>causale</b>). Les données se collectent par <b>observation</b> (comportements d'achat, résultats de vente : audimètre, audit de magasin, panels distributeurs), par <b>interrogation</b> (entretiens, enquêtes) ou par <b>expérimentation</b> (on contrôle des variables et on attribue les variations observées aux variables manipulées : tests de produit, de marché, de prix)."},
+  {lesson:'l2', q:"Distinguez données secondaires et données primaires. Qu'est-ce qu'une étude documentaire ?",
+   crit:[
+     {t:"Secondaires : existent déjà, pas produites pour l'étude", k:['existe','deja','pas ete produit','non produit']},
+     {t:"Internes / externes", k:['interne','externe']},
+     {t:"Primaires : études ad hoc", k:['ad hoc','pour l\'etude','pour les besoins']},
+     {t:"Sélectionner, synthétiser, analyser", k:['synthetis','selectionn']},
+     {t:"Gratuite ou payante", k:['gratuit','payant']}
+   ],
+   modele:"Les <b>données secondaires</b> <b>existent déjà</b> : elles n'ont pas été produites pour les besoins de l'étude. Elles sont <b>internes</b> (fichier clients, ventes) ou <b>externes</b> (études sectorielles, panels). Les <b>données primaires</b> sont produites spécialement pour l'étude : ce sont les études <b>ad hoc</b>, qualitatives ou quantitatives (enquêtes, expérimentations). L'<b>étude documentaire</b> consiste à <b>sélectionner, synthétiser et analyser</b> des données secondaires ; elle est <b>gratuite</b> (Internet) ou <b>payante</b> (études de cabinets). Pistes : sonder ses clients, groupes Facebook ou LinkedIn, forums, études sectorielles, moteurs de recherche, benchmark des concurrents."},
+  {lesson:'l3', q:"Comparez études qualitatives et quantitatives. En quoi sont-elles complémentaires ?",
+   crit:[
+     {t:"Quanti : mesurer, « combien »", k:['combien','mesur','quantifi']},
+     {t:"Quali : comprendre, « pourquoi »", k:['pourquoi','comprendre']},
+     {t:"Échantillon large et représentatif / restreint et diversifié", k:['representati','restreint']},
+     {t:"Questionnaire fermé / guide d'entretien", k:['questionnaire','guide']},
+     {t:"Analyse statistique / interprétative", k:['statisti','interpreta','verbatim']},
+     {t:"Complémentarité", k:['complementa']}
+   ],
+   modele:"L'étude <b>quantitative</b> vise à <b>mesurer</b> et <b>quantifier</b> (« <b>combien</b> ») et à vérifier des hypothèses : échantillon <b>large et représentatif</b>, <b>questionnaire</b> standardisé et fermé, analyse <b>statistique</b> ; sa force est la représentativité, qui permet de généraliser. L'étude <b>qualitative</b> vise à <b>comprendre</b> et interpréter (« <b>pourquoi</b> ») et à construire des propositions : échantillon <b>restreint</b> et diversifié, <b>guide</b> d'entretien souple et questions ouvertes, analyse <b>interprétative</b> (verbatims, thèmes récurrents) ; sa force est l'explication en profondeur. Elles sont <b>complémentaires</b> : un quanti révèle que 35 % achètent la marque X contre 20 % pour Y ; un quali cherche pourquoi X est préférée."},
+  {lesson:'l3', q:"Qu'est-ce qu'un insight marché ? Que peut apporter une étude qualitative à une entreprise ?",
+   crit:[
+     {t:"Réalité pertinente, concrète, inexploitée", k:['inexploit','concret','pertinent']},
+     {t:"Analyse subjective et approfondie", k:['subjecti','approfondi']},
+     {t:"Ressorts psychologiques (motivations, freins…)", k:['motivation','frein','attente','valeur']},
+     {t:"Leviers de différenciation", k:['differenci','levier','preference']},
+     {t:"Éviter des erreurs de positionnement / tester", k:['positionnement','tester','prototype']}
+   ],
+   modele:"Un <b>insight marché</b> est la découverte d'une réalité <b>pertinente, concrète et jusque-là inexploitée</b> sur un marché cible, obtenue par une <b>analyse subjective et approfondie</b> des données ; il répond aux vrais besoins de la cible tout en créant de la valeur pour l'entreprise. L'étude qualitative permet de comprendre les <b>ressorts psychologiques</b> de l'achat (attentes, <b>valeurs</b>, <b>freins</b>, émotions, habitudes), d'identifier les <b>leviers</b> d'influence et de <b>différenciation</b> (ce qui crée la préférence, les objections), de <b>tester</b> messages et prototypes et d'éviter des erreurs de <b>positionnement</b>. Exemple : on croyait être choisi pour sa technologie, les entretiens révèlent que c'est le prix."},
+  {lesson:'l4', q:"Présentez les différents types d'entretiens individuels et la méthodologie d'échantillonnage en qualitatif.",
+   crit:[
+     {t:"Directif", k:['directif']},
+     {t:"Semi-directif, le plus utilisé", k:['semi']},
+     {t:"Non directif", k:['non directif','non-directif']},
+     {t:"Mixte / observation accompagnée", k:['mixte','observation accompagnee']},
+     {t:"Variation maximale, échantillon hétérogène", k:['variation','heterogene']},
+     {t:"Saturation", k:['saturation','plus d\'information','pas de nouvelle','n\'apporte plus']}
+   ],
+   modele:"Quatre types : le <b>directif</b> (questions précises, ouvertes, ordre structuré, trame stricte : valider des hypothèses) ; le <b>semi-directif</b> (guide souple, l'interviewé développe dans l'ordre qu'il veut, l'enquêteur relance et recentre : le <b>plus utilisé</b>, il allie cadre et spontanéité) ; le <b>non directif</b> (un thème, expression libre : très riche mais difficile) ; le <b>mixte</b> ou observation accompagnée (entretien et mise en situation réelle, l'interviewé explique ses gestes : pertinent mais long). Un entretien dure 45 à 90 minutes. L'échantillon est <b>restreint</b> et <b>hétérogène</b> (technique de <b>variation maximale</b> selon 2 à 3 critères), de 10 à 20 personnes (15 à 30 selon une autre diapositive), et l'on s'arrête à la <b>saturation</b>, quand un nouvel entretien n'apporte plus d'information nouvelle."},
+  {lesson:'l5', q:"Comment conduire un entretien individuel sans influencer le répondant ?",
+   crit:[
+     {t:"Présenter objectifs et déroulement", k:['present','objectif']},
+     {t:"Phase de purge / mise en confiance", k:['purge','confiance']},
+     {t:"Neutralité, ne jamais donner son avis", k:['neutre','opinion','avis']},
+     {t:"Reformulations : relance, contrôle, approfondissement", k:['reformul','relance']},
+     {t:"Questions ouvertes non biaisées", k:['biais','ouverte']},
+     {t:"Enregistrement et prise de notes", k:['enregistr','note']}
+   ],
+   modele:"On commence par <b>présenter</b> les <b>objectifs</b> et le déroulement, puis on réalise la <b>phase de purge</b> pour lever les craintes du répondant et le mettre en <b>confiance</b>. Pendant l'entretien, l'enquêteur intervient le moins possible : il aborde les thèmes, reste <b>neutre</b> et objectif et ne donne jamais son <b>opinion</b>. Ses seules interventions sont des <b>reformulations</b> : de <b>relance</b> (« Et puis ? »), de contrôle (« Si j'ai bien compris… »), d'approfondissement (« Peux-tu me réexpliquer ? »). Les questions sont <b>ouvertes</b>, claires et non <b>biaisées</b> : « Comment comparez-vous notre produit à celui des concurrents ? » plutôt que « Ne pensez-vous pas que notre produit est meilleur ? ». L'entretien est <b>enregistré</b>, et l'enquêteur prend des <b>notes</b> rapides pour rebondir."},
+  {lesson:'l6', q:"Présentez le focus group : principe, objectifs, avantages et limites.",
+   crit:[
+     {t:"6 à 10 personnes, animateur", k:['6','10','animateur','facilitateur']},
+     {t:"Opinions, réactions croisées, idées, signaux faibles", k:['croise','signaux','idee']},
+     {t:"Rapide, créatif ; 2 groupes ≈ 30 entretiens", k:['30','rapide','creati']},
+     {t:"Biais : leader, influence mutuelle", k:['leader','dominant','influence']},
+     {t:"Animateur neutre et expérimenté", k:['neutre','experiment']},
+     {t:"Logistique et budget", k:['logisti','budget','cout']}
+   ],
+   modele:"Le focus group réunit un petit groupe de <b>6 à 10 personnes</b> qui discutent d'un sujet ou d'un concept, avec un <b>animateur</b>. Objectifs : faire émerger opinions, critiques et suggestions, observer les réactions <b>croisées</b>, générer des <b>idées</b> et détecter des <b>signaux</b> faibles. Avantages : des informations variées obtenues <b>rapidement</b>, un format stimulant et <b>créatif</b>, utile en phase exploratoire (nom, prototype) ; deux réunions d'une dizaine de personnes peuvent remplacer <b>30</b> entretiens individuels. Limites : il faut un animateur <b>neutre</b> et <b>expérimenté</b>, qui fait participer tout le monde et évite l'apparition de <b>leaders</b> ; les biais de prise de parole dominante et d'<b>influence</b> mutuelle ; une <b>logistique</b> plus lourde et un <b>budget</b>. Il peut se tenir à distance (Zoom, Teams, Livestorm, forums privés)."},
+  {lesson:'l6', q:"Qu'est-ce que le collage projectif ? Comment l'anime-t-on ?",
+   crit:[
+     {t:"Technique projective non verbale, images", k:['projecti','image','non verbal']},
+     {t:"Divergence, créativité", k:['divergence','creativ']},
+     {t:"Matériel : revues, ciseaux, colle", k:['revue','magazine','ciseau','colle']},
+     {t:"Collage individuel puis présentation", k:['present','individuel']},
+     {t:"Éviter l'autocensure / se mettre à la place de", k:['censur','place de']},
+     {t:"Volontariat", k:['volontariat','volontaire','choquer']}
+   ],
+   modele:"Le collage est une technique <b>projective non verbale</b> : on représente une vision ou des idées uniquement avec des <b>images</b>. Il sert l'étape de <b>divergence</b> du processus <b>créatif</b>, surtout en début de séance pour s'imprégner du problème. Animation : mettre à disposition des <b>revues</b> variées, des <b>ciseaux</b>, de la <b>colle</b> et de grands supports ; chacun réalise un collage <b>individuel</b> exprimant sa vision du problème ; chacun le <b>présente</b> ; l'animateur note les réactions, et les commentaires alimentent les axes de réflexion. L'animateur empêche l'<b>autocensure</b> et invite à « se mettre à la <b>place de</b>… ». Facile et ludique, il libère l'imaginaire, mais peut <b>choquer</b> en entreprise : on le propose sur la base du <b>volontariat</b>."},
+  {lesson:'l7', q:"Comment exploiter les résultats d'une étude qualitative ?",
+   crit:[
+     {t:"Regrouper par grands thèmes", k:['theme']},
+     {t:"Verbatims", k:['verbatim']},
+     {t:"Divergences, signaux faibles", k:['divergen','signaux faibles','signal']},
+     {t:"Motivations et freins profonds", k:['motivation','frein']},
+     {t:"Adapter le projet (positionnement, communication…)", k:['positionnement','communication','argument','adapter']}
+   ],
+   modele:"Trois étapes. <b>1. Synthétiser</b> : regrouper les réponses par grands <b>thèmes</b> (prix, image, usage, freins, attentes non satisfaites), repérer les <b>verbatims</b> marquants — phrases spontanées citées telles quelles —, les <b>divergences</b> d'avis et les <b>signaux faibles</b>. <b>2. Identifier les <b>motivations</b> et <b>freins</b> profonds</b> : ce qui attire, rassure ou rebute, ce que les clients cherchent sans le trouver ; c'est là qu'apparaissent les insights. <b>3. <b>Adapter</b> le projet</b> : <b>positionnement</b> (prix, valeur perçue), <b>arguments</b> commerciaux, <b>communication</b> (canaux, messages, ton), fonctionnalités, packaging, canaux de vente. Exemple : si les prospects veulent avant tout simplicité et gain de temps, on ajuste le produit et on met cet avantage en avant."},
+  {lesson:'l8', q:"Définissez la population mère et présentez les principales méthodes d'échantillonnage.",
+   crit:[
+     {t:"Définition de la population mère", k:['possedant les information','ensemble des personnes']},
+     {t:"Hypothèse : mêmes réponses, généralisation", k:['generalis','memes reponses']},
+     {t:"Méthodes aléatoires / probabilistes", k:['aleatoire','probabilist']},
+     {t:"Méthodes empiriques (convenance, boule de neige…)", k:['convenance','boule de neige','empirique']},
+     {t:"Quotas", k:['quota']},
+     {t:"Biais de sélection", k:['biais']}
+   ],
+   modele:"La <b>population mère</b> est « l'<b>ensemble des personnes possédant les informations</b> désirées pour répondre aux objectifs d'une étude ». L'échantillonnage repose sur l'hypothèse qu'un échantillon issu de cette population aura sensiblement les <b>mêmes réponses</b> qu'elle, ce qui permet de <b>généraliser</b>. Le plan de sondage répond à trois questions : qui, comment, combien. Les méthodes <b>aléatoires</b> (<b>probabilistes</b>) — aléatoire simple, systématique, stratifiée, en grappes — donnent à chacun une probabilité connue d'être choisi ; l'aléatoire simple produit un échantillon représentatif. Les méthodes <b>empiriques</b> : la <b>convenance</b> (facile, pas chère, fort <b>biais</b> de sélection), la <b>boule de neige</b> (pour des profils rares, mais longue), le jugement et les <b>quotas</b> (groupes fixés a priori selon des caractéristiques connues, ex. 48 % d'hommes et 52 % de femmes → 480 et 520 sur 1 000 ; contrôle précis mais plus cher, biais de sélection)."},
+  {lesson:'l9', q:"De quoi dépend la taille d'un échantillon ? Donnez la formule de la marge d'erreur et commentez l'exemple du référendum (52 % de OUI, n = 500).",
+   crit:[
+     {t:"Temps, budget, accès, précision", k:['budget','temps','precision']},
+     {t:"Formule e = t √(pq/n)", k:['racine','√','pq','p(1-p)','p x q','p × q']},
+     {t:"t = 1,96 pour 95 %", k:['1,96','1.96','95']},
+     {t:"Marge ≈ 4 points (0,04)", k:['0,04','4,4','4 points','0.04','4 %','4%']},
+     {t:"L'intervalle contient 50 % : pas de conclusion", k:['50','rien conclure','ne peut pas conclure','pas conclure','on ne peut']}
+   ],
+   modele:"La taille dépend du <b>temps</b> et du <b>budget</b> disponibles, de la facilité d'accès à la population et de la <b>précision</b> statistique souhaitée. Pour une proportion : <b>e = t × √(p × q ÷ n)</b>, d'où <b>n = t² × p × q ÷ e²</b>, avec n la taille de l'échantillon, p la proportion observée, q = 1 − p et t = <b>1,96</b> pour un niveau de confiance de <b>95</b> %. Référendum : e = 1,96 × √(0,52 × 0,48 ÷ 500) ≈ 0,0438, soit environ <b>4,4 points</b> (0,04 dans le cours). Le vrai résultat est entre 47,6 et 56,4 % (48–56 % arrondi) : l'intervalle contient <b>50</b> %, donc <b>on ne peut rien conclure</b> sur l'issue. Plus n augmente, plus la marge baisse, mais lentement : diviser la marge par 2 demande 4 fois plus de répondants."},
+  {lesson:'l10', q:"Questions ouvertes ou fermées ? Montrez, avec un exemple, que la formulation et les modalités de réponse influencent les résultats.",
+   crit:[
+     {t:"Majorité de questions fermées", k:['fermee']},
+     {t:"Avantages : codage, traitement, rapidité", k:['codage','traitement','rapid']},
+     {t:"Inconvénient : influencent le répondant", k:['influenc']},
+     {t:"Biais de cadrage, Tversky et Kahneman", k:['cadrage','kahneman','tversky']},
+     {t:"72 % / 22 %", k:['72','22']},
+     {t:"Modalités : Likert, différentiel sémantique…", k:['likert','semantique','dichotom','icone']}
+   ],
+   modele:"Un questionnaire contient en majorité des questions <b>fermées</b> : <b>codage</b> et <b>traitement</b> faciles, passation <b>rapide</b> ; mais les réponses proposées <b>influencent</b> le répondant et peuvent ne pas refléter son opinion réelle. La formulation compte : c'est le <b>biais de cadrage</b> (théorie des perspectives de <b>Tversky et Kahneman</b>). Face à une maladie qui doit faire 600 victimes, <b>72 %</b> choisissent le programme A quand il « sauve 200 personnes », mais <b>22 %</b> seulement quand il « laisse mourir 400 personnes » — alors que c'est la même chose. Le choix des modalités influence aussi : dichotomique, choix multiples, échelle de <b>Likert</b> (paire ou impaire ; un « sans opinion » au milieu rompt l'échelle), différentiel <b>sémantique</b>, icônes."},
+  {lesson:'l11', q:"Citez et illustrez les pièges à éviter dans la rédaction d'un questionnaire.",
+   crit:[
+     {t:"Phrases longues / jargon", k:['jargon','complexe','plusieurs lignes','longue']},
+     {t:"Termes sujets à interprétation / ambiguïté", k:['interpret','ambigu']},
+     {t:"Deux en un", k:['deux en un','deux questions']},
+     {t:"Double négation", k:['negation']},
+     {t:"Questions gênantes / qui suggèrent la réponse", k:['genant','personnel','sugger','orient']},
+     {t:"Mémoire / trop de questions", k:['memoire','trop de questions','trop long']}
+   ],
+   modele:"Les dix pièges (Gianelloni et Vernette) : 1. les phrases de <b>plusieurs lignes</b> ; 2. le <b>jargon</b> (« quel pH favorisez-vous ? ») ; 3. les termes sujets à <b>interprétation</b> (« allez-vous souvent à la piscine ? ») ; 4. les formulations <b>ambiguës</b> (« pour ou contre la culture ? ») ; 5. le <b>deux en un</b> (« utile et performant ? ») ; 6. les doubles <b>négations</b> (« les notices ne sont pas faciles à comprendre ») ; 7. les questions trop <b>personnelles</b> ou <b>gênantes</b> (salaire, alcool, compétence du chef) ; 8. les questions qui <b>suggèrent</b> la réponse (« malgré sa faible mémoire ») ; 9. l'appel à la <b>mémoire</b> (« combien de yaourts par an ? ») ; 10. <b>trop de questions</b>, qui font répondre n'importe quoi pour en finir."},
+  {lesson:'l11', q:"Comment structurer un questionnaire ? Que doit contenir son introduction ?",
+   crit:[
+     {t:"Introduction : but, durée, anonymat, mode de remplissage", k:['duree','anonym']},
+     {t:"Ni bonne ni mauvaise réponse", k:['ni bonne','bonne ni mauvaise','pas de bonne']},
+     {t:"Questions générales et faciles au début, filtres", k:['general','facile','filtre']},
+     {t:"Regroupement par thème", k:['theme']},
+     {t:"Questions personnelles à la fin", k:['personnel','identification','fin']},
+     {t:"Progression et conclusion / remerciements", k:['progression','remerci','conclusion']}
+   ],
+   modele:"Un questionnaire suit un <b>entonnoir</b>. <b>Introduction</b> : le but, la <b>durée</b>, l'<b>anonymat</b> ou non, le mode de remplissage, et la mention qu'il n'y a <b>ni bonne ni mauvaise réponse</b> (modèle de l'IAE Vannes : cadre universitaire, habitudes alimentaires, 8 minutes, réponses anonymes, remerciements). Au <b>début</b>, des questions <b>générales</b> et <b>faciles</b>, avec d'éventuelles questions <b>filtres</b>. Le corps regroupe les questions par <b>thème</b>, du général au précis (introductives, qualifiantes, de mise en route, spécifiques). Les questions <b>personnelles</b> d'<b>identification</b> vont à la <b>fin</b> pour ne pas heurter. Idéalement, un indicateur de <b>progression</b> évite l'abandon. <b>Conclusion</b> : <b>remerciements</b>, éventuellement des coordonnées de contact."},
+  {lesson:'l12', q:"Pourquoi et comment prétester un questionnaire ? Comparez les modes d'administration.",
+   crit:[
+     {t:"Questions ambiguës, dérangeantes, longueur", k:['ambigu','derange','longueur']},
+     {t:"Éviter des données inexploitables ou faussées", k:['inexploitable','fauss','couteu']},
+     {t:"Une dizaine de personnes de la population mère", k:['dizaine','10 personnes']},
+     {t:"Face à face, conditions réelles, à voix haute", k:['face a face','haute voix','conditions reelles']},
+     {t:"Face à face : fiable, coûteux, biais enquêteur", k:['fiable','enqueteur']},
+     {t:"Auto-administré : peu coûteux, biais du média, faible retour", k:['auto','media','retour']}
+   ],
+   modele:"Le <b>prétest</b> sert à repérer les questions <b>ambiguës</b> ou <b>dérangeantes</b> et à évaluer la <b>longueur</b>, pour éviter une collecte <b>coûteuse</b> de données <b>inexploitables</b>, voire <b>faussées</b>, menant à de mauvaises décisions. On soumet le questionnaire <b>en face à face</b> à une <b>dizaine</b> de personnes de la population mère, en <b>conditions réelles</b>, en leur faisant commenter leurs choix à <b>haute voix</b>. Pour l'administration : le <b>face à face</b> (rue, téléphone) est très <b>fiable</b> mais coûteux, avec un biais de sélection par l'<b>enquêteur</b> ; l'<b>auto</b>-administré (courrier, sur place, internet) est peu coûteux, mais expose à une mauvaise compréhension, à un biais de sélection par le <b>média</b> et à un faible taux de <b>retour</b>."},
+  {lesson:'l12', q:"« Garbage in, garbage out » : expliquez cette conclusion du cours et les précautions qu'elle implique.",
+   crit:[
+     {t:"Mauvaises données → mauvais résultats", k:['mauvais']},
+     {t:"Bien définir son objectif", k:['objectif']},
+     {t:"D'où viennent les chiffres ? Ont-ils du sens ?", k:['d\'ou viennent','du sens','sens']},
+     {t:"Exemple : moyenne de CSP ou de sexe", k:['csp','socio','sexe','moyenne']},
+     {t:"Saisie : éliminer les questionnaires aberrants", k:['aberrant','codage','masque']}
+   ],
+   modele:"« Garbage in, garbage out » : des données de <b>mauvaise</b> qualité en entrée donnent de mauvais résultats en sortie, quelle que soit la sophistication du traitement. D'où plusieurs précautions : <b>bien définir son objectif</b> avant toute étude ; soigner la rédaction et le prétest du questionnaire ; à la saisie (Excel, SPSS, Sphinx), préparer le masque, définir le <b>codage</b> et éliminer les questionnaires <b>aberrants</b> ; pendant l'analyse, toujours se demander « <b>d'où viennent les chiffres</b> ? » et « ont-ils du <b>sens</b> ? » — une <b>moyenne</b> de catégorie <b>socio</b>professionnelle ou de <b>sexe</b> n'en a aucun. Le quanti permet de quantifier et de généraliser, mais « sous réserve » : ses réponses pré-formatées le rendent rigide et sujet aux biais."}
+];
+
+function sansAccent(s){ return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[’']/g,"'"); }
+function renderRedac(){
+  const host = document.getElementById('redacList');
+  host.innerHTML = REDAC.map((r,i)=>
+    '<div class="annale redac" id="rd'+i+'">'+
+      '<div class="an-tag">Question '+(i+1)+'/'+REDAC.length+' · '+LESSONS.find(l=>l.id===r.lesson).t+'</div>'+
+      '<h3>'+r.q+'</h3>'+
+      '<label class="sr" for="rd'+i+'in">Ta réponse</label>'+
+      '<textarea id="rd'+i+'in" rows="6" placeholder="Rédige ta réponse ici, en phrases complètes…"></textarea>'+
+      '<div class="redac-btns"><button class="btn primary" onclick="corrigerRedac('+i+')">Corriger ma réponse</button>'+
+      '<button class="btn" onclick="go(\''+r.lesson+'\')">📖 Revoir la leçon</button></div>'+
+      '<div class="corrige" id="rd'+i+'cor"></div>'+
+    '</div>').join('');
+}
+function corrigerRedac(i){
+  const r = REDAC[i];
+  const txt = ' '+sansAccent(document.getElementById('rd'+i+'in').value)+' ';
+  const cor = document.getElementById('rd'+i+'cor');
+  if(txt.trim().length < 15){ popXp('Rédige au moins une phrase'); return; }
+  let ok = 0;
+  const lignes = r.crit.map(c=>{
+    const trouve = c.k.some(k=>txt.indexOf(sansAccent(k))>=0);
+    if(trouve) ok++;
+    return '<li class="'+(trouve?'ok':'ko')+'"><span aria-hidden="true">'+(trouve?'✓':'✗')+'</span> '+c.t+(trouve?'':' — <i>absent de ta réponse</i>')+'</li>';
+  }).join('');
+  const pct = Math.round(ok/r.crit.length*100);
+  const verdict = pct>=80 ? 'Réponse complète' : pct>=50 ? 'Réponse partielle' : 'Réponse insuffisante';
+  cor.innerHTML =
+    '<div class="redac-score '+(pct>=80?'ok':pct>=50?'mid':'ko')+'">'+verdict+' : '+ok+'/'+r.crit.length+' notions-clés</div>'+
+    '<ul class="crit">'+lignes+'</ul>'+
+    '<div class="corrige-head">✅ Réponse modèle</div>'+
+    '<p class="modele">'+r.modele+'</p>';
+  cor.classList.add('show');
+  if(window.P) P.noterReponse('redac:'+i, pct>=80, 'Questions rédigées');
+  if(!corrigerRedac.fait) corrigerRedac.fait = {};
+  if(!corrigerRedac.fait[i]){ corrigerRedac.fait[i]=1; addXp(5+ok*3); }
+}
+
+/* ===================== TEST FINAL ===================== */
+const TEST = [
+  {ch:'Les bases', lesson:'l1', type:'qcm',
+   q:"L'objectif d'une étude de marché est de :",
+   opts:["Prouver que le produit est bon","Réduire l'incertitude pour aider la prise de décision","Remplacer la décision du dirigeant","Collecter le plus de données possible"], correct:1,
+   ex:"Générer des informations pertinentes pour réduire l'incertitude et aider la décision, sous contrainte de budget et de délai."},
+  {ch:'Les bases', lesson:'l1', type:'qcm',
+   q:"Une étude qui cherche à expliquer l'effet d'une campagne sur les ventes est :",
+   opts:["Descriptive","Exploratoire","Causale","Documentaire"], correct:2,
+   ex:"Expliquer un lien de cause à effet : étude causale."},
+  {ch:'Les bases', lesson:'l1', type:'qcm',
+   q:"L'audit de magasin relève de quelle méthode de collecte ?",
+   opts:["L'observation","L'interrogation","L'expérimentation","L'étude documentaire"], correct:0,
+   ex:"Audimètre, observation sur le lieu de vente, audit de magasin, panels distributeurs : observation."},
+  {ch:'Les bases', lesson:'l1', type:'num',
+   q:"Selon Syntec (2014), quelle part des dépenses d'études va aux études quantitatives ? (en %)",
+   answer:78, tol:0, unit:"%",
+   ex:"78 % quanti, 14 % quali, 8 % autres (Syntec 2014)."},
+  {ch:'Les bases', lesson:'l2', type:'qcm',
+   q:"Des données produites spécialement pour une étude sont :",
+   opts:["Secondaires","Primaires (ad hoc)","Internes","Documentaires"], correct:1,
+   ex:"Les données primaires sont issues d'études ad hoc ; les secondaires existent déjà."},
+  {ch:'Les bases', lesson:'l2', type:'qcm',
+   q:"L'étude documentaire consiste à :",
+   opts:["Interroger un échantillon représentatif","Sélectionner, synthétiser et analyser des données secondaires","Animer un focus group","Tester un prix en magasin"], correct:1,
+   ex:"Elle exploite des données qui n'ont pas été produites pour l'étude, gratuites ou payantes."},
+  {ch:'Les bases', lesson:'l3', type:'qcm',
+   q:"Le quali répond surtout à la question :",
+   opts:["Combien ?","Pourquoi ?","Quand ?","Où ?"], correct:1,
+   ex:"Le quanti dit « combien », le quali explique « pourquoi »."},
+  {ch:'Les bases', lesson:'l3', type:'qcm',
+   q:"Lequel de ces éléments caractérise une étude qualitative ?",
+   opts:["Un échantillon large et représentatif","Un questionnaire standardisé et fermé","Une analyse interprétative de verbatims","Une analyse statistique"], correct:2,
+   ex:"Quali : échantillon restreint et diversifié, guide souple, analyse interprétative (verbatims, thèmes)."},
+  {ch:'Les bases', lesson:'l3', type:'qcm',
+   q:"Un insight marché est :",
+   opts:["Un chiffre clé du marché","Une réalité pertinente, concrète et jusque-là inexploitée sur une cible","Le résultat d'un test de prix","Une tendance publiée par un cabinet"], correct:1,
+   ex:"Il naît d'une analyse subjective et approfondie des données."},
+
+  {ch:'Qualitatif', lesson:'l4', type:'qcm',
+   q:"Combien de temps dure en général un bon entretien individuel ?",
+   opts:["10 à 20 minutes","45 à 90 minutes","2 à 3 heures","Une demi-journée"], correct:1,
+   ex:"Entre 45 et 90 minutes selon le format."},
+  {ch:'Qualitatif', lesson:'l4', type:'qcm',
+   q:"L'entretien où l'interviewé est observé en magasin et commente ses gestes est :",
+   opts:["Directif","Non directif","Mixte (observation accompagnée)","Semi-directif"], correct:2,
+   ex:"Entretien + mise en situation réelle : très pertinent, mais long à mettre en place."},
+  {ch:'Qualitatif', lesson:'l4', type:'qcm',
+   q:"La technique de variation maximale consiste à :",
+   opts:["Interroger le plus de personnes possible","Faire varier au maximum le profil des répondants selon 2 à 3 critères","Poser des questions de plus en plus difficiles","Tirer les répondants au sort"], correct:1,
+   ex:"L'échantillon quali est restreint mais hétérogène."},
+  {ch:'Qualitatif', lesson:'l5', type:'qcm',
+   q:"« Et puis ? Mais encore ? » sont des reformulations :",
+   opts:["De contrôle","De relance","D'approfondissement","Fermées"], correct:1,
+   ex:"Relance : « Et puis ? » ; contrôle : « Si j'ai bien compris… » ; approfondissement : « Peux-tu me réexpliquer ? »."},
+  {ch:'Qualitatif', lesson:'l5', type:'qcm',
+   q:"Laquelle de ces questions est non biaisée ?",
+   opts:["Ne pensez-vous pas que notre produit est meilleur ?","Comment comparez-vous notre produit à celui des concurrents ?","Notre produit est-il meilleur que celui des concurrents ?","Préférez-vous notre excellent produit ?"], correct:1,
+   ex:"Une question ouverte et neutre, qui ne suggère pas la réponse."},
+  {ch:'Qualitatif', lesson:'l5', type:'qcm',
+   q:"Pendant l'entretien, l'enquêteur :",
+   opts:["Donne son avis pour relancer","Reste neutre et intervient très peu","Pose surtout des questions fermées","Corrige les erreurs du répondant"], correct:1,
+   ex:"Il reste neutre, ne donne jamais son opinion et se contente de reformuler."},
+  {ch:'Qualitatif', lesson:'l6', type:'num',
+   q:"Combien de personnes au maximum réunit un focus group selon le cours ?",
+   answer:10, tol:0, unit:"personnes",
+   ex:"De 6 à 10 personnes."},
+  {ch:'Qualitatif', lesson:'l6', type:'num',
+   q:"Deux réunions de groupe peuvent remplacer combien d'entretiens individuels ?",
+   answer:30, tol:0, unit:"entretiens",
+   ex:"Deux focus groups d'une dizaine de personnes ≈ 30 entretiens individuels."},
+  {ch:'Qualitatif', lesson:'l6', type:'qcm',
+   q:"Quel est un biais propre au focus group ?",
+   opts:["Le biais de cadrage","La prise de parole dominante et l'influence mutuelle","Le biais de sélection par le média","L'appel à la mémoire"], correct:1,
+   ex:"D'où le rôle de l'animateur : faire participer tous et éviter les leaders."},
+  {ch:'Qualitatif', lesson:'l6', type:'qcm',
+   q:"Le collage est surtout utile :",
+   opts:["Pour mesurer une part de marché","En début de séance de créativité, pour la divergence","Pour prétester un questionnaire","Pour calculer une marge d'erreur"], correct:1,
+   ex:"Technique projective non verbale, très efficace pour l'imprégnation du problème."},
+  {ch:'Qualitatif', lesson:'l7', type:'qcm',
+   q:"Dans l'analyse quali, quelle étape vient en dernier ?",
+   opts:["Regrouper par thèmes","Repérer les verbatims","Adapter le positionnement et la communication","Identifier les freins"], correct:2,
+   ex:"Synthétiser → identifier motivations et freins → adapter le projet."},
+
+  {ch:'Échantillonnage', lesson:'l8', type:'qcm',
+   q:"La population mère est :",
+   opts:["L'ensemble des clients actuels","L'ensemble des personnes possédant les informations utiles aux objectifs de l'étude","L'échantillon interrogé","La population française"], correct:1,
+   ex:"C'est la définition du cours : on part de qui détient l'information."},
+  {ch:'Échantillonnage', lesson:'l8', type:'num',
+   q:"Étape de l'enquête : le prétest vient en quelle position sur 7 ?",
+   answer:3, tol:0, unit:"e étape",
+   ex:"1 population, 2 rédaction, 3 prétest, 4 administration, 5 saisie, 6 traitement, 7 analyse et rapport."},
+  {ch:'Échantillonnage', lesson:'l8', type:'qcm',
+   q:"Quelle méthode est probabiliste ?",
+   opts:["Quotas","Convenance","Stratifiée","Boule de neige"], correct:2,
+   ex:"Aléatoires : simple, systématique, stratifiée, en grappes. Empiriques : convenance, jugement, boule de neige, quotas."},
+  {ch:'Échantillonnage', lesson:'l8', type:'qcm',
+   q:"La méthode des quotas suppose de connaître :",
+   opts:["Le nom de chaque individu de la population","La répartition de la population selon certaines caractéristiques","La marge d'erreur à l'avance","Les réponses attendues"], correct:1,
+   ex:"On fixe a priori des groupes selon des caractéristiques connues et mesurées (sexe, âge…)."},
+  {ch:'Échantillonnage', lesson:'l8', type:'num',
+   q:"Population à 52 % de femmes, échantillon de 1 500 personnes. Combien de femmes interroger ?",
+   answer:780, tol:0, unit:"femmes",
+   ex:"1 500 × 52 % = 780."},
+  {ch:'Échantillonnage', lesson:'l9', type:'num',
+   q:"Quelle valeur de t retient-on pour un niveau de confiance de 95 % ?",
+   answer:1.96, tol:0, unit:"",
+   ex:"t = 1,96."},
+  {ch:'Échantillonnage', lesson:'l9', type:'num',
+   q:"Marge d'erreur pour p = 50 % et n = 1 000, au niveau de 95 % ? (en points, arrondi au dixième)",
+   answer:3.1, tol:0.05, unit:"points",
+   ex:"1,96 × √(0,25 ÷ 1 000) ≈ 0,0310, soit ± 3,1 points."},
+  {ch:'Échantillonnage', lesson:'l9', type:'num',
+   q:"Taille d'échantillon pour une marge de ± 5 points avec p = 50 % (95 %) ? (arrondi à l'entier supérieur)",
+   answer:385, tol:0, unit:"personnes",
+   ex:"1,96² × 0,25 ÷ 0,05² = 384,16, arrondi à 385."},
+  {ch:'Échantillonnage', lesson:'l9', type:'qcm',
+   q:"Pour diviser la marge d'erreur par 2, il faut multiplier la taille de l'échantillon par :",
+   opts:["2","4","√2","10"], correct:1,
+   ex:"La marge varie comme 1 ÷ √n : ×4 sur n divise la marge par √4 = 2."},
+  {ch:'Échantillonnage', lesson:'l9', type:'qcm',
+   q:"Un sondage donne 52 % de OUI sur 500 personnes. Conclusion ?",
+   opts:["Le OUI l'emportera","Le NON l'emportera","On ne peut rien conclure : l'intervalle (≈ 47,6–56,4 %) contient 50 %","Il faut interroger 52 personnes de plus"], correct:2,
+   ex:"e ≈ 0,0438 : l'intervalle déborde sous 50 %."},
+  {ch:'Échantillonnage', lesson:'l9', type:'num',
+   q:"Taille minimale d'un test de communication (performance d'une publicité) selon le cours ?",
+   answer:150, tol:0, unit:"personnes",
+   ex:"150 minimum, 200 à 300 en taille classique."},
+
+  {ch:'Questionnaire', lesson:'l10', type:'qcm',
+   q:"Un avantage des questions fermées est :",
+   opts:["Elles reflètent toujours l'opinion réelle","Elles se codent et se traitent facilement","Elles n'influencent pas le répondant","Elles permettent l'expression libre"], correct:1,
+   ex:"Codage et traitement faciles, passation rapide ; mais elles influencent le répondant."},
+  {ch:'Questionnaire', lesson:'l10', type:'num',
+   q:"Expérience de Tversky et Kahneman : quel pourcentage choisit le programme A dans le cadre positif ?",
+   answer:72, tol:0, unit:"%",
+   ex:"72 % en cadre positif (« 200 sauvées »), 22 % en cadre négatif (« 400 mourront »)."},
+  {ch:'Questionnaire', lesson:'l10', type:'qcm',
+   q:"Pourquoi éviter un « sans opinion » au milieu d'une échelle de Likert ?",
+   opts:["Il rompt l'échelle","Il rend l'échelle paire","Il est interdit par le RGPD","Il allonge le questionnaire"], correct:0,
+   ex:"« Sans opinion » n'est pas un degré d'accord : placé au milieu, il rompt la continuité de l'échelle."},
+  {ch:'Questionnaire', lesson:'l11', type:'qcm',
+   q:"« Combien de yaourts consommez-vous par an ? » est un piège de type :",
+   opts:["Jargon","Appel à la mémoire","Double négation","Deux en un"], correct:1,
+   ex:"Impossible de s'en souvenir sur un an : la réponse sera inventée."},
+  {ch:'Questionnaire', lesson:'l11', type:'qcm',
+   q:"« Achèteriez-vous cet ordinateur malgré sa faible capacité de mémoire ? » :",
+   opts:["Suggère la réponse","Est trop personnelle","Est un deux en un","Fait appel à la mémoire"], correct:0,
+   ex:"« Malgré sa faible capacité » oriente vers le non."},
+  {ch:'Questionnaire', lesson:'l11', type:'qcm',
+   q:"Les questions d'identification (âge, revenus, CSP) se placent :",
+   opts:["Au début","Au milieu","À la fin","Dans l'introduction"], correct:2,
+   ex:"À la fin, pour ne pas heurter le répondant et éviter l'abandon."},
+  {ch:'Questionnaire', lesson:'l11', type:'qcm',
+   q:"Quelle mention l'introduction d'un questionnaire doit-elle comporter ?",
+   opts:["Le prix du produit testé","Qu'il n'y a ni bonne ni mauvaise réponse","Le nom des autres répondants","La marge d'erreur"], correct:1,
+   ex:"But, durée, anonymat, mode de remplissage, et « ni bonne ni mauvaise réponse »."},
+  {ch:'Questionnaire', lesson:'l12', type:'qcm',
+   q:"Le mode auto-administré par internet présente surtout :",
+   opts:["Un coût élevé","Un biais de sélection par le média et un faible taux de retour","Un biais de sélection par l'enquêteur","Une fiabilité maximale"], correct:1,
+   ex:"Peu coûteux, mais biais du média (ceux qui ont du temps), mauvaise compréhension possible, faible retour."},
+  {ch:'Questionnaire', lesson:'l12', type:'qcm',
+   q:"Lors de la saisie, on doit notamment :",
+   opts:["Éliminer les questionnaires aberrants","Calculer une moyenne des CSP","Supprimer les réponses négatives","Relancer les non-répondants"], correct:0,
+   ex:"Masque de saisie, codage, élimination des questionnaires aberrants. Et une moyenne de CSP n'a aucun sens."}
+];
+
+function renderTest(){
+  const c = document.getElementById('testQuestions');
+  c.innerHTML = '';
+  TEST.forEach((q,i)=>{
+    const div = document.createElement('div');
+    div.className = 'test-q'; div.id = 'tq'+i;
+    let body = '';
+    if(q.type==='qcm'){
+      body = '<div class="topt">' + q.opts.map((o,j)=>
+        '<button onclick="selOpt('+i+','+j+')" id="tq'+i+'o'+j+'">'+o+'</button>').join('') + '</div>';
+    } else {
+      body = '<input type="text" inputmode="decimal" autocomplete="off" class="num-input" id="tq'+i+'in" placeholder="…" aria-label="Ta réponse"><span class="unit">'+(q.unit||'')+'</span>';
+    }
+    div.innerHTML =
+      '<div class="tq-head"><span class="tq-num">Question '+(i+1)+'/'+TEST.length+'</span><span class="tq-chap">'+q.ch+'</span></div>'+
+      '<div class="tq-q">'+q.q+'</div>'+ body +
+      '<div class="remed" id="tq'+i+'rem"><div class="rt">⚠️ À revoir</div><div class="ra" id="tq'+i+'ra"></div>'+
+      '<div class="remed-btns"><button class="btn" onclick="go(\''+q.lesson+'\')">📖 Revoir la leçon</button>'+
+      '<button class="btn primary" onclick="dismissRemed('+i+')">Continuer →</button></div></div>';
+    c.appendChild(div);
+  });
+  document.getElementById('testResult').classList.remove('show');
+  document.getElementById('testSubmitRow').style.display = 'flex';
+  document.getElementById('floatRetry').classList.remove('show');
+  TEST._answers = {};
+}
+function selOpt(qi, oi){
+  if(document.getElementById('tq'+qi).classList.contains('graded')) return;
+  TEST._answers = TEST._answers || {};
+  TEST._answers[qi] = oi;
+  TEST[qi].opts.forEach((_,j)=>document.getElementById('tq'+qi+'o'+j).classList.toggle('sel', j===oi));
+}
+function lireNombre(v){ return parseFloat(String(v).replace(/[\s\u00a0\u202f]/g,'').replace(',', '.')); }   // « 1 000 », « 1,96 »
+function gradeTest(){
+  TEST._answers = TEST._answers || {};
+  let score = 0; const chap = {};
+  TEST.forEach((q,i)=>{
+    const box = document.getElementById('tq'+i);
+    box.classList.add('graded');
+    let ok = false;
+    if(q.type==='qcm'){
+      ok = TEST._answers[i] === q.correct;
+      q.opts.forEach((_,j)=>{ const b=document.getElementById('tq'+i+'o'+j); b.disabled=true;
+        if(j===q.correct) b.classList.add('sel'); });
+    } else {
+      const val = lireNombre(document.getElementById('tq'+i+'in').value);
+      ok = !isNaN(val) && Math.abs(val - q.answer) <= (q.tol||0) + 1e-9;
+      document.getElementById('tq'+i+'in').disabled = true;
+    }
+    if(window.P) P.noterReponse('test:'+i, ok, q.ch);
+    chap[q.ch] = chap[q.ch] || {ok:0,tot:0};
+    chap[q.ch].tot++;
+    if(ok){ score++; chap[q.ch].ok++; box.classList.add('ok'); }
+    else { box.classList.add('ko');
+      document.getElementById('tq'+i+'ra').innerHTML = q.ex;
+      document.getElementById('tq'+i+'rem').classList.add('show'); }
+  });
+  showResult(score, chap);
+}
+function dismissRemed(i){ document.getElementById('tq'+i+'rem').classList.remove('show'); }
+function showResult(score, chap){
+  document.getElementById('testSubmitRow').style.display = 'none';
+  document.getElementById('scoreBig').textContent = score+'/'+TEST.length;
+  let msg, col; const pct = score/TEST.length*100;
+  if(pct>=90){ msg="Excellent — tu es prêt pour les questions rédigées."; col=getCss('--teal'); }
+  else if(pct>=70){ msg="Très bon niveau. Revois les chapitres en orange ci-dessous."; col=getCss('--teal'); }
+  else if(pct>=50){ msg="Bon début. Concentre tes révisions sur les chapitres faibles."; col=getCss('--amber'); }
+  else { msg="Il reste du travail. Reprends les leçons signalées, puis réessaie."; col=getCss('--rust'); }
+  document.getElementById('scoreBig').style.color = col;
+  document.getElementById('scoreMsg').textContent = msg;
+  const bars = document.getElementById('chapBars');
+  bars.innerHTML = '';
+  Object.keys(chap).forEach(name=>{
+    const c = chap[name];
+    const p = Math.round(c.ok/c.tot*100);
+    const bc = p>=67?getCss('--teal'):p>=34?getCss('--amber'):getCss('--rust');
+    bars.innerHTML += '<div class="chapbar"><div class="cbl"><span>'+name+'</span><span>'+c.ok+'/'+c.tot+'</span></div>'+
+      '<div class="cbt"><div class="cbf" style="width:0;background:'+bc+'" data-w="'+p+'"></div></div></div>';
+  });
+  document.getElementById('testResult').classList.add('show');
+  document.getElementById('floatRetry').classList.add('show');
+  setTimeout(()=>document.querySelectorAll('.cbf').forEach(b=>b.style.width=b.dataset.w+'%'),120);
+  addXp(score*20);
+  if(window.P) P.meilleurScore('Test final', score, TEST.length);
+  document.getElementById('testResult').scrollIntoView({behavior:'smooth'});
+  if(window.LB){ try{ LB.record({subject:SUBJECT_KEY, mode:'Test final', correct:score, total:TEST.length, xp:state.xp}); }catch(e){} }
+}
+function resetTest(){ renderTest(); go('test'); }
+function getCss(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+
+/* ===================== APPLICATIONS ===================== */
+function toggleCorrige(btn){
+  const cor = btn.nextElementSibling;
+  const open = cor.classList.toggle('show');
+  btn.textContent = open ? 'Masquer le corrigé' : 'Voir le corrigé';
+}
+
+/* ===================== INIT ===================== */
+buildNav();
+updateProgress();
+renderRedac();
+renderTest();
+['cN','cP'].forEach(id=>document.getElementById(id).addEventListener('input', calcMarge));
+['cE','cP2'].forEach(id=>document.getElementById(id).addEventListener('input', calcTaille));
+calcMarge(); calcTaille();
+go((window.P && SAVE.last && document.querySelector('.view[data-view="'+SAVE.last+'"]')) ? SAVE.last : 'l1');
+try{ document.getElementById('lb-id-slot').appendChild(LB.idButton()); }catch(e){}
+</script>
+<script src="banque.js"></script>
+<script src="ui.js"></script>
+</body>
+</html>

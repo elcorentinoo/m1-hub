@@ -4,121 +4,67 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Classement · M1 MBAF</title>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{
-  --card:#fff; --card2:#fbf9f5;
-  --paper:#faf6ef; --paper2:#f3ece0; --ink:#22201b; --ink2:#4a4640;
-  --muted:#8a8378; --line:#e3d9c8; --line2:#d4c7b0;
-  --teal:#1b6b5e; --teal-l:#e4f0ed; --teal-d:#0f4a40;
-  --amber:#c87a12; --amber-l:#fbf0db;
-  --rust:#a8432a; --rust-l:#f7e6df;
-  --plum:#6b3a73; --plum-l:#f0e7f2;
-  --navy:#241C15; --navy-l:#e3ebf4;
-  --gold:#b8860b;
-  --shadow:0 1px 3px rgba(34,32,27,.08), 0 8px 24px rgba(34,32,27,.06);
-  --shadow-lg:0 4px 12px rgba(34,32,27,.12), 0 20px 48px rgba(34,32,27,.1);
-}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{
-  font-family:'DM Sans',sans-serif; background:var(--paper); color:var(--ink);
-  line-height:1.65; font-size:16px;
-  background-image:radial-gradient(var(--line) 0.5px, transparent 0.5px);
-  background-size:22px 22px;
-}
-#topbar{
-  position:sticky; top:0; z-index:50;
-  background:color-mix(in srgb, var(--paper) 92%, transparent); backdrop-filter:blur(10px);
-  border-bottom:1px solid var(--line);
-  padding:12px 24px; display:flex; align-items:center; gap:18px; flex-wrap:wrap;
-}
-#topbar .logo{font-family:'Fraunces',serif; font-weight:900; font-size:18px; color:var(--navy); letter-spacing:-.5px; white-space:nowrap}
-#topbar .logo span{color:var(--amber)}
-.top-txt{flex:1; font-size:11px; color:var(--muted); font-family:'DM Mono',monospace; min-width:120px}
+body{background:var(--fond);color:var(--txt);line-height:1.55;font-size:16px}
+#topbar{display:flex;align-items:center;gap:14px;padding:12px 24px}
+#content{max-width:880px;margin:0 auto;padding:28px 24px 120px;min-width:0}
 
-#content{max-width:880px; margin:0 auto; padding:40px 24px 120px; min-width:0}
-.home-tag{font-family:'DM Mono',monospace; font-size:12px; letter-spacing:1px; text-transform:uppercase; color:var(--amber); font-weight:500; display:flex; align-items:center; gap:8px; margin-bottom:10px}
-.home-tag::before{content:''; width:24px; height:2px; background:var(--amber)}
-h1{font-family:'Fraunces',serif; font-weight:900; font-size:2.3rem; line-height:1.08; letter-spacing:-1px; margin-bottom:10px}
-h1 .acc{color:var(--amber)}
-.home-sub{font-size:16.5px; color:var(--ink2); margin-bottom:24px; max-width:600px}
-.chips{display:flex;gap:12px;flex-wrap:wrap;margin:6px 0 26px}
-.start-chip{padding:10px 18px; border-radius:11px; font-family:'DM Sans',sans-serif; font-weight:600; font-size:14px; cursor:pointer; border:1.5px solid var(--line2); background:var(--card); color:var(--ink2); transition:all .15s}
-.start-chip:hover{transform:translateY(-2px); box-shadow:var(--shadow); border-color:var(--navy); color:var(--navy)}
-.start-chip.solo{background:var(--navy); color:#fff; border-color:var(--navy)}
-.start-chip.solo:hover{background:#3A2E23; color:#fff}
+.tag{font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;color:var(--txt3);margin-bottom:12px}
+h1{font-weight:200;font-size:clamp(2.2rem,6vw,3.4rem);line-height:1.02;letter-spacing:-.03em;margin-bottom:12px;color:var(--nuit)}
+h1 b{font-weight:500}
+.sous{font-size:16.5px;color:var(--txt2);max-width:60ch;margin-bottom:22px}
 
-/* ── faux chargement du classement ── */
-.lb-fake{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
-.lb-fake-tabs{display:flex;gap:8px;padding:16px 16px 0}
-.lb-fake-tab{padding:8px 16px;border-radius:999px;border:1.5px solid var(--line2);font-weight:600;font-size:13.5px;color:var(--ink2)}
-.lb-fake-tab.on{background:var(--teal);border-color:var(--teal);color:#fff}
-.lb-fake-head{display:grid;grid-template-columns:52px 1fr 110px 90px;gap:10px;padding:16px 18px 10px;
-  font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line)}
-.lb-fake-row{display:grid;grid-template-columns:52px 1fr 110px 90px;gap:10px;align-items:center;padding:13px 18px;border-bottom:1px solid var(--paper2)}
-.lb-fake-row:last-child{border-bottom:none}
-.lb-fake-row .rk{font-family:'DM Mono',monospace;font-weight:600;color:var(--muted)}
-.sk{height:12px;border-radius:6px;background:linear-gradient(90deg,var(--paper2) 0%,var(--line) 50%,var(--paper2) 100%);background-size:200% 100%;animation:shim 1.2s linear infinite}
-@keyframes shim{from{background-position:200% 0}to{background-position:-200% 0}}
-.status{font-family:'DM Mono',monospace;font-size:12.5px;color:var(--muted);padding:14px 18px;border-top:1px solid var(--line);
-  display:flex;align-items:center;gap:10px;background:var(--paper)}
-.status .dot{width:8px;height:8px;border-radius:50%;background:var(--teal);animation:pulse 1s ease-in-out infinite;flex-shrink:0}
-@keyframes pulse{50%{opacity:.25}}
-.pbar{height:4px;background:var(--paper2)}
-.pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--gold));transition:width .5s ease}
-.skip{margin-left:auto;background:none;border:none;color:var(--muted);font-family:'DM Mono',monospace;font-size:11.5px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
-.lb-fake.glitch{animation:glitch .5s steps(2) 2}
-@keyframes glitch{0%{transform:translate(0)}25%{transform:translate(-3px,1px)}50%{transform:translate(3px,-1px)}75%{transform:translate(-1px,2px)}100%{transform:translate(0)}}
-.lb-fake.gone{opacity:0;transform:scale(.97);transition:opacity .45s,transform .45s}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:26px}
+.pil{border:none;border-radius:999px;padding:11px 18px;font-size:14px;font-weight:500;cursor:pointer;background:var(--blanc);color:var(--nuit);box-shadow:var(--ombre1)}
+.pil:hover{background:var(--surface2)}
+.pil.fonce{background:var(--nuit);color:#fff}
+.pil.fonce:hover{background:var(--nuit);opacity:.92}
 
-/* ── la révélation ── */
-.reveal{display:none}
-.reveal.on{display:block;animation:rise .6s cubic-bezier(.2,.7,.2,1)}
-@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-.twist{background:linear-gradient(135deg,#120E0A 0%,#241C15 60%,#2A2018 100%);color:#f3ece0;border-radius:20px;
-  padding:30px 30px 28px;margin-bottom:28px;box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
-.twist::after{content:'';position:absolute;top:-70px;right:-50px;width:260px;height:260px;border-radius:50%;
-  background:radial-gradient(circle,rgba(184,134,11,.3) 0%,transparent 70%);pointer-events:none}
-.twist .big{font-family:'Fraunces',serif;font-weight:900;font-size:2rem;line-height:1.1;letter-spacing:-.8px;margin-bottom:12px;position:relative;z-index:1}
-.twist .big span{color:#e8b463}
-.twist p{color:#cdd8e6;font-size:15.5px;line-height:1.65;max-width:62ch;position:relative;z-index:1}
-.twist p + p{margin-top:10px}
+.onglets{display:inline-flex;gap:4px;padding:5px;border-radius:999px;background:var(--blanc);box-shadow:var(--shadow);margin-bottom:24px;max-width:100%}
+.onglets button{border:none;background:transparent;border-radius:999px;padding:10px 18px;font-size:14px;font-weight:500;color:var(--txt2);cursor:pointer;white-space:nowrap}
+.onglets button[aria-selected="true"]{background:var(--nuit);color:#fff}
 
-.count{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin:0 0 14px}
-.people{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
-.person{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 22px 20px;box-shadow:var(--shadow);
-  position:relative;overflow:hidden;opacity:0;transform:translateY(14px);animation:pin .5s cubic-bezier(.2,.7,.2,1) forwards}
-@keyframes pin{to{opacity:1;transform:none}}
-.person::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--acc,var(--gold))}
-.person .em{font-size:30px;line-height:1;margin-bottom:12px}
-.person .nm{font-family:'Fraunces',serif;font-weight:900;font-size:1.35rem;line-height:1.15;letter-spacing:-.4px;margin-bottom:10px;word-break:break-word}
-.person .ph{font-family:'Fraunces',serif;font-style:italic;font-weight:500;font-size:1.02rem;line-height:1.5;color:var(--ink2)}
-.person .ph b{font-style:normal;font-weight:700;color:var(--ink)}
-.person.me{border:2px solid var(--gold);box-shadow:0 0 0 4px color-mix(in srgb, var(--gold) 18%, transparent), var(--shadow-lg)}
-.person .toi{position:absolute;top:14px;right:14px;font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:1px;
-  text-transform:uppercase;background:var(--gold);color:#1d1b15;padding:3px 9px;border-radius:20px;font-weight:600}
-.foot-note{margin-top:30px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);line-height:1.7}
+.podium{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;align-items:end;margin-bottom:18px}
+.marche{background:var(--blanc);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:20px 18px 18px;text-align:center;min-width:0;position:relative}
+.marche.r1{padding-top:30px;padding-bottom:26px}
+.marche .rg{width:38px;height:38px;border-radius:50%;margin:0 auto 12px;display:grid;place-items:center;font-weight:600;font-size:15px;background:var(--surface2);color:var(--nuit)}
+.marche.r1 .rg{background:var(--nuit);color:#fff;width:44px;height:44px}
+.marche .nm{font-weight:500;font-size:16px;overflow-wrap:anywhere;margin-bottom:6px}
+.marche .val{font-weight:200;font-size:clamp(1.9rem,5vw,2.6rem);line-height:1;color:var(--nuit);letter-spacing:-.03em}
+.marche .val small{font-size:.45em;font-weight:400;margin-left:2px}
+.marche .sec{font-size:12.5px;color:var(--txt3);margin-top:8px}
+.marche.moi{box-shadow:0 0 0 2px var(--nuit),var(--shadow)}
 
-.diag{background:var(--card);border:1px solid #e7c4b8;border-left:5px solid var(--rust);border-radius:14px;padding:20px 22px}
-.diag h4{font-family:'Fraunces',serif;color:var(--rust);font-size:1.05rem;margin-bottom:9px;font-weight:700}
-.diag div{font-size:14.5px;line-height:1.6}
-.diag code{background:var(--paper2);padding:2px 6px;border-radius:5px;font-family:'DM Mono',monospace;font-size:12.5px}
+.liste{background:var(--blanc);border-radius:var(--r-lg);box-shadow:var(--shadow);overflow:hidden}
+.ligne{display:grid;grid-template-columns:44px minmax(0,1fr) minmax(0,1.1fr) 76px;gap:14px;align-items:center;padding:14px 18px;border-top:1px solid var(--stroke)}
+.ligne:first-child{border-top:none}
+.ligne .rg{font-weight:600;color:var(--txt3);font-size:14px}
+.ligne .nm{font-weight:500;overflow-wrap:anywhere}
+.ligne .nm small{display:block;font-weight:400;font-size:12.5px;color:var(--txt3)}
+.jauge{height:8px;border-radius:999px;background:var(--surface3);overflow:hidden}
+.jauge i{display:block;height:100%;border-radius:999px;background:var(--nuit)}
+.ligne .val{text-align:right;font-weight:500;font-size:17px;color:var(--nuit)}
+.ligne.moi{background:var(--surface2)}
+.toi{display:inline-block;margin-left:6px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;background:var(--nuit);color:#fff;border-radius:999px;padding:2px 8px;vertical-align:2px}
 
-::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--line2);border-radius:4px}
-@media(max-width:760px){
-  #content{padding:28px 16px 100px}
-  h1{font-size:1.85rem}
-  .top-txt{display:none}
-  .twist{padding:24px 20px}
-  .twist .big{font-size:1.6rem}
-  .lb-fake-head,.lb-fake-row{grid-template-columns:40px 1fr 80px}
-  .lb-fake-head span:last-child,.lb-fake-row > :last-child{display:none}
-}
-@media (prefers-reduced-motion: reduce){
-  .sk,.status .dot,.lb-fake.glitch,.person,.reveal.on{animation:none!important}
-  .person{opacity:1;transform:none}
+.note{font-size:13.5px;color:var(--txt3);margin-top:16px;max-width:70ch}
+.vide{background:var(--blanc);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:34px 24px;text-align:center;color:var(--txt2)}
+.diag{background:var(--blanc);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:22px 24px;border-left:5px solid var(--bad)}
+.diag h2{font-weight:500;font-size:1.1rem;color:var(--bad);margin-bottom:8px}
+.diag code{background:var(--surface2);padding:2px 6px;border-radius:6px;font-size:13px}
+.attente{margin-top:14px;font-size:13.5px;color:var(--txt3)}
+
+@media(max-width:640px){
+  #content{padding:22px 16px 110px}
+  .podium{gap:8px}
+  .marche{padding:16px 8px 14px}
+  .marche.r1{padding-top:22px}
+  .marche .nm{font-size:14px}
+  .ligne{grid-template-columns:30px minmax(0,1fr) 64px;gap:10px;padding:13px 14px}
+  .ligne .jauge{grid-column:2 / 4;grid-row:2}
+  .onglets{display:flex;width:100%}
+  .onglets button{flex:1;padding:10px 8px;font-size:13px;white-space:normal;line-height:1.2}
 }
 </style>
 <link rel="stylesheet" href="ui.css">
@@ -132,311 +78,138 @@ h1 .acc{color:var(--amber)}
 <body>
 
 <div id="topbar">
-  <div class="logo">Classe<span>ment</span></div>
   <span id="nav-slot"></span>
-  <div class="top-txt">Qui révise le plus ?</div>
   <span id="lb-id-slot"></span>
 </div>
 
 <main id="content">
-  <div class="home-tag" id="tag">Classement partagé · M1 MBAF</div>
-  <h1 id="titre">Le tableau d'honneur des <span class="acc">révisions</span></h1>
-  <p class="home-sub" id="sous">Deux classements mis à jour en direct : les plus assidus et les meilleures notes. Chaque test final validé met ton score à jour automatiquement.</p>
+  <div class="tag">Classement partagé · M1 MBAF</div>
+  <h1>Qui révise <b>le plus</b> ?</h1>
+  <p class="sous">Deux classements de la promo, mis à jour à chaque visite : qui a le plus avancé dans ses cours, et qui répond le plus juste.</p>
 
-  <div class="chips">
-    <button class="start-chip solo" id="btn-id">👤 Définir / changer mon pseudo</button>
-    <button class="start-chip" id="btn-refresh">↻ Rafraîchir</button>
+  <div class="actions">
+    <button class="pil fonce" id="btn-id" type="button">Choisir ou changer mon pseudo</button>
+    <button class="pil" id="btn-refresh" type="button">↻ Actualiser</button>
   </div>
 
-  <!-- 1. Ce qui ressemble à un classement qui charge -->
-  <div class="lb-fake" id="fake">
-    <div class="lb-fake-tabs">
-      <span class="lb-fake-tab on">🔥 Les plus studieux</span>
-      <span class="lb-fake-tab">🎯 Meilleures notes</span>
-    </div>
-    <div class="lb-fake-head"><span>#</span><span>Pseudo</span><span>Questions</span><span>Séries</span></div>
-    <div id="fakeRows"></div>
-    <div class="pbar"><i id="pbar"></i></div>
-    <div class="status"><span class="dot"></span><span id="statusTxt">Connexion au classement…</span>
-      <button class="skip" id="skip" hidden>passer</button></div>
+  <div class="onglets" role="tablist" aria-label="Type de classement">
+    <button type="button" role="tab" id="tab-c" aria-selected="true" aria-controls="zone">Qui complète le plus</button>
+    <button type="button" role="tab" id="tab-r" aria-selected="false" aria-controls="zone">Meilleur taux de réussite</button>
   </div>
 
-  <!-- 2. Ce que c'est vraiment -->
-  <div class="reveal" id="reveal">
-    <div class="twist">
-      <div class="big">En fait, il n'y aura <span>pas de classement.</span></div>
-      <p>On a tout calculé, promis. Les questions, les séries, les moyennes. Et puis on a regardé le résultat, et on s'est dit qu'une promo qui s'entraide ne se range pas en colonnes.</p>
-      <p>Alors à la place, voici ce qu'on pense <b>vraiment</b> de chacun d'entre vous. Une phrase par personne. Aucune n'est en double. Toutes sont rigoureusement vraies.</p>
-    </div>
-    <div class="count" id="count"></div>
-    <div class="people" id="people"></div>
-    <div class="foot-note">Chaque phrase est attribuée une fois pour toutes, dans l'ordre d'arrivée sur le site.<br>Elle ne changera pas. Elle ne se négocie pas. Elle est à toi.</div>
-  </div>
+  <div id="zone" role="tabpanel" aria-live="polite"><div class="vide">Chargement du classement…</div></div>
 </main>
 
 <script src="lb.js"></script>
+<script src="progress.js"></script>
+<script src="banque.js"></script>
 <script>
 /* ════════════════════════════════════════════════════════════
-   Le « classement ».
-   Les pseudos viennent de la même table Supabase qu'avant
-   (lb.js, filtrée sur le M1). Chaque personne reçoit une phrase
-   unique, attribuée dans l'ordre de sa première apparition :
-   l'ordre ne bouge pas quand quelqu'un arrive, donc la phrase
-   de chacun reste la même d'une visite à l'autre.
+   Le classement.
+   · « Qui complète le plus » : moyenne, sur les cours du M1, du
+     pourcentage de complétion de chacun (leçons 50 % · mini-quiz 25 %
+     · test final 25 %, le calcul de « Ma progression »).
+   · « Meilleur taux de réussite » : bonnes réponses ÷ questions sur
+     les tests finaux et les séries d'entraînement enregistrés.
+   Les données viennent de la table Supabase partagée (lb.js).
    ════════════════════════════════════════════════════════════ */
-
-const PHRASES = [
-  ["🏛️","{p} ne révise pas ses cours : ce sont les cours qui se révisent en sa présence, par respect."],
-  ["🏦","Quand {p} ouvre une leçon, la BCE suspend sa réunion pour prendre des notes."],
-  ["📈","Le taux d'usure a demandé à {p} la permission de monter. {p} a dit non. Il n'a pas bougé."],
-  ["🧮","{p} a calculé une quinzaine d'intérêts de tête. La calculatrice a posé sa démission le soir même."],
-  ["📱","Les néobanques n'ont qu'un seul point faible : elles n'ont pas {p}."],
-  ["📝","{p} ne passe pas les partiels. Les partiels passent devant {p} et baissent les yeux."],
-  ["💶","Si {p} était un placement, ce serait un Livret A à 45 % net, garanti par l'État et par la galaxie."],
-  ["🛡️","L'AMF a classé {p} dans une catégorie inédite : risque nul, rendement infini, liquidité immédiate."],
-  ["🧭","{p} a fait son propre SWOT. Quatre cases de Forces. Le cadre du tableau a cédé sous la pression."],
-  ["✍️","Le jour où {p} signera un crédit, c'est la banque qui demandera un délai de réflexion de 10 jours."],
-  ["💱","{p} a réalisé un arbitrage entre Londres et New York sans téléphone. Juste en y pensant très fort."],
-  ["🖼️","Les salles de marché de la City ont un poster de {p} au mur. Personne n'ose le décrocher."],
-  ["⚖️","Même le FICP rêverait d'être inscrit chez {p}. Pour apprendre."],
-  ["🎓","{p} a expliqué la règle des 70 ans à un notaire. Le notaire a pris des notes, puis sa retraite."],
-  ["⏰","Les marchés ouvrent à 9 h. Sauf quand {p} fait la grasse matinée : ils attendent, par politesse."],
-  ["💪","{p} n'a pas de points faibles. Seulement des forces qui font une sieste."],
-  ["📉","La courbe des taux ne s'est inversée qu'une fois dans l'histoire récente : pour voir {p} de face."],
-  ["🎯","Le jour de l'examen, le sujet sera stressé. Pas {p}."],
-  ["🔁","{p} a atteint le palier « 75 jours » de la révision espacée en une seule après-midi. Le code n'était pas prévu pour."],
-  ["🚀","Si la motivation était cotée, l'action {p} serait suspendue pour hausse excessive dès l'ouverture."],
-  ["🖊️","La BCE a demandé un autographe à {p}. Deux fois. La deuxième, c'était pour tout le conseil des gouverneurs."],
-  ["🧑‍🏫","Un jour, on enseignera « la méthode {p} » en M1. Puis en M2. Puis en maternelle, par précaution."],
-  ["📚","{p} a lu le Code monétaire et financier en entier. Le Code, lui, attend encore la suite."],
-  ["🚗","Le coefficient bonus-malus de {p} est passé sous 0,50. Il a fallu réécrire la loi."],
-  ["🌙","Pendant que les autres dorment, {p} compte des spreads. En points. Pour le plaisir."],
-  ["🔍","Même TRACFIN trouve suspect un niveau d'excellence pareil. L'enquête conclut : c'est juste {p}."],
-  ["⚙️","L'effet de levier de {p} : une heure de révision, dix ans de carrière. Aucune banque ne propose mieux."],
-  ["🔒","{p} est la seule garantie réelle que la promo ait jamais eue. Hypothèque de premier rang sur le talent."],
-  ["🌍","Les ODD sont 17. Les objectifs de {p} ? Tous atteints avant le petit-déjeuner."],
-  ["🧾","{p} a calculé le TAEG de son avenir : 0 % de frais, 0 % d'assurance, 100 % de réussite."],
-  ["🏛","Si {p} était un taux directeur, l'inflation serait maîtrisée depuis 2019. Au moins."],
-  ["✂️","Kotler segmente les marchés. {p}, de son côté, segmente les difficultés en petits morceaux, et les mange."],
-  ["👑","{p} n'hésite pas entre une sortie en capital ou en rente : {p} sort en légende, net de prélèvements."],
-  ["💎","Le losange de Kapferer appliqué à {p} : Qui ? {p}. Pourquoi ? Parce que. Quand ? Maintenant. Contre qui ? Personne n'ose."],
-  ["🧳","{p} a demandé la portabilité bancaire de sa motivation. Aucun coffre n'était assez grand."],
-  ["📶","{p} révise si vite que le mode hors ligne n'a pas eu le temps de mettre les pages en cache."],
-  ["📊","Le cours de {p} ne connaît qu'une seule tendance : haussière. Les analystes ont arrêté de chercher à comprendre."],
-  ["☂️","Si l'on essayait d'assurer le potentiel de {p}, la prime ferait sauter toute la mutualité."],
-  ["🏰","On dit que la réserve héréditaire est intouchable. Le mental de {p} aussi."],
-  ["🚫","{p} a un taux d'endettement de 0 % envers la flemme. Le HCSF a demandé la recette."],
-  ["🏅","Même l'OAT à 4 % rêve, la nuit, du rendement de {p}."],
-  ["☕","{p} a réussi un arbitrage triangulaire entre le café, les cours et le sommeil. Gain net : colossal."],
-  ["🥲","Quand {p} valide une leçon, quelque part en Bretagne, un conseiller patrimonial verse une larme de fierté."],
-  ["♾️","Le Livret A plafonne à 22 950 €. La détermination de {p}, elle, n'a jamais entendu parler de plafond."],
-  ["⏳","Le PEA exige 5 ans de détention. {p} a détenu la bonne réponse en 5 secondes."],
-  ["🗺️","Le marché générique de {p}, c'est le besoin universel de réussir. Part de marché : 100 %."],
-  ["🏪","Si {p} ouvrait une agence, la concurrence fermerait la sienne, par simple courtoisie."],
-  ["🧯","La sinistralité des crédits en France est de 1,1 %. Celle des objectifs de {p} : 0 %, depuis toujours."],
-  ["🙅","{p} a lu « délai de rétractation » et a répondu calmement : « Je ne me rétracte jamais. »"],
-  ["🏆","Si le talent était soumis au PFU, {p} paierait, en solo, plus que tout le CAC 40 réuni."],
-  ["📞","Les cambistes du monde entier annoncent désormais leurs cotations « à figure {p} ». C'est devenu l'étalon."],
-  ["🧘","{p} n'a pas besoin de dispense d'acompte : l'échec ne lui a jamais rien prélevé."],
-  ["📏","Une nouvelle unité de mesure vient de naître : le « {p} », soit mille heures de motivation concentrées en une."],
-  ["🏧","La Banque de France a désigné {p} d'office. Pas pour ouvrir un compte : pour inspirer les autres."],
-  ["🔄","{p} a transformé le stress en actif de bilan. Les commissaires aux comptes n'en reviennent toujours pas."],
-  ["🌱","Le cycle de vie de la motivation de {p} ne connaît qu'une seule phase : la croissance."],
-  ["🌐","Chaque fois que {p} répond juste, un spread se resserre quelque part dans le monde."],
-  ["🗓️","Les partiels de janvier ont demandé à être reportés. Ils venaient d'apprendre que {p} les attendait de pied ferme."],
-  ["🧲","Les 5 forces de Porter + l'État + {p} : le modèle compte officiellement 7 forces depuis ce matin."],
-  ["📜","Si {p} était une clause bénéficiaire, toute la promo voudrait y figurer, à parts égales."],
-  ["🩺","La loi Lemoine a supprimé le questionnaire médical. Pour {p}, elle a supprimé le doute."],
-  ["🔤","Le glossaire contient une entrée secrète : « {p} — nom propre, synonyme de réussite »."],
-  ["⚡","Quand {p} entre dans l'amphi, l'énergie de la salle double. Les physiciens de l'université enquêtent."],
-  ["📋","{p} n'a pas de plan d'action commercial. {p} EST le plan d'action commercial."],
-  ["🤖","Une DMP a analysé {p} pendant trois jours. Conclusion du rapport : « valeur métier incalculable »."],
-  ["🧊","Les produits dérivés dérivent. {p}, jamais."],
-  ["🍩","Dans le donut de Kate Raworth, {p} est la confiture au milieu."],
-  ["🤝","{p} a signé une clause de reconduction tacite avec le succès. Résiliation impossible, loi Hamon ou pas."],
-  ["🔐","Le risque de change de {p} est nul : tout ce que {p} échange se convertit automatiquement en réussite."],
-  ["🌊","Le marché des changes ne ferme jamais. Sauf quand {p} fait une pause. Là, il retient son souffle."],
-  ["🎙️","{p} a fait un calcul à l'oral si clair que le jury a demandé à le réécouter en podcast."],
-  ["🪙","Écu, Denier, Louis… La prochaine version majeure du site portera un nom de monnaie. Pourquoi pas « {p} » ?"],
-  ["🦉","Minerve, déesse de la sagesse, a mis {p} en favori. Elle ne met personne en favori."],
-  ["🧱","{p} construit sa réussite comme un crédit amortissable : chaque jour, un peu plus de capital, un peu moins de doute."],
-  ["🌟","Quand on demande à la BRI le volume quotidien du talent de {p}, elle répond : « plus de 5 100 milliards ». Au moins."]
-];
-
-/* Au-delà du nombre de phrases, on combine une phrase et une variante :
-   chaque personne garde une formule unique, quelle que soit la taille de la promo. */
-const CODAS = [
-  " Version collector.", " Et ce n'est qu'un début.", " Certifié conforme par l'ACPR.",
-  " Avec mention très bien.", " Édition limitée.", " Hors plafond.", " Net de frais.",
-  " Garanti en capital.", " Et avec le sourire.", " Vérifié au centime."
-];
-
-const COULEURS = ['var(--gold)','var(--teal)','var(--navy)','var(--plum)','var(--rust)','var(--amber)'];
-
-/* Mélange fixe (graine constante) : l'ordre des phrases est le même pour tout le monde,
-   à chaque visite, sur chaque appareil. */
-function melangeFixe(n, graine){
-  const idx = Array.from({length:n}, (_,i)=>i);
-  let s = graine >>> 0;
-  const rnd = ()=>{ s |= 0; s = s + 0x6D2B79F5 | 0; let t = Math.imul(s ^ s >>> 15, 1 | s);
-    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
-  for(let i=n-1;i>0;i--){ const j = Math.floor(rnd()*(i+1)); [idx[i],idx[j]] = [idx[j],idx[i]]; }
-  return idx;
-}
-const ORDRE = melangeFixe(PHRASES.length, 20260921);
-
-function phrasePour(rang, pseudo){
-  const N = PHRASES.length;
-  const [em, modele] = PHRASES[ORDRE[rang % N]];
-  const tour = Math.floor(rang / N);
-  let txt = modele.split('{p}').join('<b>'+esc(pseudo)+'</b>');
-  if(tour > 0) txt += CODAS[(tour - 1) % CODAS.length];
-  return {em, txt, couleur: COULEURS[rang % COULEURS.length]};
-}
+let DATA = null, ONGLET = 'c';
+try{ ONGLET = localStorage.getItem('clt_onglet') === 'r' ? 'r' : 'c'; }catch(e){}
 
 function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-function norm(s){ return String(s||'').trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
-const attendre = ms => new Promise(r=>setTimeout(r, ms));
-const MOINS_DE_MOUVEMENT = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+function norm(s){ return String(s||'').trim().toLowerCase(); }
+function pctFr(x){ return (Math.round(x*10)/10).toLocaleString('fr-FR',{maximumFractionDigits:1}); }
+function nb(n){ return Number(n).toLocaleString('fr-FR'); }
 
-/* ---------- la mise en scène ---------- */
-function lignesFactices(){
-  const medal = i => i===0?'🥇':i===1?'🥈':i===2?'🥉':('#'+(i+1));
-  document.getElementById('fakeRows').innerHTML = Array.from({length:6},(_,i)=>`
-    <div class="lb-fake-row">
-      <span class="rk">${medal(i)}</span>
-      <span class="sk" style="width:${45+((i*37)%40)}%"></span>
-      <span class="sk" style="width:${55+((i*23)%35)}%"></span>
-      <span class="sk" style="width:${40+((i*29)%40)}%"></span>
-    </div>`).join('');
-}
-function etat(txt, pct){
-  document.getElementById('statusTxt').textContent = txt;
-  document.getElementById('pbar').style.width = pct+'%';
+function valeur(x){
+  return ONGLET==='c'
+    ? {v:pctFr(x.completion), unite:'%', jauge:x.completion,
+       sec: nb(x.lecons)+' leçon'+(x.lecons>1?'s':'')+' validée'+(x.lecons>1?'s':'')}
+    : {v:pctFr(x.pct), unite:'%', jauge:x.pct,
+       sec: nb(x.correct)+' / '+nb(x.questions)+' bonnes réponses'};
 }
 
-let passer = false;
-async function miseEnScene(nbPersonnes, nbReponses, premiereFois){
-  const fake = document.getElementById('fake');
-  if(MOINS_DE_MOUVEMENT){ return; }
-  const court = !premiereFois;
-  const etapes = court ? [
-    ["Mise à jour du classement…", 60, 500],
-    ["Presque…", 100, 450]
-  ] : [
-    ["Connexion au serveur des scores…", 12, 900],
-    ["Lecture de "+nbReponses.toLocaleString('fr-FR')+" résultat"+(nbReponses>1?'s':'')+" de la promo…", 30, 1000],
-    ["Calcul des moyennes pondérées…", 52, 1000],
-    ["Départage des ex æquo au centième…", 74, 950],
-    ["Attribution du podium à "+nbPersonnes+" participant"+(nbPersonnes>1?'s':'')+"…", 96, 1100],
-    ["Hmm.", 100, 1300]
-  ];
-  document.getElementById('skip').hidden = court;
-  for(const [txt, pct, ms] of etapes){
-    if(passer) break;
-    etat(txt, pct);
-    await attendre(ms);
-  }
-  if(!passer && !court){ fake.classList.add('glitch'); await attendre(700); }
-}
-
-async function devoiler(personnes){
-  const fake = document.getElementById('fake');
-  fake.classList.add('gone');
-  await attendre(MOINS_DE_MOUVEMENT ? 0 : 420);
-  fake.style.display = 'none';
-
-  document.getElementById('tag').textContent = 'Le vrai classement · M1 MBAF';
-  document.getElementById('titre').innerHTML = 'Tout le monde est <span class="acc">premier.</span>';
-  document.getElementById('sous').textContent = "Pas de podium, pas de dernier, pas de moyenne. Juste la vérité sur chacun, formulée avec toute la retenue dont nous sommes capables — c'est-à-dire aucune.";
-
+function dessiner(){
+  document.getElementById('tab-c').setAttribute('aria-selected', ONGLET==='c');
+  document.getElementById('tab-r').setAttribute('aria-selected', ONGLET==='r');
+  const zone = document.getElementById('zone');
+  if(!DATA) return;
+  const liste = ONGLET==='c' ? DATA.completion : DATA.reussite;
   const moi = norm(window.LB ? LB.pseudo() : '');
-  document.getElementById('count').textContent =
-    personnes.length + (personnes.length>1 ? ' personnes' : ' personne') + ' · ' +
-    (personnes.length>1 ? personnes.length+' phrases uniques' : '1 phrase unique');
 
-  // affichage alphabétique : aucune position ne peut ressembler à un rang
-  const affichage = personnes.slice().sort((a,b)=>a.pseudo.localeCompare(b.pseudo,'fr',{sensitivity:'base'}));
-  // ta carte en premier, pour que tu la voies tout de suite
-  const iMoi = affichage.findIndex(p=>norm(p.pseudo)===moi);
-  if(iMoi > 0) affichage.unshift(affichage.splice(iMoi,1)[0]);
-
-  document.getElementById('people').innerHTML = affichage.map((p,i)=>{
-    const f = phrasePour(p.rang, p.pseudo);
-    const estMoi = norm(p.pseudo)===moi;
-    return `<div class="person${estMoi?' me':''}" style="--acc:${f.couleur};animation-delay:${Math.min(i,24)*70}ms">
-      ${estMoi?'<span class="toi">C\'est toi</span>':''}
-      <div class="em">${f.em}</div>
-      <div class="nm">${esc(p.pseudo)}</div>
-      <div class="ph">${f.txt}</div>
-    </div>`;
-  }).join('');
-  document.getElementById('reveal').classList.add('on');
-}
-
-/* ---------- les données ---------- */
-async function charger(){
-  passer = false;
-  const fake = document.getElementById('fake');
-  fake.style.display = ''; fake.classList.remove('gone','glitch');
-  document.getElementById('reveal').classList.remove('on');
-  lignesFactices(); etat('Connexion au classement…', 5);
-
-  if(!window.LB || !LB.configured()){
-    return erreur("⚙️ Le classement n'est pas encore configuré", "Renseigne ton projet Supabase en haut du fichier <code>lb.js</code>.");
-  }
-  const rows = await LB.fetchAll();
-  if(rows === null){
-    return erreur("⚠️ Le classement n'a pas pu être chargé", (LB.diagnose ? LB.diagnose() : "Vérifie la connexion et la configuration Supabase."));
-  }
-
-  // une entrée par pseudo, datée de sa première apparition
-  const parPseudo = {};
-  rows.forEach(r=>{
-    const p = String(r.pseudo||'').trim(); if(!p) return;
-    const k = norm(p);
-    const t = r.created_at ? Date.parse(r.created_at) : Date.now();
-    if(!parPseudo[k] || t < parPseudo[k].t) parPseudo[k] = {pseudo:p, t};
-  });
-  const moi = window.LB ? LB.pseudo() : null;
-  if(moi && !parPseudo[norm(moi)]) parPseudo[norm(moi)] = {pseudo:moi, t:Infinity};
-
-  // ordre d'arrivée = ordre d'attribution des phrases (stable dans le temps)
-  const personnes = Object.values(parPseudo)
-    .sort((a,b)=> a.t - b.t || norm(a.pseudo).localeCompare(norm(b.pseudo)))
-    .map((p,i)=>Object.assign(p,{rang:i}));
-
-  let premiereFois = true;
-  try{ premiereFois = !localStorage.getItem('clt_vu'); }catch(e){}
-
-  await miseEnScene(Math.max(personnes.length,1), rows.length, premiereFois);
-  // marqué « vu » seulement une fois la mise en scène jouée jusqu'au bout
-  try{ localStorage.setItem('clt_vu','1'); }catch(e){}
-
-  if(!personnes.length){
-    document.getElementById('fake').style.display='none';
-    document.getElementById('reveal').classList.add('on');
-    document.getElementById('people').innerHTML = '';
-    document.getElementById('count').textContent = "Personne ici pour l'instant. Choisis un pseudo : ta phrase t'attend déjà.";
+  if(!liste.length){
+    zone.innerHTML = '<div class="vide">'+(ONGLET==='c'
+      ? "Personne n'apparaît encore ici. La progression s'enregistre dès qu'une personne ayant choisi un pseudo ouvre le hub ou un cours."
+      : "Personne n'a encore répondu à "+LB.MIN_QUESTIONS+" questions enregistrées. Passe un test final ou une série d'entraînement pour apparaître ici.")+'</div>'+note();
     return;
   }
-  await devoiler(personnes);
+
+  const top = liste.slice(0,3);
+  const ordre = top.length===3 ? [top[1],top[0],top[2]] : top.length===2 ? [top[1],top[0]] : [top[0]];
+  const podium = '<div class="podium" style="grid-template-columns:repeat('+ordre.length+',1fr)">'+ordre.map(x=>{
+    const r = liste.indexOf(x)+1, v = valeur(x), estMoi = norm(x.pseudo)===moi;
+    return '<div class="marche r'+r+(estMoi?' moi':'')+'">'+
+      '<div class="rg" aria-label="'+r+'e place">'+r+'</div>'+
+      '<div class="nm">'+esc(x.pseudo)+(estMoi?'<span class="toi">toi</span>':'')+'</div>'+
+      '<div class="val">'+v.v+'<small>'+v.unite+'</small></div>'+
+      '<div class="sec">'+v.sec+'</div></div>';
+  }).join('')+'</div>';
+
+  const reste = liste.slice(3);
+  const lignes = reste.length ? '<div class="liste">'+reste.map((x,i)=>{
+    const r = i+4, v = valeur(x), estMoi = norm(x.pseudo)===moi;
+    return '<div class="ligne'+(estMoi?' moi':'')+'">'+
+      '<span class="rg">'+r+'</span>'+
+      '<span class="nm">'+esc(x.pseudo)+(estMoi?'<span class="toi">toi</span>':'')+'<small>'+v.sec+'</small></span>'+
+      '<span class="jauge" aria-hidden="true"><i style="width:'+Math.max(2,Math.min(100,v.jauge))+'%"></i></span>'+
+      '<span class="val">'+v.v+' '+v.unite+'</span></div>';
+  }).join('')+'</div>' : '';
+
+  let attente = '';
+  if(ONGLET==='c' && DATA.enAttente.length){
+    attente = '<p class="attente">Pas encore de progression enregistrée pour : '+DATA.enAttente.map(x=>esc(x.pseudo)).join(', ')+
+      '. Elle apparaîtra à leur prochaine visite sur le site.</p>';
+  }
+  zone.innerHTML = podium + lignes + attente + note();
+}
+
+function note(){
+  return '<p class="note">'+(ONGLET==='c'
+    ? "Complétion : la moyenne de tes "+DATA.nbCours+" cours, chacun calculé comme dans « Ma progression » — leçons validées 50 %, mini-quiz réussis 25 %, test final 25 % (compté en entier dès 80 % de bonnes réponses). Un cours jamais ouvert compte 0 %. Égalité départagée par le nombre de leçons validées."
+    : "Taux de réussite : bonnes réponses ÷ questions, sur les tests finaux et les séries d'entraînement enregistrés avec ton pseudo. Il faut au moins "+LB.MIN_QUESTIONS+" questions pour apparaître. Égalité départagée par le nombre de questions.")+'</p>';
 }
 
 function erreur(titre, corps){
-  document.getElementById('fake').style.display='none';
-  const r = document.getElementById('reveal');
-  r.classList.add('on');
-  r.innerHTML = `<div class="diag"><h4>${titre}</h4><div>${corps}</div></div>`;
+  document.getElementById('zone').innerHTML = '<div class="diag"><h2>'+titre+'</h2><div>'+corps+'</div></div>';
 }
 
-document.getElementById('skip').onclick = ()=>{ passer = true; };
-document.getElementById('btn-id').onclick = ()=>LB.identityModal(()=>location.reload());
-document.getElementById('btn-refresh').onclick = ()=>location.reload();
+async function charger(){
+  const zone = document.getElementById('zone');
+  zone.innerHTML = '<div class="vide">Chargement du classement…</div>';
+  if(!window.LB || !LB.configured()){
+    return erreur("Le classement n'est pas encore configuré", "Renseigne le projet Supabase en haut du fichier <code>lb.js</code>.");
+  }
+  try{ await LB.syncProgression(); }catch(e){}   // ta propre progression d'abord
+  const rows = await LB.fetchAll();
+  if(rows === null){
+    return erreur("Le classement n'a pas pu être chargé", LB.diagnose ? LB.diagnose() : "Vérifie la connexion.");
+  }
+  DATA = LB.rankings(rows);
+  dessiner();
+}
+
+function choisir(o){ ONGLET = o; try{ localStorage.setItem('clt_onglet', o); }catch(e){} dessiner(); }
+document.getElementById('tab-c').onclick = ()=>choisir('c');
+document.getElementById('tab-r').onclick = ()=>choisir('r');
+document.querySelector('.onglets').addEventListener('keydown', e=>{
+  if(e.key==='ArrowRight' || e.key==='ArrowLeft'){ e.preventDefault(); choisir(ONGLET==='c'?'r':'c'); document.getElementById(ONGLET==='c'?'tab-c':'tab-r').focus(); }
+});
+document.getElementById('btn-id').onclick = ()=>LB.identityModal(()=>charger());
+document.getElementById('btn-refresh').onclick = charger;
 try{ document.getElementById('lb-id-slot').appendChild(LB.idButton()); }catch(e){}
+dessiner();
 charger();
 </script>
-<script src="banque.js"></script>
 <script src="ui.js"></script>
 </body>
 </html>

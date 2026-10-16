@@ -13,7 +13,7 @@
    ⚠️ Cette valeur doit rester IDENTIQUE à VERSION_APP,
       en haut de ui.js.
    ════════════════════════════════════════════════════════════ */
-const VERSION = '5.0.0';        // « Florin »
+const VERSION = '5.1.0';        // « Florin »
 const CACHE_APP  = 'm1-app-'+VERSION;      // les fichiers du site
 const CACHE_EXT  = 'm1-ext-'+VERSION;      // polices et bibliothèques externes
 
@@ -27,6 +27,7 @@ const FICHIERS = [
   'entrainement_fiscal.html',
   'fiscalite_particulier.html',
   'droits_particuliers.html',
+  'etudes_de_marche.html',
   'marketing_numerique.html',
   'es_banque.html',
   'glossaire.html',
@@ -46,6 +47,7 @@ const FICHIERS = [
   /* Copies locales des photos de matière : affichées si Unsplash ne répond pas */
   'img/accueil.webp',
   'img/sujet-droits-particuliers.webp',
+  'img/sujet-etudes-marche.webp',
   'img/sujet-fiscalite-particulier.webp',
   'img/sujet-produits-derives.webp',
   'img/sujet-marketing-numerique.webp',

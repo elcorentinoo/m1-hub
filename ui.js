@@ -10,7 +10,7 @@
 
   /* ---------- 0. VERSION ---------- */
   /* Doit rester identique à VERSION en haut de sw.js. */
-  const VERSION_APP = '5.0.0';
+  const VERSION_APP = '5.1.0';
   const NOM_VERSION = 'Florin';
   window.APP_VERSION = VERSION_APP;
 
@@ -31,6 +31,7 @@
     {g:'Cours',    href:'es_banque.html',              ico:'🏛️', t:'ES Banque',                s:'14 leçons · simulateur fiscal'},
     {g:'Cours',    href:'fiscalite_particulier.html',   ico:'§',  t:'Fiscalité du Particulier', s:"11 leçons · IR et foyer fiscal"},
     {g:'Cours',    href:'droits_particuliers.html',     ico:'⚖',  t:'Droits des Particuliers',  s:'10 leçons · droit des personnes'},
+    {g:'Cours',    href:'etudes_de_marche.html',        ico:'👤', t:'Études de marché',          s:'12 leçons · quali, quanti, échantillon'},
     {g:'Entraînement', href:'entrainement_changes.html', ico:'🎯', t:'Marché des changes',      s:'13 notions · calculs ∞'},
     {g:'Entraînement', href:'entrainement_fiscal.html',  ico:'🧮', t:'Impôt sur le revenu',     s:'9 notions · parts et RNGI ∞'},
     {g:'Outils',   href:'ressourcerie.html', ico:'📚', t:'Ressourcerie',  s:'Documents partagés de la promo'},
@@ -129,12 +130,18 @@
       '<nav class="ds-nav verre" aria-label="Navigation principale">'+liens+'</nav>'+
       '<div class="ds-acts verre">'+
         '<span class="ds-slot" id="ds-slot"></span>'+
+        '<div class="ds-q" role="search">'+
+          '<svg viewBox="0 0 20 20" width="17" height="17" aria-hidden="true" focusable="false">'+IC_RECH+'</svg>'+
+          '<input id="ds-q-in" type="search" placeholder="Rechercher" autocomplete="off" aria-label="Rechercher une leçon, un sigle, une page" aria-controls="ds-q-res" aria-expanded="false">'+
+          '<div class="ds-q-res" id="ds-q-res" role="listbox" hidden></div>'+
+        '</div>'+
         '<button class="ds-ic" id="ds-rech" title="Recherche (Ctrl+K)">'+icone(IC_RECH,'Rechercher')+'</button>'+
         '<button class="ds-ic" id="ds-menu" aria-label="Ouvrir la navigation">'+icone(IC_MENU,'Menu')+'</button>'+
       '</div>';
 
     document.body.insertBefore(h, document.body.firstChild);
     document.getElementById('ds-rech').onclick = ouvrirRecherche;
+    brancherRechercheEntete();
     document.getElementById('ds-menu').onclick = ouvrir;
 
     /* on récupère les widgets de la page : progression, XP, identité */
@@ -170,7 +177,7 @@
   const CREDITS = [
     ['Tobias Keller','tokeller'], ['Miles Smith','msmith0912'], ['Kelly Sikkema','kellysikkema'],
     ['Anne Nygård','polarmermaid'], ['Shutter Speed','shutter_speed_'], ['David Trinks','dtrinksrph'],
-    ['Jakub Żerdzicki','jakubzerdzicki']
+    ['Jakub Żerdzicki','jakubzerdzicki'], ['FotoFlo','flotography_91']
   ];
 
   /* ---------- ICÔNES AU TRAIT ---------- */
@@ -206,7 +213,7 @@
   }
 
   /* ---------- PAGES DE COURS : cadre photo, progression, suite ---------- */
-  const NOMS = {'marche-particuliers':'Marché des Particuliers','produits-derives':'Produits Dérivés I','marketing-numerique':'Marketing Numérique','es-banque':'ES Banque','fiscalite-particulier':'Fiscalité du Particulier','droits-particuliers':'Droits des particuliers'};
+  const NOMS = {'marche-particuliers':'Marché des Particuliers','produits-derives':'Produits Dérivés I','marketing-numerique':'Marketing Numérique','es-banque':'ES Banque','fiscalite-particulier':'Fiscalité du Particulier','droits-particuliers':'Droits des particuliers','etudes-marche':'Études de marché'};
   function estLecon(v){ return /^l\d+$/.test(v||''); }
   function sequence(){
     const vus = {}, out = [];
@@ -262,7 +269,18 @@
     if(typeof window.toggleSidebar === 'function') window.toggleSidebar();
   };
   function vueActive(){ return document.querySelector('.view.active'); }
+  /* ---------- CLASSEMENT : envoi discret de la progression ---------- */
+  let _synchro = null;
+  function synchroniser(delai){
+    clearTimeout(_synchro);
+    _synchro = setTimeout(()=>{ try{ if(window.LB && LB.syncProgression) LB.syncProgression(); }catch(e){} }, delai);
+  }
+  document.addEventListener('visibilitychange', ()=>{
+    if(document.visibilityState === 'hidden'){ try{ if(window.LB && LB.syncProgression) LB.syncProgression(); }catch(e){} }
+  });
+
   function majProgres(){
+    synchroniser(1500);
     const items = [...document.querySelectorAll('.sidebar .nav-item[data-view]')].filter(n=>estLecon(n.dataset.view));
     const tot = items.length, faites = items.filter(n=>n.classList.contains('done')).length;
     const n = document.getElementById('ds-n'), j = document.getElementById('ds-j');
@@ -390,12 +408,63 @@
     }
     return out;
   }
-  const LABM = {'marche-particuliers':'Marché des Particuliers','produits-derives':'Produits Dérivés','marketing-numerique':'Marketing Numérique','es-banque':'ES Banque','fiscalite-particulier':'Fiscalité du Particulier','droits-particuliers':'Droits des Particuliers'};
+  const LABM = {'marche-particuliers':'Marché des Particuliers','produits-derives':'Produits Dérivés','marketing-numerique':'Marketing Numérique','es-banque':'ES Banque','fiscalite-particulier':'Fiscalité du Particulier','droits-particuliers':'Droits des Particuliers','etudes-marche':'Études de marché'};
   function fichierDe(m){
-    return {'marche-particuliers':'marche_des_particuliers.html','produits-derives':'produits_derives.html','marketing-numerique':'marketing_numerique.html','es-banque':'es_banque.html','fiscalite-particulier':'fiscalite_particulier.html','droits-particuliers':'droits_particuliers.html'}[m] || 'index.html';
+    return {'marche-particuliers':'marche_des_particuliers.html','produits-derives':'produits_derives.html','marketing-numerique':'marketing_numerique.html','es-banque':'es_banque.html','fiscalite-particulier':'fiscalite_particulier.html','droits-particuliers':'droits_particuliers.html','etudes-marche':'etudes_de_marche.html'}[m] || 'index.html';
+  }
+
+  /* Résultats d'une recherche : 8 suggestions sans texte, 30 au plus sinon. */
+  let _index = null;
+  function chercher(txt){
+    if(!_index) _index = indexComplet();
+    const v = norm(String(txt||'').trim());
+    return (v ? _index.filter(o=>norm(o.t+' '+(o.s||'')).includes(v)) : _index.slice(0,8)).slice(0,30);
+  }
+  function ligneResultat(o, i, classe){
+    return '<a class="'+classe+(i===0?' sel':'')+'" role="option" href="'+o.u+'">'+
+      '<span class="pi">'+o.i+'</span><span class="pt">'+echap(o.t)+
+      '<span class="ps">'+echap(o.s||'')+'</span></span></a>';
+  }
+
+  /* Le champ de recherche intégré à l'en-tête (grands écrans) :
+     on tape directement, les résultats s'ouvrent dessous. */
+  function rechercheEnteteVisible(){
+    const q = document.querySelector('.ds-q');
+    return !!(q && q.offsetParent !== null);
+  }
+  function brancherRechercheEntete(){
+    const q = document.getElementById('ds-q-in'), box = document.getElementById('ds-q-res');
+    if(!q || !box) return;
+    let res = [], sel = 0;
+    function ouvre(on){ box.hidden = !on; q.setAttribute('aria-expanded', on ? 'true' : 'false'); }
+    function dessine(){
+      res = chercher(q.value); sel = 0;
+      box.innerHTML = res.length ? res.map((o,i)=>ligneResultat(o,i,'ds-q-i')).join('')
+                                 : '<div class="ds-q-v">Aucun résultat.</div>';
+      ouvre(true);
+    }
+    function bouge(d){
+      if(!res.length) return;
+      sel = (sel + d + res.length) % res.length;
+      const items = box.querySelectorAll('.ds-q-i');
+      items.forEach((e,i)=>e.classList.toggle('sel', i===sel));
+      if(items[sel]) items[sel].scrollIntoView({block:'nearest'});
+    }
+    q.addEventListener('input', dessine);
+    q.addEventListener('focus', dessine);
+    q.addEventListener('keydown', e=>{
+      if(e.key==='ArrowDown'){ e.preventDefault(); if(box.hidden) dessine(); else bouge(1); }
+      else if(e.key==='ArrowUp'){ e.preventDefault(); bouge(-1); }
+      else if(e.key==='Enter'){ e.preventDefault(); const a = box.querySelectorAll('.ds-q-i')[sel]; if(a) location.href = a.getAttribute('href'); }
+      else if(e.key==='Escape'){ ouvre(false); q.blur(); }
+    });
+    /* on ferme quand on clique ailleurs (le clic sur un résultat suit le lien) */
+    document.addEventListener('pointerdown', e=>{ if(!e.target.closest('.ds-q')) ouvre(false); });
+    q.addEventListener('blur', ()=>setTimeout(()=>{ if(!document.activeElement || !document.activeElement.closest('.ds-q')) ouvre(false); }, 150));
   }
 
   function ouvrirRecherche(){
+    if(rechercheEnteteVisible()){ document.getElementById('ds-q-in').focus(); return; }
     if(document.getElementById('ui-pal')) { document.getElementById('ui-pal-q').focus(); return; }
     const p = document.createElement('div');
     p.className = 'ui-pal-ov'; p.id = 'ui-pal';
@@ -407,17 +476,13 @@
     p.onclick = e=>{ if(e.target===p) p.remove(); };
     document.body.appendChild(p);
     const q = document.getElementById('ui-pal-q');
-    const idx = indexComplet();
     let sel = 0, res = [];
     function dessine(){
-      const v = norm(q.value.trim());
-      res = (v ? idx.filter(o=>norm(o.t+' '+(o.s||'')).includes(v)) : idx.slice(0,8)).slice(0,30);
+      res = chercher(q.value);
       sel = 0;
       const host = document.getElementById('ui-pal-r');
       host.innerHTML = res.length
-        ? res.map((o,i)=>'<a class="ui-pal-i'+(i===0?' sel':'')+'" href="'+o.u+'">'+
-            '<span class="pi">'+o.i+'</span><span class="pt">'+echap(o.t)+
-            '<span class="ps">'+echap(o.s||'')+'</span></span></a>').join('')
+        ? res.map((o,i)=>ligneResultat(o,i,'ui-pal-i')).join('')
         : '<div class="ui-pal-v">Aucun résultat.</div>';
     }
     function bouge(d){
@@ -460,6 +525,7 @@
     enregistrerSW();
     majReseau();
     setTimeout(ouvrirAncre, 60);
+    synchroniser(2500);
   }
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();

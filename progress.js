@@ -14,7 +14,10 @@ window.P = (function(){
     'marche-particuliers':{lab:'Marché des Particuliers', f:'marche_des_particuliers.html', ico:'🏦'},
     'produits-derives'   :{lab:'Produits Dérivés',        f:'produits_derives.html',        ico:'💱'},
     'marketing-numerique':{lab:'Marketing Numérique',     f:'marketing_numerique.html',     ico:'📊'},
-    'es-banque'          :{lab:'ES Banque',              f:'es_banque.html',               ico:'🏛️'}
+    'es-banque'          :{lab:'ES Banque',              f:'es_banque.html',               ico:'🏛️'},
+    'fiscalite-particulier':{lab:'Fiscalité du Particulier', f:'fiscalite_particulier.html', ico:'§'},
+    'droits-particuliers':{lab:'Droits des Particuliers', f:'droits_particuliers.html',     ico:'⚖'},
+    'etudes-marche'      :{lab:'Études de marché',       f:'etudes_de_marche.html',        ico:'👤'}
   };
 
   /* ---------- lecture / écriture ---------- */
