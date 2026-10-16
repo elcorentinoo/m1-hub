@@ -274,6 +274,9 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  6.0.6            Retour du nouveau logo « M1 MBAF » (images seules ; la
+                   configuration reste celle de la 5.1). L'icône vide venait de la
+                   mémoire de Safari sur l'iPhone, pas du site.
   6.0.5            Icône d'écran d'accueil : retour à l'identique de la 5.1 (même
                    fichier « M1 » souligné, même manifeste, une seule déclaration
                    apple-touch-icon), toutes les icônes ajoutées depuis retirées.
