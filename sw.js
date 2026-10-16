@@ -13,7 +13,7 @@
    ⚠️ Cette valeur doit rester IDENTIQUE à VERSION_APP,
       en haut de ui.js.
    ════════════════════════════════════════════════════════════ */
-const VERSION = '6.0.4';        // « Ducat »
+const VERSION = '6.0.5';        // « Ducat »
 const CACHE_APP  = 'm1-app-'+VERSION;      // les fichiers du site
 const CACHE_EXT  = 'm1-ext-'+VERSION;      // polices et bibliothèques externes
 
@@ -44,7 +44,9 @@ const FICHIERS = [
   'banque.js',
   'calendrier.js',
   'bequick.js',
-  /* (les icônes et le manifeste ne passent pas par le service worker) */
+  'manifest.webmanifest',
+  'icons/icon-192.png',
+  'icons/icon-512.png',
   /* Copies locales des photos de matière : affichées si Unsplash ne répond pas */
   'img/accueil.webp',
   'img/sujet-droits-particuliers.webp',
@@ -91,9 +93,6 @@ self.addEventListener('fetch', e=>{
   if(req.method !== 'GET') return;
   const url = new URL(req.url);
 
-  /* Icônes et manifeste : jamais interceptés, le téléphone les lit directement
-     (l'icône d'écran d'accueil de l'iPhone ne doit dépendre de rien d'autre) */
-  if(url.origin === self.location.origin && /\/icons\/|apple-touch-icon|favicon|manifest\.webmanifest/.test(url.pathname)) return;
   /* Les fonctions Netlify (notification de test) : toujours le réseau */
   if(url.pathname.startsWith('/.netlify/')) return;
 

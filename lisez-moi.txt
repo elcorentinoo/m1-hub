@@ -274,6 +274,9 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  6.0.5            Icône d'écran d'accueil : retour à l'identique de la 5.1 (même
+                   fichier « M1 » souligné, même manifeste, une seule déclaration
+                   apple-touch-icon), toutes les icônes ajoutées depuis retirées.
   6.0.4            Icône d'écran d'accueil iPhone : la déclaration de favicon.ico en
                    « sizes=any » (6.0.1) la faisait passer pour la plus grande icône ;
                    l'iPhone la préférait au logo et ne savait pas l'afficher. Retirée
