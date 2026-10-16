@@ -274,6 +274,11 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  6.0.4            Icône d'écran d'accueil iPhone : la déclaration de favicon.ico en
+                   « sizes=any » (6.0.1) la faisait passer pour la plus grande icône ;
+                   l'iPhone la préférait au logo et ne savait pas l'afficher. Retirée
+                   (le navigateur trouve /favicon.ico tout seul) ; restent le logo
+                   apple-touch-icon et les icônes d'onglet PNG 32 et 48 px.
   6.0.3            Icône d'écran d'accueil : déclarée en 5 tailles (120, 152, 167,
                    180 et par défaut), adresses absolues avec un numéro de version
                    (?v=603) pour qu'aucun téléphone ne réutilise un ancien essai,
