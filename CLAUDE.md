@@ -24,22 +24,36 @@ respecte ces deux contraintes :
 
 L'historique complet est dans `lisez-moi.txt`, à compléter à chaque version.
 
-## Direction artistique — « Prisme » (4.0.0)
+## Direction artistique — « Verre » (5.0.0 « Florin »)
 
 Toute la charte tient dans `theme.css`, chargé après le `<style>` de chaque
 page et après `ui.css` : il reprend la main sur les styles locaux. **Ne jamais
 coder une couleur en dur dans une page** — tout passe par les variables de
 `theme.css`.
 
-Registre : instrument de précision. Blanc pur sur canevas froid (`#F7F8FA`),
-filets d'un pixel, rayons de 10 px, et un seul dégradé spectral
-(violet → bleu → cyan) réservé aux marqueurs : onglet actif, jauges, fil du
-semestre, arête des panneaux. Typographie Inter Tight resserrée, IBM Plex Mono
-pour les chiffres et les étiquettes. Les encadrés de règle (`.rulebox`) sont le
-seul aplat sombre du système.
+Registre : une grande photo par matière dans un cadre très arrondi (36 px),
+des cartes blanches (26 px) et du verre dépoli (`.verre`) posés dessus, des
+pilules et des boutons ronds, fond bleu-gris `#ECEEF6`, texte bleu nuit
+`#1E2147`. Police Outfit partout : fine (200–300) pour les grands titres,
+moyenne pour le reste, chiffres en grand. Les encadrés de règle (`.rulebox`)
+sont le seul aplat bleu nuit dans les leçons.
+
+**Chaque matière a son identité**, déclarée une seule fois en haut de
+`theme.css` (`:root[subject-id="…"], [data-sid="…"]`) : `--m` (couleur),
+`--m-soft`, `--m-clair`, `--emb` (emblème) et `--photo` (photo Unsplash, puis
+copie locale `img/sujet-<matière>.webp` en secours). Une nouvelle matière =
+un nouveau bloc à cet endroit, une copie locale de sa photo, et le
+photographe ajouté à `CREDITS` dans `ui.js`. Les photos passent en noir et
+blanc puis prennent la couleur de la matière (`.ph`).
+
+`ui.js` construit l'en-tête en pilules de verre, la barre basse sur
+téléphone, et sur les pages de cours le cadre photo (titre de la leçon,
+progression emboîtée dans le coin) et la barre « leçon précédente /
+suivante ». Les transitions entre pages passent par `@view-transition`.
 
 **Accessibilité : tous les textes doivent rester à 4,5:1 minimum**, fond
-composité pris en compte. À vérifier après toute modification de couleur.
+composité pris en compte — y compris les textes posés sur une photo, à
+mesurer au pixel. À vérifier après toute modification de couleur.
 
 ## Architecture
 
