@@ -10,7 +10,7 @@
 
   /* ---------- 0. VERSION ---------- */
   /* Doit rester identique à VERSION en haut de sw.js. */
-  const VERSION_APP = '6.0.6';
+  const VERSION_APP = '6.0.7';
   const NOM_VERSION = 'Ducat';
   window.APP_VERSION = VERSION_APP;
 
@@ -576,13 +576,21 @@
     const z = document.getElementById('ds-n-push'); if(!z || !window.BQ) return;
     const et = await BQ.etatPush();
     const txt = {
-      actif:'<b>Alerte BeQuick activée</b> sur cet appareil : tu seras prévenu chaque soir à 18 h 30.<button type="button" class="ds-n-b sec" data-a="off">Désactiver</button>',
+      actif:'<b>Alerte BeQuick activée</b> sur cet appareil : tu seras prévenu chaque soir à 18 h 30.<button type="button" class="ds-n-b" data-t="1">Envoyer une notification de test</button><button type="button" class="ds-n-b sec" data-a="off">Désactiver</button>',
       inactif:'<b>Être prévenu à 18 h 30</b> sur cet appareil, même site fermé, quand BeQuick ouvre.<button type="button" class="ds-n-b" data-a="on">Activer l\'alerte</button>',
       refuse:'<b>Notifications bloquées</b> pour ce site dans les réglages du navigateur. Autorise-les, puis reviens ici.',
       ios:'<b>Sur iPhone</b> : touche Partager, puis « Sur l\'écran d\'accueil ». Ouvre ensuite le site depuis cette nouvelle icône et reviens ici pour activer l\'alerte de 18 h 30.',
       impossible:'Ce navigateur ne permet pas de recevoir des notifications.'
     }[et] || '';
     z.innerHTML = '<div class="ds-n-p">'+txt+'</div>';
+    const t = z.querySelector('[data-t]');
+    if(t) t.onclick = async ()=>{
+      t.disabled = true; t.textContent = 'Envoi…';
+      const r = await BQ.testerMaintenant().catch(e=>({ok:false, texte:e.message}));
+      t.disabled = false; t.textContent = 'Envoyer une notification de test';
+      const old = z.querySelector('.ds-n-res'); if(old) old.remove();
+      z.insertAdjacentHTML('beforeend','<div class="ds-n-p ds-n-res'+(r.ok?'':' ds-n-err')+'" style="margin-top:8px">'+echap(r.texte)+'</div>');
+    };
     const b = z.querySelector('[data-a]');
     if(b) b.onclick = async ()=>{
       b.disabled = true;

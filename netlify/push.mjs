@@ -59,7 +59,25 @@ export async function envoyerUn(abonne, message, publique, privee){
     'TTL':'12600', 'Urgency':'high', 'Topic':message.tag || 'm1',
     'Authorization':'vapid t='+jetonVapid(abonne.endpoint, publique, privee)+', k='+publique
   }, body:chiffrer(JSON.stringify(message), abonne.p256dh, abonne.auth)});
-  return r.status;
+  let texte = ''; try{ texte = (await r.text()).slice(0, 300); }catch(e){}
+  return {status:r.status, texte};
+}
+
+/* Les clés d'envoi. La publique n'est pas secrète (elle est aussi dans
+   bequick.js) : on la garde ici en secours si la variable manque. */
+export const CLE_PUBLIQUE = 'BGudFKvHrz5uqtu2wW2HlNTfMgpuAvXR-E0EacuHaqb-9WSJV7oLdBxpwTc7EOtx2Ffn3JdBjPr0BcqVw8T8tzA';
+export function cles(){
+  const env = (globalThis.Netlify && Netlify.env) ? (k=>Netlify.env.get(k)) : (k=>process.env[k]);
+  return {publique: env('VAPID_PUBLIC') || CLE_PUBLIQUE, privee: env('VAPID_PRIVATE') || ''};
+}
+
+/* Lecture du corps d'une requête (fonctions « classiques » : il peut
+   arriver encodé en base64). */
+export function lireCorps(event){
+  try{
+    const brut = event.isBase64Encoded ? Buffer.from(event.body||'', 'base64').toString('utf8') : (event.body||'');
+    return JSON.parse(brut || '{}');
+  }catch(e){ return null; }
 }
 
 /* Garde-fou : on n'envoie qu'à un vrai service de notifications

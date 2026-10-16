@@ -274,6 +274,12 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  6.0.7            Notification de test : le programme en arrière-plan lit aussi
+                   un corps de requête encodé en base64, prend la clé publique
+                   dans le code si la variable manque, et écrit chaque étape dans
+                   son journal. Nouveau bouton « Envoyer une notification de
+                   test » dans la cloche : envoi immédiat et réponse exacte du
+                   service de notifications affichée à l'écran.
   6.0.6            Retour du nouveau logo « M1 MBAF » (images seules ; la
                    configuration reste celle de la 5.1). L'icône vide venait de la
                    mémoire de Safari sur l'iPhone, pas du site.

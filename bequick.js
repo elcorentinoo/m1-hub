@@ -226,6 +226,23 @@
     }catch(e){}
     return 'echec';
   }
+  /* Bouton « Envoyer une notification de test » : envoi immédiat, et la
+     réponse du service de notifications est rendue lisible à l'écran. */
+  async function testerMaintenant(){
+    const reg = await navigator.serviceWorker.ready;
+    const sub = await reg.pushManager.getSubscription();
+    if(!sub) return {ok:false, texte:"Cet appareil n'est pas abonné : active d'abord l'alerte."};
+    const j = sub.toJSON();
+    let r, o = {};
+    try{
+      r = await fetch('/.netlify/functions/push-test', {method:'POST', headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({endpoint:j.endpoint, p256dh:j.keys.p256dh, auth:j.keys.auth})});
+      o = await r.json().catch(()=>({}));
+    }catch(e){ return {ok:false, texte:'Le site est injoignable (connexion ?).'}; }
+    if(o.ok) return {ok:true, texte:"✓ Envoyée, et acceptée par le service de notifications. Elle doit arriver dans les secondes qui viennent."};
+    const quoi = {abonnement:"abonnement non reconnu", cle:"clé d'envoi absente côté serveur", envoi:"refusée par le service de notifications", methode:"requête invalide"}[o.etape] || ('erreur '+(r && r.status));
+    return {ok:false, texte:'Échec — '+quoi+(o.service ? ' (code '+o.service+')' : '')+(o.detail ? ' : '+String(o.detail).slice(0,160) : '')+'.'};
+  }
   const MSG_TEST = {
     minute:"✓ Alerte activée. Une notification de test arrive dans une minute : tu peux fermer l'appli pour vérifier.",
     immediat:"✓ Alerte activée. Une notification de test vient d'être envoyée.",
@@ -263,6 +280,6 @@
   window.BQ = {NOM, OUVERTURE, FERMETURE, DUREE, NB_Q, PTS_MAX, PTS_MIN, T_REF, PREMIER_JOUR,
     paris, maintenant, jourDe, instant, ouverture, fermeture, phase, decaleJour, points,
     tirage, poidsMatieres, questions, serie, maPartie, demarrer, envoyer, classement, toutes, general,
-    lireLocal, ecrireLocal, pseudo, cle, api, MSG_TEST,
+    lireLocal, ecrireLocal, pseudo, cle, api, MSG_TEST, testerMaintenant,
     pushPossible, estIOS, installe, etatPush, activerPush, desactiverPush, alertes};
 })();

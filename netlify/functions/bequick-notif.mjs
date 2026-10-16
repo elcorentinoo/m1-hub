@@ -13,7 +13,7 @@
      VAPID_PUBLIC   clé publique (la même que CLE_PUSH dans bequick.js)
      VAPID_PRIVATE  clé privée — ne jamais la mettre dans le dépôt
    ════════════════════════════════════════════════════════════ */
-import {supa, envoyerUn} from '../push.mjs';
+import {supa, envoyerUn, cles} from '../push.mjs';
 
 export const MESSAGE = {
   title: '⚡ BeQuick est ouvert',
@@ -32,7 +32,7 @@ export async function envoyerATous(publique, privee, message = MESSAGE){
   let ok = 0, oublies = 0, echecs = 0;
   await Promise.all(abonnes.map(async a=>{
     try{
-      const st = await envoyerUn(a, message, publique, privee);
+      const st = (await envoyerUn(a, message, publique, privee)).status;
       if(st === 404 || st === 410){ oublies++; await supa('rpc/push_oublier', {method:'POST', body:{e:a.endpoint}}).catch(()=>{}); }
       else if(st >= 200 && st < 300) ok++;
       else echecs++;
@@ -42,8 +42,8 @@ export async function envoyerATous(publique, privee, message = MESSAGE){
 }
 
 export default async (req) => {
-  const publique = process.env.VAPID_PUBLIC, privee = process.env.VAPID_PRIVATE;
-  if(!publique || !privee) return new Response('Clés VAPID absentes', {status:500});
+  const {publique, privee} = cles();
+  if(!privee) return new Response('Clé VAPID_PRIVATE absente', {status:500});
   const {h, mi} = heureParis();
   if(h !== 18) return new Response('Pas encore 18 h 30 à Paris ('+h+' h '+mi+').');
   const bilan = await envoyerATous(publique, privee);
