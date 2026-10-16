@@ -52,3 +52,9 @@
   for = "/icons/*"
   [headers.values]
     Cache-Control = "public, max-age=604800"
+
+# L'icône d'écran d'accueil de l'iPhone est cherchée à la racine du site.
+[[headers]]
+  for = "/apple-touch-icon*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"

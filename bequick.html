@@ -169,7 +169,7 @@ main{max-width:980px;margin:0 auto;padding:12px 16px 120px;min-width:0}
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <link rel="icon" type="image/png" sizes="48x48" href="icons/favicon-48.png">
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="M1 MBAF">
 </head>
@@ -281,8 +281,9 @@ async function afficherEtat(){
     try{ const l = await BQ.classement(j); const i = l.findIndex(x=>x.pseudo_cle === BQ.cle(BQ.pseudo())); if(i >= 0) rang = (i+1)+'<small> / '+l.length+'</small>'; }catch(e){}
     z.innerHTML = '<div class="carte-res"><div><b>'+nb(sc)+'</b><small>points ce soir</small></div><div><b>'+bo+'<small style="font-size:16px"> / '+BQ.NB_Q+'</small></b><small>bonnes réponses</small></div><div><b>'+rang+'</b><small>rang du soir</small></div></div>'+
       '<p class="note-n">'+(ph === 'ouvert' ? 'Le classement se complète jusqu\'à 22 h 20. ' : '')+'Prochain BeQuick '+(ph === 'avant' ? 'à 18 h 30.' : 'demain à 18 h 30.')+'</p>'+
-      '<div><button class="btn-sec" id="bCorr">Voir la correction de ce soir</button></div>';
-    $('bCorr').onclick = ()=>{ choisir('cal'); selJour = j; dessinerCalendrier(); afficherJour(j, true); document.getElementById('classement').scrollIntoView({behavior:'smooth'}); };
+      (ph === 'ferme' ? '<div><button class="btn-sec" id="bCorr">Voir la correction de ce soir</button></div>'
+                      : '<p class="note-n">La correction de ce soir sera disponible à 22 h, pour tout le monde en même temps.</p>');
+    if($('bCorr')) $('bCorr').onclick = ()=>{ selJour = j; moisVu = j.slice(0,7); corrAOuvrir = true; choisir('cal'); document.getElementById('classement').scrollIntoView({behavior:'smooth'}); };
     return;
   }
 
@@ -407,12 +408,13 @@ function repondre(rep, bouton){
   JEU.detail.push(ok ? String(pts) : 'x');
   JEU.reps.push({id:q.id, rep, ok, pts});
   if(q.type === 'qcm'){
-    $('jeuCorps').querySelectorAll('.q-opt').forEach(b=>{ b.disabled = true; if(+b.dataset.k === q.correct) b.classList.add('juste'); });
-    if(!ok && bouton) bouton.classList.add('faux');
+    /* on ne montre que ton choix, juste ou faux : la bonne réponse attend la correction de 22 h */
+    $('jeuCorps').querySelectorAll('.q-opt').forEach(b=>{ b.disabled = true; });
+    if(bouton) bouton.classList.add(ok ? 'juste' : 'faux');
   } else { $('inNum').disabled = true; }
   const r = $('retour');
   r.className = 'retour '+(ok?'ok':'ko');
-  r.innerHTML = ok ? '<b>Juste ! +'+pts+' points</b>' : '<b>Raté.</b> <span>La bonne réponse : '+esc(bonneReponse(q))+'</span>';
+  r.innerHTML = ok ? '<b>Juste ! +'+pts+' points</b>' : '<b>Raté.</b> <span>La correction sera disponible à 22 h.</span>';
   $('qscore').textContent = nb(JEU.score);
   sauver();
   JEU.i++;
@@ -452,7 +454,7 @@ function terminer(){
 }
 
 /* ════════ CLASSEMENTS ════════ */
-let ONGLET = 'soir', TOUTES = null, selJour = null, moisVu = null;
+let ONGLET = 'soir', TOUTES = null, selJour = null, moisVu = null, corrAOuvrir = false;
 function choisir(o){
   ONGLET = o;
   [['soir','o-soir'],['cal','o-cal'],['gen','o-gen']].forEach(([k,id])=>$(id).setAttribute('aria-selected', k===o));
@@ -496,7 +498,7 @@ async function chargerClassement(){
       if(!selJour){ selJour = BQ.jourDe(); if(BQ.phase() === 'avant') selJour = BQ.decaleJour(selJour, -1); }
       if(!moisVu) moisVu = selJour.slice(0,7);
       z.innerHTML = '<div class="cal" id="cal"></div><div id="jourSel"></div>';
-      dessinerCalendrier(); afficherJour(selJour);
+      dessinerCalendrier(); afficherJour(selJour, corrAOuvrir); corrAOuvrir = false;
     }
   }catch(e){
     z.innerHTML = '<div class="vide">Classement indisponible pour l\'instant'+(e.status === 404 ? ' : BeQuick n\'est pas encore activé.' : ' (connexion ?).')+'</div>';
@@ -525,10 +527,10 @@ async function afficherJour(j, ouvrirCorrection){
   const z = $('jourSel'); if(!z) return;
   z.innerHTML = '<p class="titre-jour"><b>'+dateLongue(j)+'</b></p><div class="vide">Chargement…</div>';
   const l = await BQ.classement(j).catch(()=>[]);
-  const loc = BQ.lireLocal(j);
-  const visible = j < BQ.jourDe() || BQ.phase() === 'ferme' || (loc && loc.debut);
+  /* la correction d'un soir n'est publiée qu'à sa fermeture (22 h), pour tout le monde */
+  const visible = j < BQ.jourDe() || BQ.phase() === 'ferme';
   z.innerHTML = '<p class="titre-jour"><b>'+dateLongue(j)+'</b> · '+l.length+' joueur'+(l.length>1?'s':'')+'</p>'+podiumEtListe(l, valJour, secJour)+
-    (visible ? '<button class="btn-lien" id="bVoirCorr">Voir les 30 questions et la correction</button><div id="corr"></div>' : '<p class="note">La correction de ce soir sera visible après ta partie, ou à la fermeture.</p>');
+    (visible ? '<button class="btn-lien" id="bVoirCorr">Voir les 30 questions et la correction</button><div id="corr"></div>' : '<p class="note">La correction de ce soir sera disponible à 22 h, pour tout le monde en même temps.</p>');
   if(visible){ $('bVoirCorr').onclick = ()=>correction(j); if(ouvrirCorrection) correction(j); }
 }
 async function correction(j){
