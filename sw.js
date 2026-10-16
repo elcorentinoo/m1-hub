@@ -13,7 +13,7 @@
    ⚠️ Cette valeur doit rester IDENTIQUE à VERSION_APP,
       en haut de ui.js.
    ════════════════════════════════════════════════════════════ */
-const VERSION = '6.0.0';        // « Ducat »
+const VERSION = '6.0.1';        // « Ducat »
 const CACHE_APP  = 'm1-app-'+VERSION;      // les fichiers du site
 const CACHE_EXT  = 'm1-ext-'+VERSION;      // polices et bibliothèques externes
 
@@ -47,6 +47,9 @@ const FICHIERS = [
   'manifest.webmanifest',
   'icons/icon-192.png',
   'icons/icon-512.png',
+  'icons/favicon-32.png',
+  'icons/favicon-48.png',
+  'favicon.ico',
   /* Copies locales des photos de matière : affichées si Unsplash ne répond pas */
   'img/accueil.webp',
   'img/sujet-droits-particuliers.webp',

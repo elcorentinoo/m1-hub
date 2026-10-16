@@ -10,7 +10,7 @@
 
   /* ---------- 0. VERSION ---------- */
   /* Doit rester identique à VERSION en haut de sw.js. */
-  const VERSION_APP = '6.0.0';
+  const VERSION_APP = '6.0.1';
   const NOM_VERSION = 'Ducat';
   window.APP_VERSION = VERSION_APP;
 

@@ -272,6 +272,9 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  6.0.1            Correctif : le site n'avait pas d'icône d'onglet. Ajout de
+                   favicon.ico et de icons/favicon-32/48.png (le logo M1 MBAF),
+                   déclarés sur toutes les pages.
   6.0.0 « Ducat »   BEQUICK ET LES NOTIFICATIONS.
                    · BeQuick (bequick.html) : chaque soir à 18 h 30, heure
                      de Paris, la même série de 30 questions pour toute la
