@@ -13,7 +13,7 @@
    ⚠️ Cette valeur doit rester IDENTIQUE à VERSION_APP,
       en haut de ui.js.
    ════════════════════════════════════════════════════════════ */
-const VERSION = '5.1.0';        // « Florin »
+const VERSION = '6.0.0';        // « Ducat »
 const CACHE_APP  = 'm1-app-'+VERSION;      // les fichiers du site
 const CACHE_EXT  = 'm1-ext-'+VERSION;      // polices et bibliothèques externes
 
@@ -34,6 +34,7 @@ const FICHIERS = [
   'revision.html',
   'stats.html',
   'classement.html',
+  'bequick.html',
   'ressourcerie.html',
   'ui.css',
   'theme.css',
@@ -41,6 +42,8 @@ const FICHIERS = [
   'lb.js',
   'progress.js',
   'banque.js',
+  'calendrier.js',
+  'bequick.js',
   'manifest.webmanifest',
   'icons/icon-192.png',
   'icons/icon-512.png',
@@ -122,4 +125,28 @@ self.addEventListener('fetch', e=>{
       )
     )
   );
+});
+
+
+/* ═══════════ NOTIFICATIONS (6.0.0) ═══════════
+   L'alerte BeQuick de 18 h 30, envoyée par la fonction Netlify
+   bequick-notif. Un clic ouvre (ou ramène au premier plan) la page. */
+self.addEventListener('push', e=>{
+  let m = {title:'⚡ BeQuick est ouvert', body:"La série du jour t'attend jusqu'à 22 h.", url:'/bequick.html', tag:'bequick'};
+  try{ if(e.data) m = Object.assign(m, e.data.json()); }catch(err){}
+  e.waitUntil(self.registration.showNotification(m.title, {
+    body:m.body, tag:m.tag, renotify:true, icon:'icons/icon-192.png', badge:'icons/badge-96.png',
+    data:{url:m.url}
+  }));
+});
+self.addEventListener('notificationclick', e=>{
+  e.notification.close();
+  const cible = new URL((e.notification.data && e.notification.data.url) || '/bequick.html', self.location.origin).href;
+  e.waitUntil(self.clients.matchAll({type:'window', includeUncontrolled:true}).then(liste=>{
+    const ouvert = liste.find(c=>c.url.split('#')[0] === cible.split('#')[0]);
+    if(ouvert) return ouvert.focus();
+    const autre = liste.find(c=>new URL(c.url).origin === self.location.origin);
+    if(autre && 'navigate' in autre) return autre.navigate(cible).then(c=>c && c.focus());
+    return self.clients.openWindow(cible);
+  }));
 });

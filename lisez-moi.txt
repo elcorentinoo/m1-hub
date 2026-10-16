@@ -10,6 +10,11 @@ CONTENU DE CE DOSSIER
                                          et photo de chaque matière, composants
   • img/ ............................... les images de secours du site (WebP)
   • lb.js .............................. identité (pseudo) + classement Supabase
+  • bequick.html / bequick.js .......... BeQuick, le défi du soir (18 h 30 – 22 h)
+  • calendrier.js ...................... les dates de partiels (seul endroit à modifier)
+  • netlify/functions/bequick-notif.mjs  l'alerte BeQuick envoyée à 18 h 30
+  • supabase/bequick.sql ............... tables BeQuick et notifications (à coller
+                                         une fois dans Supabase → SQL Editor)
   • marche_des_particuliers.html ....... Le Marché des Particuliers (11 leçons)
   • produits_derives.html .............. Produits Dérivés I — Forward (ch. 1-3,
                                          15 leçons, générateur de calculs à
@@ -102,7 +107,8 @@ remplace simplement `url` et `key` en haut de lb.js.
 ────────────────────────────────────────────────────────────
   METTRE À JOUR LE COMPTE À REBOURS
 ────────────────────────────────────────────────────────────
-Dans index.html, tableau ECHEANCES. Une ligne par partiel :
+Dans calendrier.js (depuis la 6.0.0), tableau ECHEANCES. Une ligne par partiel.
+Le hub, BeQuick et la cloche des notifications le lisent tous :
 
   {end:Date.UTC(2027,0,15,8,0,0), label:"janvier 2027",
    matiere:"marche_des_particuliers.html",
@@ -266,6 +272,43 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  6.0.0 « Ducat »   BEQUICK ET LES NOTIFICATIONS.
+                   · BeQuick (bequick.html) : chaque soir à 18 h 30, heure
+                     de Paris, la même série de 30 questions pour toute la
+                     promo, tirée dans banque.js sur 1 ou 2 matières (plus
+                     souvent celles dont le partiel approche ; une matière
+                     dont le partiel est passé n'est plus tirée). Vingt
+                     minutes, une seule chance, départs jusqu'à 22 h.
+                     Page d'avertissement puis bouton Démarrer. Une bonne
+                     réponse : de 500 points (immédiate) à 250 (40 s ou
+                     plus). Quitter l'appli fait passer la question ; pas
+                     de reprise, même sur un autre appareil : le serveur
+                     horodate le départ et refuse toute réponse après
+                     20 minutes (déclencheur SQL, supabase/bequick.sql).
+                     Classements : ce soir (podium), calendrier des soirs
+                     passés avec correction, général (cumul des points).
+                   · Carte BeQuick sur le hub, entrée dans le menu, l'en-tête
+                     et la barre basse (à la place de « Progrès », toujours
+                     dans le menu).
+                   · Notifications : une cloche dans l'en-tête (BeQuick
+                     ouvert, partiel dans 7 jours, révisions du jour,
+                     nouveautés) et l'alerte de 18 h 30 sur téléphone, même
+                     site fermé : fonction planifiée Netlify bequick-notif,
+                     sans dépendance (chiffrement RFC 8291 et signature
+                     VAPID faits à la main, vérifiés sur le jeu d'essai de
+                     la RFC). Clés VAPID_PUBLIC / VAPID_PRIVATE dans les
+                     variables d'environnement Netlify.
+                   · Nouveau logo de l'application (« M1 MBAF » en Outfit sur
+                     bleu nuit), icônes régénérées.
+                   · Les dates de partiels passent dans calendrier.js.
+                   · Corrections : la recherche ouvre une fiche du glossaire
+                     dans le glossaire ; la pilule du hub suit le défilement
+                     (Mes cours, Entraînement) ; les pages glissent au lieu
+                     d'un simple fondu, et 9 pages ne chargent plus les
+                     anciennes polices (Fraunces, DM Sans) qui retardaient
+                     l'affichage ; l'en-tête ne déborde plus entre 1 080 et
+                     1 340 px (menu replié jusqu'à 1 200 px, champ de
+                     recherche intégré à partir de 1 340 px).
   5.1.0            NOUVELLE MATIÈRE : ÉTUDES DE MARCHÉ. Le classement
                    revient, la recherche s'écrit dans l'en-tête.
                    · etudes_de_marche.html : 12 leçons en trois chapitres

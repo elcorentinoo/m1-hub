@@ -52,6 +52,7 @@
   --plum:var(--m); --plum-l:var(--m-soft); --plum-soft:var(--m-soft); --plum-deep:var(--m);
   --spectre:linear-gradient(90deg,var(--m),var(--m));
 
+  --eclair:#FFD54A;  /* l'accent BeQuick, uniquement sur aplat bleu nuit — 10,9:1 */
   --nuit-ombre:rgba(30,33,71,.5); --blanc-08:rgba(255,255,255,.08); --blanc-16:rgba(255,255,255,.16); --blanc-22:rgba(255,255,255,.22);
   --ombre1:0 1px 2px rgba(30,33,71,.05);
   --shadow:0 2px 6px rgba(30,33,71,.05), 0 14px 34px -18px rgba(30,33,71,.30);
@@ -407,7 +408,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 @media(max-width:1180px){ #ds-rech::after{ display:none; } #ds-rech{ width:40px; padding:0; } }
 
 /* champ de recherche intégré à l'en-tête, sur grand écran : on tape
-   directement, les résultats s'ouvrent dessous. En dessous de 1181 px,
+   directement, les résultats s'ouvrent dessous. En dessous de 1340 px,
    la loupe ouvre la fenêtre de recherche. */
 .ds-q{ display:none; position:relative; align-items:center; gap:8px; height:40px; padding:0 14px; border-radius:999px; background:var(--blanc); color:var(--txt2); }
 .ds-q:focus-within{ box-shadow:0 0 0 2px var(--nuit); }
@@ -429,12 +430,12 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .ds-q-i.sel, .ds-q-i:hover{ background:var(--nuit); color:#fff; }
 .ds-q-i.sel .ps, .ds-q-i:hover .ps{ color:var(--sur-nuit); }
 .ds-q-v{ padding:14px; color:var(--txt3); font-size:14px; }
-@media(min-width:1181px){
+@media(min-width:1340px){
   .ds-q{ display:flex; }
   #ds-rech{ display:none; }
-  /* la progression est déjà dans le cadre photo du cours : on libère la place */
-  body.ds-cours .ds-slot .progress-wrap{ display:none; }
 }
+/* la progression est déjà dans le cadre photo du cours : on libère la place */
+body.ds-cours .ds-slot .progress-wrap{ display:none; }
 
 /* les widgets récupérés dans l'en-tête */
 .ds-slot .progress-wrap{ min-width:120px; margin:0 6px; }
@@ -450,7 +451,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 body.ds-ready{ padding-top:84px; }
 body.ds-ready .shell{ padding-top:0 !important; }
 
-@media(max-width:1080px){ .ds-nav{ display:none; } }
+@media(max-width:1200px){ .ds-nav{ display:none; } }
 @media(max-width:760px){
   .ds-header{ top:8px; left:8px; right:8px; height:52px; }
   .ds-left, .ds-acts{ height:52px; padding:0 6px; }
@@ -656,7 +657,13 @@ body.ds-cours .main, body.ds-cours .view{ min-width:0; max-width:100%; }
    Les navigateurs récents enchaînent les pages par un fondu au lieu
    d'un écran blanc ; l'en-tête et la barre basse restent en place. */
 @view-transition{ navigation:auto; }
-::view-transition-old(root), ::view-transition-new(root){ animation-duration:.32s; animation-timing-function:var(--ressort); }
+/* 6.0 : la page glisse au lieu d'un simple fondu — l'ancienne part
+   légèrement vers la gauche, la nouvelle arrive de la droite. L'en-tête
+   et la barre basse, nommés à part, restent immobiles. */
+::view-transition-old(root){ animation:.3s var(--ressort) both vt-sortie; }
+::view-transition-new(root){ animation:.38s var(--ressort) both vt-entree; }
+@keyframes vt-sortie{ to{ opacity:0; transform:translateX(-36px); } }
+@keyframes vt-entree{ from{ opacity:0; transform:translateX(56px); } }
 ::view-transition-group(cadre-matiere){ animation-duration:.45s; animation-timing-function:var(--ressort); }
 @media(prefers-reduced-motion:reduce){
   *{ animation:none !important; transition:none !important; }
@@ -680,3 +687,39 @@ body.ds-cours .main, body.ds-cours .view{ min-width:0; max-width:100%; }
   .rulebox strong, .rb-main strong, .rb-main em{ color:#000 !important; }
   a{ color:#000; }
 }
+
+
+/* ═══════════ NOTIFICATIONS : la cloche et son panneau (6.0) ═══════════ */
+.ds-cloche{ position:relative; }
+.ds-cloche svg{ width:19px; height:19px; fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+.ds-pastille{
+  position:absolute; top:3px; right:2px; min-width:18px; height:18px; padding:0 5px; border-radius:999px;
+  background:var(--bad); color:#fff; font-size:11px; font-weight:600; line-height:18px; text-align:center;
+  box-shadow:0 0 0 2px var(--blanc);
+}
+.ds-pastille[hidden]{ display:none; }
+.ds-notifs{
+  position:fixed; top:80px; right:12px; z-index:90; width:min(400px, calc(100vw - 24px)); max-height:calc(100vh - 110px); overflow-y:auto;
+  background:var(--blanc); border-radius:var(--r-lg); box-shadow:var(--shadow-lg); padding:8px 8px 10px; color:var(--txt);
+}
+.ds-notifs[hidden]{ display:none; }
+.ds-n-tete{ display:flex; align-items:center; justify-content:space-between; padding:10px 12px 8px; }
+.ds-n-tete b{ font-weight:500; font-size:16px; }
+.ds-n-x{ border:none; background:var(--surface2); color:var(--nuit); width:34px; height:34px; border-radius:50%; cursor:pointer; font-size:14px; }
+.ds-n{ display:flex; gap:12px; align-items:flex-start; padding:12px; border-radius:var(--r); text-decoration:none; color:var(--txt); position:relative; }
+.ds-n:hover{ background:var(--surface2); color:var(--txt); }
+.ds-n .ni{ width:36px; height:36px; flex:none; border-radius:50%; background:var(--surface2); display:grid; place-items:center; font-size:17px; }
+.ds-n.fort .ni{ background:var(--nuit); }
+.ds-n .nt{ display:flex; flex-direction:column; gap:2px; min-width:0; }
+.ds-n .nt b{ font-weight:500; font-size:14.5px; line-height:1.3; }
+.ds-n .nt small{ font-size:13px; color:var(--txt3); line-height:1.4; }
+.ds-n.neuf::after{ content:''; position:absolute; right:12px; top:18px; width:8px; height:8px; border-radius:50%; background:var(--bad); }
+.ds-n-vide{ padding:14px 12px; color:var(--txt3); font-size:14px; }
+.ds-n-push{ margin-top:6px; border-top:1px solid var(--stroke); padding:12px 12px 4px; }
+.ds-n-p{ font-size:13.5px; color:var(--txt2); line-height:1.5; }
+.ds-n-p b{ color:var(--nuit); font-weight:500; }
+.ds-n-b{ display:block; margin-top:10px; border:none; border-radius:999px; padding:10px 16px; background:var(--nuit); color:#fff; font-size:14px; font-weight:500; cursor:pointer; }
+.ds-n-b.sec{ background:var(--surface2); color:var(--nuit); }
+.ds-n-b:disabled{ opacity:.6; cursor:wait; }
+.ds-n-err{ margin-top:8px; font-size:13px; color:var(--bad); }
+@media(max-width:760px){ .ds-notifs{ top:68px; right:8px; width:calc(100vw - 16px); } }

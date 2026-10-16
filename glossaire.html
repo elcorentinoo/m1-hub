@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Glossaire — M1 MBAF</title>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
   --card:#fff; --card2:#fbf9f5;
@@ -95,6 +94,7 @@ mark{background:var(--amber-l);color:inherit;padding:0 2px;border-radius:3px;fon
   h1{font-size:1.75rem}
   .toolbar{top:53px}
 }
+.entry.cible{box-shadow:0 0 0 3px var(--nuit),var(--shadow)!important;scroll-margin-top:110px}
 </style>
 <link rel="stylesheet" href="ui.css">
 <link rel="stylesheet" href="theme.css">
@@ -327,7 +327,7 @@ function render(){
     const L = e.s[0].toUpperCase();
     if(L !== lettre){ html += `<div class="letter">${L}</div>`; lettre = L; }
     const mat = F[e.m];
-    html += `<div class="entry">
+    html += `<div class="entry" id="glo-${G.indexOf(e)}">
       <div class="e-head">
         <span class="e-sigle">${esc(e.s)}</span>
         <span class="e-dev">${esc(e.d)}</span>
@@ -346,6 +346,19 @@ function render(){
 document.getElementById('q').addEventListener('input', render);
 renderChips();
 render();
+
+/* Arrivée depuis la recherche du site (glossaire.html#glo-12) :
+   on affiche toute la liste, on va à la fiche et on la met en valeur. */
+function ouvrirFiche(){
+  const m = /^#glo-(\d+)$/.exec(location.hash||''); if(!m) return;
+  FILTRE = 'Toutes'; document.getElementById('q').value = ''; renderChips(); render();
+  const el = document.getElementById('glo-'+m[1]); if(!el) return;
+  document.querySelectorAll('.entry.cible').forEach(x=>x.classList.remove('cible'));
+  el.classList.add('cible');
+  el.scrollIntoView({block:'center', behavior:'smooth'});
+}
+window.addEventListener('hashchange', ouvrirFiche);
+setTimeout(ouvrirFiche, 80);
 </script>
 <script src="banque.js"></script>
 <script src="ui.js"></script>

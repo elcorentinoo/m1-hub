@@ -10,8 +10,8 @@
 
   /* ---------- 0. VERSION ---------- */
   /* Doit rester identique à VERSION en haut de sw.js. */
-  const VERSION_APP = '5.1.0';
-  const NOM_VERSION = 'Florin';
+  const VERSION_APP = '6.0.0';
+  const NOM_VERSION = 'Ducat';
   window.APP_VERSION = VERSION_APP;
 
   /* ---------- 1. THÈME ---------- */
@@ -32,6 +32,7 @@
     {g:'Cours',    href:'fiscalite_particulier.html',   ico:'§',  t:'Fiscalité du Particulier', s:"11 leçons · IR et foyer fiscal"},
     {g:'Cours',    href:'droits_particuliers.html',     ico:'⚖',  t:'Droits des Particuliers',  s:'10 leçons · droit des personnes'},
     {g:'Cours',    href:'etudes_de_marche.html',        ico:'👤', t:'Études de marché',          s:'12 leçons · quali, quanti, échantillon'},
+    {g:'Entraînement', href:'bequick.html',              ico:'⚡', t:'BeQuick',                 s:'Le défi du soir · 18 h 30 – 22 h'},
     {g:'Entraînement', href:'entrainement_changes.html', ico:'🎯', t:'Marché des changes',      s:'13 notions · calculs ∞'},
     {g:'Entraînement', href:'entrainement_fiscal.html',  ico:'🧮', t:'Impôt sur le revenu',     s:'9 notions · parts et RNGI ∞'},
     {g:'Outils',   href:'ressourcerie.html', ico:'📚', t:'Ressourcerie',  s:'Documents partagés de la promo'},
@@ -46,6 +47,7 @@
     {href:'index.html',               t:'Hub'},
     {href:'#matieres',                t:'Mes cours', hubOnly:true},
     {href:'index.html#entrainement',  t:'Entraînement'},
+    {href:'bequick.html',             t:'BeQuick'},
     {href:'revision.html',            t:'Révision'},
     {href:'ressourcerie.html',        t:'Ressourcerie'},
     {href:'glossaire.html',           t:'Glossaire'}
@@ -136,6 +138,7 @@
           '<div class="ds-q-res" id="ds-q-res" role="listbox" hidden></div>'+
         '</div>'+
         '<button class="ds-ic" id="ds-rech" title="Recherche (Ctrl+K)">'+icone(IC_RECH,'Rechercher')+'</button>'+
+        '<button class="ds-ic ds-cloche" id="ds-cloche" aria-label="Notifications" aria-expanded="false" aria-controls="ds-notifs">'+ic('cloche')+'<span class="ds-pastille" id="ds-pastille" hidden></span></button>'+
         '<button class="ds-ic" id="ds-menu" aria-label="Ouvrir la navigation">'+icone(IC_MENU,'Menu')+'</button>'+
       '</div>';
 
@@ -143,6 +146,7 @@
     document.getElementById('ds-rech').onclick = ouvrirRecherche;
     brancherRechercheEntete();
     document.getElementById('ds-menu').onclick = ouvrir;
+    document.getElementById('ds-cloche').onclick = basculerNotifs;
 
     /* on récupère les widgets de la page : progression, XP, identité */
     const slot = document.getElementById('ds-slot');
@@ -190,7 +194,9 @@
     liste:'<path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01"/>',
     retour:'<path d="M19 12H5M11 6l-6 6 6 6"/>',
     suite:'<path d="M5 12h14M13 6l6 6-6 6"/>',
-    cible:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/>'
+    cible:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/>',
+    eclair:'<path d="M13 3L5 13.5h6L10 21l8-10.5h-6z"/>',
+    cloche:'<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>'
   };
   const ic = n => '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'+SVG[n]+'</svg>';
 
@@ -202,7 +208,7 @@
     t.className = 'ds-tab verre'; t.setAttribute('aria-label','Navigation rapide');
     const L = [
       ['index.html','maison','Accueil'], ['index.html#matieres','grille','Cours'],
-      ['revision.html','boucle','Révision'], ['stats.html','jauge','Progrès']
+      ['bequick.html','eclair','BeQuick'], ['revision.html','boucle','Révision']
     ];
     t.innerHTML = L.map(l=>{
       const on = (l[0]===ici) ? ' on' : '';
@@ -388,7 +394,8 @@
     {t:'Ma progression', s:'Statistiques, points faibles', u:'stats.html', i:'📈'},
     {t:'Glossaire', s:'Sigles, définitions', u:'glossaire.html', i:'🔤'},
     {t:'Ressourcerie', s:'Documents partagés', u:'ressourcerie.html', i:'📚'},
-    {t:'Classement', s:'Scores de la promo', u:'classement.html', i:'🏆'}
+    {t:'Classement', s:'Scores de la promo', u:'classement.html', i:'🏆'},
+    {t:'BeQuick', s:'Le défi du soir, 18 h 30 – 22 h · classements', u:'bequick.html', i:'⚡'}
   ];
   const norm = s=>String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
 
@@ -396,7 +403,7 @@
     const out = INDEX.slice();
     // les leçons et le glossaire, si banque.js est chargé
     if(window.CARTES) window.CARTES.forEach(c=>{
-      out.push({t:c.q, s:(c.d||'')+' · '+(c.ex||'').slice(0,70), u:fichierDe(c.m)+'#'+c.l, i:'🔤', g:'Glossaire'});
+      out.push({t:c.q, s:'Glossaire · '+(c.d||'')+' · '+(c.ex||'').slice(0,60), u:'glossaire.html#'+String(c.id).replace(':','-'), i:'🔤', g:'Glossaire'});
     });
     if(window.BANQUE){
       const vus = {};
@@ -504,6 +511,117 @@
   function echap(s){ return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
   window.uiRecherche = ouvrirRecherche;
 
+  /* ---------- 7. NOTIFICATIONS : la cloche (6.0.0) ----------
+     Les alertes sont calculées sur l'appareil (bequick.js) : BeQuick
+     ouvert, partiel proche, révisions du jour, nouveautés du site.
+     Le panneau propose aussi d'activer l'alerte de 18 h 30 sur le
+     téléphone (notification envoyée même site fermé). */
+  function chargerScript(src){
+    return new Promise(ok=>{
+      if(document.querySelector('script[src="'+src+'"]')) return ok();
+      const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = ok; document.head.appendChild(s);
+    });
+  }
+  async function pretBQ(){
+    if(!window.ECHEANCES) await chargerScript('calendrier.js');
+    if(!window.BQ) await chargerScript('bequick.js');
+    return window.BQ || null;
+  }
+  function vues(){ try{ return JSON.parse(localStorage.getItem('notif_vues') || '[]'); }catch(e){ return []; } }
+  function marquerVues(ids){ try{ const v = new Set(vues()); ids.forEach(i=>v.add(i)); localStorage.setItem('notif_vues', JSON.stringify([...v].slice(-200))); }catch(e){} }
+  function nouveautes(){
+    let vu = null; try{ vu = localStorage.getItem('version_vue'); }catch(e){}
+    if(vu === VERSION_APP) return [];
+    return [{id:'version-'+VERSION_APP, ico:'✨', titre:'Nouveau : BeQuick, le défi du soir', texte:'Version '+VERSION_APP+' « '+NOM_VERSION+' » : 30 questions à 18 h 30, la même pour toute la promo, et cette cloche.', url:'bequick.html'}];
+  }
+  let _alertes = [];
+  async function majCloche(){
+    const BQ = await pretBQ();
+    try{ _alertes = nouveautes().concat(BQ ? BQ.alertes() : []); }catch(e){ _alertes = nouveautes(); }
+    const v = new Set(vues()), n = _alertes.filter(a=>!v.has(a.id)).length;
+    const p = document.getElementById('ds-pastille'); if(p){ p.hidden = !n; p.textContent = n > 9 ? '9+' : String(n); }
+    const b = document.getElementById('ds-cloche'); if(b) b.setAttribute('aria-label', n ? 'Notifications, '+n+' non lue'+(n>1?'s':'') : 'Notifications');
+    const pn = document.getElementById('ds-notifs'); if(pn && !pn.hidden) dessinerNotifs();
+  }
+  function basculerNotifs(e){
+    if(e) e.stopPropagation();
+    const pn = document.getElementById('ds-notifs');
+    if(pn && !pn.hidden) fermerNotifs(); else ouvrirNotifs();
+  }
+  async function ouvrirNotifs(){
+    let pn = document.getElementById('ds-notifs');
+    if(!pn){ pn = document.createElement('div'); pn.id = 'ds-notifs'; pn.className = 'ds-notifs'; pn.setAttribute('role','dialog'); pn.setAttribute('aria-label','Notifications'); document.body.appendChild(pn); }
+    pn.hidden = false;
+    const b = document.getElementById('ds-cloche'); if(b) b.setAttribute('aria-expanded','true');
+    await majCloche(); dessinerNotifs();
+    marquerVues(_alertes.map(a=>a.id)); try{ localStorage.setItem('version_vue', VERSION_APP); }catch(e){}
+    const p = document.getElementById('ds-pastille'); if(p) p.hidden = true;
+  }
+  function fermerNotifs(){
+    const pn = document.getElementById('ds-notifs'); if(pn) pn.hidden = true;
+    const b = document.getElementById('ds-cloche'); if(b) b.setAttribute('aria-expanded','false');
+  }
+  function dessinerNotifs(){
+    const pn = document.getElementById('ds-notifs'); if(!pn) return;
+    const v = new Set(vues());
+    const liste = _alertes.length
+      ? _alertes.map(a=>'<a class="ds-n'+(v.has(a.id)?'':' neuf')+(a.fort?' fort':'')+'" href="'+a.url+'"><span class="ni" aria-hidden="true">'+a.ico+'</span><span class="nt"><b>'+echap(a.titre)+'</b><small>'+echap(a.texte||'')+'</small></span></a>').join('')
+      : '<div class="ds-n-vide">Rien de neuf pour l\'instant.</div>';
+    pn.innerHTML = '<div class="ds-n-tete"><b>Notifications</b><button type="button" class="ds-n-x" aria-label="Fermer">✕</button></div>'+
+      '<div class="ds-n-liste">'+liste+'</div><div class="ds-n-push" id="ds-n-push"></div>';
+    pn.querySelector('.ds-n-x').onclick = fermerNotifs;
+    dessinerPush();
+  }
+  async function dessinerPush(){
+    const z = document.getElementById('ds-n-push'); if(!z || !window.BQ) return;
+    const et = await BQ.etatPush();
+    const txt = {
+      actif:'<b>Alerte BeQuick activée</b> sur cet appareil : tu seras prévenu chaque soir à 18 h 30.<button type="button" class="ds-n-b sec" data-a="off">Désactiver</button>',
+      inactif:'<b>Être prévenu à 18 h 30</b> sur cet appareil, même site fermé, quand BeQuick ouvre.<button type="button" class="ds-n-b" data-a="on">Activer l\'alerte</button>',
+      refuse:'<b>Notifications bloquées</b> pour ce site dans les réglages du navigateur. Autorise-les, puis reviens ici.',
+      ios:'<b>Sur iPhone</b> : touche Partager, puis « Sur l\'écran d\'accueil ». Ouvre ensuite le site depuis cette nouvelle icône et reviens ici pour activer l\'alerte de 18 h 30.',
+      impossible:'Ce navigateur ne permet pas de recevoir des notifications.'
+    }[et] || '';
+    z.innerHTML = '<div class="ds-n-p">'+txt+'</div>';
+    const b = z.querySelector('[data-a]');
+    if(b) b.onclick = async ()=>{
+      b.disabled = true;
+      try{ if(b.dataset.a === 'on') await BQ.activerPush(); else await BQ.desactiverPush(); dessinerPush(); }
+      catch(err){ b.disabled = false; z.insertAdjacentHTML('beforeend','<div class="ds-n-err">'+echap(err.message || 'Activation impossible.')+'</div>'); }
+    };
+  }
+  document.addEventListener('pointerdown', e=>{
+    const pn = document.getElementById('ds-notifs');
+    if(pn && !pn.hidden && !e.target.closest('#ds-notifs, #ds-cloche')) fermerNotifs();
+  });
+
+  /* ---------- 8. LE HUB : la pilule suit le défilement ----------
+     « Mes cours » et « Entraînement » sont des sections de l'accueil :
+     la pilule active (en-tête et barre basse) suit la section visible. */
+  function suivreSections(){
+    if(pageActuelle() !== 'index.html') return;
+    const secs = ['matieres','entrainement'].map(id=>document.getElementById(id)).filter(Boolean);
+    if(!secs.length) return;
+    const ancre = h=>{ h = h || ''; if(h === 'index.html' || h === './') return ''; const i = h.indexOf('#'); return (i >= 0 && (h.startsWith('#') || h.startsWith('index.html#'))) ? h.slice(i+1) : null; };
+    function maj(){
+      const y = innerHeight * 0.4; let actif = '';
+      secs.forEach(s=>{ const r = s.getBoundingClientRect(); if(r.top <= y && r.bottom > y) actif = s.id; });
+      document.querySelectorAll('.ds-nav .ds-l, .ds-tab a').forEach(a=>{
+        const id = ancre(a.getAttribute('href')); if(id === null) return;
+        const on = id === actif; a.classList.toggle('on', on);
+        if(a.closest('.ds-tab')){
+          const sp = a.querySelector('span:not(.sr)');
+          if(on && !sp){ const t = document.createElement('span'); t.textContent = a.getAttribute('aria-label') || ''; a.appendChild(t); }
+          if(!on && sp) sp.remove();
+        }
+      });
+    }
+    let att = null;
+    addEventListener('scroll', ()=>{ if(!att) att = requestAnimationFrame(()=>{ att = null; maj(); }); }, {passive:true});
+    addEventListener('hashchange', ()=>setTimeout(maj, 400));
+    maj();
+  }
+
   /* ---------- exports ---------- */
   window.uiOuvrirMenu = ouvrir;
   window.uiFermerMenu = fermer;
@@ -511,7 +629,7 @@
   window.uiTheme      = function(){ return 'dark'; };
 
   document.addEventListener('keydown', e=>{
-    if(e.key==='Escape') fermer();
+    if(e.key==='Escape'){ fermer(); fermerNotifs(); }
     if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='k'){ e.preventDefault(); ouvrirRecherche(); }
   });
 
@@ -526,6 +644,9 @@
     majReseau();
     setTimeout(ouvrirAncre, 60);
     synchroniser(2500);
+    suivreSections();
+    majCloche();
+    setInterval(majCloche, 60000);
   }
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
