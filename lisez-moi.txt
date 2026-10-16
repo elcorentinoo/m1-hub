@@ -274,6 +274,10 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  6.0.8            Remise en ligne pour transmettre la clé VAPID_PRIVATE aux fonctions :
+                   enregistrée en 6.0.0 avec l'option « secrète », elle n'avait en
+                   réalité jamais été créée. Réenregistrée en variable normale
+                   (Netlify → Site configuration → Environment variables).
   6.0.7            Notification de test : le programme en arrière-plan lit aussi
                    un corps de requête encodé en base64, prend la clé publique
                    dans le code si la variable manque, et écrit chaque étape dans
