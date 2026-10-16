@@ -10,7 +10,7 @@
 
   /* ---------- 0. VERSION ---------- */
   /* Doit rester identique à VERSION en haut de sw.js. */
-  const VERSION_APP = '6.0.2';
+  const VERSION_APP = '6.0.3';
   const NOM_VERSION = 'Ducat';
   window.APP_VERSION = VERSION_APP;
 
@@ -586,7 +586,10 @@
     const b = z.querySelector('[data-a]');
     if(b) b.onclick = async ()=>{
       b.disabled = true;
-      try{ if(b.dataset.a === 'on') await BQ.activerPush(); else await BQ.desactiverPush(); dessinerPush(); }
+      try{
+        if(b.dataset.a === 'on'){ const t = await BQ.activerPush(); await dessinerPush(); const zz = document.getElementById('ds-n-push'); if(zz) zz.insertAdjacentHTML('beforeend','<div class="ds-n-p" style="margin-top:8px">'+echap(BQ.MSG_TEST[t]||'')+'</div>'); }
+        else { await BQ.desactiverPush(); dessinerPush(); }
+      }
       catch(err){ b.disabled = false; z.insertAdjacentHTML('beforeend','<div class="ds-n-err">'+echap(err.message || 'Activation impossible.')+'</div>'); }
     };
   }

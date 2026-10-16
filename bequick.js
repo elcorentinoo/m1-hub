@@ -203,10 +203,36 @@
     let sub = await reg.pushManager.getSubscription();
     if(!sub) sub = await reg.pushManager.subscribe({userVisibleOnly:true, applicationServerKey:b64(CLE_PUSH)});
     const j = sub.toJSON();
-    await api('push_abonnements', {method:'POST', headers:{'Prefer':'resolution=merge-duplicates,return=minimal'},
-      body:{endpoint:j.endpoint, p256dh:j.keys.p256dh, auth:j.keys.auth, pseudo:pseudo()}});
-    return true;
+    let inscrit = true;
+    try{
+      await api('push_abonnements', {method:'POST', headers:{'Prefer':'resolution=merge-duplicates,return=minimal'},
+        body:{endpoint:j.endpoint, p256dh:j.keys.p256dh, auth:j.keys.auth, pseudo:pseudo()}});
+    }catch(e){ inscrit = false; }          // base pas encore prête : le test part quand même
+    const t = await testerPush(j);
+    return inscrit ? t : t+'-noninscrit';
   }
+  /* Notification de test : une minute après l'activation (fonction Netlify
+     en arrière-plan) ; si ce n'est pas possible, tout de suite.
+     Renvoie 'minute', 'immediat' ou 'echec'. */
+  async function testerPush(j){
+    const corps = JSON.stringify({endpoint:j.endpoint, p256dh:j.keys.p256dh, auth:j.keys.auth});
+    try{
+      const r = await fetch('/.netlify/functions/push-test-background', {method:'POST', headers:{'Content-Type':'application/json'}, body:corps});
+      if(r.status === 202) return 'minute';
+    }catch(e){}
+    try{
+      const r = await fetch('/.netlify/functions/push-test', {method:'POST', headers:{'Content-Type':'application/json'}, body:corps});
+      if(r.ok) return 'immediat';
+    }catch(e){}
+    return 'echec';
+  }
+  const MSG_TEST = {
+    minute:"✓ Alerte activée. Une notification de test arrive dans une minute : tu peux fermer l'appli pour vérifier.",
+    immediat:"✓ Alerte activée. Une notification de test vient d'être envoyée.",
+    echec:"✓ Alerte activée, mais la notification de test n'a pas pu partir. L'alerte de 18 h 30 reste programmée."
+  };
+  const NON_INSCRIT = " Attention : ton appareil n'a pas pu être inscrit pour l'alerte de 18 h 30, car la base de données BeQuick n'est pas encore prête.";
+  ['minute','immediat','echec'].forEach(k=>{ MSG_TEST[k+'-noninscrit'] = MSG_TEST[k].replace(" L'alerte de 18 h 30 reste programmée.", '') + NON_INSCRIT; });
   async function desactiverPush(){
     const reg = await navigator.serviceWorker.ready;
     const sub = await reg.pushManager.getSubscription();
@@ -237,6 +263,6 @@
   window.BQ = {NOM, OUVERTURE, FERMETURE, DUREE, NB_Q, PTS_MAX, PTS_MIN, T_REF, PREMIER_JOUR,
     paris, maintenant, jourDe, instant, ouverture, fermeture, phase, decaleJour, points,
     tirage, poidsMatieres, questions, serie, maPartie, demarrer, envoyer, classement, toutes, general,
-    lireLocal, ecrireLocal, pseudo, cle, api,
+    lireLocal, ecrireLocal, pseudo, cle, api, MSG_TEST,
     pushPossible, estIOS, installe, etatPush, activerPush, desactiverPush, alertes};
 })();

@@ -13,6 +13,8 @@ CONTENU DE CE DOSSIER
   • bequick.html / bequick.js .......... BeQuick, le défi du soir (18 h 30 – 22 h)
   • calendrier.js ...................... les dates de partiels (seul endroit à modifier)
   • netlify/functions/bequick-notif.mjs  l'alerte BeQuick envoyée à 18 h 30
+  • netlify/functions/push-test*.mjs ... la notification de test (activation)
+  • netlify/push.mjs ................... chiffrement et envoi des notifications
   • supabase/bequick.sql ............... tables BeQuick et notifications (à coller
                                          une fois dans Supabase → SQL Editor)
   • marche_des_particuliers.html ....... Le Marché des Particuliers (11 leçons)
@@ -272,6 +274,16 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  6.0.3            Icône d'écran d'accueil : déclarée en 5 tailles (120, 152, 167,
+                   180 et par défaut), adresses absolues avec un numéro de version
+                   (?v=603) pour qu'aucun téléphone ne réutilise un ancien essai,
+                   manifeste complété (id, purpose « any »), et le service worker
+                   ne touche plus aux icônes ni au manifeste.
+                   Notification de test : à l'activation de l'alerte, une
+                   notification « 🔔 Notification de test » arrive une minute
+                   plus tard (fonction Netlify push-test-background ; repli
+                   immédiat par push-test si l'arrière-plan n'est pas disponible).
+                   Le code d'envoi est mis en commun dans netlify/push.mjs.
   6.0.2            BeQuick : la correction d'un soir n'est publiée qu'à 22 h,
                    pour tout le monde (avant : dès la fin de sa partie) ; pendant
                    le jeu, on voit seulement « Juste » ou « Raté », sans la bonne
