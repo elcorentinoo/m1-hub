@@ -13,7 +13,7 @@
    ⚠️ Cette valeur doit rester IDENTIQUE à VERSION_APP,
       en haut de ui.js.
    ════════════════════════════════════════════════════════════ */
-const VERSION = '4.2.1';        // « Sesterce »
+const VERSION = '5.0.0';        // « Florin »
 const CACHE_APP  = 'm1-app-'+VERSION;      // les fichiers du site
 const CACHE_EXT  = 'm1-ext-'+VERSION;      // polices et bibliothèques externes
 
@@ -42,13 +42,19 @@ const FICHIERS = [
   'banque.js',
   'manifest.webmanifest',
   'icons/icon-192.png',
-  'icons/icon-512.png'
-  /* La direction « Prisme » n'utilise aucune photographie : le dossier img/
-     reste dans le dépôt mais n'est plus mis en cache hors ligne. */
+  'icons/icon-512.png',
+  /* Copies locales des photos de matière : affichées si Unsplash ne répond pas */
+  'img/accueil.webp',
+  'img/sujet-droits-particuliers.webp',
+  'img/sujet-fiscalite-particulier.webp',
+  'img/sujet-produits-derives.webp',
+  'img/sujet-marketing-numerique.webp',
+  'img/sujet-es-banque.webp',
+  'img/sujet-marche-particuliers.webp'
 ];
 
-/* Domaines externes conservés au premier passage (polices, PDF.js, Mammoth) */
-const EXTERNES = ['fonts.googleapis.com','fonts.gstatic.com','cdnjs.cloudflare.com'];
+/* Domaines externes conservés au premier passage (polices, PDF.js, Mammoth, photos Unsplash) */
+const EXTERNES = ['fonts.googleapis.com','fonts.gstatic.com','cdnjs.cloudflare.com','images.unsplash.com'];
 
 /* Ce qui ne doit JAMAIS être servi depuis le cache : les données vivantes */
 const JAMAIS = ['supabase.co'];

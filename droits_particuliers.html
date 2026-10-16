@@ -226,13 +226,14 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
 .main{min-width:0}
 .tbl-scroll{overflow-x:auto;margin:22px 0}
 .tbl-scroll .tbl{margin:0}
-.tbl td,.tbl th{hyphens:auto;overflow-wrap:anywhere}
+.tbl td,.tbl th{hyphens:auto;overflow-wrap:break-word}
+@media(max-width:560px){.tbl-scroll .tbl{min-width:540px}}
 @media(max-width:560px){.tbl th,.tbl td{padding:9px 10px;font-size:.88rem}}
 </style>
 <link rel="stylesheet" href="ui.css">
 <link rel="stylesheet" href="theme.css">
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#F7F8FA">
+<meta name="theme-color" content="#ECEEF6">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 </head>
 <body>

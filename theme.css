@@ -1,64 +1,109 @@
 /* ════════════════════════════════════════════════════════════
-   theme.css — système de design 4.0 « Sesterce », direction PRISME
-   Clair, précis, dense : blanc pur sur canevas froid, filets d'un
-   pixel, un seul dégradé spectral réservé aux marqueurs (onglet
-   actif, jauges, fil du temps). La donnée est l'ornement.
+   theme.css — système de design 5.0 « Florin », direction VERRE
+   Une grande photo par matière, teintée de sa couleur ; des cartes
+   blanches très arrondies et du verre dépoli posé dessus ; des
+   pilules et des boutons ronds ; Outfit, fine pour les titres, et
+   de gros chiffres. Chaque matière a sa couleur et son emblème,
+   repris partout où elle apparaît.
 
    Chargé par toutes les pages, après leur <style> et après ui.css :
    il reprend la main sur l'ancienne charte.
+   Contrastes : tous les textes à 4,5:1 minimum (mesurés à chaque
+   version, fond composité compris).
    ════════════════════════════════════════════════════════════ */
-@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&display=swap');
 
 /* ───────────── JETONS ───────────── */
 :root, :root[data-theme="dark"], :root[data-theme="light"]{
   /* surfaces */
-  --canevas:#F7F8FA; --surface:#FFFFFF; --surface2:#F2F4F7; --surface3:#EBEEF3;
-  --bg:var(--canevas); --bg2:var(--surface); --bg3:var(--surface2);
-  --panel:var(--surface); --panel2:var(--surface2);
-  --stroke:#E4E7EC; --stroke2:#D0D5DD;
-  --glass:rgba(255,255,255,.88);
+  --fond:#ECEEF6; --blanc:#FFFFFF; --surface2:#F4F5FA; --surface3:#E6E8F2;
+  --canevas:var(--fond); --surface:var(--blanc);
+  --stroke:#E1E3EE; --stroke2:#CDD0E0;
+  --verre:rgba(255,255,255,.80); --verre-fort:rgba(255,255,255,.88);
 
   /* texte */
-  --txt:#0D1117;    /* 15,1:1 sur blanc */
-  --txt2:#5B6474;   /*  6,0:1 */
-  --txt3:#646B78;   /*  5,4:1 sur blanc — et 4,9:1 sur les aplats gris */
+  --nuit:#1E2147;   /* 15,4:1 sur blanc */
+  --txt:var(--nuit);
+  --txt2:#4A4F6A;   /*  8,0:1 sur blanc */
+  --txt3:#5A5F7A;   /*  6,3:1 sur blanc — 5,4:1 sur le fond */
+  --sur-nuit:#C5C8E6; /* texte secondaire sur aplat bleu nuit — 9,4:1 */
 
-  /* accent : violet, et le dégradé spectral */
-  --acc:#4F2DDB;    /*  7,7:1 */
-  --acc2:#3B1FB0; --acc-d:#3B1FB0; --acc-soft:#EFECFE;
-  --spectre:linear-gradient(90deg,#6D3BF5,#1E6BFF 52%,#0FB8C8);
-  --warn:#9A4708;   /*  6,4:1 sur blanc — 5,8:1 sur son propre aplat */
-  --bad:#C81E1E;    /*  5,7:1 sur blanc — 5,0:1 sur son propre aplat */
-  --ok:#047857;     /*  5,6:1 sur blanc — 4,9:1 sur son propre aplat */
+  /* états */
+  --ok:#047857; --bad:#C81E1E; --warn:#9A4708;
+  --ok-soft:#E3F3EC; --bad-soft:#FBE9E9; --warn-soft:#FBF0E2;
+
+  /* couleur de la matière : indigo par défaut, remplacée sur chaque cours */
+  --m:#3F46A8; --m-soft:#E9EBF8; --m-clair:#BFC4F5; --emb:"M1";
+  --photo:url("https://images.unsplash.com/photo-1531591022136-eb8b0da1e6d0?auto=format&fit=crop&w=1800&q=70"),url("img/accueil.webp");
+
+  /* accent = couleur de la matière */
+  --acc:var(--m); --acc2:var(--m); --acc-d:var(--m); --acc-soft:var(--m-soft);
 
   /* compatibilité avec les variables des anciennes pages */
-  --paper:var(--canevas); --paper2:var(--surface2); --card:var(--surface); --card2:var(--surface2);
+  --paper:var(--fond); --paper2:var(--surface2); --card:var(--blanc); --card2:var(--surface2);
+  --bg:var(--fond); --bg2:var(--blanc); --bg3:var(--surface2); --panel:var(--blanc); --panel2:var(--surface2);
   --ink:var(--txt); --ink2:var(--txt2); --muted:var(--txt3); --muted2:var(--txt3);
   --line:var(--stroke); --line2:var(--stroke2); --line2b:var(--stroke2);
-  --navy:var(--txt); --navy-l:var(--surface2); --navy-soft:var(--acc-soft); --navy-deep:var(--acc);
-  --amber:var(--warn); --amber-l:#FDF2E3; --amber-soft:#FDF2E3; --amber-deep:#92400E;
+  --navy:var(--nuit); --navy-l:var(--surface2); --navy-soft:var(--m-soft); --navy-deep:var(--m);
+  --amber:var(--warn); --amber-l:var(--warn-soft); --amber-soft:var(--warn-soft); --amber-deep:var(--warn);
   --gold:var(--warn);
-  --teal:var(--ok); --teal-l:#E6F4EF; --teal-soft:#E6F4EF; --teal-d:#065F46; --teal-deep:#065F46;
-  --rust:var(--bad); --rust-l:#FDEBEB; --rust-soft:#FDEBEB; --rust-deep:#B91C1C;
-  --plum:var(--acc); --plum-l:var(--acc-soft); --plum-soft:var(--acc-soft); --plum-deep:var(--acc2);
+  --teal:var(--ok); --teal-l:var(--ok-soft); --teal-soft:var(--ok-soft); --teal-d:#065F46; --teal-deep:#065F46;
+  --rust:var(--bad); --rust-l:var(--bad-soft); --rust-soft:var(--bad-soft); --rust-deep:#B91C1C;
+  --plum:var(--m); --plum-l:var(--m-soft); --plum-soft:var(--m-soft); --plum-deep:var(--m);
+  --spectre:linear-gradient(90deg,var(--m),var(--m));
 
-  --shadow:0 1px 3px rgba(13,17,23,.07), 0 6px 16px -8px rgba(13,17,23,.10);
-  --shadow-lg:0 2px 6px rgba(13,17,23,.08), 0 18px 40px -18px rgba(13,17,23,.18);
-  --ombre1:0 1px 2px rgba(13,17,23,.05);
-  --r:10px; --r-lg:14px; --r-s:6px;
+  --nuit-ombre:rgba(30,33,71,.5); --blanc-08:rgba(255,255,255,.08); --blanc-16:rgba(255,255,255,.16); --blanc-22:rgba(255,255,255,.22);
+  --ombre1:0 1px 2px rgba(30,33,71,.05);
+  --shadow:0 2px 6px rgba(30,33,71,.05), 0 14px 34px -18px rgba(30,33,71,.30);
+  --shadow-lg:0 4px 12px rgba(30,33,71,.08), 0 26px 60px -24px rgba(30,33,71,.42);
+  --r:16px; --r-lg:26px; --r-s:12px; --r-xl:36px;
   --ressort:cubic-bezier(.32,.72,.24,1);
   color-scheme: light;
 }
-html{ background:var(--canevas); }
-body{ background:var(--canevas); color:var(--txt); }
+
+/* ───────────── LES SIX MATIÈRES ─────────────
+   Une seule source : la couleur, l'emblème et la photo de chaque
+   matière. Elles s'appliquent à la page du cours (subject-id) et à
+   sa carte sur le hub (data-sid). Photos Unsplash, avec une copie
+   locale en secours si Unsplash ne répond pas. */
+:root[subject-id="droits-particuliers"], [data-sid="droits-particuliers"]{
+  --m:#B0452F; --m-soft:#F9E9E5; --m-clair:#F4B6A6; --emb:"⚖";
+  --photo:url("https://images.unsplash.com/photo-1773544015678-58d09366ad6e?auto=format&fit=crop&w=1800&q=70"),url("img/sujet-droits-particuliers.webp");
+}
+:root[subject-id="fiscalite-particulier"], [data-sid="fiscalite-particulier"]{
+  --m:#5B4FC4; --m-soft:#EEECFB; --m-clair:#C9C2FF; --emb:"§";
+  --photo:url("https://images.unsplash.com/photo-1554224154-26032ffc0d07?auto=format&fit=crop&w=1800&q=70"),url("img/sujet-fiscalite-particulier.webp");
+}
+:root[subject-id="produits-derives"], [data-sid="produits-derives"]{
+  --m:#2F5FA8; --m-soft:#E7EEF8; --m-clair:#A9C6F2; --emb:"↗";
+  --photo:url("https://images.unsplash.com/photo-1651341050677-24dba59ce0fd?auto=format&fit=crop&w=1800&q=70"),url("img/sujet-produits-derives.webp");
+}
+:root[subject-id="marketing-numerique"], [data-sid="marketing-numerique"]{
+  --m:#A23E6E; --m-soft:#F7E7EF; --m-clair:#F1B2CF; --emb:"◎";
+  --photo:url("https://images.unsplash.com/photo-1675352161865-27816c76141a?auto=format&fit=crop&w=1800&q=70"),url("img/sujet-marketing-numerique.webp");
+}
+:root[subject-id="es-banque"], [data-sid="es-banque"]{
+  --m:#8F5A12; --m-soft:#F6EEDF; --m-clair:#EAC88C; --emb:"◇";
+  --photo:url("https://images.unsplash.com/photo-1710981855156-1dd4b48e668d?auto=format&fit=crop&w=1800&q=70"),url("img/sujet-es-banque.webp");
+}
+:root[subject-id="marche-particuliers"], [data-sid="marche-particuliers"]{
+  --m:#2D6E57; --m-soft:#E4F1EB; --m-clair:#9FD8C0; --emb:"€";
+  --photo:url("https://images.unsplash.com/photo-1759428679273-11d914866394?auto=format&fit=crop&w=1800&q=70"),url("img/sujet-marche-particuliers.webp");
+}
+
+html{ background:var(--fond); }
+body{ background:var(--fond); color:var(--txt); }
+/* une seule police partout : les anciennes pages déclaraient Fraunces,
+   DM Sans ou DM Mono élément par élément */
+:root body, :root body *{ font-family:'Outfit', system-ui, -apple-system, sans-serif !important; }
 
 /* ───────────── TYPOGRAPHIE ─────────────
-   Inter Tight partout, en approche resserrée ; IBM Plex Mono pour
-   les chiffres, les étiquettes et les raccourcis. Les titres ne sont
-   plus en capitales espacées : ils sont serrés et semi-gras. */
+   Outfit partout : fine pour les grands titres, moyenne pour les
+   titres de bloc. Plus de police à chasse fixe : les chiffres
+   restent alignés grâce aux chiffres tabulaires. */
 body{
-  font-family:'Inter Tight', system-ui, -apple-system, sans-serif !important;
-  font-size:15px; line-height:1.6; letter-spacing:-.005em;
+  font-family:'Outfit', system-ui, -apple-system, sans-serif !important;
+  font-size:15.5px; line-height:1.6; letter-spacing:0;
   font-variant-numeric:tabular-nums;
 }
 :root h1, :root h2, :root h2.sec, :root h3, :root h4, :root h5,
@@ -66,18 +111,20 @@ body{
 :root .hero h1, :root .intro-card h2, :root .main h2, :root .main h3,
 :root .panel h3, :root .mat-t h3, :root .annale h3, :root .drop h3,
 :root .simu h3, :root .fin h3, :root .diag h4, :root .doc-t h4, :root .sidebar h4,
-:root .meth-item .mc h4{
-  font-family:'Inter Tight', system-ui, sans-serif !important;
+:root .meth-item .mc h4, :root .example .ex-head, :root .corrige-head, :root .callout .ct,
+:root .rt, :root .fb-head{
+  font-family:'Outfit', system-ui, sans-serif !important;
   text-transform:none !important;
-  letter-spacing:-.028em !important;
-  font-weight:600 !important;
+  letter-spacing:-.02em !important;
+  font-weight:500 !important;
   line-height:1.15;
 }
-:root h1, :root .hero h1{ font-size:clamp(1.9rem,4vw,2.7rem); }
-:root h2, :root h2.sec{ font-size:clamp(1.35rem,2.6vw,1.8rem); }
-:root h1.lesson-title, :root .lesson-title{ font-size:clamp(1.6rem,3.2vw,2.15rem); line-height:1.12; }
-:root h3{ font-size:1.1rem; } :root h4{ font-size:.98rem; }
-.subtitle, .hero-sub{ color:var(--txt2); }
+:root h1, :root .hero h1{ font-size:clamp(2rem,4.4vw,3.2rem); font-weight:300 !important; letter-spacing:-.035em !important; }
+:root h2, :root h2.sec{ font-size:clamp(1.4rem,2.6vw,1.9rem); font-weight:400 !important; }
+:root h1.lesson-title, :root .lesson-title{ font-size:clamp(1.8rem,3.6vw,2.6rem); font-weight:300 !important; }
+:root h3{ font-size:1.12rem; } :root h4{ font-size:1rem; }
+.subtitle, .hero-sub{ color:var(--txt2) !important; font-weight:300; }
+.main .subtitle{ font-size:1.22rem !important; line-height:1.5; max-width:62ch; }
 
 :root code, :root pre, :root kbd, :root samp, :root .mono,
 :root .tag, :root .eyebrow, :root .card-meta, :root .qhead, :root .tq-num, :root .tq-chap,
@@ -94,371 +141,504 @@ body{
 :root .tbl.num td, :root .test-q .num-input, :root .test-q .tq-num, :root .test-q .unit,
 :root .top-txt, :root .unit, :root .weak .wt span, :root .yours code, :root table.data td.v,
 :root .kpi .n, :root .ring, :root .weak .pct, :root .result .score-big, :root .fin .sc,
-:root .ans input{
-  font-family:'IBM Plex Mono', ui-monospace, monospace !important;
+:root .ans input, :root .rb-main, :root .rb-sub{
+  font-family:'Outfit', system-ui, sans-serif !important;
   font-variant-numeric:tabular-nums;
 }
 .btn, .chip, button, input, select, textarea, .opt, .mode, .login-btn{
-  font-family:'Inter Tight', system-ui, sans-serif !important;
+  font-family:'Outfit', system-ui, sans-serif !important;
 }
-.num-input, .numrow input, .ans input{ font-family:'IBM Plex Mono', ui-monospace, monospace !important; }
+/* petites étiquettes en capitales espacées */
+:root .quiz .qhead, :root .annale .an-tag, :root .tq-chap, :root .sidebar h4, :root .tbl th,
+:root .hero-tag, :root .callout .ct, :root .rulebox::before{
+  text-transform:uppercase; letter-spacing:.14em !important; font-size:.7rem !important; font-weight:500 !important;
+}
 
-/* ───────────── TITRE DE SECTION ─────────────
-   Plus de filets de part et d'autre : un court trait spectral à gauche. */
+/* ───────────── TITRE DE SECTION ───────────── */
 .ds-rule{ display:flex; align-items:center; gap:14px; margin:0 0 22px; }
-.ds-rule::before{
-  content:''; width:18px; height:2px; border-radius:2px; background:var(--spectre); flex:none;
-}
+.ds-rule::before{ content:''; width:22px; height:3px; border-radius:3px; background:var(--m); flex:none; }
 .ds-rule::after{ display:none; }
 .ds-rule > *{ margin:0 !important; }
 
-/* ───────────── SURFACES ───────────── */
-.tbl, .example, .annale, .test-q, .result, .gen-card, .doc, .panel, .rulebox, .callout,
+/* ───────────── SURFACES ─────────────
+   Blanc pur, très arrondi, sans filet : la profondeur vient de
+   l'ombre douce et du fond bleuté. */
+.tbl, .example, .annale, .test-q, .result, .gen-card, .doc, .panel, .callout,
 .intro-card, .card, .bx, .mode, .kpi, .weak, .diag, .drop, .meth-item, .simu, .fin,
-.person, .twist, .quiz, .ex{
-  background:var(--surface) !important;
-  border:1px solid var(--stroke) !important;
+.person, .twist, .quiz, .ex, .schema{
+  background:var(--blanc) !important;
+  border:1px solid transparent !important;
   border-radius:var(--r-lg) !important;
-  box-shadow:var(--ombre1) !important;
-  backdrop-filter:none;
+  box-shadow:var(--shadow) !important;
   color:var(--txt);
 }
-.callout{ border-left-width:3px !important; }
-.c-analogy{ border-left-color:var(--acc) !important; }
-.c-piege{ border-left-color:var(--warn) !important; }
-.c-retenir{ border-left-color:var(--ok) !important; }
+.quiz{ background:var(--blanc) !important; }
+.callout{ border-left:none !important; position:relative; padding-left:26px !important; }
+.callout::before{ content:''; position:absolute; left:12px; top:18px; bottom:18px; width:3px; border-radius:3px; background:var(--m); }
+.c-piege::before{ background:var(--warn); }
+.c-retenir::before{ background:var(--ok); }
 .callout, .c-analogy, .c-piege, .c-retenir{ color:var(--txt) !important; }
 .callout p{ color:var(--txt2) !important; }
-.callout .ct{
-  color:var(--acc) !important; text-transform:uppercase; letter-spacing:.1em;
-  font-size:.66rem !important; font-weight:600 !important;
-  font-family:'IBM Plex Mono',monospace !important;
-}
+.callout .ct{ color:var(--m) !important; }
 .c-piege .ct{ color:var(--warn) !important; }
 .c-retenir .ct{ color:var(--ok) !important; }
 
-/* L'encadré de règle devient un bloc sombre, comme un éditeur de code :
-   c'est le seul aplat foncé du système, et il fait ressortir la formule. */
+/* L'encadré de règle : le seul aplat sombre, en bleu nuit, la règle en grand. */
 .rulebox{
-  background:var(--txt) !important; border:1px solid var(--txt) !important;
-  border-radius:var(--r-lg) !important; box-shadow:var(--shadow) !important;
+  background:var(--nuit) !important; border:none !important;
+  border-radius:var(--r-lg) !important; box-shadow:var(--shadow-lg) !important; padding:28px 30px !important;
 }
-.rb-main{ color:#E8EBF0 !important; font-family:'IBM Plex Mono',monospace !important;
-  font-weight:500 !important; letter-spacing:-.01em; line-height:1.65; }
-.rb-sub{ color:#99A3B2 !important; }
-.rulebox strong, .rb-main strong, .rb-main em{ color:#A78BFA !important; font-style:normal; }
-.rulebox .sess{ color:#99A3B2 !important; }
-/* l'étiquette d'angle (REPÈRE / FORMULE) des pages de cours */
-.rulebox::before{ color:#99A3B2 !important; letter-spacing:.1em !important;
-  font-family:'IBM Plex Mono',monospace !important; }
+.rb-main{ color:#FFFFFF !important; font-weight:300 !important; font-size:1.4rem !important; line-height:1.4 !important; letter-spacing:-.015em; }
+.rb-sub{ color:var(--sur-nuit) !important; font-size:.95rem !important; }
+.rulebox strong, .rulebox em, .rb-main strong, .rb-main em, .rb-sub strong, .rb-sub em{
+  color:var(--m-clair) !important; font-style:normal; font-weight:500 !important;
+}
+.rulebox .sess{ color:var(--sur-nuit) !important; }
+.rulebox::before{ color:var(--sur-nuit) !important; }
 
-.intro-card{ background:var(--surface) !important; }
+.intro-card{ background:var(--blanc) !important; }
 .intro-card h2{ color:var(--txt) !important; }
 .intro-card p{ color:var(--txt2) !important; }
-.example .ex-head, .corrige-head, .gen-fb .fb-head{
-  color:var(--acc) !important; font-weight:600 !important; letter-spacing:-.01em;
-}
+.example .ex-head, .corrige-head, .gen-fb .fb-head{ color:var(--m) !important; }
+.ex-result{ background:var(--m-soft) !important; border:none !important; color:var(--nuit) !important; border-radius:var(--r) !important; }
+.step .sn{ background:var(--m-soft) !important; color:var(--m) !important; font-weight:600; }
+.step .sc code, .sc code{ background:var(--surface2) !important; color:var(--nuit) !important; border-radius:8px !important; }
+.step .sc b{ color:var(--nuit) !important; }
 
 /* tableaux */
 .tbl{ overflow:hidden; border-collapse:separate !important; border-spacing:0; }
-.tbl th{
-  background:var(--surface2) !important; color:var(--txt3) !important;
-  font-family:'IBM Plex Mono',monospace !important; font-weight:600 !important;
-  text-transform:uppercase; letter-spacing:.09em; font-size:.64rem !important;
-  border-bottom:1px solid var(--stroke) !important;
-}
-.tbl td{ border-bottom:1px solid var(--stroke) !important; color:var(--txt2); }
+.tbl th{ background:var(--surface2) !important; color:var(--txt3) !important; border-bottom:1px solid var(--stroke) !important; }
+.tbl td{ border-top:none !important; border-bottom:1px solid var(--stroke) !important; color:var(--txt2); background:transparent !important; }
+.tbl td:first-child{ color:var(--nuit) !important; }
 .tbl tr:last-child td{ border-bottom:none !important; }
+.tbl tr:nth-child(even) td{ background:transparent !important; }
 .tbl tbody tr:hover td{ background:var(--surface2) !important; }
 
-/* ───────────── BOUTONS ───────────── */
+/* ───────────── BOUTONS : des pilules ───────────── */
 .btn, .login-btn, .bigbtn, .start-chip{
-  border-radius:var(--r) !important; border:1px solid var(--stroke2) !important;
-  background:var(--surface) !important; color:var(--txt) !important;
-  font-weight:500 !important; letter-spacing:-.01em;
-  box-shadow:var(--ombre1) !important;
-  transition:background .14s var(--ressort), border-color .14s var(--ressort), color .14s var(--ressort);
+  border-radius:999px !important; border:1px solid var(--stroke2) !important;
+  background:var(--blanc) !important; color:var(--nuit) !important;
+  font-weight:500 !important; box-shadow:var(--ombre1) !important;
+  transition:background .18s var(--ressort), border-color .18s var(--ressort), color .18s var(--ressort), transform .18s var(--ressort);
 }
 a.btn, a.login-btn, a.bigbtn, a.start-chip, a.chip{ text-decoration:none !important; }
 .btn:hover, .login-btn:hover, .bigbtn:hover, .start-chip:hover{
-  background:var(--surface2) !important; border-color:var(--stroke2) !important; color:var(--txt) !important;
+  background:var(--surface2) !important; color:var(--nuit) !important; transform:translateY(-1px);
 }
 .btn.primary, .login-btn, .btn.amber, .btn.navy, .bigbtn.voir, .start-chip.solo{
-  background:linear-gradient(180deg,#5E3CE8,var(--acc)) !important; border-color:transparent !important;
-  color:#FFFFFF !important; font-weight:500 !important;
-  box-shadow:0 1px 2px rgba(13,17,23,.12), 0 4px 14px -6px rgba(79,45,219,.55), inset 0 1px 0 rgba(255,255,255,.22) !important;
+  background:var(--nuit) !important; border-color:var(--nuit) !important; color:#FFFFFF !important;
+  box-shadow:0 10px 24px -12px rgba(30,33,71,.6) !important;
 }
 .btn.primary:hover, .login-btn:hover, .btn.amber:hover, .btn.navy:hover, .bigbtn.voir:hover, .start-chip.solo:hover{
-  background:linear-gradient(180deg,#5330E4,#4425CC) !important; color:#FFFFFF !important;
+  background:#2A2E5E !important; color:#FFFFFF !important;
 }
-.btn.plum{ background:var(--surface) !important; border-color:var(--acc) !important; color:var(--acc) !important; }
-.btn.plum:hover{ background:var(--acc-soft) !important; }
+.btn.plum{ background:var(--m) !important; border-color:var(--m) !important; color:#fff !important; }
+.btn.plum:hover{ background:var(--nuit) !important; border-color:var(--nuit) !important; color:#fff !important; }
 
 /* puces / filtres */
-.chip{
-  border-radius:var(--r) !important; border:1px solid var(--stroke) !important;
-  background:var(--surface) !important; color:var(--txt2) !important; box-shadow:var(--ombre1) !important;
+.chip, .gen-mode, .mode{
+  border-radius:999px !important; border:1px solid var(--stroke) !important;
+  background:var(--blanc) !important; color:var(--txt2) !important; box-shadow:var(--ombre1) !important;
 }
-.chip:hover{ border-color:var(--stroke2) !important; color:var(--txt) !important; background:var(--surface2) !important; }
+.chip:hover, .gen-mode:hover{ border-color:var(--stroke2) !important; color:var(--nuit) !important; }
 .chip.on, .gen-mode.on, .mode.on{
-  background:var(--acc-soft) !important; border-color:#DFD8FD !important; color:var(--acc) !important; font-weight:600 !important;
+  background:var(--nuit) !important; border-color:var(--nuit) !important; color:#fff !important; font-weight:500 !important;
 }
 
 /* champs */
 input, select, textarea, .num-input{
-  background:var(--surface) !important; border:1px solid var(--stroke2) !important;
-  color:var(--txt) !important; border-radius:var(--r) !important; box-shadow:var(--ombre1) !important;
+  background:var(--blanc) !important; border:1px solid var(--stroke2) !important;
+  color:var(--txt) !important; border-radius:var(--r-s) !important; box-shadow:none !important;
 }
 input::placeholder, textarea::placeholder{ color:var(--txt3) !important; }
 input:focus, select:focus, textarea:focus, .num-input:focus{
-  border-color:var(--acc) !important; box-shadow:0 0 0 3px var(--acc-soft) !important; outline:none !important;
+  border-color:var(--m) !important; box-shadow:0 0 0 4px var(--m-soft) !important; outline:none !important;
 }
 
-/* QCM */
+/* QCM : des pilules */
 .opt, .opts button, .topt button{
-  background:var(--surface) !important; border:1px solid var(--stroke2) !important;
-  color:var(--txt) !important; border-radius:var(--r) !important; box-shadow:var(--ombre1) !important;
+  background:var(--surface2) !important; border:1px solid transparent !important;
+  color:var(--txt) !important; border-radius:22px !important; box-shadow:none !important; padding:13px 20px !important;
 }
 .opt:hover:not(:disabled), .opts button:hover:not(:disabled), .topt button:hover:not(:disabled){
-  border-color:var(--acc) !important; background:var(--acc-soft) !important; color:var(--txt) !important;
+  border-color:var(--m) !important; background:var(--m-soft) !important; color:var(--txt) !important;
 }
-.opt.good, .opt.ok, .opts button.good, .topt button.ok{
-  border-color:var(--ok) !important; background:#E6F4EF !important; color:var(--txt) !important;
+.topt button.sel{ background:var(--nuit) !important; color:#fff !important; border-color:var(--nuit) !important; }
+.opt.right, .opt.good, .opt.ok, .opts button.good, .topt button.ok{
+  border-color:var(--ok) !important; background:var(--ok-soft) !important; color:var(--txt) !important;
 }
-.opt.bad, .opts button.bad, .topt button.bad{
-  border-color:var(--bad) !important; background:#FDEBEB !important; color:var(--txt) !important;
+.opt.right::after{ color:var(--ok) !important; }
+.opt.wrong, .opt.bad, .opts button.bad, .topt button.bad{
+  border-color:var(--bad) !important; background:var(--bad-soft) !important; color:var(--txt) !important;
 }
+.opt.wrong::after{ color:var(--bad) !important; }
 .feedback{
-  background:#E6F4EF !important; border:1px solid #CDE8DE !important;
+  background:var(--surface2) !important; border:none !important;
   border-radius:var(--r) !important; color:var(--txt2) !important;
 }
 .feedback b{ color:var(--ok) !important; }
+.test-q.ok{ box-shadow:0 0 0 2px var(--ok), var(--shadow) !important; }
+.test-q.ko{ box-shadow:0 0 0 2px var(--bad), var(--shadow) !important; }
+.remed{ background:var(--bad-soft) !important; border:none !important; border-radius:var(--r) !important; }
+.remed .rt{ color:var(--bad) !important; } .remed .ra{ color:var(--txt) !important; }
+.result .score-big{ color:var(--m); font-weight:200 !important; font-size:4.6rem !important; letter-spacing:-.05em; }
 
-/* barres de progression : le dégradé spectral, nulle part ailleurs */
-.progress-bar, .cpb, .bar{ background:var(--surface3) !important; border:none !important; border-radius:999px !important; }
-.progress-fill, .card-prog .cpb i, .bar i{ background:var(--spectre) !important; border-radius:999px !important; }
-
-/* ───────────── BARRE LATÉRALE DES COURS ───────────── */
-.sidebar{ background:var(--surface) !important; border-right:1px solid var(--stroke) !important; }
-.sidebar h4{
-  color:var(--txt3) !important; text-transform:uppercase; letter-spacing:.09em;
-  font-size:.64rem !important; font-weight:600 !important;
-  font-family:'IBM Plex Mono',monospace !important;
-}
-.nav-item{
-  border-radius:var(--r-s) !important; border:1px solid transparent !important; color:var(--txt2) !important;
-}
-.nav-item:hover{ background:var(--surface2) !important; color:var(--txt) !important; }
-.nav-item.active{
-  background:var(--acc-soft) !important; border-color:#DFD8FD !important; color:var(--acc) !important; font-weight:600 !important;
-}
-.nav-item .num{
-  background:var(--surface2) !important; color:var(--txt3) !important;
-  border:1px solid var(--stroke) !important; border-radius:var(--r-s) !important;
-}
-.nav-item.active .num{ background:var(--acc) !important; color:#fff !important; border-color:var(--acc) !important; }
-.nav-item.done .num{ background:var(--ok) !important; color:#fff !important; border-color:var(--ok) !important; }
+/* jauges : la couleur de la matière */
+.progress-bar, .cpb, .bar, .cbt{ background:var(--surface3) !important; border:none !important; border-radius:999px !important; }
+.progress-fill, .card-prog .cpb i, .bar i{ background:var(--m) !important; border-radius:999px !important; }
 
 /* ───────────── ÉTIQUETTES ───────────── */
-.tag, .an-tag, .eyebrow, .hero-tag, .home-tag, .badge, .e-mat{
+.tag, .an-tag, .eyebrow, .home-tag, .badge, .e-mat{
   display:inline-flex !important; align-items:center; gap:6px; width:auto !important; align-self:flex-start;
-  background:var(--acc-soft) !important; border:1px solid #DFD8FD !important;
-  color:var(--acc) !important; border-radius:var(--r-s) !important;
-  text-transform:none; letter-spacing:.01em; font-size:.73rem !important; font-weight:500 !important;
-  padding:3px 9px !important;
+  background:var(--m-soft) !important; border:none !important;
+  color:var(--m) !important; border-radius:999px !important;
+  font-size:.74rem !important; font-weight:500 !important; padding:4px 12px !important;
 }
-.badge, .e-mat{ background:var(--surface2) !important; border-color:var(--stroke) !important; color:var(--txt2) !important; }
-a{ color:var(--acc); }
-a:hover{ color:var(--acc2); }
+.badge, .e-mat{ background:var(--surface2) !important; color:var(--txt2) !important; }
+a{ color:var(--m); }
+a:hover{ color:var(--nuit); }
 
 /* accessibilité */
 a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, .opt:focus-visible{
-  outline:2px solid var(--acc); outline-offset:2px; border-radius:var(--r-s);
+  outline:2px solid var(--m); outline-offset:2px;
 }
 @media(max-width:760px){ .btn, .login-btn, .opt, .chip, .nav-item, .ds-ic{ min-height:44px; } }
-@media(prefers-reduced-motion:reduce){ *{ animation:none !important; transition:none !important; } }
+@media(max-width:560px){ .tbl{ font-size:.9rem !important; } .tbl th, .tbl td{ padding:10px 11px !important; } }
 
-/* ───────────── IMPRESSION ───────────── */
-@media print{
-  :root{ --canevas:#fff; --surface:#fff; --surface2:#fff; --panel:#fff; --stroke:#ccc; --txt:#000; --txt2:#222; --txt3:#555; }
-  html, body{ background:#fff !important; color:#000 !important; }
-  .ds-header, .ui-fab, .ui-drawer, .tabbar, .print-fab, .ds-foot, #nav-slot, .ui-ov{ display:none !important; }
-  body.ds-ready{ padding-top:0 !important; }
-  .tbl th{ background:#eee !important; color:#000 !important; }
-  .tbl, .example, .annale, .test-q, .result, .panel, .callout, .card, .bx, .kpi, .diag, .drop{
-    box-shadow:none !important; border:1px solid #ccc !important; break-inside:avoid;
+/* ───────────── VERRE DÉPOLI ─────────────
+   Repli : sans flou (anciens navigateurs), le verre devient blanc
+   presque opaque, toujours lisible. */
+.verre{
+  background:rgba(255,255,255,.88);
+  border:1px solid rgba(255,255,255,.65);
+}
+@supports ((backdrop-filter:blur(2px)) or (-webkit-backdrop-filter:blur(2px))){
+  .verre{
+    background:var(--verre);
+    backdrop-filter:blur(18px) saturate(1.4); -webkit-backdrop-filter:blur(18px) saturate(1.4);
   }
-  .rulebox{ background:#fff !important; border:1px solid #ccc !important; }
-  .rb-main{ color:#000 !important; } .rb-sub{ color:#333 !important; }
-  .rulebox strong, .rb-main strong, .rb-main em{ color:#000 !important; }
-  .btn, .chip{ box-shadow:none !important; }
-  a{ color:#000; }
 }
 
-/* ════════════════════════════════════════════════════════════
-   EN-TÊTE, TIROIR, RECHERCHE ET PIED DE PAGE COMMUNS
-   Construits par ui.js sur toutes les pages : une seule navigation
-   pour tout le site. L'ancienne barre de chaque page est masquée.
-   ════════════════════════════════════════════════════════════ */
+/* ───────────── PHOTO TEINTÉE ─────────────
+   Toute photo passe en noir et blanc puis prend la couleur de sa
+   matière : six photos très différentes forment une seule famille. */
+.ph{ position:absolute; inset:0; overflow:hidden; border-radius:inherit; background:var(--nuit); }
+.ph::before{ content:''; position:absolute; inset:0; background-image:var(--photo); background-size:cover; background-position:center;
+  filter:grayscale(1) contrast(1.08) brightness(1.08); }
+.ph::after{ content:''; position:absolute; inset:0; background:var(--m); mix-blend-mode:color; opacity:.78; }
+.voile-bas{ position:absolute; inset:0; background:linear-gradient(180deg, rgba(30,33,71,.58) 0%, rgba(30,33,71,.5) 40%, rgba(30,33,71,.66) 100%); }
+.voile-g{ position:absolute; inset:0; background:linear-gradient(90deg, rgba(30,33,71,.84) 0%, rgba(30,33,71,.62) 55%, rgba(30,33,71,.30) 100%); }
+
+/* ═══════════ BARRE LATÉRALE DES COURS ═══════════
+   Un panneau blanc flottant, le sommaire en pilules. */
+.sidebar{
+  background:var(--blanc) !important; border:none !important;
+  border-radius:var(--r-lg) !important; box-shadow:var(--shadow) !important;
+}
+.sidebar h4{ color:var(--txt3) !important; letter-spacing:.08em !important; line-height:1.35 !important; }
+.nav-item{
+  border-radius:999px !important; border:1px solid transparent !important; color:var(--txt2) !important;
+  padding:9px 12px !important; transition:background .18s var(--ressort), color .18s var(--ressort);
+}
+.nav-item:hover{ background:var(--surface2) !important; color:var(--nuit) !important; }
+.nav-item.active{
+  background:var(--nuit) !important; border-color:var(--nuit) !important; color:#fff !important; font-weight:500 !important; box-shadow:none !important;
+}
+.nav-item .num{
+  background:var(--surface2) !important; color:var(--txt3) !important;
+  border:none !important; border-radius:50% !important;
+}
+.nav-item.done .num{ background:var(--m-soft) !important; color:var(--m) !important; }
+.nav-item.active .num{ background:var(--m) !important; color:#fff !important; }
+.nav-item.special, .nav-item.special2, .nav-item.special3{ background:var(--surface2) !important; color:var(--nuit) !important; }
+.nav-item.special.active, .nav-item.special2.active, .nav-item.special3.active{ background:var(--nuit) !important; color:#fff !important; }
+
+/* ═══════════ EN-TÊTE COMMUNE : trois pilules de verre ═══════════ */
 .ds-gone{ display:none !important; }
 .sr{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
 
 .ds-header{
-  position:fixed; top:0; left:0; right:0; z-index:60; height:58px;
-  display:flex; align-items:center; justify-content:space-between; gap:16px;
-  padding:0 20px; background:rgba(255,255,255,.86);
-  backdrop-filter:blur(14px) saturate(1.4); -webkit-backdrop-filter:blur(14px) saturate(1.4);
-  border-bottom:1px solid var(--stroke);
+  position:fixed; top:12px; left:12px; right:12px; z-index:60; height:56px;
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  background:transparent; border:none; pointer-events:none;
+  view-transition-name:entete;
 }
-.ds-left{ display:flex; align-items:center; gap:10px; }
+.ds-header > *{ pointer-events:auto; }
+.ds-left.verre, .ds-acts.verre, .ds-nav.verre, .ds-tab.verre, .ds-suite.verre{ background:rgba(255,255,255,.9); }
+.ds-left, .ds-acts, .ds-nav{
+  display:flex; align-items:center; gap:6px; height:56px; padding:0 8px; border-radius:999px;
+  box-shadow:0 8px 28px -14px rgba(30,33,71,.35);
+}
 .ds-logo{
-  display:inline-flex; align-items:center; gap:9px; text-decoration:none; color:var(--txt);
-  font-family:'Inter Tight',sans-serif; font-weight:600; font-size:15px; letter-spacing:-.025em; text-transform:none;
+  display:inline-flex; align-items:center; gap:10px; text-decoration:none; color:var(--nuit);
+  font-weight:600; font-size:16px; letter-spacing:-.02em; padding:0 10px 0 4px;
 }
-.ds-logo:hover{ color:var(--txt); }
-.ds-logo b{ font-weight:400; color:var(--txt3); letter-spacing:-.01em; }
+.ds-logo:hover{ color:var(--nuit); }
+.ds-logo b{ font-weight:300; color:var(--txt3); }
 .ds-logo .mk{
-  width:22px; height:22px; border-radius:var(--r-s); background:var(--spectre); display:inline-block;
-  position:relative; border:0; box-shadow:0 2px 6px -2px rgba(79,45,219,.55);
+  width:38px; height:38px; border-radius:50%; background:var(--nuit); color:#fff; display:inline-grid; place-items:center;
+  font-size:13px; font-weight:600; letter-spacing:-.04em;
 }
-.ds-logo .mk::after{ display:none; }
-
-.ds-nav{ display:flex; align-items:center; gap:2px; }
+.ds-logo .mk::after{ content:var(--emb); font-size:14px; }
 .ds-nav .ds-l{
-  position:relative; padding:8px 11px; border-radius:var(--r-s); text-decoration:none; color:var(--txt2);
-  font-size:13.5px; font-weight:500; letter-spacing:-.01em; white-space:nowrap;
-  transition:color .14s var(--ressort), background .14s var(--ressort);
+  padding:9px 16px; border-radius:999px; text-decoration:none; color:var(--txt2);
+  font-size:14px; font-weight:500; white-space:nowrap; transition:background .18s var(--ressort), color .18s var(--ressort);
 }
-.ds-nav .ds-l:hover{ color:var(--txt); background:var(--surface2); }
-.ds-nav .ds-l.on{ color:var(--txt); font-weight:600; background:transparent; }
-.ds-nav .ds-l.on::after{
-  content:''; position:absolute; left:11px; right:11px; bottom:2px; height:2px; border-radius:2px; background:var(--spectre);
-}
-.ds-acts{ display:flex; align-items:center; gap:9px; }
-.ds-slot{ display:flex; align-items:center; gap:9px; }
+.ds-nav .ds-l:hover{ color:var(--nuit); background:rgba(255,255,255,.7); }
+.ds-nav .ds-l.on{ color:#fff; background:var(--nuit); }
+.ds-slot{ display:flex; align-items:center; gap:6px; }
 .ds-ic{
-  width:36px; height:36px; border-radius:var(--r); border:1px solid var(--stroke); background:var(--surface);
-  color:var(--txt2); display:inline-flex; align-items:center; justify-content:center; gap:7px; cursor:pointer; padding:0;
-  box-shadow:var(--ombre1); transition:background .14s var(--ressort), border-color .14s var(--ressort), color .14s var(--ressort);
+  width:40px; height:40px; border-radius:50%; border:none; background:var(--blanc);
+  color:var(--nuit); display:inline-flex; align-items:center; justify-content:center; cursor:pointer; padding:0;
+  transition:background .18s var(--ressort), transform .18s var(--ressort);
 }
-.ds-ic:hover{ border-color:var(--stroke2); background:var(--surface2); color:var(--txt); }
-/* la recherche affiche son raccourci, comme dans un outil de travail */
-#ds-rech{ width:auto; padding:0 11px; }
-#ds-rech::after{
-  content:'⌘K'; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:500;
-  color:var(--txt3); padding:2px 5px; border:1px solid var(--stroke); border-radius:4px; background:var(--surface2);
-}
-@media(max-width:900px){ #ds-rech::after{ display:none; } #ds-rech{ width:36px; padding:0; } }
+.ds-ic:hover{ background:var(--surface2); }
+.ds-ic:active{ transform:scale(.94); }
+#ds-rech{ width:auto; padding:0 14px; gap:8px; }
+#ds-rech::after{ content:'Rechercher'; font-size:13.5px; font-weight:500; color:var(--txt2); }
+@media(max-width:1180px){ #ds-rech::after{ display:none; } #ds-rech{ width:40px; padding:0; } }
 
 /* les widgets récupérés dans l'en-tête */
-.ds-slot .progress-wrap{ min-width:140px; margin:0; }
-.ds-slot .progress-wrap .lab{ color:var(--txt3); }
+.ds-slot .progress-wrap{ min-width:120px; margin:0 6px; }
+.ds-slot .progress-wrap .lab{ color:var(--txt3) !important; font-family:'Outfit',sans-serif !important; letter-spacing:.06em; }
 .ds-slot .xp{
-  background:var(--acc-soft) !important; border:1px solid #DFD8FD !important;
-  color:var(--acc) !important; border-radius:var(--r-s) !important; padding:5px 10px !important;
-  font-family:'IBM Plex Mono',monospace !important; font-size:12px !important; font-weight:500 !important;
+  background:var(--m-soft) !important; border:none !important;
+  color:var(--m) !important; border-radius:999px !important; padding:7px 12px !important;
+  font-size:12.5px !important; font-weight:600 !important;
 }
-.ds-slot .xp .star{ color:var(--acc); }
+.ds-slot .xp .star{ color:var(--m); }
 
-/* le corps descend sous l'en-tête fixe */
-body.ds-ready{ padding-top:58px; }
-body.ds-ready .shell, body.ds-ready .sidebar{ padding-top:0; }
-body.ds-ready .sidebar{ top:58px; }
-
-/* ───────────── TIROIR ───────────── */
-.ui-drawer{
-  background:var(--surface) !important; border-left:1px solid var(--stroke) !important;
-  box-shadow:var(--shadow-lg) !important;
-}
-.ui-drawer .dh{ border-bottom:1px solid var(--stroke) !important; }
-.ui-drawer .dh b{ font-family:'Inter Tight',sans-serif; text-transform:none; letter-spacing:-.02em; font-size:15px; font-weight:600; }
-.ui-drawer h5{
-  color:var(--txt3) !important; text-transform:uppercase; letter-spacing:.09em;
-  font-size:.64rem !important; font-family:'IBM Plex Mono',monospace !important; font-weight:600 !important;
-}
-.ui-drawer .ui-link{
-  background:transparent !important; border:1px solid transparent !important; border-radius:var(--r) !important;
-  color:var(--txt) !important;
-}
-.ui-drawer .ui-link:hover{ background:var(--surface2) !important; border-color:var(--stroke) !important; }
-.ui-drawer .ui-link.here{ background:var(--acc-soft) !important; border-color:#DFD8FD !important; color:var(--acc) !important; }
-.ui-drawer .es{ color:var(--txt3) !important; }
-.ui-ver{ color:var(--txt3) !important; letter-spacing:.06em; text-transform:none; font-size:.68rem !important; }
-.ui-ov{ background:rgba(13,17,23,.34) !important; backdrop-filter:blur(3px); }
-
-/* ───────────── RECHERCHE ───────────── */
-.ui-pal-ov{ background:rgba(13,17,23,.34) !important; backdrop-filter:blur(5px); }
-.ui-pal{
-  background:var(--surface) !important; border:1px solid var(--stroke2) !important;
-  border-radius:var(--r-lg) !important; box-shadow:var(--shadow-lg) !important; backdrop-filter:none;
-}
-.ui-pal input{
-  background:transparent !important; border:none !important; box-shadow:none !important;
-  border-bottom:1px solid var(--stroke) !important; border-radius:0 !important; color:var(--txt) !important;
-}
-.ui-pal-i{ border-radius:var(--r-s) !important; color:var(--txt) !important; }
-.ui-pal-i.sel, .ui-pal-i:hover{ background:var(--acc-soft) !important; color:var(--acc) !important; }
-.ui-pal-f{ color:var(--txt3) !important; border-top:1px solid var(--stroke) !important; }
-
-/* ───────────── PIED DE PAGE ───────────── */
-.ds-foot{
-  margin-top:64px; padding:24px 20px; display:flex; align-items:center; justify-content:space-between;
-  gap:16px; flex-wrap:wrap; border-top:1px solid var(--stroke); background:var(--surface);
-}
-.ds-fnav{ display:flex; gap:4px; flex-wrap:wrap; }
-.ds-fnav a{ padding:7px 11px; border-radius:var(--r-s); color:var(--txt2); text-decoration:none; font-size:13.5px; font-weight:500; }
-.ds-fnav a:hover{ background:var(--surface2); color:var(--txt); }
-.ds-fv{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--txt3); letter-spacing:.04em; }
+/* le corps descend sous l'en-tête flottante */
+body.ds-ready{ padding-top:84px; }
+body.ds-ready .shell{ padding-top:0 !important; }
 
 @media(max-width:1080px){ .ds-nav{ display:none; } }
 @media(max-width:760px){
-  .ds-header{ padding:0 10px; gap:6px; overflow:hidden; }
-  .ds-slot{ gap:6px; }
-  .ds-slot .progress-wrap{ display:none; }
-  .ds-logo b{ display:none; }
-  .ds-logo{ font-size:14.5px; }
-  .ds-slot .xp{ padding:4px 8px !important; font-size:11px !important; }
-  .ds-slot .btn, .ds-slot .lb-id, #lb-id-slot .btn{ padding:6px 10px !important; font-size:12px !important; }
-  .ds-ic{ width:34px; height:34px; }
-  .ds-foot{ flex-direction:column; align-items:flex-start; }
+  .ds-header{ top:8px; left:8px; right:8px; height:52px; }
+  .ds-left, .ds-acts{ height:52px; padding:0 6px; }
+  .ds-slot .progress-wrap, .ds-slot .xp{ display:none; }
+  .ds-logo{ font-size:0; gap:0; padding:0 2px; }
+  .ds-logo .mk{ font-size:14px; }
+  .ds-logo .mk{ width:36px; height:36px; }
+  .ds-ic{ width:38px; height:38px; }
+  body.ds-ready{ padding-top:72px; }
 }
 
-/* bouton d'identité (pseudo) dans l'en-tête */
-#lb-id-slot .lb-id, #lb-id-slot button, #hub-id{
-  background:var(--surface) !important; border:1px solid var(--stroke) !important;
-  color:var(--txt) !important; border-radius:var(--r) !important; padding:7px 13px !important;
-  font-family:'Inter Tight',sans-serif !important; font-size:13px !important; font-weight:500 !important;
-  cursor:pointer; box-shadow:var(--ombre1) !important;
+/* bouton d'identité (pseudo) */
+#lb-id-slot .lb-id, #lb-id-slot button, #hub-id, .ds-slot .btn, .ds-slot .btn.primary, .ds-slot .lb-id{
+  background:var(--blanc) !important; border:none !important;
+  color:var(--nuit) !important; border-radius:999px !important; padding:9px 14px !important;
+  font-size:13px !important; font-weight:500 !important; cursor:pointer; box-shadow:none !important; min-height:40px;
 }
-#lb-id-slot .lb-id:hover, #hub-id:hover{ border-color:var(--stroke2) !important; background:var(--surface2) !important; }
+#lb-id-slot .lb-id:hover, #hub-id:hover{ background:var(--surface2) !important; }
 
-/* en-têtes colorés des pages d'outils : panneau clair, filet spectral */
+/* ═══════════ BARRE BASSE (téléphone) ═══════════ */
+.ds-tab{ display:none; }
+@media(max-width:760px){
+  .ds-tab{
+    display:flex; position:fixed; left:12px; right:12px; bottom:calc(12px + env(safe-area-inset-bottom,0px)); z-index:70;
+    justify-content:space-between; align-items:center; padding:7px; border-radius:999px;
+    box-shadow:0 14px 40px -16px rgba(30,33,71,.5); view-transition-name:barre;
+  }
+  .ds-tab a, .ds-tab button{
+    min-width:52px; height:48px; border-radius:999px; display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    color:var(--nuit); text-decoration:none; font-size:14px; font-weight:500; background:none; border:none; padding:0 12px; cursor:pointer;
+  }
+  .ds-tab .on{ background:var(--nuit); color:#fff; padding:0 18px; }
+  body.ds-ready.ds-a-tab{ padding-bottom:92px; }
+}
+.ds-tab svg, .ds-suite svg, .ds-cadre svg{ width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; flex:none; }
+
+/* ═══════════ PAGES DE COURS ═══════════ */
+@media(min-width:881px){
+  body.ds-cours .sidebar{ top:84px !important; left:16px !important; bottom:16px !important; width:272px !important; padding:18px 12px 30px !important; }
+  body.ds-cours .main{ margin-left:304px !important; padding:0 32px 140px 12px !important; max-width:1060px !important; }
+}
+@media(max-width:880px){
+  body.ds-cours .sidebar{ top:8px !important; left:8px !important; bottom:8px !important; width:min(300px,86vw) !important; z-index:80 !important; }
+  body.ds-cours .main{ padding:0 10px 130px !important; }
+  body.ds-cours .overlay{ inset:0 !important; z-index:75 !important; background:rgba(30,33,71,.35) !important; backdrop-filter:blur(3px); }
+}
+body.ds-cours .main p, body.ds-cours .main li{ color:var(--txt2); }
+body.ds-cours .main p strong, body.ds-cours .main li strong{ color:var(--nuit); }
+body.ds-cours .main h2{ color:var(--nuit) !important; }
+/* le titre de la leçon passe dans le grand cadre photo */
+body.ds-cours .view > .tag, body.ds-cours .view > h1.lesson-title{ display:none !important; }
+body.ds-cours .view{ animation:dsApparait .45s var(--ressort); }
+@keyframes dsApparait{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:none; } }
+
+/* le cadre photo en tête de cours */
+.ds-cadre{
+  position:relative; min-height:380px; border-radius:var(--r-xl); overflow:hidden; margin:0 0 30px;
+  color:#fff; isolation:isolate; view-transition-name:cadre-matiere;
+}
+.ds-cadre .ph{ z-index:-2; }
+.ds-cadre .voile-g{ z-index:-1; }
+.ds-cadre .haut{ position:absolute; top:16px; left:16px; right:16px; display:flex; justify-content:space-between; gap:10px; }
+.ds-pil{
+  display:inline-flex; align-items:center; gap:9px; height:44px; padding:0 18px; border-radius:999px;
+  color:var(--nuit); text-decoration:none; font-size:14px; font-weight:500; cursor:pointer; border:none;
+}
+.ds-cadre .corps{ position:relative; padding:96px 40px 120px; max-width:760px; }
+.ds-kick{ display:inline-flex; align-items:center; gap:12px; font-size:12.5px; letter-spacing:.16em; text-transform:uppercase; font-weight:500; }
+.ds-emb{
+  width:36px; height:36px; border-radius:50%; background:var(--m); color:#fff; display:inline-grid; place-items:center;
+  font-size:16px; letter-spacing:0; flex:none; box-shadow:0 0 0 3px rgba(255,255,255,.25);
+}
+.ds-emb::before{ content:var(--emb); }
+.ds-cadre h1{
+  color:#fff !important; font-weight:300 !important; font-size:clamp(2.1rem,5vw,3.6rem) !important; line-height:1.02 !important;
+  letter-spacing:-.04em !important; margin:16px 0 0; text-shadow:0 2px 24px rgba(30,33,71,.35);
+}
+.ds-cadre h1 em, .ds-cadre h1 i, .ds-cadre h1 b{ font-weight:500; font-style:normal; }
+/* l'encoche : la progression s'emboîte dans le coin du cadre */
+.ds-encoche{ position:absolute; left:0; bottom:0; background:var(--fond); border-top-right-radius:30px; padding:14px 14px 0 0; }
+.ds-encoche::before, .ds-encoche::after{ content:''; position:absolute; width:30px; height:30px;
+  background:radial-gradient(circle at 100% 0, transparent 29.5px, var(--fond) 30px); }
+.ds-encoche::before{ left:0; top:-30px; }
+.ds-encoche::after{ right:-30px; bottom:0; }
+.ds-prog{ display:flex; align-items:center; gap:16px; width:380px; max-width:calc(100vw - 60px); background:var(--blanc); color:var(--nuit);
+  border-radius:26px; padding:16px 22px; }
+.ds-prog .n{ font-size:46px; font-weight:200; letter-spacing:-.05em; line-height:1; }
+.ds-prog .n small{ font-size:18px; color:var(--txt3); font-weight:300; }
+.ds-prog .l{ font-size:12.5px; color:var(--txt3); line-height:1.3; }
+.ds-prog .j{ flex:1; height:6px; border-radius:6px; background:var(--surface3); overflow:hidden; }
+.ds-prog .j i{ display:block; height:100%; border-radius:6px; background:var(--m); transition:width .6s var(--ressort); }
+@media(max-width:880px){
+  .ds-cadre{ min-height:0; border-radius:30px; margin-bottom:12px; }
+  .ds-cadre .corps{ padding:86px 22px 22px; }
+  .ds-cadre .haut .ds-pil span.txt{ display:none; }
+  .ds-encoche{ position:relative; background:none; padding:0 10px 10px; }
+  .ds-encoche::before, .ds-encoche::after{ display:none; }
+  .ds-prog{ width:auto; max-width:none; border-radius:22px; }
+}
+
+/* la barre « leçon précédente / suivante », flottante */
+.ds-suite{
+  position:fixed; left:50%; bottom:calc(18px + env(safe-area-inset-bottom,0px)); transform:translateX(-50%); z-index:70;
+  display:flex; align-items:center; gap:6px; padding:6px; border-radius:999px; box-shadow:0 14px 40px -16px rgba(30,33,71,.5);
+  view-transition-name:barre;
+}
+.ds-suite button{ display:inline-flex; align-items:center; gap:8px; height:46px; padding:0 18px; border-radius:999px; border:none;
+  background:none; color:var(--nuit); font-size:14px; font-weight:500; cursor:pointer; white-space:nowrap; max-width:42vw; overflow:hidden; text-overflow:ellipsis; }
+.ds-suite button.go{ background:var(--nuit); color:#fff; }
+.ds-suite button.som{ width:46px; padding:0; justify-content:center; }
+.ds-suite button:disabled{ opacity:.35; cursor:default; }
+@media(min-width:881px){ .ds-suite{ left:calc(50% + 152px); } .ds-suite button.som{ display:none; } }
+@media(max-width:880px){ .ds-suite{ left:12px; right:12px; transform:none; justify-content:space-between; } }
+body.ds-cours .print-fab{ display:none !important; }
+
+/* ═══════════ TIROIR ═══════════ */
+.ui-drawer{
+  top:8px !important; right:8px !important; bottom:8px !important; border-radius:var(--r-lg) !important;
+  background:var(--blanc) !important; border:none !important; box-shadow:var(--shadow-lg) !important;
+  transition:transform .38s var(--ressort) !important;
+}
+.ui-drawer:not(.open){ transform:translateX(calc(100% + 16px)) !important; }
+.ui-drawer .dh{ border-bottom:none !important; }
+.ui-drawer .dh b{ font-family:'Outfit',sans-serif; font-size:18px; font-weight:500; letter-spacing:-.02em; color:var(--nuit) !important; }
+.ui-drawer h5{ color:var(--txt3) !important; text-transform:uppercase; letter-spacing:.14em; font-size:.68rem !important; font-family:'Outfit',sans-serif !important; font-weight:500 !important; }
+.ui-drawer .ui-link{ background:transparent !important; border:1px solid transparent !important; border-radius:999px !important; color:var(--nuit) !important; }
+.ui-drawer .ui-link:hover{ background:var(--surface2) !important; }
+.ui-drawer .ui-link.here{ background:var(--nuit) !important; color:#fff !important; }
+.ui-drawer .ui-link.here .es{ color:var(--sur-nuit) !important; }
+.ui-drawer .es{ color:var(--txt3) !important; }
+.ui-drawer .ui-hub{ background:var(--surface2) !important; }
+.ui-ver{ color:var(--txt3) !important; font-size:.72rem !important; }
+.ui-ov{ background:rgba(30,33,71,.35) !important; backdrop-filter:blur(4px); }
+
+/* ═══════════ RECHERCHE ═══════════ */
+.ui-pal-ov{ background:rgba(30,33,71,.35) !important; backdrop-filter:blur(6px); }
+.ui-pal{ background:var(--blanc) !important; border:none !important; border-radius:var(--r-lg) !important; box-shadow:var(--shadow-lg) !important; }
+.ui-pal input{ background:transparent !important; border:none !important; box-shadow:none !important; border-bottom:1px solid var(--stroke) !important; border-radius:0 !important; color:var(--txt) !important; }
+.ui-pal-i{ border-radius:var(--r) !important; color:var(--txt) !important; }
+.ui-pal-i.sel, .ui-pal-i:hover{ background:var(--nuit) !important; color:#fff !important; }
+.ui-pal-i.sel .ps, .ui-pal-i:hover .ps{ color:var(--sur-nuit) !important; }
+.ui-pal-f{ color:var(--txt3) !important; border-top:1px solid var(--stroke) !important; }
+
+/* ═══════════ PIED DE PAGE ═══════════ */
+.ds-foot{
+  margin:64px 16px 16px; padding:22px 24px; display:flex; align-items:center; justify-content:space-between;
+  gap:16px; flex-wrap:wrap; border:none; border-radius:var(--r-lg); background:var(--blanc); box-shadow:var(--shadow);
+}
+.ds-fnav{ display:flex; gap:4px; flex-wrap:wrap; }
+.ds-fnav a{ padding:8px 14px; border-radius:999px; color:var(--txt2); text-decoration:none; font-size:14px; font-weight:500; }
+.ds-fnav a:hover{ background:var(--surface2); color:var(--nuit); }
+.ds-fv{ font-size:12px; color:var(--txt3); }
+.ds-credits{ flex-basis:100%; font-size:12px; color:var(--txt3); }
+.ds-credits a{ color:var(--txt2); }
+@media(max-width:760px){ .ds-foot{ flex-direction:column; align-items:flex-start; margin:40px 10px 100px; } }
+
+/* ═══════════ PAGES D'OUTILS ET GÉNÉRATEURS ═══════════ */
 .hero{
-  background:var(--surface) !important; border:1px solid var(--stroke) !important;
-  border-radius:var(--r-lg) !important; box-shadow:var(--ombre1) !important;
-  position:relative; overflow:hidden;
+  position:relative; overflow:hidden; isolation:isolate; border:none !important;
+  border-radius:var(--r-xl) !important; box-shadow:var(--shadow-lg) !important; color:#fff !important;
+  background:var(--nuit) !important; padding:40px 36px !important;
 }
-.hero::before{ content:''; position:absolute; left:0; right:0; top:0; height:2px; background:var(--spectre); }
-.hero::after{ background:radial-gradient(circle, rgba(79,45,219,.10), transparent 70%) !important; }
-.hero h1{ color:var(--txt) !important; }
-.hero p{ color:var(--txt2) !important; }
-/* le mot accentué des titres d'outils et les repères d'index passent au violet */
-h1 .acc, .hero h1 em, .letter, #topbar .logo span, .eyebrow{ color:var(--acc) !important; }
-.partiel{
-  background:var(--surface2) !important; border:1px solid var(--stroke) !important;
-  border-radius:var(--r) !important;
+.hero::before{ content:''; position:absolute; inset:0; z-index:-2; background-image:var(--photo); background-size:cover; background-position:center;
+  filter:grayscale(1) contrast(1.08) brightness(1.05); height:auto; }
+.hero::after{ content:''; position:absolute; inset:0; z-index:-1; width:auto; height:auto; border-radius:0;
+  background:linear-gradient(90deg, rgba(30,33,71,.90) 0%, rgba(30,33,71,.62) 100%) !important; opacity:1; }
+.hero h1, .hero h1 em{ color:#fff !important; }
+.hero p{ color:#E2E4F3 !important; }
+.hero a.back, .back, .hublink{
+  border:none !important; border-radius:999px !important; color:var(--nuit) !important;
+  background:rgba(255,255,255,.88) !important; box-shadow:none !important;
 }
+.hero-tag{
+  display:inline-flex; align-items:center; gap:8px; background:var(--m-soft); color:var(--m) !important;
+  padding:6px 14px; border-radius:999px; margin-bottom:14px;
+}
+.hero-tag::before{ display:none !important; }
+h1 .acc, .letter, #topbar .logo span, .eyebrow{ color:var(--m) !important; }
+.partiel{ background:var(--surface2) !important; border:none !important; border-radius:var(--r) !important; }
 .partiel .l{ color:var(--txt3) !important; }
-.partiel .m{ color:var(--acc) !important; font-weight:600 !important; }
-.back, .hublink{
-  border:1px solid var(--stroke) !important; border-radius:var(--r) !important; color:var(--txt) !important;
-  background:var(--surface) !important; box-shadow:var(--ombre1) !important;
-}
-.back:hover, .hublink:hover{ border-color:var(--stroke2) !important; background:var(--surface2) !important; }
+.partiel .m{ color:var(--m) !important; font-weight:600 !important; }
 
-/* l'identité reste discrète dans l'en-tête, même si la page la stylait en bouton plein */
-.ds-slot .btn, .ds-slot .btn.primary, .ds-slot .lb-id, #lb-id-slot .btn{
-  background:var(--surface) !important; border:1px solid var(--stroke) !important;
-  color:var(--txt) !important; font-weight:500 !important; padding:7px 12px !important; font-size:13px !important;
-  box-shadow:var(--ombre1) !important;
+
+/* ═══════════ ANCIENNES ÉTIQUETTES GRISES ═══════════
+   Les pages déclaraient leurs gris en dur (#8a8170, 3,5:1) : on les
+   ramène au gris du système (6,3:1 sur blanc). */
+:root .tq-chap, :root .unit, :root .scap, :root .hint, :root .sh, :root .gen-data .dl, :root .simu .v,
+:root .main label, :root .simu label, :root .mode .s, :root .gen-stat, :root .schema .scap{ color:var(--txt3) !important; }
+:root .mode.on .s, :root .mode.on small{ color:var(--sur-nuit) !important; }
+
+/* ═══════════ LARGEUR SUR TÉLÉPHONE ═══════════
+   Un tableau ou un schéma trop large défile dans son cadre au lieu
+   d'élargir toute la page. */
+body.ds-cours .shell{ min-width:0; }
+body.ds-cours .main, body.ds-cours .view{ min-width:0; max-width:100%; }
+.main img, .main svg, .schema svg{ max-width:100%; height:auto; }
+@media(max-width:880px){
+  .main .tbl{ display:block; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  .main .schema, .main .gen-data, .main pre{ overflow-x:auto; }
+}
+
+/* ═══════════ TRANSITIONS ENTRE LES PAGES ═══════════
+   Les navigateurs récents enchaînent les pages par un fondu au lieu
+   d'un écran blanc ; l'en-tête et la barre basse restent en place. */
+@view-transition{ navigation:auto; }
+::view-transition-old(root), ::view-transition-new(root){ animation-duration:.32s; animation-timing-function:var(--ressort); }
+::view-transition-group(cadre-matiere){ animation-duration:.45s; animation-timing-function:var(--ressort); }
+@media(prefers-reduced-motion:reduce){
+  *{ animation:none !important; transition:none !important; }
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*){ animation:none !important; }
+}
+
+/* ═══════════ IMPRESSION ═══════════ */
+@media print{
+  :root{ --fond:#fff; --surface2:#fff; --stroke:#ccc; }
+  html, body{ background:#fff !important; color:#000 !important; }
+  .ds-header, .ui-fab, .ui-drawer, .tabbar, .print-fab, .ds-foot, #nav-slot, .ui-ov, .ds-tab, .ds-suite, .ds-cadre .haut, .ds-encoche{ display:none !important; }
+  body.ds-ready{ padding-top:0 !important; }
+  .ds-cadre{ min-height:0 !important; color:#000 !important; }
+  .ds-cadre .ph, .ds-cadre .voile-g{ display:none !important; }
+  .ds-cadre .corps{ padding:0 !important; }
+  .ds-cadre h1{ color:#000 !important; text-shadow:none !important; }
+  .tbl th{ background:#eee !important; color:#000 !important; }
+  .tbl, .example, .annale, .test-q, .result, .panel, .callout, .card, .bx, .kpi, .diag, .drop{ box-shadow:none !important; border:1px solid #ccc !important; break-inside:avoid; }
+  .rulebox{ background:#fff !important; border:1px solid #ccc !important; }
+  .rb-main{ color:#000 !important; } .rb-sub{ color:#333 !important; }
+  .rulebox strong, .rb-main strong, .rb-main em{ color:#000 !important; }
+  a{ color:#000; }
 }

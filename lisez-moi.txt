@@ -6,8 +6,8 @@
 CONTENU DE CE DOSSIER
   • index.html ......................... le hub (portail pseudo + cartes matières)
   • classement.html .................... le classement partagé
-  • theme.css .......................... charte visuelle 2.0 : typographie,
-                                         palette, composants, mode sombre
+  • theme.css .......................... charte « Verre » (5.0) : couleur, emblème
+                                         et photo de chaque matière, composants
   • img/ ............................... les 7 images du site (WebP, 220 Ko)
   • lb.js .............................. identité (pseudo) + classement Supabase
   • marche_des_particuliers.html ....... Le Marché des Particuliers (11 leçons)
@@ -254,6 +254,48 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  5.0.0 « Florin »  NOUVELLE DIRECTION ARTISTIQUE : « VERRE ».
+                   Refonte visuelle complète, sur le modèle choisi par
+                   Corentin : une grande photo par matière dans un cadre
+                   très arrondi, des cartes de verre dépoli posées dessus,
+                   des pilules et des boutons ronds, la police Outfit
+                   (fine pour les titres) et de gros chiffres.
+                   CHAQUE MATIÈRE A SON IDENTITÉ : une couleur, un
+                   emblème et une photo, déclarés une seule fois en haut
+                   de theme.css et repris partout (carte du hub, cadre du
+                   cours, étiquettes, jauges, sommaire, boutons) :
+                     Droits des particuliers · terracotta · ⚖
+                     Fiscalité du Particulier · violet · §
+                     Produits Dérivés I · bleu · ↗
+                     Marketing Numérique · framboise · ◎
+                     ES Banque · ambre · ◇
+                     Marché des Particuliers · vert · €
+                   Les photos viennent d'Unsplash (crédits en pied de
+                   page), passées en noir et blanc puis teintées de la
+                   couleur de la matière ; une copie locale (img/sujet-*)
+                   prend le relais si Unsplash ne répond pas.
+                   LE HUB : grand cadre photo « Bonjour + pseudo », carte
+                   « Reprendre » emboîtée dans le coin, prochain partiel
+                   sur verre, cartes de matières photo, section sombre
+                   pour l'entraînement, chiffres, calendrier.
+                   LES COURS : le titre de la leçon passe dans un cadre
+                   photo en tête de page, avec la progression emboîtée
+                   dans le coin ; barre flottante « leçon précédente /
+                   suivante » ; sommaire en pilules. Le contenu des
+                   leçons, des quiz et des corrigés n'a pas changé.
+                   FLUIDITÉ : en-tête en pilules de verre ; barre de
+                   navigation en bas sur téléphone ; fondu entre les
+                   pages au lieu de l'écran blanc (la carte de matière se
+                   transforme en cadre du cours sur les navigateurs
+                   récents) ; pages préchargées avant le clic ; menu et
+                   sommaire qui glissent.
+                   Les gris codés en dur des anciennes pages (3,5:1) sont
+                   ramenés au gris du système ; les tableaux larges
+                   défilent dans leur cadre sur téléphone.
+                   Vérifié sur les 14 pages, en 1366 px et en 390 px :
+                   aucune erreur, aucun débordement, tous les textes à
+                   4,5:1 minimum, y compris ceux posés sur les photos
+                   (mesurés au pixel).
   4.2.1  CORRECTIF : publication automatique rétablie.
                    Netlify bloquait les envois faits depuis Claude
                    (dépôt privé + plan gratuit = un seul contributeur

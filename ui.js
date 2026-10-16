@@ -10,8 +10,8 @@
 
   /* ---------- 0. VERSION ---------- */
   /* Doit rester identique à VERSION en haut de sw.js. */
-  const VERSION_APP = '4.2.1';
-  const NOM_VERSION = 'Sesterce';
+  const VERSION_APP = '5.0.0';
+  const NOM_VERSION = 'Florin';
   window.APP_VERSION = VERSION_APP;
 
   /* ---------- 1. THÈME ---------- */
@@ -123,12 +123,11 @@
     }).join('');
 
     h.innerHTML =
-      '<div class="ds-left">'+
-        '<button class="ds-ic ds-burger" aria-label="Sommaire de la matière">'+icone(IC_BURG,'Sommaire')+'</button>'+
-        '<a class="ds-logo" href="index.html"><span class="mk"></span>M1<b>MBAF</b></a>'+
+      '<div class="ds-left verre">'+
+        '<a class="ds-logo" href="index.html" aria-label="Accueil du hub"><span class="mk" aria-hidden="true"></span>M1<b>MBAF</b></a>'+
       '</div>'+
-      '<nav class="ds-nav" aria-label="Navigation principale">'+liens+'</nav>'+
-      '<div class="ds-acts">'+
+      '<nav class="ds-nav verre" aria-label="Navigation principale">'+liens+'</nav>'+
+      '<div class="ds-acts verre">'+
         '<span class="ds-slot" id="ds-slot"></span>'+
         '<button class="ds-ic" id="ds-rech" title="Recherche (Ctrl+K)">'+icone(IC_RECH,'Rechercher')+'</button>'+
         '<button class="ds-ic" id="ds-menu" aria-label="Ouvrir la navigation">'+icone(IC_MENU,'Menu')+'</button>'+
@@ -144,14 +143,6 @@
       const el = document.querySelector(sel);
       if(el && !slot.contains(el)) slot.appendChild(el);
     });
-
-    /* le bouton « sommaire » ne sert que sur les pages à barre latérale */
-    const burger = h.querySelector('.ds-burger');
-    if(document.querySelector('.sidebar')){
-      burger.onclick = ()=>{ if(typeof window.toggleSidebar === 'function') window.toggleSidebar(); };
-    } else {
-      burger.remove();
-    }
 
     /* l'ancienne barre de la page disparaît */
     document.querySelectorAll('.topbar, #topbar').forEach(b=>{ if(!b.classList.contains('ds-header')) b.classList.add('ds-gone'); });
@@ -169,8 +160,150 @@
     f.innerHTML =
       '<a class="ds-logo" href="index.html"><span class="mk"></span>M1<b>MBAF</b></a>'+
       '<nav class="ds-fnav">'+liens+'</nav>'+
-      '<div class="ds-fv">v'+VERSION_APP+' « '+NOM_VERSION+' »</div>';
+      '<div class="ds-fv">v'+VERSION_APP+' « '+NOM_VERSION+' »</div>'+
+      '<div class="ds-credits">Photos <a href="https://unsplash.com/?utm_source=m1_mbaf&utm_medium=referral" rel="noopener">Unsplash</a> : '+
+        CREDITS.map(c=>'<a href="https://unsplash.com/@'+c[1]+'?utm_source=m1_mbaf&utm_medium=referral" rel="noopener">'+c[0]+'</a>').join(', ')+'.</div>';
     document.body.appendChild(f);
+  }
+
+  /* ---------- PHOTOS : crédits Unsplash ---------- */
+  const CREDITS = [
+    ['Tobias Keller','tokeller'], ['Miles Smith','msmith0912'], ['Kelly Sikkema','kellysikkema'],
+    ['Anne Nygård','polarmermaid'], ['Shutter Speed','shutter_speed_'], ['David Trinks','dtrinksrph'],
+    ['Jakub Żerdzicki','jakubzerdzicki']
+  ];
+
+  /* ---------- ICÔNES AU TRAIT ---------- */
+  const SVG = {
+    maison:'<path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/>',
+    grille:'<rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><rect x="14" y="14" width="6" height="6" rx="1.5"/>',
+    boucle:'<path d="M4 12a8 8 0 0 1 14-5.3L20 9"/><path d="M20 4v5h-5"/><path d="M20 12a8 8 0 0 1-14 5.3L4 15"/><path d="M4 20v-5h5"/>',
+    jauge:'<path d="M4 20V10M10 20V4M16 20v-7"/>',
+    menu:'<path d="M4 7h16M4 12h16M4 17h10"/>',
+    liste:'<path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01"/>',
+    retour:'<path d="M19 12H5M11 6l-6 6 6 6"/>',
+    suite:'<path d="M5 12h14M13 6l6 6-6 6"/>',
+    cible:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/>'
+  };
+  const ic = n => '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'+SVG[n]+'</svg>';
+
+  /* ---------- BARRE BASSE (téléphone, hors pages de cours) ---------- */
+  function construireBarre(){
+    if(document.querySelector('.ds-tab') || document.querySelector('.sidebar')) return;
+    const ici = pageActuelle();
+    const t = document.createElement('nav');
+    t.className = 'ds-tab verre'; t.setAttribute('aria-label','Navigation rapide');
+    const L = [
+      ['index.html','maison','Accueil'], ['index.html#matieres','grille','Cours'],
+      ['revision.html','boucle','Révision'], ['stats.html','jauge','Progrès']
+    ];
+    t.innerHTML = L.map(l=>{
+      const on = (l[0]===ici) ? ' on' : '';
+      return '<a class="'+on+'" href="'+l[0]+'" aria-label="'+l[2]+'">'+ic(l[1])+(on?'<span>'+l[2]+'</span>':'')+'</a>';
+    }).join('') + '<button type="button" aria-label="Ouvrir la navigation" onclick="uiOuvrirMenu()">'+ic('menu')+'</button>';
+    document.body.appendChild(t);
+    document.body.classList.add('ds-a-tab');
+  }
+
+  /* ---------- PAGES DE COURS : cadre photo, progression, suite ---------- */
+  const NOMS = {'marche-particuliers':'Marché des Particuliers','produits-derives':'Produits Dérivés I','marketing-numerique':'Marketing Numérique','es-banque':'ES Banque','fiscalite-particulier':'Fiscalité du Particulier','droits-particuliers':'Droits des particuliers'};
+  function estLecon(v){ return /^l\d+$/.test(v||''); }
+  function sequence(){
+    const vus = {}, out = [];
+    document.querySelectorAll('.sidebar .nav-item[data-view]').forEach(n=>{
+      const v = n.dataset.view;
+      if(v && !vus[v] && document.querySelector('.view[data-view="'+v+'"]')){ vus[v]=1; out.push({v, lab:(n.querySelector('.lab')||n).textContent.trim()}); }
+    });
+    return out;
+  }
+  function libelle(it, seq){
+    if(estLecon(it.v)) return 'Leçon '+(seq.filter(x=>estLecon(x.v)).indexOf(it)+1);
+    return it.lab;
+  }
+  function construireCours(){
+    const main = document.querySelector('.main'), side = document.querySelector('.sidebar');
+    if(!main || !side || document.querySelector('.ds-cadre') || typeof window.go !== 'function') return;
+    const sid = document.documentElement.getAttribute('subject-id') || '';
+    document.body.classList.add('ds-cours');
+
+    const c = document.createElement('section');
+    c.className = 'ds-cadre';
+    c.style.viewTransitionName = 'mat-'+sid;
+    const aTest = !!document.querySelector('.view[data-view="test"]');
+    c.innerHTML =
+      '<div class="ph"></div><div class="voile-g"></div>'+
+      '<div class="haut">'+
+        '<a class="ds-pil verre" href="index.html#matieres">'+ic('retour')+'<span class="txt">Mes cours</span></a>'+
+        '<span style="display:flex;gap:8px">'+
+          (aTest?'<button type="button" class="ds-pil verre ds-pil-test" onclick="go(\'test\')">'+ic('cible')+'<span class="txt">Test final</span></button>':'')+
+          '<button type="button" class="ds-pil verre ds-pil-som" onclick="uiSommaire()">'+ic('liste')+'<span class="txt">Sommaire</span></button>'+
+        '</span>'+
+      '</div>'+
+      '<div class="corps"><div class="ds-kick"><span class="ds-emb" aria-hidden="true"></span><span id="ds-kick">'+(NOMS[sid]||'')+'</span></div>'+
+      '<h1 id="ds-titre"></h1></div>'+
+      '<div class="ds-encoche"><div class="ds-prog"><div class="n" id="ds-n">0<small>/0</small></div>'+
+        '<div class="l">leçons<br>validées</div><div class="j"><i id="ds-j" style="width:0"></i></div></div></div>';
+    main.insertBefore(c, main.firstChild);
+
+    const s = document.createElement('nav');
+    s.className = 'ds-suite verre'; s.setAttribute('aria-label','Leçon précédente ou suivante');
+    s.innerHTML = '<button type="button" id="ds-prec">'+ic('retour')+'<span></span></button>'+
+                  '<button type="button" class="som" onclick="uiSommaire()" aria-label="Sommaire">'+ic('liste')+'</button>'+
+                  '<button type="button" class="go" id="ds-suiv"><span></span>'+ic('suite')+'</button>';
+    document.body.appendChild(s);
+
+    const goOrig = window.go;
+    window.go = function(v){ const r = goOrig.apply(this, arguments); majCours(); return r; };
+    new MutationObserver(majProgres).observe(side, {subtree:true, attributes:true, attributeFilter:['class'], childList:true});
+    majCours();
+  }
+  window.uiSommaire = function(){
+    if(window.innerWidth > 880){ const s=document.querySelector('.sidebar'); if(s) s.scrollIntoView({behavior:'smooth'}); return; }
+    if(typeof window.toggleSidebar === 'function') window.toggleSidebar();
+  };
+  function vueActive(){ return document.querySelector('.view.active'); }
+  function majProgres(){
+    const items = [...document.querySelectorAll('.sidebar .nav-item[data-view]')].filter(n=>estLecon(n.dataset.view));
+    const tot = items.length, faites = items.filter(n=>n.classList.contains('done')).length;
+    const n = document.getElementById('ds-n'), j = document.getElementById('ds-j');
+    if(n) n.innerHTML = faites+'<small>/'+tot+'</small>';
+    if(j) j.style.width = (tot? Math.round(faites/tot*100) : 0)+'%';
+  }
+  function majCours(){
+    const vue = vueActive(); if(!vue) return;
+    const sid = document.documentElement.getAttribute('subject-id') || '';
+    const h1 = vue.querySelector('h1.lesson-title, h1'), tag = vue.querySelector('.tag');
+    const t = document.getElementById('ds-titre'), k = document.getElementById('ds-kick');
+    if(t) t.innerHTML = h1 ? h1.innerHTML : '';
+    if(k) k.textContent = (NOMS[sid]||'') + (tag ? ' · '+tag.textContent.trim() : '');
+    document.title = (h1 ? h1.textContent.trim()+' — ' : '') + (NOMS[sid]||'M1 MBAF');
+    const seq = sequence(), i = seq.findIndex(x=>x.v===vue.dataset.view);
+    const p = document.getElementById('ds-prec'), s = document.getElementById('ds-suiv');
+    const prev = i>0 ? seq[i-1] : null, next = (i>=0 && i<seq.length-1) ? seq[i+1] : null;
+    if(p){ p.disabled = !prev; p.querySelector('span').textContent = prev ? libelle(prev, seq) : 'Début'; p.onclick = prev ? ()=>window.go(prev.v) : null; }
+    if(s){ s.disabled = !next; s.querySelector('span').textContent = next ? libelle(next, seq) : 'Fin'; s.onclick = next ? ()=>window.go(next.v) : null; }
+    majProgres();
+  }
+
+  /* ---------- PRÉCHARGEMENT : les pages s'ouvrent sans attendre ---------- */
+  function precharger(){
+    try{
+      if(HTMLScriptElement.supports && HTMLScriptElement.supports('speculationrules')){
+        const sr = document.createElement('script');
+        sr.type = 'speculationrules';
+        sr.textContent = JSON.stringify({prerender:[{source:'document', where:{and:[{href_matches:'/*'},{not:{href_matches:'*#*'}}]}, eagerness:'moderate'}]});
+        document.head.appendChild(sr);
+        return;
+      }
+    }catch(e){}
+    const faits = {};
+    const pref = e=>{
+      const a = e.target.closest && e.target.closest('a[href]'); if(!a) return;
+      const u = a.getAttribute('href'); if(!u || u[0]==='#' || /^https?:/.test(u) || faits[u]) return;
+      faits[u] = 1; const l = document.createElement('link'); l.rel = 'prefetch'; l.href = u.split('#')[0]; document.head.appendChild(l);
+    };
+    document.addEventListener('pointerover', pref, {passive:true});
+    document.addEventListener('touchstart', pref, {passive:true});
   }
 
   /* ---------- 4. OUVRIR UNE LEÇON VIA L'ANCRE (#l4) ---------- */
@@ -319,7 +452,10 @@
 
   function init(){
     construireEntete();
+    construireCours();
+    construireBarre();
     construirePied();
+    precharger();
     appliquerTheme();
     enregistrerSW();
     majReseau();
