@@ -178,7 +178,7 @@ main{max-width:980px;margin:0 auto;padding:12px 16px 120px;min-width:0}
   <section class="bq-hero" aria-labelledby="titre-bq">
     <div class="sur">Le défi du soir · toute la promo</div>
     <h1 id="titre-bq">Be<b>Quick</b></h1>
-    <p class="accroche">Chaque soir à 18 h 30, la même série de 30 questions pour tout le M1. Vingt minutes, une seule chance, fermeture à 22 h.</p>
+    <p class="accroche">Du lundi au vendredi à 18 h 30, la même série de 15 questions pour tout le M1. Dix minutes, une seule chance, fermeture à 22 h.</p>
     <div class="etat" id="etat" aria-live="polite"><p class="note-n">Chargement…</p></div>
   </section>
 
@@ -195,9 +195,9 @@ main{max-width:980px;margin:0 auto;padding:12px 16px 120px;min-width:0}
   <section class="sec">
     <div class="st"><h2>Les <b>règles</b></h2></div>
     <div class="regles">
-      <div class="regle"><b>18 h 30</b><span>Ouverture, la même série pour tous. Fermeture à 22 h.</span></div>
-      <div class="regle"><b>20 min</b><span>Un seul essai par soir. Le chrono, une fois lancé, ne s'arrête plus.</span></div>
-      <div class="regle"><b>30</b><span>Questions, sur 1 ou 2 matières dont le partiel est à venir.</span></div>
+      <div class="regle"><b>18 h 30</b><span>Ouverture du lundi au vendredi, la même série pour tous. Fermeture à 22 h. Relâche le week-end.</span></div>
+      <div class="regle"><b>10 min</b><span>Un seul essai par soir. Le chrono, une fois lancé, ne s'arrête plus.</span></div>
+      <div class="regle"><b>15</b><span>Questions, sur 1 ou 2 matières au maximum, dont le partiel est à venir.</span></div>
       <div class="regle"><b>500 → 250</b><span>Points d'une bonne réponse : 500 si tu réponds aussitôt, 250 au-delà de 40 secondes.</span></div>
       <div class="regle"><b>0</b><span>Point si tu quittes l'appli : la question en cours est passée.</span></div>
       <div class="regle"><b>Aucune</b><span>Reprise possible : recharger la page ou changer d'appareil ne relance pas le chrono.</span></div>
@@ -277,13 +277,21 @@ async function afficherEtat(){
     let rang = '—';
     try{ const l = await BQ.classement(j); const i = l.findIndex(x=>x.pseudo_cle === BQ.cle(BQ.pseudo())); if(i >= 0) rang = (i+1)+'<small> / '+l.length+'</small>'; }catch(e){}
     z.innerHTML = '<div class="carte-res"><div><b>'+nb(sc)+'</b><small>points ce soir</small></div><div><b>'+bo+'<small style="font-size:16px"> / '+BQ.NB_Q+'</small></b><small>bonnes réponses</small></div><div><b>'+rang+'</b><small>rang du soir</small></div></div>'+
-      '<p class="note-n">'+(ph === 'ouvert' ? 'Le classement se complète jusqu\'à 22 h 20. ' : '')+'Prochain BeQuick '+(ph === 'avant' ? 'à 18 h 30.' : 'demain à 18 h 30.')+'</p>'+
+      '<p class="note-n">'+(ph === 'ouvert' ? 'Le classement se complète jusqu\'à 22 h 20. ' : '')+'Prochain BeQuick '+BQ.texteProchain()+'.</p>'+
       (ph === 'ferme' ? '<div><button class="btn-sec" id="bCorr">Voir la correction de ce soir</button></div>'
                       : '<p class="note-n">La correction de ce soir sera disponible à 22 h, pour tout le monde en même temps.</p>');
     if($('bCorr')) $('bCorr').onclick = ()=>{ selJour = j; moisVu = j.slice(0,7); corrAOuvrir = true; choisir('cal'); document.getElementById('classement').scrollIntoView({behavior:'smooth'}); };
     return;
   }
 
+  if(ph === 'repos'){
+    const o = BQ.prochaineOuverture();
+    z.innerHTML = '<div class="ligne-etat"><div class="compte"><small>Relâche le week-end · retour dans</small><span id="cpt">'+duree(o - BQ.maintenant())+'</span></div></div>'+
+      '<p class="note-n">BeQuick a lieu du lundi au vendredi. Prochaine série '+BQ.texteProchain()+' — en attendant, le podium et la correction de vendredi sont ci-dessous.</p><div id="zPush"></div>';
+    zonePush();
+    TIC = setInterval(()=>{ const r = o - BQ.maintenant(); if(r <= 0 || BQ.phase() !== 'repos') afficherEtat(); else if($('cpt')) $('cpt').textContent = duree(r); }, 1000);
+    return;
+  }
   if(ph === 'avant'){
     const o = BQ.ouverture(j);
     z.innerHTML = '<div class="ligne-etat"><div class="compte"><small>Ouverture dans</small><span id="cpt">'+duree(o - BQ.maintenant())+'</span></div></div>'+
@@ -293,9 +301,9 @@ async function afficherEtat(){
     return;
   }
   if(ph === 'ferme'){
-    const o = BQ.ouverture(BQ.decaleJour(j, 1));
+    const o = BQ.prochaineOuverture();
     z.innerHTML = '<div class="ligne-etat"><div class="compte"><small>BeQuick est fermé · réouverture dans</small><span id="cpt">'+duree(o - BQ.maintenant())+'</span></div></div>'+
-      '<p class="note-n">Tu n\'as pas joué ce soir. Rendez-vous demain à 18 h 30 — en attendant, regarde le podium et la correction ci-dessous.</p><div id="zPush"></div>';
+      '<p class="note-n">Tu n\'as pas joué ce soir. Prochaine série '+BQ.texteProchain()+' — en attendant, regarde le podium et la correction ci-dessous.</p><div id="zPush"></div>';
     zonePush();
     TIC = setInterval(()=>{ const r = o - BQ.maintenant(); if(r <= 0 || BQ.jourDe() !== j) afficherEtat(); else if($('cpt')) $('cpt').textContent = duree(r); }, 1000);
     return;
@@ -326,7 +334,7 @@ function avertissement(){
   $('etat').innerHTML = '<div class="avert" role="alertdialog" aria-labelledby="avT">'+
     '<h2 id="avT">Une seule chance ce soir</h2>'+
     '<ul>'+
-      '<li><span>⏱</span><span><b>20 minutes</b> pour 30 questions, une seule fois par jour.</span></li>'+
+      '<li><span>⏱</span><span><b>10 minutes</b> pour 15 questions, une seule fois par jour.</span></li>'+
       '<li><span>▶</span><span>Le bouton <b>Démarrer</b> utilise ta chance du soir et lance le chrono, qui ne s\'arrête plus.</span></li>'+
       '<li><span>↻</span><span><b>Aucune reprise</b> : recharger la page, fermer l\'appli ou changer d\'appareil ne relance rien. Le chrono continue jusqu\'au bout.</span></li>'+
       '<li><span>📱</span><span>Si tu <b>quittes l\'appli</b> pendant une question, elle est <b>passée</b> (0 point).</span></li>'+
@@ -472,16 +480,17 @@ function podiumEtListe(lignes, valeur, sec){
     return '<div class="ligne'+(m?' moi':'')+'"><span class="rg">'+(i+4)+'</span><span class="nm">'+esc(x.pseudo)+(m?'<span class="toi">toi</span>':'')+'<small>'+sec(x)+'</small></span><span class="val">'+valeur(x)+'</span></div>'; }).join('')+'</div>';
   return h;
 }
+function etiquetteJour(j){ const a = BQ.jourDe(); return j === a ? 'Ce soir' : (j === BQ.decaleJour(a, -1) ? 'Hier soir' : 'Dernier BeQuick'); }
 const valJour = x=>nb(x.score)+' pts', secJour = x=>x.bonnes+' / '+BQ.NB_Q+' bonnes réponses';
 
 async function chargerClassement(){
   const z = $('zoneClt');
   try{
     if(ONGLET === 'soir'){
-      let j = BQ.jourDe(); if(BQ.phase() === 'avant') j = BQ.decaleJour(j, -1);
-      z.innerHTML = '<p class="titre-jour">'+(j === BQ.jourDe() ? 'Ce soir' : 'Hier soir')+' — <b>'+dateLongue(j)+'</b></p><div class="vide">Chargement…</div>';
+      const j = BQ.dernierJour();
+      z.innerHTML = '<p class="titre-jour">'+etiquetteJour(j)+' — <b>'+dateLongue(j)+'</b></p><div class="vide">Chargement…</div>';
       const l = await BQ.classement(j);
-      z.innerHTML = '<p class="titre-jour">'+(j === BQ.jourDe() ? 'Ce soir' : 'Hier soir')+' — <b>'+dateLongue(j)+'</b></p>'+podiumEtListe(l, valJour, secJour)+
+      z.innerHTML = '<p class="titre-jour">'+etiquetteJour(j)+' — <b>'+dateLongue(j)+'</b></p>'+podiumEtListe(l, valJour, secJour)+
         '<p class="note">Une bonne réponse rapporte de 500 à 250 points selon la rapidité. Égalité départagée par le nombre de bonnes réponses, puis par l\'heure de départ.</p>';
     } else if(ONGLET === 'gen'){
       z.innerHTML = '<div class="vide">Chargement…</div>';
@@ -492,7 +501,7 @@ async function chargerClassement(){
     } else {
       z.innerHTML = '<div class="vide">Chargement…</div>';
       TOUTES = await BQ.toutes();
-      if(!selJour){ selJour = BQ.jourDe(); if(BQ.phase() === 'avant') selJour = BQ.decaleJour(selJour, -1); }
+      if(!selJour) selJour = BQ.dernierJour();
       if(!moisVu) moisVu = selJour.slice(0,7);
       z.innerHTML = '<div class="cal" id="cal"></div><div id="jourSel"></div>';
       dessinerCalendrier(); afficherJour(selJour, corrAOuvrir); corrAOuvrir = false;
@@ -527,7 +536,7 @@ async function afficherJour(j, ouvrirCorrection){
   /* la correction d'un soir n'est publiée qu'à sa fermeture (22 h), pour tout le monde */
   const visible = j < BQ.jourDe() || BQ.phase() === 'ferme';
   z.innerHTML = '<p class="titre-jour"><b>'+dateLongue(j)+'</b> · '+l.length+' joueur'+(l.length>1?'s':'')+'</p>'+podiumEtListe(l, valJour, secJour)+
-    (visible ? '<button class="btn-lien" id="bVoirCorr">Voir les 30 questions et la correction</button><div id="corr"></div>' : '<p class="note">La correction de ce soir sera disponible à 22 h, pour tout le monde en même temps.</p>');
+    (visible ? '<button class="btn-lien" id="bVoirCorr">Voir les '+BQ.NB_Q+' questions et la correction</button><div id="corr"></div>' : '<p class="note">La correction de ce soir sera disponible à 22 h, pour tout le monde en même temps.</p>');
   if(visible){ $('bVoirCorr').onclick = ()=>correction(j); if(ouvrirCorrection) correction(j); }
 }
 async function correction(j){

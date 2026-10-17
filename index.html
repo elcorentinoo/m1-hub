@@ -270,9 +270,9 @@ body{overflow-x:hidden}
     <section class="sec" id="bequick">
       <a class="bqc" href="bequick.html" aria-describedby="bqTxt">
         <div class="g">
-          <div class="sur">Le défi du soir · toute la promo</div>
+          <div class="sur">Le défi du soir · du lundi au vendredi</div>
           <h2>Be<b>Quick</b></h2>
-          <p id="bqTxt">30 questions à 18 h 30, la même série pour tout le M1. Vingt minutes, une seule chance.</p>
+          <p id="bqTxt">15 questions à 18 h 30, du lundi au vendredi, la même série pour tout le M1. Dix minutes, une seule chance.</p>
           <div class="bqc-bas"><span class="bqb" id="bqBtn">Découvrir</span><span class="bqt" id="bqCpt"></span></div>
         </div>
         <div class="d" id="bqPodium"></div>
@@ -578,18 +578,19 @@ async function renderBeQuick(){
   const j = BQ.jourDe(), ph = BQ.phase(), loc = BQ.lireLocal(j), maintenant = BQ.maintenant();
   const txt = document.getElementById('bqTxt'), btn = document.getElementById('bqBtn'), cpt = document.getElementById('bqCpt');
   const duree = ms=>{ const s = Math.max(0, Math.floor(ms/1000)), h = Math.floor(s/3600), m = Math.floor(s%3600/60), x = s%60; return (h ? h+' h '+String(m).padStart(2,'0') : m+' min '+String(x).padStart(2,'0')); };
-  if(loc && loc.fini){ txt.textContent = 'Ce soir : '+(loc.score||0).toLocaleString('fr-FR')+' points, '+(loc.bonnes||0)+' bonnes réponses sur 30. Prochain BeQuick demain à 18 h 30.'; btn.textContent = 'Voir le classement'; cpt.textContent = ''; }
-  else if(ph === 'avant'){ txt.textContent = '30 questions à 18 h 30, la même série pour tout le M1. Vingt minutes, une seule chance.'; btn.textContent = 'Ouverture à 18 h 30'; cpt.textContent = 'dans '+duree(BQ.ouverture(j) - maintenant); }
-  else if(ph === 'ouvert' && !loc){ txt.textContent = 'C\'est ouvert ! 30 questions, 20 minutes, une seule chance — toute la promo joue la même série.'; btn.textContent = 'Jouer maintenant'; cpt.textContent = 'fermeture dans '+duree(BQ.fermeture(j) - maintenant); }
+  if(loc && loc.fini){ txt.textContent = 'Ce soir : '+(loc.score||0).toLocaleString('fr-FR')+' points, '+(loc.bonnes||0)+' bonnes réponses sur '+BQ.NB_Q+'. Prochain BeQuick '+BQ.texteProchain()+'.'; btn.textContent = 'Voir le classement'; cpt.textContent = ''; }
+  else if(ph === 'repos'){ txt.textContent = 'Relâche le week-end. Prochaine série '+BQ.texteProchain()+' : 15 questions, 10 minutes, une seule chance.'; btn.textContent = 'Podium et correction'; cpt.textContent = 'dans '+duree(BQ.prochaineOuverture() - maintenant); }
+  else if(ph === 'avant'){ txt.textContent = '15 questions à 18 h 30, la même série pour tout le M1. Dix minutes, une seule chance.'; btn.textContent = 'Ouverture à 18 h 30'; cpt.textContent = 'dans '+duree(BQ.ouverture(j) - maintenant); }
+  else if(ph === 'ouvert' && !loc){ txt.textContent = 'C\'est ouvert ! 15 questions, 10 minutes, une seule chance — toute la promo joue la même série.'; btn.textContent = 'Jouer maintenant'; cpt.textContent = 'fermeture dans '+duree(BQ.fermeture(j) - maintenant); }
   else if(ph === 'ouvert'){ txt.textContent = 'Ta partie de ce soir est lancée ou terminée. Le classement se complète jusqu\'à 22 h 20.'; btn.textContent = 'Voir le classement'; cpt.textContent = ''; }
-  else { txt.textContent = 'Fermé pour ce soir. Rendez-vous demain à 18 h 30 pour la prochaine série.'; btn.textContent = 'Podium et correction'; cpt.textContent = ''; }
-  const jc = ph === 'avant' ? BQ.decaleJour(j, -1) : j;
+  else { txt.textContent = 'Fermé pour ce soir. Prochaine série '+BQ.texteProchain()+'.'; btn.textContent = 'Podium et correction'; cpt.textContent = ''; }
+  const jc = BQ.dernierJour();
   if(bqDernier === jc+ph) return;            // le podium ne se recharge qu'à chaque changement de phase
   bqDernier = jc+ph;
   const zp = document.getElementById('bqPodium');
   try{
     const l = (await BQ.classement(jc)).slice(0,3);
-    const t = '<div class="t">Podium '+(jc === j ? 'de ce soir' : 'd\'hier soir')+'</div>';
+    const t = '<div class="t">Podium '+(jc === j ? 'de ce soir' : jc === BQ.decaleJour(j, -1) ? 'd\'hier soir' : 'du dernier BeQuick')+'</div>';
     zp.innerHTML = t + (l.length ? l.map((x,i)=>'<div class="bqp p'+(i+1)+'"><span class="r">'+(i+1)+'</span><span class="n">'+x.pseudo.replace(/[&<>]/g,'')+'</span><span class="s">'+Number(x.score).toLocaleString('fr-FR')+' pts</span></div>').join('') : '<div class="bqv">Personne n\'a encore joué. La première place est libre.</div>');
   }catch(e){ zp.innerHTML = ''; }      // hors ligne : on réessaiera au prochain changement de phase
 }

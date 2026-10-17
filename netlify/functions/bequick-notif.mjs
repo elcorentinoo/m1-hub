@@ -5,8 +5,8 @@
    faits avec le module crypto de Node.
 
    Netlify lance les fonctions planifiées à heure fixe en UTC : elle
-   tourne à 16 h 30 et 17 h 30 UTC, et n'envoie que lorsqu'il est
-   18 h 30 à Paris (17 h 30 UTC en hiver, 16 h 30 UTC en été).
+   tourne à 16 h 30 et 17 h 30 UTC, du lundi au vendredi, et n'envoie
+   que lorsqu'il est 18 h 30 à Paris (17 h 30 UTC en hiver, 16 h 30 UTC en été).
 
    Variables d'environnement (Netlify → Site configuration →
    Environment variables) :
@@ -17,14 +17,14 @@ import {supa, envoyerUn, cles} from '../push.mjs';
 
 export const MESSAGE = {
   title: '⚡ BeQuick est ouvert',
-  body: "18 h 30 : la série du jour t'attend. 30 questions, 20 minutes, une seule chance — toute la promo joue la même. Fermeture à 22 h.",
+  body: "18 h 30 : la série du jour t'attend. 15 questions, 10 minutes, une seule chance — toute la promo joue la même. Fermeture à 22 h.",
   url: '/bequick.html',
   tag: 'bequick'
 };
 
 function heureParis(){
-  const p = Object.fromEntries(new Intl.DateTimeFormat('fr-FR',{timeZone:'Europe/Paris',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date()).map(x=>[x.type,x.value]));
-  return {h:+p.hour, mi:+p.minute};
+  const p = Object.fromEntries(new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Paris',weekday:'short',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date()).map(x=>[x.type,x.value]));
+  return {h:+p.hour, mi:+p.minute, weekend:p.weekday === 'Sat' || p.weekday === 'Sun'};
 }
 
 export async function envoyerATous(publique, privee, message = MESSAGE){
@@ -44,11 +44,12 @@ export async function envoyerATous(publique, privee, message = MESSAGE){
 export default async (req) => {
   const {publique, privee} = cles();
   if(!privee) return new Response('Clé VAPID_PRIVATE absente', {status:500});
-  const {h, mi} = heureParis();
+  const {h, mi, weekend} = heureParis();
+  if(weekend) return new Response('Week-end : pas de BeQuick.');
   if(h !== 18) return new Response('Pas encore 18 h 30 à Paris ('+h+' h '+mi+').');
   const bilan = await envoyerATous(publique, privee);
   console.log('[bequick-notif]', JSON.stringify(bilan));
   return new Response(JSON.stringify(bilan), {headers:{'Content-Type':'application/json'}});
 };
 
-export const config = { schedule: '30 16,17 * * *' };
+export const config = { schedule: '30 16,17 * * 1-5' };   // du lundi au vendredi

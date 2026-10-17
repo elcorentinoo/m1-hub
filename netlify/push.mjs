@@ -93,7 +93,7 @@ export function abonnementValide(a){
 
 export const MESSAGE_TEST = {
   title: '🔔 Notification de test',
-  body: "Ça marche ! Tu recevras l'alerte BeQuick chaque soir à 18 h 30.",
+  body: "Ça marche ! Tu recevras l'alerte BeQuick à 18 h 30, du lundi au vendredi.",
   url: '/bequick.html',
   tag: 'test'
 };

@@ -42,14 +42,17 @@ drop policy if exists "bq mise a jour" on public.bequick_parties;
 create policy "bq mise a jour" on public.bequick_parties for update to anon using (true) with check (true);
 
 -- Le serveur fait foi : il horodate le départ, n'accepte un départ
--- qu'entre 18 h 30 et 22 h 00 (heure de Paris), et refuse toute
--- réponse après les 20 minutes du chrono.
+-- que du lundi au vendredi entre 18 h 30 et 22 h 00 (heure de Paris),
+-- et refuse toute réponse après les 10 minutes du chrono (règles 6.1.0).
 create or replace function public.bequick_controle() returns trigger
 language plpgsql as $$
 declare
   paris timestamp := now() at time zone 'Europe/Paris';
 begin
   if tg_op = 'INSERT' then
+    if extract(isodow from paris) > 5 then
+      raise exception 'BeQuick a lieu du lundi au vendredi.';
+    end if;
     if paris::time < time '18:30' or paris::time >= time '22:00' then
       raise exception 'BeQuick est ouvert de 18 h 30 à 22 h 00.';
     end if;
@@ -59,13 +62,13 @@ begin
     new.pseudo := btrim(new.pseudo);
     new.pseudo_cle := lower(new.pseudo);
   else
-    if now() > old.debut + interval '20 minutes 20 seconds' then
+    if now() > old.debut + interval '10 minutes 20 seconds' then
       raise exception 'Le chrono est écoulé.';
     end if;
     new.id := old.id; new.jour := old.jour; new.debut := old.debut;
     new.pseudo := old.pseudo; new.pseudo_cle := old.pseudo_cle;
     new.maj := now();
-    if new.repondues < old.repondues or new.repondues > 30 or new.bonnes > new.repondues
+    if new.repondues < old.repondues or new.repondues > 15 or new.bonnes > new.repondues
        or new.score < old.score or new.score > new.bonnes * 500 then
       raise exception 'Valeurs refusées.';
     end if;

@@ -1,9 +1,9 @@
 /* ════════════════════════════════════════════════════════════
-   bequick.js — le mode BeQuick (6.0.0 « Ducat »)
-   Chaque soir à 18 h 30 (heure de Paris), la même série de 30
-   questions pour toute la promo : 20 minutes, une seule chance,
-   fermeture à 22 h 00. Une bonne réponse rapporte de 500 points
-   (immédiate) à 250 points (40 secondes ou plus).
+   bequick.js — le mode BeQuick (6.0.0 « Ducat », règles 6.1.0)
+   Du lundi au vendredi à 18 h 30 (heure de Paris), la même série de
+   15 questions pour toute la promo : 10 minutes, une seule chance,
+   fermeture à 22 h 00, relâche le week-end. Une bonne réponse
+   rapporte de 500 points (immédiate) à 250 points (40 s ou plus).
 
    Dépend de : calendrier.js (dates de partiels), banque.js (les
    questions), lb.js (projet Supabase et pseudo). Si lb.js manque,
@@ -13,13 +13,13 @@
      bequick_jours     la série du jour, figée par le premier joueur
      bequick_parties   une ligne par joueur et par jour ; le serveur
                        horodate le départ et refuse toute réponse
-                       après 20 minutes ou hors de 18 h 30 – 22 h 00
+                       après 10 minutes, hors de 18 h 30 – 22 h 00 ou le week-end
      push_abonnements  les téléphones qui reçoivent l'alerte
    ════════════════════════════════════════════════════════════ */
 (function(){
   const NOM = 'BeQuick';
   const OUVERTURE = 18*60+30, FERMETURE = 22*60;      // minutes depuis minuit, Paris
-  const DUREE = 20*60*1000, NB_Q = 30;
+  const DUREE = 10*60*1000, NB_Q = 15;
   const PTS_MAX = 500, PTS_MIN = 250, T_REF = 40;     // secondes pour tomber à 250
   /* clé publique d'envoi des notifications (la clé privée est chez Netlify) */
   const CLE_PUSH = 'BGudFKvHrz5uqtu2wW2HlNTfMgpuAvXR-E0EacuHaqb-9WSJV7oLdBxpwTc7EOtx2Ffn3JdBjPr0BcqVw8T8tzA';
@@ -49,14 +49,39 @@
   function ouverture(jour){ return instant(jour||jourDe(), OUVERTURE); }
   function fermeture(jour){ return instant(jour||jourDe(), FERMETURE); }
   /* 'avant' · 'ouvert' · 'ferme' */
+  /* BeQuick a lieu du lundi au vendredi */
+  function estOuvre(jour){ const [y,mo,d] = jour.split('-').map(Number); const w = new Date(Date.UTC(y, mo-1, d)).getUTCDay(); return w >= 1 && w <= 5; }
+  /* 'avant' · 'ouvert' · 'ferme' · 'repos' (week-end) */
   function phase(t){
-    const m = paris(t==null ? maintenant() : t).min;
+    t = t==null ? maintenant() : t;
+    if(!estOuvre(jourDe(t))) return 'repos';
+    const m = paris(t).min;
     return m < OUVERTURE ? 'avant' : (m < FERMETURE ? 'ouvert' : 'ferme');
   }
   function decaleJour(jour, n){
     const [y,mo,d] = jour.split('-').map(Number);
     const t = new Date(Date.UTC(y, mo-1, d+n, 12));
     return t.toISOString().slice(0,10);
+  }
+  /* le prochain départ possible (aujourd'hui si on est avant 18 h 30 un jour ouvré) */
+  function prochaineOuverture(){
+    let j = jourDe();
+    if(!(estOuvre(j) && phase() === 'avant')){ do{ j = decaleJour(j, 1); }while(!estOuvre(j)); }
+    return ouverture(j);
+  }
+  /* le dernier BeQuick ouvert : ce soir s'il a commencé, sinon le jour ouvré précédent */
+  function dernierJour(){
+    let j = jourDe(); const ph = phase();
+    if(ph === 'ouvert' || ph === 'ferme') return j;
+    do{ j = decaleJour(j, -1); }while(!estOuvre(j));
+    return j;
+  }
+  /* « ce soir à 18 h 30 », « demain à 18 h 30 », « lundi à 18 h 30 » */
+  function texteProchain(){
+    const o = prochaineOuverture(), jo = jourDe(o), auj = jourDe();
+    if(jo === auj) return 'ce soir à 18 h 30';
+    if(jo === decaleJour(auj, 1)) return 'demain à 18 h 30';
+    return new Date(o).toLocaleDateString('fr-FR', {weekday:'long', timeZone:'Europe/Paris'})+' à 18 h 30';
   }
 
   /* ---------- points ---------- */
@@ -261,7 +286,7 @@
      identifiant : une fois vue, elle ne compte plus dans la pastille. */
   function alertes(){
     const out = [], t = maintenant(), j = jourDe(t), ph = phase(t), loc = lireLocal(j);
-    if(ph === 'ouvert' && !loc) out.push({id:'bq-'+j, ico:'⚡', titre:NOM+" est ouvert jusqu'à 22 h", texte:"30 questions, 20 minutes, une seule chance. Toute la promo joue la même série.", url:'bequick.html', fort:true});
+    if(ph === 'ouvert' && !loc) out.push({id:'bq-'+j, ico:'⚡', titre:NOM+" est ouvert jusqu'à 22 h", texte:"15 questions, 10 minutes, une seule chance. Toute la promo joue la même série.", url:'bequick.html', fort:true});
     if(ph === 'ouvert' && loc && loc.fini) out.push({id:'bq-res-'+j, ico:'🏆', titre:"Ton "+NOM+" du jour : "+(loc.score||0).toLocaleString('fr-FR')+" points", texte:"Le classement du jour se complète jusqu'à 22 h 20.", url:'bequick.html#classement'});
     if(ph === 'avant'){ const m = OUVERTURE - paris(t).min; if(m <= 60) out.push({id:'bq-bientot-'+j, ico:'⏳', titre:NOM+" ouvre dans "+m+" min", texte:"Rendez-vous à 18 h 30.", url:'bequick.html'}); }
     (window.ECHEANCES||[]).forEach(e=>{
@@ -279,6 +304,7 @@
 
   window.BQ = {NOM, OUVERTURE, FERMETURE, DUREE, NB_Q, PTS_MAX, PTS_MIN, T_REF, PREMIER_JOUR,
     paris, maintenant, jourDe, instant, ouverture, fermeture, phase, decaleJour, points,
+    estOuvre, prochaineOuverture, dernierJour, texteProchain,
     tirage, poidsMatieres, questions, serie, maPartie, demarrer, envoyer, classement, toutes, general,
     lireLocal, ecrireLocal, pseudo, cle, api, MSG_TEST, testerMaintenant,
     pushPossible, estIOS, installe, etatPush, activerPush, desactiverPush, alertes};

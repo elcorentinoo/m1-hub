@@ -274,6 +274,14 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  6.1.0            BeQuick, nouvelles règles : du lundi au vendredi seulement
+                   (relâche le week-end, compte à rebours jusqu'au lundi),
+                   15 questions en 10 minutes (au lieu de 30 en 20), toujours
+                   sur 1 ou 2 matières au maximum. Même barème (500 → 250 points
+                   en 40 s). Le serveur refuse les départs le week-end et toute
+                   réponse après 10 minutes : supabase/bequick.sql est à
+                   relancer une fois (SQL Editor → Run). L'alerte de 18 h 30 ne
+                   part plus le samedi ni le dimanche.
   6.0.8            Remise en ligne pour transmettre la clé VAPID_PRIVATE aux fonctions :
                    enregistrée en 6.0.0 avec l'option « secrète », elle n'avait en
                    réalité jamais été créée. Réenregistrée en variable normale
