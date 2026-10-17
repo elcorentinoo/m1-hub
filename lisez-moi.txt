@@ -274,6 +274,12 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  6.2.0            VIDÉOS D'OUVERTURE DE LEÇON (test sur Droits des particuliers,
+                   leçon 1). Nouveau bloc <div class="video-lecon" data-yt="ID">
+                   construit par ui.js : aperçu léger, le lecteur YouTube (domaine
+                   sans cookies) ne se charge qu'au clic ; message clair hors ligne.
+                   Vidéos générées par Gemini Notebook, hébergées en non répertorié
+                   sur la chaîne YouTube « M1 HUB ».
   6.1.0            BeQuick, nouvelles règles : du lundi au vendredi seulement
                    (relâche le week-end, compte à rebours jusqu'au lundi),
                    15 questions en 10 minutes (au lieu de 30 en 20), toujours
