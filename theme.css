@@ -723,3 +723,25 @@ body.ds-cours .main, body.ds-cours .view{ min-width:0; max-width:100%; }
 .ds-n-b:disabled{ opacity:.6; cursor:wait; }
 .ds-n-err{ margin-top:8px; font-size:13px; color:var(--bad); }
 @media(max-width:760px){ .ds-notifs{ top:68px; right:8px; width:calc(100vw - 16px); } }
+
+/* ═══════════ VIDÉO D'OUVERTURE DE LEÇON (6.2.0) ═══════════
+   <div class="video-lecon" data-yt="ID_YOUTUBE" data-duree="6 min"></div>
+   ui.js construit l'aperçu ; la vidéo YouTube (sans cookies) ne se charge
+   qu'au clic. Aucun texte posé sur l'image : la légende est sur fond blanc. */
+.video-lecon{ background:var(--blanc); border:1px solid var(--stroke); border-radius:26px; padding:10px; margin:18px 0 26px; }
+.video-lecon .vl-ecran{ position:relative; display:block; width:100%; aspect-ratio:16/9; border:0; padding:0; margin:0;
+  border-radius:18px; overflow:hidden; background:var(--nuit); cursor:pointer; }
+.video-lecon .vl-ecran img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .4s; }
+.video-lecon .vl-ecran:hover img{ transform:scale(1.03); }
+.video-lecon .vl-play{ position:absolute; left:50%; top:50%; width:72px; height:72px; margin:-36px 0 0 -36px; border-radius:50%;
+  background:var(--verre-fort); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+  display:flex; align-items:center; justify-content:center; box-shadow:0 8px 28px rgba(30,33,71,.35); transition:transform .2s; }
+.video-lecon .vl-ecran:hover .vl-play, .video-lecon .vl-ecran:focus-visible .vl-play{ transform:scale(1.08); }
+.video-lecon .vl-ecran:focus-visible{ outline:3px solid var(--m); outline-offset:3px; }
+.video-lecon .vl-play svg{ width:28px; height:28px; margin-left:4px; fill:var(--m); }
+.video-lecon iframe{ display:block; width:100%; aspect-ratio:16/9; border:0; border-radius:18px; background:var(--nuit); }
+.video-lecon .vl-leg{ display:flex; flex-wrap:wrap; gap:4px 12px; align-items:baseline; padding:12px 8px 4px; }
+.video-lecon .vl-titre{ color:var(--m); font-weight:600; font-size:.95rem; }
+.video-lecon .vl-info{ color:var(--txt3); font-size:.85rem; }
+.video-lecon .vl-horsligne{ aspect-ratio:16/9; border-radius:18px; background:var(--surface2); color:var(--txt2);
+  display:flex; align-items:center; justify-content:center; text-align:center; padding:20px; font-size:.95rem; }

@@ -633,6 +633,37 @@
     maj();
   }
 
+  /* ---------- VIDÉOS D'OUVERTURE DE LEÇON (6.2.0) ----------
+     <div class="video-lecon" data-yt="ID" data-duree="6 min"></div>
+     Aperçu léger ; le lecteur YouTube (domaine sans cookies) ne se
+     charge qu'au clic, pour garder les pages rapides. */
+  function construireVideos(){
+    document.querySelectorAll('.video-lecon[data-yt]').forEach(box=>{
+      const id = (box.dataset.yt||'').trim();
+      if(!/^[\w-]{11}$/.test(id) || box.dataset.pret) return;
+      box.dataset.pret = '1';
+      const duree = box.dataset.duree ? ' · '+box.dataset.duree : '';
+      const leg = '<div class="vl-leg"><span class="vl-titre">La leçon en vidéo'+duree+'</span>'+
+                  '<span class="vl-info">Résumé généré par IA à partir du cours — le texte de la leçon fait foi.</span></div>';
+      box.innerHTML = '<button type="button" class="vl-ecran" aria-label="Lire la vidéo de la leçon">'+
+        '<img src="https://i.ytimg.com/vi/'+id+'/hqdefault.jpg" alt="" loading="lazy">'+
+        '<span class="vl-play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span></button>'+leg;
+      box.querySelector('.vl-ecran').addEventListener('click', ()=>{
+        if(!navigator.onLine){
+          box.querySelector('.vl-ecran').outerHTML = '<div class="vl-horsligne">La vidéo demande une connexion internet. Le cours, lui, reste disponible hors ligne.</div>';
+          return;
+        }
+        const f = document.createElement('iframe');
+        f.src = 'https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0&modestbranding=1&playsinline=1';
+        f.title = 'Vidéo de la leçon';
+        f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+        f.allowFullscreen = true;
+        f.referrerPolicy = 'strict-origin-when-cross-origin';
+        box.querySelector('.vl-ecran').replaceWith(f);
+      });
+    });
+  }
+
   /* ---------- exports ---------- */
   window.uiOuvrirMenu = ouvrir;
   window.uiFermerMenu = fermer;
@@ -647,6 +678,7 @@
   function init(){
     construireEntete();
     construireCours();
+    construireVideos();
     construireBarre();
     construirePied();
     precharger();
