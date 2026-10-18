@@ -355,7 +355,7 @@ function bootGate(){
    ════════════════════════════════════════════════════════════════ */
 const MATIERES = [
   {
-    file:"marche_des_particuliers.html", sid:"marche-particuliers", nb:11,
+    file:"marche_des_particuliers.html", sid:"marche-particuliers", yt:"NWaHjAD3hVM", duree:"7 min", nb:11,
     badge:"QCM + mini-cas",
     title:"Le Marché des Particuliers", court:"Marché des Particuliers",
     desc:"Panorama du marché, crédit, épargne réglementée, assurance vie, PER, gestion de portefeuille, responsabilité civile.",
@@ -363,7 +363,7 @@ const MATIERES = [
     stats:[["11","leçons"],["5","mini-cas"],["1","test final"]]
   },
   {
-    file:"produits_derives.html", sid:"produits-derives", nb:15,
+    file:"produits_derives.html", sid:"produits-derives", yt:"boIFCkjpHtI", duree:"7 min", nb:15,
     badge:"QCM · oral · écrit",
     title:"Produits Dérivés I — Forward", court:"Produits Dérivés",
     desc:"Le marché des changes, le comptant puis le terme : report et déport, points de swap, eurodevises, cours à terme.",
@@ -371,7 +371,7 @@ const MATIERES = [
     stats:[["15","leçons"],["11","applications"],["∞","calculs"]]
   },
   {
-    file:"marketing_numerique.html", sid:"marketing-numerique", nb:11,
+    file:"marketing_numerique.html", sid:"marketing-numerique", yt:"suhvus2KxpY", duree:"10 min", nb:11,
     badge:"écrit 2 h",
     title:"Marketing Numérique", court:"Marketing Numérique",
     desc:"Données, CRM et DMP, la démarche complète (PESTEL, Porter, SWOT, segmentation, positionnement, mix 4P), puis le parcours client et le RGPD.",
@@ -379,7 +379,7 @@ const MATIERES = [
     stats:[["11","leçons"],["4","cas"],["1","méthode"]]
   },
   {
-    file:"es_banque.html", sid:"es-banque", nb:14,
+    file:"es_banque.html", sid:"es-banque", yt:"8DjZuDmS22I", duree:"8 min", nb:14,
     badge:"patrimoine & assurance",
     title:"ES Banque — Patrimoine", court:"ES Banque",
     desc:"Relation client, succession, assurance vie et règle des 70 ans, IARD, crédit, LCB-FT, et un simulateur fiscal.",
@@ -387,7 +387,7 @@ const MATIERES = [
     stats:[["14","leçons"],["1","simulateur"],["1","test final"]]
   },
   {
-    file:"fiscalite_particulier.html", sid:"fiscalite-particulier", nb:11,
+    file:"fiscalite_particulier.html", sid:"fiscalite-particulier", yt:"Yczyh77_k3I", duree:"7 min", nb:11,
     badge:"IR & prélèvements sociaux",
     title:"Fiscalité du Particulier", court:"Fiscalité",
     desc:"Module 1 : principes et raisonnement en matière d'impôt sur le revenu — territorialité, domicile fiscal, foyer fiscal, nombre de parts, et le passage du revenu global au revenu net global imposable.",
@@ -395,7 +395,7 @@ const MATIERES = [
     stats:[["11","leçons"],["6","applications"],["1","test final"]]
   },
   {
-    file:"droits_particuliers.html", sid:"droits-particuliers", nb:10,
+    file:"droits_particuliers.html", sid:"droits-particuliers", yt:"j9Ut6ASrw-E", duree:"7 min", nb:10,
     badge:"droit des personnes",
     title:"Caractéristiques des droits des particuliers", court:"Droits des particuliers",
     desc:"Partie 1 : l'existence juridique du particulier — naissance, infans conceptus, décès, absence et disparition — puis ce qui l'identifie : nom, prénom, sexe, domicile, nationalité.",
@@ -403,7 +403,7 @@ const MATIERES = [
     stats:[["10","leçons"],["6","cas"],["10","rédigées"]]
   },
   {
-    file:"etudes_de_marche.html", sid:"etudes-marche", nb:12,
+    file:"etudes_de_marche.html", sid:"etudes-marche", yt:"Czg3Q9YZK9U", duree:"8 min", nb:12,
     badge:"rédigé · 1 h 30",
     title:"Études de marché", court:"Études de marché",
     desc:"Étude documentaire, quali (entretiens, focus group, collage) et quanti : échantillonnage, marge d'erreur, rédaction et structure du questionnaire, du prétest au rapport.",
@@ -450,8 +450,11 @@ function carteMatiere(m){
       <h3>${m.title}</h3>
       <div class="m-pied"><div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}" aria-label="Complétion ${echapH(m.title)}"><i style="width:${pct}%"></i></div>${n}/${m.nb} leçons</div>
     </div>`;
-  return m.soon ? `<div class="mcard" data-sid="${m.sid}" style="opacity:.55">${corps}</div>`
-                : `<a class="mcard" data-sid="${m.sid}" href="${lienMatiere(m)}" style="view-transition-name:mat-${m.sid}">${corps}</a>`;
+  if(m.soon) return `<div class="mcard" data-sid="${m.sid}" style="opacity:.55">${corps}</div>`;
+  const carte = `<a class="mcard" data-sid="${m.sid}" href="${lienMatiere(m)}" style="view-transition-name:mat-${m.sid}">${corps}</a>`;
+  if(!m.yt) return carte;
+  /* pastille ▶ : la présentation du cours s'ouvre par-dessus le hub (6.3.0) */
+  return `<div class="mcard-bloc" data-sid="${m.sid}">${carte}<button type="button" class="mcard-video" onclick="uiVideo('${m.yt}','${echapH(m.court)} — Présentation du cours')" aria-label="Voir la présentation du cours ${echapH(m.court)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>${m.duree}</button></div>`;
 }
 function renderMatieres(){
   document.getElementById('grid-matieres').innerHTML = MATIERES.map(carteMatiere).join('');

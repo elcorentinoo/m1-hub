@@ -274,6 +274,15 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  6.3.0            PRÉSENTATION DU COURS EN VIDÉO, une par matière (7 vidéos
+                   Gemini Notebook, non répertoriées sur « M1 HUB »). Dans chaque
+                   cours, nouvelle entrée « Présentation du cours » en tête du menu,
+                   sur sa propre page, avant la leçon 1 : ouverte d'office à la
+                   première visite, hors progression. Sur le hub, pastille ▶ sur
+                   chaque carte « Mes cours » : la vidéo s'ouvre par-dessus la page
+                   (fermeture par la croix, Échap ou un clic à côté). Les ID sont
+                   dans PRESENTATIONS (ui.js) et MATIERES (index.html). Vidéo test
+                   de la leçon 1 de Droits des particuliers retirée.
   6.2.0            VIDÉOS D'OUVERTURE DE LEÇON (test sur Droits des particuliers,
                    leçon 1). Nouveau bloc <div class="video-lecon" data-yt="ID">
                    construit par ui.js : aperçu léger, le lecteur YouTube (domaine

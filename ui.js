@@ -10,7 +10,7 @@
 
   /* ---------- 0. VERSION ---------- */
   /* Doit rester identique à VERSION en haut de sw.js. */
-  const VERSION_APP = '6.2.0';
+  const VERSION_APP = '6.3.0';
   const NOM_VERSION = 'Ducat';
   window.APP_VERSION = VERSION_APP;
 
@@ -196,7 +196,8 @@
     suite:'<path d="M5 12h14M13 6l6 6-6 6"/>',
     cible:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/>',
     eclair:'<path d="M13 3L5 13.5h6L10 21l8-10.5h-6z"/>',
-    cloche:'<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>'
+    cloche:'<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>',
+    lecture:'<path d="M8 5.5v13l10.5-6.5z"/>'
   };
   const ic = n => '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'+SVG[n]+'</svg>';
 
@@ -230,6 +231,7 @@
     return out;
   }
   function libelle(it, seq){
+    if(it.v === 'intro') return 'Présentation';
     if(estLecon(it.v)) return 'Leçon '+(seq.filter(x=>estLecon(x.v)).indexOf(it)+1);
     return it.lab;
   }
@@ -238,6 +240,7 @@
     if(!main || !side || document.querySelector('.ds-cadre') || typeof window.go !== 'function') return;
     const sid = document.documentElement.getAttribute('subject-id') || '';
     document.body.classList.add('ds-cours');
+    const intro = construireIntro(sid);
 
     const c = document.createElement('section');
     c.className = 'ds-cadre';
@@ -268,7 +271,83 @@
     const goOrig = window.go;
     window.go = function(v){ const r = goOrig.apply(this, arguments); majCours(); return r; };
     new MutationObserver(majProgres).observe(side, {subtree:true, attributes:true, attributeFilter:['class'], childList:true});
+    /* Première visite d'un cours (aucune leçon validée) : on ouvre la présentation. */
+    if(intro && !location.hash && !lireLocal('m1-intro-'+sid) && !side.querySelector('.nav-item.done')){
+      ecrireLocal('m1-intro-'+sid, '1');
+      window.go('intro');
+    }
     majCours();
+  }
+
+  /* ---------- PRÉSENTATION DU COURS (6.3.0) ----------
+     Une vidéo par matière, sur sa propre page, avant la leçon 1.
+     Elle s'insère dans le menu de gauche : la barre « précédent /
+     suivant » la prend donc en compte, mais pas la progression. */
+  const PRESENTATIONS = {
+    'droits-particuliers':   {yt:'j9Ut6ASrw-E', duree:'7 min'},
+    'fiscalite-particulier': {yt:'Yczyh77_k3I', duree:'7 min'},
+    'marche-particuliers':   {yt:'NWaHjAD3hVM', duree:'7 min'},
+    'produits-derives':      {yt:'boIFCkjpHtI', duree:'7 min'},
+    'es-banque':             {yt:'8DjZuDmS22I', duree:'8 min'},
+    'marketing-numerique':   {yt:'suhvus2KxpY', duree:'10 min'},
+    'etudes-marche':         {yt:'Czg3Q9YZK9U', duree:'8 min'}
+  };
+  function lireLocal(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  function ecrireLocal(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
+  function construireIntro(sid){
+    const pr = PRESENTATIONS[sid], side = document.querySelector('.sidebar'),
+          l1 = document.querySelector('.view[data-view="l1"]');
+    if(!pr || !side || !l1 || document.querySelector('.view[data-view="intro"]')) return false;
+    const h = document.createElement('h4');
+    h.textContent = 'Introduction';
+    const it = document.createElement('div');
+    it.className = 'nav-item ds-intro'; it.dataset.view = 'intro';
+    it.setAttribute('role','button'); it.tabIndex = 0;
+    it.innerHTML = '<span class="num">'+ic('lecture')+'</span><span class="lab">Présentation du cours</span>';
+    it.addEventListener('click', ()=>window.go('intro'));
+    it.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); window.go('intro'); } });
+    side.insertBefore(it, side.firstChild);
+    side.insertBefore(h, it);
+    const v = document.createElement('section');
+    v.className = 'view'; v.dataset.view = 'intro';
+    v.innerHTML = '<span class="tag">Introduction</span>'+
+      '<h1 class="lesson-title">Présentation du cours</h1>'+
+      '<p class="subtitle">Le plan du cours, ses notions clés et ses pièges, en '+pr.duree+'. À regarder avant de commencer, ou pour tout revoir d’un coup d’œil.</p>'+
+      '<div class="video-lecon" data-yt="'+pr.yt+'" data-duree="'+pr.duree+'" data-leg="Le cours en vidéo"></div>'+
+      '<div class="lesson-nav ds-intro-nav"><button type="button" class="btn primary">Commencer la leçon 1 →</button></div>';
+    v.querySelector('.ds-intro-nav .btn').addEventListener('click', ()=>window.go('l1'));
+    l1.parentNode.insertBefore(v, l1);
+    return true;
+  }
+
+  /* Fenêtre vidéo par-dessus la page (pastille ▶ des cartes du hub). */
+  let vmRetour = null;
+  function ouvrirVideo(id, titre){
+    if(!/^[\w-]{11}$/.test(id||'')) return;
+    fermerVideo();
+    vmRetour = document.activeElement;
+    const m = document.createElement('div');
+    m.className = 'ds-vmodal'; m.id = 'ds-vmodal';
+    m.innerHTML = '<div class="ds-vm-boite" role="dialog" aria-modal="true" aria-label="'+(titre||'Vidéo').replace(/"/g,'&quot;')+'">'+
+      '<div class="ds-vm-haut"><span class="ds-vm-titre"></span>'+
+      '<button type="button" class="ds-vm-fermer" aria-label="Fermer la vidéo">✕</button></div>'+
+      (navigator.onLine
+        ? '<iframe src="https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0&modestbranding=1&playsinline=1" title="'+(titre||'Vidéo').replace(/"/g,'&quot;')+'" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>'
+        : '<div class="ds-vm-horsligne">La vidéo demande une connexion internet.</div>')+
+      '<p class="ds-vm-info">Résumé généré par IA à partir du cours — le texte des leçons fait foi.</p></div>';
+    m.querySelector('.ds-vm-titre').textContent = titre || '';
+    m.addEventListener('click', e=>{ if(e.target === m) fermerVideo(); });
+    m.querySelector('.ds-vm-fermer').addEventListener('click', fermerVideo);
+    document.body.appendChild(m);
+    document.body.classList.add('ds-vm-ouvert');
+    m.querySelector('.ds-vm-fermer').focus();
+  }
+  function fermerVideo(){
+    const m = document.getElementById('ds-vmodal'); if(!m) return;
+    m.remove();                                   /* retire l'iframe : la vidéo s'arrête */
+    document.body.classList.remove('ds-vm-ouvert');
+    if(vmRetour && vmRetour.focus) vmRetour.focus();
+    vmRetour = null;
   }
   window.uiSommaire = function(){
     if(window.innerWidth > 880){ const s=document.querySelector('.sidebar'); if(s) s.scrollIntoView({behavior:'smooth'}); return; }
@@ -643,8 +722,8 @@
       if(!/^[\w-]{11}$/.test(id) || box.dataset.pret) return;
       box.dataset.pret = '1';
       const duree = box.dataset.duree ? ' · '+box.dataset.duree : '';
-      const leg = '<div class="vl-leg"><span class="vl-titre">La leçon en vidéo'+duree+'</span>'+
-                  '<span class="vl-info">Résumé généré par IA à partir du cours — le texte de la leçon fait foi.</span></div>';
+      const leg = '<div class="vl-leg"><span class="vl-titre">'+(box.dataset.leg||'La leçon en vidéo')+duree+'</span>'+
+                  '<span class="vl-info">Résumé généré par IA à partir du cours — le texte '+(box.dataset.leg?'des leçons':'de la leçon')+' fait foi.</span></div>';
       box.innerHTML = '<button type="button" class="vl-ecran" aria-label="Lire la vidéo de la leçon">'+
         '<img src="https://i.ytimg.com/vi/'+id+'/hqdefault.jpg" alt="" loading="lazy">'+
         '<span class="vl-play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span></button>'+leg;
@@ -667,11 +746,16 @@
   /* ---------- exports ---------- */
   window.uiOuvrirMenu = ouvrir;
   window.uiFermerMenu = fermer;
+  window.uiVideo      = ouvrirVideo;
   window.uiSetTheme   = function(){};   /* conservé : le thème ne change plus */
   window.uiTheme      = function(){ return 'dark'; };
 
   document.addEventListener('keydown', e=>{
-    if(e.key==='Escape'){ fermer(); fermerNotifs(); }
+    if(e.key==='Escape'){ fermer(); fermerNotifs(); fermerVideo(); }
+    if(e.key==='Tab'){ const m = document.getElementById('ds-vmodal');   /* le focus reste dans la fenêtre vidéo */
+      if(m){ const f = [...m.querySelectorAll('button, iframe')]; const i = f.indexOf(document.activeElement);
+        if(e.shiftKey && i<=0){ e.preventDefault(); f[f.length-1].focus(); }
+        else if(!e.shiftKey && i===f.length-1){ e.preventDefault(); f[0].focus(); } } }
     if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='k'){ e.preventDefault(); ouvrirRecherche(); }
   });
 
