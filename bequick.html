@@ -83,6 +83,9 @@ main{max-width:980px;margin:0 auto;padding:12px 16px 120px;min-width:0}
 .retour.ko{display:block;background:var(--blanc);color:var(--bad)}
 .retour b{font-weight:600}
 .retour span{color:var(--txt2)}
+.retour .expl{display:block;margin-top:8px;font-size:14.5px;line-height:1.45;color:var(--txt2)}
+.retour .suivante{display:block;margin-top:12px;border:0;border-radius:999px;padding:11px 18px;background:var(--nuit);color:var(--blanc);font:inherit;font-size:15px;font-weight:500;cursor:pointer}
+.retour .suivante:focus-visible{outline:3px solid var(--nuit);outline-offset:3px}
 .fin{text-align:center;padding:40px 20px;max-width:560px;margin:auto;display:grid;gap:14px;justify-items:center}
 .fin h2{color:var(--blanc)!important;font-weight:200!important;font-size:clamp(2.4rem,8vw,3.6rem)!important;letter-spacing:-.04em!important;line-height:1}
 .fin p{color:var(--sur-nuit)}
@@ -278,8 +281,7 @@ async function afficherEtat(){
     try{ const l = await BQ.classement(j); const i = l.findIndex(x=>x.pseudo_cle === BQ.cle(BQ.pseudo())); if(i >= 0) rang = (i+1)+'<small> / '+l.length+'</small>'; }catch(e){}
     z.innerHTML = '<div class="carte-res"><div><b>'+nb(sc)+'</b><small>points ce soir</small></div><div><b>'+bo+'<small style="font-size:16px"> / '+BQ.NB_Q+'</small></b><small>bonnes réponses</small></div><div><b>'+rang+'</b><small>rang du soir</small></div></div>'+
       '<p class="note-n">'+(ph === 'ouvert' ? 'Le classement se complète jusqu\'à 22 h 20. ' : '')+'Prochain BeQuick '+BQ.texteProchain()+'.</p>'+
-      (ph === 'ferme' ? '<div><button class="btn-sec" id="bCorr">Voir la correction de ce soir</button></div>'
-                      : '<p class="note-n">La correction de ce soir sera disponible à 22 h, pour tout le monde en même temps.</p>');
+      '<div><button class="btn-sec" id="bCorr">Revoir les '+BQ.NB_Q+' questions et la correction</button></div>';
     if($('bCorr')) $('bCorr').onclick = ()=>{ selJour = j; moisVu = j.slice(0,7); corrAOuvrir = true; choisir('cal'); document.getElementById('classement').scrollIntoView({behavior:'smooth'}); };
     return;
   }
@@ -413,17 +415,21 @@ function repondre(rep, bouton){
   JEU.detail.push(ok ? String(pts) : 'x');
   JEU.reps.push({id:q.id, rep, ok, pts});
   if(q.type === 'qcm'){
-    /* on ne montre que ton choix, juste ou faux : la bonne réponse attend la correction de 22 h */
-    $('jeuCorps').querySelectorAll('.q-opt').forEach(b=>{ b.disabled = true; });
-    if(bouton) bouton.classList.add(ok ? 'juste' : 'faux');
+    /* 6.3.1 : la bonne réponse s'affiche tout de suite, pour apprendre en jouant */
+    $('jeuCorps').querySelectorAll('.q-opt').forEach(b=>{ b.disabled = true; if(+b.dataset.k === q.correct) b.classList.add('juste'); });
+    if(bouton && !ok) bouton.classList.add('faux');
   } else { $('inNum').disabled = true; }
   const r = $('retour');
   r.className = 'retour '+(ok?'ok':'ko');
-  r.innerHTML = ok ? '<b>Juste ! +'+pts+' points</b>' : '<b>Raté.</b> <span>La correction sera disponible à 22 h.</span>';
+  r.innerHTML = (ok ? '<b>Juste ! +'+pts+' points</b>' : '<b>Raté.</b> <span>Bonne réponse : <b>'+esc(bonneReponse(q))+'</b></span>')+
+    (q.ex ? '<span class="expl">'+esc(q.ex)+'</span>' : '')+
+    '<button type="button" class="suivante" id="bSuiv">'+(JEU.i+1 < JEU.qs.length ? 'Question suivante →' : 'Voir mon score →')+'</button>';
   $('qscore').textContent = nb(JEU.score);
   sauver();
   JEU.i++;
-  setTimeout(afficherQuestion, ok ? 900 : 1700);
+  /* le chrono continue : on passe à la suite quand on a lu l'explication */
+  $('bSuiv').onclick = afficherQuestion;
+  $('bSuiv').focus();
 }
 /* l'appli passe en arrière-plan : la question en cours est passée */
 document.addEventListener('visibilitychange', ()=>{
@@ -533,8 +539,8 @@ async function afficherJour(j, ouvrirCorrection){
   const z = $('jourSel'); if(!z) return;
   z.innerHTML = '<p class="titre-jour"><b>'+dateLongue(j)+'</b></p><div class="vide">Chargement…</div>';
   const l = await BQ.classement(j).catch(()=>[]);
-  /* la correction d'un soir n'est publiée qu'à sa fermeture (22 h), pour tout le monde */
-  const visible = j < BQ.jourDe() || BQ.phase() === 'ferme';
+  /* la correction d'un soir est publiée à sa fermeture (22 h), ou dès qu'on a fini sa propre partie */
+  const visible = j < BQ.jourDe() || BQ.phase() === 'ferme' || !!(BQ.lireLocal(j)||{}).fini;
   z.innerHTML = '<p class="titre-jour"><b>'+dateLongue(j)+'</b> · '+l.length+' joueur'+(l.length>1?'s':'')+'</p>'+podiumEtListe(l, valJour, secJour)+
     (visible ? '<button class="btn-lien" id="bVoirCorr">Voir les '+BQ.NB_Q+' questions et la correction</button><div id="corr"></div>' : '<p class="note">La correction de ce soir sera disponible à 22 h, pour tout le monde en même temps.</p>');
   if(visible){ $('bVoirCorr').onclick = ()=>correction(j); if(ouvrirCorrection) correction(j); }

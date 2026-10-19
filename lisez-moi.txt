@@ -274,6 +274,12 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  6.3.1            BeQuick : la bonne réponse et son explication s'affichent tout
+                   de suite après chaque question (on passe à la suivante avec un
+                   bouton, le chrono continue) ; la correction complète est visible
+                   dès qu'on a fini sa partie. Notification de 18 h 30 : une
+                   étiquette par jour, pour que l'iPhone ne la remplace plus en
+                   silence quand celle de la veille est encore affichée.
   6.3.0            PRÉSENTATION DU COURS EN VIDÉO, une par matière (7 vidéos
                    Gemini Notebook, non répertoriées sur « M1 HUB »). Dans chaque
                    cours, nouvelle entrée « Présentation du cours » en tête du menu,

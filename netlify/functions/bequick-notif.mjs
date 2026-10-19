@@ -47,7 +47,10 @@ export default async (req) => {
   const {h, mi, weekend} = heureParis();
   if(weekend) return new Response('Week-end : pas de BeQuick.');
   if(h !== 18) return new Response('Pas encore 18 h 30 à Paris ('+h+' h '+mi+').');
-  const bilan = await envoyerATous(publique, privee);
+  /* une étiquette par jour : sur iPhone, une notification qui porte la même
+     étiquette qu'une précédente la remplace sans bannière ni son (6.3.1) */
+  const jour = new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Paris'}).format(new Date());
+  const bilan = await envoyerATous(publique, privee, {...MESSAGE, tag:'bequick-'+jour});
   console.log('[bequick-notif]', JSON.stringify(bilan));
   return new Response(JSON.stringify(bilan), {headers:{'Content-Type':'application/json'}});
 };
