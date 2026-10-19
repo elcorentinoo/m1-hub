@@ -274,6 +274,8 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  6.3.2            BeQuick : l'explication de la réponse sur un encadré gris clair
+                   bordé de bleu nuit, plus lisible.
   6.3.1            BeQuick : la bonne réponse et son explication s'affichent tout
                    de suite après chaque question (on passe à la suivante avec un
                    bouton, le chrono continue) ; la correction complète est visible
