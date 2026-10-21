@@ -32,6 +32,7 @@
     {g:'Cours',    href:'fiscalite_particulier.html',   ico:'§',  t:'Fiscalité du Particulier', s:"11 leçons · IR et foyer fiscal"},
     {g:'Cours',    href:'droits_particuliers.html',     ico:'⚖',  t:'Droits des Particuliers',  s:'10 leçons · droit des personnes'},
     {g:'Cours',    href:'etudes_de_marche.html',        ico:'👤', t:'Études de marché',          s:'12 leçons · quali, quanti, échantillon'},
+    {g:'Cours',    href:'systeme_bancaire.html',        ico:'🏦', t:'Le système bancaire français', s:'12 leçons · Livret A, crédits, régulation'},
     {g:'Entraînement', href:'bequick.html',              ico:'⚡', t:'BeQuick',                 s:'Le défi du soir · 18 h 30 – 22 h'},
     {g:'Entraînement', href:'entrainement_changes.html', ico:'🎯', t:'Marché des changes',      s:'13 notions · calculs ∞'},
     {g:'Entraînement', href:'entrainement_fiscal.html',  ico:'🧮', t:'Impôt sur le revenu',     s:'9 notions · parts et RNGI ∞'},
@@ -181,7 +182,7 @@
   const CREDITS = [
     ['Tobias Keller','tokeller'], ['Miles Smith','msmith0912'], ['Kelly Sikkema','kellysikkema'],
     ['Anne Nygård','polarmermaid'], ['Shutter Speed','shutter_speed_'], ['David Trinks','dtrinksrph'],
-    ['Jakub Żerdzicki','jakubzerdzicki'], ['FotoFlo','flotography_91']
+    ['Jakub Żerdzicki','jakubzerdzicki'], ['FotoFlo','flotography_91'], ['Athithan Vignakaran','avignakaran']
   ];
 
   /* ---------- ICÔNES AU TRAIT ---------- */
@@ -220,7 +221,7 @@
   }
 
   /* ---------- PAGES DE COURS : cadre photo, progression, suite ---------- */
-  const NOMS = {'marche-particuliers':'Marché des Particuliers','produits-derives':'Produits Dérivés I','marketing-numerique':'Marketing Numérique','es-banque':'ES Banque','fiscalite-particulier':'Fiscalité du Particulier','droits-particuliers':'Droits des particuliers','etudes-marche':'Études de marché'};
+  const NOMS = {'marche-particuliers':'Marché des Particuliers','produits-derives':'Produits Dérivés I','marketing-numerique':'Marketing Numérique','es-banque':'ES Banque','fiscalite-particulier':'Fiscalité du Particulier','droits-particuliers':'Droits des particuliers','etudes-marche':'Études de marché','systeme-bancaire':'Le système bancaire français'};
   function estLecon(v){ return /^l\d+$/.test(v||''); }
   function sequence(){
     const vus = {}, out = [];
@@ -494,9 +495,9 @@
     }
     return out;
   }
-  const LABM = {'marche-particuliers':'Marché des Particuliers','produits-derives':'Produits Dérivés','marketing-numerique':'Marketing Numérique','es-banque':'ES Banque','fiscalite-particulier':'Fiscalité du Particulier','droits-particuliers':'Droits des Particuliers','etudes-marche':'Études de marché'};
+  const LABM = {'marche-particuliers':'Marché des Particuliers','produits-derives':'Produits Dérivés','marketing-numerique':'Marketing Numérique','es-banque':'ES Banque','fiscalite-particulier':'Fiscalité du Particulier','droits-particuliers':'Droits des Particuliers','etudes-marche':'Études de marché','systeme-bancaire':'Le système bancaire français'};
   function fichierDe(m){
-    return {'marche-particuliers':'marche_des_particuliers.html','produits-derives':'produits_derives.html','marketing-numerique':'marketing_numerique.html','es-banque':'es_banque.html','fiscalite-particulier':'fiscalite_particulier.html','droits-particuliers':'droits_particuliers.html','etudes-marche':'etudes_de_marche.html'}[m] || 'index.html';
+    return {'marche-particuliers':'marche_des_particuliers.html','produits-derives':'produits_derives.html','marketing-numerique':'marketing_numerique.html','es-banque':'es_banque.html','fiscalite-particulier':'fiscalite_particulier.html','droits-particuliers':'droits_particuliers.html','etudes-marche':'etudes_de_marche.html','systeme-bancaire':'systeme_bancaire.html'}[m] || 'index.html';
   }
 
   /* Résultats d'une recherche : 8 suggestions sans texte, 30 au plus sinon. */

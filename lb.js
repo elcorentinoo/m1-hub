@@ -27,7 +27,7 @@ const PROGRAM = 'M1';
 const COURS_M1 = {
   'marche-particuliers':11, 'produits-derives':15, 'marketing-numerique':11,
   'es-banque':14, 'fiscalite-particulier':11, 'droits-particuliers':10,
-  'etudes-marche':12
+  'etudes-marche':12, 'systeme-bancaire':12
 };
 /* ════════════════════════════════════════════════════════════════════ */
 

@@ -17,7 +17,8 @@ window.P = (function(){
     'es-banque'          :{lab:'ES Banque',              f:'es_banque.html',               ico:'🏛️'},
     'fiscalite-particulier':{lab:'Fiscalité du Particulier', f:'fiscalite_particulier.html', ico:'§'},
     'droits-particuliers':{lab:'Droits des Particuliers', f:'droits_particuliers.html',     ico:'⚖'},
-    'etudes-marche'      :{lab:'Études de marché',       f:'etudes_de_marche.html',        ico:'👤'}
+    'etudes-marche'      :{lab:'Études de marché',       f:'etudes_de_marche.html',        ico:'👤'},
+    'systeme-bancaire'   :{lab:'Le système bancaire français', f:'systeme_bancaire.html', ico:'🏦'}
   };
 
   /* ---------- lecture / écriture ---------- */

@@ -28,6 +28,7 @@ const FICHIERS = [
   'fiscalite_particulier.html',
   'droits_particuliers.html',
   'etudes_de_marche.html',
+  'systeme_bancaire.html',
   'marketing_numerique.html',
   'es_banque.html',
   'glossaire.html',
