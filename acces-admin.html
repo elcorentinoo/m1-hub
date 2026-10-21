@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<title>Gestion des accès — Hub M1 MBAF</title>
+<title>Tableau de bord — Hub M1 MBAF</title>
 <link rel="icon" href="icons/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
 <style>
-/* Gestion des clés d'accès (6.5.0) — servie sous /admin, jamais listée
+/* Tableau de bord et gestion des clés (6.5.0, tableau de bord 7.3.0) — servi sous /admin, jamais listée
    dans le site ni dans le cache hors ligne. Toutes les actions passent
    par la fonction acces-admin, qui exige le mot de passe à chaque appel.
    Couleurs : variables de theme.css uniquement. */
@@ -56,8 +56,42 @@ td{padding:10px;border-bottom:1px solid var(--stroke);vertical-align:middle}
 .vide{color:var(--txt3);padding:16px 0}
 .cache{display:none}
 td.cle{white-space:nowrap}
+/* Tableau de bord (7.3.0) */
+.onglets{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 18px;padding:6px;background:var(--blanc);border-radius:28px;box-shadow:var(--shadow);width:fit-content;max-width:100%}
+.onglets button{background:transparent;color:var(--nuit);padding:9px 16px}
+.onglets button[aria-selected="true"]{background:var(--nuit);color:var(--blanc)}
+.panneau[hidden]{display:none}
+.chiffres{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin:0 0 4px}
+.chiffres div{background:var(--surface2);border-radius:18px;padding:14px 16px}
+.chiffres b{display:block;font-size:1.9rem;font-weight:300;line-height:1.1}
+.chiffres small{color:var(--txt2);font-size:.85rem}
+.graphe{display:flex;align-items:flex-end;gap:3px;height:140px;padding:6px 0 0;border-bottom:1px solid var(--stroke2)}
+.graphe span{flex:1;min-width:3px;background:var(--nuit);border-radius:5px 5px 0 0}
+.graphe span.zero{background:var(--stroke)}
+.axe{display:flex;justify-content:space-between;color:var(--txt3);font-size:.78rem;margin:6px 0 0}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.duo > .carte{min-width:0}
+.barre{height:8px;border-radius:999px;background:var(--surface3);overflow:hidden;min-width:60px}
+.barre i{display:block;height:100%;background:var(--nuit);border-radius:999px}
+.fait{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;background:var(--surface2);border-radius:14px;padding:10px 14px;margin:0 0 10px;color:var(--txt2)}
+.fait b{color:var(--nuit);font-weight:500}
+.periode{display:flex;gap:6px;margin:0 0 14px;flex-wrap:wrap}
+.periode button{padding:6px 14px;font-size:.88rem}
+.periode button[aria-pressed="false"]{background:var(--surface2);color:var(--nuit)}
+tr.clic{cursor:pointer}
+tr.clic:hover td{background:var(--surface2)}
+.pseudos{color:var(--txt3);font-size:.82rem;display:block}
+.puce{display:inline-flex;align-items:center;gap:6px;background:var(--surface2);border-radius:999px;padding:5px 6px 5px 12px;margin:0 6px 6px 0;font-size:.9rem}
+.puce button{padding:3px 9px;font-size:.78rem}
+textarea{font:inherit;width:100%;min-height:90px;padding:11px 14px;border-radius:14px;border:2px solid var(--stroke2);background:var(--surface2);color:var(--nuit);resize:vertical}
+textarea:focus{outline:none;border-color:var(--nuit);background:var(--blanc)}
+select{font:inherit;padding:10px 12px;border-radius:14px;border:2px solid var(--stroke2);background:var(--surface2);color:var(--nuit);width:100%}
+.retour{margin:0 0 14px}
+.num{text-align:right;white-space:nowrap}
+.q{font-size:.9rem;line-height:1.4}
+@media (max-width:720px){ .duo{grid-template-columns:1fr} }
 @media (max-width:640px){
-  th.opt, td.opt{display:none}
+  th.mob, td.mob{display:none}
   td{padding:10px 6px}
   button.danger, button.petit{padding:5px 9px;font-size:.8rem}
 }
@@ -66,8 +100,8 @@ td.cle{white-space:nowrap}
 </head>
 <body>
 <div class="wrap">
-  <h1>Gestion des accès</h1>
-  <p class="sous">Hub M1 MBAF · clés d'accès à usage unique, une par appareil.</p>
+  <h1>Tableau de bord</h1>
+  <p class="sous">Hub M1 MBAF · activité de la promo, progrès par matière et clés d'accès.</p>
 
   <section class="carte" id="connexion">
     <h2>Mot de passe administrateur</h2>
@@ -79,6 +113,19 @@ td.cle{white-space:nowrap}
   </section>
 
   <div id="admin" class="cache">
+    <nav class="onglets" role="tablist" aria-label="Sections du tableau de bord">
+      <button type="button" role="tab" aria-selected="true" aria-controls="p-vue" data-o="vue">Vue d'ensemble</button>
+      <button type="button" role="tab" aria-selected="false" aria-controls="p-mat" data-o="mat">Matières</button>
+      <button type="button" role="tab" aria-selected="false" aria-controls="p-etu" data-o="etu">Étudiants</button>
+      <button type="button" role="tab" aria-selected="false" aria-controls="p-bq" data-o="bq">BeQuick</button>
+      <button type="button" role="tab" aria-selected="false" aria-controls="p-cles" data-o="cles">Clés</button>
+    </nav>
+    <div class="msg" id="msgTab" role="status"></div>
+    <div class="panneau" id="p-vue" role="tabpanel"></div>
+    <div class="panneau" id="p-mat" role="tabpanel" hidden></div>
+    <div class="panneau" id="p-etu" role="tabpanel" hidden></div>
+    <div class="panneau" id="p-bq" role="tabpanel" hidden></div>
+    <div class="panneau" id="p-cles" role="tabpanel" hidden>
     <section class="carte">
       <h2>Générer des clés</h2>
       <form id="fGen" class="ligne" autocomplete="off">
@@ -102,11 +149,12 @@ td.cle{white-space:nowrap}
       </div>
       <div style="margin:0 0 12px"><label for="cherche">Chercher un nom ou un pseudo</label><input id="cherche" type="search" placeholder="ex. lea" autocomplete="off"></div>
       <div class="table"><table>
-        <thead><tr><th>Note</th><th>Pseudo</th><th>Clé</th><th class="opt">Créée</th><th>État</th><th class="opt">Appareil</th><th></th></tr></thead>
+        <thead><tr><th>Note</th><th>Pseudo</th><th>Clé</th><th class="mob">Créée</th><th>État</th><th class="mob">Appareil</th><th></th></tr></thead>
         <tbody id="liste"><tr><td colspan="7" class="vide">Chargement…</td></tr></tbody>
       </table></div>
       <div class="msg" id="msgListe" role="status"></div>
     </section>
+    </div>
   </div>
 </div>
 <script>
@@ -137,6 +185,7 @@ $('fMdp').addEventListener('submit', async e=>{
   try{
     await charger(true);
     $('connexion').classList.add('cache'); $('admin').classList.remove('cache');
+    chargerTableau();
     try{ sessionStorage.setItem('m1_admin', MDP); }catch(err){}
   }catch(err){ $('msgMdp').className = 'msg ko'; $('msgMdp').textContent = texteErreur(err); MDP = ''; }
   $('bMdp').disabled = false;
@@ -159,7 +208,7 @@ function dessiner(){
     const e = etat(c);
     const lib = e === 'rev' ? 'Révoquée' : e === 'prise' ? 'Utilisée le '+date(c.utilisee) : 'Libre';
     return '<tr><td>'+(esc(c.nom) || '<span style="color:var(--txt3)">—</span>')+'</td><td><b>'+(esc(c.pseudo) || '<span style="color:var(--txt3);font-weight:400">—</span>')+'</b></td><td class="cle">…'+esc(c.suffixe)+'</td>'+
-      '<td class="opt">'+date(c.cree)+'</td><td><span class="etat '+e+'">'+lib+'</span></td><td class="opt">'+esc(c.appareil)+'</td>'+
+      '<td class="mob">'+date(c.cree)+'</td><td><span class="etat '+e+'">'+lib+'</span></td><td class="mob">'+esc(c.appareil)+'</td>'+
       '<td>'+(c.revoquee ? '<button class="petit sec" data-act="retablir" data-id="'+c.id+'">Rétablir</button>'
                          : '<button class="danger" data-act="revoquer" data-id="'+c.id+'">Révoquer</button>')+'</td></tr>';
   }).join('') : '<tr><td colspan="7" class="vide">Aucune clé ici.</td></tr>';
@@ -195,6 +244,266 @@ $('fGen').addEventListener('submit', async e=>{
     await charger();
   }catch(err){ $('msgGen').className = 'msg ko'; $('msgGen').textContent = texteErreur(err); }
   b.disabled = false;
+});
+
+/* ═══════════ TABLEAU DE BORD (7.3.0) ═══════════
+   Toutes les données arrivent d'un coup (action « tableau » de la fonction
+   acces-admin) et sont calculées ici. Une personne = un ou plusieurs
+   pseudos regroupés (admin_personnes). Dates à l'heure de Paris. */
+const NOMS_M = {'marche-particuliers':'Marché des Particuliers','produits-derives':'Produits Dérivés','marketing-numerique':'Marketing Numérique',
+  'es-banque':'ES Banque','fiscalite-particulier':'Fiscalité du Particulier','droits-particuliers':'Droits des Particuliers',
+  'etudes-marche':'Études de marché','systeme-bancaire':'Système bancaire français',
+  hub:'Accueil', bequick:'BeQuick', revision:'Révision', glossaire:'Glossaire', stats:'Statistiques', classement:'Classement', ressourcerie:'Ressourcerie'};
+const COURS = Object.keys(NOMS_M).slice(0, 8);
+const nomM = m => NOMS_M[m] || m;
+const JP = new Intl.DateTimeFormat('fr-CA', {timeZone:'Europe/Paris', year:'numeric', month:'2-digit', day:'2-digit'});
+const jourDe = d => JP.format(new Date(d));
+const ilYa = n => JP.format(new Date(Date.now() - n*86400000));
+const duree = s => { s = Math.round(s/60); return s < 60 ? s+' min' : Math.floor(s/60)+' h '+String(s%60).padStart(2,'0'); };
+const pct = (a, b) => b ? Math.round(100*a/b)+' %' : '—';
+const jourCourt = j => { const [y,m,d] = j.split('-'); return d+'/'+m; };
+let D = null, A = null, PERIODE = 30, FICHE = null, Q_BANQUE = null;
+
+async function chargerTableau(){
+  try{
+    D = (await appel('tableau')).donnees;
+    $('msgTab').textContent = '';
+    analyser(); dessinerTout();
+  }catch(e){
+    $('msgTab').className = 'msg ko';
+    $('msgTab').textContent = e.message === 'sql'
+      ? "Le tableau de bord n'est pas encore activé : lance supabase/admin.sql dans Supabase (SQL Editor). La gestion des clés fonctionne déjà, onglet « Clés »."
+      : texteErreur(e);
+  }
+}
+
+/* ---------- calculs ---------- */
+function analyser(){
+  const P = D.personnes || {};
+  const nomDe = p => { p = String(p||'').trim(); return P[p.toLowerCase()] || p; };
+  const pers = new Map();
+  const perso = p => {
+    const nom = nomDe(p), k = nom.toLowerCase();
+    if(!pers.has(k)) pers.set(k, {k, nom, pseudos:new Set(), appareils:[], jours:new Set(), act:[], scores:[], bq:[], msgs:[], prog:{}});
+    const o = pers.get(k); o.pseudos.add(String(p).trim()); return o;
+  };
+  (D.cles || []).forEach(c=>{ if(c.pseudo && c.utilisee) perso(c.pseudo).appareils.push(c); });
+  (D.activite || []).forEach(a=>{ const o = perso(a.p); o.act.push(a); o.jours.add(a.j); });
+  (D.scores || []).forEach(s=>{ if(!s.p) return; const o = perso(s.p); s.j = jourDe(s.d); o.scores.push(s); o.jours.add(s.j); });
+  (D.bequick || []).forEach(b=>{ const o = perso(b.p); o.bq.push(b); o.jours.add(b.j); });
+  (D.chat || []).forEach(c=>{ const o = perso(c.p); o.msgs.push(c); o.jours.add(c.j); });
+  (D.progression || []).forEach(g=>{
+    const o = perso(g.pseudo), v = o.prog[g.sujet];
+    if(!v || g.pct > v.pct || (g.pct === v.pct && g.maj > v.maj)) o.prog[g.sujet] = g;
+  });
+  pers.forEach(o=>{ o.dernier = [...o.jours].sort().pop() || ''; });
+  A = {pers, nomDe};
+}
+const dans = (j, n) => j >= ilYa(n - 1);
+function totaux(o, n){
+  let s = 0, r = 0, b = 0;
+  o.act.forEach(a=>{ if(dans(a.j, n)){ s += a.s; r += a.r; b += a.b; } });
+  return {s, r, b};
+}
+function progMoy(o){
+  const v = COURS.map(m=>o.prog[m] ? o.prog[m].pct : 0);
+  return Object.keys(o.prog).length ? Math.round(v.reduce((x, y)=>x+y, 0)/COURS.length) : null;
+}
+
+/* ---------- dessin ---------- */
+function dessinerTout(){ vue(); matieres(); etudiants(); bequick(); }
+function graphe(vals, jours, unite){
+  const max = Math.max(1, ...vals);
+  return '<div class="graphe" role="img" aria-label="'+esc(unite)+' par jour">'+vals.map((v, i)=>
+    '<span class="'+(v ? '' : 'zero')+'" style="height:'+Math.max(3, Math.round(100*v/max))+'%" title="'+jourCourt(jours[i])+' : '+v+' '+esc(unite)+'"></span>').join('')+'</div>'+
+    '<div class="axe"><span>'+jourCourt(jours[0])+'</span><span>'+jourCourt(jours[Math.floor(jours.length/2)])+'</span><span>'+jourCourt(jours[jours.length-1])+'</span></div>';
+}
+function vue(){
+  const L = [...A.pers.values()];
+  const actifs = n => L.filter(o=>o.dernier && dans(o.dernier, n)).length;
+  let t7 = 0, r7 = 0, b7 = 0; L.forEach(o=>{ const t = totaux(o, 7); t7 += t.s; r7 += t.r; b7 += t.b; });
+  const m7 = (D.chat || []).filter(c=>dans(c.j, 7)).reduce((x, c)=>x + c.n, 0);
+  const inscrits = L.filter(o=>o.appareils.length).length;
+  const libres = (D.cles || []).filter(c=>!c.utilisee && !c.revoquee).length;
+  const jours = Array.from({length:30}, (_, i)=>ilYa(29 - i));
+  const parJour = jours.map(j=>L.filter(o=>o.jours.has(j)).length);
+  const minutes = jours.map(j=>Math.round((D.activite || []).filter(a=>a.j === j).reduce((x, a)=>x + a.s, 0)/60));
+  const recents = L.filter(o=>o.dernier).sort((a, b)=>b.dernier.localeCompare(a.dernier)).slice(0, 8);
+  $('p-vue').innerHTML =
+    '<section class="carte"><h2>En bref</h2><div class="chiffres">'+
+      '<div><b>'+inscrits+'</b><small>étudiants inscrits</small></div>'+
+      '<div><b>'+actifs(1)+'</b><small>actifs aujourd\'hui</small></div>'+
+      '<div><b>'+actifs(7)+'</b><small>actifs sur 7 jours</small></div>'+
+      '<div><b>'+actifs(30)+'</b><small>actifs sur 30 jours</small></div>'+
+      '<div><b>'+duree(t7)+'</b><small>de révision sur 7 jours</small></div>'+
+      '<div><b>'+r7+'</b><small>questions répondues (7 j) · '+pct(b7, r7)+' juste</small></div>'+
+      '<div><b>'+m7+'</b><small>messages sur 7 jours</small></div>'+
+      '<div><b>'+libres+'</b><small>clés libres</small></div>'+
+    '</div></section>'+
+    '<div class="duo">'+
+      '<section class="carte"><h2>Étudiants actifs par jour</h2>'+graphe(parJour, jours, 'actifs')+'</section>'+
+      '<section class="carte"><h2>Minutes de révision par jour</h2>'+graphe(minutes, jours, 'min')+'</section>'+
+    '</div>'+
+    '<section class="carte"><h2>Derniers actifs</h2>'+(recents.length ? '<div class="table"><table><thead><tr><th>Étudiant</th><th>Dernière activité</th><th class="num">Révision 7 j</th></tr></thead><tbody>'+
+      recents.map(o=>'<tr class="clic" data-p="'+esc(o.k)+'"><td><b>'+esc(o.nom)+'</b></td><td>'+jourCourt(o.dernier)+'</td><td class="num">'+duree(totaux(o, 7).s)+'</td></tr>').join('')+
+      '</tbody></table></div>' : '<p class="vide">Aucune activité enregistrée pour l\'instant : le suivi démarre avec la version 7.3.0.</p>')+'</section>';
+}
+function matieres(){
+  const L = [...A.pers.values()], n = PERIODE;
+  const lignes = COURS.map(m=>{
+    let s = 0, r = 0, b = 0; const qui = new Set();
+    (D.activite || []).forEach(a=>{ if(a.m === m && dans(a.j, n)){ s += a.s; r += a.r; b += a.b; if(a.s || a.r) qui.add(A.nomDe(a.p).toLowerCase()); } });
+    const sc = (D.scores || []).filter(x=>x.m === m && dans(x.j, n));
+    const scMoy = sc.length ? sc.reduce((x, y)=>x + (y.t ? y.c/y.t : 0), 0)/sc.length : null;
+    const pr = L.map(o=>o.prog[m]).filter(Boolean);
+    const prMoy = pr.length ? Math.round(pr.reduce((x, g)=>x + g.pct, 0)/pr.length) : null;
+    return {m, s, r, b, qui:qui.size, scN:sc.length, scMoy, prMoy, commences:pr.filter(g=>g.pct > 0).length};
+  }).sort((a, b)=>b.s - a.s || b.r - a.r);
+  const max = Math.max(1, ...lignes.map(l=>l.s));
+  const top = lignes.find(l=>l.s > 0);
+  const faibles = lignes.filter(l=>l.r >= 20).sort((a, b)=>a.b/a.r - b.b/b.r);
+  $('p-mat').innerHTML =
+    '<section class="carte"><h2>Matières</h2>'+
+    '<div class="periode" role="group" aria-label="Période">'+[7, 30, 120].map(p=>'<button type="button" data-per="'+p+'" aria-pressed="'+(p === n)+'">'+(p === 120 ? 'Tout' : p+' jours')+'</button>').join('')+'</div>'+
+    (top ? '<div class="fait">La plus révisée : <b>'+esc(nomM(top.m))+'</b> ('+duree(top.s)+')</div>' : '')+
+    (faibles.length ? '<div class="fait">La moins maîtrisée : <b>'+esc(nomM(faibles[0].m))+'</b> ('+pct(faibles[0].b, faibles[0].r)+' de bonnes réponses)</div>' : '')+
+    '<div class="table"><table><thead><tr><th>Matière</th><th>Temps</th><th class="num">Étudiants</th><th class="num">Réponses</th><th class="num">Réussite</th><th class="num mob">Tests</th><th class="num">Progression moy.</th></tr></thead><tbody>'+
+    lignes.map(l=>'<tr><td><b>'+esc(nomM(l.m))+'</b></td>'+
+      '<td><div style="display:flex;align-items:center;gap:8px"><div class="barre" style="flex:1"><i style="width:'+Math.round(100*l.s/max)+'%"></i></div><span style="white-space:nowrap">'+duree(l.s)+'</span></div></td>'+
+      '<td class="num">'+l.qui+'</td><td class="num">'+l.r+'</td><td class="num">'+pct(l.b, l.r)+'</td>'+
+      '<td class="num mob">'+(l.scN ? l.scN+' · '+Math.round(100*l.scMoy)+' %' : '—')+'</td>'+
+      '<td class="num">'+(l.prMoy == null ? '—' : l.prMoy+' % <span class="pseudos">'+l.commences+' commencé'+(l.commences > 1 ? 's' : '')+'</span>')+'</td></tr>').join('')+
+    '</tbody></table></div>'+
+    '<p class="pseudos" style="margin-top:10px">Temps et réponses : suivi du site depuis la 7.3.0. Tests : résultats des tests et quiz enregistrés au classement. Progression : dernière photo envoyée depuis l\'accueil de chaque étudiant.</p>'+
+    '</section>';
+}
+function etudiants(){
+  if(FICHE && A.pers.has(FICHE)) return fiche(A.pers.get(FICHE));
+  FICHE = null;
+  const q = (($('chEtu') || {}).value || '').trim().toLowerCase();
+  const L = [...A.pers.values()].filter(o=>!q || o.nom.toLowerCase().includes(q) || [...o.pseudos].some(p=>p.toLowerCase().includes(q)))
+    .sort((a, b)=>(b.dernier || '').localeCompare(a.dernier || '') || a.nom.localeCompare(b.nom, 'fr'));
+  const garde = $('chEtu') ? $('chEtu').value : '';
+  $('p-etu').innerHTML =
+    '<section class="carte"><h2>Étudiants</h2>'+
+    '<div style="margin:0 0 12px"><label for="chEtu">Chercher</label><input id="chEtu" type="search" autocomplete="off" placeholder="nom ou pseudo"></div>'+
+    '<div class="table"><table><thead><tr><th>Étudiant</th><th>Dernière activité</th><th class="num">Révision 7 j</th><th class="num mob">Réponses 7 j</th><th class="num">Réussite 30 j</th><th class="num">Progression</th><th class="num mob">BeQuick</th><th class="num mob">Messages</th></tr></thead><tbody>'+
+    (L.length ? L.map(o=>{
+      const t7 = totaux(o, 7), t30 = totaux(o, 30), pm = progMoy(o);
+      const autres = [...o.pseudos].filter(p=>p !== o.nom);
+      return '<tr class="clic" data-p="'+esc(o.k)+'"><td><b>'+esc(o.nom)+'</b>'+(autres.length ? '<span class="pseudos">aussi : '+esc(autres.join(', '))+'</span>' : '')+'</td>'+
+        '<td>'+(o.dernier ? jourCourt(o.dernier) : '—')+'</td><td class="num">'+duree(t7.s)+'</td><td class="num mob">'+t7.r+'</td>'+
+        '<td class="num">'+pct(t30.b, t30.r)+'</td><td class="num">'+(pm == null ? '—' : pm+' %')+'</td>'+
+        '<td class="num mob">'+o.bq.length+'</td><td class="num mob">'+o.msgs.reduce((x, c)=>x + c.n, 0)+'</td></tr>';
+    }).join('') : '<tr><td colspan="8" class="vide">Personne ici.</td></tr>')+
+    '</tbody></table></div><p class="pseudos" style="margin-top:10px">Touche une ligne pour ouvrir la fiche : progrès par matière, appareils, regroupement de pseudos et note privée.</p></section>';
+  const c = $('chEtu'); c.value = garde; c.oninput = ()=>{ etudiants(); const n = $('chEtu'); n.focus(); n.setSelectionRange(n.value.length, n.value.length); };
+}
+function fiche(o){
+  const t7 = totaux(o, 7), t30 = totaux(o, 30), pm = progMoy(o);
+  const autres = [...A.pers.values()].filter(x=>x !== o).flatMap(x=>[...x.pseudos]).sort((a, b)=>a.localeCompare(b, 'fr'));
+  const P = D.personnes || {};
+  const actM = m => o.act.filter(a=>a.m === m && dans(a.j, 30)).reduce((x, a)=>({s:x.s + a.s, r:x.r + a.r, b:x.b + a.b}), {s:0, r:0, b:0});
+  const sc = o.scores.slice().sort((a, b)=>b.d.localeCompare(a.d));
+  const bq = o.bq.slice().sort((a, b)=>b.j.localeCompare(a.j));
+  $('p-etu').innerHTML =
+    '<button type="button" class="sec retour" id="bRetour">← Tous les étudiants</button>'+
+    '<section class="carte"><h2 style="font-size:1.6rem;font-weight:300">'+esc(o.nom)+'</h2><div class="chiffres">'+
+      '<div><b>'+(o.dernier ? jourCourt(o.dernier) : '—')+'</b><small>dernière activité</small></div>'+
+      '<div><b>'+duree(t7.s)+'</b><small>révision sur 7 jours</small></div>'+
+      '<div><b>'+duree(t30.s)+'</b><small>révision sur 30 jours</small></div>'+
+      '<div><b>'+pct(t30.b, t30.r)+'</b><small>réussite (30 j, '+t30.r+' réponses)</small></div>'+
+      '<div><b>'+(pm == null ? '—' : pm+' %')+'</b><small>progression moyenne</small></div>'+
+      '<div><b>'+o.bq.length+'</b><small>BeQuick joués</small></div>'+
+    '</div></section>'+
+    '<section class="carte"><h2>Par matière</h2><div class="table"><table><thead><tr><th>Matière</th><th>Progression</th><th class="num">Leçons</th><th class="num mob">Quiz</th><th class="num">Test</th><th class="num mob">Révision</th><th class="num">Temps 30 j</th><th class="num">Réussite 30 j</th></tr></thead><tbody>'+
+    COURS.map(m=>{ const g = o.prog[m], a = actM(m);
+      return '<tr><td><b>'+esc(nomM(m))+'</b></td>'+
+        '<td>'+(g ? '<div style="display:flex;align-items:center;gap:8px"><div class="barre" style="flex:1"><i style="width:'+g.pct+'%"></i></div>'+g.pct+' %</div>' : '—')+'</td>'+
+        '<td class="num">'+(g ? g.lecons+' / '+g.lecons_tot : '—')+'</td><td class="num mob">'+(g ? g.quiz+' / '+g.quiz_tot : '—')+'</td>'+
+        '<td class="num">'+(g && g.test_pct != null ? g.test_pct+' %' : '—')+'</td>'+
+        '<td class="num mob">'+(g ? g.acquis+' acquises · '+g.a_revoir+' à revoir' : '—')+'</td>'+
+        '<td class="num">'+duree(a.s)+'</td><td class="num">'+pct(a.b, a.r)+'</td></tr>'; }).join('')+
+    '</tbody></table></div>'+(Object.keys(o.prog).length ? '<p class="pseudos" style="margin-top:8px">Progression envoyée le '+
+      new Date(Object.values(o.prog).map(g=>g.maj).sort().pop()).toLocaleString('fr-FR', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'})+', à sa dernière visite de l\'accueil.</p>' : '<p class="pseudos" style="margin-top:8px">Pas encore de progression reçue : elle arrive quand il ouvre l\'accueil du site (version 7.3.0 ou plus).</p>')+'</section>'+
+    '<div class="duo">'+
+      '<section class="carte"><h2>Derniers tests</h2>'+(sc.length ? '<div class="table"><table><tbody>'+sc.slice(0, 8).map(x=>'<tr><td>'+jourCourt(x.j)+'</td><td>'+esc(nomM(x.m))+'<span class="pseudos">'+esc(x.mo || '')+'</span></td><td class="num">'+x.c+' / '+x.t+'</td></tr>').join('')+'</tbody></table></div>' : '<p class="vide">Aucun test enregistré.</p>')+'</section>'+
+      '<section class="carte"><h2>BeQuick</h2>'+(bq.length ? '<div class="table"><table><tbody>'+bq.slice(0, 8).map(x=>'<tr><td>'+jourCourt(x.j)+'</td><td class="num">'+Number(x.s).toLocaleString('fr-FR')+' pts</td><td class="num">'+x.b+' / 15</td></tr>').join('')+'</tbody></table></div>' : '<p class="vide">Jamais joué.</p>')+'</section>'+
+    '</div>'+
+    '<section class="carte"><h2>Pseudos et appareils</h2>'+
+      '<div>'+[...o.pseudos].map(p=>'<span class="puce">'+esc(p)+(P[p.toLowerCase()] ? ' <button type="button" class="sec" data-dissocier="'+esc(p)+'">Séparer</button>' : '')+'</span>').join('')+'</div>'+
+      '<p class="pseudos" style="margin:4px 0 14px">'+(o.appareils.length ? o.appareils.length+' appareil'+(o.appareils.length > 1 ? 's' : '')+' : '+esc(o.appareils.map(c=>(c.appareil || 'inconnu')+(c.revoquee ? ' (révoqué)' : '')).join(' · ')) : 'Aucune clé utilisée sous ces pseudos.')+'</p>'+
+      '<div class="ligne"><div><label for="selAssoc">Regrouper un autre pseudo avec '+esc(o.nom)+'</label><select id="selAssoc"><option value="">Choisir un pseudo…</option>'+autres.map(p=>'<option>'+esc(p)+'</option>').join('')+'</select></div><button type="button" id="bAssoc">Regrouper</button></div>'+
+      '<div class="ligne" style="margin-top:12px"><div><label for="inNom">Nom affiché pour cette personne</label><input id="inNom" maxlength="60" value="'+esc(o.nom)+'"></div><button type="button" class="sec" id="bNom">Renommer</button></div>'+
+      '<div class="msg" id="msgFiche" role="status"></div>'+
+    '</section>'+
+    '<section class="carte"><h2>Note privée</h2><textarea id="note" aria-label="Note privée" maxlength="2000" placeholder="Visible par toi seul.">'+esc((D.notes || {})[o.k] || '')+'</textarea>'+
+      '<button type="button" style="margin-top:10px" id="bNote">Enregistrer la note</button><div class="msg" id="msgNote" role="status"></div></section>';
+  $('bRetour').onclick = ()=>{ FICHE = null; etudiants(); window.scrollTo(0, 0); };
+  const agir = async (action, donnees, msg, ok)=>{
+    $(msg).className = 'msg'; $(msg).textContent = 'Enregistrement…';
+    try{ await appel(action, donnees); if(ok) ok(); await chargerTableau(); }
+    catch(e){ $(msg).className = 'msg ko'; $(msg).textContent = texteErreur(e); }
+  };
+  $('bAssoc').onclick = ()=>{ const p = $('selAssoc').value; if(p) agir('associer', {pseudo:p, personne:o.nom}, 'msgFiche'); };
+  $('bNom').onclick = async ()=>{
+    const n = $('inNom').value.trim(); if(!n || n === o.nom) return;
+    $('msgFiche').textContent = 'Enregistrement…';
+    try{
+      for(const p of o.pseudos) await appel('associer', {pseudo:p, personne:n});
+      const note = (D.notes || {})[o.k]; if(note) await appel('note', {personne:n, note});
+      FICHE = n.toLowerCase(); await chargerTableau();
+    }catch(e){ $('msgFiche').className = 'msg ko'; $('msgFiche').textContent = texteErreur(e); }
+  };
+  $('p-etu').querySelectorAll('[data-dissocier]').forEach(b=>b.onclick = ()=>{
+    if(confirm('Séparer « '+b.dataset.dissocier+' » de '+o.nom+' ?')) agir('dissocier', {pseudo:b.dataset.dissocier}, 'msgFiche');
+  });
+  $('bNote').onclick = ()=>agir('note', {personne:o.nom, note:$('note').value}, 'msgNote', ()=>{ $('msgNote').className = 'msg ok'; });
+}
+function bequick(){
+  const soirs = (D.bq_jours || []).slice().sort((a, b)=>b.j.localeCompare(a.j));
+  const parSoir = {}; (D.bequick || []).forEach(b=>{ (parSoir[b.j] = parSoir[b.j] || []).push(b); });
+  /* questions les plus ratées : détail de chaque partie, dans l'ordre de la série */
+  const stat = {};
+  soirs.forEach(s=>{
+    const ids = String(s.ids || '').split(',');
+    (parSoir[s.j] || []).forEach(b=>String(b.d || '').split(',').forEach((r, i)=>{
+      if(!r || !ids[i]) return;
+      const x = stat[ids[i]] = stat[ids[i]] || {id:ids[i], n:0, ko:0};
+      x.n++; if(r === 'x' || r === 'p') x.ko++;
+    }));
+  });
+  const ratees = Object.values(stat).filter(x=>x.n >= 3 && x.ko).sort((a, b)=>b.ko/b.n - a.ko/a.n || b.n - a.n).slice(0, 15);
+  const texte = id => { const q = Q_BANQUE && Q_BANQUE[id]; return q ? esc(q.q) : '<span class="pseudos">'+esc(id)+'</span>'; };
+  $('p-bq').innerHTML =
+    '<section class="carte"><h2>Les questions les plus ratées</h2>'+(ratees.length ? '<div class="table"><table><thead><tr><th>Question</th><th>Matière</th><th class="num">Échec</th></tr></thead><tbody>'+
+      ratees.map(x=>'<tr><td class="q">'+texte(x.id)+'</td><td>'+esc(nomM(x.id.split(':')[0]))+'</td><td class="num">'+Math.round(100*x.ko/x.n)+' %<span class="pseudos">'+x.ko+' / '+x.n+'</span></td></tr>').join('')+
+      '</tbody></table></div>' : '<p class="vide">Pas encore assez de parties (3 essais minimum par question).</p>')+'</section>'+
+    '<section class="carte"><h2>Soir par soir</h2>'+(soirs.length ? '<div class="table"><table><thead><tr><th>Soir</th><th>Matières</th><th class="num">Joueurs</th><th class="num">Score moyen</th><th>Meilleur</th></tr></thead><tbody>'+
+      soirs.map(s=>{ const l = (parSoir[s.j] || []).slice().sort((a, b)=>b.s - a.s);
+        const moy = l.length ? Math.round(l.reduce((x, b)=>x + b.s, 0)/l.length) : 0;
+        return '<tr><td>'+jourCourt(s.j)+'</td><td>'+esc(String(s.m || '').split(',').filter(Boolean).map(nomM).join(' + '))+'</td><td class="num">'+l.length+'</td>'+
+          '<td class="num">'+(l.length ? moy.toLocaleString('fr-FR')+' pts' : '—')+'</td><td>'+(l[0] ? esc(A.nomDe(l[0].p))+' <span class="pseudos">'+Number(l[0].s).toLocaleString('fr-FR')+' pts</span>' : '—')+'</td></tr>'; }).join('')+
+      '</tbody></table></div>' : '<p class="vide">Aucun BeQuick joué.</p>')+'</section>';
+  /* le texte des questions vient de banque.js, chargé à la première ouverture */
+  if(ratees.length && !Q_BANQUE && !window.__banque){
+    window.__banque = true;
+    const sc = document.createElement('script'); sc.src = 'banque.js';
+    sc.onload = ()=>{ Q_BANQUE = {}; (window.BANQUE || []).forEach(q=>{ Q_BANQUE[q.id] = q; }); bequick(); };
+    document.head.appendChild(sc);
+  }
+}
+
+/* ---------- onglets et clics ---------- */
+document.querySelectorAll('.onglets [role="tab"]').forEach(b=>b.addEventListener('click', ()=>{
+  document.querySelectorAll('.onglets [role="tab"]').forEach(x=>{ const on = x === b; x.setAttribute('aria-selected', on); $('p-'+x.dataset.o).hidden = !on; });
+}));
+$('admin').addEventListener('click', e=>{
+  const per = e.target.closest('[data-per]'); if(per){ PERIODE = +per.dataset.per; matieres(); return; }
+  const tr = e.target.closest('tr.clic'); if(tr && A && A.pers.has(tr.dataset.p)){
+    FICHE = tr.dataset.p; etudiants();
+    document.querySelector('.onglets [data-o="etu"]').click(); window.scrollTo(0, 0);
+  }
 });
 
 /* même onglet : on ne redemande pas le mot de passe après un rechargement */

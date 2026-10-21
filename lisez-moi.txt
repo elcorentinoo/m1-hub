@@ -278,6 +278,17 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  7.3.0            TABLEAU DE BORD /admin. Cinq onglets : vue d'ensemble (actifs
+                   du jour, 7 et 30 jours, temps de révision, courbes), matières
+                   (la plus révisée, la moins maîtrisée, réussite, progression
+                   moyenne), étudiants (fiche par personne : progrès par matière,
+                   tests, BeQuick, appareils, note privée, regroupement de
+                   plusieurs pseudos sous une même personne), BeQuick (questions
+                   les plus ratées, soir par soir) et clés.
+                   Suivi des progrès : le site envoie le temps passé par matière,
+                   les réponses données et, depuis l'accueil, la progression de
+                   chaque matière (supabase/admin.sql). Les étudiants en sont
+                   prévenus (page d'accès, pied de page, cloche).
   7.2.0            CHAT ENRICHI ET BEQUICK SANS TRICHE.
                    Chat : un appui sur un message ouvre 👍 ❤️ 😂 😮 😢 🔥 et
                    « Répondre » (citation cliquable) ; « Léa écrit… » et nombre

@@ -10,7 +10,7 @@
 
   /* ---------- 0. VERSION ---------- */
   /* Doit rester identique à VERSION en haut de sw.js. */
-  const VERSION_APP = '7.2.0';
+  const VERSION_APP = '7.3.0';
   const NOM_VERSION = 'Thaler';
   window.APP_VERSION = VERSION_APP;
 
@@ -175,6 +175,7 @@
       '<a class="ds-logo" href="index.html"><span class="mk"></span>M1<b>MBAF</b></a>'+
       '<nav class="ds-fnav">'+liens+'</nav>'+
       '<div class="ds-fv">v'+VERSION_APP+' « '+NOM_VERSION+' »</div>'+
+      '<div class="ds-credits">Tes progrès (leçons, temps de révision, résultats) sont partagés avec l\'administrateur du hub.</div>'+
       '<div class="ds-credits">Photos <a href="https://unsplash.com/?utm_source=m1_mbaf&utm_medium=referral" rel="noopener">Unsplash</a> : '+
         CREDITS.map(c=>'<a href="https://unsplash.com/@'+c[1]+'?utm_source=m1_mbaf&utm_medium=referral" rel="noopener">'+c[0]+'</a>').join(', ')+'.</div>';
     document.body.appendChild(f);
@@ -619,7 +620,7 @@
   function nouveautes(){
     let vu = null; try{ vu = localStorage.getItem('version_vue'); }catch(e){}
     if(vu === VERSION_APP) return [];
-    return [{id:'version-'+VERSION_APP, ico:'✨', titre:'Nouveau dans le chat : réactions et réponses', texte:'Version '+VERSION_APP+' : touche un message pour réagir ou répondre, et @pseudo pour prévenir quelqu\'un.', url:'index.html?chat=1', chat:true}];
+    return [{id:'version-'+VERSION_APP, ico:'✨', titre:'Nouveau : réactions dans le chat et suivi des progrès', texte:'Version '+VERSION_APP+' : touche un message pour réagir ou répondre. Tes progrès (leçons, temps, résultats) sont désormais partagés avec l\'administrateur du hub.', url:'index.html?chat=1', chat:true}];
   }
   let _alertes = [];
   async function majCloche(){
@@ -864,6 +865,105 @@
   }
   document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState === 'visible') verrouBeQuick(); });
 
+  /* ---------- SUIVI DES PROGRÈS (7.3.0) ----------
+     Pour le tableau de bord /admin : temps passé par matière (onglet visible
+     et utilisé dans les 3 dernières minutes), réponses données (historique de
+     progress.js) et, depuis le hub, la progression de chaque matière.
+     Envoi toutes les 2 minutes et quand on quitte la page, directement à
+     Supabase (rien ne passe par Netlify), avec le jeton de la messagerie :
+     seule une clé valide écrit, et seulement sous son propre pseudo. */
+  const SUIVI_URL = 'https://vrlvtcydgdyrcljfgasg.supabase.co/rest/v1/rpc/suivi_envoyer';
+  const SUIVI_CLE = 'sb_publishable__rK_zB-3ePNEqekPNo3N4Q_7dMOUFIK';
+  const SUIVI_PAS = 15, SUIVI_INACTIF = 3*60*1000, SEPT_JOURS = 7*86400*1000;
+  const JOUR_PARIS = new Intl.DateTimeFormat('fr-CA', {timeZone:'Europe/Paris', year:'numeric', month:'2-digit', day:'2-digit'});
+  let suiviGeste = Date.now(), suiviEnvoi = false, progressionEnvoyee = 0;
+  const lireJSON = (k, d)=>{ try{ const v = JSON.parse(localStorage.getItem(k) || 'null'); return v == null ? d : v; }catch(e){ return d; } };
+  const ecrireJSON = (k, v)=>{ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} };
+  function sujetSuivi(){
+    const sid = document.documentElement.getAttribute('subject-id');
+    if(sid) return sid;
+    const f = (location.pathname.split('/').pop() || 'index').replace(/\.html$/, '') || 'index';
+    return f === 'index' ? 'hub' : f.replace(/_/g, '-').toLowerCase().replace(/[^a-z0-9-]/g, '').slice(0, 40) || 'hub';
+  }
+  function compterTemps(){
+    if(document.visibilityState !== 'visible' || Date.now() - suiviGeste > SUIVI_INACTIF) return;
+    const a = lireJSON('suivi_attente', {}), k = JOUR_PARIS.format(new Date())+'|'+sujetSuivi();
+    a[k] = (a[k] || 0) + SUIVI_PAS;
+    ecrireJSON('suivi_attente', a);
+  }
+  /* même jeton que chat.js (localStorage « chat_jeton ») */
+  async function jetonSuivi(){
+    let pseudo = null; try{ pseudo = localStorage.getItem('lb_name'); }catch(e){}
+    if(!pseudo || !pseudo.trim() || !navigator.onLine) return null;
+    const j = lireJSON('chat_jeton', null);
+    if(j && j.jeton && j.p === pseudo && j.exp - Date.now()/1000 > 3*86400) return j.jeton;
+    const r = await fetch('/.netlify/functions/acces-jeton', {method:'POST', credentials:'same-origin',
+      headers:{'Content-Type':'application/json'}, body:JSON.stringify({pseudo})}).catch(()=>null);
+    if(!r || !r.ok) return null;
+    const d = await r.json().catch(()=>({}));
+    if(!d.jeton) return null;
+    ecrireJSON('chat_jeton', {jeton:d.jeton, exp:d.exp, p:pseudo});
+    return d.jeton;
+  }
+  /* Progression de chaque matière : seulement depuis le hub, qui connaît le
+     nombre de leçons (MATIERES) et charge banque.js. */
+  function photoProgression(){
+    if(typeof MATIERES === 'undefined' || !Array.isArray(MATIERES) || !window.P || !P.completion || !window.BANQUE) return [];
+    if(Date.now() - progressionEnvoyee < 10*60*1000) return [];
+    return MATIERES.filter(m=>m.sid && m.nb).map(m=>{
+      const c = P.completion(m.sid, m.nb);
+      const ids = BANQUE.filter(q=>q.m === m.sid).map(q=>q.id);
+      const b = P.bilanPlan ? P.bilanPlan(ids) : {};
+      return {sujet:m.sid, pct:c.pct, l:c.lecons.n, lt:c.lecons.tot, q:c.quiz.n, qt:c.quiz.tot,
+              t:c.test.fait ? c.test.pct : null, a:b.acquis|0, e:b.encours|0, v:b.aRevoir|0, xp:(P.etat(m.sid).xp)|0};
+    });
+  }
+  async function envoyerSuivi(depart){
+    if(suiviEnvoi || !navigator.onLine) return;
+    const attente = lireJSON('suivi_attente', {});
+    /* réponses données depuis le dernier envoi (7 jours au plus) */
+    const prog = lireJSON('m1_progress_v1', {rep:[]});
+    const depuis = Math.max(lireJSON('suivi_rep_t', 0) || 0, Date.now() - SEPT_JOURS);
+    const lignes = {}, ligne = k=>(lignes[k] = lignes[k] || {s:0, r:0, b:0});
+    let dernier = depuis;
+    (prog.rep || []).forEach(r=>{
+      if(!r || !r.m || !(r.t > depuis)) return;
+      const l = ligne(JOUR_PARIS.format(new Date(r.t))+'|'+r.m); l.r++; if(r.ok) l.b++;
+      if(r.t > dernier) dernier = r.t;
+    });
+    Object.keys(attente).forEach(k=>{ ligne(k).s += attente[k]; });
+    const activite = Object.keys(lignes).map(k=>{ const [jour, sujet] = k.split('|'); const l = lignes[k];
+      return {jour, sujet, s:Math.min(l.s, 3600), r:Math.min(l.r, 500), b:Math.min(l.b, 500)}; })
+      .filter(x=>/^[a-z0-9-]{2,40}$/.test(x.sujet) && (x.s || x.r));
+    const progression = photoProgression();
+    if(!activite.length && !progression.length) return;
+    suiviEnvoi = true;
+    try{
+      const jeton = await jetonSuivi(); if(!jeton) return;
+      ecrireJSON('suivi_attente', {});                       // ce qui arrive pendant l'envoi repart au prochain
+      const r = await fetch(SUIVI_URL, {method:'POST', keepalive:!!depart,
+        headers:{apikey:SUIVI_CLE, Authorization:'Bearer '+jeton, 'Content-Type':'application/json'},
+        body:JSON.stringify({p_activite:activite.slice(0, 80), p_progression:progression})}).catch(()=>null);
+      if(r && r.ok){
+        ecrireJSON('suivi_rep_t', dernier);
+        if(progression.length) progressionEnvoyee = Date.now();
+      }else{
+        /* échec : on remet le temps en attente (les jours de plus d'une semaine sont abandonnés) */
+        const a = lireJSON('suivi_attente', {}), limite = JOUR_PARIS.format(new Date(Date.now() - SEPT_JOURS));
+        Object.keys(attente).forEach(k=>{ if(k.split('|')[0] >= limite) a[k] = (a[k] || 0) + attente[k]; });
+        ecrireJSON('suivi_attente', a);
+      }
+    }finally{ suiviEnvoi = false; }
+  }
+  function demarrerSuivi(){
+    ['pointerdown', 'keydown', 'scroll', 'touchstart', 'wheel'].forEach(t=>
+      addEventListener(t, ()=>{ suiviGeste = Date.now(); }, {passive:true, capture:true}));
+    setInterval(compterTemps, SUIVI_PAS*1000);
+    setInterval(()=>envoyerSuivi(false), 2*60*1000);
+    setTimeout(()=>envoyerSuivi(false), 8000);
+    document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState === 'hidden') envoyerSuivi(true); });
+  }
+
   /* ---------- MESSAGERIE (7.1.0) ----------
      chat.js n'est chargé qu'au premier clic sur la bulle, ou en différé
      si cet appareil a déjà un jeton de messagerie (pour la pastille des
@@ -914,6 +1014,7 @@
     setTimeout(signalerPseudo, 3000);
     demarrerChat();
     verrouBeQuick();
+    demarrerSuivi();
     /* 7.2.0 : pas de zoom sur téléphone (pincer ni double-tap), le site est déjà à la bonne taille */
     document.addEventListener('gesturestart', e=>e.preventDefault(), {passive:false});
   }

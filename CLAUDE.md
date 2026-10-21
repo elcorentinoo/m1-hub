@@ -99,6 +99,9 @@ après toute modification de couleur ou de photo.
 - `supabase/chat-plus.sql` — réponses et réactions du chat (7.2.0).
 - Verrou BeQuick (`ui.js`, `verrouBeQuick`) — de 18 h 30 à la fin de sa
   série, cours des matières du soir et révision fermés, contrôle par pseudo.
+- Tableau de bord `/admin` (7.3.0) — `acces-admin.html`, données par la
+  fonction `acces-admin` (action `tableau`) ; suivi envoyé par `ui.js`
+  (`envoyerSuivi`) ; tables et fonctions dans `supabase/admin.sql`.
 - `sw.js` — hors ligne. Toute nouvelle page doit être ajoutée à `FICHIERS`
   (sauf les pages d'accès, jamais mises en cache).
 
