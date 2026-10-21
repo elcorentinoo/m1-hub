@@ -96,6 +96,9 @@ après toute modification de couleur ou de photo.
   classement Supabase.
 - `banque.js` — banque de révision espacée et de BeQuick, **générée** depuis
   les pages de cours (tableau `TEST` et mini-quiz) : ne pas éditer à la main.
+- `supabase/chat-plus.sql` — réponses et réactions du chat (7.2.0).
+- Verrou BeQuick (`ui.js`, `verrouBeQuick`) — de 18 h 30 à la fin de sa
+  série, cours des matières du soir et révision fermés, contrôle par pseudo.
 - `sw.js` — hors ligne. Toute nouvelle page doit être ajoutée à `FICHIERS`
   (sauf les pages d'accès, jamais mises en cache).
 
