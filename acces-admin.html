@@ -100,9 +100,10 @@ td.cle{white-space:nowrap}
         <button type="button" data-f="rev" aria-pressed="false">Révoquées</button>
         <button type="button" class="sec" id="bMaj">↻ Actualiser</button>
       </div>
+      <div style="margin:0 0 12px"><label for="cherche">Chercher un nom ou un pseudo</label><input id="cherche" type="search" placeholder="ex. lea" autocomplete="off"></div>
       <div class="table"><table>
-        <thead><tr><th>Pour</th><th>Clé</th><th class="opt">Créée</th><th>État</th><th class="opt">Appareil</th><th></th></tr></thead>
-        <tbody id="liste"><tr><td colspan="6" class="vide">Chargement…</td></tr></tbody>
+        <thead><tr><th>Pour</th><th>Pseudo</th><th>Clé</th><th class="opt">Créée</th><th>État</th><th class="opt">Appareil</th><th></th></tr></thead>
+        <tbody id="liste"><tr><td colspan="7" class="vide">Chargement…</td></tr></tbody>
       </table></div>
       <div class="msg" id="msgListe" role="status"></div>
     </section>
@@ -151,15 +152,17 @@ function dessiner(){
   const n = {libre:0, prise:0, rev:0}; CLES.forEach(c=>n[etat(c)]++);
   $('stats').innerHTML = '<div><b>'+CLES.length+'</b><small>clés</small></div><div><b>'+n.libre+'</b><small>libres</small></div>'+
     '<div><b>'+n.prise+'</b><small>utilisées</small></div><div><b>'+n.rev+'</b><small>révoquées</small></div>';
-  const l = CLES.filter(c=>FILTRE === 'toutes' || etat(c) === FILTRE);
+  const q = ($('cherche').value||'').trim().toLowerCase();
+  const l = CLES.filter(c=>(FILTRE === 'toutes' || etat(c) === FILTRE) &&
+    (!q || (c.nom||'').toLowerCase().includes(q) || (c.pseudo||'').toLowerCase().includes(q)));
   $('liste').innerHTML = l.length ? l.map(c=>{
     const e = etat(c);
     const lib = e === 'rev' ? 'Révoquée' : e === 'prise' ? 'Utilisée le '+date(c.utilisee) : 'Libre';
-    return '<tr><td>'+(esc(c.nom) || '<span style="color:var(--txt3)">—</span>')+'</td><td class="cle">…'+esc(c.suffixe)+'</td>'+
+    return '<tr><td>'+(esc(c.nom) || '<span style="color:var(--txt3)">—</span>')+'</td><td><b>'+(esc(c.pseudo) || '<span style="color:var(--txt3);font-weight:400">—</span>')+'</b></td><td class="cle">…'+esc(c.suffixe)+'</td>'+
       '<td class="opt">'+date(c.cree)+'</td><td><span class="etat '+e+'">'+lib+'</span></td><td class="opt">'+esc(c.appareil)+'</td>'+
       '<td>'+(c.revoquee ? '<button class="petit sec" data-act="retablir" data-id="'+c.id+'">Rétablir</button>'
                          : '<button class="danger" data-act="revoquer" data-id="'+c.id+'">Révoquer</button>')+'</td></tr>';
-  }).join('') : '<tr><td colspan="6" class="vide">Aucune clé ici.</td></tr>';
+  }).join('') : '<tr><td colspan="7" class="vide">Aucune clé ici.</td></tr>';
 }
 $('liste').addEventListener('click', async e=>{
   const b = e.target.closest('button[data-act]'); if(!b) return;
@@ -174,6 +177,7 @@ document.querySelectorAll('.filtres button[data-f]').forEach(b=>b.addEventListen
   dessiner();
 }));
 $('bMaj').addEventListener('click', ()=>charger());
+$('cherche').addEventListener('input', dessiner);
 
 $('fGen').addEventListener('submit', async e=>{
   e.preventDefault();

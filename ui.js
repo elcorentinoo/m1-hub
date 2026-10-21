@@ -764,6 +764,17 @@
     if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='k'){ e.preventDefault(); ouvrirRecherche(); }
   });
 
+  /* Clé d'accès (7.0.0) : on rattache une fois le pseudo du site à la clé de
+     cet appareil, pour que /admin sache qui utilise quelle clé. */
+  function signalerPseudo(){
+    let p = null, deja = null;
+    try{ p = localStorage.getItem('lb_name'); deja = localStorage.getItem('acces_pseudo_envoye'); }catch(e){ return; }
+    if(!p || p === deja || !navigator.onLine) return;
+    fetch('/.netlify/functions/acces-pseudo', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({pseudo:p})})
+      .then(r=>{ if(r.ok){ try{ localStorage.setItem('acces_pseudo_envoye', p); }catch(e){} } })
+      .catch(()=>{});
+  }
+
   function init(){
     construireEntete();
     construireCours();
@@ -779,6 +790,7 @@
     suivreSections();
     majCloche();
     setInterval(majCloche, 60000);
+    setTimeout(signalerPseudo, 3000);
   }
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();

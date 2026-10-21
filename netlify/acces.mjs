@@ -32,6 +32,14 @@ export function cookieAcces(secret, id){
   const sig = crypto.createHmac('sha256', secret).update(id+'.'+chk).digest('base64url');
   return 'm1_acces='+id+'.'+chk+'.'+sig+'; Max-Age='+UN_AN+'; Path=/; HttpOnly; Secure; SameSite=Lax';
 }
+/* Identifiant de clé porté par le cookie signé, ou null s'il est absent ou falsifié. */
+export function lireCookie(secret, entete){
+  const m = String(entete||'').match(/(?:^|;\s*)m1_acces=([^;]+)/); if(!m) return null;
+  const [id, chk, sig] = m[1].split('.');
+  if(!id || !chk || !sig || !/^[0-9a-f-]{36}$/.test(id)) return null;
+  const attendu = crypto.createHmac('sha256', secret).update(id+'.'+chk).digest('base64url');
+  return memeTexte(sig, attendu) ? id : null;
+}
 export function memeTexte(a, b){
   const x = Buffer.from(String(a||'')), y = Buffer.from(String(b||''));
   return x.length === y.length && crypto.timingSafeEqual(x, y);

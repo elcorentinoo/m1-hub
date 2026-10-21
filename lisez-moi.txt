@@ -288,6 +288,8 @@ HISTORIQUE
                    acces_cles (empreintes SHA-256 seulement) et trois fonctions,
                    supabase/acces.sql. Le service worker ne garde jamais les pages
                    d'accès et efface ses copies si l'appareil n'est plus autorisé.
+                   Le pseudo du site est rattaché à la clé de l'appareil (fonction
+                   acces-pseudo) : /admin montre qui utilise quelle clé.
   6.4.2            Système bancaire : copie locale de la photo (img/sujet-systeme-
                    bancaire.webp, ajoutée au hors-ligne) ; photo assombrie
                    (--ph-lum .68) pour garder 4,5:1 sur les textes, mesuré au pixel.
