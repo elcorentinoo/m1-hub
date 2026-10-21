@@ -7,7 +7,8 @@ Patrimoine Agence (IAE Vannes / BNP Paribas Rennes). Propriétaire : Corentin.
 
 Site **statique** : HTML, CSS et JavaScript écrits à la main, aucune étape de
 construction, aucune dépendance npm. Déployé sur Netlify, qui publie la racine
-du dépôt telle quelle (voir `netlify.toml`).
+du dépôt telle quelle (voir `netlify.toml`), avec quelques fonctions Netlify
+(dossier `netlify/`) et une base Supabase pour les données partagées.
 
 ## Règle de version — impérative
 
@@ -20,7 +21,8 @@ respecte ces deux contraintes :
 2. Versionnage sémantique : MAJEURE = refonte ou fonctionnalité structurante ·
    MINEURE = nouvelle matière ou nouvelle page · CORRECTIF = correction.
    Chaque version MAJEURE porte un nom de monnaie — déjà utilisés : Obole, Sou,
-   Écu, Denier, Livre, Louis, Franc, Sesterce. Disponibles : Florin, Ducat…
+   Écu, Denier, Livre, Louis, Franc, Sesterce, Florin, Ducat, Thaler.
+   Disponibles : Guinée, Réal, Kreuzer, Piastre…
 
 L'historique complet est dans `lisez-moi.txt`, à compléter à chaque version.
 
@@ -40,11 +42,11 @@ sont le seul aplat bleu nuit dans les leçons.
 
 **Chaque matière a son identité**, déclarée une seule fois en haut de
 `theme.css` (`:root[subject-id="…"], [data-sid="…"]`) : `--m` (couleur),
-`--m-soft`, `--m-clair`, `--emb` (emblème) et `--photo` (photo Unsplash, puis
-copie locale `img/sujet-<matière>.webp` en secours). Une nouvelle matière =
-un nouveau bloc à cet endroit, une copie locale de sa photo, et le
-photographe ajouté à `CREDITS` dans `ui.js`. Les photos passent en noir et
-blanc puis prennent la couleur de la matière (`.ph`).
+`--m-soft`, `--m-clair`, `--emb` (emblème : un caractère, ou une petite image
+SVG blanche en `url(data:…)` quand aucun caractère ne rend proprement),
+`--photo` (photo Unsplash, puis copie locale `img/sujet-<matière>.webp` en
+secours) et, si la photo est claire, `--ph-lum` (assombrissement). Les photos
+passent en noir et blanc puis prennent la couleur de la matière (`.ph`).
 
 `ui.js` construit l'en-tête en pilules de verre, la barre basse sur
 téléphone, et sur les pages de cours le cadre photo (titre de la leçon,
@@ -53,42 +55,89 @@ suivante ». Les transitions entre pages passent par `@view-transition`.
 
 **Accessibilité : tous les textes doivent rester à 4,5:1 minimum**, fond
 composité pris en compte — y compris les textes posés sur une photo, à
-mesurer au pixel. À vérifier après toute modification de couleur.
+mesurer au pixel (le pixel le plus clair derrière chaque texte). À vérifier
+après toute modification de couleur ou de photo.
 
 ## Architecture
 
 - `index.html` — le hub : tableau de bord, **Mes cours** et **Entraînement**
-  séparés, fil du semestre, panneau de reprise. Les tableaux `MATIERES`,
-  `ENTRAINEMENTS` et `ECHEANCES` en tête du script sont les seuls endroits à
-  modifier pour ajouter un contenu.
+  séparés, fil du semestre, panneau de reprise. Les tableaux `MATIERES` et
+  `ENTRAINEMENTS` en tête du script sont les endroits à modifier pour ajouter
+  un contenu (`yt` et `duree` = vidéo de présentation, pastille ▶ de la carte).
+- `calendrier.js` — `DEBUT_SEMESTRE` et `ECHEANCES` (dates de partiels) : le
+  **seul** endroit où modifier une date. Utilisé par le hub, la cloche et
+  BeQuick. Une échéance sans cours a `matiere:null`.
 - Pages de cours (`marche_des_particuliers`, `produits_derives`,
   `marketing_numerique`, `es_banque`, `fiscalite_particulier`,
-  `droits_particuliers`) — même squelette :
-  `topbar`, `sidebar` à chapitres, sections `.view` par leçon, mini-quiz,
-  applications corrigées, test final adaptatif. L'attribut `subject-id` sur
-  `<html>` identifie la matière pour `progress.js`.
+  `droits_particuliers`, `etudes_de_marche`, `systeme_bancaire`) — même
+  squelette : `topbar`, `sidebar` à chapitres, sections `.view` par leçon,
+  mini-quiz, applications corrigées, test final adaptatif (`const TEST`).
+  L'attribut `subject-id` sur `<html>` identifie la matière pour `progress.js`.
+- **Nouvelle matière** : la page, son bloc dans `theme.css` (+ photo locale et
+  photographe dans `CREDITS` de `ui.js`), puis sa déclaration dans `ui.js`
+  (`PAGES`, `NOMS`, `LABM`, `fichierDe`, `PRESENTATIONS`), `progress.js`,
+  `lb.js` (`COURS_M1`), `revision.html`, `stats.html`, `bequick.html` (`NOMS`),
+  `index.html` (`MATIERES`), `calendrier.js` si la date est connue, `sw.js`
+  (`FICHIERS`), et ses questions dans `banque.js`.
+- **Vidéos de présentation** (6.3.0) : une par matière, générée dans
+  NotebookLM à partir d'un document source (Drive « M1 – Sources vidéo »),
+  hébergée en **non répertorié** sur la chaîne YouTube « M1 HUB ». `ui.js`
+  (`PRESENTATIONS`) ajoute la page « Présentation du cours » avant la leçon 1.
 - Générateurs (`entrainement_changes`, `entrainement_fiscal`) — exercices tirés
   au hasard à l'infini, trois modes : par notion, série, cas complet.
-- `ui.js` — en-tête, pied de page et recherche communs à toutes les pages.
+- `bequick.html` / `bequick.js` — le défi du soir : du lundi au vendredi,
+  18 h 30 – 22 h, 15 questions en 10 minutes, une seule partie, même série
+  pour toute la promo. Bonne réponse et explication affichées après chaque
+  question. Tables Supabase dans `supabase/bequick.sql`. Notification de
+  18 h 30 : `netlify/functions/bequick-notif.mjs` (Web Push, clé `VAPID_PRIVATE`).
+- `ui.js` — en-tête, pied de page, recherche, cloche, vidéos, présentation.
 - `theme.css` — la charte. `ui.css` — la coquille.
-- `progress.js` — progression locale. `lb.js` — identité et classement Supabase.
-- `banque.js` — banque de révision espacée, **généré** : ne pas éditer à la
-  main, régénérer depuis les pages de cours.
-- `sw.js` — hors ligne. Toute nouvelle page doit être ajoutée à `FICHIERS`.
+- `progress.js` — progression locale. `lb.js` — identité (pseudo) et
+  classement Supabase.
+- `banque.js` — banque de révision espacée et de BeQuick, **générée** depuis
+  les pages de cours (tableau `TEST` et mini-quiz) : ne pas éditer à la main.
+- `sw.js` — hors ligne. Toute nouvelle page doit être ajoutée à `FICHIERS`
+  (sauf les pages d'accès, jamais mises en cache).
+
+## Accès réservé par clé (7.0.0 « Thaler »)
+
+Tout le site est derrière une porte : `netlify/edge-functions/acces.js`
+vérifie avant chaque fichier un cookie signé posé à l'activation d'une clé.
+Sans lui, on arrive sur `acces.html`, qui demande la clé **et** le pseudo.
+
+- Une clé (`XXX-XXX-XXX`) = un appareil : consommée à la première
+  utilisation, l'appareil reste autorisé un an, revérifié chaque jour.
+  Un même pseudo peut avoir plusieurs clés (téléphone, ordinateur).
+- Gestion réservée à Corentin : `/admin` (ou « /admin » + Entrée dans la
+  recherche, jamais proposé). Génération illimitée, liste avec pseudo et
+  appareil, révocation (effet sous 24 h). Mot de passe : variable Netlify.
+- Fonctions : `acces-activer`, `acces-admin`, `acces-pseudo` ; outils communs
+  dans `netlify/acces.mjs`. Base : `supabase/acces.sql` (table `acces_cles`,
+  empreintes SHA-256 seulement, jamais les clés en clair).
+- Variables d'environnement Netlify : `ACCES_SECRET`, `ACCES_JETON`,
+  `ADMIN_MDP`, `VAPID_PRIVATE`. **Ne jamais les écrire dans le dépôt.**
+- Restent ouverts sans clé : `acces.html`, `/admin`, `/.netlify/*`, `sw.js`,
+  le manifeste et les icônes.
 
 ## Vérifications attendues avant livraison
 
 Rendre les pages dans un navigateur sans serveur de production : aucune erreur
 JavaScript, aucun débordement horizontal (bureau et 390 px), contrastes mesurés.
 Tout calcul affiché à l'étudiant doit être vérifié numériquement — c'est un
-site de révision, une erreur de corrigé coûte des points en examen.
+site de révision, une erreur de corrigé coûte des points en examen. Les
+chiffres d'un cours (taux, plafonds, lois) se vérifient sur des sources
+officielles (service-public.fr, economie.gouv.fr, Légifrance, Banque de
+France, ACPR, EUR-Lex) ; en cas d'écart, on corrige et on le signale dans le
+mémo du cours.
 
 ## Déploiement
 
 Un `git push` sur `main` déclenche un déploiement Netlify automatique, qui
-consomme **15 crédits** sur les 300 mensuels du plan gratuit. Regrouper les
+consomme **15 crédits** sur les **1 000** mensuels du plan. Regrouper les
 commits plutôt que pousser dix fois d'affilée. Ne jamais déposer de zip
-manuellement sur Netlify : le dépôt est la référence.
+manuellement sur Netlify : le dépôt est la référence. Après chaque push,
+vérifier que le déploiement est publié (et non « Skipped », signe de crédits
+épuisés).
 
 ## Façon de travailler avec Corentin
 
@@ -96,3 +145,7 @@ Il n'est pas développeur — c'est un étudiant en banque. Expliquer en frança
 sans jargon, et décrire les manipulations écran par écran.
 
 **Proposer avant de coder, et attendre son feu vert.**
+
+Ses crédits Claude sont limités : aller à l'essentiel, déléguer les gros
+travaux de lecture à des sous-agents, et lui conseiller d'ouvrir une nouvelle
+session quand la conversation devient longue.
