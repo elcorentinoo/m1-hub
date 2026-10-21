@@ -82,7 +82,7 @@ td.cle{white-space:nowrap}
     <section class="carte">
       <h2>Générer des clés</h2>
       <form id="fGen" class="ligne" autocomplete="off">
-        <div><label for="nom">Pour qui ? (facultatif)</label><input id="nom" maxlength="60" placeholder="ex. Léa Martin, ou Promo M1"></div>
+        <div><label for="nom">Note (facultatif)</label><input id="nom" maxlength="60" placeholder="ex. envoyée à Léa — le pseudo s'ajoute tout seul"></div>
         <div class="court"><label for="nb">Combien ?</label><input id="nb" type="number" min="1" max="100" value="1"></div>
         <button type="submit" id="bGen">Générer</button>
       </form>
@@ -102,7 +102,7 @@ td.cle{white-space:nowrap}
       </div>
       <div style="margin:0 0 12px"><label for="cherche">Chercher un nom ou un pseudo</label><input id="cherche" type="search" placeholder="ex. lea" autocomplete="off"></div>
       <div class="table"><table>
-        <thead><tr><th>Pour</th><th>Pseudo</th><th>Clé</th><th class="opt">Créée</th><th>État</th><th class="opt">Appareil</th><th></th></tr></thead>
+        <thead><tr><th>Note</th><th>Pseudo</th><th>Clé</th><th class="opt">Créée</th><th>État</th><th class="opt">Appareil</th><th></th></tr></thead>
         <tbody id="liste"><tr><td colspan="7" class="vide">Chargement…</td></tr></tbody>
       </table></div>
       <div class="msg" id="msgListe" role="status"></div>

@@ -25,6 +25,9 @@ label{display:block;text-align:left;font-size:.85rem;font-weight:500;color:var(-
 input{width:100%;font:inherit;font-size:1.35rem;letter-spacing:.14em;text-align:center;text-transform:uppercase;
   padding:14px 16px;border-radius:18px;border:2px solid var(--stroke2);background:var(--surface2);color:var(--nuit)}
 input:focus{outline:none;border-color:var(--nuit);background:var(--blanc)}
+input.ps{font-size:1.1rem;letter-spacing:normal;text-transform:none}
+.l2{margin-top:16px}
+.aide{text-align:left;font-size:.82rem;color:var(--txt3);margin:6px 0 0 4px}
 button{margin-top:14px;width:100%;font:inherit;font-size:1.05rem;font-weight:500;padding:14px;border:0;border-radius:999px;
   background:var(--nuit);color:var(--blanc);cursor:pointer}
 button:focus-visible{outline:3px solid var(--nuit);outline-offset:3px}
@@ -39,10 +42,13 @@ button[disabled]{opacity:.6;cursor:wait}
 <main class="carte">
   <div class="logo" aria-hidden="true">M1</div>
   <h1>Accès réservé</h1>
-  <p>Le hub de révision du M1 MBAF est réservé aux étudiants de la promo. Entre la clé d'accès qu'on t'a donnée.</p>
+  <p>Le hub de révision du M1 MBAF est réservé aux étudiants de la promo. Entre la clé d'accès qu'on t'a donnée et ton pseudo.</p>
   <form id="f" autocomplete="off">
     <label for="cle">Clé d'accès</label>
     <input id="cle" name="cle" inputmode="text" autocapitalize="characters" spellcheck="false" placeholder="XXX-XXX-XXX" maxlength="13" required>
+    <label for="pseudo" class="l2">Ton pseudo</label>
+    <input id="pseudo" class="ps" name="pseudo" autocomplete="nickname" spellcheck="false" placeholder="ex. Léa M." maxlength="24" required>
+    <div class="aide">Celui des classements et de BeQuick : toute la promo le verra.</div>
     <button type="submit" id="b">Entrer</button>
     <div class="msg" id="msg" role="status" aria-live="polite"></div>
   </form>
@@ -60,14 +66,17 @@ function retour(){
 }
 $('f').addEventListener('submit', async e=>{
   e.preventDefault();
-  const cle = $('cle').value, m = $('msg'), b = $('b');
+  const cle = $('cle').value, pseudo = $('pseudo').value.trim(), m = $('msg'), b = $('b');
   if(cle.replace(/[^A-Z0-9]/gi,'').length !== 9){ m.className = 'msg ko'; m.textContent = 'Une clé compte 9 caractères, par exemple K7Q-M2X-9PL.'; return; }
+  if(pseudo.length < 2){ m.className = 'msg ko'; m.textContent = 'Choisis un pseudo d’au moins 2 caractères.'; $('pseudo').focus(); return; }
   b.disabled = true; b.textContent = 'Vérification…'; m.textContent = '';
   try{
-    const r = await fetch('/.netlify/functions/acces-activer', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({cle})});
+    const r = await fetch('/.netlify/functions/acces-activer', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({cle, pseudo})});
     const d = await r.json().catch(()=>({}));
     if(d.ok){
-      m.className = 'msg ok'; m.textContent = 'Bienvenue ! Ouverture du hub…';
+      /* même mémoire que le reste du site (lb.js) : le hub ne redemandera pas le pseudo */
+      try{ localStorage.setItem('lb_name', pseudo); localStorage.setItem('acces_pseudo_envoye', pseudo); }catch(err){}
+      m.className = 'msg ok'; m.textContent = 'Bienvenue '+pseudo+' ! Ouverture du hub…';
       setTimeout(()=>location.replace(retour()), 500);
       return;
     }
@@ -80,6 +89,7 @@ $('f').addEventListener('submit', async e=>{
   }
   b.disabled = false; b.textContent = 'Entrer';
 });
+try{ const p = localStorage.getItem('lb_name'); if(p) $('pseudo').value = p; }catch(e){}
 $('cle').focus();
 </script>
 </body>
