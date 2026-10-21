@@ -166,6 +166,11 @@ begin
   elsif p_action = 'dissocier' then
     delete from public.admin_personnes where pseudo_cle = p;
     return jsonb_build_object('ok', true);
+  elsif p_action = 'bq_reset' then
+    -- 7.3.1 : efface la partie BeQuick du soir de ce pseudo, qui peut rejouer jusqu'à 22 h
+    delete from public.bequick_parties
+     where pseudo_cle = p and jour = (now() at time zone 'Europe/Paris')::date;
+    return jsonb_build_object('ok', true);
   elsif p_action = 'note' then
     insert into public.admin_notes (personne_cle, note) values (lower(left(n, 60)), left(coalesce(p_donnees->>'note', ''), 2000))
       on conflict (personne_cle) do update set note = excluded.note, maj = now();

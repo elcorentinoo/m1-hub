@@ -10,7 +10,7 @@
 
   /* ---------- 0. VERSION ---------- */
   /* Doit rester identique à VERSION en haut de sw.js. */
-  const VERSION_APP = '7.3.0';
+  const VERSION_APP = '7.3.1';
   const NOM_VERSION = 'Thaler';
   window.APP_VERSION = VERSION_APP;
 
@@ -825,9 +825,10 @@
     const matieres = (s && s.matieres) || [];
     if(!revision && !matieres.includes(sid)){ ouvrirVerrou(); return; }
     const loc = BQ.lireLocal(j);
-    if(loc && loc.fini){ ouvrirVerrou(); return; }
     let partie = null, joint = true;
     try{ partie = await BQ.maPartie(j); }catch(e){ joint = false; }
+    /* la mémoire locale ne compte que hors connexion (partie effacée par l'admin : 7.3.1) */
+    if(!joint && loc && loc.fini){ ouvrirVerrou(); return; }
     const finie = partie && ((partie.repondues|0) >= BQ.NB_Q || BQ.maintenant() > Date.parse(partie.debut) + BQ.DUREE + 20000);
     if(finie){ ouvrirVerrou(); return; }
     fermerVerrou({revision, matieres, enCours:!!partie, joint});

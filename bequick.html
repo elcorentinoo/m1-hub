@@ -266,6 +266,8 @@ async function afficherEtat(){
     }
     PARTIE = undefined;   // hors ligne : on se fie à la mémoire locale
   }
+  /* 7.3.1 : partie effacée par l'administrateur → on oublie aussi la mémoire locale, on peut rejouer */
+  if(PARTIE === null && loc){ try{ localStorage.removeItem('bq_'+j); }catch(e){} loc = null; }
   const fin = PARTIE ? Date.parse(PARTIE.debut) + BQ.DUREE : (loc && loc.debut ? loc.debut + BQ.DUREE : null);
 
   /* déjà joué ce soir */

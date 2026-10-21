@@ -475,7 +475,13 @@ function bequick(){
   });
   const ratees = Object.values(stat).filter(x=>x.n >= 3 && x.ko).sort((a, b)=>b.ko/b.n - a.ko/a.n || b.n - a.n).slice(0, 15);
   const texte = id => { const q = Q_BANQUE && Q_BANQUE[id]; return q ? esc(q.q) : '<span class="pseudos">'+esc(id)+'</span>'; };
+  const auj = ilYa(0), ceSoir = (parSoir[auj] || []).slice().sort((a, b)=>b.s - a.s);
   $('p-bq').innerHTML =
+    '<section class="carte"><h2>Ce soir</h2>'+(ceSoir.length ? '<div class="table"><table><thead><tr><th>Joueur</th><th class="num">Score</th><th class="num">Bonnes</th><th></th></tr></thead><tbody>'+
+      ceSoir.map(b=>'<tr><td><b>'+esc(A.nomDe(b.p))+'</b>'+(A.nomDe(b.p) !== b.p ? '<span class="pseudos">'+esc(b.p)+'</span>' : '')+'</td><td class="num">'+Number(b.s).toLocaleString('fr-FR')+' pts</td><td class="num">'+b.b+' / 15</td>'+
+        '<td class="num"><button type="button" class="danger" data-reset="'+esc(b.p)+'">Réinitialiser</button></td></tr>').join('')+
+      '</tbody></table></div><p class="pseudos" style="margin-top:8px">Réinitialiser efface la partie du soir : le score sort du classement et la personne peut rejouer jusqu\'à 22 h, sur n\'importe quel appareil. Elle a déjà vu les corrections.</p>' : '<p class="vide">Personne n\'a encore joué ce soir.</p>')+
+      '<div class="msg" id="msgBq" role="status"></div></section>'+
     '<section class="carte"><h2>Les questions les plus ratées</h2>'+(ratees.length ? '<div class="table"><table><thead><tr><th>Question</th><th>Matière</th><th class="num">Échec</th></tr></thead><tbody>'+
       ratees.map(x=>'<tr><td class="q">'+texte(x.id)+'</td><td>'+esc(nomM(x.id.split(':')[0]))+'</td><td class="num">'+Math.round(100*x.ko/x.n)+' %<span class="pseudos">'+x.ko+' / '+x.n+'</span></td></tr>').join('')+
       '</tbody></table></div>' : '<p class="vide">Pas encore assez de parties (3 essais minimum par question).</p>')+'</section>'+
@@ -493,6 +499,14 @@ function bequick(){
     document.head.appendChild(sc);
   }
 }
+
+$('p-bq').addEventListener('click', async e=>{
+  const b = e.target.closest('[data-reset]'); if(!b) return;
+  if(!confirm('Réinitialiser le BeQuick de ce soir de « '+b.dataset.reset+' » ? Son score sera effacé et il pourra rejouer jusqu\'à 22 h.')) return;
+  b.disabled = true;
+  try{ await appel('bq_reset', {pseudo:b.dataset.reset}); await chargerTableau(); $('msgBq').className = 'msg ok'; $('msgBq').textContent = 'Partie de '+b.dataset.reset+' réinitialisée.'; }
+  catch(err){ b.disabled = false; $('msgBq').className = 'msg ko'; $('msgBq').textContent = texteErreur(err); }
+});
 
 /* ---------- onglets et clics ---------- */
 document.querySelectorAll('.onglets [role="tab"]').forEach(b=>b.addEventListener('click', ()=>{

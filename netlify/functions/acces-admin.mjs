@@ -1,6 +1,6 @@
 /* acces-admin — gestion des clés d'accès, pour Corentin seul (6.5.0)
    POST {mdp, action:'liste'|'generer'|'revoquer'|'retablir'|'chat_supprimer'
-         |'tableau'|'associer'|'dissocier'|'note', ...}
+         |'tableau'|'associer'|'dissocier'|'note'|'bq_reset', ...}
    Le mot de passe est comparé à ADMIN_MDP ; le serveur parle ensuite à
    Supabase avec ACCES_JETON (dont seule l'empreinte est dans la base).
    Les clés générées ne sont renvoyées qu'une fois, en clair : la base
@@ -41,7 +41,7 @@ export default async (req) => {
     if(d.action === 'tableau'){
       return json({ok:true, donnees:await rpc('admin_tableau', {p_jeton:JETON, p_action:'donnees', p_donnees:{}})});
     }
-    if(d.action === 'associer' || d.action === 'dissocier' || d.action === 'note'){
+    if(d.action === 'associer' || d.action === 'dissocier' || d.action === 'note' || d.action === 'bq_reset'){
       await rpc('admin_tableau', {p_jeton:JETON, p_action:d.action, p_donnees:{
         pseudo:String(d.pseudo||'').slice(0, 40), personne:String(d.personne||'').slice(0, 60), note:String(d.note||'').slice(0, 2000)}});
       return json({ok:true});
