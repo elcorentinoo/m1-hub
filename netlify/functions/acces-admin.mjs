@@ -1,5 +1,5 @@
 /* acces-admin — gestion des clés d'accès, pour Corentin seul (6.5.0)
-   POST {mdp, action:'liste'|'generer'|'revoquer'|'retablir', ...}
+   POST {mdp, action:'liste'|'generer'|'revoquer'|'retablir'|'chat_supprimer', ...}
    Le mot de passe est comparé à ADMIN_MDP ; le serveur parle ensuite à
    Supabase avec ACCES_JETON (dont seule l'empreinte est dans la base).
    Les clés générées ne sont renvoyées qu'une fois, en clair : la base
@@ -28,6 +28,12 @@ export default async (req) => {
     if(d.action === 'revoquer' || d.action === 'retablir'){
       if(!/^[0-9a-f-]{36}$/.test(String(d.id||''))) return json({ok:false}, 400);
       await rpc('acces_admin', {p_jeton:JETON, p_action:d.action, p_donnees:{id:d.id}});
+      return json({ok:true});
+    }
+    /* Messagerie (7.1.0) : retirer un message */
+    if(d.action === 'chat_supprimer'){
+      if(!/^\d{1,18}$/.test(String(d.id||''))) return json({ok:false}, 400);
+      await rpc('chat_admin', {p_jeton:JETON, p_action:'supprimer', p_donnees:{id:Number(d.id)}});
       return json({ok:true});
     }
     return json({ok:false, erreur:'action'}, 400);

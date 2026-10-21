@@ -53,3 +53,18 @@ export function appareil(ua){
 }
 export async function lireCorps(req){ try{ return await req.json(); }catch(e){ return {}; } }
 export const json = (obj, status=200, extra={}) => new Response(JSON.stringify(obj), {status, headers:Object.assign({'Content-Type':'application/json', 'Cache-Control':'no-store'}, extra)});
+/* Jeton Supabase (7.1.0) : JWT HS256 signé avec le secret JWT « legacy » du
+   projet (variable SUPABASE_JWT_SECRET). Supabase le reconnaît comme un
+   utilisateur « authenticated » ; les règles de la base (RLS) lisent ensuite
+   ses champs (cle, pseudo) avec auth.jwt(). Aucune bibliothèque : node:crypto. */
+export function jwtSupabase(secret, payload){
+  const b64 = o => Buffer.from(JSON.stringify(o)).toString('base64url');
+  const corps = b64({alg:'HS256', typ:'JWT'})+'.'+b64(payload);
+  return corps+'.'+crypto.createHmac('sha256', secret).update(corps).digest('base64url');
+}
+/* Pseudo affiché dans le chat : sans caractères de contrôle, espaces
+   resserrés, 24 caractères au plus. */
+export function nettoyerPseudo(p){
+  const t = String(p||'').replace(/[\p{Cc}\p{Cf}\p{Zl}\p{Zp}]/gu, '').replace(/\s+/g, ' ').trim();
+  return Array.from(t).slice(0, 24).join('').trim();     // compte les émojis pour un caractère
+}
