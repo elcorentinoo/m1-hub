@@ -100,13 +100,12 @@
   --photo:url("https://images.unsplash.com/photo-1684514570833-d7eaae2c169b?auto=format&fit=crop&w=1800&q=70"),url("img/sujet-etudes-marche.webp");
 }
 /* emblème dessiné : un bâtiment à fronton et colonnes (6.4.0). Photo :
-   façade haussmannienne, Athithan Vignakaran. Copie locale à ajouter
-   (img/sujet-systeme-bancaire.webp) ; en attendant, celle d'ES Banque. */
+   façade haussmannienne, Athithan Vignakaran (copie locale 6.4.2). */
 :root[subject-id="systeme-bancaire"], [data-sid="systeme-bancaire"]{
   --m:#7A3348; --m-soft:#F5E6EA; --m-clair:#EBB3C2;
-  --ph-lum:.8;
+  --ph-lum:.68;  /* façade claire et ciel : assombrie pour garder 4,5:1, mesuré au pixel */
   --emb:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='%23fff'%3E%3Cpath d='M8 .8 15.2 4.6v1.2H.8V4.6z'/%3E%3Crect x='2' y='6.8' width='1.9' height='5.6'/%3E%3Crect x='5.4' y='6.8' width='1.9' height='5.6'/%3E%3Crect x='8.7' y='6.8' width='1.9' height='5.6'/%3E%3Crect x='12.1' y='6.8' width='1.9' height='5.6'/%3E%3Crect x='.8' y='13.2' width='14.4' height='2'/%3E%3C/svg%3E");
-  --photo:url("https://images.unsplash.com/photo-1787826249483-edfeee468445?auto=format&fit=crop&w=1800&q=70"),url("img/sujet-es-banque.webp");
+  --photo:url("https://images.unsplash.com/photo-1787826249483-edfeee468445?auto=format&fit=crop&w=1800&q=70"),url("img/sujet-systeme-bancaire.webp");
 }
 
 html{ background:var(--fond); }

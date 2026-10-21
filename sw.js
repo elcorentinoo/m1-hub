@@ -13,7 +13,7 @@
    ⚠️ Cette valeur doit rester IDENTIQUE à VERSION_APP,
       en haut de ui.js.
    ════════════════════════════════════════════════════════════ */
-const VERSION = '6.4.1';        // « Ducat »
+const VERSION = '6.4.2';        // « Ducat »
 const CACHE_APP  = 'm1-app-'+VERSION;      // les fichiers du site
 const CACHE_EXT  = 'm1-ext-'+VERSION;      // polices et bibliothèques externes
 
@@ -52,6 +52,7 @@ const FICHIERS = [
   'img/accueil.webp',
   'img/sujet-droits-particuliers.webp',
   'img/sujet-etudes-marche.webp',
+  'img/sujet-systeme-bancaire.webp',
   'img/sujet-fiscalite-particulier.webp',
   'img/sujet-produits-derives.webp',
   'img/sujet-marketing-numerique.webp',
