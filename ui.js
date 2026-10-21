@@ -10,8 +10,8 @@
 
   /* ---------- 0. VERSION ---------- */
   /* Doit rester identique à VERSION en haut de sw.js. */
-  const VERSION_APP = '7.0.1';
-  const NOM_VERSION = 'Ducat';
+  const VERSION_APP = '7.1.0';
+  const NOM_VERSION = 'Thaler';
   window.APP_VERSION = VERSION_APP;
 
   /* ---------- 1. THÈME ---------- */
@@ -139,6 +139,7 @@
           '<div class="ds-q-res" id="ds-q-res" role="listbox" hidden></div>'+
         '</div>'+
         '<button class="ds-ic" id="ds-rech" title="Recherche (Ctrl+K)">'+icone(IC_RECH,'Rechercher')+'</button>'+
+        '<button class="ds-ic ds-bulle" id="ds-chat" aria-label="Messagerie" aria-expanded="false" aria-controls="chat">'+ic('bulle')+'<span class="ds-pastille" id="ds-chat-pastille" hidden></span></button>'+
         '<button class="ds-ic ds-cloche" id="ds-cloche" aria-label="Notifications" aria-expanded="false" aria-controls="ds-notifs">'+ic('cloche')+'<span class="ds-pastille" id="ds-pastille" hidden></span></button>'+
         '<button class="ds-ic" id="ds-menu" aria-label="Ouvrir la navigation">'+icone(IC_MENU,'Menu')+'</button>'+
       '</div>';
@@ -148,6 +149,7 @@
     brancherRechercheEntete();
     document.getElementById('ds-menu').onclick = ouvrir;
     document.getElementById('ds-cloche').onclick = basculerNotifs;
+    document.getElementById('ds-chat').onclick = basculerChat;
 
     /* on récupère les widgets de la page : progression, XP, identité */
     const slot = document.getElementById('ds-slot');
@@ -198,7 +200,8 @@
     cible:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/>',
     eclair:'<path d="M13 3L5 13.5h6L10 21l8-10.5h-6z"/>',
     cloche:'<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>',
-    lecture:'<path d="M8 5.5v13l10.5-6.5z"/>'
+    lecture:'<path d="M8 5.5v13l10.5-6.5z"/>',
+    bulle:'<path d="M5.5 4.5h13a2 2 0 0 1 2 2v8.5a2 2 0 0 1-2 2H11l-4.5 3.5V17H5.5a2 2 0 0 1-2-2V6.5a2 2 0 0 1 2-2z"/>'
   };
   const ic = n => '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'+SVG[n]+'</svg>';
 
@@ -616,12 +619,13 @@
   function nouveautes(){
     let vu = null; try{ vu = localStorage.getItem('version_vue'); }catch(e){}
     if(vu === VERSION_APP) return [];
-    return [{id:'version-'+VERSION_APP, ico:'✨', titre:'BeQuick : nouvelles règles', texte:'Version '+VERSION_APP+' : 15 questions en 10 minutes, du lundi au vendredi à 18 h 30. Relâche le week-end.', url:'bequick.html'}];
+    return [{id:'version-'+VERSION_APP, ico:'✨', titre:'Nouveau : la messagerie de la promo', texte:'Version '+VERSION_APP+' : discute en direct avec la promo, bouton 💬 en haut de l\'écran.', url:'index.html?chat=1', chat:true}];
   }
   let _alertes = [];
   async function majCloche(){
     const BQ = await pretBQ();
-    try{ _alertes = nouveautes().concat(BQ ? BQ.alertes() : []); }catch(e){ _alertes = nouveautes(); }
+    const chat = (window.M1Chat && M1Chat.alertes()) || [];
+    try{ _alertes = chat.concat(nouveautes(), BQ ? BQ.alertes() : []); }catch(e){ _alertes = chat.concat(nouveautes()); }
     const v = new Set(vues()), n = _alertes.filter(a=>!v.has(a.id)).length;
     const p = document.getElementById('ds-pastille'); if(p){ p.hidden = !n; p.textContent = n > 9 ? '9+' : String(n); }
     const b = document.getElementById('ds-cloche'); if(b) b.setAttribute('aria-label', n ? 'Notifications, '+n+' non lue'+(n>1?'s':'') : 'Notifications');
@@ -649,11 +653,12 @@
     const pn = document.getElementById('ds-notifs'); if(!pn) return;
     const v = new Set(vues());
     const liste = _alertes.length
-      ? _alertes.map(a=>'<a class="ds-n'+(v.has(a.id)?'':' neuf')+(a.fort?' fort':'')+'" href="'+a.url+'"><span class="ni" aria-hidden="true">'+a.ico+'</span><span class="nt"><b>'+echap(a.titre)+'</b><small>'+echap(a.texte||'')+'</small></span></a>').join('')
+      ? _alertes.map(a=>'<a class="ds-n'+(v.has(a.id)?'':' neuf')+(a.fort?' fort':'')+'" href="'+a.url+'"'+(a.chat?' data-chat="1"':'')+'><span class="ni" aria-hidden="true">'+a.ico+'</span><span class="nt"><b>'+echap(a.titre)+'</b><small>'+echap(a.texte||'')+'</small></span></a>').join('')
       : '<div class="ds-n-vide">Rien de neuf pour l\'instant.</div>';
     pn.innerHTML = '<div class="ds-n-tete"><b>Notifications</b><button type="button" class="ds-n-x" aria-label="Fermer">✕</button></div>'+
       '<div class="ds-n-liste">'+liste+'</div><div class="ds-n-push" id="ds-n-push"></div>';
     pn.querySelector('.ds-n-x').onclick = fermerNotifs;
+    pn.querySelectorAll('[data-chat]').forEach(a=>a.onclick = e=>{ e.preventDefault(); fermerNotifs(); ouvrirChat(); });
     dessinerPush();
   }
   async function dessinerPush(){
@@ -777,6 +782,38 @@
       .catch(()=>{});
   }
 
+  /* ---------- MESSAGERIE (7.1.0) ----------
+     chat.js n'est chargé qu'au premier clic sur la bulle, ou en différé
+     si cet appareil a déjà un jeton de messagerie (pour la pastille des
+     non-lus). Sans jeton, rien n'est chargé : aucun coût. */
+  function chargerChat(){ return chargerScript('chat.js').then(()=>window.M1Chat || null); }
+  function ouvrirChat(){ fermerNotifs(); return chargerChat().then(c=>{ if(c) c.ouvrir(); }); }
+  function basculerChat(e){
+    if(e) e.stopPropagation();
+    fermerNotifs();
+    chargerChat().then(c=>{ if(c) c.basculer(); });
+  }
+  function majBulle(n){
+    const p = document.getElementById('ds-chat-pastille'); if(p){ p.hidden = !n; p.textContent = n > 9 ? '9+' : String(n); }
+    const b = document.getElementById('ds-chat'); if(b) b.setAttribute('aria-label', n ? 'Messagerie, '+n+' message'+(n>1?'s':'')+' non lu'+(n>1?'s':'') : 'Messagerie');
+  }
+  window.addEventListener('m1chat', e=>{ majBulle(e.detail ? e.detail.n : 0); majCloche(); });
+  function demarrerChat(){
+    /* lien d'une notification : /?chat=1 ouvre directement la messagerie */
+    if(/[?&]chat=1\b/.test(location.search)){
+      try{ const u = new URL(location.href); u.searchParams.delete('chat'); history.replaceState(history.state, '', u.pathname + u.search + u.hash); }catch(e){}
+      ouvrirChat();
+      return;
+    }
+    let j = null; try{ j = JSON.parse(localStorage.getItem('chat_jeton') || 'null'); }catch(e){}
+    if(!j || !j.exp || j.exp * 1000 < Date.now() || !navigator.onLine) return;
+    setTimeout(()=>{
+      const go = ()=>chargerChat().then(c=>{ if(c) c.connecter(); });
+      if('requestIdleCallback' in window) requestIdleCallback(go, {timeout:3000}); else go();
+    }, 2000);
+  }
+  window.uiOuvrirChat = ouvrirChat;
+
   function init(){
     construireEntete();
     construireCours();
@@ -793,6 +830,7 @@
     majCloche();
     setInterval(majCloche, 60000);
     setTimeout(signalerPseudo, 3000);
+    demarrerChat();
   }
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();

@@ -13,7 +13,7 @@
    ⚠️ Cette valeur doit rester IDENTIQUE à VERSION_APP,
       en haut de ui.js.
    ════════════════════════════════════════════════════════════ */
-const VERSION = '7.0.1';        // « Thaler »
+const VERSION = '7.1.0';        // « Thaler »
 const CACHE_APP  = 'm1-app-'+VERSION;      // les fichiers du site
 const CACHE_EXT  = 'm1-ext-'+VERSION;      // polices et bibliothèques externes
 
@@ -45,6 +45,7 @@ const FICHIERS = [
   'banque.js',
   'calendrier.js',
   'bequick.js',
+  'chat.js',
   'manifest.webmanifest',
   'icons/icon-192.png',
   'icons/icon-512.png',
@@ -60,8 +61,8 @@ const FICHIERS = [
   'img/sujet-marche-particuliers.webp'
 ];
 
-/* Domaines externes conservés au premier passage (polices, PDF.js, Mammoth, photos Unsplash) */
-const EXTERNES = ['fonts.googleapis.com','fonts.gstatic.com','cdnjs.cloudflare.com','images.unsplash.com'];
+/* Domaines externes conservés au premier passage (polices, PDF.js, Mammoth, photos Unsplash, supabase-js) */
+const EXTERNES = ['fonts.googleapis.com','fonts.gstatic.com','cdnjs.cloudflare.com','images.unsplash.com','cdn.jsdelivr.net'];
 
 /* Ce qui ne doit JAMAIS être servi depuis le cache : les données vivantes */
 const JAMAIS = ['supabase.co'];
