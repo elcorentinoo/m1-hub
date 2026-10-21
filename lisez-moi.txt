@@ -278,6 +278,12 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  7.1.1            Logo iPhone : iOS cherche aussi /apple-touch-icon.png et
+                   /apple-touch-icon-precomposed.png à la racine, refusés par la
+                   porte depuis la 7.0.0 (installations récentes sans logo). Copies
+                   à la racine, laissées ouvertes sans clé.
+                   Notification par défaut neutre (« Du nouveau sur le hub »)
+                   au lieu du texte BeQuick quand une alerte arrive illisible.
   7.1.0            MESSAGERIE DE LA PROMO. Bulle 💬 dans l'en-tête, à côté de la
                    cloche : un salon unique « Général », en direct (Supabase
                    Realtime), réservé aux appareils qui ont une clé d'accès

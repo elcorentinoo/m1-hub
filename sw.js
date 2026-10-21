@@ -13,7 +13,7 @@
    ⚠️ Cette valeur doit rester IDENTIQUE à VERSION_APP,
       en haut de ui.js.
    ════════════════════════════════════════════════════════════ */
-const VERSION = '7.1.0';        // « Thaler »
+const VERSION = '7.1.1';        // « Thaler »
 const CACHE_APP  = 'm1-app-'+VERSION;      // les fichiers du site
 const CACHE_EXT  = 'm1-ext-'+VERSION;      // polices et bibliothèques externes
 
@@ -141,10 +141,12 @@ self.addEventListener('fetch', e=>{
 
 
 /* ═══════════ NOTIFICATIONS (6.0.0) ═══════════
-   L'alerte BeQuick de 18 h 30, envoyée par la fonction Netlify
-   bequick-notif. Un clic ouvre (ou ramène au premier plan) la page. */
+   L'alerte BeQuick de 18 h 30 (bequick-notif) et celles du chat
+   (chat-notif) portent leur propre texte. Si un appareil reçoit une
+   notification illisible, on affiche un message neutre (7.1.1).
+   Un clic ouvre (ou ramène au premier plan) la page. */
 self.addEventListener('push', e=>{
-  let m = {title:'⚡ BeQuick est ouvert', body:"La série du jour t'attend jusqu'à 22 h.", url:'/bequick.html', tag:'bequick'};
+  let m = {title:'🔔 Hub M1 MBAF', body:'Du nouveau sur le hub.', url:'/', tag:'hub'};
   try{ if(e.data) m = Object.assign(m, e.data.json()); }catch(err){}
   e.waitUntil(self.registration.showNotification(m.title, {
     body:m.body, tag:m.tag, renotify:true, icon:'icons/icon-192.png', badge:'icons/badge-96.png',

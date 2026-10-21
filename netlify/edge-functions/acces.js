@@ -76,5 +76,5 @@ export default async (req, context) => {
 export const config = {
   path: '/*',
   excludedPath: ['/acces.html', '/admin', '/acces-admin.html', '/.netlify/*', '/sw.js',
-                 '/manifest.webmanifest', '/icons/*', '/favicon.ico', '/theme.css', '/ui.css']
+                 '/manifest.webmanifest', '/icons/*', '/favicon.ico', '/apple-touch-icon.png', '/apple-touch-icon-precomposed.png', '/theme.css', '/ui.css']
 };
