@@ -4,6 +4,8 @@
    notifications du chat même appli fermée, sans passer par Netlify.
    Fichier unique, à coller tel quel dans Supabase → Edge Functions.
    Chiffrement identique à netlify/push.mjs (vérifié octet pour octet).
+   7.2.0 : une @mention prévient la personne visée tout de suite, même
+   si elle a coupé les notifications du chat.
    ════════════════════════════════════════════════════════════ */
 const te = new TextEncoder();
 const b64u = buf => btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
@@ -92,28 +94,56 @@ function texte(t){
   return (p[0] || 'Quelqu’un')+' a envoyé un message';
 }
 
-Deno.serve(async (req) => {
-  if(req.headers.get('x-chat-secret') !== Deno.env.get('CHAT_NOTIF_SECRET')) return new Response('refusé', {status:401});
-  const privee = Deno.env.get('VAPID_PRIVATE');
-  if(!privee) return new Response('VAPID_PRIVATE manquante', {status:500});
-  const {id, pseudo} = await req.json().catch(()=>({}));
-  const r = await base('rpc/chat_notif_tour', {method:'POST', body:{p_id:id}});
-  if(!r.ok) return new Response('base '+r.status+' '+await r.text(), {status:502});
-  const tour = await r.json();
-  if(!tour || !tour.envoyer) return new Response('regroupé avec la notification précédente');
-  const a = await base('push_abonnements?select=endpoint,p256dh,auth,pseudo,chat');
-  const abonnes = (await a.json()).filter(x => x.chat !== false && abonnementValide(x) &&
-    (x.pseudo||'').trim().toLowerCase() !== String(pseudo||'').trim().toLowerCase());
-  const message = {title:'💬 Messagerie M1', body:texte(tour), url:'/?chat=1', tag:'chat'};
+/* @Léa dans le texte : Léa est mentionnée (7.2.0). */
+const echapRe = (t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+function mentionne(texte, pseudo){
+  const p = pseudo.trim(); if(p.length < 2) return false;
+  return new RegExp('@'+echapRe(p)+'(?![\\p{L}\\p{N}])', 'iu').test(texte);
+}
+
+async function envoyerA(liste, message, privee){
   let ok = 0, oublies = 0, echecs = 0;
-  await Promise.all(abonnes.map(async x => {
+  await Promise.all(liste.map(async x => {
     try{
       const st = await envoyerUn(x, message, VAPID_PUBLIQUE, privee, CONTACT);
       if(st === 404 || st === 410){ oublies++; await base('rpc/push_oublier', {method:'POST', body:{e:x.endpoint}}).catch(()=>{}); }
       else if(st >= 200 && st < 300) ok++; else echecs++;
     }catch(e){ echecs++; }
   }));
-  const bilan = {abonnes:abonnes.length, ok, oublies, echecs, texte:message.body};
+  return {abonnes:liste.length, ok, oublies, echecs};
+}
+
+Deno.serve(async (req) => {
+  if(req.headers.get('x-chat-secret') !== Deno.env.get('CHAT_NOTIF_SECRET')) return new Response('refusé', {status:401});
+  const privee = Deno.env.get('VAPID_PRIVATE');
+  if(!privee) return new Response('VAPID_PRIVATE manquante', {status:500});
+  const {id, pseudo} = await req.json().catch(()=>({}));
+  const auteur = String(pseudo||'').trim().toLowerCase();
+  const a = await base('push_abonnements?select=endpoint,p256dh,auth,pseudo,chat');
+  const tous = ((await a.json().catch(()=>[])) || []).filter((x) => abonnementValide(x) &&
+    (x.pseudo||'').trim().toLowerCase() !== auteur);
+
+  /* 1. Mentions : toujours envoyées, même chat coupé, sans attendre les 3 minutes. */
+  const m = await base('chat_messages?id=eq.'+Number(id)+'&select=texte').then(r => r.json()).catch(()=>[]);
+  const texteMsg = String((m && m[0] && m[0].texte) || '');
+  const vises = texteMsg.includes('@') ? tous.filter((x) => mentionne(texteMsg, x.pseudo || '')) : [];
+  const bilanMention = vises.length ? await envoyerA(vises, {
+    title:'💬 '+(pseudo || 'Quelqu’un')+' t’a mentionné',
+    body:texteMsg.length > 120 ? texteMsg.slice(0, 118)+'…' : texteMsg,
+    url:'/?chat=1', tag:'chat-mention'}, privee) : null;
+
+  /* 2. Notification générale, regroupée (une toutes les 3 minutes au plus). */
+  const r = await base('rpc/chat_notif_tour', {method:'POST', body:{p_id:id}});
+  if(!r.ok) return new Response('base '+r.status+' '+await r.text(), {status:502});
+  const tour = await r.json();
+  if(!tour || !tour.envoyer){
+    console.log('[chat-notif]', JSON.stringify({mentions:bilanMention, regroupe:true}));
+    return new Response('regroupé avec la notification précédente');
+  }
+  const deja = new Set(vises.map((x) => x.endpoint));
+  const abonnes = tous.filter((x) => x.chat !== false && !deja.has(x.endpoint));
+  const message = {title:'💬 Messagerie M1', body:texte(tour), url:'/?chat=1', tag:'chat'};
+  const bilan = Object.assign(await envoyerA(abonnes, message, privee), {mentions:bilanMention, texte:message.body});
   console.log('[chat-notif]', JSON.stringify(bilan));
   return new Response(JSON.stringify(bilan), {headers:{'Content-Type':'application/json'}});
 });

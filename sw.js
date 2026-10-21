@@ -13,7 +13,7 @@
    ⚠️ Cette valeur doit rester IDENTIQUE à VERSION_APP,
       en haut de ui.js.
    ════════════════════════════════════════════════════════════ */
-const VERSION = '7.1.1';        // « Thaler »
+const VERSION = '7.2.0';        // « Thaler »
 const CACHE_APP  = 'm1-app-'+VERSION;      // les fichiers du site
 const CACHE_EXT  = 'm1-ext-'+VERSION;      // polices et bibliothèques externes
 
@@ -148,10 +148,12 @@ self.addEventListener('fetch', e=>{
 self.addEventListener('push', e=>{
   let m = {title:'🔔 Hub M1 MBAF', body:'Du nouveau sur le hub.', url:'/', tag:'hub'};
   try{ if(e.data) m = Object.assign(m, e.data.json()); }catch(err){}
-  e.waitUntil(self.registration.showNotification(m.title, {
+  /* 7.2.0 : un message du chat met une pastille sur l'icône de l'app */
+  const pastille = /^chat/.test(m.tag || '') && self.navigator.setAppBadge ? self.navigator.setAppBadge().catch(()=>{}) : null;
+  e.waitUntil(Promise.all([pastille, self.registration.showNotification(m.title, {
     body:m.body, tag:m.tag, renotify:true, icon:'icons/icon-192.png', badge:'icons/badge-96.png',
     data:{url:m.url}
-  }));
+  })]));
 });
 self.addEventListener('notificationclick', e=>{
   e.notification.close();

@@ -10,7 +10,7 @@
 
   /* ---------- 0. VERSION ---------- */
   /* Doit rester identique à VERSION en haut de sw.js. */
-  const VERSION_APP = '7.1.1';
+  const VERSION_APP = '7.2.0';
   const NOM_VERSION = 'Thaler';
   window.APP_VERSION = VERSION_APP;
 
@@ -619,7 +619,7 @@
   function nouveautes(){
     let vu = null; try{ vu = localStorage.getItem('version_vue'); }catch(e){}
     if(vu === VERSION_APP) return [];
-    return [{id:'version-'+VERSION_APP, ico:'✨', titre:'Nouveau : la messagerie de la promo', texte:'Version '+VERSION_APP+' : discute en direct avec la promo, bouton 💬 en haut de l\'écran.', url:'index.html?chat=1', chat:true}];
+    return [{id:'version-'+VERSION_APP, ico:'✨', titre:'Nouveau dans le chat : réactions et réponses', texte:'Version '+VERSION_APP+' : touche un message pour réagir ou répondre, et @pseudo pour prévenir quelqu\'un.', url:'index.html?chat=1', chat:true}];
   }
   let _alertes = [];
   async function majCloche(){
@@ -801,6 +801,69 @@
       .catch(()=>{});
   }
 
+  /* ---------- VERROU BEQUICK (7.2.0) ----------
+     De 18 h 30 à 22 h, les cours des matières de la série du soir (et la
+     révision espacée, qui puise dans les mêmes questions) restent fermés
+     tant que la personne n'a pas fini sa série. Le contrôle se fait sur le
+     serveur par pseudo : ordinateur et téléphone se débloquent ensemble.
+     Sans réponse du serveur, on reste fermé (sauf partie finie ici). */
+  let verrouMinuterie = null;
+  async function verrouBeQuick(){
+    const fichier = (location.pathname.split('/').pop() || '').replace(/\.html$/, '');
+    const sid = document.documentElement.getAttribute('subject-id');
+    const revision = fichier === 'revision';
+    if(!revision && (!sid || /^entrainement_/.test(fichier))) return;
+    clearTimeout(verrouMinuterie);
+    await pretBQ();
+    if(!window.BQ) return;
+    const t = BQ.maintenant(), j = BQ.jourDe(t), ph = BQ.phase(t);
+    if(ph === 'avant'){ ouvrirVerrou(); verrouMinuterie = setTimeout(verrouBeQuick, BQ.ouverture(j) - t + 2000); return; }
+    if(ph !== 'ouvert'){ ouvrirVerrou(); return; }
+    verrouMinuterie = setTimeout(verrouBeQuick, Math.min(60000, BQ.fermeture(j) - t + 2000));
+    const s = await BQ.serie(j, false);
+    const matieres = (s && s.matieres) || [];
+    if(!revision && !matieres.includes(sid)){ ouvrirVerrou(); return; }
+    const loc = BQ.lireLocal(j);
+    if(loc && loc.fini){ ouvrirVerrou(); return; }
+    let partie = null, joint = true;
+    try{ partie = await BQ.maPartie(j); }catch(e){ joint = false; }
+    const finie = partie && ((partie.repondues|0) >= BQ.NB_Q || BQ.maintenant() > Date.parse(partie.debut) + BQ.DUREE + 20000);
+    if(finie){ ouvrirVerrou(); return; }
+    fermerVerrou({revision, matieres, enCours:!!partie, joint});
+  }
+  function fermerVerrou(o){
+    const noms = o.matieres.map(m=>NOMS[m] || m);
+    const quoi = o.revision
+      ? 'La révision reprend les questions de BeQuick : elle est fermée ce soir'
+      : 'Ce soir, BeQuick porte sur <b>'+echap(noms.join(' et '))+'</b>. Ce cours est fermé';
+    const html =
+      '<div class="bqv-carte">'+
+        '<div class="bqv-ico" aria-hidden="true">⚡</div>'+
+        '<h1 id="bqv-t">'+(o.enCours ? 'Termine d\'abord ta série' : (o.revision ? 'Révision en pause' : 'Cours en pause'))+'</h1>'+
+        '<p>'+quoi+' jusqu\'à ce que tu aies joué ta série, sur n\'importe quel appareil, ou jusqu\'à 22 h. Comme ça, c\'est juste pour tout le monde.</p>'+
+        (o.joint ? '' : '<p class="bqv-petit">Pas de connexion : impossible de vérifier ta partie pour l\'instant.</p>')+
+        '<a class="bqv-b" href="bequick.html">'+(o.enCours ? 'Reprendre ma série' : 'Jouer au BeQuick')+'</a>'+
+        '<a class="bqv-l" href="index.html">Retour à l\'accueil</a>'+
+      '</div>';
+    let v = document.getElementById('bq-verrou');
+    if(!v){
+      v = document.createElement('div');
+      v.id = 'bq-verrou'; v.className = 'bq-verrou';
+      v.setAttribute('role', 'dialog'); v.setAttribute('aria-modal', 'true'); v.setAttribute('aria-labelledby', 'bqv-t');
+      document.body.appendChild(v);
+    }
+    if(v.innerHTML !== html) v.innerHTML = html;
+    [...document.body.children].forEach(el=>{ if(el !== v && el.id !== 'chat') el.inert = true; });
+    document.documentElement.classList.add('bq-verrouille');
+  }
+  function ouvrirVerrou(){
+    const v = document.getElementById('bq-verrou'); if(!v) return;
+    v.remove();
+    [...document.body.children].forEach(el=>{ el.inert = false; });
+    document.documentElement.classList.remove('bq-verrouille');
+  }
+  document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState === 'visible') verrouBeQuick(); });
+
   /* ---------- MESSAGERIE (7.1.0) ----------
      chat.js n'est chargé qu'au premier clic sur la bulle, ou en différé
      si cet appareil a déjà un jeton de messagerie (pour la pastille des
@@ -850,6 +913,9 @@
     setInterval(majCloche, 60000);
     setTimeout(signalerPseudo, 3000);
     demarrerChat();
+    verrouBeQuick();
+    /* 7.2.0 : pas de zoom sur téléphone (pincer ni double-tap), le site est déjà à la bonne taille */
+    document.addEventListener('gesturestart', e=>e.preventDefault(), {passive:false});
   }
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();

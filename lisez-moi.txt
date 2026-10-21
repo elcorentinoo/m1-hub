@@ -278,6 +278,18 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  7.2.0            CHAT ENRICHI ET BEQUICK SANS TRICHE.
+                   Chat : un appui sur un message ouvre 👍 ❤️ 😂 😮 😢 🔥 et
+                   « Répondre » (citation cliquable) ; « Léa écrit… » et nombre
+                   de connectés en direct ; @pseudo proposé à la saisie, surligné,
+                   et notifié à la personne visée même si elle a coupé le chat ;
+                   chiffre des non-lus sur l'icône de l'app. Base :
+                   supabase/chat-plus.sql ; fonction Supabase chat-notif mise à jour.
+                   BeQuick : de 18 h 30 à 22 h, les cours des matières du soir et
+                   la révision restent fermés tant que la série n'est pas jouée —
+                   contrôle par pseudo sur le serveur, donc tous les appareils
+                   se débloquent ensemble.
+                   Zoom coupé sur téléphone (double-tap, pincer, champs de saisie).
   7.1.1            Logo iPhone : iOS cherche aussi /apple-touch-icon.png et
                    /apple-touch-icon-precomposed.png à la racine, refusés par la
                    porte depuis la 7.0.0 (installations récentes sans logo). Copies
