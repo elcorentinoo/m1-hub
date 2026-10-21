@@ -185,12 +185,22 @@
   function envoyer(id, champs, keepalive){
     return api('bequick_parties?id=eq.'+id, {method:'PATCH', headers:{'Prefer':'return=minimal'}, body:champs, keepalive});
   }
+  /* 7.3.2 : une partie en cours n'apparaît nulle part, et le classement du
+     soir reste caché tant qu'on n'a pas fini sa propre série (ou 22 h). */
+  function enCours(r){ return (r.repondues|0) < NB_Q && maintenant() < Date.parse(r.debut) + DUREE + 20000; }
   async function classement(jour){
     const l = await api('bequick_parties?jour=eq.'+jour+'&select=pseudo,pseudo_cle,score,bonnes,repondues,debut&order=score.desc,bonnes.desc,debut.asc');
-    return l || [];
+    return (l || []).filter(r=>!enCours(r));
+  }
+  async function classementVisible(jour){
+    if(jour !== jourDe() || phase() !== 'ouvert') return true;
+    if((lireLocal(jour) || {}).fini) return true;
+    try{ const p = await maPartie(jour); return !!p && !enCours(p); }catch(e){ return false; }
   }
   async function toutes(){
-    return (await api('bequick_parties?select=pseudo,pseudo_cle,score,bonnes,repondues,jour&limit=20000')) || [];
+    const l = (await api('bequick_parties?select=pseudo,pseudo_cle,score,bonnes,repondues,jour,debut&limit=20000')) || [];
+    const auj = jourDe(), cache = !(await classementVisible(auj));
+    return l.filter(r=>!enCours(r) && !(cache && r.jour === auj));
   }
   function general(lignes){
     const u = {};
@@ -305,7 +315,7 @@
   window.BQ = {NOM, OUVERTURE, FERMETURE, DUREE, NB_Q, PTS_MAX, PTS_MIN, T_REF, PREMIER_JOUR,
     paris, maintenant, jourDe, instant, ouverture, fermeture, phase, decaleJour, points,
     estOuvre, prochaineOuverture, dernierJour, texteProchain,
-    tirage, poidsMatieres, questions, serie, maPartie, demarrer, envoyer, classement, toutes, general,
+    tirage, poidsMatieres, questions, serie, maPartie, demarrer, envoyer, classement, classementVisible, enCours, toutes, general,
     lireLocal, ecrireLocal, pseudo, cle, api, MSG_TEST, testerMaintenant,
     pushPossible, estIOS, installe, etatPush, activerPush, desactiverPush, alertes};
 })();

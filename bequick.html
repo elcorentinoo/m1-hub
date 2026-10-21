@@ -497,6 +497,7 @@ async function chargerClassement(){
     if(ONGLET === 'soir'){
       const j = BQ.dernierJour();
       z.innerHTML = '<p class="titre-jour">'+etiquetteJour(j)+' — <b>'+dateLongue(j)+'</b></p><div class="vide">Chargement…</div>';
+      if(!(await BQ.classementVisible(j))){ z.innerHTML = '<p class="titre-jour">'+etiquetteJour(j)+' — <b>'+dateLongue(j)+'</b></p>'+'<div class="vide">🔒 Le classement de ce soir s\'affiche dès que tu as fini ta série (ou à 22 h). Pas de spoiler !</div>'; return; }
       const l = await BQ.classement(j);
       z.innerHTML = '<p class="titre-jour">'+etiquetteJour(j)+' — <b>'+dateLongue(j)+'</b></p>'+podiumEtListe(l, valJour, secJour)+
         '<p class="note">Une bonne réponse rapporte de 500 à 250 points selon la rapidité. Égalité départagée par le nombre de bonnes réponses, puis par l\'heure de départ.</p>';
@@ -540,6 +541,7 @@ function dessinerCalendrier(){
 async function afficherJour(j, ouvrirCorrection){
   const z = $('jourSel'); if(!z) return;
   z.innerHTML = '<p class="titre-jour"><b>'+dateLongue(j)+'</b></p><div class="vide">Chargement…</div>';
+  if(!(await BQ.classementVisible(j))){ z.innerHTML = '<p class="titre-jour"><b>'+dateLongue(j)+'</b></p>'+'<div class="vide">🔒 Le classement de ce soir s\'affiche dès que tu as fini ta série (ou à 22 h). Pas de spoiler !</div>'; return; }
   const l = await BQ.classement(j).catch(()=>[]);
   /* la correction d'un soir est publiée à sa fermeture (22 h), ou dès qu'on a fini sa propre partie —
      sur cet appareil, ou sur un autre : le serveur sait si ce pseudo a terminé (6.4.0) */

@@ -596,9 +596,11 @@ async function renderBeQuick(){
   else if(ph === 'ouvert'){ txt.textContent = 'Ta partie de ce soir est lancée ou terminée. Le classement se complète jusqu\'à 22 h 20.'; btn.textContent = 'Voir le classement'; cpt.textContent = ''; }
   else { txt.textContent = 'Fermé pour ce soir. Prochaine série '+BQ.texteProchain()+'.'; btn.textContent = 'Podium et correction'; cpt.textContent = ''; }
   const jc = BQ.dernierJour();
-  if(bqDernier === jc+ph) return;            // le podium ne se recharge qu'à chaque changement de phase
-  bqDernier = jc+ph;
+  const vis = await BQ.classementVisible(jc);  // 7.3.2 : pas de podium du soir avant d'avoir fini sa série
+  if(bqDernier === jc+ph+vis) return;        // le podium ne se recharge qu'à chaque changement de phase
+  bqDernier = jc+ph+vis;
   const zp = document.getElementById('bqPodium');
+  if(!vis){ zp.innerHTML = '<div class="t">Podium de ce soir</div><div class="bqv">🔒 Visible dès que tu as fini ta série (ou à 22 h).</div>'; return; }
   try{
     const l = (await BQ.classement(jc)).slice(0,3);
     const t = '<div class="t">Podium '+(jc === j ? 'de ce soir' : jc === BQ.decaleJour(j, -1) ? 'd\'hier soir' : 'du dernier BeQuick')+'</div>';

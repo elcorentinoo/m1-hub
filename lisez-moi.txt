@@ -278,6 +278,10 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  7.3.2            BeQuick sans spoiler : les parties en cours n'apparaissent plus
+                   dans aucun classement, et le classement du soir (onglet Ce soir,
+                   calendrier, podium du hub, cumul) reste caché tant qu'on n'a pas
+                   fini sa propre série, ou jusqu'à 22 h.
   7.3.1            /admin, onglet BeQuick : « Ce soir » liste les joueurs du soir
                    avec un bouton Réinitialiser (partie effacée, rejouable jusqu'à
                    22 h sur tous les appareils). SQL : relancer supabase/admin.sql.
