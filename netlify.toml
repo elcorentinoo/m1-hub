@@ -13,6 +13,12 @@
 [build]
   publish = "."
 
+# Gestion des clés d'accès (6.5.0) : /admin, jamais listée dans le site.
+[[redirects]]
+  from = "/admin"
+  to = "/acces-admin.html"
+  status = 200
+
 # Le service worker et les pages ne doivent jamais être servis
 # depuis le cache sans revalidation.
 [[headers]]

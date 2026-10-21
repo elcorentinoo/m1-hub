@@ -10,7 +10,7 @@
 
   /* ---------- 0. VERSION ---------- */
   /* Doit rester identique à VERSION en haut de sw.js. */
-  const VERSION_APP = '6.4.2';
+  const VERSION_APP = '7.0.0';
   const NOM_VERSION = 'Ducat';
   window.APP_VERSION = VERSION_APP;
 
@@ -543,7 +543,7 @@
     q.addEventListener('keydown', e=>{
       if(e.key==='ArrowDown'){ e.preventDefault(); if(box.hidden) dessine(); else bouge(1); }
       else if(e.key==='ArrowUp'){ e.preventDefault(); bouge(-1); }
-      else if(e.key==='Enter'){ e.preventDefault(); const a = box.querySelectorAll('.ds-q-i')[sel]; if(a) location.href = a.getAttribute('href'); }
+      else if(e.key==='Enter'){ e.preventDefault(); if(estAdmin(q.value)){ location.href = '/admin'; return; } const a = box.querySelectorAll('.ds-q-i')[sel]; if(a) location.href = a.getAttribute('href'); }
       else if(e.key==='Escape'){ ouvre(false); q.blur(); }
     });
     /* on ferme quand on clique ailleurs (le clic sur un résultat suit le lien) */
@@ -584,11 +584,14 @@
     q.addEventListener('keydown', e=>{
       if(e.key==='ArrowDown'){ e.preventDefault(); bouge(1); }
       else if(e.key==='ArrowUp'){ e.preventDefault(); bouge(-1); }
-      else if(e.key==='Enter'){ e.preventDefault(); const a=document.querySelectorAll('.ui-pal-i')[sel]; if(a) location.href=a.getAttribute('href'); }
+      else if(e.key==='Enter'){ e.preventDefault(); if(estAdmin(q.value)){ location.href = '/admin'; return; } const a=document.querySelectorAll('.ui-pal-i')[sel]; if(a) location.href=a.getAttribute('href'); }
       else if(e.key==='Escape'){ p.remove(); }
     });
     dessine(); q.focus();
   }
+  /* « /admin » + Entrée ouvre la gestion des clés d'accès (6.5.0) : jamais proposé
+     dans les résultats, et la page reste protégée par un mot de passe. */
+  function estAdmin(v){ return String(v||'').trim().toLowerCase() === '/admin'; }
   function echap(s){ return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
   window.uiRecherche = ouvrirRecherche;
 

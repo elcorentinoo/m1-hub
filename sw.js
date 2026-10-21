@@ -13,7 +13,7 @@
    ⚠️ Cette valeur doit rester IDENTIQUE à VERSION_APP,
       en haut de ui.js.
    ════════════════════════════════════════════════════════════ */
-const VERSION = '6.4.2';        // « Ducat »
+const VERSION = '7.0.0';        // « Thaler »
 const CACHE_APP  = 'm1-app-'+VERSION;      // les fichiers du site
 const CACHE_EXT  = 'm1-ext-'+VERSION;      // polices et bibliothèques externes
 
@@ -98,6 +98,9 @@ self.addEventListener('fetch', e=>{
   /* Les fonctions Netlify (notification de test) : toujours le réseau */
   if(url.pathname.startsWith('/.netlify/')) return;
 
+  /* Les pages d'accès (clé, gestion /admin) : jamais en cache (6.5.0) */
+  if(['/acces.html', '/admin', '/acces-admin.html'].includes(url.pathname)) return;
+
   /* Supabase : toujours le réseau, jamais de cache (classement, ressourcerie) */
   if(JAMAIS.some(d=>url.hostname.includes(d))) return;
 
@@ -119,6 +122,9 @@ self.addEventListener('fetch', e=>{
      le cache en secours dès que la connexion manque */
   e.respondWith(
     fetch(req).then(rep=>{
+      /* 401 : cet appareil n'a pas (ou plus) de clé d'accès valide. On efface
+         les copies hors ligne, pour qu'elles ne servent pas de porte dérobée. */
+      if(rep && rep.status === 401 && url.origin === self.location.origin) caches.delete(CACHE_APP);
       if(rep && rep.ok && url.origin === self.location.origin){
         const copie = rep.clone();
         caches.open(CACHE_APP).then(c=>c.put(req, copie));

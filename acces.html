@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Accès réservé — Hub M1 MBAF</title>
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Page d'entrée du site (6.5.0) : la seule page servie sans clé.
+   Couleurs : variables de theme.css uniquement. */
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 16px;
+  font-family:'Outfit',system-ui,sans-serif;background:var(--fond);color:var(--nuit)}
+.carte{width:min(440px,100%);background:var(--blanc);border-radius:var(--r-xl);box-shadow:var(--shadow-lg);padding:34px 28px 28px;text-align:center}
+.logo{width:64px;height:64px;border-radius:50%;background:var(--nuit);color:var(--blanc);display:grid;place-items:center;
+  margin:0 auto 18px;font-weight:600;font-size:20px;letter-spacing:.02em}
+h1{font-weight:300;font-size:2rem;line-height:1.15;margin:0 0 10px}
+p{color:var(--txt2);line-height:1.5;margin:0 0 22px}
+label{display:block;text-align:left;font-size:.85rem;font-weight:500;color:var(--txt2);margin:0 0 6px 4px}
+input{width:100%;font:inherit;font-size:1.35rem;letter-spacing:.14em;text-align:center;text-transform:uppercase;
+  padding:14px 16px;border-radius:18px;border:2px solid var(--stroke2);background:var(--surface2);color:var(--nuit)}
+input:focus{outline:none;border-color:var(--nuit);background:var(--blanc)}
+button{margin-top:14px;width:100%;font:inherit;font-size:1.05rem;font-weight:500;padding:14px;border:0;border-radius:999px;
+  background:var(--nuit);color:var(--blanc);cursor:pointer}
+button:focus-visible{outline:3px solid var(--nuit);outline-offset:3px}
+button[disabled]{opacity:.6;cursor:wait}
+.msg{min-height:1.5em;margin:14px 0 0;font-size:.95rem}
+.msg.ko{color:var(--bad)} .msg.ok{color:var(--ok)}
+.pied{margin:22px 0 0;font-size:.85rem;color:var(--txt3)}
+</style>
+<link rel="stylesheet" href="theme.css">
+</head>
+<body>
+<main class="carte">
+  <div class="logo" aria-hidden="true">M1</div>
+  <h1>Accès réservé</h1>
+  <p>Le hub de révision du M1 MBAF est réservé aux étudiants de la promo. Entre la clé d'accès qu'on t'a donnée.</p>
+  <form id="f" autocomplete="off">
+    <label for="cle">Clé d'accès</label>
+    <input id="cle" name="cle" inputmode="text" autocapitalize="characters" spellcheck="false" placeholder="XXX-XXX-XXX" maxlength="13" required>
+    <button type="submit" id="b">Entrer</button>
+    <div class="msg" id="msg" role="status" aria-live="polite"></div>
+  </form>
+  <p class="pied">Une clé ne sert qu'une fois : elle autorise cet appareil. Pour un autre appareil, demande une nouvelle clé.</p>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+$('cle').addEventListener('input', e=>{
+  const v = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,9);
+  e.target.value = v.replace(/^(.{3})(.{1,3})?(.{1,3})?$/, (m,a,b,c)=>[a,b,c].filter(Boolean).join('-'));
+});
+function retour(){
+  const r = new URLSearchParams(location.search).get('r') || '/';
+  return /^\/(?!\/)/.test(r) ? r : '/';
+}
+$('f').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const cle = $('cle').value, m = $('msg'), b = $('b');
+  if(cle.replace(/[^A-Z0-9]/gi,'').length !== 9){ m.className = 'msg ko'; m.textContent = 'Une clé compte 9 caractères, par exemple K7Q-M2X-9PL.'; return; }
+  b.disabled = true; b.textContent = 'Vérification…'; m.textContent = '';
+  try{
+    const r = await fetch('/.netlify/functions/acces-activer', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({cle})});
+    const d = await r.json().catch(()=>({}));
+    if(d.ok){
+      m.className = 'msg ok'; m.textContent = 'Bienvenue ! Ouverture du hub…';
+      setTimeout(()=>location.replace(retour()), 500);
+      return;
+    }
+    m.className = 'msg ko';
+    m.textContent = d.erreur === 'invalide' ? "Cette clé n'existe pas ou a déjà été utilisée."
+                  : d.erreur === 'format' ? 'Une clé compte 9 caractères, par exemple K7Q-M2X-9PL.'
+                  : 'Le serveur ne répond pas. Réessaie dans un instant.';
+  }catch(err){
+    m.className = 'msg ko'; m.textContent = 'Pas de connexion internet : la clé se vérifie en ligne.';
+  }
+  b.disabled = false; b.textContent = 'Entrer';
+});
+$('cle').focus();
+</script>
+</body>
+</html>

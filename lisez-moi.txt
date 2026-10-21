@@ -274,6 +274,20 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  7.0.0 « Thaler » ACCÈS RÉSERVÉ PAR CLÉ. Tout le site passe derrière une porte :
+                   une fonction Edge Netlify (netlify/edge-functions/acces.js)
+                   vérifie avant chaque fichier un cookie signé (ACCES_SECRET).
+                   Sans lui, les pages renvoient vers acces.html. Une clé
+                   (XXX-XXX-XXX) = une personne = un appareil : elle est consommée
+                   à la première utilisation (fonction acces-activer), l'appareil
+                   reste autorisé un an, revérifié chaque jour (révocation sous
+                   24 h). Gestion par Corentin seul : /admin (aussi « /admin » +
+                   Entrée dans la recherche, jamais proposé), mot de passe
+                   ADMIN_MDP ; génération illimitée, liste, révocation (fonction
+                   acces-admin, jeton serveur ACCES_JETON). Supabase : table
+                   acces_cles (empreintes SHA-256 seulement) et trois fonctions,
+                   supabase/acces.sql. Le service worker ne garde jamais les pages
+                   d'accès et efface ses copies si l'appareil n'est plus autorisé.
   6.4.2            Système bancaire : copie locale de la photo (img/sujet-systeme-
                    bancaire.webp, ajoutée au hors-ligne) ; photo assombrie
                    (--ph-lum .68) pour garder 4,5:1 sur les textes, mesuré au pixel.
