@@ -274,6 +274,18 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  6.4.0            NOUVELLE MATIÈRE : LE SYSTÈME BANCAIRE FRANÇAIS (systeme_bancaire.html,
+                   subject-id systeme-bancaire). 12 leçons en 5 chapitres : paysage
+                   bancaire, Livret A, crédit immobilier, crédit à la consommation,
+                   régulation et évolutions (ACPR, AMF, Bâle III, banques en ligne,
+                   FinTech, transition écologique). 24 mini-quiz, 6 cas corrigés,
+                   13 questions rédigées, test final de 46 questions, mémo des
+                   points à vérifier. Rédigé à partir du cours scanné (40 pages).
+                   Identité : bordeaux #7A3348, emblème bâtiment à colonnes, photo
+                   Athithan Vignakaran (copie locale à ajouter). 70 questions
+                   ajoutées à banque.js : la matière entre dans BeQuick et la
+                   révision espacée. Déclarée dans ui.js, progress.js, lb.js,
+                   revision.html, stats.html, bequick.html, index.html, sw.js.
   6.3.2            BeQuick : l'explication de la réponse sur un encadré gris clair
                    bordé de bleu nuit, plus lisible.
   6.3.1            BeQuick : la bonne réponse et son explication s'affichent tout

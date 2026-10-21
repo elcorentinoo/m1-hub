@@ -1,0 +1,2087 @@
+<!DOCTYPE html>
+<html lang="fr" subject-id="systeme-bancaire">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le système bancaire français — M1 MBAF</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+:root{
+  --card:#fff; --card2:#fbf9f5;
+  --paper:#faf6ef; --paper2:#f3ece0; --ink:#22201b; --line:#e3d9c8;
+  --teal:#1b6b5e; --amber:#c87a12; --rust:#a8432a; --plum:#6b3a73; --navy:#241C15;
+  --teal-soft:#e3efec; --amber-soft:#f6ead4; --rust-soft:#f3e0da; --plum-soft:#ece3ef; --navy-soft:#dde6f0;
+  --shadow:0 2px 14px rgba(34,32,27,.07); --shadow-lg:0 8px 30px rgba(34,32,27,.13);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-track{background:var(--paper2)}
+::-webkit-scrollbar-thumb{background:#cdbfa6;border-radius:6px;border:2px solid var(--paper2)}
+::-webkit-scrollbar-thumb:hover{background:var(--amber)}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:62px;z-index:50;background:var(--paper);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:18px;padding:0 22px}
+.brand{display:flex;align-items:center;gap:11px;font-family:'Fraunces',serif;font-weight:600;font-size:1.12rem;color:var(--navy)}
+.brand .logo{width:36px;height:36px;border-radius:9px;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:1.15rem;flex-shrink:0;box-shadow:var(--shadow)}
+.brand small{display:block;font-family:'DM Sans';font-weight:500;font-size:.66rem;letter-spacing:.09em;color:var(--amber);text-transform:uppercase}
+.hublink{font-family:'DM Mono';font-size:.72rem;color:#8a8170;text-decoration:none;padding:5px 10px;border-radius:8px;border:1px solid var(--line);white-space:nowrap;transition:.15s}
+.hublink:hover{color:var(--navy);border-color:#c9bca3;background:var(--card)}
+.progress-wrap{flex:1;max-width:300px;display:flex;flex-direction:column;gap:3px}
+.progress-wrap .lab{font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:#8a8170;font-weight:600;display:flex;justify-content:space-between}
+.progress-bar{height:8px;background:var(--paper2);border-radius:5px;overflow:hidden;border:1px solid var(--line)}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),#2a8a78);transition:width .5s cubic-bezier(.4,0,.2,1)}
+.xp{margin-left:auto;display:flex;align-items:center;gap:7px;background:var(--amber-soft);border:1px solid #e6cf9e;color:var(--amber);font-weight:700;padding:7px 14px;border-radius:30px;font-size:.9rem}
+.burger{display:none;background:none;border:1px solid var(--line);border-radius:8px;padding:7px 10px;cursor:pointer;font-size:1.1rem;color:var(--ink)}
+
+.shell{display:flex;padding-top:62px}
+.sidebar{position:fixed;top:62px;bottom:0;left:0;width:282px;background:var(--paper2);border-right:1px solid var(--line);overflow-y:auto;padding:20px 14px 50px;z-index:40;transition:transform .3s}
+.sidebar h4{font-family:'Fraunces',serif;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:#8a8170;margin:18px 10px 9px;font-weight:600}
+.sidebar h4:first-child{margin-top:0}
+.nav-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;cursor:pointer;font-size:.92rem;color:var(--ink);border:1px solid transparent;transition:.16s;margin-bottom:3px}
+.nav-item:hover{background:#ece3d3}
+.nav-item.active{background:var(--card);border-color:var(--line);box-shadow:var(--shadow);font-weight:600;color:var(--navy)}
+.nav-item .num{width:25px;height:25px;border-radius:50%;background:var(--card);border:1.5px solid var(--line);flex-shrink:0;display:grid;place-items:center;font-size:.78rem;font-weight:700;font-family:'DM Mono';color:#8a8170;transition:.16s}
+.nav-item.active .num,.nav-item.done .num{background:var(--teal);color:#fff;border-color:var(--teal)}
+.nav-item .lab{flex:1;line-height:1.25}
+.nav-item.special{background:var(--plum-soft);border-color:#d8c5dc;color:var(--plum);font-weight:600}
+.nav-item.special.active{background:var(--plum);color:#fff}
+.nav-item.special2{background:var(--navy-soft);border-color:#c3d2e2;color:var(--navy);font-weight:600}
+.nav-item.special2.active{background:var(--navy);color:#fff}
+.nav-item.special3{background:var(--amber-soft);border-color:#e6cf9e;color:var(--amber);font-weight:600}
+.nav-item.special3.active{background:var(--amber);color:#fff}
+.nav-item .ico{font-size:1.05rem}
+
+.main{flex:1;margin-left:282px;padding:40px 6vw 120px;max-width:920px}
+.view{display:none;animation:fadeIn .45s ease}
+.view.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.tag{display:inline-block;font-family:'DM Mono';font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;background:var(--navy-soft);color:var(--navy);padding:5px 12px;border-radius:20px;font-weight:500;margin-bottom:16px}
+h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;font-weight:600;color:var(--ink);margin-bottom:10px;letter-spacing:-.01em}
+.subtitle{font-size:1.12rem;color:#6f6757;margin-bottom:30px;max-width:62ch}
+.main p{margin-bottom:16px;font-size:1.04rem;max-width:68ch}
+.main h2{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:600;color:var(--navy);margin:38px 0 14px;letter-spacing:-.01em}
+.main strong{font-weight:600;color:var(--ink)}
+
+.callout{border-radius:14px;padding:18px 20px 18px 22px;margin:24px 0;border-left:5px solid;position:relative;font-size:1rem}
+.callout .ct{font-weight:700;font-family:'Fraunces',serif;font-size:1.02rem;display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.callout p{margin:0;max-width:none}
+.c-analogy{background:var(--amber-soft);border-color:var(--amber);color:#5e3a06}
+.c-analogy .ct{color:var(--amber)}
+.c-retenir{background:var(--teal-soft);border-color:var(--teal);color:#0f3d36}
+.c-retenir .ct{color:var(--teal)}
+.c-piege{background:var(--rust-soft);border-color:var(--rust);color:#5e2317}
+.c-piege .ct{color:var(--rust)}
+
+.rulebox{background:#1c1a16;color:#f3ece0;border-radius:14px;padding:22px 24px;margin:26px 0;font-family:'DM Mono';box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
+.rulebox::before{content:'REPÈRE';position:absolute;top:13px;right:18px;font-size:.62rem;letter-spacing:.2em;color:#7d7566}
+.rulebox.formule::before{content:'FORMULE'}
+.rulebox .rb-main{font-size:1.18rem;font-weight:500;line-height:1.5;color:#fff}
+.rulebox .rb-sub{font-size:.86rem;color:#b8af9d;margin-top:10px;line-height:1.55}
+.rulebox em{color:var(--amber);font-style:normal;font-weight:500}
+
+.tbl{width:100%;border-collapse:collapse;margin:22px 0;font-size:.96rem;background:var(--card);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line)}
+.tbl th{background:var(--navy);color:#fff;text-align:left;padding:11px 15px;font-weight:600;font-size:.86rem}
+.tbl td{padding:11px 15px;border-top:1px solid var(--line);vertical-align:top}
+.tbl tr:nth-child(even) td{background:var(--paper)}
+.tbl td:first-child{font-weight:600;color:var(--navy);white-space:nowrap}
+.tbl.wrap td:first-child{white-space:normal}
+.tbl.num td{font-family:'DM Mono';font-size:.94rem}
+.tbl.num td:first-child{font-family:'DM Sans'}
+
+.example{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:26px 0;box-shadow:var(--shadow)}
+.example .ex-head{font-family:'Fraunces',serif;font-weight:600;color:var(--plum);font-size:1.08rem;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.step{display:flex;gap:14px;margin-bottom:14px}
+.step:last-child{margin-bottom:0}
+.step .sn{width:27px;height:27px;border-radius:50%;background:var(--plum);color:#fff;flex-shrink:0;display:grid;place-items:center;font-family:'DM Mono';font-weight:500;font-size:.85rem}
+.step .sc{flex:1;padding-top:1px}
+.step .sc b{color:var(--navy)}
+.step .sc code{background:var(--paper2);padding:2px 7px;border-radius:5px;font-family:'DM Mono';font-size:.9rem;color:var(--teal)}
+.ex-result{margin-top:6px;background:var(--teal-soft);border:1px solid #bcdcd4;border-radius:10px;padding:12px 16px;font-weight:600;color:#0f3d36}
+
+.schema{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin:26px 0;box-shadow:var(--shadow);text-align:center}
+.schema .scap{font-size:.82rem;color:#8a8170;margin-top:12px;font-style:italic}
+.schema svg{max-width:100%;height:auto}
+
+.quiz{background:var(--plum-soft);border:1px solid #d8c5dc;border-radius:14px;padding:20px 22px;margin:24px 0}
+.quiz .qhead{font-family:'DM Mono';font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--plum);font-weight:500;margin-bottom:9px}
+.quiz .q{font-weight:600;font-size:1.05rem;margin-bottom:14px;color:var(--ink)}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{text-align:left;background:var(--card);border:1.5px solid #d8c5dc;border-radius:10px;padding:11px 15px;cursor:pointer;font-family:'DM Sans';font-size:.98rem;color:var(--ink);transition:.15s}
+.opt:hover:not(:disabled){border-color:var(--plum);background:#fbf8fc}
+.opt:disabled{cursor:default}
+.opt.right{background:var(--teal-soft);border-color:var(--teal);color:#0f3d36;font-weight:600}
+.opt.right::after{content:' ✓';color:var(--teal);font-weight:700}
+.opt.wrong{background:var(--rust-soft);border-color:var(--rust);color:#5e2317}
+.opt.wrong::after{content:' ✗';color:var(--rust);font-weight:700}
+.feedback{margin-top:13px;padding:12px 15px;border-radius:10px;background:var(--card);border:1px dashed #cbb9cf;font-size:.95rem;color:#5a4d5d}
+.feedback b{color:var(--plum)}
+
+.lesson-nav{display:flex;justify-content:space-between;gap:14px;margin-top:46px;padding-top:26px;border-top:1px solid var(--line)}
+.btn{font-family:'DM Sans';font-weight:600;font-size:.98rem;padding:12px 22px;border-radius:11px;cursor:pointer;border:1.5px solid var(--line);background:var(--card);color:var(--ink);transition:.16s;display:inline-flex;align-items:center;gap:8px}
+.btn:hover{border-color:#bbac90;transform:translateY(-1px)}
+.btn.primary{background:var(--teal);color:#fff;border-color:var(--teal);box-shadow:var(--shadow)}
+.btn.primary:hover{background:#155a4f}
+.btn.plum{background:var(--plum);color:#fff;border-color:var(--plum)}
+.btn.plum:hover{background:#592f60}
+.btn.amber{background:var(--amber);color:#fff;border-color:var(--amber)}
+.btn.amber:hover{background:#a86610}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.print-fab{position:fixed;bottom:26px;left:26px;z-index:110;background:var(--card);color:var(--ink2);border:1.5px solid var(--line2);font-weight:600;padding:10px 16px;border-radius:24px;cursor:pointer;font-family:'DM Sans';font-size:.85rem;box-shadow:var(--shadow);transition:.15s}
+.print-fab:hover{border-color:var(--navy);color:var(--navy);transform:translateY(-1px)}
+@media(max-width:880px){.print-fab{bottom:20px;left:16px;padding:9px 13px;font-size:.8rem}}
+.xp-pop{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--amber);color:#fff;font-weight:700;padding:13px 26px;border-radius:30px;box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:.4s;z-index:200;font-size:1rem}
+.xp-pop.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.test-q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:18px;box-shadow:var(--shadow);transition:.3s}
+.test-q .tq-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px}
+.test-q .tq-num{font-family:'DM Mono';font-weight:500;color:var(--navy);font-size:.9rem}
+.test-q .tq-chap{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:#8a8170;font-weight:600;background:var(--paper2);padding:4px 10px;border-radius:20px;text-align:right}
+.test-q .tq-q{font-weight:600;font-size:1.08rem;margin-bottom:14px}
+.num-input{font-family:'DM Mono';font-size:1.05rem;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;width:190px;background:var(--paper)}
+.num-input:focus{outline:none;border-color:var(--teal)}
+.unit{font-family:'DM Mono';color:#8a8170;margin-left:9px}
+.topt{display:flex;flex-direction:column;gap:8px}
+.topt button{text-align:left;background:var(--paper);border:1.5px solid var(--line);border-radius:10px;padding:11px 15px;cursor:pointer;font-family:'DM Sans';font-size:.98rem;transition:.15s}
+.topt button:hover{border-color:var(--teal)}
+.topt button.sel{background:var(--teal-soft);border-color:var(--teal);font-weight:600;color:#0f3d36}
+.remed{margin-top:14px;border-radius:11px;border-left:5px solid var(--rust);background:var(--rust-soft);padding:15px 18px;display:none}
+.remed.show{display:block;animation:fadeIn .35s}
+.remed .rt{font-weight:700;color:var(--rust);font-family:'Fraunces',serif;margin-bottom:5px;display:flex;align-items:center;gap:7px}
+.remed .ra{font-size:.95rem;color:#5e2317;margin-bottom:11px}
+.remed-btns{display:flex;gap:10px;flex-wrap:wrap}
+.remed-btns .btn{padding:8px 16px;font-size:.88rem}
+.test-q.ok{border-color:var(--teal);background:#fbfdfc}
+.test-q.ko{border-color:var(--rust)}
+.float-retry{position:fixed;bottom:26px;right:26px;z-index:120;display:none;background:var(--plum);color:#fff;border:none;font-weight:700;padding:14px 24px;border-radius:30px;box-shadow:var(--shadow-lg);cursor:pointer;font-family:'DM Sans';font-size:.98rem;align-items:center;gap:9px}
+.float-retry.show{display:inline-flex;animation:fadeIn .4s}
+
+.result{display:none;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:34px;box-shadow:var(--shadow-lg);text-align:center;animation:fadeIn .5s}
+.result.show{display:block}
+.result .score-big{font-family:'Fraunces',serif;font-size:4rem;font-weight:700;line-height:1;color:var(--teal)}
+.result .score-lab{color:#8a8170;font-weight:600;margin-bottom:8px}
+.result .msg{font-size:1.12rem;margin:14px auto 28px;max-width:46ch;color:var(--ink)}
+.chapbars{text-align:left;max-width:560px;margin:0 auto}
+.chapbar{margin-bottom:14px}
+.chapbar .cbl{display:flex;justify-content:space-between;font-size:.9rem;font-weight:600;margin-bottom:5px}
+.chapbar .cbl span:last-child{font-family:'DM Mono';color:#8a8170}
+.cbt{height:13px;background:var(--paper2);border-radius:7px;overflow:hidden;border:1px solid var(--line)}
+.cbf{height:100%;border-radius:7px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+
+.annale{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px 26px;margin-bottom:22px;box-shadow:var(--shadow)}
+.annale .an-tag{font-family:'DM Mono';font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);font-weight:500}
+.annale h3{font-family:'Fraunces',serif;font-size:1.32rem;color:var(--navy);margin:6px 0 14px;font-weight:600}
+.annale .enonce{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:16px 19px;font-size:1rem;color:#3a352c}
+.annale .enonce .qlist{margin:10px 0 0 4px}
+.annale .enonce .qlist li{margin-bottom:5px;list-style:none;padding-left:22px;position:relative}
+.annale .enonce .qlist li::before{content:'▸';position:absolute;left:0;color:var(--amber);font-weight:700}
+.corrige{margin-top:14px;display:none;animation:fadeIn .4s}
+.corrige.show{display:block}
+.corrige-head{font-family:'Fraunces',serif;font-weight:600;color:var(--teal);margin-bottom:12px;display:flex;align-items:center;gap:8px;font-size:1.06rem}
+
+.intro-card{background:var(--navy);color:#f3ece0;border-radius:16px;padding:24px 26px;margin-bottom:26px}
+.intro-card h2{color:#fff;margin:0 0 8px;font-family:'Fraunces',serif;font-size:1.4rem}
+.intro-card p{color:#cdd8e6;max-width:none;margin:0}
+.intro-card.amber{background:#7a4c08}
+.intro-card.amber p{color:#f2e0c0}
+.intro-card.plum{background:#4a2750}
+.intro-card.plum p{color:#e6d5ea}
+
+.hint{font-size:.85rem;color:#8a8170;font-style:italic;margin-top:8px}
+.overlay{display:none;position:fixed;inset:62px 0 0 0;background:rgba(34,32,27,.4);z-index:35}
+@media(max-width:880px){
+  .main{margin-left:0;padding:30px 22px 110px}
+  .sidebar{transform:translateX(-100%);box-shadow:var(--shadow-lg)}
+  .sidebar.open{transform:translateX(0)}
+  .overlay.show{display:block}
+  .burger{display:block}
+  .progress-wrap{max-width:none}
+  .brand small{display:none}
+  h1.lesson-title{font-size:1.8rem}
+  .xp{padding:6px 11px;font-size:.82rem}
+  .gen-data .dl{min-width:0;display:block}
+}
+@media(max-width:560px){
+  .progress-wrap,.hublink{display:none}
+  .topbar{gap:12px}
+}
+/* ===== QUESTIONS RÉDIGÉES — couleurs uniquement par variables de theme.css ===== */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.redac textarea{display:block;width:100%;min-height:130px;margin-top:4px;padding:12px 14px;border:1.5px solid var(--line2);border-radius:10px;background:var(--card);color:var(--ink);font:inherit;font-size:1rem;line-height:1.55;resize:vertical}
+.redac textarea:focus{outline:none;border-color:var(--acc)}
+.redac-btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.redac-score{font-weight:700;padding:10px 14px;border-radius:10px;margin-bottom:10px;border:1px solid var(--line)}
+.redac-score.ok{background:var(--teal-soft);color:var(--teal-d)}
+.redac-score.mid{background:var(--amber-soft);color:var(--amber)}
+.redac-score.ko{background:var(--rust-soft);color:var(--rust)}
+.crit{list-style:none;margin:0 0 16px;padding:0}
+.crit li{padding:6px 0;border-bottom:1px solid var(--line);font-size:.96rem}
+.crit li.ok{color:var(--teal-d)}
+.crit li.ko{color:var(--rust)}
+.crit li i{color:var(--ink2)}
+.modele{background:var(--paper2);border:1px solid var(--line);border-radius:10px;padding:14px 16px;max-width:none !important}
+/* lisibilité et contraste : étiquettes grises reprises sur les variables de theme.css */
+.test-q .tq-chap,.unit,.hint,.result .score-lab,.chapbar .cbl span:last-child{color:var(--txt3)}
+.main{min-width:0}
+.tbl-scroll{overflow-x:auto;margin:22px 0}
+.tbl-scroll .tbl{margin:0}
+.tbl td,.tbl th{hyphens:auto;overflow-wrap:break-word}
+@media(max-width:560px){.tbl-scroll .tbl{min-width:540px}}
+@media(max-width:560px){.tbl th,.tbl td{padding:9px 10px;font-size:.88rem}}
+/* ===== CALCULATRICE (leçon 9) ===== */
+.calc-row{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:12px}
+.calc-row label{display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:.92rem;color:var(--ink);flex:1 1 200px;min-width:0}
+.calc .num-input{width:100%}
+</style>
+<link rel="stylesheet" href="ui.css">
+<link rel="stylesheet" href="theme.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#ECEEF6">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="M1 MBAF">
+</head>
+<body>
+
+<div class="topbar">
+  <button class="burger" onclick="toggleSidebar()">☰</button>
+  <div class="brand">
+    <span class="logo">€</span>
+    <span>Système bancaire<small>M1 MBAF · banques, épargne, crédit</small></span>
+  </div>
+  <span id="nav-slot"></span>
+  <div class="progress-wrap">
+    <div class="lab"><span>Progression</span><span id="progPct">0 %</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+  </div>
+  <div class="xp"><span class="star">★</span><span id="xpVal">0</span> XP</div>
+  <span id="lb-id-slot"></span>
+</div>
+
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <h4>Chapitre 1 · Le paysage bancaire</h4>
+    <div id="navList1"></div>
+    <h4>Chapitre 2 · Le Livret A</h4>
+    <div id="navList2"></div>
+    <h4>Chapitre 3 · Le crédit immobilier</h4>
+    <div id="navList3"></div>
+    <h4>Chapitre 4 · Le crédit à la consommation</h4>
+    <div id="navList4"></div>
+    <h4>Chapitre 5 · Régulation et évolutions</h4>
+    <div id="navList5"></div>
+    <h4>S'entraîner</h4>
+    <div class="nav-item special3" data-view="redac" onclick="go('redac')">
+      <span class="ico">✍️</span><span class="lab">Questions rédigées</span>
+    </div>
+    <div class="nav-item special2" data-view="annales" onclick="go('annales')">
+      <span class="ico">📐</span><span class="lab">Cas pratiques corrigés</span>
+    </div>
+    <div class="nav-item special" data-view="test" onclick="go('test')">
+      <span class="ico">🎯</span><span class="lab">Test final adaptatif</span>
+    </div>
+    <h4>À savoir</h4>
+    <div class="nav-item" data-view="ecarts" onclick="go('ecarts')">
+      <span class="ico">⚠️</span><span class="lab">Mémo et points à vérifier</span>
+    </div>
+  </aside>
+
+  <main class="main" id="main">
+
+    <!-- ============ LEÇON 1 ============ -->
+    <section class="view" data-view="l1">
+      <span class="tag">Leçon 1 · Paysage bancaire</span>
+      <h1 class="lesson-title">Les acteurs du système bancaire</h1>
+      <p class="subtitle">Banque commerciale, banque mutualiste, banque d'affaires, Banque de France : quatre familles d'acteurs, quatre rôles. Savoir les distinguer, c'est savoir situer sa propre banque.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Le système bancaire français est un <em>pilier de l'économie</em> : il gère les flux financiers au niveau national et au sein de l'<em>Union européenne</em>.</div>
+        <div class="rb-sub">Il réunit plusieurs types d'institutions financières aux rôles différents, sous un cadre réglementaire français et européen (chapitre 5).</div>
+      </div>
+
+      <h2>Quatre familles d'acteurs</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Famille</th><th>Rôle principal</th><th>Exemples du cours</th></tr>
+        <tr><td>Banques commerciales</td><td>Services financiers de base aux particuliers, aux entreprises et aux institutions publiques : dépôts, prêts, comptes courants, paiements, virements.</td><td>BNP Paribas, Société Générale, Crédit Agricole, Groupe BPCE (Banque Populaire et Caisse d'Épargne).</td></tr>
+        <tr><td>Banques mutualistes et coopératives</td><td>Elles <strong>appartiennent à leurs membres</strong> (les clients). Orientées vers la proximité et des valeurs solidaires.</td><td>Crédit Agricole (à l'origine coopérative pour le secteur agricole), Crédit Mutuel, Banques Populaires et Caisses d'Épargne (BPCE).</td></tr>
+        <tr><td>Banques d'investissement et d'affaires</td><td>Services spécialisés aux entreprises : fusions et acquisitions, levée de fonds sur les marchés, gestion de portefeuilles.</td><td>BNP Paribas et Société Générale (aussi actives dans ce secteur), avec des filiales spécifiques.</td></tr>
+        <tr><td>Banque de France</td><td>Autorité monétaire du pays, intégrée dans l'Eurosystème (avec la BCE).</td><td>Une seule institution.</td></tr>
+      </table>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Les familles ne sont pas étanches. Le <strong>Crédit Agricole</strong> figure à la fois parmi les grandes banques commerciales et parmi les banques mutualistes. <strong>BNP Paribas</strong> est une banque commerciale <em>et</em> une banque d'investissement. À l'examen, classe un établissement selon l'<strong>activité</strong> dont on parle, pas selon son seul nom.</p>
+      </div>
+
+      <h2>Les quatre missions de la Banque de France</h2>
+      <div class="example">
+        <div class="ex-head">Ce que fait la Banque de France</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Mettre en œuvre la politique monétaire européenne</b>, décidée dans le cadre de l'Eurosystème.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Surveiller la stabilité financière.</b></div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>Superviser les établissements bancaires et financiers</b>, via l'<b>ACPR</b> (Autorité de contrôle prudentiel et de résolution).</div></div>
+        <div class="step"><div class="sn">4</div><div class="sc"><b>Gérer la monnaie et le crédit.</b></div></div>
+      </div>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Pour s'en souvenir</div>
+        <p>Une banque mutualiste, c'est un peu comme une coopérative agricole : les clients en sont aussi les propriétaires (les « membres »). Une banque commerciale classique appartient à ses actionnaires.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 À retenir</div>
+        <p>Commerciales = services de base à tous. Mutualistes = propriété des clients, proximité. Investissement = services spécialisés aux entreprises. Banque de France = politique monétaire européenne, stabilité financière, supervision via l'ACPR, monnaie et crédit.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Qu'est-ce qui distingue une banque mutualiste ou coopérative ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Elle ne fait que du conseil en fusions et acquisitions</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Elle appartient à ses membres, c'est-à-dire à ses clients</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Elle appartient à l'État</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Elle ne reçoit pas de dépôts</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Les banques mutualistes appartiennent à leurs membres (les clients) et sont tournées vers la proximité et des valeurs solidaires : Crédit Agricole, Crédit Mutuel, Banques Populaires et Caisses d'Épargne.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Par quel organisme la Banque de France supervise-t-elle les banques ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">L'AMF</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">La Caisse des Dépôts et Consignations</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">L'ACPR</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> L'Autorité de contrôle prudentiel et de résolution (ACPR) est adossée à la Banque de France. L'AMF, elle, régule les marchés financiers.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('redac')">Questions rédigées</button>
+        <button class="btn primary" onclick="validate('l1',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 2 ============ -->
+    <section class="view" data-view="l2">
+      <span class="tag">Leçon 2 · Paysage bancaire</span>
+      <h1 class="lesson-title">Les services bancaires</h1>
+      <p class="subtitle">Comptes, crédits, gestion de patrimoine : ce que la banque propose à ses clients. Une vue d'ensemble, avant de zoomer sur le Livret A et les crédits.</p>
+
+      <h2>Les comptes bancaires</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Compte</th><th>À quoi il sert</th><th>Exemples</th></tr>
+        <tr><td>Compte courant</td><td>Les transactions du quotidien : factures, virements, retraits. Souvent associé à une <strong>carte bancaire</strong>.</td><td>Le compte de dépôt du client.</td></tr>
+        <tr><td>Comptes d'épargne</td><td>Ils offrent un <strong>rendement</strong> sur les dépôts, souvent sous forme d'intérêts.</td><td>Livret A, LDDS (Livret de Développement Durable et Solidaire), PEL (Plan d'Épargne Logement).</td></tr>
+      </table>
+      </div>
+
+      <h2>Les crédits et prêts, en survol</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Crédit</th><th>Ce qu'il finance</th><th>Où l'approfondir</th></tr>
+        <tr><td>Crédit immobilier</td><td>L'achat d'un bien immobilier, avec une durée de remboursement généralement <strong>longue</strong>.</td><td>Chapitre 3 (leçons 5 à 7)</td></tr>
+        <tr><td>Crédit à la consommation</td><td>Les achats <strong>non immobiliers</strong> : voiture, électroménager, etc.</td><td>Chapitre 4 (leçons 8 et 9)</td></tr>
+        <tr><td>Crédit professionnel</td><td>Les <strong>entreprises</strong> : leurs activités courantes ou leurs investissements.</td><td>Cité seulement par le cours</td></tr>
+      </table>
+      </div>
+
+      <h2>Gestion d'actifs et de patrimoine</h2>
+      <p>Les banques proposent aussi des services de <strong>conseil en gestion de patrimoine</strong>, des produits d'<strong>assurance-vie</strong>, des <strong>fonds d'investissement</strong> et des <strong>plans de retraite</strong>. C'est le cœur du métier de conseiller patrimoine en agence.</p>
+
+      <div class="example">
+        <div class="ex-head">En agence : un même client, plusieurs services</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Le quotidien</b> : un compte courant avec une carte bancaire pour payer et retirer.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>La précaution</b> : un Livret A ou un LDDS pour mettre de côté.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>Les projets</b> : un crédit à la consommation pour une voiture, un crédit immobilier pour un logement.</div></div>
+        <div class="step"><div class="sn">4</div><div class="sc"><b>Le long terme</b> : assurance-vie, fonds d'investissement, plan de retraite.</div></div>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Le compte courant n'est pas un compte d'épargne : il sert aux opérations du quotidien. Ce sont les comptes d'épargne (Livret A, LDDS, PEL) qui offrent un rendement sous forme d'intérêts.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 À retenir</div>
+        <p>Trois blocs de services : les <strong>comptes</strong> (courant, épargne), les <strong>crédits</strong> (immobilier, consommation, professionnel), la <strong>gestion d'actifs et de patrimoine</strong> (conseil, assurance-vie, fonds, retraite).</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Un client veut financer l'achat d'une voiture. Quel type de crédit relève de cette dépense ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Un crédit immobilier</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Un crédit à la consommation</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Un crédit professionnel</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Le crédit à la consommation finance les achats non immobiliers (voiture, électroménager…). Le crédit professionnel est accordé aux entreprises.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Lequel de ces produits n'est PAS un compte d'épargne cité par le cours ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Le LDDS</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le PEL</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Le compte courant</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le Livret A</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Le compte courant sert aux transactions quotidiennes. Livret A, LDDS et PEL sont les produits d'épargne populaires cités par le cours.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l1')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l2',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 3 ============ -->
+    <section class="view" data-view="l3">
+      <span class="tag">Leçon 3 · Livret A</span>
+      <h1 class="lesson-title">Le Livret A : définition et fonctionnement</h1>
+      <p class="subtitle">Le placement que tout le monde a, ou presque. Taux, plafond, quinzaines : les règles simples qu'un conseiller doit pouvoir expliquer en deux minutes.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Le Livret A est un compte d'épargne <em>réglementé</em> par l'État, <em>sécurisé</em> et <em>non imposable</em>, au taux fixé par l'État.</div>
+        <div class="rb-sub">Disponible pour toute personne résidant en France. Idéal pour conserver une partie de ses économies à court terme.</div>
+      </div>
+
+      <h2>Les caractéristiques principales</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Élément</th><th>Règle du cours</th></tr>
+        <tr><td>Taux d'intérêt</td><td>Fixé par l'État, révisé <strong>deux fois par an</strong> (1<sup>er</sup> février et 1<sup>er</sup> août). Il dépend de l'inflation et des conditions du marché monétaire. Selon le cours : <strong>1,7 % depuis le 1<sup>er</sup> août 2026</strong>, contre 1,5 % auparavant.</td></tr>
+        <tr><td>Plafond de dépôt</td><td><strong>22 950 €</strong> pour les particuliers. Les intérêts peuvent faire dépasser ce plafond.</td></tr>
+        <tr><td>Disponibilité</td><td>Fonds disponibles <strong>à tout moment</strong>, sans période de blocage.</td></tr>
+        <tr><td>Fiscalité</td><td>Intérêts <strong>exonérés</strong> d'impôt sur le revenu et de prélèvements sociaux.</td></tr>
+        <tr><td>Unicité</td><td><strong>Un seul</strong> Livret A par personne, même mineure.</td></tr>
+      </table>
+      </div>
+
+      <h2>Ouverture, dépôts et retraits</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Opération</th><th>Ce que dit le cours</th></tr>
+        <tr><td>Ouverture</td><td>Tout résident fiscal français, <strong>enfants et mineurs compris</strong>, dans n'importe quelle banque, y compris en ligne. Pièces souvent demandées : pièce d'identité et justificatif de domicile.</td></tr>
+        <tr><td>Dépôts</td><td>À tout moment, à partir de <strong>10 ou 15 €</strong> selon les banques. Par virement, chèque ou espèces.</td></tr>
+        <tr><td>Retraits</td><td>Libres, à tout moment : en agence, en ligne, ou par carte liée au livret dans certaines banques. <strong>Aucune pénalité</strong>.</td></tr>
+      </table>
+      </div>
+
+      <h2>Le calcul des intérêts : la règle des quinzaines</h2>
+      <div class="rulebox formule">
+        <div class="rb-main">Les intérêts se calculent par <em>quinzaine</em> (le 1<sup>er</sup> et le 16 de chaque mois). Un dépôt ne rapporte qu'à partir de la <em>quinzaine suivante</em>.</div>
+        <div class="rb-sub">Exemple du cours : un dépôt du 8 janvier ne rapporte qu'à partir du 16 janvier. Les intérêts sont <strong>capitalisés chaque année au 31 décembre</strong> : ils s'ajoutent au capital et rapportent à leur tour l'année suivante.</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">Exemple illustratif (construit par le site, calcul vérifié)</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Situation.</b> Un client dépose <code>1 200 €</code> le 8 janvier, au taux de <code>1,7 %</code> (taux cité par le cours), sans autre mouvement dans l'année.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Point de départ.</b> Le dépôt rapporte à partir du <b>16 janvier</b>. Il reste la deuxième quinzaine de janvier, puis 2 quinzaines par mois de février à décembre : <code>1 + 11 × 2 = 23 quinzaines</code>.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>Calcul.</b> Une année compte 24 quinzaines, donc chaque quinzaine rapporte <code>taux ÷ 24</code> : <code>1 200 × 1,7 % × 23 ÷ 24 = 19,55 €</code>.</div></div>
+        <div class="ex-result">Au 31 décembre, 19,55 € d'intérêts sont capitalisés : le livret affiche 1 219,55 €, qui rapporteront l'année suivante.</div>
+      </div>
+
+      <h2>Plafond et excédents</h2>
+      <p>Une fois le plafond de <strong>22 950 €</strong> atteint, l'épargnant ne peut plus faire de <strong>nouveaux dépôts</strong>. Mais les intérêts continuent d'être capitalisés au-delà : le solde peut donc <strong>dépasser le plafond</strong>.</p>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>« Mon livret affiche plus de 22 950 €, c'est une erreur ! » Non : le plafond limite les <strong>versements</strong>, pas le solde. Les intérêts capitalisés peuvent le dépasser. En revanche, le client ne peut plus rien verser tant qu'il est au-dessus.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 À retenir</div>
+        <p>Taux fixé par l'État (révisé au 1<sup>er</sup> février et au 1<sup>er</sup> août) · plafond de 22 950 € · disponible à tout moment · exonéré d'impôt et de prélèvements sociaux · un seul par personne · intérêts par quinzaine, capitalisés au 31 décembre.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Une cliente verse 500 € le 20 mars sur son Livret A. À partir de quand ce versement rapporte-t-il des intérêts ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Le 20 mars</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le 16 mars</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Le 1er avril</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le 31 décembre</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Le 20 mars tombe dans la quinzaine du 16 au 31 mars. Le versement rapporte à partir de la quinzaine suivante, soit le 1er avril.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Le Livret A d'un client affiche 23 300 € après capitalisation des intérêts. Que peut-il faire ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Rien : la banque doit lui reverser l'excédent sur son compte courant</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Il garde ce solde, mais ne peut plus faire de nouveaux dépôts</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Il peut verser encore 22 950 €</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Les intérêts capitalisés peuvent dépasser le plafond de 22 950 € ; ce sont les nouveaux dépôts qui sont bloqués.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l2')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l3',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 4 ============ -->
+    <section class="view" data-view="l4">
+      <span class="tag">Leçon 4 · Livret A</span>
+      <h1 class="lesson-title">Le Livret A : rôle économique, histoire, avantages</h1>
+      <p class="subtitle">Derrière le placement du quotidien, un outil de politique publique : il finance le logement social et sert de levier sur l'épargne des ménages. Depuis plus de deux siècles.</p>
+
+      <h2>Trois rôles économiques et sociaux</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Rôle</th><th>Explication du cours</th></tr>
+        <tr><td>Épargne de précaution</td><td>Garanti par l'État, donc <strong>sans risque</strong> ; accessible à tous, sans condition de revenus, et ouvrable pour les enfants dès leur plus jeune âge.</td></tr>
+        <tr><td>Financement du logement social</td><td>Une partie des fonds est centralisée par la <strong>Caisse des Dépôts et Consignations (CDC)</strong>, qui finance des projets d'intérêt général : construction et rénovation de <strong>logements sociaux</strong>, infrastructures publiques (hôpitaux, transports…).</td></tr>
+        <tr><td>Outil de politique monétaire</td><td>En fixant le taux, l'État influence l'épargne des ménages : un taux <strong>élevé</strong> incite à épargner ; un taux <strong>faible</strong> favorise la consommation ou le placement vers des produits plus rémunérateurs.</td></tr>
+      </table>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>La CDC ne centralise qu'<strong>une partie</strong> des fonds collectés, pas la totalité. Et c'est la <strong>Caisse des Dépôts et Consignations</strong>, pas la Banque de France, qui finance le logement social avec cette épargne.</p>
+      </div>
+
+      <h2>Une histoire depuis 1818</h2>
+      <div class="example">
+        <div class="ex-head">Les grandes dates du cours</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>1818</b> — Création, après la chute de Napoléon, pour relancer l'économie en encourageant les citoyens à épargner. Objectif double : sécuriser les économies des particuliers et collecter des fonds pour des projets d'utilité publique. Au début, il est surtout distribué par la <b>Caisse d'Épargne</b>.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Longtemps</b> — Seules la Caisse d'Épargne et La Banque Postale le distribuent.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>2009</b> — Une réforme permet à <b>toutes les banques</b> de le proposer : plus de concurrence, plus de distribution.</div></div>
+        <div class="step"><div class="sn">✓</div><div class="sc">Entre-temps, de nombreuses réformes de taux et de plafonds pour coller aux réalités économiques (inflation, taux du marché).</div></div>
+      </div>
+
+      <h2>Avantages et inconvénients</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Avantages</th><th>Inconvénients</th></tr>
+        <tr><td><strong>Sécurité</strong> : dépôts garantis par l'État.<br><strong>Disponibilité</strong> : retraits à tout moment sans pénalité.<br><strong>Exonération fiscale</strong> : ni impôt sur le revenu ni prélèvements sociaux.<br><strong>Simplicité</strong> d'ouverture et d'usage.</td><td><strong>Plafond limité</strong> (22 950 €) pour les grosses sommes.<br><strong>Taux parfois faible</strong>, souvent inférieur à l'inflation : perte de pouvoir d'achat à long terme.<br><strong>Rémunération modérée</strong> face aux actions ou à l'assurance-vie.</td></tr>
+      </table>
+      </div>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 En rendez-vous client</div>
+        <p>Le Livret A est la « réserve de sécurité » : on y place ce dont on peut avoir besoin vite. Pour un objectif à long terme, on oriente vers d'autres produits plus rémunérateurs, que le cours cite : actions, assurance-vie.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 À retenir</div>
+        <p>Créé en 1818 · ouvert à toutes les banques en 2009 · une partie des fonds financée par la CDC pour le logement social · taux = levier de l'État sur l'épargne · sûr, disponible, exonéré, simple · mais plafonné, peu rémunérateur, parfois sous l'inflation.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Qui centralise une partie des fonds du Livret A pour financer le logement social ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">La Banque de France</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">La Caisse des Dépôts et Consignations</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">L'ACPR</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">La Banque centrale européenne</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> La CDC finance avec ces fonds des projets d'intérêt général : logements sociaux, hôpitaux, transports.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">L'État baisse le taux du Livret A. Quel effet attend-il selon le cours ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Que les ménages épargnent davantage</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Favoriser la consommation ou le placement vers des produits plus rémunérateurs</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Augmenter le plafond de dépôt</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Un taux élevé incite à épargner ; un taux faible pousse à consommer ou à placer ailleurs.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l3')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l4',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 5 ============ -->
+    <section class="view" data-view="l5">
+      <span class="tag">Leçon 5 · Crédit immobilier</span>
+      <h1 class="lesson-title">Caractéristiques et types de prêts immobiliers</h1>
+      <p class="subtitle">Amortissable, relais, PTZ, conventionné, PAS : cinq prêts, cinq situations de client. Le bon conseil commence par le bon prêt.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Le crédit immobilier est un prêt <em>à long terme</em> pour financer l'achat, la construction ou la rénovation d'un bien immobilier.</div>
+        <div class="rb-sub">Résidence principale, secondaire ou investissement locatif. L'emprunteur rembourse la somme empruntée (le <strong>capital</strong>) et des <strong>intérêts</strong>, selon des conditions convenues avec le prêteur.</div>
+      </div>
+
+      <h2>Les caractéristiques principales</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Élément</th><th>Ce que dit le cours</th></tr>
+        <tr><td>Montant</td><td>De quelques dizaines de milliers à plusieurs centaines de milliers d'euros, selon la valeur du bien et la capacité de remboursement.</td></tr>
+        <tr><td>Durée</td><td>Généralement <strong>5 à 25 ans</strong> ; jusqu'à <strong>27 ans</strong> pour un achat en VEFA (vente en l'état futur d'achèvement) ou un bien ancien avec travaux importants (norme du <strong>HCSF</strong>).</td></tr>
+        <tr><td>Taux</td><td>Calculé sur la somme empruntée ; <strong>fixe</strong> ou <strong>variable</strong>.</td></tr>
+        <tr><td>Garantie</td><td>Généralement une <strong>hypothèque</strong> sur le bien, ou une <strong>caution</strong>.</td></tr>
+        <tr><td>Assurance emprunteur</td><td>Exigée pour couvrir le non-remboursement en cas de décès, d'invalidité ou de perte d'emploi.</td></tr>
+      </table>
+      </div>
+
+      <h2>Les cinq types de prêts</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Prêt</th><th>Pour qui, pour quoi</th><th>Chiffres et règles du cours</th></tr>
+        <tr><td>Amortissable</td><td>Le plus courant. Chaque mois, on rembourse une partie du capital et des intérêts.</td><td>Taux fixe (mensualités stables) ou variable (risque de hausse). Souvent 15 à 25 ans.</td></tr>
+        <tr><td>Relais</td><td>Acheter un nouveau bien <strong>avant d'avoir vendu</strong> l'actuel.</td><td>Durée courte : <strong>1 à 2 ans</strong>. Montant : <strong>50 à 80 %</strong> de la valeur du bien mis en vente.</td></tr>
+        <tr><td>PTZ (prêt à taux zéro)</td><td>Prêt <strong>sans intérêts</strong> accordé par l'État, pour les ménages modestes ou les primo-accédants. Finance <strong>partiellement</strong> une résidence principale, neuve ou ancienne sous conditions.</td><td>Conditions : revenus, zone, nature du bien. Montant plafonné selon la localisation et les revenus. Différé de 2, 8 ou 10 ans, puis remboursement sur 12, 13 ou 15 ans : <strong>14 à 25 ans</strong> au total.</td></tr>
+        <tr><td>Conventionné</td><td>Accessible à <strong>tous, sans conditions de ressources</strong>. Résidence principale (achat ou construction). Ouvre droit aux <strong>APL</strong>.</td><td>Taux fixé par l'État, parfois légèrement supérieur aux prêts classiques. Durée : <strong>5 à 30 ans</strong>.</td></tr>
+        <tr><td>PAS (prêt d'accession sociale)</td><td>Comme le conventionné, mais <strong>réservé</strong> aux foyers sous un plafond de revenus. Résidence principale.</td><td>Taux fixé par les banques. Plafond selon la composition du foyer et la localisation. Ouvre droit aux APL.</td></tr>
+      </table>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">Exemple illustratif : le prêt relais (calcul vérifié)</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Situation.</b> Un couple met en vente sa maison estimée à <code>300 000 €</code> et a trouvé son nouveau logement.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Règle du cours.</b> Le prêt relais représente généralement 50 à 80 % de la valeur du bien mis en vente : <code>300 000 × 50 % = 150 000 €</code> et <code>300 000 × 80 % = 240 000 €</code>.</div></div>
+        <div class="ex-result">Prêt relais envisageable : entre 150 000 € et 240 000 €, sur 1 à 2 ans, remboursé à la vente de la maison.</div>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Ne confonds pas <strong>conventionné</strong> et <strong>PAS</strong>. Le prêt conventionné est ouvert à tous, <strong>sans conditions de ressources</strong>. Le PAS est le même principe, mais <strong>réservé aux revenus modestes</strong>. Tous deux ouvrent droit aux APL. Autre nuance du cours : le taux du conventionné est fixé par l'État, celui du PAS par les banques.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 À retenir</div>
+        <p>Amortissable = le standard (fixe ou variable). Relais = acheter avant de vendre (1 à 2 ans, 50 à 80 % du bien vendu). PTZ = sans intérêts, partiel, sous conditions. Conventionné = tous, APL. PAS = revenus modestes, APL.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Un client veut acheter un appartement avant d'avoir vendu le sien. Quel prêt lui proposer en complément ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Un prêt conventionné</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Un prêt relais</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Un PTZ</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Un crédit renouvelable</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Le prêt relais finance le nouvel achat en attendant la vente de l'ancien bien, sur 1 à 2 ans.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Quel prêt est accessible à tous, sans condition de ressources, et ouvre droit aux APL ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">Le prêt conventionné</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le PAS</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le PTZ</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Le PAS ouvre aussi droit aux APL, mais il est réservé aux foyers sous plafond de revenus. Le PTZ est soumis à des conditions de revenus.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l4')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l5',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 6 ============ -->
+    <section class="view" data-view="l6">
+      <span class="tag">Leçon 6 · Crédit immobilier</span>
+      <h1 class="lesson-title">Obtenir un crédit immobilier</h1>
+      <p class="subtitle">Du budget à la signature chez le notaire : six étapes, une règle des 35 %, une assurance obligatoire et une garantie pour la banque.</p>
+
+      <h2>Les six étapes</h2>
+      <div class="example">
+        <div class="ex-head">De la simulation à l'acte de vente</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Définir son budget et sa capacité d'emprunt</b> : revenus nets (emprunteur et co-emprunteur), apport personnel, taux d'endettement, durée.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Chercher le bien</b>, puis signer souvent une promesse ou un compromis de vente avant de finaliser le prêt.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>Simuler et demander le prêt</b> : comparer plusieurs banques ; fournir un dossier (relevés de compte, bulletins de salaire, avis d'imposition, compromis…) pour évaluer la solvabilité.</div></div>
+        <div class="step"><div class="sn">4</div><div class="sc"><b>Accord de principe</b> : la banque formalise sa volonté de financer, sous réserve de vérifications (expertise du bien…).</div></div>
+        <div class="step"><div class="sn">5</div><div class="sc"><b>Offre de prêt</b> : montant, taux, durée, assurance… L'emprunteur a un <b>délai de réflexion de 10 jours</b> avant d'accepter ou de refuser.</div></div>
+        <div class="step"><div class="sn">6</div><div class="sc"><b>Acte de vente chez le notaire</b> : les fonds sont débloqués, l'acquisition devient officielle.</div></div>
+      </div>
+
+      <h2>Les repères de la capacité d'emprunt</h2>
+      <div class="rulebox">
+        <div class="rb-main">Taux d'endettement : toutes les mensualités de crédit ne doivent généralement pas dépasser <em>35 % des revenus nets</em>, <em>assurance emprunteur comprise</em> (norme HCSF).</div>
+        <div class="rb-sub">Apport personnel : en général <strong>10 à 20 %</strong> du prix d'achat. Durée : plus le prêt est long, plus les mensualités baissent, mais plus le coût total augmente à cause des intérêts.</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">Exemple illustratif : la règle des 35 % (calcul vérifié)</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Situation.</b> Un couple gagne <code>4 000 €</code> nets par mois et rembourse déjà un crédit auto de <code>300 €</code> par mois.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Plafond total.</b> <code>4 000 × 35 % = 1 400 €</code> de mensualités, tous crédits et assurance compris.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>Place pour l'immobilier.</b> <code>1 400 − 300 = 1 100 €</code> par mois, assurance emprunteur comprise.</div></div>
+        <div class="ex-result">Mensualité immobilière maximale : 1 100 € (et non 1 400 €, car le crédit auto compte aussi).</div>
+      </div>
+
+      <h2>Taux, assurance et garanties</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Sujet</th><th>Option 1</th><th>Option 2</th></tr>
+        <tr><td>Taux d'intérêt</td><td><strong>Fixe</strong> : le même pendant toute la durée, mensualités prévisibles.</td><td><strong>Variable</strong> : suit les indices du marché ; les mensualités peuvent monter ou baisser.</td></tr>
+        <tr><td>Assurance emprunteur</td><td><strong>Assurance groupe</strong> : proposée par la banque prêteuse, conditions standard pour tous.</td><td><strong>Délégation d'assurance</strong> : contrat souscrit ailleurs, plus adapté ou moins cher.</td></tr>
+        <tr><td>Garantie</td><td><strong>Hypothèque</strong> : en cas de défaut, la banque peut saisir et vendre le bien.</td><td><strong>Caution</strong> : une société de cautionnement (ex. Crédit Logement) se porte garante.</td></tr>
+      </table>
+      </div>
+      <p>L'assurance emprunteur couvre le remboursement du prêt en cas de <strong>décès</strong>, d'<strong>invalidité</strong> ou d'<strong>incapacité de travail</strong>. Le cours la présente comme <strong>obligatoire</strong> pour un crédit immobilier.</p>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Le taux d'endettement se calcule sur <strong>toutes</strong> les mensualités de crédit (immobilier <em>et</em> autres), <strong>assurance comprise</strong>. Oublier un crédit auto ou l'assurance, c'est surestimer la capacité d'emprunt du client. Et ne confonds pas : <strong>10 jours</strong> de réflexion pour l'offre de prêt immobilier, <strong>14 jours</strong> de rétractation pour le crédit à la consommation (leçon 9).</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 À retenir</div>
+        <p>Budget → bien → simulation et dossier → accord de principe → offre (10 jours de réflexion) → notaire. 35 % d'endettement maximum, assurance comprise (HCSF). Apport : 10 à 20 %. Assurance groupe ou délégation. Hypothèque ou caution.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Un client gagne 3 200 € nets par mois et n'a aucun autre crédit. Quelle mensualité maximale (assurance comprise) selon la norme HCSF ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">1 056 €</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">1 120 €</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">1 280 €</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">1 600 €</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> 3 200 × 35 % = 1 120 €, assurance emprunteur comprise. (1 056 € correspondrait à 33 %.)</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Quel est le délai de réflexion après réception de l'offre de prêt immobilier ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">7 jours</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">10 jours</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">14 jours</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">30 jours</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> 10 jours de réflexion avant d'accepter ou de refuser l'offre. Les 14 jours, c'est la rétractation du crédit à la consommation.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l5')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l6',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 7 ============ -->
+    <section class="view" data-view="l7">
+      <span class="tag">Leçon 7 · Crédit immobilier</span>
+      <h1 class="lesson-title">Aides, fiscalité et optimisation</h1>
+      <p class="subtitle">PTZ, PAS, aides locales, dispositifs locatifs, assurance déléguée, renégociation : tout ce qui fait baisser le coût d'un projet immobilier.</p>
+
+      <h2>Avantages et inconvénients du crédit immobilier</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Avantage</th><th>Inconvénients</th></tr>
+        <tr><td><strong>Effet de levier</strong> : acquérir des biens plus importants, qui peuvent générer plus-values ou revenus locatifs. En locatif, les loyers peuvent couvrir tout ou partie des mensualités.</td><td><strong>Endettement à long terme</strong> : un imprévu (perte d'emploi, maladie) peut compliquer le remboursement.<br><strong>Coût total élevé</strong> : intérêts cumulés sur 15 à 30 ans, plus assurances et frais (notaire, garantie).<br><strong>Risque du taux variable</strong> : les mensualités peuvent augmenter.</td></tr>
+      </table>
+      </div>
+
+      <h2>Les aides à l'achat</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Aide</th><th>Ce que dit le cours</th></tr>
+        <tr><td>PTZ</td><td>Prêt sans intérêts, réservé aux <strong>primo-accédants</strong>, sous conditions de revenus et de zone (zones tendues). <strong>En 2026</strong>, reconduit aux conditions de 2025 : jusqu'à <strong>50 %</strong> du prix d'un appartement neuf (logement collectif) partout, jusqu'à <strong>30 %</strong> d'une maison neuve, jusqu'à <strong>50 %</strong> d'un logement ancien en zones <strong>B2 et C</strong> avec au moins 25 % de travaux et au minimum la classe énergétique <strong>D</strong>. Il réduit le coût global, mais ne couvre jamais tout le projet : il faut un autre prêt.</td></tr>
+        <tr><td>PAS</td><td>Prêt conventionné pour les revenus modestes : droit à l'<strong>APL</strong>, frais de notaire parfois réduits, taux souvent plus avantageux.</td></tr>
+        <tr><td>Aides locales</td><td>Régions, départements, communes : subventions aux primo-accédants, prêts à taux réduit en zones rurales ou urbaines en revitalisation.</td></tr>
+        <tr><td>Investissement locatif</td><td><strong>Denormandie</strong>, <strong>Malraux</strong> et, depuis la loi de finances 2026, le dispositif <strong>Jeanbrun</strong>, qui succède au <strong>Pinel</strong> (arrivé à échéance le 31 décembre 2024). Avantages fiscaux contre un engagement de location.</td></tr>
+      </table>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">Exemple illustratif : plafonds du PTZ (calcul vérifié)</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Appartement neuf à 200 000 €.</b> Jusqu'à 50 % : <code>200 000 × 50 % = 100 000 €</code> de PTZ au maximum.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Maison neuve à 250 000 €.</b> Jusqu'à 30 % : <code>250 000 × 30 % = 75 000 €</code> au maximum.</div></div>
+        <div class="ex-result">Ce sont des plafonds : le montant réel dépend aussi des revenus du foyer et de la zone. Le reste se finance par un prêt bancaire classique.</div>
+      </div>
+
+      <h2>La fiscalité</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Situation</th><th>Règle du cours</th></tr>
+        <tr><td>Résidence principale</td><td><strong>Plus de déduction</strong> des intérêts d'emprunt depuis <strong>2011</strong>.</td></tr>
+        <tr><td>Investissement locatif</td><td>Les intérêts d'emprunt se <strong>déduisent des revenus locatifs</strong>, ce qui réduit l'impôt.</td></tr>
+        <tr><td>Pinel (fini)</td><td>Ne s'applique plus aux acquisitions depuis le 1<sup>er</sup> janvier 2025. Réduction d'impôt jusqu'à <strong>21 %</strong> du prix, étalée sur <strong>12 ans</strong>, selon la durée de location.</td></tr>
+        <tr><td>Jeanbrun (successeur)</td><td>Non plus une réduction d'impôt, mais l'<strong>amortissement du bien</strong>, contre une location à <strong>loyer abordable pendant 9 ans</strong>.</td></tr>
+      </table>
+      </div>
+
+      <h2>Optimiser son crédit : quatre leviers</h2>
+      <div class="example">
+        <div class="ex-head">Les leviers du cours</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Négocier</b> taux, assurance et frais de dossier, en comparant plusieurs banques, éventuellement via un <b>courtier</b>.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Déléguer l'assurance</b> : possible depuis la <b>loi Hamon (2014)</b> et la <b>loi Bourquin (2018)</b>, à garanties équivalentes. Depuis la <b>loi Lemoine (2022)</b>, changement <b>à tout moment</b>, sans frais ni attente de la date anniversaire.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>Rembourser par anticipation</b> (partiellement ou totalement) pour réduire la durée ou les intérêts restants — en tenant compte d'éventuelles <b>IRA</b> (indemnités de remboursement anticipé), qui compensent les intérêts perdus par la banque.</div></div>
+        <div class="step"><div class="sn">4</div><div class="sc"><b>Renégocier</b> avec sa banque si les taux baissent, ou faire <b>racheter</b> le prêt par une autre banque — en comptant les frais (dossier, garantie, IRA).</div></div>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Trois lois, trois apports : <strong>Hamon 2014</strong> et <strong>Bourquin 2018</strong> ouvrent la délégation d'assurance ; seule <strong>Lemoine 2022</strong> permet de changer <strong>à tout moment</strong>, sans frais ni date anniversaire. Et pour un client propriétaire de sa résidence principale : <strong>pas</strong> de déduction des intérêts d'emprunt.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 À retenir</div>
+        <p>Effet de levier contre endettement long et coût total. Aides : PTZ, PAS, aides locales, dispositifs locatifs (Denormandie, Malraux, Jeanbrun après Pinel). Intérêts déductibles en locatif seulement. Optimiser : négocier, déléguer l'assurance (Lemoine : à tout moment), rembourser par anticipation (attention aux IRA), renégocier ou faire racheter.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Quelle loi permet de changer d'assurance emprunteur à tout moment, sans frais ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">La loi Hamon (2014)</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">La loi Bourquin (2018)</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">La loi Lemoine (2022)</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">La loi Denormandie</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Depuis la loi Lemoine (2022), plus besoin d'attendre la date anniversaire. Hamon et Bourquin avaient ouvert la délégation d'assurance.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Un client achète un appartement qu'il va louer. Que peut-il faire des intérêts d'emprunt ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Rien : la déduction est supprimée depuis 2011</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Les déduire de ses revenus locatifs</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Obtenir une réduction d'impôt de 21 % du prix</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> La suppression de 2011 concerne la résidence principale. En locatif, les intérêts se déduisent des revenus locatifs. Les 21 % étaient le maximum du Pinel, qui ne s'applique plus depuis 2025.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l6')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l7',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 8 ============ -->
+    <section class="view" data-view="l8">
+      <span class="tag">Leçon 8 · Crédit conso</span>
+      <h1 class="lesson-title">Les types de crédits à la consommation</h1>
+      <p class="subtitle">Une voiture, des travaux, un imprévu : cinq formes de crédit, de la plus libre (le prêt personnel) à la plus encadrée (le microcrédit).</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Le crédit à la consommation finance des dépenses <em>non immobilières</em>. Il est encadré par le <em>Code de la consommation</em>.</div>
+        <div class="rb-sub">Montant : de <strong>200 € à 75 000 €</strong>, durée supérieure à <strong>trois mois</strong>. À compter du <strong>20 novembre 2026</strong> (transposition de la directive européenne 2023/2297, selon le cours), le plafond passe à <strong>100 000 €</strong> et le seuil de 200 € disparaît.</div>
+      </div>
+
+      <p>Il peut financer des <strong>biens</strong> (électroménager, automobile, mobilier), des <strong>services</strong> (voyages, mariages, études, travaux) ou des <strong>imprévus</strong> (dépenses médicales, réparation d'un véhicule). Par rapport au crédit immobilier : montants plus modestes, durées plus courtes.</p>
+
+      <h2>Les cinq types</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Type</th><th>Principe</th><th>Chiffres et traits du cours</th></tr>
+        <tr><td>Prêt personnel</td><td>Crédit <strong>non affecté</strong> : on utilise l'argent librement, sans justifier.</td><td>1 000 € à 75 000 € ; 12 mois à 7 ans ; taux fixe, mensualités constantes.</td></tr>
+        <tr><td>Crédit affecté</td><td>Lié à un <strong>achat précis</strong> (crédit auto, prêt travaux) ; les fonds sont débloqués à l'achat.</td><td>Si l'achat ne se fait pas, le prêt est <strong>annulé</strong>. Moins flexible.</td></tr>
+        <tr><td>Crédit renouvelable (revolving)</td><td>Une <strong>réserve d'argent</strong> utilisable à tout moment, qui se reconstitue à chaque remboursement.</td><td>500 € à 6 000 € ; taux souvent plus élevé et pouvant varier ; risque de <strong>surendettement</strong>.</td></tr>
+        <tr><td>Crédit-bail (leasing)</td><td><strong>Location avec option d'achat</strong> (LOA) : on loue, avec la possibilité d'acheter en fin de contrat.</td><td>Surtout pour les véhicules (et équipements) ; mensualités de location puis option d'achat.</td></tr>
+        <tr><td>Microcrédit personnel</td><td>Petit prêt pour un projet de <strong>réinsertion</strong> sociale ou professionnelle (permis, formation), pour les personnes exclues du système bancaire.</td><td>300 € à 5 000 € ; avec un <strong>accompagnement social</strong>.</td></tr>
+      </table>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">En agence : prêt personnel ou crédit affecté ?</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>La cliente</b> veut acheter une voiture d'occasion chez un concessionnaire, mais la vente n'est pas encore certaine.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Crédit affecté (crédit auto)</b> : si la vente de la voiture échoue, le prêt est annulé. Elle est protégée.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>Prêt personnel</b> : plus souple (elle peut utiliser l'argent comme elle veut), mais le prêt n'est pas lié à l'achat.</div></div>
+        <div class="ex-result">Achat précis et incertain → crédit affecté. Besoin libre et sans justificatif → prêt personnel.</div>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Le crédit renouvelable paraît pratique (la réserve se reconstitue), mais c'est celui que le cours associe au <strong>risque de surendettement</strong> : taux élevé et facilité d'accès. Et le prêt personnel n'est <strong>pas</strong> annulé si un achat échoue : c'est la protection propre au crédit <strong>affecté</strong>.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 À retenir</div>
+        <p>200 € à 75 000 € (100 000 € et plus de seuil minimum à partir du 20 novembre 2026), plus de 3 mois. Personnel = libre. Affecté = lié à l'achat, annulé si l'achat échoue. Renouvelable = réserve, taux élevé, risque de surendettement. Crédit-bail = LOA. Microcrédit = réinsertion, accompagnement social.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Quel crédit est annulé si l'achat qu'il finance ne se réalise pas ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Le prêt personnel</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Le crédit affecté</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le crédit renouvelable</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le microcrédit personnel</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Le crédit affecté est lié à l'achat d'un bien ou d'un service précis : si la vente échoue, le prêt tombe.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Un jeune sans accès au crédit bancaire veut financer son permis de conduire pour trouver un emploi. Quel crédit correspond ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Un crédit renouvelable</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Un crédit-bail</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Un microcrédit personnel</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Le microcrédit personnel (300 € à 5 000 € selon le cours) finance des projets de réinsertion, avec un accompagnement social.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l7')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l8',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 9 ============ -->
+    <section class="view" data-view="l9">
+      <span class="tag">Leçon 9 · Crédit conso</span>
+      <h1 class="lesson-title">Souscription, droits de l'emprunteur et surendettement</h1>
+      <p class="subtitle">TAEG, 33 %, 14 jours de rétractation, Commission de surendettement : les règles qui protègent l'emprunteur, et celles qu'il doit respecter.</p>
+
+      <h2>Les conditions d'octroi</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Condition</th><th>Ce que dit le cours</th></tr>
+        <tr><td>Capacité de remboursement</td><td>La banque examine revenus, charges et crédits en cours. Le taux d'endettement ne doit généralement pas dépasser <strong>33 % des revenus mensuels</strong>.</td></tr>
+        <tr><td>Garanties</td><td>Parfois demandées : un <strong>co-emprunteur</strong> ou une <strong>assurance</strong>.</td></tr>
+      </table>
+      </div>
+
+      <h2>Le coût : le TAEG</h2>
+      <div class="rulebox">
+        <div class="rb-main">Le <em>TAEG</em> (taux annuel effectif global) inclut le taux nominal, les frais de dossier et frais liés, et l'assurance emprunteur.</div>
+        <div class="rb-sub">C'est lui qui permet de <strong>comparer</strong> les offres. Pour le crédit à la consommation, l'assurance emprunteur est <strong>non obligatoire</strong>, mais souvent proposée (décès, invalidité, incapacité de travail).</div>
+      </div>
+      <p>Le remboursement est généralement <strong>mensuel</strong> : chaque mensualité contient une part de capital et une part d'intérêts, fixées à la souscription. Un remboursement <strong>anticipé</strong>, partiel ou total, est possible selon les contrats, avec d'éventuelles <strong>IRA</strong>.</p>
+
+      <h2>Les quatre étapes de souscription</h2>
+      <div class="example">
+        <div class="ex-head">Du besoin à la signature</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Évaluer le besoin</b> : le bon montant, une durée adaptée. Un emprunt mal calibré mène aux impayés, voire au surendettement.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Comparer les offres</b> : TAEG, durée, frais annexes (dossier, assurance). Simulateurs en ligne.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>Constituer le dossier</b> : pièce d'identité, justificatifs de revenus (fiches de paie, avis d'imposition), relevés bancaires, justificatif de domicile.</div></div>
+        <div class="step"><div class="sn">4</div><div class="sc"><b>Recevoir l'offre et signer</b> : montant, durée, taux, mensualités. Puis <b>14 jours</b> de rétractation après la signature.</div></div>
+      </div>
+
+      <h2>Obligations et droits</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Obligations de l'emprunteur</th><th>Droits de l'emprunteur</th></tr>
+        <tr><td>Rembourser selon le contrat.<br>En cas de difficulté, <strong>prévenir immédiatement</strong> le prêteur (report, réaménagement).<br>Sinon : pénalités, et en cas de défaut prolongé, <strong>recouvrement judiciaire</strong>.</td><td><strong>Rétractation</strong> : 14 jours calendaires après la signature, sans se justifier.<br><strong>Information</strong> avant signature : montant total dû, nombre de mensualités, intérêts, frais.<br><strong>Remboursement anticipé</strong> de tout ou partie, même si des frais peuvent s'appliquer.</td></tr>
+      </table>
+      </div>
+
+      <h2>Le surendettement</h2>
+      <p>Il survient quand un ménage ne peut plus faire face à ses charges financières, crédits compris — souvent par cumul de crédits ou recours excessif au <strong>crédit renouvelable</strong>. L'emprunteur peut saisir la <strong>Commission de surendettement de la Banque de France</strong>, qui propose : le <strong>rééchelonnement</strong> des dettes, la <strong>suspension</strong> des paiements, et dans les cas extrêmes l'<strong>effacement</strong> partiel ou total des dettes.</p>
+
+      <div class="example">
+        <div class="ex-head">Exemple illustratif : la règle des 33 % (calcul vérifié)</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Situation.</b> Un client gagne <code>2 500 €</code> par mois et demande un prêt personnel.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Calcul.</b> <code>2 500 × 33 % = 825 €</code> de mensualités au total, crédits en cours compris.</div></div>
+        <div class="ex-result">Repère du cours pour le crédit à la consommation : 825 € par mois. (Avec la norme HCSF de 35 % du crédit immobilier, on obtiendrait 875 €.)</div>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Compare les offres sur le <strong>TAEG</strong>, pas sur le seul taux nominal : le TAEG intègre les frais et l'assurance. Et attention aux deux repères d'endettement du cours : <strong>33 %</strong> pour le crédit à la consommation, <strong>35 %</strong> (norme HCSF, assurance comprise) pour le crédit immobilier.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 À retenir</div>
+        <p>Endettement ≤ 33 % (repère conso). TAEG = taux nominal + frais + assurance, pour comparer. Assurance non obligatoire. 14 jours calendaires de rétractation. Information obligatoire avant signature. Remboursement anticipé possible (IRA éventuelles). Surendettement : Commission de la Banque de France (rééchelonnement, suspension, effacement).</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Une cliente a signé un prêt personnel et change d'avis. De combien de jours dispose-t-elle pour renoncer ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">7 jours</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">10 jours</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">14 jours calendaires</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Aucun : le contrat est signé</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> 14 jours calendaires après la signature, sans avoir à se justifier.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Laquelle de ces mesures la Commission de surendettement peut-elle proposer dans les cas extrêmes ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Un nouveau crédit renouvelable</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">L'effacement partiel ou total des dettes</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">La saisie du Livret A par la CDC</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Rééchelonnement, suspension des paiements, et effacement partiel ou total dans les cas extrêmes.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l8')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l9',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 10 ============ -->
+    <section class="view" data-view="l10">
+      <span class="tag">Leçon 10 · Régulation</span>
+      <h1 class="lesson-title">La régulation et la supervision</h1>
+      <p class="subtitle">Qui surveille les banques ? En France, l'ACPR et l'AMF ; en Europe, la BCE et les règles de Bâle III. Objectif : la stabilité, et la protection des épargnants.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Le secteur bancaire est fortement régulé pour assurer sa <em>stabilité</em> et <em>protéger les épargnants et investisseurs</em>.</div>
+        <div class="rb-sub">Le cadre repose sur la Banque de France et l'ACPR, sur l'AMF, et sur la réglementation européenne.</div>
+      </div>
+
+      <h2>Qui fait quoi ?</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Autorité</th><th>Missions selon le cours</th></tr>
+        <tr><td>ACPR (adossée à la Banque de France)</td><td>Superviser les établissements financiers et bancaires : leur <strong>solvabilité</strong> et leur conformité aux <strong>règles prudentielles</strong>. Garantir aussi la <strong>protection des consommateurs</strong> de services financiers.</td></tr>
+        <tr><td>AMF (Autorité des marchés financiers)</td><td>Réguler les <strong>marchés financiers</strong> : sociétés cotées, fonds d'investissement, transactions boursières. Objectif : <strong>transparence</strong> des marchés et protection des <strong>investisseurs</strong>.</td></tr>
+        <tr><td>Réglementation européenne</td><td>La France applique les règles bancaires européennes, dont <strong>Bâle III</strong> (fonds propres, gestion des risques), mis en œuvre dans l'UE par le règlement <strong>CRR3</strong> et la directive <strong>CRD VI</strong>, applicables depuis le 1<sup>er</sup> janvier 2025 selon le cours.</td></tr>
+        <tr><td>BCE</td><td>Supervise les <strong>plus grandes banques</strong> européennes dans le cadre du <strong>Mécanisme de supervision unique (MSU)</strong>.</td></tr>
+      </table>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">En pratique : à qui s'adresser ?</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Une banque manque de fonds propres</b> → c'est la solvabilité d'un établissement : <b>ACPR</b> (et la BCE pour les plus grandes banques, via le MSU).</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Une société cotée publie une information trompeuse</b> → c'est la transparence d'un marché : <b>AMF</b>.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>Un client s'estime mal informé sur un crédit</b> → protection des consommateurs de services financiers : <b>ACPR</b>.</div></div>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p><strong>ACPR</strong> = les <strong>établissements</strong> (banques, assureurs : solvabilité, règles prudentielles). <strong>AMF</strong> = les <strong>marchés</strong> (sociétés cotées, fonds, Bourse). Ne les inverse pas. Et la Banque de France n'est pas seule : la <strong>BCE</strong> supervise directement les plus grandes banques.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 À retenir</div>
+        <p>ACPR (adossée à la Banque de France) : solvabilité, règles prudentielles, protection des consommateurs. AMF : marchés, transparence, investisseurs. Europe : Bâle III (CRR3, CRD VI) et BCE via le MSU pour les plus grandes banques.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Quelle autorité surveille les sociétés cotées et les transactions boursières ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">L'ACPR</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">L'AMF</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">La Caisse des Dépôts</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le HCSF</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> L'AMF régule les marchés financiers : sociétés cotées, fonds d'investissement, transactions boursières.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Dans quel cadre la BCE supervise-t-elle les plus grandes banques européennes ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">Le Mécanisme de supervision unique (MSU)</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le Fonds de résolution unique (FRU)</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le Dodd-Frank Act</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Le MSU confie à la BCE la supervision directe des plus grandes banques. Le FRU sert à financer les défaillances (leçon 11).</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l9')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l10',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 11 ============ -->
+    <section class="view" data-view="l11">
+      <span class="tag">Leçon 11 · Régulation</span>
+      <h1 class="lesson-title">La crise de 2007-2008 et la régulation accrue</h1>
+      <p class="subtitle">Subprimes, opacité, effet de levier : la crise a montré les failles. Bâle III, Dodd-Frank et l'Union bancaire ont suivi. Avec un prix à payer.</p>
+
+      <h2>Les trois causes de la crise</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Cause</th><th>Explication du cours</th></tr>
+        <tr><td>Prise de risque excessive</td><td>Produits complexes : prêts <strong>subprime</strong> (prêts immobiliers à haut risque) et dérivés.</td></tr>
+        <tr><td>Manque de transparence</td><td>Produits opaques, difficiles à évaluer : risques <strong>sous-estimés</strong>.</td></tr>
+        <tr><td>Réglementation insuffisante</td><td>Exigences limitées, qui ont permis d'accroître l'<strong>effet de levier</strong> et l'exposition au risque.</td></tr>
+      </table>
+      </div>
+      <p>Résultat : pertes massives, faillites de grandes institutions, et <strong>renflouement massif par les États</strong> pour éviter l'effondrement du système financier.</p>
+
+      <h2>Cinq objectifs de la régulation</h2>
+      <div class="example">
+        <div class="ex-head">Ce que vise la régulation post-crise</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Stabiliser</b> le système financier.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Réduire le risque systémique</b> : éviter qu'une défaillance entraîne un effet domino.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>Protéger</b> consommateurs et déposants.</div></div>
+        <div class="step"><div class="sn">4</div><div class="sc"><b>Assurer la transparence</b> des opérations bancaires.</div></div>
+        <div class="step"><div class="sn">5</div><div class="sc"><b>Limiter les comportements à risque.</b></div></div>
+      </div>
+
+      <h2>Les grandes réformes</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Réforme</th><th>Contenu selon le cours</th></tr>
+        <tr><td>Bâle III (Comité de Bâle)</td><td>Plus de <strong>fonds propres</strong> pour absorber les pertes ; <strong>ratio de levier</strong> ; <strong>ratio de liquidité</strong> (actifs liquides contre une crise à court terme) ; <strong>coussin contra-cyclique</strong> (capital mis de côté en période de croissance).</td></tr>
+        <tr><td>Dodd-Frank Act (États-Unis, 2010)</td><td><strong>Volcker Rule</strong> (interdiction de spéculer pour compte propre ou d'investir ses fonds dans des actifs à haut risque) ; <strong>stress tests</strong> ; création du <strong>CFPB</strong> (protection des consommateurs).</td></tr>
+        <tr><td>Union bancaire (Europe)</td><td><strong>MSU</strong> : la BCE supervise les plus grandes banques de la zone euro. <strong>MRU</strong> (Mécanisme de résolution unique) : résoudre les crises de façon ordonnée, en limitant l'impact sur les contribuables. <strong>FRU</strong> (Fonds de résolution unique) : financé par les banques.</td></tr>
+      </table>
+      </div>
+
+      <h2>Impacts, critiques, bilan</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Impacts sur les banques</th><th>Critiques</th></tr>
+        <tr><td>Hausse des <strong>coûts</strong> (capital, stress tests, conformité).<br>Baisse de la <strong>rentabilité</strong> (moins de trading risqué).<br>Nouveau <strong>modèle d'affaires</strong> : recentrage sur la banque de détail.<br>Plus de <strong>transparence</strong>.</td><td><strong>Coût pour l'économie</strong> : moins de financement, croissance freinée.<br><strong>Complexité excessive</strong>, surtout pour les petites et moyennes banques.<br><strong>Innovation bloquée</strong>.</td></tr>
+      </table>
+      </div>
+      <p><strong>Bilan</strong> : des banques mieux capitalisées, plus liquides, plus transparentes, et une confiance restaurée. Mais de nouveaux risques : <strong>cyberattaques</strong>, <strong>changement climatique</strong>, <strong>cryptomonnaies</strong>. La régulation des FinTech et des actifs numériques pourrait devenir centrale.</p>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Ne mélange pas les deux rives de l'Atlantique : <strong>Volcker Rule, stress tests, CFPB</strong> = Dodd-Frank, <strong>États-Unis</strong>. <strong>MSU, MRU, FRU</strong> = Union bancaire, <strong>Europe</strong>. Et dans l'Union bancaire, le <strong>MRU</strong> est un mécanisme (résoudre la crise) ; le <strong>FRU</strong> est un fonds (financé par les banques).</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 À retenir</div>
+        <p>Causes : risque excessif (subprimes, dérivés), opacité, réglementation insuffisante. Réformes : Bâle III (fonds propres, levier, liquidité, coussin contra-cyclique), Dodd-Frank 2010 (Volcker, stress tests, CFPB), Union bancaire (MSU, MRU, FRU). Effets : coûts en hausse, rentabilité en baisse, recentrage sur la banque de détail.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Le coussin (buffer) contra-cyclique de Bâle III oblige les banques à :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Ne plus prêter en période de crise</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Mettre du capital de côté en période de croissance</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Passer des stress tests américains</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Financer le Fonds de résolution unique</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Le capital mis de côté en période de croissance sert à absorber les pertes en période de crise.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">La Volcker Rule appartient à :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Bâle III</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Le Dodd-Frank Act (États-Unis)</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">L'Union bancaire européenne</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Adopté en 2010, le Dodd-Frank Act comprend la Volcker Rule, les stress tests et la création du CFPB.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l10')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l11',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 12 ============ -->
+    <section class="view" data-view="l12">
+      <span class="tag">Leçon 12 · Régulation</span>
+      <h1 class="lesson-title">Les défis : digital, néobanques, finance verte</h1>
+      <p class="subtitle">Banques en ligne, néobanques, FinTech, GAFAM, transition écologique : ce qui bouscule la banque d'agence, et ce qui la rend encore utile.</p>
+
+      <h2>Banque en ligne et néobanque</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Critère</th><th>Banque en ligne</th><th>Néobanque</th></tr>
+        <tr><td>Qui ?</td><td>Souvent une <strong>filiale</strong> d'un grand groupe traditionnel.</td><td>Une <strong>startup indépendante</strong>.</td></tr>
+        <tr><td>Expérience</td><td>Majorité (voire totalité) des services via internet, sans agence.</td><td><strong>Mobile-first</strong>, application très intuitive, ultra-rapide.</td></tr>
+        <tr><td>Offre</td><td>Comparable à une banque traditionnelle, simplifiée : comptes, cartes, épargne (livrets réglementés, assurance-vie), crédits (conso, immobilier).</td><td>Services innovants (multi-devises, cryptomonnaie), mais parfois plus limités : <strong>pas de crédits, d'assurances</strong>…</td></tr>
+        <tr><td>Exemples du cours</td><td>Boursorama, Hello Bank, Fortuneo, ING Direct.</td><td>N26, Revolut, Bunq.</td></tr>
+      </table>
+      </div>
+
+      <h2>Trente ans d'histoire</h2>
+      <div class="example">
+        <div class="ex-head">Les repères du cours</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Années 1990</b> : les banques à distance. En France, <b>Banque Directe</b>, filiale de BNP Paribas, dès <b>1994</b>.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Années 2000</b> : les premières banques 100 % en ligne. <b>ING Direct</b> (lancée en 2000) ; <b>Boursorama Banque</b> (rachetée par la Société Générale en 2002), d'abord courtier en ligne.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>Années 2010</b> : smartphones et néobanques. <b>N26</b> (allemande, 2015) ; <b>Revolut</b> (Royaume-Uni, 2015), d'abord carte prépayée de voyage.</div></div>
+      </div>
+
+      <h2>Avantages et inconvénients des banques en ligne</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Avantages</th><th>Inconvénients</th></tr>
+        <tr><td><strong>Coût réduit</strong> : comptes souvent gratuits, cartes moins chères, pas de frais d'agence.<br><strong>Accessibilité</strong> 24 h/24, 7 j/7.<br><strong>Rapidité</strong> : compte ouvert en quelques clics.<br><strong>Outils</strong> : suivi des dépenses en temps réel, alertes, paiement mobile (Apple Pay, Google Pay).</td><td><strong>Pas de conseiller en agence</strong> : un frein pour le crédit immobilier ou l'investissement.<br><strong>Support</strong> numérique parfois peu réactif.<br><strong>Services limités</strong> : gestion de patrimoine, produits élaborés.<br><strong>Risque technologique</strong> : panne, cyberattaque.</td></tr>
+      </table>
+      </div>
+
+      <h2>Perspectives et transition écologique</h2>
+      <p>Le marché des banques en ligne a atteint sa <strong>maturité</strong> : des <strong>consolidations</strong> (rachats, fusions) sont possibles. L'avenir passe par l'<strong>innovation</strong> (IA, conseillers virtuels, gestion automatisée), face aux néobanques et aux <strong>GAFAM</strong> (Apple, Google, Facebook) qui investissent les paiements. La digitalisation pousse aussi les banques traditionnelles à <strong>se moderniser</strong>.</p>
+      <p>Enfin, les banques françaises financent de plus en plus la <strong>transition énergétique</strong> : c'est la <strong>finance verte</strong>, qui oriente une part des investissements vers des projets respectueux de l'environnement, comme les énergies renouvelables.</p>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Banque en ligne ≠ néobanque. Boursorama ou Hello Bank sont des banques en ligne <strong>adossées à de grands groupes</strong>, avec crédits et épargne. N26 ou Revolut sont des <strong>startups indépendantes</strong>, mobile-first, dont l'offre peut exclure crédits et assurances.</p>
+      </div>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Argument d'agence</div>
+        <p>Le cours le dit lui-même : le principal inconvénient des banques en ligne est l'absence de conseiller physique, surtout pour le crédit immobilier, l'investissement ou la gestion de patrimoine. C'est exactement la valeur ajoutée du conseiller en agence.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 À retenir</div>
+        <p>Banques en ligne : filiales de groupes, sans agence, moins chères, 24 h/24 ; mais pas de conseiller, services limités, risque technologique. Néobanques : startups mobile-first (N26, Revolut, Bunq). Concurrence des GAFAM. Finance verte : financement de la transition énergétique.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Selon le cours, quel est le principal inconvénient des banques en ligne ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Des frais de tenue de compte élevés</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">L'absence de conseiller physique</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">L'impossibilité d'ouvrir un livret réglementé</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Des horaires d'ouverture limités</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> C'est un frein pour les besoins complexes (crédit immobilier, investissement). Les banques en ligne proposent bien des livrets réglementés et sont accessibles 24 h/24.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Qu'est-ce qui distingue une néobanque d'une banque en ligne, selon le cours ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">C'est une startup indépendante, mobile-first, alors que la banque en ligne est souvent une filiale d'un grand groupe</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Elle dispose d'un réseau d'agences</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Elle propose toujours plus de crédits</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Les néobanques (Revolut, N26, Bunq) sont des startups indépendantes ; leurs services peuvent être plus limités (pas de crédits, d'assurances…).</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l11')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l12',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ QUESTIONS RÉDIGÉES ============ -->
+    <section class="view" data-view="redac">
+      <span class="tag">S'entraîner</span>
+      <h1 class="lesson-title">Questions rédigées, corrigées automatiquement</h1>
+      <p class="subtitle">Rédige comme à l'examen, puis demande la correction : le site repère les notions-clés, te dit ce qui manque et affiche une réponse modèle.</p>
+
+      <div class="intro-card">
+        <h2>✍️ Comment ça marche</h2>
+        <p>Le cours ne contient pas de questions d'examen : celles-ci ont été <strong>rédigées par le site</strong> à partir du cours, et chaque réponse modèle reprend uniquement ce que dit le cours. La correction cherche des <strong>mots-clés</strong> : elle vérifie que les notions sont là, pas la qualité de ta rédaction. Relis toujours la réponse modèle.</p>
+      </div>
+
+      <div id="redacList"></div>
+    </section>
+
+    <!-- ============ CAS PRATIQUES ============ -->
+    <section class="view" data-view="annales">
+      <span class="tag">Applications</span>
+      <h1 class="lesson-title">Six cas pratiques corrigés</h1>
+      <p class="subtitle">Des situations d'agence. Cherche au brouillon avant d'ouvrir le corrigé.</p>
+
+      <div class="intro-card">
+        <h2>📐 D'où viennent ces cas ?</h2>
+        <p>Les situations sont <strong>inventées par le site</strong>, mais chaque réponse s'appuie uniquement sur les règles du cours. Tous les calculs ont été <strong>vérifiés par ordinateur</strong>. Les montants de taux et de plafonds sont ceux du cours : vérifie-les auprès de ton enseignant s'ils ont changé.</p>
+      </div>
+
+      <div class="annale">
+        <div class="an-tag">Cas 1 · Livret A · calcul</div>
+        <h3>Léa ouvre un Livret A pour sa fille</h3>
+        <div class="enonce">
+          Léa, cliente de l'agence, veut ouvrir un Livret A pour sa fille de 6 ans, qui en a déjà un dans une autre banque. Elle compte ensuite verser 3 000 € le 20 mars sur son propre Livret A, au taux de 1,7 %, sans autre mouvement dans l'année.
+          <ul class="qlist">
+            <li>Peut-on ouvrir le livret de la fille ?</li>
+            <li>À partir de quand les 3 000 € rapportent-ils des intérêts ?</li>
+            <li>Combien rapportent-ils jusqu'au 31 décembre, et que deviennent ces intérêts ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé — calcul vérifié</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Unicité.</b> Chaque personne, même mineure, ne peut avoir qu'<b>un seul</b> Livret A. La fille en a déjà un : on ne peut pas en ouvrir un second.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Quinzaines.</b> Le 20 mars tombe dans la quinzaine du 16 au 31 mars : le versement rapporte à partir du <b>1<sup>er</sup> avril</b>.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Calcul illustratif.</b> D'avril à décembre : <code>9 × 2 = 18 quinzaines</code> sur 24 dans l'année. <code>3 000 × 1,7 % × 18 ÷ 24 = 38,25 €</code>.</div></div>
+          <div class="step"><div class="sn">✓</div><div class="sc"><b>Capitalisation.</b> Les 38,25 € s'ajoutent au capital au <b>31 décembre</b> et rapportent à leur tour l'année suivante. Ils sont exonérés d'impôt et de prélèvements sociaux.</div></div>
+        </div>
+      </div>
+
+      <div class="annale">
+        <div class="an-tag">Cas 2 · Livret A · plafond</div>
+        <h3>Un livret presque plein</h3>
+        <div class="enonce">
+          M. Martin a 21 000 € sur son Livret A et vient de recevoir une prime de 5 000 €.
+          <ul class="qlist">
+            <li>Combien peut-il encore verser sur son Livret A ?</li>
+            <li>Que faire du reste ? Citez les limites du Livret A qui justifient votre conseil.</li>
+            <li>Plus tard, son solde atteint 22 950 € au 1<sup>er</sup> janvier et il ne fait aucun mouvement. Que se passe-t-il au 31 décembre au taux de 1,7 % ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé — calcul vérifié</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Marge de versement.</b> <code>22 950 − 21 000 = 1 950 €</code>.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Le reste</b> : <code>5 000 − 1 950 = 3 050 €</code> à placer ailleurs, par exemple sur un LDDS ou un autre produit d'épargne. Limites du Livret A : <b>plafond</b> limité, taux parfois <b>inférieur à l'inflation</b>, rémunération modérée face aux actions ou à l'assurance-vie.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Capitalisation au-delà du plafond.</b> <code>22 950 × 1,7 % = 390,15 €</code> d'intérêts ; solde au 31 décembre : <code>23 340,15 €</code>.</div></div>
+          <div class="step"><div class="sn">✓</div><div class="sc"><b>Conclusion.</b> Le solde dépasse le plafond, et c'est normal : seuls les <b>nouveaux dépôts</b> sont bloqués.</div></div>
+        </div>
+      </div>
+
+      <div class="annale">
+        <div class="an-tag">Cas 3 · Crédit à la consommation · choix</div>
+        <h3>Prêt personnel ou crédit affecté ?</h3>
+        <div class="enonce">
+          Sophie, 2 500 € de revenus mensuels, sans autre crédit, veut acheter une voiture d'occasion de 12 000 € chez un garage. La vente dépend encore d'un contrôle technique. Un ami lui conseille plutôt un crédit renouvelable « parce que c'est plus souple ».
+          <ul class="qlist">
+            <li>Quel crédit lui conseiller, et pourquoi ?</li>
+            <li>Que penser du conseil de l'ami ?</li>
+            <li>Quelle mensualité maximale selon le repère du cours ? Sur quel indicateur comparer les offres ? Quel délai pour changer d'avis ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé — calcul vérifié</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Crédit affecté (crédit auto).</b> Il est lié à l'achat précis : si la vente échoue (contrôle technique), le prêt est <b>annulé</b>. Un prêt personnel serait plus libre, mais sans cette protection.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Le crédit renouvelable</b> est en général entre 500 € et 6 000 € selon le cours : 12 000 € dépasse ce montant. Son taux est souvent plus élevé, et il expose au <b>surendettement</b>.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Endettement.</b> <code>2 500 × 33 % = 825 €</code> par mois au maximum.</div></div>
+          <div class="step"><div class="sn">✓</div><div class="sc"><b>Comparer</b> sur le <b>TAEG</b> (taux nominal, frais, assurance). Après signature : <b>14 jours calendaires</b> de rétractation.</div></div>
+        </div>
+      </div>
+
+      <div class="annale">
+        <div class="an-tag">Cas 4 · Crédit immobilier · montage</div>
+        <h3>Un premier achat avec PTZ</h3>
+        <div class="enonce">
+          Un couple de primo-accédants, 4 000 € nets par mois à deux, rembourse un crédit auto de 300 € par mois. Il vise un appartement neuf (logement collectif) à 220 000 € pour en faire sa résidence principale.
+          <ul class="qlist">
+            <li>Quelle mensualité maximale pour le crédit immobilier ?</li>
+            <li>Quel apport personnel prévoir, selon le repère du cours ?</li>
+            <li>Quel PTZ maximal en 2026, et que faut-il ajouter ?</li>
+            <li>Quelles assurance et garantie la banque va-t-elle demander ? Quel délai après l'offre ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé — calcul vérifié</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Endettement HCSF.</b> <code>4 000 × 35 % = 1 400 €</code> tous crédits compris, assurance comprise ; moins le crédit auto : <code>1 400 − 300 = 1 100 €</code> par mois pour l'immobilier.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Apport.</b> En général 10 à 20 % du prix : <code>220 000 × 10 % = 22 000 €</code> à <code>220 000 × 20 % = 44 000 €</code>.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>PTZ.</b> Appartement neuf : jusqu'à 50 % du prix, soit <code>220 000 × 50 % = 110 000 €</code> au <b>maximum</b>, sous réserve des plafonds de revenus et de zone. Le PTZ ne couvre pas tout : il faut <b>compléter</b> par un prêt amortissable.</div></div>
+          <div class="step"><div class="sn">4</div><div class="sc"><b>Assurance emprunteur</b> exigée (décès, invalidité, incapacité) : assurance groupe ou <b>délégation</b> (Lemoine : changement à tout moment). <b>Garantie</b> : hypothèque ou caution (ex. Crédit Logement).</div></div>
+          <div class="step"><div class="sn">✓</div><div class="sc"><b>Délai.</b> <b>10 jours</b> de réflexion après l'offre de prêt, puis signature chez le notaire et déblocage des fonds.</div></div>
+        </div>
+      </div>
+
+      <div class="annale">
+        <div class="an-tag">Cas 5 · Crédit immobilier · optimisation</div>
+        <h3>Un client veut alléger son crédit</h3>
+        <div class="enonce">
+          M. Dubois a un crédit immobilier depuis plusieurs années. Les taux du marché ont baissé, il vient de recevoir un héritage, et il trouve son assurance emprunteur chère.
+          <ul class="qlist">
+            <li>Quelles pistes lui proposer ?</li>
+            <li>Quels frais doit-il anticiper ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé proposé par le site</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Assurance.</b> Changer d'assurance <b>à tout moment</b>, sans frais ni date anniversaire (loi Lemoine 2022), vers un contrat aux garanties équivalentes (Hamon 2014, Bourquin 2018).</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Héritage.</b> Remboursement <b>anticipé</b> partiel ou total : moins de durée ou moins d'intérêts restants.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Taux en baisse.</b> <b>Renégocier</b> avec sa banque ; en cas d'échec, <b>rachat de crédit</b> par une autre banque.</div></div>
+          <div class="step"><div class="sn">✓</div><div class="sc"><b>Frais.</b> <b>IRA</b> (indemnités de remboursement anticipé), et pour un rachat : frais de dossier, de garantie, IRA. Comparer l'économie et les frais avant de décider.</div></div>
+        </div>
+      </div>
+
+      <div class="annale">
+        <div class="an-tag">Cas 6 · Régulation · analyse</div>
+        <h3>Une banque en difficulté</h3>
+        <div class="enonce">
+          La presse annonce qu'une banque française de taille moyenne a subi de lourdes pertes sur des produits complexes et que ses fonds propres fondent. Un client inquiet vient en agence.
+          <ul class="qlist">
+            <li>Quelle autorité française est chargée de surveiller cette banque, et sur quoi ?</li>
+            <li>Quels outils européens issus de la crise de 2007-2008 existent pour gérer une défaillance ?</li>
+            <li>Quelle règle de Bâle III vise à éviter cette situation ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé proposé par le site</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>L'ACPR</b>, adossée à la Banque de France : elle supervise la <b>solvabilité</b> et la conformité aux <b>règles prudentielles</b>, et protège les consommateurs de services financiers. Pour les plus grandes banques, la <b>BCE</b> supervise directement (MSU).</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>L'Union bancaire</b> : le <b>MRU</b> permet de résoudre la crise de façon ordonnée en limitant l'impact sur les contribuables ; le <b>FRU</b>, financé par les banques, couvre les coûts des défaillances.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Bâle III</b> : des <b>fonds propres</b> plus élevés pour absorber les pertes, un ratio de levier, un ratio de liquidité et un coussin contra-cyclique.</div></div>
+          <div class="step"><div class="sn">✓</div><div class="sc"><b>Pour rassurer le client</b> : objectif affiché de la régulation post-crise, protéger les déposants et éviter l'effet domino (risque systémique). Et son Livret A est garanti par l'État.</div></div>
+        </div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('redac')">← Questions rédigées</button>
+        <button class="btn plum" onclick="go('test')">Passer le test final →</button>
+      </div>
+    </section>
+
+    <!-- ============ MÉMO ET POINTS À VÉRIFIER ============ -->
+    <section class="view" data-view="ecarts">
+      <span class="tag">À savoir</span>
+      <h1 class="lesson-title">Mémo des chiffres et points à vérifier</h1>
+      <p class="subtitle">Les chiffres à connaître, puis les endroits où le cours se contredit ou peut avoir vieilli. Si ton enseignant dit autre chose, c'est lui qui fait foi.</p>
+
+      <h2>Les chiffres à connaître</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Élément</th><th>Valeur selon le cours</th></tr>
+        <tr><td>Livret A : taux</td><td>1,7 % depuis le 1<sup>er</sup> août 2026 (1,5 % avant) ; révisé au 1<sup>er</sup> février et au 1<sup>er</sup> août</td></tr>
+        <tr><td>Livret A : plafond</td><td>22 950 € (dépôts) ; dépôt minimum 10 ou 15 €</td></tr>
+        <tr><td>Livret A : dates</td><td>Créé en 1818 ; ouvert à toutes les banques en 2009</td></tr>
+        <tr><td>Crédit immobilier : durée</td><td>5 à 25 ans ; 27 ans en VEFA ou ancien avec travaux (HCSF)</td></tr>
+        <tr><td>Endettement</td><td>35 % assurance comprise (HCSF, immobilier) ; 33 % (crédit à la consommation)</td></tr>
+        <tr><td>Apport</td><td>10 à 20 % du prix</td></tr>
+        <tr><td>Prêt relais</td><td>1 à 2 ans ; 50 à 80 % de la valeur du bien vendu</td></tr>
+        <tr><td>PTZ 2026</td><td>50 % appartement neuf ; 30 % maison neuve ; 50 % ancien en B2/C (25 % de travaux, classe D minimum)</td></tr>
+        <tr><td>Délais</td><td>10 jours de réflexion (offre immobilière) ; 14 jours calendaires de rétractation (conso)</td></tr>
+        <tr><td>Crédit conso</td><td>200 € à 75 000 €, plus de 3 mois ; 100 000 € et plus de seuil à partir du 20 novembre 2026</td></tr>
+        <tr><td>Montants par type</td><td>Personnel 1 000–75 000 € (12 mois–7 ans) ; renouvelable 500–6 000 € ; microcrédit 300–5 000 €</td></tr>
+        <tr><td>Lois assurance</td><td>Hamon 2014 · Bourquin 2018 · Lemoine 2022</td></tr>
+        <tr><td>Fiscalité</td><td>Plus de déduction des intérêts (résidence principale) depuis 2011 ; Pinel : 21 % sur 12 ans, fini au 31/12/2024 ; Jeanbrun : 9 ans</td></tr>
+        <tr><td>Régulation</td><td>Dodd-Frank 2010 ; CRR3 et CRD VI au 1<sup>er</sup> janvier 2025</td></tr>
+      </table>
+      </div>
+
+      <h2>Points à vérifier dans le cours</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Sujet</th><th>Ce que dit le cours</th><th>Pourquoi le vérifier</th></tr>
+        <tr><td>Taux d'endettement</td><td>35 % (immobilier) et 33 % (conso)</td><td>Deux repères différents dans le même cours : retiens les deux, chacun dans son contexte.</td></tr>
+        <tr><td>Durée du crédit immobilier</td><td>5 à 25 ans (27 ans max), mais aussi « 15-30 ans » et prêt conventionné « 5 à 30 ans »</td><td>Ces durées ne concordent pas avec la limite de 25-27 ans citée plus haut.</td></tr>
+        <tr><td>PTZ : bénéficiaires</td><td>« ménages modestes ou primo-accédants » (leçon 5) puis « réservé aux primo-accédants » (leçon 7)</td><td>Formulations différentes : à faire préciser.</td></tr>
+        <tr><td>Assurance emprunteur</td><td>« Exigée » puis « obligatoire » ; risques couverts : perte d'emploi ou incapacité de travail selon le passage</td><td>Formulations variables selon le passage.</td></tr>
+        <tr><td>Ouverture du Livret A</td><td>« Toute personne résidant en France » puis « tout résident fiscal français »</td><td>Deux formulations différentes.</td></tr>
+        <tr><td>MSU</td><td>« Mécanisme de supervision unique » et « Mécanisme de surveillance unique »</td><td>Même sigle, deux noms : il s'agit du même mécanisme.</td></tr>
+        <tr><td>Cadre réglementaire</td><td>« Trois institutions majeures »</td><td>Le troisième élément listé est la réglementation européenne, pas une institution.</td></tr>
+        <tr><td>Chiffres récents</td><td>Taux du Livret A au 1<sup>er</sup> août 2026, PTZ 2026, dispositif Jeanbrun, directive 2023/2297</td><td>Données récentes ou susceptibles de changer : à confirmer en cours.</td></tr>
+      </table>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l1')">← Revoir le cours</button>
+        <button class="btn plum" onclick="go('test')">Passer le test final →</button>
+      </div>
+    </section>
+
+    <!-- ============ TEST FINAL ============ -->
+    <section class="view" data-view="test">
+      <span class="tag">Évaluation</span>
+      <h1 class="lesson-title">Test final adaptatif</h1>
+      <p class="subtitle">Quarante-six questions rédigées par le site à partir du cours, dont quelques calculs vérifiés.</p>
+
+      <div class="intro-card">
+        <h2>🎯 Comment le lire</h2>
+        <p>Chaque erreur rouvre la leçon correspondante. Le bilan par chapitre, en bas, te dit où réviser en priorité. Pour les calculs, arrondis comme demandé dans la question.</p>
+      </div>
+
+      <div id="testQuestions"></div>
+
+      <div class="lesson-nav" id="testSubmitRow">
+        <button class="btn" onclick="go('l1')">← Revoir le cours</button>
+        <button class="btn plum" onclick="gradeTest()">Valider mes réponses ✓</button>
+      </div>
+
+      <div class="result" id="testResult">
+        <div class="score-lab">Ton score</div>
+        <div class="score-big" id="scoreBig">0</div>
+        <div class="msg" id="scoreMsg"></div>
+        <div class="chapbars" id="chapBars"></div>
+        <div style="margin-top:28px"><button class="btn plum" onclick="resetTest()">↻ Reprendre le test</button></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<button class="float-retry" id="floatRetry" onclick="resetTest()">↻ Reprendre le test</button>
+<button class="print-fab" onclick="imprimerFiche()" title="Imprimer cette leçon en fiche">🖨️ Fiche</button>
+<div class="xp-pop" id="xpPop"></div>
+
+<script src="lb.js"></script>
+<script src="progress.js"></script>
+<script>
+const SUBJECT_KEY = 'Système bancaire';
+
+/* ===================== ÉTAT ===================== */
+const LESSONS = [
+  {id:'l1',  t:'Les acteurs du système',      ch:1},
+  {id:'l2',  t:'Les services bancaires',      ch:1},
+  {id:'l3',  t:'Livret A : fonctionnement',   ch:2},
+  {id:'l4',  t:'Livret A : rôle et histoire', ch:2},
+  {id:'l5',  t:'Les prêts immobiliers',       ch:3},
+  {id:'l6',  t:'Obtenir un crédit immo',      ch:3},
+  {id:'l7',  t:'Aides, fiscalité, optimiser', ch:3},
+  {id:'l8',  t:'Les crédits à la conso',      ch:4},
+  {id:'l9',  t:'Droits et surendettement',    ch:4},
+  {id:'l10', t:'Régulation et supervision',   ch:5},
+  {id:'l11', t:'Crise de 2008 et réformes',   ch:5},
+  {id:'l12', t:'Digital et finance verte',    ch:5}
+];
+const SAVE = (window.P ? P.etat() : {done:{},xp:0,last:null});
+const state = { xp: SAVE.xp||0, done: Object.assign({}, SAVE.done), view:'l1' };
+
+/* ===================== NAVIGATION ===================== */
+/* ===================== NAVIGATION ===================== */
+function buildNav(){
+  [1,2,3,4,5].forEach(ch=>{
+    const nav = document.getElementById('navList'+ch);
+    if(!nav) return;
+    nav.innerHTML = '';
+    LESSONS.forEach((l,i)=>{
+      if(l.ch!==ch) return;
+      const d = document.createElement('div');
+      d.className = 'nav-item' + (state.done[l.id]?' done':'');
+      d.dataset.view = l.id;
+      d.onclick = ()=>go(l.id);
+      d.innerHTML = '<span class="num">'+(state.done[l.id]?'✓':(i+1))+'</span><span class="lab">'+l.t+'</span>';
+      nav.appendChild(d);
+    });
+  });
+  highlightNav();
+}
+function highlightNav(){
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.dataset.view===state.view));
+}
+function go(view){
+  state.view = view;
+  if(window.P && /^l\d+$/.test(view)) P.derniereLecon(view);
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active', v.dataset.view===view));
+  highlightNav();
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(window.innerWidth<=880) closeSidebar();
+}
+function imprimerFiche(){ window.print(); }
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+/* ===================== XP ===================== */
+function addXp(n){
+  state.xp += n;
+  if(window.P) P.ajouterXp(n);
+  document.getElementById('xpVal').textContent = state.xp;
+  popXp('+'+n+' XP');
+}
+function popXp(txt){
+  const p = document.getElementById('xpPop');
+  p.textContent = '★ '+txt;
+  p.classList.add('show');
+  clearTimeout(p._t);
+  p._t = setTimeout(()=>p.classList.remove('show'),1400);
+}
+function updateProgress(){
+  const pct = Math.round(Object.keys(state.done).length/LESSONS.length*100);
+  document.getElementById('progFill').style.width = pct+'%';
+  document.getElementById('progPct').textContent = pct+' %';
+}
+
+/* ===================== MINI-QUIZ ===================== */
+function pick(btn){
+  const quiz = btn.closest('.quiz');
+  if(quiz.classList.contains('answered')) return;
+  quiz.classList.add('answered');
+  const correct = btn.dataset.correct === 'true';
+  quiz.querySelectorAll('.opt').forEach(o=>{
+    o.disabled = true;
+    if(o.dataset.correct === 'true') o.classList.add('right');
+  });
+  if(!correct) btn.classList.add('wrong');
+  const fb = quiz.querySelector('.feedback');
+  if(fb) fb.hidden = false;
+  if(window.P){
+    const sec = quiz.closest('.view');
+    const lec = sec ? sec.dataset.view : '?';
+    const rang = sec ? [...sec.querySelectorAll('.quiz')].indexOf(quiz) : 0;
+    P.noterReponse('quiz:'+lec+':'+rang, correct, 'Leçon '+lec.replace('l',''));
+  }
+  if(correct) addXp(10);
+}
+function validate(id, quizCount){
+  const sec = document.querySelector('.view[data-view="'+id+'"]');
+  const answered = sec.querySelectorAll('.quiz.answered').length;
+  if(answered < quizCount){
+    popXp("Réponds aux "+quizCount+" quiz d'abord");
+    sec.querySelectorAll('.quiz:not(.answered)').forEach(q=>{ q.style.boxShadow='0 0 0 2px var(--plum)'; setTimeout(()=>q.style.boxShadow='',1200); });
+    return;
+  }
+  if(!state.done[id]){ state.done[id]=true; if(window.P) P.marquerLecon(id); addXp(50); buildNav(); updateProgress(); }
+  const idx = LESSONS.findIndex(l=>l.id===id);
+  const next = LESSONS[idx+1];
+  if(next) go(next.id); else go('redac');
+}
+
+/* ===================== QUESTIONS RÉDIGÉES =====================
+   Chaque critère est une notion attendue ; `k` liste les façons de
+   l'écrire (comparées sans accents ni majuscules). Un critère est
+   rempli dès qu'une de ses formes apparaît dans la réponse. */
+const REDAC = [
+  {lesson:'l1', q:"Présentez les principaux acteurs du système bancaire français et les missions de la Banque de France.",
+   crit:[
+     {t:"Banques commerciales : services de base", k:['commercial']},
+     {t:"Banques mutualistes : appartiennent à leurs membres", k:['mutualist','cooperati','membre']},
+     {t:"Banques d'investissement : fusions, levées de fonds", k:['investissement','affaires','fusion']},
+     {t:"Banque de France dans l'Eurosystème", k:['eurosysteme','bce']},
+     {t:"Politique monétaire, stabilité financière", k:['politique monetaire','stabilite']},
+     {t:"Supervision via l'ACPR", k:['acpr','supervis']}
+   ],
+   modele:"Le système bancaire français réunit plusieurs familles d'acteurs. Les <b>banques commerciales</b> (BNP Paribas, Société Générale, Crédit Agricole, Groupe BPCE) fournissent les services de base : dépôts, prêts, comptes courants, paiements et virements. Les <b>banques mutualistes et coopératives</b> (Crédit Agricole, Crédit Mutuel, Banques Populaires et Caisses d'Épargne) appartiennent à leurs <b>membres</b>, les clients, et privilégient la proximité et la solidarité. Les <b>banques d'investissement et d'affaires</b> servent les entreprises : <b>fusions</b> et acquisitions, levées de fonds, gestion de portefeuilles. La <b>Banque de France</b>, autorité monétaire intégrée à l'<b>Eurosystème</b> avec la <b>BCE</b>, met en œuvre la <b>politique monétaire</b> européenne, surveille la <b>stabilité</b> financière, <b>supervise</b> les établissements via l'<b>ACPR</b> et gère la monnaie et le crédit."},
+  {lesson:'l2', q:"Quels sont les principaux services proposés par les banques ?",
+   crit:[
+     {t:"Compte courant (quotidien, carte)", k:['compte courant']},
+     {t:"Comptes d'épargne (Livret A, LDDS, PEL)", k:['epargne','livret','ldds']},
+     {t:"Crédit immobilier", k:['immobilier']},
+     {t:"Crédit à la consommation", k:['consommation']},
+     {t:"Crédit professionnel", k:['professionnel','entreprise']},
+     {t:"Gestion de patrimoine, assurance-vie", k:['patrimoine','assurance-vie','assurance vie']}
+   ],
+   modele:"Les banques proposent d'abord des <b>comptes</b> : le <b>compte courant</b>, pour les transactions quotidiennes (factures, virements, retraits), souvent associé à une carte bancaire, et les <b>comptes d'épargne</b>, qui rapportent des intérêts (<b>Livret A</b>, <b>LDDS</b>, <b>PEL</b>). Elles accordent ensuite des <b>crédits</b> : le crédit <b>immobilier</b> (achat d'un bien, durée longue), le crédit à la <b>consommation</b> (achats non immobiliers) et le crédit <b>professionnel</b> (activité ou investissements des entreprises). Enfin, elles offrent des services de gestion d'actifs et de <b>patrimoine</b> : conseil, <b>assurance-vie</b>, fonds d'investissement et plans de retraite."},
+  {lesson:'l3', q:"Présentez les caractéristiques et le fonctionnement du Livret A.",
+   crit:[
+     {t:"Réglementé, taux fixé par l'État", k:['etat','reglemente']},
+     {t:"Révision au 1er février et au 1er août", k:['fevrier','aout']},
+     {t:"Plafond de 22 950 €", k:['22 950','22950','22.950']},
+     {t:"Exonéré d'impôt et de prélèvements sociaux", k:['exonere','prelevements sociaux','non imposable']},
+     {t:"Un seul par personne", k:['un seul','unicite']},
+     {t:"Quinzaines, capitalisation au 31 décembre", k:['quinzaine','capitalis']}
+   ],
+   modele:"Le Livret A est un compte d'épargne <b>réglementé</b>, sécurisé et non imposable. Son taux est fixé par l'<b>État</b> et révisé deux fois par an, au 1<sup>er</sup> <b>février</b> et au 1<sup>er</sup> <b>août</b>, selon l'inflation et le marché monétaire (1,7 % depuis le 1<sup>er</sup> août 2026 selon le cours). Les dépôts sont plafonnés à <b>22 950 €</b>, mais les intérêts peuvent faire dépasser ce plafond. Les fonds sont disponibles à tout moment, sans pénalité. Les intérêts sont <b>exonérés</b> d'impôt sur le revenu et de <b>prélèvements sociaux</b>. Chaque personne, même mineure, ne peut en détenir qu'<b>un seul</b>. Il s'ouvre dans n'importe quelle banque, dès 10 ou 15 € de dépôt. Les intérêts se calculent par <b>quinzaine</b> (un dépôt du 8 janvier rapporte à partir du 16 janvier) et sont <b>capitalisés</b> au 31 décembre."},
+  {lesson:'l4', q:"En quoi le Livret A joue-t-il un rôle économique et social ? Présentez ses avantages et ses inconvénients.",
+   crit:[
+     {t:"Épargne de précaution sûre, garantie par l'État", k:['precaution','garanti']},
+     {t:"CDC, logement social", k:['cdc','caisse des depots','logement social']},
+     {t:"Levier de l'État sur l'épargne", k:['inciter','incite','comportement','politique monetaire']},
+     {t:"Historique : 1818, 2009", k:['1818','2009']},
+     {t:"Avantages : sécurité, disponibilité, fiscalité", k:['disponib','securite','simplicite']},
+     {t:"Inconvénients : plafond, taux sous l'inflation", k:['inflation','plafond']}
+   ],
+   modele:"Le Livret A est une épargne de <b>précaution</b> idéale : <b>garanti</b> par l'État, accessible à tous, même aux enfants. Une partie des fonds est centralisée par la <b>Caisse des Dépôts</b> et Consignations (CDC), qui finance le <b>logement social</b> et des infrastructures publiques (hôpitaux, transports). En fixant son taux, l'État influence le <b>comportement</b> d'épargne : un taux élevé <b>incite</b> à épargner, un taux faible favorise la consommation. Créé en <b>1818</b>, après la chute de Napoléon, il a longtemps été distribué par la Caisse d'Épargne et La Banque Postale, avant d'être ouvert à toutes les banques en <b>2009</b>. Avantages : <b>sécurité</b>, <b>disponibilité</b>, exonération fiscale, <b>simplicité</b>. Inconvénients : un <b>plafond</b> limité, un taux souvent inférieur à l'<b>inflation</b>, une rémunération modérée face aux actions ou à l'assurance-vie."},
+  {lesson:'l5', q:"Présentez les principaux types de prêts immobiliers.",
+   crit:[
+     {t:"Prêt amortissable, fixe ou variable", k:['amortissable']},
+     {t:"Prêt relais : acheter avant de vendre", k:['relais']},
+     {t:"PTZ : sans intérêts, partiel", k:['ptz','taux zero']},
+     {t:"Prêt conventionné : sans condition de ressources", k:['conventionne']},
+     {t:"PAS : revenus modestes", k:['accession sociale','le pas ','un pas ','(pas)']},
+     {t:"APL", k:['apl','aide personnalisee']}
+   ],
+   modele:"Le prêt <b>amortissable</b> est le plus courant : chaque mensualité rembourse capital et intérêts, à taux fixe (mensualités stables) ou variable (risque de hausse), souvent sur 15 à 25 ans. Le prêt <b>relais</b> permet d'acheter avant d'avoir vendu, sur 1 à 2 ans, pour 50 à 80 % de la valeur du bien mis en vente. Le <b>PTZ</b> (prêt à <b>taux zéro</b>) est un prêt sans intérêts pour les ménages modestes ou les primo-accédants, qui finance partiellement une résidence principale, sous conditions de revenus, de zone et de bien. Le prêt <b>conventionné</b> est ouvert à tous, sans condition de ressources, pour une résidence principale, et ouvre droit à l'<b>APL</b>. Le <b>PAS</b> (prêt d'<b>accession sociale</b>) reprend ce principe, réservé aux revenus modestes, et ouvre aussi droit à l'APL."},
+  {lesson:'l6', q:"Décrivez les étapes d'obtention d'un crédit immobilier et les critères de la capacité d'emprunt.",
+   crit:[
+     {t:"Budget et capacité d'emprunt", k:['budget','capacite']},
+     {t:"35 % assurance comprise (HCSF)", k:['35']},
+     {t:"Apport 10 à 20 %", k:['apport']},
+     {t:"Accord de principe", k:['accord de principe']},
+     {t:"Offre et 10 jours de réflexion", k:['10 jours','dix jours']},
+     {t:"Notaire, acte de vente", k:['notaire']}
+   ],
+   modele:"On commence par définir son <b>budget</b> et sa <b>capacité</b> d'emprunt : revenus nets de l'emprunteur et du co-emprunteur, <b>apport</b> personnel (en général 10 à 20 % du prix), taux d'endettement (au plus <b>35</b> % des revenus nets, assurance comprise, norme HCSF), durée (plus elle est longue, plus la mensualité baisse et plus le coût total monte). On cherche ensuite le bien et l'on signe souvent une promesse ou un compromis. On fait des simulations dans plusieurs banques et on dépose un dossier (relevés, bulletins de salaire, avis d'imposition, compromis). La banque peut donner un <b>accord de principe</b>, puis émet une offre de prêt détaillée : l'emprunteur dispose de <b>10 jours</b> de réflexion. L'acte de vente est enfin signé chez le <b>notaire</b>, et les fonds sont débloqués."},
+  {lesson:'l6', q:"Assurance emprunteur et garanties : que demande la banque pour un crédit immobilier ?",
+   crit:[
+     {t:"Assurance : décès, invalidité, incapacité", k:['deces','invalidite']},
+     {t:"Assurance groupe", k:['groupe']},
+     {t:"Délégation d'assurance", k:['delegation']},
+     {t:"Hypothèque", k:['hypotheque']},
+     {t:"Caution (Crédit Logement)", k:['caution','credit logement']}
+   ],
+   modele:"La banque exige une <b>assurance emprunteur</b>, qui couvre le remboursement du prêt en cas de <b>décès</b>, d'<b>invalidité</b> ou d'incapacité de travail. Elle peut être une assurance <b>groupe</b>, proposée par la banque prêteuse aux conditions standard, ou une <b>délégation</b> d'assurance auprès d'un autre organisme, plus adaptée ou moins chère (lois Hamon 2014, Bourquin 2018, Lemoine 2022). Pour se protéger contre le non-remboursement, la banque demande aussi une garantie : l'<b>hypothèque</b>, qui lui permet de saisir et vendre le bien en cas de défaut, ou la <b>caution</b> d'une société de cautionnement comme <b>Crédit Logement</b>."},
+  {lesson:'l7', q:"Comment un emprunteur peut-il optimiser le coût de son crédit immobilier ?",
+   crit:[
+     {t:"Négocier, comparer, courtier", k:['negoci','courtier','compar']},
+     {t:"Délégation d'assurance", k:['delegation','assurance']},
+     {t:"Lois Hamon, Bourquin, Lemoine", k:['hamon','bourquin','lemoine']},
+     {t:"Remboursement anticipé et IRA", k:['anticip','ira']},
+     {t:"Renégociation ou rachat", k:['renegoci','rachat']}
+   ],
+   modele:"Il peut d'abord <b>négocier</b> taux, assurance et frais de dossier en <b>comparant</b> plusieurs banques, éventuellement via un <b>courtier</b>. Il peut ensuite opter pour la <b>délégation</b> d'<b>assurance</b> : depuis les lois <b>Hamon</b> (2014) et <b>Bourquin</b> (2018), il peut s'assurer ailleurs à garanties équivalentes, et depuis la loi <b>Lemoine</b> (2022), changer à tout moment, sans frais. Il peut aussi rembourser par <b>anticipation</b>, partiellement ou totalement, pour réduire la durée ou les intérêts, en tenant compte des <b>IRA</b>. Enfin, si les taux baissent, il peut <b>renégocier</b> avec sa banque ou faire procéder à un <b>rachat</b> de crédit par une autre banque, en intégrant les frais (dossier, garantie, IRA)."},
+  {lesson:'l8', q:"Présentez les différents types de crédits à la consommation.",
+   crit:[
+     {t:"Prêt personnel : non affecté", k:['personnel']},
+     {t:"Crédit affecté : annulé si l'achat échoue", k:['affecte']},
+     {t:"Crédit renouvelable / revolving", k:['renouvelable','revolving']},
+     {t:"Crédit-bail / LOA", k:['credit-bail','credit bail','leasing','loa']},
+     {t:"Microcrédit personnel", k:['microcredit','micro-credit']},
+     {t:"Cadre : 200 € à 75 000 €, Code de la consommation", k:['75 000','75000','code de la consommation']}
+   ],
+   modele:"Le crédit à la consommation finance des dépenses non immobilières ; encadré par le <b>Code de la consommation</b>, il va de 200 € à <b>75 000 €</b>, pour plus de trois mois (100 000 € à partir du 20 novembre 2026). Le prêt <b>personnel</b> est non affecté : l'argent s'utilise librement (1 000 à 75 000 €, 12 mois à 7 ans, taux fixe). Le crédit <b>affecté</b> finance un achat précis (crédit auto, prêt travaux) : si l'achat échoue, le prêt est annulé. Le crédit <b>renouvelable</b> (<b>revolving</b>) est une réserve qui se reconstitue (500 à 6 000 €), au taux souvent élevé et exposant au surendettement. Le <b>crédit-bail</b> (<b>leasing</b>, LOA) est une location avec option d'achat, surtout pour les véhicules. Le <b>microcrédit</b> personnel (300 à 5 000 €) finance la réinsertion des personnes exclues du système bancaire, avec un accompagnement social."},
+  {lesson:'l9', q:"Quels sont les droits de l'emprunteur d'un crédit à la consommation, et que faire en cas de surendettement ?",
+   crit:[
+     {t:"Rétractation de 14 jours", k:['14 jours','quatorze']},
+     {t:"Information avant signature", k:['information','transparence']},
+     {t:"Remboursement anticipé", k:['anticip']},
+     {t:"TAEG pour comparer", k:['taeg']},
+     {t:"Commission de surendettement de la Banque de France", k:['commission','surendettement']},
+     {t:"Rééchelonnement, suspension, effacement", k:['reechelon','suspension','effacement']}
+   ],
+   modele:"L'emprunteur dispose d'un droit de <b>rétractation de 14 jours</b> calendaires après la signature, sans se justifier. Avant la signature, le prêteur doit lui donner toute l'<b>information</b> utile : montant total dû, nombre de mensualités, intérêts, frais. Il peut rembourser par <b>anticipation</b> tout ou partie du prêt, même si des frais peuvent s'appliquer. Pour comparer les offres, il se fonde sur le <b>TAEG</b>, qui inclut taux nominal, frais et assurance. En contrepartie, il doit rembourser selon le contrat et prévenir le prêteur en cas de difficulté. S'il ne peut plus faire face à ses charges (cumul de crédits, recours excessif au renouvelable), il peut saisir la <b>Commission de surendettement</b> de la Banque de France, qui propose un <b>rééchelonnement</b>, une <b>suspension</b> des paiements, voire un <b>effacement</b> partiel ou total des dettes."},
+  {lesson:'l10', q:"Comment est organisée la régulation du système bancaire français ?",
+   crit:[
+     {t:"ACPR : solvabilité, règles prudentielles", k:['acpr']},
+     {t:"Protection des consommateurs", k:['consommateur']},
+     {t:"AMF : marchés financiers", k:['amf','marches financiers']},
+     {t:"Bâle III, CRR3, CRD VI", k:['bale','crr','crd']},
+     {t:"BCE et MSU", k:['msu','bce','supervision unique','surveillance unique']}
+   ],
+   modele:"Le secteur bancaire est fortement régulé pour assurer sa stabilité et protéger épargnants et investisseurs. L'<b>ACPR</b>, adossée à la Banque de France, supervise les établissements bancaires et financiers : leur solvabilité et le respect des règles prudentielles ; elle protège aussi les <b>consommateurs</b> de services financiers. L'<b>AMF</b> régule les <b>marchés financiers</b> (sociétés cotées, fonds, transactions boursières) pour garantir la transparence et protéger les investisseurs. Membre de l'UE, la France applique la réglementation européenne, dont <b>Bâle III</b> (fonds propres, gestion des risques), mise en œuvre par le règlement <b>CRR3</b> et la directive CRD VI. La <b>BCE</b> supervise les plus grandes banques européennes dans le cadre du <b>MSU</b>."},
+  {lesson:'l11', q:"Quelles sont les causes de la crise de 2007-2008 et les principales réformes qui ont suivi ?",
+   crit:[
+     {t:"Risque excessif, subprimes", k:['subprime','risque']},
+     {t:"Manque de transparence", k:['transparence','opaque']},
+     {t:"Réglementation insuffisante, effet de levier", k:['levier','insuffisant']},
+     {t:"Bâle III : fonds propres, liquidité", k:['bale','fonds propres']},
+     {t:"Dodd-Frank, Volcker", k:['dodd','volcker']},
+     {t:"Union bancaire : MSU, MRU, FRU", k:['union bancaire','mru','fru']}
+   ],
+   modele:"La crise s'explique par une prise de <b>risque</b> excessive dans des produits complexes (prêts <b>subprime</b>, dérivés), un manque de <b>transparence</b> qui a fait sous-estimer les risques, et une réglementation <b>insuffisante</b> qui a permis d'accroître l'effet de <b>levier</b>. Il en a résulté des pertes massives, des faillites et des renflouements publics. Les réformes visent à stabiliser le système, réduire le risque systémique, protéger les déposants, assurer la transparence et limiter les comportements à risque. <b>Bâle III</b> renforce les <b>fonds propres</b> et introduit ratio de levier, ratio de liquidité et coussin contra-cyclique. Aux États-Unis, le <b>Dodd-Frank</b> Act (2010) crée la <b>Volcker</b> Rule, les stress tests et le CFPB. En Europe, l'<b>Union bancaire</b> repose sur le MSU, le <b>MRU</b> et le <b>FRU</b>. Effets : coûts en hausse, rentabilité en baisse, recentrage sur la banque de détail ; critiques : coût pour l'économie, complexité, innovation freinée."},
+  {lesson:'l12', q:"Comparez banques en ligne et néobanques, puis présentez les autres défis du système bancaire.",
+   crit:[
+     {t:"Banques en ligne : sans agence, coûts réduits", k:['sans agence','agence','cout']},
+     {t:"Filiales de groupes / startups indépendantes", k:['filiale','startup','independant']},
+     {t:"Exemples : Boursorama, N26, Revolut", k:['boursorama','hello bank','n26','revolut','ing direct']},
+     {t:"Inconvénient : pas de conseiller", k:['conseiller']},
+     {t:"GAFAM / FinTech", k:['gafam','fintech','apple','google']},
+     {t:"Finance verte, transition écologique", k:['verte','ecologi','energetique','durable']}
+   ],
+   modele:"Les banques en ligne proposent l'essentiel de leurs services par internet, <b>sans agence</b> : <b>coûts</b> réduits, accès 24 h/24, ouverture rapide, outils de suivi en temps réel ; mais pas de <b>conseiller</b> physique, un support parfois peu réactif, des services limités et un risque technologique. Ce sont souvent des <b>filiales</b> de grands groupes (<b>Boursorama</b>, Hello Bank). Les néobanques (<b>N26</b>, <b>Revolut</b>, Bunq) sont des <b>startups</b> <b>indépendantes</b>, mobile-first, aux services innovants (multi-devises, cryptomonnaie) mais parfois sans crédits ni assurances. La digitalisation et les <b>FinTech</b> poussent les banques traditionnelles à se moderniser, face aussi aux <b>GAFAM</b>. Enfin, les banques financent de plus en plus la transition <b>énergétique</b> : c'est la finance <b>verte</b>."}
+];
+
+function sansAccent(s){ return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[’']/g,"'"); }
+function renderRedac(){
+  const host = document.getElementById('redacList');
+  host.innerHTML = REDAC.map((r,i)=>
+    '<div class="annale redac" id="rd'+i+'">'+
+      '<div class="an-tag">Question '+(i+1)+'/'+REDAC.length+' · '+LESSONS.find(l=>l.id===r.lesson).t+'</div>'+
+      '<h3>'+r.q+'</h3>'+
+      '<label class="sr" for="rd'+i+'in">Ta réponse</label>'+
+      '<textarea id="rd'+i+'in" rows="6" placeholder="Rédige ta réponse ici, en phrases complètes…"></textarea>'+
+      '<div class="redac-btns"><button class="btn primary" onclick="corrigerRedac('+i+')">Corriger ma réponse</button>'+
+      '<button class="btn" onclick="go(\''+r.lesson+'\')">📖 Revoir la leçon</button></div>'+
+      '<div class="corrige" id="rd'+i+'cor"></div>'+
+    '</div>').join('');
+}
+function corrigerRedac(i){
+  const r = REDAC[i];
+  const txt = ' '+sansAccent(document.getElementById('rd'+i+'in').value)+' ';
+  const cor = document.getElementById('rd'+i+'cor');
+  if(txt.trim().length < 15){ popXp('Rédige au moins une phrase'); return; }
+  let ok = 0;
+  const lignes = r.crit.map(c=>{
+    const trouve = c.k.some(k=>txt.indexOf(sansAccent(k))>=0);
+    if(trouve) ok++;
+    return '<li class="'+(trouve?'ok':'ko')+'"><span aria-hidden="true">'+(trouve?'✓':'✗')+'</span> '+c.t+(trouve?'':' — <i>absent de ta réponse</i>')+'</li>';
+  }).join('');
+  const pct = Math.round(ok/r.crit.length*100);
+  const verdict = pct>=80 ? 'Réponse complète' : pct>=50 ? 'Réponse partielle' : 'Réponse insuffisante';
+  cor.innerHTML =
+    '<div class="redac-score '+(pct>=80?'ok':pct>=50?'mid':'ko')+'">'+verdict+' : '+ok+'/'+r.crit.length+' notions-clés</div>'+
+    '<ul class="crit">'+lignes+'</ul>'+
+    '<div class="corrige-head">✅ Réponse modèle</div>'+
+    '<p class="modele">'+r.modele+'</p>';
+  cor.classList.add('show');
+  if(window.P) P.noterReponse('redac:'+i, pct>=80, 'Questions rédigées');
+  if(!corrigerRedac.fait) corrigerRedac.fait = {};
+  if(!corrigerRedac.fait[i]){ corrigerRedac.fait[i]=1; addXp(5+ok*3); }
+}
+
+/* ===================== TEST FINAL ===================== */
+const TEST = [
+  {ch:'Paysage bancaire', lesson:'l1', type:'qcm',
+   q:"Les banques mutualistes et coopératives appartiennent :",
+   opts:["À l'État","À leurs membres, c'est-à-dire leurs clients","À la Banque de France","À des fonds d'investissement"], correct:1,
+   ex:"Elles appartiennent à leurs membres (clients) et sont orientées vers la proximité et des valeurs solidaires."},
+  {ch:'Paysage bancaire', lesson:'l1', type:'qcm',
+   q:"Lequel de ces établissements le cours range-t-il à la fois parmi les grandes banques commerciales et parmi les banques mutualistes ?",
+   opts:["Société Générale","BNP Paribas","Crédit Agricole","Boursorama"], correct:2,
+   ex:"Le Crédit Agricole, à l'origine coopérative pour le secteur agricole, figure dans les deux listes."},
+  {ch:'Paysage bancaire', lesson:'l1', type:'qcm',
+   q:"Conseiller une entreprise sur une fusion-acquisition relève :",
+   opts:["D'une banque mutualiste","D'une banque d'investissement et d'affaires","De la Banque de France","De l'ACPR"], correct:1,
+   ex:"Les banques d'investissement et d'affaires : fusions et acquisitions, levées de fonds, gestion de portefeuilles."},
+  {ch:'Paysage bancaire', lesson:'l1', type:'qcm',
+   q:"Laquelle de ces missions n'est PAS une mission de la Banque de France selon le cours ?",
+   opts:["Mettre en œuvre la politique monétaire européenne","Surveiller la stabilité financière","Réguler les sociétés cotées en Bourse","Superviser les banques via l'ACPR"], correct:2,
+   ex:"La régulation des sociétés cotées et des transactions boursières revient à l'AMF."},
+  {ch:'Paysage bancaire', lesson:'l2', type:'qcm',
+   q:"Le compte courant sert surtout :",
+   opts:["À faire fructifier son épargne","Aux transactions quotidiennes : factures, virements, retraits","À financer un logement","À préparer sa retraite"], correct:1,
+   ex:"Il est utilisé pour les opérations du quotidien et souvent associé à une carte bancaire."},
+  {ch:'Paysage bancaire', lesson:'l2', type:'qcm',
+   q:"Le crédit professionnel est accordé :",
+   opts:["Aux particuliers pour une voiture","Aux entreprises pour leurs activités courantes ou leurs investissements","Aux primo-accédants","Aux personnes exclues du système bancaire"], correct:1,
+   ex:"Crédit professionnel : prêt aux entreprises, pour leurs activités courantes ou leurs investissements."},
+  {ch:'Paysage bancaire', lesson:'l2', type:'qcm',
+   q:"Lequel de ces services relève de la gestion d'actifs et de patrimoine ?",
+   opts:["Le compte courant","Le crédit renouvelable","L'assurance-vie","Le prêt relais"], correct:2,
+   ex:"Conseil en gestion de patrimoine, assurance-vie, fonds d'investissement, plans de retraite."},
+
+  {ch:'Livret A', lesson:'l3', type:'num',
+   q:"Quel est le plafond de dépôt du Livret A pour un particulier ? (en euros)",
+   answer:22950, tol:0, unit:"€",
+   ex:"22 950 €. Les intérêts capitalisés peuvent faire dépasser ce plafond."},
+  {ch:'Livret A', lesson:'l3', type:'num',
+   q:"Selon le cours, quel est le taux du Livret A depuis le 1er août 2026 ? (en %)",
+   answer:1.7, tol:0, unit:"%",
+   ex:"1,7 %, contre 1,5 % auparavant selon le cours. Le taux est révisé au 1er février et au 1er août."},
+  {ch:'Livret A', lesson:'l3', type:'qcm',
+   q:"Un dépôt effectué le 8 janvier commence à rapporter des intérêts :",
+   opts:["Le 8 janvier","Le 9 janvier","Le 16 janvier","Le 1er février"], correct:2,
+   ex:"Règle des quinzaines : le dépôt rapporte à partir de la quinzaine suivante, soit le 16 janvier."},
+  {ch:'Livret A', lesson:'l3', type:'num',
+   q:"Un client verse 1 200 € le 8 janvier, au taux de 1,7 %, sans autre mouvement. Combien d'intérêts au 31 décembre ? (en euros, au centime)",
+   answer:19.55, tol:0.01, unit:"€",
+   ex:"23 quinzaines (du 16 janvier au 31 décembre) sur 24 : 1 200 × 1,7 % × 23 ÷ 24 = 19,55 €."},
+  {ch:'Livret A', lesson:'l3', type:'qcm',
+   q:"Les intérêts du Livret A sont capitalisés :",
+   opts:["Chaque quinzaine","Chaque mois","Chaque année au 31 décembre","À la clôture du livret"], correct:2,
+   ex:"Ils s'ajoutent au capital au 31 décembre et rapportent à leur tour l'année suivante."},
+  {ch:'Livret A', lesson:'l4', type:'num',
+   q:"En quelle année le Livret A a-t-il été créé ?",
+   answer:1818, tol:0, unit:"",
+   ex:"En 1818, après la chute de Napoléon, pour relancer l'économie en encourageant l'épargne."},
+  {ch:'Livret A', lesson:'l4', type:'num',
+   q:"En quelle année une réforme a-t-elle permis à toutes les banques de distribuer le Livret A ?",
+   answer:2009, tol:0, unit:"",
+   ex:"2009. Avant, seules la Caisse d'Épargne et La Banque Postale le distribuaient."},
+  {ch:'Livret A', lesson:'l4', type:'qcm',
+   q:"Que finance la Caisse des Dépôts avec une partie des fonds du Livret A ?",
+   opts:["Les crédits renouvelables","Le logement social et des infrastructures publiques","Les fonds propres des banques","Le Fonds de résolution unique"], correct:1,
+   ex:"Construction et rénovation de logements sociaux, hôpitaux, transports."},
+  {ch:'Livret A', lesson:'l4', type:'qcm',
+   q:"Quel inconvénient du Livret A le cours relève-t-il ?",
+   opts:["Les retraits sont pénalisés","Les intérêts sont imposés","Le taux est souvent inférieur à l'inflation","Il faut bloquer les fonds un an"], correct:2,
+   ex:"D'où une perte de pouvoir d'achat à long terme. Retraits libres, intérêts exonérés, aucune période de blocage."},
+
+  {ch:'Crédit immobilier', lesson:'l5', type:'num',
+   q:"Jusqu'à combien d'années un crédit immobilier peut-il aller pour un achat en VEFA, selon la norme HCSF citée par le cours ?",
+   answer:27, tol:0, unit:"ans",
+   ex:"Généralement 5 à 25 ans ; jusqu'à 27 ans en VEFA ou pour un bien ancien avec travaux importants."},
+  {ch:'Crédit immobilier', lesson:'l5', type:'qcm',
+   q:"Le prêt relais représente généralement :",
+   opts:["10 à 20 % du prix du nouveau bien","50 à 80 % de la valeur du bien mis en vente","100 % du nouveau bien","35 % des revenus"], correct:1,
+   ex:"50 à 80 % de la valeur du bien mis en vente, sur une durée courte de 1 à 2 ans."},
+  {ch:'Crédit immobilier', lesson:'l5', type:'num',
+   q:"Un client vend une maison estimée à 300 000 €. Quel montant maximal de prêt relais selon le repère du cours ? (en euros)",
+   answer:240000, tol:0, unit:"€",
+   ex:"300 000 × 80 % = 240 000 € (et 150 000 € au minimum, à 50 %)."},
+  {ch:'Crédit immobilier', lesson:'l5', type:'qcm',
+   q:"Quel prêt est réservé aux foyers dont les revenus ne dépassent pas un plafond, et ouvre droit à l'APL ?",
+   opts:["Le prêt conventionné","Le PAS","Le prêt relais","Le prêt amortissable à taux variable"], correct:1,
+   ex:"Le prêt d'accession sociale. Le conventionné ouvre aussi droit à l'APL, mais sans condition de ressources."},
+  {ch:'Crédit immobilier', lesson:'l6', type:'num',
+   q:"Revenus nets de 4 000 € par mois, crédit auto de 300 € par mois. Quelle mensualité maximale pour le crédit immobilier selon la norme HCSF ? (en euros)",
+   answer:1100, tol:0, unit:"€",
+   ex:"4 000 × 35 % = 1 400 € tous crédits compris, assurance comprise ; 1 400 − 300 = 1 100 €."},
+  {ch:'Crédit immobilier', lesson:'l6', type:'qcm',
+   q:"La norme HCSF du taux d'endettement (35 %) s'entend :",
+   opts:["Hors assurance emprunteur","Assurance emprunteur comprise","Hors crédits à la consommation","Sur les revenus bruts"], correct:1,
+   ex:"35 % des revenus nets, toutes mensualités de crédit et assurance emprunteur comprises."},
+  {ch:'Crédit immobilier', lesson:'l6', type:'num',
+   q:"De combien de jours de réflexion l'emprunteur dispose-t-il après l'offre de prêt immobilier ?",
+   answer:10, tol:0, unit:"jours",
+   ex:"10 jours avant d'accepter ou de refuser l'offre."},
+  {ch:'Crédit immobilier', lesson:'l6', type:'qcm',
+   q:"Crédit Logement est un exemple :",
+   opts:["D'hypothèque","De société de cautionnement","D'assurance groupe","De prêt aidé"], correct:1,
+   ex:"La caution d'une société comme Crédit Logement est une alternative à l'hypothèque."},
+  {ch:'Crédit immobilier', lesson:'l7', type:'qcm',
+   q:"Depuis quelle loi peut-on changer d'assurance emprunteur à tout moment, sans frais ?",
+   opts:["Loi Hamon (2014)","Loi Bourquin (2018)","Loi Lemoine (2022)","Loi Pinel"], correct:2,
+   ex:"Hamon et Bourquin ont ouvert la délégation ; Lemoine permet le changement à tout moment."},
+  {ch:'Crédit immobilier', lesson:'l7', type:'num',
+   q:"PTZ 2026 selon le cours : montant maximal pour un appartement neuf (logement collectif) à 220 000 € ? (en euros)",
+   answer:110000, tol:0, unit:"€",
+   ex:"Jusqu'à 50 % du prix : 220 000 × 50 % = 110 000 €, sous réserve des conditions de revenus et de zone."},
+  {ch:'Crédit immobilier', lesson:'l7', type:'qcm',
+   q:"Pour sa résidence principale, un emprunteur peut-il déduire ses intérêts d'emprunt ?",
+   opts:["Oui, en totalité","Oui, pendant 5 ans","Non, plus depuis 2011","Oui, s'il a un PTZ"], correct:2,
+   ex:"Plus de déduction depuis 2011 pour la résidence principale. En locatif, les intérêts se déduisent des revenus locatifs."},
+  {ch:'Crédit immobilier', lesson:'l7', type:'qcm',
+   q:"Selon le cours, le dispositif Jeanbrun, successeur du Pinel, repose sur :",
+   opts:["Une réduction d'impôt de 21 % sur 12 ans","L'amortissement du bien, contre une location à loyer abordable pendant 9 ans","Un prêt à taux zéro","La déduction des intérêts de la résidence principale"], correct:1,
+   ex:"Le Pinel offrait une réduction d'impôt jusqu'à 21 % sur 12 ans ; le Jeanbrun repose sur l'amortissement du bien (engagement de 9 ans)."},
+
+  {ch:'Crédit conso', lesson:'l8', type:'num',
+   q:"Avant le 20 novembre 2026, quel est le montant maximal d'un crédit à la consommation selon le cours ? (en euros)",
+   answer:75000, tol:0, unit:"€",
+   ex:"200 € à 75 000 € ; le plafond passe à 100 000 € à compter du 20 novembre 2026."},
+  {ch:'Crédit conso', lesson:'l8', type:'qcm',
+   q:"Le prêt personnel est un crédit :",
+   opts:["Affecté à un achat précis","Non affecté : l'argent s'utilise librement","Renouvelable","Réservé à la réinsertion"], correct:1,
+   ex:"Pas besoin de justifier l'utilisation des fonds ; taux fixe, mensualités constantes."},
+  {ch:'Crédit conso', lesson:'l8', type:'qcm',
+   q:"Quel crédit le cours associe-t-il particulièrement au risque de surendettement ?",
+   opts:["Le crédit affecté","Le microcrédit personnel","Le crédit renouvelable","Le crédit-bail"], correct:2,
+   ex:"Taux élevé et facilité d'accès : le crédit renouvelable (revolving)."},
+  {ch:'Crédit conso', lesson:'l8', type:'qcm',
+   q:"La location avec option d'achat (LOA) correspond :",
+   opts:["Au crédit-bail (leasing)","Au prêt relais","Au crédit affecté","Au prêt conventionné"], correct:0,
+   ex:"On loue le bien, surtout un véhicule, avec la possibilité de l'acheter en fin de contrat."},
+  {ch:'Crédit conso', lesson:'l9', type:'num',
+   q:"De combien de jours calendaires dispose l'emprunteur pour se rétracter d'un crédit à la consommation ?",
+   answer:14, tol:0, unit:"jours",
+   ex:"14 jours calendaires après la signature, sans se justifier."},
+  {ch:'Crédit conso', lesson:'l9', type:'qcm',
+   q:"Pour comparer deux offres de crédit à la consommation, on regarde :",
+   opts:["Le seul taux nominal","Le TAEG","Le montant de la première mensualité","Le nombre d'agences de la banque"], correct:1,
+   ex:"Le TAEG inclut le taux nominal, les frais de dossier et l'assurance emprunteur."},
+  {ch:'Crédit conso', lesson:'l9', type:'num',
+   q:"Revenus de 2 500 € par mois : quelle mensualité maximale selon le repère de 33 % du cours pour le crédit à la consommation ? (en euros)",
+   answer:825, tol:0, unit:"€",
+   ex:"2 500 × 33 % = 825 €, crédits en cours compris."},
+  {ch:'Crédit conso', lesson:'l9', type:'qcm',
+   q:"Qui un ménage surendetté peut-il saisir ?",
+   opts:["L'AMF","La Commission de surendettement de la Banque de France","La Caisse des Dépôts","Le HCSF"], correct:1,
+   ex:"Elle propose rééchelonnement, suspension des paiements et, dans les cas extrêmes, effacement des dettes."},
+
+  {ch:'Régulation', lesson:'l10', type:'qcm',
+   q:"L'ACPR est chargée :",
+   opts:["De réguler les sociétés cotées","De superviser la solvabilité des banques et leur respect des règles prudentielles","De fixer le taux du Livret A","De distribuer le PTZ"], correct:1,
+   ex:"Adossée à la Banque de France, l'ACPR supervise les établissements et protège les consommateurs de services financiers."},
+  {ch:'Régulation', lesson:'l10', type:'qcm',
+   q:"L'objectif de l'AMF est :",
+   opts:["La transparence des marchés et la protection des investisseurs","La politique monétaire","Le financement du logement social","La résolution des crises bancaires"], correct:0,
+   ex:"Elle surveille les sociétés cotées, les fonds d'investissement et les transactions boursières."},
+  {ch:'Régulation', lesson:'l10', type:'qcm',
+   q:"Dans l'UE, Bâle III est mis en œuvre, selon le cours, par :",
+   opts:["La loi Lemoine","Le règlement CRR3 et la directive CRD VI","Le Dodd-Frank Act","Le Code de la consommation"], correct:1,
+   ex:"CRR3 et CRD VI, applicables depuis le 1er janvier 2025 selon le cours."},
+  {ch:'Régulation', lesson:'l11', type:'qcm',
+   q:"Laquelle de ces causes de la crise de 2007-2008 le cours cite-t-il ?",
+   opts:["La digitalisation des banques","Les prêts subprime et des produits opaques","Le plafond du Livret A","La loi Hamon"], correct:1,
+   ex:"Prise de risque excessive (subprimes, dérivés), manque de transparence, réglementation insuffisante."},
+  {ch:'Régulation', lesson:'l11', type:'num',
+   q:"En quelle année le Dodd-Frank Act a-t-il été adopté ?",
+   answer:2010, tol:0, unit:"",
+   ex:"En 2010, pour réguler plus strictement le secteur financier américain."},
+  {ch:'Régulation', lesson:'l11', type:'qcm',
+   q:"Dans l'Union bancaire, le FRU est :",
+   opts:["Un fonds financé par les banques pour couvrir les coûts des défaillances","L'agence américaine de protection des consommateurs","Le superviseur des plus grandes banques","Un ratio de liquidité"], correct:0,
+   ex:"Fonds de résolution unique ; le MRU organise la résolution, le MSU la supervision par la BCE."},
+  {ch:'Régulation', lesson:'l11', type:'qcm',
+   q:"Quel impact de la régulation accrue le cours relève-t-il ?",
+   opts:["Une hausse de la rentabilité du trading","Un recentrage de certaines banques sur la banque de détail","La disparition des stress tests","La fin des fonds propres obligatoires"], correct:1,
+   ex:"Coûts en hausse, rentabilité en baisse, recentrage sur la banque de détail, plus de transparence."},
+  {ch:'Régulation', lesson:'l12', type:'qcm',
+   q:"Selon le cours, les banques en ligne sont souvent :",
+   opts:["Des startups indépendantes","Des filiales de grands groupes bancaires traditionnels","Des établissements publics","Des sociétés de cautionnement"], correct:1,
+   ex:"Les startups indépendantes, mobile-first, ce sont les néobanques (N26, Revolut, Bunq)."},
+  {ch:'Régulation', lesson:'l12', type:'qcm',
+   q:"Lequel de ces établissements est une néobanque selon le cours ?",
+   opts:["Boursorama","Hello Bank","N26","Banque Directe"], correct:2,
+   ex:"N26 (Allemagne, 2015), comme Revolut et Bunq. Boursorama et Hello Bank sont des banques en ligne."},
+  {ch:'Régulation', lesson:'l12', type:'qcm',
+   q:"La « finance verte » désigne :",
+   opts:["Le financement de la transition énergétique et de projets durables","Les frais réduits des banques en ligne","Le Livret A","Le coussin contra-cyclique"], correct:0,
+   ex:"Les banques orientent une part de leurs investissements vers des projets respectueux de l'environnement (énergies renouvelables)."}
+];
+
+function renderTest(){
+  const c = document.getElementById('testQuestions');
+  c.innerHTML = '';
+  TEST.forEach((q,i)=>{
+    const div = document.createElement('div');
+    div.className = 'test-q'; div.id = 'tq'+i;
+    let body = '';
+    if(q.type==='qcm'){
+      body = '<div class="topt">' + q.opts.map((o,j)=>
+        '<button onclick="selOpt('+i+','+j+')" id="tq'+i+'o'+j+'">'+o+'</button>').join('') + '</div>';
+    } else {
+      body = '<input type="text" inputmode="decimal" autocomplete="off" class="num-input" id="tq'+i+'in" placeholder="…" aria-label="Ta réponse"><span class="unit">'+(q.unit||'')+'</span>';
+    }
+    div.innerHTML =
+      '<div class="tq-head"><span class="tq-num">Question '+(i+1)+'/'+TEST.length+'</span><span class="tq-chap">'+q.ch+'</span></div>'+
+      '<div class="tq-q">'+q.q+'</div>'+ body +
+      '<div class="remed" id="tq'+i+'rem"><div class="rt">⚠️ À revoir</div><div class="ra" id="tq'+i+'ra"></div>'+
+      '<div class="remed-btns"><button class="btn" onclick="go(\''+q.lesson+'\')">📖 Revoir la leçon</button>'+
+      '<button class="btn primary" onclick="dismissRemed('+i+')">Continuer →</button></div></div>';
+    c.appendChild(div);
+  });
+  document.getElementById('testResult').classList.remove('show');
+  document.getElementById('testSubmitRow').style.display = 'flex';
+  document.getElementById('floatRetry').classList.remove('show');
+  TEST._answers = {};
+}
+function selOpt(qi, oi){
+  if(document.getElementById('tq'+qi).classList.contains('graded')) return;
+  TEST._answers = TEST._answers || {};
+  TEST._answers[qi] = oi;
+  TEST[qi].opts.forEach((_,j)=>document.getElementById('tq'+qi+'o'+j).classList.toggle('sel', j===oi));
+}
+function lireNombre(v){ return parseFloat(String(v).replace(/[\s\u00a0\u202f]/g,'').replace(',', '.')); }   // « 1 000 », « 1,96 »
+function gradeTest(){
+  TEST._answers = TEST._answers || {};
+  let score = 0; const chap = {};
+  TEST.forEach((q,i)=>{
+    const box = document.getElementById('tq'+i);
+    box.classList.add('graded');
+    let ok = false;
+    if(q.type==='qcm'){
+      ok = TEST._answers[i] === q.correct;
+      q.opts.forEach((_,j)=>{ const b=document.getElementById('tq'+i+'o'+j); b.disabled=true;
+        if(j===q.correct) b.classList.add('sel'); });
+    } else {
+      const val = lireNombre(document.getElementById('tq'+i+'in').value);
+      ok = !isNaN(val) && Math.abs(val - q.answer) <= (q.tol||0) + 1e-9;
+      document.getElementById('tq'+i+'in').disabled = true;
+    }
+    if(window.P) P.noterReponse('test:'+i, ok, q.ch);
+    chap[q.ch] = chap[q.ch] || {ok:0,tot:0};
+    chap[q.ch].tot++;
+    if(ok){ score++; chap[q.ch].ok++; box.classList.add('ok'); }
+    else { box.classList.add('ko');
+      document.getElementById('tq'+i+'ra').innerHTML = q.ex;
+      document.getElementById('tq'+i+'rem').classList.add('show'); }
+  });
+  showResult(score, chap);
+}
+function dismissRemed(i){ document.getElementById('tq'+i+'rem').classList.remove('show'); }
+function showResult(score, chap){
+  document.getElementById('testSubmitRow').style.display = 'none';
+  document.getElementById('scoreBig').textContent = score+'/'+TEST.length;
+  let msg, col; const pct = score/TEST.length*100;
+  if(pct>=90){ msg="Excellent — tu es prêt pour les questions rédigées."; col=getCss('--teal'); }
+  else if(pct>=70){ msg="Très bon niveau. Revois les chapitres en orange ci-dessous."; col=getCss('--teal'); }
+  else if(pct>=50){ msg="Bon début. Concentre tes révisions sur les chapitres faibles."; col=getCss('--amber'); }
+  else { msg="Il reste du travail. Reprends les leçons signalées, puis réessaie."; col=getCss('--rust'); }
+  document.getElementById('scoreBig').style.color = col;
+  document.getElementById('scoreMsg').textContent = msg;
+  const bars = document.getElementById('chapBars');
+  bars.innerHTML = '';
+  Object.keys(chap).forEach(name=>{
+    const c = chap[name];
+    const p = Math.round(c.ok/c.tot*100);
+    const bc = p>=67?getCss('--teal'):p>=34?getCss('--amber'):getCss('--rust');
+    bars.innerHTML += '<div class="chapbar"><div class="cbl"><span>'+name+'</span><span>'+c.ok+'/'+c.tot+'</span></div>'+
+      '<div class="cbt"><div class="cbf" style="width:0;background:'+bc+'" data-w="'+p+'"></div></div></div>';
+  });
+  document.getElementById('testResult').classList.add('show');
+  document.getElementById('floatRetry').classList.add('show');
+  setTimeout(()=>document.querySelectorAll('.cbf').forEach(b=>b.style.width=b.dataset.w+'%'),120);
+  addXp(score*20);
+  if(window.P) P.meilleurScore('Test final', score, TEST.length);
+  document.getElementById('testResult').scrollIntoView({behavior:'smooth'});
+  if(window.LB){ try{ LB.record({subject:SUBJECT_KEY, mode:'Test final', correct:score, total:TEST.length, xp:state.xp}); }catch(e){} }
+}
+function resetTest(){ renderTest(); go('test'); }
+function getCss(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+
+/* ===================== APPLICATIONS ===================== */
+function toggleCorrige(btn){
+  const cor = btn.nextElementSibling;
+  const open = cor.classList.toggle('show');
+  btn.textContent = open ? 'Masquer le corrigé' : 'Voir le corrigé';
+}
+
+/* ===================== INIT ===================== */
+buildNav();
+updateProgress();
+renderRedac();
+renderTest();
+go((window.P && SAVE.last && document.querySelector('.view[data-view="'+SAVE.last+'"]')) ? SAVE.last : 'l1');
+try{ document.getElementById('lb-id-slot').appendChild(LB.idButton()); }catch(e){}
+</script>
+<script src="banque.js"></script>
+<script src="ui.js"></script>
+</body>
+</html>
