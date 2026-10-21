@@ -274,6 +274,17 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  6.4.1            Système bancaire français : vidéo de présentation (9 min) ;
+                   chiffres du cours vérifiés sur sources officielles et corrigés
+                   (directive (UE) 2023/2225, microcrédit 8 000 €, CRD VI au
+                   11/01/2026, 33 % = ancien repère sans valeur réglementaire,
+                   « Mécanisme de surveillance unique », banques en ligne à jour),
+                   encadré « Mises à jour vérifiées » dans le Mémo ; banque.js
+                   régénérée pour cette matière. Partiels du mardi 19 janvier 2027
+                   (Entreprise banque 9 h, Marché des Particuliers 10 h 30,
+                   Système bancaire 13 h 30, Marketing Numérique 15 h). BeQuick :
+                   la correction se débloque sur tous les appareils une fois la
+                   partie finie (vérification côté serveur).
   6.4.0            NOUVELLE MATIÈRE : LE SYSTÈME BANCAIRE FRANÇAIS (systeme_bancaire.html,
                    subject-id systeme-bancaire). 12 leçons en 5 chapitres : paysage
                    bancaire, Livret A, crédit immobilier, crédit à la consommation,
