@@ -75,7 +75,7 @@ $('f').addEventListener('submit', async e=>{
     const d = await r.json().catch(()=>({}));
     if(d.ok){
       /* même mémoire que le reste du site (lb.js) : le hub ne redemandera pas le pseudo */
-      try{ localStorage.setItem('lb_name', pseudo); localStorage.setItem('acces_pseudo_envoye', pseudo); }catch(err){}
+      try{ localStorage.setItem('lb_name', pseudo); }catch(err){}
       m.className = 'msg ok'; m.textContent = 'Bienvenue '+pseudo+' ! Ouverture du hub…';
       setTimeout(()=>location.replace(retour()), 500);
       return;

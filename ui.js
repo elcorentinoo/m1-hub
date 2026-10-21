@@ -10,7 +10,7 @@
 
   /* ---------- 0. VERSION ---------- */
   /* Doit rester identique à VERSION en haut de sw.js. */
-  const VERSION_APP = '7.0.0';
+  const VERSION_APP = '7.0.1';
   const NOM_VERSION = 'Ducat';
   window.APP_VERSION = VERSION_APP;
 
@@ -768,10 +768,12 @@
      cet appareil, pour que /admin sache qui utilise quelle clé. */
   function signalerPseudo(){
     let p = null, deja = null;
-    try{ p = localStorage.getItem('lb_name'); deja = localStorage.getItem('acces_pseudo_envoye'); }catch(e){ return; }
+    /* « acces_pseudo_ok » (7.0.1) : envoyé et confirmé par le serveur. Les clés
+       activées avant que la base sache stocker le pseudo se complètent ainsi. */
+    try{ p = localStorage.getItem('lb_name'); deja = localStorage.getItem('acces_pseudo_ok'); }catch(e){ return; }
     if(!p || p === deja || !navigator.onLine) return;
     fetch('/.netlify/functions/acces-pseudo', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({pseudo:p})})
-      .then(r=>{ if(r.ok){ try{ localStorage.setItem('acces_pseudo_envoye', p); }catch(e){} } })
+      .then(r=>{ if(r.ok){ try{ localStorage.setItem('acces_pseudo_ok', p); }catch(e){} } })
       .catch(()=>{});
   }
 

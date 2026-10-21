@@ -274,6 +274,9 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  7.0.1            Clés d'accès : chaque appareil renvoie une fois son pseudo au
+                   serveur (et attend sa confirmation), pour compléter les clés
+                   activées avant que la base sache stocker le pseudo.
   7.0.0 « Thaler » ACCÈS RÉSERVÉ PAR CLÉ. Tout le site passe derrière une porte :
                    une fonction Edge Netlify (netlify/edge-functions/acces.js)
                    vérifie avant chaque fichier un cookie signé (ACCES_SECRET).
