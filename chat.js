@@ -208,10 +208,17 @@
     /* plusieurs onglets ouverts : un seul prévient */
     if((lire('chat_notif', 0) || 0) >= m.id) return;
     ecrire('chat_notif', m.id);
-    navigator.serviceWorker.ready.then(r=>r.showNotification('💬 Messagerie M1', {
-      body:m.pseudo+' a envoyé un message', tag:'chat', renotify:true,
-      icon:'icons/icon-192.png', badge:'icons/icon-192.png', data:{url:'/?chat=1'}
-    })).catch(()=>{});
+    navigator.serviceWorker.ready.then(async r=>{
+      /* abonné aux notifications (et chat non coupé) : c'est le serveur
+         (fonction Supabase chat-notif) qui prévient, même appli fermée ;
+         on ne double pas l'alerte. */
+      const sub = await r.pushManager.getSubscription().catch(()=>null);
+      if(sub) return;                      // le serveur prévient, ou l'utilisateur a coupé
+      return r.showNotification('💬 Messagerie M1', {
+        body:m.pseudo+' a envoyé un message', tag:'chat', renotify:true,
+        icon:'icons/icon-192.png', badge:'icons/icon-192.png', data:{url:'/?chat=1'}
+      });
+    }).catch(()=>{});
   }
 
   /* ---------- 6. LE PANNEAU ---------- */

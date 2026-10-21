@@ -12,6 +12,10 @@ CONTENU DE CE DOSSIER
   • lb.js .............................. identité (pseudo) + classement Supabase
   • bequick.html / bequick.js .......... BeQuick, le défi du soir (18 h 30 – 22 h)
   • calendrier.js ...................... les dates de partiels (seul endroit à modifier)
+  • chat.js ............................ la messagerie de la promo (7.1.0)
+  • netlify/functions/acces-jeton.mjs .. le jeton Supabase de la messagerie
+  • supabase/chat.sql .................. table et règles de la messagerie (à coller
+                                         une fois dans Supabase → SQL Editor)
   • netlify/functions/bequick-notif.mjs  l'alerte BeQuick envoyée à 18 h 30
   • netlify/functions/push-test*.mjs ... la notification de test (activation)
   • netlify/push.mjs ................... chiffrement et envoi des notifications
@@ -274,6 +278,33 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  7.1.0            MESSAGERIE DE LA PROMO. Bulle 💬 dans l'en-tête, à côté de la
+                   cloche : un salon unique « Général », en direct (Supabase
+                   Realtime), réservé aux appareils qui ont une clé d'accès
+                   valide, en lecture comme en écriture. La fonction Netlify
+                   acces-jeton remet à l'appareil un jeton Supabase de 30 jours
+                   (clé + pseudo, signé avec SUPABASE_JWT_SECRET) ; ensuite les
+                   messages passent directement entre le navigateur et Supabase,
+                   sans coût Netlify. Base : supabase/chat.sql (table
+                   chat_messages, règles qui revérifient la clé à chaque lecture
+                   et envoi, 5 messages max / 10 s, effacement après 30 jours).
+                   Panneau latéral sur ordinateur, plein écran sur téléphone ;
+                   Entrée envoie, Maj + Entrée passe à la ligne, 1 000 caractères,
+                   liens cliquables. Non-lus : pastille sur la bulle, entrée
+                   « Léa a envoyé un message » dans la cloche, et notification du
+                   système (si déjà autorisée) quand le panneau est fermé ou
+                   l'onglet en arrière-plan ; /?chat=1 ouvre la messagerie.
+                   Modération : bouton « Supprimer » sur chaque message après
+                   connexion à /admin (action chat_supprimer). chat.js n'est
+                   chargé qu'au premier clic, ou en différé si l'appareil a déjà
+                   un jeton. Pied de page : nom de version corrigé (« Thaler »).
+                   Notifications du chat même appli fermée, gratuites : la base
+                   appelle la fonction Supabase chat-notif (supabase/functions/
+                   chat-notif/index.ts, Web Push en WebCrypto, identique à
+                   netlify/push.mjs) via un trigger pg_net (supabase/chat-notif.sql) ;
+                   au plus une notification toutes les 3 minutes, qui regroupe
+                   (« Léa et 2 autres… »), jamais à l'auteur ; interrupteur
+                   « Couper celles du chat » dans la cloche (push_abonnements.chat).
   7.0.1            Clés d'accès : chaque appareil renvoie une fois son pseudo au
                    serveur (et attend sa confirmation), pour compléter les clés
                    activées avant que la base sache stocker le pseudo.

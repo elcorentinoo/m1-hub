@@ -672,6 +672,25 @@
       impossible:'Ce navigateur ne permet pas de recevoir des notifications.'
     }[et] || '';
     z.innerHTML = '<div class="ds-n-p">'+txt+'</div>';
+    /* 7.1.0 : les notifications du chat passent par le même abonnement ;
+       on peut les couper ici sans couper l'alerte BeQuick. */
+    if(et === 'actif'){
+      let chatOn = true; try{ chatOn = localStorage.getItem('chat_push') !== '0'; }catch(e){}
+      z.insertAdjacentHTML('beforeend','<div class="ds-n-p" style="margin-top:8px"><b>Messagerie</b> : '+
+        (chatOn ? 'tu es prévenu quand quelqu\'un écrit, même appli fermée.' : 'notifications du chat coupées.')+
+        '<button type="button" class="ds-n-b sec" data-c="'+(chatOn?'off':'on')+'">'+(chatOn?'Couper celles du chat':'Réactiver celles du chat')+'</button></div>');
+      const c = z.querySelector('[data-c]');
+      c.onclick = async ()=>{
+        c.disabled = true;
+        const actif = c.dataset.c === 'on';
+        try{
+          const sub = await (await navigator.serviceWorker.ready).pushManager.getSubscription();
+          if(sub) await BQ.api('rpc/push_chat', {method:'POST', body:{e:sub.endpoint, actif}});
+          try{ localStorage.setItem('chat_push', actif ? '1' : '0'); }catch(e){}
+          dessinerPush();
+        }catch(err){ c.disabled = false; z.insertAdjacentHTML('beforeend','<div class="ds-n-err">'+echap(err.message || 'Réglage impossible.')+'</div>'); }
+      };
+    }
     const t = z.querySelector('[data-t]');
     if(t) t.onclick = async ()=>{
       t.disabled = true; t.textContent = 'Envoi…';
