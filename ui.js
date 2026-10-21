@@ -291,7 +291,8 @@
     'produits-derives':      {yt:'boIFCkjpHtI', duree:'7 min'},
     'es-banque':             {yt:'8DjZuDmS22I', duree:'8 min'},
     'marketing-numerique':   {yt:'suhvus2KxpY', duree:'10 min'},
-    'etudes-marche':         {yt:'Czg3Q9YZK9U', duree:'8 min'}
+    'etudes-marche':         {yt:'Czg3Q9YZK9U', duree:'8 min'},
+    'systeme-bancaire':      {yt:'kV5Ruf3QC4I', duree:''}
   };
   function lireLocal(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
   function ecrireLocal(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
@@ -313,7 +314,7 @@
     v.className = 'view'; v.dataset.view = 'intro';
     v.innerHTML = '<span class="tag">Introduction</span>'+
       '<h1 class="lesson-title">Présentation du cours</h1>'+
-      '<p class="subtitle">Le plan du cours, ses notions clés et ses pièges, en '+pr.duree+'. À regarder avant de commencer, ou pour tout revoir d’un coup d’œil.</p>'+
+      '<p class="subtitle">Le plan du cours, ses notions clés et ses pièges'+(pr.duree?', en '+pr.duree:'')+'. À regarder avant de commencer, ou pour tout revoir d’un coup d’œil.</p>'+
       '<div class="video-lecon" data-yt="'+pr.yt+'" data-duree="'+pr.duree+'" data-leg="Le cours en vidéo"></div>'+
       '<div class="lesson-nav ds-intro-nav"><button type="button" class="btn primary">Commencer la leçon 1 →</button></div>';
     v.querySelector('.ds-intro-nav .btn').addEventListener('click', ()=>window.go('l1'));

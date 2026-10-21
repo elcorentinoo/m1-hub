@@ -539,8 +539,11 @@ async function afficherJour(j, ouvrirCorrection){
   const z = $('jourSel'); if(!z) return;
   z.innerHTML = '<p class="titre-jour"><b>'+dateLongue(j)+'</b></p><div class="vide">Chargement…</div>';
   const l = await BQ.classement(j).catch(()=>[]);
-  /* la correction d'un soir est publiée à sa fermeture (22 h), ou dès qu'on a fini sa propre partie */
-  const visible = j < BQ.jourDe() || BQ.phase() === 'ferme' || !!(BQ.lireLocal(j)||{}).fini;
+  /* la correction d'un soir est publiée à sa fermeture (22 h), ou dès qu'on a fini sa propre partie —
+     sur cet appareil, ou sur un autre : le serveur sait si ce pseudo a terminé (6.4.0) */
+  const moi = BQ.pseudo() ? l.find(x=>x.pseudo_cle === BQ.cle(BQ.pseudo())) : null;
+  const finiServeur = !!moi && ((moi.repondues|0) >= BQ.NB_Q || BQ.maintenant() > Date.parse(moi.debut) + BQ.DUREE);
+  const visible = j < BQ.jourDe() || BQ.phase() === 'ferme' || !!(BQ.lireLocal(j)||{}).fini || finiServeur;
   z.innerHTML = '<p class="titre-jour"><b>'+dateLongue(j)+'</b> · '+l.length+' joueur'+(l.length>1?'s':'')+'</p>'+podiumEtListe(l, valJour, secJour)+
     (visible ? '<button class="btn-lien" id="bVoirCorr">Voir les '+BQ.NB_Q+' questions et la correction</button><div id="corr"></div>' : '<p class="note">La correction de ce soir sera disponible à 22 h, pour tout le monde en même temps.</p>');
   if(visible){ $('bVoirCorr').onclick = ()=>correction(j); if(ouvrirCorrection) correction(j); }

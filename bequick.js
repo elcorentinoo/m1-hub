@@ -291,7 +291,7 @@
     if(ph === 'avant'){ const m = OUVERTURE - paris(t).min; if(m <= 60) out.push({id:'bq-bientot-'+j, ico:'⏳', titre:NOM+" ouvre dans "+m+" min", texte:"Rendez-vous à 18 h 30.", url:'bequick.html'}); }
     (window.ECHEANCES||[]).forEach(e=>{
       const n = Math.ceil((e.end - t)/864e5);
-      if(n >= 0 && n <= 7 && !e.provisoire) out.push({id:'partiel-'+e.sid+'-'+n, ico:'📅', titre:(n===0?"Partiel aujourd'hui : ":n===1?"Partiel demain : ":"Partiel dans "+n+" jours : ")+e.titre, texte:e.format, url:e.matiere});
+      if(n >= 0 && n <= 7 && !e.provisoire) out.push({id:'partiel-'+e.sid+'-'+n, ico:'📅', titre:(n===0?"Partiel aujourd'hui : ":n===1?"Partiel demain : ":"Partiel dans "+n+" jours : ")+e.titre, texte:e.format, url:e.matiere || 'index.html#piste'});
     });
     try{
       if(window.P && P.aReviser && window.BANQUE){

@@ -411,7 +411,7 @@ const MATIERES = [
     stats:[["12","leçons"],["16","rédigées"],["8","cas"]]
   },
   {
-    file:"systeme_bancaire.html", sid:"systeme-bancaire", nb:12,
+    file:"systeme_bancaire.html", sid:"systeme-bancaire", yt:"kV5Ruf3QC4I", duree:"", nb:12,
     badge:"nouveau cours",
     title:"Le système bancaire français", court:"Système bancaire",
     desc:"Les acteurs et les services bancaires, le Livret A, le crédit immobilier et à la consommation, puis la régulation : ACPR, AMF, Bâle III, banques en ligne et FinTech.",
@@ -462,7 +462,7 @@ function carteMatiere(m){
   const carte = `<a class="mcard" data-sid="${m.sid}" href="${lienMatiere(m)}" style="view-transition-name:mat-${m.sid}">${corps}</a>`;
   if(!m.yt) return carte;
   /* pastille ▶ : la présentation du cours s'ouvre par-dessus le hub (6.3.0) */
-  return `<div class="mcard-bloc" data-sid="${m.sid}">${carte}<button type="button" class="mcard-video" onclick="uiVideo('${m.yt}','${echapH(m.court)} — Présentation du cours')" aria-label="Voir la présentation du cours ${echapH(m.court)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>${m.duree}</button></div>`;
+  return `<div class="mcard-bloc" data-sid="${m.sid}">${carte}<button type="button" class="mcard-video" onclick="uiVideo('${m.yt}','${echapH(m.court)} — Présentation du cours')" aria-label="Voir la présentation du cours ${echapH(m.court)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>${m.duree||'Vidéo'}</button></div>`;
 }
 function renderMatieres(){
   document.getElementById('grid-matieres').innerHTML = MATIERES.map(carteMatiere).join('');
@@ -494,11 +494,11 @@ function renderPiste(){
   const der = ECHEANCES[ECHEANCES.length-1];
   const fait = Math.min(100, Math.max(0, Math.round((Date.now()-DEBUT_SEMESTRE)/(der.end-DEBUT_SEMESTRE)*100)));
   const lignes = ECHEANCES.map(e=>{
-    const c = (window.P && P.completion) ? P.completion(e.sid, e.nb) : null;
+    const c = (window.P && P.completion && e.nb) ? P.completion(e.sid, e.nb) : null;
     return `<div class="ech" data-sid="${e.sid}">
       <div class="date">${e.court}<small>${e.provisoire?'provisoire':'dans '+jours(e.end)+' j'}</small></div>
       <div><b>${e.titre}</b><span class="f">${e.format}</span>
-        <div class="liens"><a href="${e.matiere}">Ouvrir le cours →</a>${e.entrainement?`<a href="${e.entrainement}">S'entraîner →</a>`:''}</div></div>
+        <div class="liens">${e.matiere?`<a href="${e.matiere}">Ouvrir le cours →</a>`:`<span>${e.desc}</span>`}${e.entrainement?`<a href="${e.entrainement}">S'entraîner →</a>`:''}</div></div>
       <div class="pct">${c?c.pct+' %':'—'}<small>prêt</small></div>
       <div class="j">J-${jours(e.end)}</div>
     </div>`;
