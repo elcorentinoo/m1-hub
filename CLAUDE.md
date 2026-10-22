@@ -69,7 +69,8 @@ après toute modification de couleur ou de photo.
   BeQuick. Une échéance sans cours a `matiere:null`.
 - Pages de cours (`marche_des_particuliers`, `produits_derives`,
   `marketing_numerique`, `es_banque`, `fiscalite_particulier`,
-  `droits_particuliers`, `etudes_de_marche`, `systeme_bancaire`) — même
+  `droits_particuliers`, `etudes_de_marche`, `systeme_bancaire`,
+  `produits_derives_2`) — même
   squelette : `topbar`, `sidebar` à chapitres, sections `.view` par leçon,
   mini-quiz, applications corrigées, test final adaptatif (`const TEST`).
   L'attribut `subject-id` sur `<html>` identifie la matière pour `progress.js`.
