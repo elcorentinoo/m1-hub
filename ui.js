@@ -10,7 +10,7 @@
 
   /* ---------- 0. VERSION ---------- */
   /* Doit rester identique à VERSION en haut de sw.js. */
-  const VERSION_APP = '7.5.0';
+  const VERSION_APP = '7.6.0';
   const NOM_VERSION = 'Thaler';
   window.APP_VERSION = VERSION_APP;
 

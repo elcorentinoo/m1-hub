@@ -1005,3 +1005,56 @@ html.bq-verrouille, html.bq-verrouille body{ overflow:hidden; }
 @media print{ .fx-i, .fx-pil, .fx-fond{ display:none !important; } }
 .fx-lab{ display:block; margin-top:8px; font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--txt3); font-weight:500; }
 .fx-lab + math{ margin-top:2px; }
+
+/* ───────────── BOUTON « AIDE » ET GUIDE « QUELLE FORMULE ? » (7.6.0) ─────────────
+   formules.js. Pilule à côté du « i », seulement sur les questions de calcul
+   de Produits Dérivés I et II (jamais dans BeQuick). La bonne formule passe
+   en vert (--ok sur --ok-soft), avec l'encadré « Pourquoi cette formule ? ». */
+.fx-groupe{ flex-wrap:wrap; justify-content:flex-end; }
+.fx-aide{
+  position:relative; flex:none; display:inline-flex; align-items:center; gap:6px; min-height:30px;
+  padding:0 12px 0 3px; border-radius:999px; cursor:pointer; background:var(--m-soft); color:var(--m);
+  border:1px solid var(--m-clair); font:inherit; font-size:13px; font-weight:600; line-height:1; letter-spacing:0; text-transform:none;
+  white-space:nowrap; transition:background .2s, color .2s;
+}
+.fx-aide::before{ content:''; position:absolute; inset:-7px -2px; border-radius:999px; }   /* zone de toucher de 44 px */
+.fx-aide-q{
+  width:24px; height:24px; border-radius:50%; display:inline-grid; place-items:center;
+  background:var(--m); color:var(--blanc); font-size:13px; font-weight:600;
+}
+.fx-aide:hover{ background:var(--m); color:var(--blanc); }
+.fx-aide:hover .fx-aide-q{ background:var(--blanc); color:var(--m); }
+.fx-aide:focus-visible, .fx-lien:focus-visible{ outline:3px solid var(--m); outline-offset:2px; }
+@media(max-width:560px){ .fx-aide-plus{ display:none; } }
+
+.fx-f.fx-vert{ border:2px solid var(--ok); background:var(--ok-soft); padding:13px 15px 11px; }
+.fx-f.fx-vert:focus{ outline:none; }
+.fx-badge{
+  display:inline-block; margin:0 8px 4px 0; padding:4px 10px; border-radius:999px; vertical-align:middle;
+  background:var(--ok); color:var(--blanc); font-size:12px; font-weight:600; letter-spacing:.02em;
+}
+.fx-pourquoi{
+  margin:0 0 10px; padding:12px 16px; border:1px solid var(--ok); border-left-width:6px; border-radius:16px; background:var(--blanc);
+}
+.fx-pourquoi:focus{ outline:none; }
+.fx-pq-t{ margin:0 0 4px; font-size:12.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ok); font-weight:600; }
+.fx-pq-x{ margin:0; font-size:.95rem; line-height:1.55; color:var(--txt); }
+
+.fx-guide-intro{ margin:10px 0 0; font-size:.95rem; color:var(--txt2); line-height:1.5; }
+.fx-guide{ list-style:none; margin:0; padding:0; display:grid; gap:10px; }
+.fx-guide li{ border:1px solid var(--stroke); border-radius:20px; padding:12px 14px; }
+.fx-gq{ margin:0 0 8px; font-size:1rem; font-weight:500; color:var(--txt); }
+.fx-gr{ display:flex; flex-wrap:wrap; gap:8px; }
+.fx-lien{
+  display:inline-flex; flex-direction:column; align-items:flex-start; gap:2px; min-height:44px; max-width:100%;
+  padding:8px 14px; border-radius:18px; border:1px solid var(--m-clair); background:var(--m-soft); cursor:pointer;
+  font:inherit; text-align:left; letter-spacing:0; text-transform:none;
+}
+.fx-lien:hover{ border-color:var(--m); }
+.fx-cond{ font-size:12.5px; color:var(--txt2); line-height:1.35; }
+.fx-cible{ font-size:14px; font-weight:600; color:var(--m); line-height:1.35; }
+@media(max-width:640px){
+  .fx-onglets button{ padding:0 13px; font-size:14px; }
+  .fx-guide li{ padding:10px 12px; }
+}
+@media print{ .fx-aide{ display:none !important; } }

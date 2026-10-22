@@ -246,7 +246,7 @@ function afficher(){
   host.innerHTML = `<div class="prog"><i style="width:${pct}%"></i></div>
     <div class="qcard">
       <div class="qmeta">
-        <span class="fx-groupe"><span class="src">${esc(LAB[q.m]||'')} · ${esc(q.ch)}</span>${window.M1Formules ? M1Formules.bouton(q.m) : ''}</span>
+        <span class="fx-groupe"><span class="src">${esc(LAB[q.m]||'')} · ${esc(q.ch)}</span>${window.M1Formules ? M1Formules.bouton(q.m) + (q.type==='num' && q.aide ? M1Formules.boutonAide(q.aide) : '') : ''}</span>
         <span class="cnt">${S.i+1}/${S.items.length} · ${statut}</span>
       </div>
       ${corps}
@@ -257,11 +257,15 @@ function afficher(){
 
 function finQuestion(ok, html){
   const S=SESSION, q=S.items[S.i];
-  P.planifier(q.id, ok);
+  const aidee = ok && S.aide === S.i;      /* 7.6.0 : réussie après avoir ouvert l'Aide → revient plus tôt */
+  P.planifier(q.id, ok, aidee);
   P.noterReponse(q.id, ok, q.ch, q.m);
   if(ok) S.ok++; else S.ko++;
+  S.repondu = S.i;
   const plan = P.etatPlan(q.id);
-  const revoir = plan.niv===0 ? "à revoir dès aujourd'hui" : 'revient dans '+P.PALIERS[plan.niv-1]+' jour'+(P.PALIERS[plan.niv-1]>1?'s':'');
+  const dans = plan.due - Math.floor(Date.now()/86400000);
+  const revoir = (dans<=0 ? "à revoir dès aujourd'hui" : 'revient dans '+dans+' jour'+(dans>1?'s':''))
+    + (aidee ? " — réussie avec l'aide, elle revient plus tôt" : '');
   document.getElementById('fb').innerHTML = html + `
     <div class="actions">
       <a class="lienlec" href="${FICH[q.m]}#${q.l}">📖 Voir la leçon</a>
@@ -271,6 +275,8 @@ function finQuestion(ok, html){
     <div style="font-family:DM Mono;font-size:11px;color:var(--muted);margin-top:9px">↻ ${revoir}</div>`;
 }
 
+/* 7.6.0 : l'Aide ouverte avant de répondre est notée pour la question en cours */
+document.addEventListener('m1-aide', ()=>{ if(SESSION && SESSION.repondu !== SESSION.i) SESSION.aide = SESSION.i; });
 function repondre(j){
   const q = SESSION.items[SESSION.i];
   const ok = j === q.correct;

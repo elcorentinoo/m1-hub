@@ -105,7 +105,7 @@ après toute modification de couleur ou de photo.
   (`envoyerSuivi`) ; tables et fonctions dans `supabase/admin.sql`.
 - `formules.js` (7.5.0) — fiches de formules Forward et Futures, en MathML,
   ouvertes par le bouton « i » (révision et pages Produits Dérivés I et II,
-  jamais dans BeQuick).
+  jamais dans BeQuick) + bouton Aide (7.6.0) qui met la bonne formule en vert.
 - `sw.js` — hors ligne. Toute nouvelle page doit être ajoutée à `FICHIERS`
   (sauf les pages d'accès, jamais mises en cache).
 

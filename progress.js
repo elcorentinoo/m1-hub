@@ -183,14 +183,19 @@ window.P = (function(){
     return {dus: dus.map(d=>d.id), neufs};
   }
 
-  function planifier(id, reussi){
+  /* 7.6.0 : « aide » = réussite obtenue après avoir ouvert le bouton Aide
+     (Produits Dérivés I et II, révision). Elle compte comme « en cours » :
+     pas de palier gagné (au plus le palier 1), retour dès le lendemain. */
+  function planifier(id, reussi, aide){
     const o = lire();
     o.plan = o.plan || {};
     const p = o.plan[id] || {niv:0, vus:0, ko:0};
-    p.niv = reussi ? Math.min(p.niv + 1, PALIERS.length) : 0;
+    const aidee = !!(reussi && aide);
+    p.niv = aidee ? Math.min(p.niv, 1) : reussi ? Math.min(p.niv + 1, PALIERS.length) : 0;
     p.vus = (p.vus||0) + 1;
     if(!reussi) p.ko = (p.ko||0) + 1;
-    const delai = reussi ? PALIERS[Math.min(p.niv, PALIERS.length) - 1] : 0;
+    if(aidee) p.aides = (p.aides||0) + 1;
+    const delai = aidee ? PALIERS[0] : reussi ? PALIERS[Math.min(p.niv, PALIERS.length) - 1] : 0;
     p.due = jour(Date.now()) + (reussi ? delai : 0);   // raté → à revoir dès aujourd'hui
     p.maj = Date.now();
     o.plan[id] = p;

@@ -12,7 +12,8 @@ CONTENU DE CE DOSSIER
   • lb.js .............................. identité (pseudo) + classement Supabase
   • bequick.html / bequick.js .......... BeQuick, le défi du soir (18 h 30 – 22 h)
   • formules.js ....................... le « i » : rappel des formules Forward et
-                                         Futures (MathML), 7.5.0
+                                         Futures (MathML), 7.5.0 ; bouton « Aide »
+                                         et guide « Quelle formule ? », 7.6.0
   • calendrier.js ...................... les dates de partiels (seul endroit à modifier)
   • chat.js ............................ la messagerie de la promo (7.1.0)
   • netlify/functions/acces-jeton.mjs .. le jeton Supabase de la messagerie
@@ -282,6 +283,25 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  7.6.0            BOUTON « AIDE : QUELLE FORMULE ? » (PRODUITS DÉRIVÉS I ET II).
+                   Sur les questions de calcul du test final des deux cours et
+                   sur leurs cartes de révision, une pilule « Aide » à côté du
+                   « i » : la fiche s'ouvre sur le bon onglet, la formule à
+                   utiliser passe en vert (« À utiliser ») et un encadré
+                   « Pourquoi cette formule ? » explique l'indice de l'énoncé et
+                   la première étape, sans donner le résultat. 34 questions
+                   dotées d'une aide (10 en Forward, 24 en Futures ; les 3
+                   questions de mémoire de Produits Dérivés I n'en ont pas).
+                   Nouvel onglet « Quelle formule ? » : guide en questions dont
+                   chaque réponse met la formule en vert. Chaque formule de
+                   formules.js a un identifiant (fwd-…, fut-…) ; nouvelle
+                   formule « Lire une cotation de taux (eurodevises) ». En
+                   révision, une bonne réponse obtenue après l'Aide ne fait pas
+                   monter de palier : la question revient le lendemain
+                   (progress.js, P.planifier). Jamais dans BeQuick. banque.js
+                   régénéré pour ces deux matières (champ aide). Corrigés de
+                   Produits Dérivés II nettoyés des décimales parasites
+                   (« 10 749,999999999918 » → « 10 750 », 9 endroits).
   7.5.0            PRODUITS DÉRIVÉS II : QUESTIONS REFAITES ET RAPPEL DES FORMULES.
                    Test final (39 questions) et 20 mini-quiz réécrits : de petites
                    situations autonomes avec leurs propres chiffres (EUR/USD,
