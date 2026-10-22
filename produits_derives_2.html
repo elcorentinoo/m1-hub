@@ -1005,7 +1005,7 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
 
       <div class="intro-card">
         <h2>📐 D'où viennent ces corrigés ?</h2>
-        <p>Les énoncés sont ceux du TD de Saker Sabkha. Les corrigés ont été <strong>rédigés par le site</strong> et <strong>tous les calculs vérifiés par ordinateur</strong>. Quand l'énoncé ne donne pas une donnée (exercice 2), l'hypothèse retenue est écrite en clair : compare avec la correction faite en TD.</p>
+        <p>Les énoncés sont ceux du TD de Saker Sabkha. Les corrigés ont été <strong>rédigés par le site</strong> et <strong>tous les calculs vérifiés par ordinateur</strong>. Quand l'énoncé ne donne pas une donnée (exercice 2), on applique la convention du TD, écrite en clair.</p>
       </div>
 
       <!-- EXERCICE 1 -->
@@ -1058,8 +1058,8 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
         </div>
         <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
         <div class="corrige">
-          <div class="corrige-head">✅ Corrigé — calculs vérifiés, une hypothèse</div>
-          <div class="callout c-piege"><div class="ct">⚠️ Hypothèse du corrigé</div><p>L'énoncé ne donne <strong>pas les cours Futures</strong>. On les estime par le <strong>cours à terme théorique</strong> (parité des taux, leçon 9), jusqu'à l'échéance de juin : 6 mois au 01/01, 1 mois au 31/05. Les autres taux ne servent pas. Vérifie cette hypothèse avec la correction du TD.</p></div>
+          <div class="corrige-head">✅ Corrigé — calculs vérifiés</div>
+          <div class="callout c-piege"><div class="ct">⚠️ Convention du TD</div><p>L'énoncé ne donne <strong>pas les cours Futures</strong> : on calcule les <strong>forwards théoriques</strong> (parité des taux, leçon 9) et on pose <strong>F = f</strong>, jusqu'à l'échéance de juin : 6 mois au 01/01, 1 mois au 31/05. Les autres taux ne servent pas.</p></div>
           <div class="step"><div class="sn">1</div><div class="sc"><b>Nature du risque.</b> Risque de change de transaction : créance de 1 M EUR (position longue en euros). La société craint une <b>baisse de l'EUR</b> face à l'USD. Couverture : <b>vendre</b> des Futures EUR/USD.</div></div>
           <div class="step"><div class="sn">2</div><div class="sc"><b>Physique.</b> <code>1 000 000 × (1,2 − 1,25) = −50 000 USD</code>.</div></div>
           <div class="step"><div class="sn">3</div><div class="sc"><b>Nombre de contrats.</b> Aversion totale : variance minimale. <code>h* = 1,5 ÷ 1,25 = 1,2</code> ; <code>N = 1,2 × 1 000 000 ÷ 125 000 = 9,6</code>, soit <b>10 contrats vendus</b>.</div></div>
@@ -1093,6 +1093,7 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
           <div class="step"><div class="sn">5</div><div class="sc"><b>Physique.</b> <code>2 500 000 ÷ 1,12 − 2 500 000 ÷ 1,08 = 2 232 142,86 − 2 314 814,81 = −82 671,96 EUR</code>. <b>Global</b> : <code>78 348,21 − 82 671,96 = −4 323,74 EUR</code> (−4 323,75 si l'on part des montants arrondis au centime).</div></div>
           <div class="step"><div class="sn">6</div><div class="sc"><b>Encaissé.</b> <code>2 232 142,86 + 78 348,21 = 2 310 491,07 EUR</code>, contre 2 314 814,81 EUR espérés au cours du 30 juin.</div></div>
           <div class="step"><div class="sn">✓</div><div class="sc"><b>Efficacité.</b> Couverture presque parfaite, pas parfaite : la perte de 82 672 EUR est réduite à 4 324 EUR (environ 95 % compensés). Deux sources : le <b>risque de base</b> (base initiale <code>1,0800 − 1,0850 = −0,0050</code>, finale <code>1,1200 − 1,1240 = −0,0040</code> : le Future a moins monté que le spot) et le <b>risque résiduel d'arrondi</b> (18 contrats au lieu de 18,43, sous-couverture).</div></div>
+          <div class="step"><div class="sn">+</div><div class="sc"><b>Et avec 19 contrats ?</b> Le TD choisit 18 contrats pour une couverture la plus neutre possible (résultat proche de 0). En <b>sur-couverture</b> à 19 contrats, on prend un petit pari en plus pour viser un gain : <code>19 × 125 000 × 0,0390 = 92 625 USD</code>, soit <code>92 625 ÷ 1,12 = 82 700,89 EUR</code>. Global : <code>82 700,89 − 82 671,96 = +28,94 EUR</code> (calcul exact), et encaissé <code>2 314 843,75 EUR</code>. Attention : si l'EUR/USD avait baissé, ce contrat en trop aurait creusé la perte.</div></div>
         </div>
       </div>
 
@@ -1199,13 +1200,13 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
         </ul>
       </div>
 
-      <h2>Points encore à faire préciser</h2>
+      <h2>Conventions du TD</h2>
       <div class="tbl-scroll">
       <table class="tbl wrap">
-        <tr><th>Sujet</th><th>Ce que fait le site</th><th>Pourquoi le vérifier</th></tr>
-        <tr><td>Exercice 2 : cours Futures</td><td>Estimés par le cours à terme théorique (6 mois au 01/01, 1 mois au 31/05).</td><td>L'énoncé ne les donne pas : la méthode du TD peut différer, et les arrondis changent le résultat (3 214 ou 3 125 USD).</td></tr>
-        <tr><td>Exercice 3 : nombre de contrats</td><td>Conversion au cours du Future F<sub>0</sub> : 18,43, soit 18 contrats.</td><td>Convertis au spot S<sub>0</sub>, on obtient 18,52, soit 19 contrats.</td></tr>
-        <tr><td>Date du partiel</td><td>Inconnue pour l'instant.</td><td>Elle apparaîtra sur le hub dès qu'elle sera connue.</td></tr>
+        <tr><th>Sujet</th><th>Convention retenue</th><th>À retenir</th></tr>
+        <tr><td>Exercice 2 : cours Futures</td><td>On calcule les forwards théoriques et on pose F = f (6 mois au 01/01, 1 mois au 31/05).</td><td>Garde 6 décimales : arrondir les cours à 4 décimales change le résultat (3 214 ou 3 125 USD).</td></tr>
+        <tr><td>Exercice 3 : nombre de contrats</td><td>18 contrats (18,43 arrondi) : couverture neutre, résultat proche de 0.</td><td>19 contrats = sur-couverture choisie pour viser un gain : +28,94 EUR ici.</td></tr>
+        <tr><td>Date du partiel</td><td>18 novembre 2026, avec Produits Dérivés I.</td><td>Le cours couvre la partie Futures au programme.</td></tr>
       </table>
       </div>
 
