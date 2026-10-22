@@ -12,7 +12,8 @@ window.P = (function(){
 
   const MATIERES = {
     'marche-particuliers':{lab:'Marché des Particuliers', f:'marche_des_particuliers.html', ico:'🏦'},
-    'produits-derives'   :{lab:'Produits Dérivés',        f:'produits_derives.html',        ico:'💱'},
+    'produits-derives'   :{lab:'Produits Dérivés I',      f:'produits_derives.html',        ico:'💱'},
+    'produits-derives-2' :{lab:'Produits Dérivés II',     f:'produits_derives_2.html',      ico:'⏳'},
     'marketing-numerique':{lab:'Marketing Numérique',     f:'marketing_numerique.html',     ico:'📊'},
     'es-banque'          :{lab:'ES Banque',              f:'es_banque.html',               ico:'🏛️'},
     'fiscalite-particulier':{lab:'Fiscalité du Particulier', f:'fiscalite_particulier.html', ico:'§'},

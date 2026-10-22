@@ -13,7 +13,7 @@
    ⚠️ Cette valeur doit rester IDENTIQUE à VERSION_APP,
       en haut de ui.js.
    ════════════════════════════════════════════════════════════ */
-const VERSION = '7.3.2';        // « Thaler »
+const VERSION = '7.4.0';        // « Thaler »
 const CACHE_APP  = 'm1-app-'+VERSION;      // les fichiers du site
 const CACHE_EXT  = 'm1-ext-'+VERSION;      // polices et bibliothèques externes
 
@@ -23,6 +23,7 @@ const FICHIERS = [
   'index.html',
   'marche_des_particuliers.html',
   'produits_derives.html',
+  'produits_derives_2.html',
   'entrainement_changes.html',
   'entrainement_fiscal.html',
   'fiscalite_particulier.html',
@@ -56,6 +57,7 @@ const FICHIERS = [
   'img/sujet-systeme-bancaire.webp',
   'img/sujet-fiscalite-particulier.webp',
   'img/sujet-produits-derives.webp',
+  'img/sujet-produits-derives-2.webp',
   'img/sujet-marketing-numerique.webp',
   'img/sujet-es-banque.webp',
   'img/sujet-marche-particuliers.webp'

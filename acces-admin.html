@@ -250,11 +250,11 @@ $('fGen').addEventListener('submit', async e=>{
    Toutes les données arrivent d'un coup (action « tableau » de la fonction
    acces-admin) et sont calculées ici. Une personne = un ou plusieurs
    pseudos regroupés (admin_personnes). Dates à l'heure de Paris. */
-const NOMS_M = {'marche-particuliers':'Marché des Particuliers','produits-derives':'Produits Dérivés','marketing-numerique':'Marketing Numérique',
+const NOMS_M = {'marche-particuliers':'Marché des Particuliers','produits-derives':'Produits Dérivés I','produits-derives-2':'Produits Dérivés II','marketing-numerique':'Marketing Numérique',
   'es-banque':'ES Banque','fiscalite-particulier':'Fiscalité du Particulier','droits-particuliers':'Droits des Particuliers',
   'etudes-marche':'Études de marché','systeme-bancaire':'Système bancaire français',
   hub:'Accueil', bequick:'BeQuick', revision:'Révision', glossaire:'Glossaire', stats:'Statistiques', classement:'Classement', ressourcerie:'Ressourcerie'};
-const COURS = Object.keys(NOMS_M).slice(0, 8);
+const COURS = Object.keys(NOMS_M).slice(0, 9);   // les 9 matières, en tête de NOMS_M
 const nomM = m => NOMS_M[m] || m;
 const JP = new Intl.DateTimeFormat('fr-CA', {timeZone:'Europe/Paris', year:'numeric', month:'2-digit', day:'2-digit'});
 const jourDe = d => JP.format(new Date(d));

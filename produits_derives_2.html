@@ -1,0 +1,1731 @@
+<!DOCTYPE html>
+<html lang="fr" subject-id="produits-derives-2">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>Produits Dérivés II — M1 MBAF</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+:root{
+  --card:#fff; --card2:#fbf9f5;
+  --paper:#faf6ef; --paper2:#f3ece0; --ink:#22201b; --line:#e3d9c8;
+  --teal:#1b6b5e; --amber:#c87a12; --rust:#a8432a; --plum:#6b3a73; --navy:#241C15;
+  --teal-soft:#e3efec; --amber-soft:#f6ead4; --rust-soft:#f3e0da; --plum-soft:#ece3ef; --navy-soft:#dde6f0;
+  --shadow:0 2px 14px rgba(34,32,27,.07); --shadow-lg:0 8px 30px rgba(34,32,27,.13);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-track{background:var(--paper2)}
+::-webkit-scrollbar-thumb{background:#cdbfa6;border-radius:6px;border:2px solid var(--paper2)}
+::-webkit-scrollbar-thumb:hover{background:var(--amber)}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:62px;z-index:50;background:var(--paper);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:18px;padding:0 22px}
+.brand{display:flex;align-items:center;gap:11px;font-family:'Fraunces',serif;font-weight:600;font-size:1.12rem;color:var(--navy)}
+.brand .logo{width:36px;height:36px;border-radius:9px;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:1.15rem;flex-shrink:0;box-shadow:var(--shadow)}
+.brand small{display:block;font-family:'DM Sans';font-weight:500;font-size:.66rem;letter-spacing:.09em;color:var(--amber);text-transform:uppercase}
+.hublink{font-family:'DM Mono';font-size:.72rem;color:#8a8170;text-decoration:none;padding:5px 10px;border-radius:8px;border:1px solid var(--line);white-space:nowrap;transition:.15s}
+.hublink:hover{color:var(--navy);border-color:#c9bca3;background:var(--card)}
+.progress-wrap{flex:1;max-width:300px;display:flex;flex-direction:column;gap:3px}
+.progress-wrap .lab{font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:#8a8170;font-weight:600;display:flex;justify-content:space-between}
+.progress-bar{height:8px;background:var(--paper2);border-radius:5px;overflow:hidden;border:1px solid var(--line)}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),#2a8a78);transition:width .5s cubic-bezier(.4,0,.2,1)}
+.xp{margin-left:auto;display:flex;align-items:center;gap:7px;background:var(--amber-soft);border:1px solid #e6cf9e;color:var(--amber);font-weight:700;padding:7px 14px;border-radius:30px;font-size:.9rem}
+.burger{display:none;background:none;border:1px solid var(--line);border-radius:8px;padding:7px 10px;cursor:pointer;font-size:1.1rem;color:var(--ink)}
+
+.shell{display:flex;padding-top:62px}
+.sidebar{position:fixed;top:62px;bottom:0;left:0;width:282px;background:var(--paper2);border-right:1px solid var(--line);overflow-y:auto;padding:20px 14px 50px;z-index:40;transition:transform .3s}
+.sidebar h4{font-family:'Fraunces',serif;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:#8a8170;margin:18px 10px 9px;font-weight:600}
+.sidebar h4:first-child{margin-top:0}
+.nav-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;cursor:pointer;font-size:.92rem;color:var(--ink);border:1px solid transparent;transition:.16s;margin-bottom:3px}
+.nav-item:hover{background:#ece3d3}
+.nav-item.active{background:var(--card);border-color:var(--line);box-shadow:var(--shadow);font-weight:600;color:var(--navy)}
+.nav-item .num{width:25px;height:25px;border-radius:50%;background:var(--card);border:1.5px solid var(--line);flex-shrink:0;display:grid;place-items:center;font-size:.78rem;font-weight:700;font-family:'DM Mono';color:#8a8170;transition:.16s}
+.nav-item.active .num,.nav-item.done .num{background:var(--teal);color:#fff;border-color:var(--teal)}
+.nav-item .lab{flex:1;line-height:1.25}
+.nav-item.special{background:var(--plum-soft);border-color:#d8c5dc;color:var(--plum);font-weight:600}
+.nav-item.special.active{background:var(--plum);color:#fff}
+.nav-item.special2{background:var(--navy-soft);border-color:#c3d2e2;color:var(--navy);font-weight:600}
+.nav-item.special2.active{background:var(--navy);color:#fff}
+.nav-item.special3{background:var(--amber-soft);border-color:#e6cf9e;color:var(--amber);font-weight:600}
+.nav-item.special3.active{background:var(--amber);color:#fff}
+.nav-item .ico{font-size:1.05rem}
+
+.main{flex:1;margin-left:282px;padding:40px 6vw 120px;max-width:920px}
+.view{display:none;animation:fadeIn .45s ease}
+.view.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.tag{display:inline-block;font-family:'DM Mono';font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;background:var(--navy-soft);color:var(--navy);padding:5px 12px;border-radius:20px;font-weight:500;margin-bottom:16px}
+h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;font-weight:600;color:var(--ink);margin-bottom:10px;letter-spacing:-.01em}
+.subtitle{font-size:1.12rem;color:#6f6757;margin-bottom:30px;max-width:62ch}
+.main p{margin-bottom:16px;font-size:1.04rem;max-width:68ch}
+.main h2{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:600;color:var(--navy);margin:38px 0 14px;letter-spacing:-.01em}
+.main strong{font-weight:600;color:var(--ink)}
+
+.callout{border-radius:14px;padding:18px 20px 18px 22px;margin:24px 0;border-left:5px solid;position:relative;font-size:1rem}
+.callout .ct{font-weight:700;font-family:'Fraunces',serif;font-size:1.02rem;display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.callout p{margin:0;max-width:none}
+.c-analogy{background:var(--amber-soft);border-color:var(--amber);color:#5e3a06}
+.c-analogy .ct{color:var(--amber)}
+.c-retenir{background:var(--teal-soft);border-color:var(--teal);color:#0f3d36}
+.c-retenir .ct{color:var(--teal)}
+.c-piege{background:var(--rust-soft);border-color:var(--rust);color:#5e2317}
+.c-piege .ct{color:var(--rust)}
+
+.rulebox{background:#1c1a16;color:#f3ece0;border-radius:14px;padding:22px 24px;margin:26px 0;font-family:'DM Mono';box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
+.rulebox::before{content:'REPÈRE';position:absolute;top:13px;right:18px;font-size:.62rem;letter-spacing:.2em;color:#7d7566}
+.rulebox.formule::before{content:'FORMULE'}
+.rulebox .rb-main{font-size:1.18rem;font-weight:500;line-height:1.5;color:#fff}
+.rulebox .rb-sub{font-size:.86rem;color:#b8af9d;margin-top:10px;line-height:1.55}
+.rulebox em{color:var(--amber);font-style:normal;font-weight:500}
+
+.tbl{width:100%;border-collapse:collapse;margin:22px 0;font-size:.96rem;background:var(--card);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line)}
+.tbl th{background:var(--navy);color:#fff;text-align:left;padding:11px 15px;font-weight:600;font-size:.86rem}
+.tbl td{padding:11px 15px;border-top:1px solid var(--line);vertical-align:top}
+.tbl tr:nth-child(even) td{background:var(--paper)}
+.tbl td:first-child{font-weight:600;color:var(--navy);white-space:nowrap}
+.tbl.wrap td:first-child{white-space:normal}
+.tbl.num td{font-family:'DM Mono';font-size:.94rem}
+.tbl.num td:first-child{font-family:'DM Sans'}
+
+.example{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:26px 0;box-shadow:var(--shadow)}
+.example .ex-head{font-family:'Fraunces',serif;font-weight:600;color:var(--plum);font-size:1.08rem;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.step{display:flex;gap:14px;margin-bottom:14px}
+.step:last-child{margin-bottom:0}
+.step .sn{width:27px;height:27px;border-radius:50%;background:var(--plum);color:#fff;flex-shrink:0;display:grid;place-items:center;font-family:'DM Mono';font-weight:500;font-size:.85rem}
+.step .sc{flex:1;padding-top:1px}
+.step .sc b{color:var(--navy)}
+.step .sc code{background:var(--paper2);padding:2px 7px;border-radius:5px;font-family:'DM Mono';font-size:.9rem;color:var(--teal)}
+.ex-result{margin-top:6px;background:var(--teal-soft);border:1px solid #bcdcd4;border-radius:10px;padding:12px 16px;font-weight:600;color:#0f3d36}
+
+.schema{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin:26px 0;box-shadow:var(--shadow);text-align:center}
+.schema .scap{font-size:.82rem;color:#8a8170;margin-top:12px;font-style:italic}
+.schema svg{max-width:100%;height:auto}
+
+.quiz{background:var(--plum-soft);border:1px solid #d8c5dc;border-radius:14px;padding:20px 22px;margin:24px 0}
+.quiz .qhead{font-family:'DM Mono';font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--plum);font-weight:500;margin-bottom:9px}
+.quiz .q{font-weight:600;font-size:1.05rem;margin-bottom:14px;color:var(--ink)}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{text-align:left;background:var(--card);border:1.5px solid #d8c5dc;border-radius:10px;padding:11px 15px;cursor:pointer;font-family:'DM Sans';font-size:.98rem;color:var(--ink);transition:.15s}
+.opt:hover:not(:disabled){border-color:var(--plum);background:#fbf8fc}
+.opt:disabled{cursor:default}
+.opt.right{background:var(--teal-soft);border-color:var(--teal);color:#0f3d36;font-weight:600}
+.opt.right::after{content:' ✓';color:var(--teal);font-weight:700}
+.opt.wrong{background:var(--rust-soft);border-color:var(--rust);color:#5e2317}
+.opt.wrong::after{content:' ✗';color:var(--rust);font-weight:700}
+.feedback{margin-top:13px;padding:12px 15px;border-radius:10px;background:var(--card);border:1px dashed #cbb9cf;font-size:.95rem;color:#5a4d5d}
+.feedback b{color:var(--plum)}
+
+.lesson-nav{display:flex;justify-content:space-between;gap:14px;margin-top:46px;padding-top:26px;border-top:1px solid var(--line)}
+.btn{font-family:'DM Sans';font-weight:600;font-size:.98rem;padding:12px 22px;border-radius:11px;cursor:pointer;border:1.5px solid var(--line);background:var(--card);color:var(--ink);transition:.16s;display:inline-flex;align-items:center;gap:8px}
+.btn:hover{border-color:#bbac90;transform:translateY(-1px)}
+.btn.primary{background:var(--teal);color:#fff;border-color:var(--teal);box-shadow:var(--shadow)}
+.btn.primary:hover{background:#155a4f}
+.btn.plum{background:var(--plum);color:#fff;border-color:var(--plum)}
+.btn.plum:hover{background:#592f60}
+.btn.amber{background:var(--amber);color:#fff;border-color:var(--amber)}
+.btn.amber:hover{background:#a86610}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.print-fab{position:fixed;bottom:26px;left:26px;z-index:110;background:var(--card);color:var(--ink2);border:1.5px solid var(--line2);font-weight:600;padding:10px 16px;border-radius:24px;cursor:pointer;font-family:'DM Sans';font-size:.85rem;box-shadow:var(--shadow);transition:.15s}
+.print-fab:hover{border-color:var(--navy);color:var(--navy);transform:translateY(-1px)}
+@media(max-width:880px){.print-fab{bottom:20px;left:16px;padding:9px 13px;font-size:.8rem}}
+.xp-pop{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--amber);color:#fff;font-weight:700;padding:13px 26px;border-radius:30px;box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:.4s;z-index:200;font-size:1rem}
+.xp-pop.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.test-q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:18px;box-shadow:var(--shadow);transition:.3s}
+.test-q .tq-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px}
+.test-q .tq-num{font-family:'DM Mono';font-weight:500;color:var(--navy);font-size:.9rem}
+.test-q .tq-chap{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:#8a8170;font-weight:600;background:var(--paper2);padding:4px 10px;border-radius:20px;text-align:right}
+.test-q .tq-q{font-weight:600;font-size:1.08rem;margin-bottom:14px}
+.num-input{font-family:'DM Mono';font-size:1.05rem;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;width:190px;background:var(--paper)}
+.num-input:focus{outline:none;border-color:var(--teal)}
+.unit{font-family:'DM Mono';color:#8a8170;margin-left:9px}
+.topt{display:flex;flex-direction:column;gap:8px}
+.topt button{text-align:left;background:var(--paper);border:1.5px solid var(--line);border-radius:10px;padding:11px 15px;cursor:pointer;font-family:'DM Sans';font-size:.98rem;transition:.15s}
+.topt button:hover{border-color:var(--teal)}
+.topt button.sel{background:var(--teal-soft);border-color:var(--teal);font-weight:600;color:#0f3d36}
+.remed{margin-top:14px;border-radius:11px;border-left:5px solid var(--rust);background:var(--rust-soft);padding:15px 18px;display:none}
+.remed.show{display:block;animation:fadeIn .35s}
+.remed .rt{font-weight:700;color:var(--rust);font-family:'Fraunces',serif;margin-bottom:5px;display:flex;align-items:center;gap:7px}
+.remed .ra{font-size:.95rem;color:#5e2317;margin-bottom:11px}
+.remed-btns{display:flex;gap:10px;flex-wrap:wrap}
+.remed-btns .btn{padding:8px 16px;font-size:.88rem}
+.test-q.ok{border-color:var(--teal);background:#fbfdfc}
+.test-q.ko{border-color:var(--rust)}
+.float-retry{position:fixed;bottom:26px;right:26px;z-index:120;display:none;background:var(--plum);color:#fff;border:none;font-weight:700;padding:14px 24px;border-radius:30px;box-shadow:var(--shadow-lg);cursor:pointer;font-family:'DM Sans';font-size:.98rem;align-items:center;gap:9px}
+.float-retry.show{display:inline-flex;animation:fadeIn .4s}
+
+.result{display:none;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:34px;box-shadow:var(--shadow-lg);text-align:center;animation:fadeIn .5s}
+.result.show{display:block}
+.result .score-big{font-family:'Fraunces',serif;font-size:4rem;font-weight:700;line-height:1;color:var(--teal)}
+.result .score-lab{color:#8a8170;font-weight:600;margin-bottom:8px}
+.result .msg{font-size:1.12rem;margin:14px auto 28px;max-width:46ch;color:var(--ink)}
+.chapbars{text-align:left;max-width:560px;margin:0 auto}
+.chapbar{margin-bottom:14px}
+.chapbar .cbl{display:flex;justify-content:space-between;font-size:.9rem;font-weight:600;margin-bottom:5px}
+.chapbar .cbl span:last-child{font-family:'DM Mono';color:#8a8170}
+.cbt{height:13px;background:var(--paper2);border-radius:7px;overflow:hidden;border:1px solid var(--line)}
+.cbf{height:100%;border-radius:7px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+
+.annale{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px 26px;margin-bottom:22px;box-shadow:var(--shadow)}
+.annale .an-tag{font-family:'DM Mono';font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);font-weight:500}
+.annale h3{font-family:'Fraunces',serif;font-size:1.32rem;color:var(--navy);margin:6px 0 14px;font-weight:600}
+.annale .enonce{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:16px 19px;font-size:1rem;color:#3a352c}
+.annale .enonce .qlist{margin:10px 0 0 4px}
+.annale .enonce .qlist li{margin-bottom:5px;list-style:none;padding-left:22px;position:relative}
+.annale .enonce .qlist li::before{content:'▸';position:absolute;left:0;color:var(--amber);font-weight:700}
+.corrige{margin-top:14px;display:none;animation:fadeIn .4s}
+.corrige.show{display:block}
+.corrige-head{font-family:'Fraunces',serif;font-weight:600;color:var(--teal);margin-bottom:12px;display:flex;align-items:center;gap:8px;font-size:1.06rem}
+
+.intro-card{background:var(--navy);color:#f3ece0;border-radius:16px;padding:24px 26px;margin-bottom:26px}
+.intro-card h2{color:#fff;margin:0 0 8px;font-family:'Fraunces',serif;font-size:1.4rem}
+.intro-card p{color:#cdd8e6;max-width:none;margin:0}
+.intro-card.amber{background:#7a4c08}
+.intro-card.amber p{color:#f2e0c0}
+.intro-card.plum{background:#4a2750}
+.intro-card.plum p{color:#e6d5ea}
+
+.hint{font-size:.85rem;color:#8a8170;font-style:italic;margin-top:8px}
+.overlay{display:none;position:fixed;inset:62px 0 0 0;background:rgba(34,32,27,.4);z-index:35}
+@media(max-width:880px){
+  .main{margin-left:0;padding:30px 22px 110px}
+  .sidebar{transform:translateX(-100%);box-shadow:var(--shadow-lg)}
+  .sidebar.open{transform:translateX(0)}
+  .overlay.show{display:block}
+  .burger{display:block}
+  .progress-wrap{max-width:none}
+  .brand small{display:none}
+  h1.lesson-title{font-size:1.8rem}
+  .xp{padding:6px 11px;font-size:.82rem}
+  .gen-data .dl{min-width:0;display:block}
+}
+@media(max-width:560px){
+  .progress-wrap,.hublink{display:none}
+  .topbar{gap:12px}
+}
+/* ===== QUESTIONS RÉDIGÉES — couleurs uniquement par variables de theme.css ===== */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.redac textarea{display:block;width:100%;min-height:130px;margin-top:4px;padding:12px 14px;border:1.5px solid var(--line2);border-radius:10px;background:var(--card);color:var(--ink);font:inherit;font-size:1rem;line-height:1.55;resize:vertical}
+.redac textarea:focus{outline:none;border-color:var(--acc)}
+.redac-btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.redac-score{font-weight:700;padding:10px 14px;border-radius:10px;margin-bottom:10px;border:1px solid var(--line)}
+.redac-score.ok{background:var(--teal-soft);color:var(--teal-d)}
+.redac-score.mid{background:var(--amber-soft);color:var(--amber)}
+.redac-score.ko{background:var(--rust-soft);color:var(--rust)}
+.crit{list-style:none;margin:0 0 16px;padding:0}
+.crit li{padding:6px 0;border-bottom:1px solid var(--line);font-size:.96rem}
+.crit li.ok{color:var(--teal-d)}
+.crit li.ko{color:var(--rust)}
+.crit li i{color:var(--ink2)}
+.modele{background:var(--paper2);border:1px solid var(--line);border-radius:10px;padding:14px 16px;max-width:none !important}
+/* lisibilité et contraste : étiquettes grises reprises sur les variables de theme.css */
+.test-q .tq-chap,.unit,.hint,.result .score-lab,.chapbar .cbl span:last-child{color:var(--txt3)}
+.main{min-width:0}
+.tbl-scroll{overflow-x:auto;margin:22px 0}
+.tbl-scroll .tbl{margin:0}
+.tbl td,.tbl th{hyphens:auto;overflow-wrap:break-word}
+@media(max-width:560px){.tbl-scroll .tbl{min-width:540px}}
+@media(max-width:560px){.tbl th,.tbl td{padding:9px 10px;font-size:.88rem}}
+/* ===== CALCULATRICE (leçon 9) ===== */
+.calc-row{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:12px}
+.calc-row label{display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:.92rem;color:var(--ink);flex:1 1 200px;min-width:0}
+.calc .num-input{width:100%}
+</style>
+<link rel="stylesheet" href="ui.css">
+<link rel="stylesheet" href="theme.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#ECEEF6">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="M1 MBAF">
+</head>
+<body>
+
+<div class="topbar">
+  <button class="burger" onclick="toggleSidebar()">☰</button>
+  <div class="brand">
+    <span class="logo">⏳</span>
+    <span>Produits Dérivés II<small>M1 MBAF · Futures</small></span>
+  </div>
+  <span id="nav-slot"></span>
+  <div class="progress-wrap">
+    <div class="lab"><span>Progression</span><span id="progPct">0 %</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+  </div>
+  <div class="xp"><span class="star">★</span><span id="xpVal">0</span> XP</div>
+  <span id="lb-id-slot"></span>
+</div>
+
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <h4>Chapitre 1 · Le marché des Futures</h4>
+    <div id="navList1"></div>
+    <h4>Chapitre 2 · Le système de marges</h4>
+    <div id="navList2"></div>
+    <h4>Chapitre 3 · Couvrir le risque de change</h4>
+    <div id="navList3"></div>
+    <h4>Chapitre 4 · Base et évaluation</h4>
+    <div id="navList4"></div>
+    <h4>Chapitre 5 · Spéculation</h4>
+    <div id="navList5"></div>
+    <h4>S'entraîner</h4>
+    <div class="nav-item special3" data-view="redac" onclick="go('redac')">
+      <span class="ico">✍️</span><span class="lab">Questions rédigées</span>
+    </div>
+    <div class="nav-item special2" data-view="annales" onclick="go('annales')">
+      <span class="ico">📐</span><span class="lab">Exercices du TD corrigés</span>
+    </div>
+    <div class="nav-item special" data-view="test" onclick="go('test')">
+      <span class="ico">🎯</span><span class="lab">Test final adaptatif</span>
+    </div>
+    <h4>À savoir</h4>
+    <div class="nav-item" data-view="ecarts" onclick="go('ecarts')">
+      <span class="ico">⚠️</span><span class="lab">Mémo et points à vérifier</span>
+    </div>
+  </aside>
+
+  <main class="main" id="main">
+
+    <!-- ============ LEÇON 1 ============ -->
+    <section class="view" data-view="l1">
+      <span class="tag">Leçon 1 · Le marché des Futures</span>
+      <h1 class="lesson-title">Forward ou Futures : deux contrats à terme</h1>
+      <p class="subtitle">En Produits Dérivés I, tu as fixé un cours à terme avec ta banque (le forward). Le Future fait la même chose, mais sur un marché organisé, avec des contrats standardisés et une chambre de compensation au milieu.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Un <em>contrat à terme (CAT)</em> ou <em>Future</em> est un engagement ferme d'acheter ou de vendre une quantité <em>standardisée</em> de devises, à un cours fixé aujourd'hui, pour une échéance <em>standardisée</em>, négocié sur un <em>marché organisé</em>.</div>
+        <div class="rb-sub">Même idée que le forward : figer un cours pour plus tard. Ce qui change, c'est l'organisation du marché et la façon dont les gains et les pertes sont réglés.</div>
+      </div>
+
+      <h2>Ce qui distingue les deux contrats</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Critère</th><th>Forward (terme sec, gré à gré)</th><th>Future (marché organisé)</th></tr>
+        <tr><td>Marché</td><td>Gré à gré : négocié directement avec une banque.</td><td>Organisé : une Bourse, par exemple le <strong>CME</strong> de Chicago.</td></tr>
+        <tr><td>Contrat</td><td>Sur mesure : montant et date choisis par le client.</td><td><strong>Standardisé</strong> : taille, échéances, pas de cotation (tick) fixés par la Bourse.</td></tr>
+        <tr><td>Contrepartie</td><td>La banque : risque de contrepartie.</td><td>La <strong>chambre de compensation</strong>, acheteur de tous les vendeurs et vendeur de tous les acheteurs.</td></tr>
+        <tr><td>Garantie</td><td>En général aucun dépôt.</td><td>Un <strong>deposit</strong> (dépôt de garantie) et des <strong>appels de marge</strong> (leçon 3).</td></tr>
+        <tr><td>Règlement</td><td>Une seule fois, à l'échéance.</td><td><strong>Chaque jour</strong> : gains et pertes sont crédités ou débités sur le compte de marge.</td></tr>
+        <tr><td>Dénouement</td><td>Livraison des devises à l'échéance.</td><td>Le plus souvent, on <strong>revend</strong> (ou rachète) le contrat avant l'échéance.</td></tr>
+      </table>
+      </div>
+
+      <h2>La chambre de compensation</h2>
+      <p>Sur un marché organisé, l'acheteur et le vendeur ne se connaissent pas. La chambre de compensation s'interpose entre eux : chacun a pour seule contrepartie la chambre. Pour ne jamais être exposée, elle exige un dépôt de garantie à l'entrée, puis réévalue chaque position tous les soirs au <strong>cours de compensation</strong> (le cours de clôture) : c'est l'<strong>appel de marge quotidien</strong>.</p>
+
+      <h2>Le CME et l'IMM</h2>
+      <p>Les contrats de devises du TD se négocient sur le <strong>Chicago Mercantile Exchange (CME)</strong>. Son département de devises, l'<strong>International Monetary Market (IMM)</strong>, a été créé en <strong>1972</strong> : c'est là que sont nés les premiers Futures sur devises. Les contrats y sont cotés en <strong>dollars américains par unité de devise</strong> : le contrat EUR/USD porte sur des euros et son cours se lit en USD pour 1 EUR, comme le cours EUR/USD au comptant.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Pour s'en souvenir</div>
+        <p>Le forward, c'est un costume sur mesure chez ton tailleur (ta banque) : à ta taille, mais tu dépends de lui. Le Future, c'est le prêt-à-porter d'un grand magasin : quelques tailles seulement, mais tout le monde achète et revend facilement, et le magasin garantit chaque vente.</p>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Un Future n'est presque jamais conservé jusqu'à la livraison. L'entreprise qui se couvre <strong>liquide</strong> sa position (elle prend la position inverse) à la date où elle encaisse ou paie réellement ses devises. C'est l'origine du <strong>risque de base</strong> (leçon 8).</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 À retenir</div>
+        <p>Future = contrat à terme <strong>standardisé</strong>, sur un <strong>marché organisé</strong> (CME, département IMM), garanti par une <strong>chambre de compensation</strong>, réglé <strong>chaque jour</strong> par les appels de marge, et le plus souvent dénoué avant l'échéance.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Quelle est la contrepartie d'un opérateur qui achète un Future EUR/USD sur le CME ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Le vendeur du contrat, qu'il connaît</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">La chambre de compensation</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Sa banque, comme pour un forward</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">La Banque centrale européenne</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> La chambre de compensation est l'acheteur de tous les vendeurs et le vendeur de tous les acheteurs : elle supprime le risque de contrepartie, en contrepartie des dépôts et des appels de marge.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Laquelle de ces caractéristiques appartient au forward, et pas au Future ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Un règlement quotidien des gains et des pertes</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Une taille de contrat fixée par la Bourse</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Un montant et une date choisis sur mesure</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Un dépôt de garantie à l'ouverture</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Le forward est négocié de gré à gré, sur mesure. Le Future est standardisé (taille, échéance, tick) et réglé chaque jour sur le compte de marge.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('annales')">Applications corrigées</button>
+        <button class="btn primary" onclick="validate('l1',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 2 ============ -->
+    <section class="view" data-view="l2">
+      <span class="tag">Leçon 2 · Le marché des Futures</span>
+      <h1 class="lesson-title">Lire un contrat : taille, échéance, tick</h1>
+      <p class="subtitle">Trois caractéristiques suffisent pour tout calculer : la taille du contrat, son échéance et la valeur d'un tick.</p>
+
+      <h2>Les caractéristiques d'un contrat</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Élément</th><th>Définition</th><th>Exemples du TD</th></tr>
+        <tr><td>Taille (T)</td><td>Quantité de devises sur laquelle porte <strong>un</strong> contrat.</td><td>EUR/USD : 125 000 EUR · GBP/USD : 62 500 GBP</td></tr>
+        <tr><td>Échéance (E)</td><td>Mois de livraison du contrat. Les grandes échéances sont trimestrielles : mars, juin, septembre, décembre.</td><td>« Échéance juin N », « décembre N »</td></tr>
+        <tr><td>Cours (F)</td><td>Prix du contrat, en USD pour 1 unité de devise.</td><td>1 GBP = 1,5210 USD</td></tr>
+        <tr><td>Tick</td><td>La plus petite variation de cours autorisée.</td><td>0,0002 USD par GBP (exercice 1)</td></tr>
+        <tr><td>Tick en valeur</td><td>Ce que gagne ou perd <strong>un</strong> contrat quand le cours bouge d'un tick.</td><td>0,0002 × 62 500 = 12,5 USD</td></tr>
+      </table>
+      </div>
+
+      <div class="rulebox formule">
+        <div class="rb-main">Tick en valeur = <em>tick × T</em><br>Résultat d'une position = <em>(F<sub>vente</sub> − F<sub>achat</sub>) × T × N</em><br>= nombre de ticks × tick en valeur × N</div>
+        <div class="rb-sub">T = taille d'un contrat, N = nombre de contrats. Le résultat est en USD, la monnaie de cotation.</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">Exemple : 3 contrats EUR/USD</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Achat</b> de 3 contrats à <code>1,0850</code>, <b>revente</b> à <code>1,0910</code>. Taille 125 000 EUR.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Par les cours</b> : <code>(1,0910 − 1,0850) × 125 000 × 3 = 0,0060 × 375 000 = 2 250 USD</code>.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>Par les ticks</b>, avec le tick actuel du CME (0,00005 USD, soit <code>0,00005 × 125 000 = 6,25 USD</code>) : <code>0,0060 ÷ 0,00005 = 120 ticks</code>, et <code>120 × 6,25 × 3 = 2 250 USD</code>.</div></div>
+        <div class="ex-result">Les deux méthodes donnent le même résultat : +2 250 USD.</div>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Le tick dépend du contrat et de l'énoncé. Le TD retient pour la livre un tick de 0,0002 USD (12,5 USD par contrat) ; le CME cote aujourd'hui la livre au tick de 0,0001 USD (6,25 USD) et l'euro au tick de 0,00005 USD (6,25 USD). <strong>À l'examen, prends toujours le tick donné par l'énoncé.</strong></p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 À retenir</div>
+        <p>Tick en valeur = tick × taille. Le résultat d'une position se calcule par l'écart de cours × taille × nombre de contrats, ou par le nombre de ticks × tick en valeur × nombre de contrats.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Contrat GBP/USD de 62 500 GBP, tick de 0,0002 USD par GBP. Que vaut un tick ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">6,25 USD</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">12,5 USD</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">125 USD</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">0,0002 GBP</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> 0,0002 × 62 500 = 12,5 USD par contrat et par tick.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Tu vends 2 contrats EUR/USD (125 000 EUR) à 1,1200 et tu les rachètes à 1,1150. Quel est ton résultat ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">+1 250 USD</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">−1 250 USD</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">+625 USD</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">+12 500 USD</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Le vendeur gagne quand le cours baisse : (1,1200 − 1,1150) × 125 000 × 2 = 0,0050 × 250 000 = 1 250 USD.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l1')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l2',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 3 ============ -->
+    <section class="view" data-view="l3">
+      <span class="tag">Leçon 3 · Le système de marges</span>
+      <h1 class="lesson-title">Deposit, marge de maintenance et appels de marge</h1>
+      <p class="subtitle">La chambre de compensation se protège en deux temps : un dépôt de garantie à l'entrée, puis un règlement des pertes chaque soir.</p>
+
+      <h2>Les trois notions</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Notion</th><th>Ce que c'est</th></tr>
+        <tr><td>Deposit</td><td>Le <strong>dépôt de garantie initial</strong>, versé à l'ouverture de la position sur le compte de marge. Il couvre la perte maximale d'une journée.</td></tr>
+        <tr><td>Marge de maintenance</td><td>Le <strong>solde minimum</strong> du compte de marge, souvent exprimé en % du deposit (80 % dans l'exercice 1, 75 % dans l'exercice 4).</td></tr>
+        <tr><td>Appel de marge</td><td>Quand le solde passe <strong>sous la marge de maintenance</strong>, l'opérateur doit verser de quoi le <strong>ramener au deposit</strong>.</td></tr>
+        <tr><td>Restitution de marge</td><td>Quand le solde dépasse le deposit, l'excédent peut être retiré. Dans le TD, il reste sur le compte (« pas de retrait »).</td></tr>
+      </table>
+      </div>
+
+      <h2>Le deposit couvre la perte maximale d'une journée</h2>
+      <p>Les cours d'un Future ne peuvent pas varier de plus d'une <strong>limite de variation quotidienne</strong>, exprimée en ticks. La perte maximale d'une journée est donc connue : c'est elle que le deposit doit couvrir.</p>
+      <div class="rulebox formule">
+        <div class="rb-main">Deposit = <em>limite quotidienne (en ticks) × tick en valeur × N</em><br>Marge de maintenance = <em>% × deposit</em></div>
+        <div class="rb-sub">Exercice 1 : 50 ticks × 12,5 USD × 15 contrats = 9 375 USD ; maintenance 80 % = 7 500 USD. Une limite de 50 ticks de 0,0002 correspond à 0,01 USD par GBP.</div>
+      </div>
+
+      <h2>La règle de l'appel de marge</h2>
+      <div class="example">
+        <div class="ex-head">Chaque soir, la chambre de compensation…</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Calcule le résultat du jour</b> : variation du cours de compensation × T × N, gagnée par l'acheteur si le cours monte, par le vendeur s'il baisse.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Met à jour le solde</b> du compte de marge : solde de la veille + résultat du jour.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>Compare le solde à la marge de maintenance.</b> S'il est au-dessus : rien à faire. S'il est en dessous : appel de marge.</div></div>
+        <div class="step"><div class="sn">4</div><div class="sc"><b>Montant de l'appel</b> = deposit − solde. Le compte revient au deposit, pas à la maintenance.</div></div>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Deux erreurs classiques. 1) Comparer le solde au deposit : on ne paie un appel que si le solde passe <strong>sous la marge de maintenance</strong>. 2) Ne verser que la différence avec la maintenance : l'appel <strong>reconstitue le deposit</strong> en entier.</p>
+      </div>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Pour s'en souvenir</div>
+        <p>C'est la caution d'une location de voiture… qu'on vérifierait chaque soir. Tant qu'elle reste au-dessus d'un plancher, tu roules. Si elle passe dessous, tu remets de quoi retrouver la caution de départ.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 À retenir</div>
+        <p>Deposit = perte maximale d'une journée. Maintenance = plancher. Sous le plancher, appel de marge = deposit − solde. Les gains s'accumulent sur le compte (restitutions), sauf retrait.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Deposit 16 000 USD, maintenance 75 %. Le solde tombe à 13 000 USD. Que se passe-t-il ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Appel de marge de 3 000 USD</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Rien : 13 000 ≥ 12 000 USD de maintenance</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Appel de marge de 1 000 USD</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">La position est liquidée d'office</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> La maintenance vaut 75 % × 16 000 = 12 000 USD. Le solde de 13 000 USD reste au-dessus : aucun appel.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Même compte : le solde tombe à 6 000 USD. Quel appel de marge faut-il verser ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">6 000 USD, pour revenir à 12 000</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">10 000 USD, pour revenir à 16 000</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">4 000 USD</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">16 000 USD</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> L'appel reconstitue le deposit : 16 000 − 6 000 = 10 000 USD.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l2')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l3',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 4 ============ -->
+    <section class="view" data-view="l4">
+      <span class="tag">Leçon 4 · Le système de marges</span>
+      <h1 class="lesson-title">Le compte de marge, jour par jour</h1>
+      <p class="subtitle">La méthode du tableau : une ligne par séance, et l'on ne se trompe plus ni de signe, ni de montant d'appel.</p>
+
+      <h2>Les colonnes du tableau</h2>
+      <p>Pour chaque séance : le <strong>cours de compensation</strong>, sa <strong>variation</strong> par rapport à la veille, le <strong>résultat du jour</strong> (variation × T × N, avec le bon signe), le <strong>solde avant appel</strong>, l'<strong>appel de marge</strong> éventuel et le <strong>solde final</strong>.</p>
+
+      <div class="rulebox formule">
+        <div class="rb-main">Acheteur : résultat du jour = <em>(F<sub>t</sub> − F<sub>t−1</sub>) × T × N</em><br>Vendeur : résultat du jour = <em>(F<sub>t−1</sub> − F<sub>t</sub>) × T × N</em></div>
+        <div class="rb-sub">Le premier jour, F<sub>t−1</sub> est le cours d'ouverture de la position.</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">Exemple : vente de 5 contrats EUR/USD à 1,1500</div>
+        <p>Taille 125 000 EUR, donc <code>T × N = 625 000</code>. Deposit 3 000 USD par contrat : <code>15 000 USD</code>. Maintenance 75 % : <code>11 250 USD</code>. Position <b>vendeuse</b> : elle gagne quand le cours baisse.</p>
+        <div class="tbl-scroll">
+        <table class="tbl num">
+          <tr><th>Séance</th><th>Cours</th><th>Résultat du jour</th><th>Solde avant appel</th><th>Appel</th><th>Solde</th></tr>
+          <tr><td>Ouverture</td><td>1,1500</td><td>—</td><td>—</td><td>—</td><td>15 000</td></tr>
+          <tr><td>Jour 1</td><td>1,1540</td><td>−2 500</td><td>12 500</td><td>0</td><td>12 500</td></tr>
+          <tr><td>Jour 2</td><td>1,1610</td><td>−4 375</td><td>8 125</td><td>6 875</td><td>15 000</td></tr>
+          <tr><td>Jour 3</td><td>1,1580</td><td>+1 875</td><td>16 875</td><td>0</td><td>16 875</td></tr>
+          <tr><td>Jour 4</td><td>1,1450</td><td>+8 125</td><td>25 000</td><td>0</td><td>25 000</td></tr>
+        </table>
+        </div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Jour 2</b> : 8 125 &lt; 11 250, appel de <code>15 000 − 8 125 = 6 875 USD</code>.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Résultat global</b> : <code>(1,1500 − 1,1450) × 625 000 = +3 125 USD</code>.</div></div>
+        <div class="step"><div class="sn">✓</div><div class="sc"><b>Vérification par la trésorerie</b> : versé <code>15 000 + 6 875 = 21 875</code>, récupéré <code>25 000</code> à la clôture, soit <code>+3 125 USD</code>.</div></div>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>La somme des résultats du jour donne le résultat global ; <strong>les appels de marge ne sont pas des pertes</strong>, ce sont des versements de trésorerie que l'on récupère à la clôture avec le solde. Pour vérifier un résultat, compare tout ce que tu as versé (deposit + appels) à ce que tu récupères.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 À retenir</div>
+        <p>Une ligne par séance : cours, résultat du jour signé, solde avant appel, appel éventuel (deposit − solde), solde final. Résultat global = (cours de clôture − cours d'ouverture) × T × N, avec le signe de la position.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Acheteur de 4 contrats EUR/USD (125 000 EUR). Le cours passe de 1,1040 à 1,0990. Quel est le résultat du jour ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">+2 500 USD</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">−2 500 USD</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">−625 USD</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">−5 000 USD</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> (1,0990 − 1,1040) × 125 000 × 4 = −0,0050 × 500 000 = −2 500 USD : l'acheteur perd quand le cours baisse.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Deposit 16 000 USD ; deux appels de marge de 10 000 et 4 000 USD ; solde récupéré à la clôture : 25 000 USD. Quel est le résultat global ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">+25 000 USD</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">+9 000 USD</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">−5 000 USD</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">−14 000 USD</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Versé 16 000 + 10 000 + 4 000 = 30 000 USD, récupéré 25 000 USD : −5 000 USD.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l3')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l4',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 5 ============ -->
+    <section class="view" data-view="l5">
+      <span class="tag">Leçon 5 · Couvrir le risque de change</span>
+      <h1 class="lesson-title">Acheter ou vendre des Futures ?</h1>
+      <p class="subtitle">On prend sur les Futures la position qui gagne quand la position physique perd. Encore faut-il savoir quelle devise on craint de voir baisser.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Se couvrir, c'est prendre sur le marché des Futures une position <em>inverse</em> de la position physique : la perte sur l'une est compensée par le gain sur l'autre.</div>
+        <div class="rb-sub">Rappel de Produits Dérivés I : une créance en devise = position longue (on craint la baisse de la devise) ; une dette en devise = position courte (on craint sa hausse).</div>
+      </div>
+
+      <h2>La méthode en trois questions</h2>
+      <div class="example">
+        <div class="ex-head">Pour un contrat EUR/USD (cours = USD pour 1 EUR)</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Quelle devise vais-je recevoir ou payer ?</b> Et quelle est ma monnaie nationale ?</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Quel mouvement de EUR/USD me fait perdre ?</b> Une hausse ou une baisse du cours ?</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>Je prends la position qui gagne dans ce cas</b> : l'acheteur de Futures gagne si le cours monte, le vendeur gagne s'il baisse.</div></div>
+      </div>
+
+      <h2>Les quatre cas types</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Situation</th><th>Ce que l'on craint</th><th>Futures EUR/USD</th></tr>
+        <tr><td>Européen qui encaisse des USD (Airbus)</td><td>Baisse de l'USD, donc <strong>hausse</strong> de EUR/USD : moins d'euros reçus.</td><td><strong>Acheter</strong></td></tr>
+        <tr><td>Européen qui paie des USD</td><td>Hausse de l'USD, donc <strong>baisse</strong> de EUR/USD.</td><td><strong>Vendre</strong></td></tr>
+        <tr><td>Américain qui encaisse des EUR</td><td><strong>Baisse</strong> de l'EUR.</td><td><strong>Vendre</strong></td></tr>
+        <tr><td>Américain qui paie des EUR</td><td><strong>Hausse</strong> de l'EUR.</td><td><strong>Acheter</strong></td></tr>
+      </table>
+      </div>
+      <p>Même raisonnement pour la livre : un Américain qui encaisse des GBP (Fender) craint la baisse de la livre et <strong>vend</strong> des Futures GBP/USD.</p>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>« J'encaisse des devises, donc je vends » n'est vrai que si la devise reçue est la devise <strong>du contrat</strong> (celle placée en premier, l'EUR dans EUR/USD). Airbus encaisse des USD : il craint la baisse du dollar, c'est-à-dire la <strong>hausse</strong> de l'euro, et il <strong>achète</strong> des Futures EUR/USD.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 À retenir</div>
+        <p>Identifie le mouvement de cours qui te fait perdre, puis prends la position qui gagne dans ce cas : acheter si tu crains la hausse du cours du contrat, vendre si tu crains sa baisse.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Un importateur français doit payer 3 millions de USD dans quatre mois. Quelle position sur les Futures EUR/USD ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Acheter, car il craint la hausse de l'EUR</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Vendre, car il craint la hausse de l'USD, donc la baisse de EUR/USD</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Aucune : il paie, il n'est pas exposé</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Si l'USD monte, EUR/USD baisse et il lui faudra plus d'euros pour payer. Le vendeur de Futures EUR/USD gagne justement quand le cours baisse.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Une société américaine doit encaisser 1 million d'EUR dans cinq mois. Que fait-elle sur le CME ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">Elle vend des Futures EUR/USD</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Elle achète des Futures EUR/USD</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Elle achète des Futures GBP/USD</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Elle craint la baisse de l'euro (moins de dollars reçus) : la position vendeuse gagne si EUR/USD baisse. C'est le cas de l'exercice 2.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l4')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l5',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 6 ============ -->
+    <section class="view" data-view="l6">
+      <span class="tag">Leçon 6 · Couvrir le risque de change</span>
+      <h1 class="lesson-title">Combien de contrats négocier ?</h1>
+      <p class="subtitle">Deux méthodes : faire correspondre les volumes, ou minimiser la variance du résultat global grâce au ratio de couverture.</p>
+
+      <h2>Méthode 1 : la correspondance des volumes</h2>
+      <div class="rulebox formule">
+        <div class="rb-main">N = <em>montant à couvrir (dans la devise du contrat) ÷ T</em></div>
+        <div class="rb-sub">Si le montant est dans l'autre devise, on le convertit d'abord. Exercice 3 : 2 500 000 USD ÷ 1,0850 = 2 304 147 EUR, puis ÷ 125 000 = 18,43, soit 18 contrats.</div>
+      </div>
+
+      <h2>Méthode 2 : la minimisation de la variance</h2>
+      <p>Le cours du Future et le cours au comptant ne bougent pas exactement ensemble. Le <strong>ratio de couverture optimal</strong> h* mesure combien de Futures il faut pour une unité de devise, de façon à rendre le résultat global le moins variable possible.</p>
+      <div class="rulebox formule">
+        <div class="rb-main">h* = <em>Cov(S, F) ÷ V(F)</em> = σ<sub>S,F</sub> ÷ σ²<sub>F</sub><br>N* = <em>h* × montant à couvrir ÷ T</em></div>
+        <div class="rb-sub">Cov(S, F) : covariance des variations du spot et du Future. V(F) : variance des variations du Future. On arrondit N* à l'entier le plus proche.</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">Exemple : créance de 2 000 000 GBP, contrat de 62 500 GBP</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Volumes</b> : <code>2 000 000 ÷ 62 500 = 32 contrats</code>.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Ratio</b> avec Cov(S, F) = 0,00009 et V(F) = 0,0001 : <code>h* = 0,00009 ÷ 0,0001 = 0,9</code>.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>Variance minimale</b> : <code>0,9 × 2 000 000 ÷ 62 500 = 28,8</code>, soit <b>29 contrats</b>.</div></div>
+        <div class="ex-result">h* &lt; 1 : le Future varie un peu plus que le spot, il en faut donc moins que par les volumes.</div>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Dans l'exercice 2, l'énoncé note σ<sub>S,F</sub> = 1,5 : c'est la <strong>covariance</strong>, pas un écart-type. h* = 1,5 ÷ 1,25 = 1,2 : il faut alors <strong>plus</strong> de contrats que par les volumes (9,6 au lieu de 8). Une société « totalement averse au risque » choisit le nombre qui minimise la variance.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 À retenir</div>
+        <p>Volumes : N = montant ÷ T. Variance minimale : N* = h* × montant ÷ T, avec h* = Cov(S, F) ÷ V(F). On arrondit à l'entier le plus proche, ce qui laisse un risque résiduel (leçon 8).</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Créance de 1 250 000 GBP, contrat de 62 500 GBP, Cov(S, F) = 0,000085, V(F) = 0,0001. Combien de contrats selon la variance minimale ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">20</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">17</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">24</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">85</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> h* = 0,000085 ÷ 0,0001 = 0,85 ; N* = 0,85 × 1 250 000 ÷ 62 500 = 17 contrats (au lieu de 20 par les volumes).</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Que signifie un ratio de couverture h* supérieur à 1 ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">La couverture est impossible</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Il faut plus de contrats que par la correspondance des volumes</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Il faut moins de contrats que par la correspondance des volumes</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le Future est surévalué</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> N* = h* × montant ÷ T : avec h* &gt; 1, N* dépasse le nombre obtenu par les volumes. C'est le cas de l'exercice 2 (h* = 1,2).</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l5')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l6',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 7 ============ -->
+    <section class="view" data-view="l7">
+      <span class="tag">Leçon 7 · Couvrir le risque de change</span>
+      <h1 class="lesson-title">Résultat physique, résultat Futures, résultat global</h1>
+      <p class="subtitle">On juge une couverture sur la somme de deux résultats : celui de l'opération commerciale et celui des Futures.</p>
+
+      <div class="rulebox formule">
+        <div class="rb-main">Résultat physique = ce que l'on reçoit (ou paie) à t − ce que l'on aurait reçu (ou payé) au cours S<sub>0</sub><br>Résultat Futures = <em>N × T × (F<sub>t</sub> − F<sub>0</sub>)</em> pour l'acheteur, <em>N × T × (F<sub>0</sub> − F<sub>t</sub>)</em> pour le vendeur<br>Résultat global consolidé = <em>physique + Futures</em></div>
+        <div class="rb-sub">Les deux résultats doivent être exprimés dans la même monnaie : la monnaie nationale de l'entreprise.</div>
+      </div>
+
+      <h2>Cas 1 : une entreprise américaine (tout est en USD)</h2>
+      <div class="example">
+        <div class="ex-head">Créance de 500 000 EUR, 4 contrats vendus</div>
+        <p>S<sub>0</sub> = 1,1000 · F<sub>0</sub> = 1,1040 · à l'encaissement : S<sub>t</sub> = 1,0800 · F<sub>t</sub> = 1,0850.</p>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Physique</b> : <code>500 000 × (1,0800 − 1,1000) = −10 000 USD</code>.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Futures</b> (vendeur) : <code>4 × 125 000 × (1,1040 − 1,0850) = +9 500 USD</code>.</div></div>
+        <div class="ex-result">Résultat global : −10 000 + 9 500 = −500 USD. La couverture a effacé 95 % de la perte.</div>
+      </div>
+
+      <h2>Cas 2 : une entreprise européenne qui encaisse des USD</h2>
+      <p>Le physique se calcule en euros : <code>Q<sub>USD</sub> ÷ S<sub>t</sub> − Q<sub>USD</sub> ÷ S<sub>0</sub></code>. Le gain des Futures, en USD, est converti en euros au cours spot du jour de liquidation : <code>résultat Futures ÷ S<sub>t</sub></code>. C'est l'exercice 3 (Airbus).</p>
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Ne mélange pas les monnaies : un gain en USD et une perte en EUR ne s'additionnent pas. Convertis d'abord le résultat Futures dans la monnaie nationale, au spot de la date de liquidation, sauf si l'énoncé dit autre chose.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 À retenir</div>
+        <p>Global = physique + Futures, dans la monnaie nationale. Montant effectivement encaissé = montant converti au spot de t + résultat des Futures.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Fender (américain) encaisse 1 250 000 GBP ; S<sub>0</sub> = 1,2600 et S<sub>t</sub> = 1,2100. Quel est le résultat physique ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">+62 500 USD</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">−62 500 USD</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">−6 250 USD</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">−1 250 USD</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> 1 250 000 × (1,2100 − 1,2600) = −62 500 USD : la livre a baissé, Fender reçoit moins de dollars.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Une entreprise européenne gagne 87 750 USD sur ses Futures. Le spot du jour de liquidation est 1,1200. Combien cela fait-il en euros ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">98 280,00 EUR</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">78 348,21 EUR</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">81 250,00 EUR</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> 87 750 ÷ 1,1200 = 78 348,21 EUR. On divise, car le cours donne des USD pour 1 EUR.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l6')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l7',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 8 ============ -->
+    <section class="view" data-view="l8">
+      <span class="tag">Leçon 8 · Base et évaluation</span>
+      <h1 class="lesson-title">La base et les risques de la couverture</h1>
+      <p class="subtitle">Ce que dit le cours (§ 3.3.4) : la couverture par les Futures a deux limites, le risque de base et les risques résiduels.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">La <em>base</em> est l'écart entre le cours au comptant et le cours du Future : <em>b = S − F</em>.</div>
+        <div class="rb-sub">Spot et Future évoluent différemment pendant la vie du contrat et ne convergent qu'à l'échéance : la base tend vers zéro quand on s'approche de l'échéance.</div>
+      </div>
+
+      <h2>Limite 1 : le risque de base</h2>
+      <p>L'échéance des CAT, <strong>E</strong>, est souvent différente de la date de liquidation de la position physique, <strong>t</strong>. Comme l'opérateur doit choisir <strong>E &gt; t</strong>, il est obligé de dénouer sa position avant l'échéance du Future. Il subit ainsi un risque de base : en cas de gain sur les Futures, il compense potentiellement la perte sur le marché spot ; en cas de perte, il voit sa perte sur le marché spot s'alourdir.</p>
+      <div class="rulebox formule">
+        <div class="rb-main">Couverture vendeuse, volumes égaux (N × T = Q) :<br>résultat global = <em>Q × (b<sub>t</sub> − b<sub>0</sub>)</em></div>
+        <div class="rb-sub">Pour une couverture acheteuse, le signe s'inverse : −Q × (b<sub>t</sub> − b<sub>0</sub>). Si la base ne bougeait pas, la couverture serait parfaite.</div>
+      </div>
+      <div class="example">
+        <div class="ex-head">Retour sur l'exemple de la leçon 7</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Base initiale</b> : <code>1,1000 − 1,1040 = −0,0040</code>. <b>Base finale</b> : <code>1,0800 − 1,0850 = −0,0050</code>.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Variation</b> : <code>−0,0010 × 500 000 = −500 USD</code>, exactement le résultat global trouvé.</div></div>
+      </div>
+
+      <h2>Limite 2 : les risques résiduels</h2>
+      <p>La quantité de sous-jacent q<sub>S</sub> est rarement un multiple de la taille des Futures T. L'opérateur est ainsi obligé de couvrir son risque de change <strong>par excès ou par défaut</strong> : 18,43 contrats deviennent 18 (sous-couverture), 9,6 deviennent 10 (sur-couverture).</p>
+
+      <h2>Liquider avant l'échéance</h2>
+      <p>L'opérateur peut aussi constater que les cours évoluent de manière différente sur le marché des Futures et que les cours spot évoluent contre ses anticipations, de manière favorable. Il a alors la possibilité de <strong>liquider sa position avant l'échéance</strong> pour limiter les pertes sur le marché des CAT et bénéficier d'un résultat global plutôt lié au gain réalisé sur le marché spot.</p>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Une couverture « imparfaite » n'est pas une couverture ratée. Avec des volumes égaux, l'écart vient uniquement de la variation de la base : il est en général bien plus petit que la perte évitée.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 À retenir</div>
+        <p>Base = S − F, nulle à l'échéance. Risque de base : on liquide avant l'échéance (E &gt; t), la base a bougé. Risques résiduels : le montant n'est pas un multiple de T, on couvre par excès ou par défaut.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">S<sub>0</sub> = 1,2600 et F<sub>0</sub> = 1,2650. Quelle est la base initiale ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">+0,0050</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">−0,0050</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">−0,0060</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">0</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> b = S − F = 1,2600 − 1,2650 = −0,0050.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Pourquoi l'opérateur subit-il un risque de base ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Parce que la chambre de compensation peut faire défaut</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Parce qu'il dénoue sa position avant l'échéance du Future, quand spot et Future n'ont pas encore convergé</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Parce que le nombre de contrats est arrondi</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> E &gt; t : il liquide avant l'échéance, et la base S − F n'est pas encore nulle. L'arrondi du nombre de contrats, lui, crée les risques résiduels.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l7')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l8',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 9 ============ -->
+    <section class="view" data-view="l9">
+      <span class="tag">Leçon 9 · Base et évaluation</span>
+      <h1 class="lesson-title">Évaluer un Future et l'arbitrer</h1>
+      <p class="subtitle">Pour savoir si un Future est cher, on le compare au cours à terme théorique donné par la parité des taux d'intérêt.</p>
+
+      <div class="rulebox formule">
+        <div class="rb-main">f<sub>EUR/USD</sub> = <em>S<sub>EUR/USD</sub> × (1 + i<sub>USD</sub> × n/12) ÷ (1 + i<sub>EUR</sub> × n/12)</em></div>
+        <div class="rb-sub">n = durée jusqu'à l'échéance du Future, en mois (n = E − t), taux annuels simples. C'est la formule du cours à terme de Produits Dérivés I, avec des taux moyens.</div>
+      </div>
+
+      <h2>Comparer F et f</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Comparaison à l'instant t</th><th>Diagnostic</th><th>Arbitrage</th></tr>
+        <tr><td>F &gt; f</td><td>Le cours Future est <strong>surévalué</strong>.</td><td><strong>Vendre le Future</strong> et acheter à terme « synthétiquement » : emprunter des USD, acheter des EUR au comptant, les placer jusqu'à l'échéance.</td></tr>
+        <tr><td>F &lt; f</td><td>Le cours Future est <strong>sous-évalué</strong>.</td><td><strong>Acheter le Future</strong> et vendre à terme synthétiquement : emprunter des EUR, les vendre au comptant contre des USD, placer les USD.</td></tr>
+        <tr><td>F = f</td><td>Prix d'équilibre.</td><td>Aucun gain sans risque possible.</td></tr>
+      </table>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">Exemple : S = 1,25, i<sub>USD</sub> = 2,25 %, i<sub>EUR</sub> = 3,5 %, 6 mois, F = 1,2500</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Cours théorique</b> : <code>1,25 × (1 + 2,25 % × 6/12) ÷ (1 + 3,5 % × 6/12) = 1,25 × 1,01125 ÷ 1,0175 = 1,242322</code>.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Diagnostic</b> : F = 1,2500 &gt; f = 1,2423 : le Future est surévalué, on le <b>vend</b>.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>Pour 1 contrat</b> : placer <code>125 000 ÷ 1,0175 = 122 850,12 EUR</code>, achetés au comptant avec <code>122 850,12 × 1,25 = 153 562,65 USD</code> empruntés.</div></div>
+        <div class="step"><div class="sn">4</div><div class="sc"><b>À l'échéance</b> : on livre 125 000 EUR au Future et l'on reçoit <code>125 000 × 1,25 = 156 250 USD</code> ; on rembourse <code>153 562,65 × 1,01125 = 155 290,23 USD</code>.</div></div>
+        <div class="ex-result">Gain sans risque : 156 250 − 155 290,23 = 959,77 USD par contrat, soit 125 000 × (F − f).</div>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Pour EUR/USD, c'est le taux <strong>USD</strong> qui est au numérateur (la monnaie de cotation) et le taux <strong>EUR</strong> au dénominateur. Inverser les deux fait passer un report pour un déport.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 À retenir</div>
+        <p>f = S × (1 + i<sub>USD</sub> × n/12) ÷ (1 + i<sub>EUR</sub> × n/12). F &gt; f : surévalué, on vend le Future. F &lt; f : sous-évalué, on l'achète. Quand les cours Futures ne sont pas donnés, on peut les estimer par f.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Le cours théorique vaut 1,1050 et le Future cote 1,1020. Que fait l'arbitragiste ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">Il achète le Future, sous-évalué</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Il vend le Future, surévalué</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Rien : l'écart est trop faible pour compter</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> F &lt; f : le Future est sous-évalué. On l'achète et l'on vend à terme synthétiquement (emprunt d'EUR, vente au comptant, placement des USD).</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">S = 1,20, i<sub>USD</sub> = 2,5 %, i<sub>EUR</sub> = 2,75 %, échéance dans 1 mois. Quel est le cours théorique ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">1,2003</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">1,1998</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">1,1970</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">1,2025</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> 1,20 × (1 + 2,5 %/12) ÷ (1 + 2,75 %/12) = 1,19975, soit 1,1998 : l'euro, mieux rémunéré, est légèrement en déport.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l8')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l9',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 10 ============ -->
+    <section class="view" data-view="l10">
+      <span class="tag">Leçon 10 · Spéculation</span>
+      <h1 class="lesson-title">Spéculer avec des Futures : levier et trésorerie</h1>
+      <p class="subtitle">Avec un petit dépôt, on prend une grosse position. Mais les pertes se paient chaque soir, même si l'on a raison à la fin.</p>
+
+      <h2>Spéculer : prendre une position sans opération à couvrir</h2>
+      <p>Le spéculateur n'a ni créance ni dette en devises : il <strong>achète</strong> des Futures s'il anticipe une hausse du cours, il en <strong>vend</strong> s'il anticipe une baisse. C'est le cas de Valrhona (exercice 4), dont l'opérateur anticipe une appréciation de l'euro et achète 4 contrats EUR/USD.</p>
+
+      <h2>L'effet de levier</h2>
+      <div class="rulebox formule">
+        <div class="rb-main">Valeur notionnelle = <em>N × T × F<sub>0</sub></em><br>Levier = <em>valeur notionnelle ÷ deposit</em></div>
+        <div class="rb-sub">Exercice 4 : 4 × 125 000 × 1,1000 = 550 000 USD de position pour 16 000 USD de deposit, soit un levier de 34,4.</div>
+      </div>
+      <p>Une baisse de 0,0190 USD (1,1040 → 1,0800 en deux séances, soit environ 1,7 %) fait perdre 9 500 USD le 8 octobre : près de 60 % du deposit en une seule séance.</p>
+
+      <h2>Le risque de trésorerie</h2>
+      <div class="example">
+        <div class="ex-head">Pourquoi on peut manquer de cash en ayant raison</div>
+        <div class="step"><div class="sn">1</div><div class="sc"><b>Le règlement est quotidien</b> : chaque perte du jour est débitée le soir même, quelle que soit l'anticipation à long terme.</div></div>
+        <div class="step"><div class="sn">2</div><div class="sc"><b>Sous la maintenance, il faut payer tout de suite</b> l'appel de marge, pour revenir au deposit.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc"><b>Faute de paiement</b>, la position est liquidée : la perte devient définitive, et le retournement espéré ne profitera à personne.</div></div>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>« J'ai encore de l'argent sur mon compte de marge, donc je n'ai rien à verser » : faux dès que le solde est <strong>sous la marge de maintenance</strong>. Le 8 octobre, Valrhona a encore 6 000 USD, mais la maintenance est de 12 000 USD : appel de 10 000 USD.</p>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">📌 À retenir</div>
+        <p>Le Future donne un fort effet de levier (notionnel ÷ deposit). Le règlement quotidien crée un risque de trésorerie : il faut pouvoir payer les appels de marge, même si l'anticipation se révèle juste à terme.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">8 contrats EUR/USD (125 000 EUR) achetés à 1,1000, deposit 4 000 USD par contrat. Quel est le levier ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">8</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">34,4</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">68,8</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">31,25</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Notionnel 8 × 125 000 × 1,10 = 1 100 000 USD ; deposit 32 000 USD ; levier 1 100 000 ÷ 32 000 = 34,4. Le levier ne dépend pas du nombre de contrats.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Un spéculateur anticipe une baisse de la livre face au dollar. Que fait-il ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Il achète des Futures GBP/USD</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Il vend des Futures GBP/USD</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Il achète des Futures EUR/USD</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Le vendeur gagne quand le cours baisse. L'opérateur de l'exercice 1, lui, a acheté 15 contrats GBP : il pariait sur la hausse.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l9')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l10',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ QUESTIONS RÉDIGÉES ============ -->
+    <section class="view" data-view="redac">
+      <span class="tag">S'entraîner</span>
+      <h1 class="lesson-title">Questions rédigées, corrigées automatiquement</h1>
+      <p class="subtitle">Rédige comme à l'examen, puis demande la correction : le site repère les notions-clés, te dit ce qui manque et affiche une réponse modèle.</p>
+
+      <div class="intro-card">
+        <h2>✍️ Comment ça marche</h2>
+        <p>Ces questions ont été <strong>rédigées par le site</strong> à partir du TD et du cours. La correction cherche des <strong>mots-clés</strong> : elle vérifie que les notions sont là, pas la qualité de ta rédaction. Relis toujours la réponse modèle.</p>
+      </div>
+
+      <div id="redacList"></div>
+    </section>
+
+    <!-- ============ APPLICATIONS CORRIGÉES ============ -->
+    <section class="view" data-view="annales">
+      <span class="tag">Applications</span>
+      <h1 class="lesson-title">Les cinq exercices du TD, corrigés</h1>
+      <p class="subtitle">TD « Systèmes de marge, couverture et arbitrage par les contrats à terme ». Cherche au brouillon avant d'ouvrir chaque corrigé.</p>
+
+      <div class="intro-card">
+        <h2>📐 D'où viennent ces corrigés ?</h2>
+        <p>Les énoncés sont ceux du TD de Saker Sabkha. Les corrigés ont été <strong>rédigés par le site</strong> et <strong>tous les calculs vérifiés par ordinateur</strong>. Quand l'énoncé ne donne pas une donnée (exercice 2), l'hypothèse retenue est écrite en clair : compare avec la correction faite en TD.</p>
+      </div>
+
+      <!-- EXERCICE 1 -->
+      <div class="annale">
+        <div class="an-tag">Exercice 1 · Marges · IMM</div>
+        <h3>Spéculation sur la livre sterling : marges et appels de marge</h3>
+        <div class="enonce">
+          Le 02-01-N, sur l'ordre d'un client, un opérateur de l'<i>International Monetary Market</i> achète à la clôture <b>15 contrats</b> à terme GBP : taille 62 500 GBP, échéance fin juin N, cours 1 GBP = 1,5210 USD, tick en valeur 12,5 USD, variation maximale quotidienne de 50 ticks unitaires par unité de GBP, marge de maintenance de 80 % du deposit. Cours Futures observés : 05-01 : 1,5200 · 06-01 : 1,5126 · 07-01 : 1,5030 · 08-01 : 1,5120 · 09-01 : 1,5040.
+          <ul class="qlist">
+            <li>Quel est le montant du deposit qui permet de couvrir la perte maximale d'une journée ?</li>
+            <li>Sachant que les restitutions de marges ne font pas l'objet de retraits, présentez les appels et restitutions de marges quotidiens effectués par la chambre de compensation de l'IMM.</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé — calculs vérifiés</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Deposit.</b> Tick = 12,5 ÷ 62 500 = 0,0002 USD par GBP. Perte maximale d'une journée = 50 ticks × 12,5 USD × 15 contrats = <code>9 375 USD</code> (50 ticks = 0,01 USD par GBP). Marge de maintenance : <code>80 % × 9 375 = 7 500 USD</code>.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Position acheteuse</b> : résultat du jour = (F<sub>t</sub> − F<sub>t−1</sub>) × 62 500 × 15 = variation × 937 500.</div></div>
+          <div class="tbl-scroll">
+          <table class="tbl num">
+            <tr><th>Date</th><th>Cours</th><th>Ticks</th><th>Résultat</th><th>Solde avant appel</th><th>Appel</th><th>Solde</th></tr>
+            <tr><td>02-01</td><td>1,5210</td><td>—</td><td>—</td><td>—</td><td>—</td><td>9 375</td></tr>
+            <tr><td>05-01</td><td>1,5200</td><td>−5</td><td>−937,5</td><td>8 437,5</td><td>0</td><td>8 437,5</td></tr>
+            <tr><td>06-01</td><td>1,5126</td><td>−37</td><td>−6 937,5</td><td>1 500</td><td>7 875</td><td>9 375</td></tr>
+            <tr><td>07-01</td><td>1,5030</td><td>−48</td><td>−9 000</td><td>375</td><td>9 000</td><td>9 375</td></tr>
+            <tr><td>08-01</td><td>1,5120</td><td>+45</td><td>+8 437,5</td><td>17 812,5</td><td>0</td><td>17 812,5</td></tr>
+            <tr><td>09-01</td><td>1,5040</td><td>−40</td><td>−7 500</td><td>10 312,5</td><td>0</td><td>10 312,5</td></tr>
+          </table>
+          </div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Appels de marge</b> : le 06-01, le solde (1 500) passe sous 7 500 : appel de <code>9 375 − 1 500 = 7 875 USD</code>. Le 07-01, solde de 375 : appel de <code>9 000 USD</code>. Aucune variation ne dépasse la limite de 50 ticks (au plus 48).</div></div>
+          <div class="step"><div class="sn">4</div><div class="sc"><b>Restitution</b> : le 08-01, gain de <code>8 437,5 USD</code> crédité ; il reste sur le compte (pas de retrait). Le 09-01, le solde de 10 312,5 reste au-dessus de 7 500 : pas d'appel.</div></div>
+          <div class="step"><div class="sn">✓</div><div class="sc"><b>Contrôle</b> : résultat cumulé <code>(1,5040 − 1,5210) × 937 500 = −15 937,5 USD</code> ; versé 9 375 + 7 875 + 9 000 = 26 250, solde 10 312,5 : <code>10 312,5 − 26 250 = −15 937,5</code>.</div></div>
+        </div>
+      </div>
+
+      <!-- EXERCICE 2 -->
+      <div class="annale">
+        <div class="an-tag">Exercice 2 · Couverture · CME</div>
+        <h3>Une exportatrice américaine couvre 1 million d'euros</h3>
+        <div class="enonce">
+          Le 1/1/N, une société américaine a réalisé une exportation à crédit de 1 million d'euros, payable dans cinq mois. Elle recourt aux CAT EUR/USD du CME : taille 125 000 EUR, échéance juin N. Statistiques du dernier trimestre N−1 : σ<sub>S,F</sub> = 1,5 et σ²<sub>F</sub> = 1,25.<br>
+          Au 01/01/N : spot EUR/USD = 1,25 ; taux EUR 3 % (1 mois), 3,5 % (6 mois) ; taux USD 2 % (1 mois), 2,25 % (6 mois).<br>
+          Au 31/05/N : spot EUR/USD = 1,2 ; taux EUR 2,75 % (1 mois), 3 % (6 mois) ; taux USD 2,5 % (1 mois), 2,75 % (6 mois).
+          <ul class="qlist">
+            <li>Quelle est la nature du risque encouru par la société ?</li>
+            <li>Quel est le résultat enregistré sur la position physique ?</li>
+            <li>Quel est le résultat global consolidé, la société étant totalement averse au risque (arrondi à l'entier le plus proche) ?</li>
+            <li>Que devient ce cours si la société, partiellement spéculative, négocie un contrat supplémentaire afin de réaliser un résultat global consolidé de 8 000 USD ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé — calculs vérifiés, une hypothèse</div>
+          <div class="callout c-piege"><div class="ct">⚠️ Hypothèse du corrigé</div><p>L'énoncé ne donne <strong>pas les cours Futures</strong>. On les estime par le <strong>cours à terme théorique</strong> (parité des taux, leçon 9), jusqu'à l'échéance de juin : 6 mois au 01/01, 1 mois au 31/05. Les autres taux ne servent pas. Vérifie cette hypothèse avec la correction du TD.</p></div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Nature du risque.</b> Risque de change de transaction : créance de 1 M EUR (position longue en euros). La société craint une <b>baisse de l'EUR</b> face à l'USD. Couverture : <b>vendre</b> des Futures EUR/USD.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Physique.</b> <code>1 000 000 × (1,2 − 1,25) = −50 000 USD</code>.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Nombre de contrats.</b> Aversion totale : variance minimale. <code>h* = 1,5 ÷ 1,25 = 1,2</code> ; <code>N = 1,2 × 1 000 000 ÷ 125 000 = 9,6</code>, soit <b>10 contrats vendus</b>.</div></div>
+          <div class="step"><div class="sn">4</div><div class="sc"><b>Cours Futures estimés.</b> 01/01 : <code>F<sub>0</sub> = 1,25 × (1 + 2,25 % × 6/12) ÷ (1 + 3,5 % × 6/12) = 1,242322</code>. 31/05 : <code>F<sub>1</sub> = 1,2 × (1 + 2,5 % × 1/12) ÷ (1 + 2,75 % × 1/12) = 1,199751</code>.</div></div>
+          <div class="step"><div class="sn">5</div><div class="sc"><b>Résultat Futures</b> (vendeur) : <code>10 × 125 000 × (1,242322 − 1,199751) = +53 214,12 USD</code>. <b>Global</b> : <code>−50 000 + 53 214,12 = +3 214,12 USD</code>, soit <b>+3 214 USD</b>. Avec des cours arrondis à 4 décimales (1,2423 et 1,1998) : +53 125 et +3 125 USD.</div></div>
+          <div class="step"><div class="sn">6</div><div class="sc"><b>11 contrats, global de 8 000 USD.</b> Il faut <code>11 × 125 000 × (F<sub>0</sub> − F<sub>1</sub>) = 8 000 + 50 000 = 58 000</code>, d'où <code>F<sub>1</sub> = 1,242322 − 58 000 ÷ 1 375 000 = 1,200140</code>, soit environ <b>1,2001</b> (le même résultat avec F<sub>0</sub> arrondi à 1,2423).</div></div>
+          <div class="step"><div class="sn">✓</div><div class="sc"><b>Pour comparer</b> : aux cours théoriques, 11 contrats donneraient <code>11 × 125 000 × 0,042571 = 58 535,53 USD</code> sur les Futures, soit un global de <b>+8 535,53 USD</b>. Le contrat supplémentaire est une position spéculative : il rapporte si l'euro baisse, et coûte s'il monte.</div></div>
+        </div>
+      </div>
+
+      <!-- EXERCICE 3 -->
+      <div class="annale">
+        <div class="an-tag">Exercice 3 · Couverture acheteuse · CME</div>
+        <h3>Airbus face au risque de change</h3>
+        <div class="enonce">
+          Airbus doit encaisser une créance de <b>2 500 000 USD</b> dans trois mois et envisage les contrats Futures EUR/USD du CME. Au 30 juin N : encaissement le 30 septembre N ; S<sub>0</sub> = 1,0800 ; F<sub>0</sub> = 1,0850 ; taille 125 000 EUR ; échéance décembre N. Au 30 septembre N : S<sub>t</sub> = 1,1200 ; F<sub>t</sub> = 1,1240.
+          <ul class="qlist">
+            <li>Nature du risque ? Position à prendre sur les Futures EUR/USD ?</li>
+            <li>Nombre de contrats en faisant correspondre les volumes ?</li>
+            <li>Résultat des Futures au 30 septembre ; résultat physique et global (gain des Futures converti au spot du 30 septembre) ?</li>
+            <li>Montant total encaissé en euros ? La couverture est-elle parfaite ? D'où vient le risque résiduel ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé — calculs vérifiés</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Risque.</b> Airbus encaisse des USD et compte en euros : il craint une <b>baisse de l'USD</b>, donc une <b>hausse de EUR/USD</b> (moins d'euros reçus).</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Position.</b> <b>Acheter</b> des Futures EUR/USD : ils gagnent si EUR/USD monte.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Volumes.</b> <code>2 500 000 ÷ 1,0850 = 2 304 147,47 EUR</code> ; <code>÷ 125 000 = 18,43</code>, soit <b>18 contrats</b>. On convertit au cours du Future, auquel la couverture est figée.</div></div>
+          <div class="step"><div class="sn">4</div><div class="sc"><b>Futures.</b> <code>18 × 125 000 × (1,1240 − 1,0850) = 2 250 000 × 0,0390 = +87 750 USD</code>, soit <code>87 750 ÷ 1,12 = 78 348,21 EUR</code>.</div></div>
+          <div class="step"><div class="sn">5</div><div class="sc"><b>Physique.</b> <code>2 500 000 ÷ 1,12 − 2 500 000 ÷ 1,08 = 2 232 142,86 − 2 314 814,81 = −82 671,96 EUR</code>. <b>Global</b> : <code>78 348,21 − 82 671,96 = −4 323,74 EUR</code> (−4 323,75 si l'on part des montants arrondis au centime).</div></div>
+          <div class="step"><div class="sn">6</div><div class="sc"><b>Encaissé.</b> <code>2 232 142,86 + 78 348,21 = 2 310 491,07 EUR</code>, contre 2 314 814,81 EUR espérés au cours du 30 juin.</div></div>
+          <div class="step"><div class="sn">✓</div><div class="sc"><b>Efficacité.</b> Couverture presque parfaite, pas parfaite : la perte de 82 672 EUR est réduite à 4 324 EUR (environ 95 % compensés). Deux sources : le <b>risque de base</b> (base initiale <code>1,0800 − 1,0850 = −0,0050</code>, finale <code>1,1200 − 1,1240 = −0,0040</code> : le Future a moins monté que le spot) et le <b>risque résiduel d'arrondi</b> (18 contrats au lieu de 18,43, sous-couverture).</div></div>
+        </div>
+      </div>
+
+      <!-- EXERCICE 4 -->
+      <div class="annale">
+        <div class="an-tag">Exercice 4 · Spéculation · marges</div>
+        <h3>Valrhona et les appels de marge</h3>
+        <div class="enonce">
+          L'opérateur de Valrhona anticipe une appréciation de l'euro face au dollar. Le 5 octobre N : 4 contrats Futures EUR/USD du CME, taille 125 000 EUR, échéance décembre N, cours d'achat F<sub>0</sub> = 1,1000, deposit initial 4 000 USD par contrat, maintenance 75 % du deposit initial. Cours de compensation : 6 oct. 1,1040 · 7 oct. 1,0990 · 8 oct. 1,0800 · 9 oct. 1,0860. Gains conservés sur le compte, appels honorés immédiatement.
+          <ul class="qlist">
+            <li>Position à prendre ; valeur notionnelle en USD.</li>
+            <li>Deposit initial et marge de maintenance.</li>
+            <li>Résultats journaliers du 6 au 9 octobre ; compte de marge et appels éventuels.</li>
+            <li>Le 8 octobre : « Mon deposit était de 16 000 USD et mon compte contient encore 6 000 USD, je n'ai pas besoin de verser de fonds. » Correct ?</li>
+            <li>Liquidation le 9 octobre : résultat global, vérifié par les flux du compte de marge.</li>
+            <li>Pourquoi une entreprise peut-elle manquer de trésorerie sur une position en Futures, même si elle anticipe un retournement favorable ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé — calculs vérifiés</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Position</b> : il anticipe une hausse de EUR/USD, il <b>achète</b> 4 contrats. <b>Notionnel</b> : <code>4 × 125 000 × 1,1000 = 550 000 USD</code>.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Deposit</b> : <code>4 × 4 000 = 16 000 USD</code>. <b>Maintenance</b> : <code>75 % × 16 000 = 12 000 USD</code>.</div></div>
+          <div class="tbl-scroll">
+          <table class="tbl num">
+            <tr><th>Date</th><th>Cours</th><th>Résultat du jour</th><th>Solde avant appel</th><th>Appel</th><th>Solde</th></tr>
+            <tr><td>5 oct.</td><td>1,1000</td><td>—</td><td>—</td><td>—</td><td>16 000</td></tr>
+            <tr><td>6 oct.</td><td>1,1040</td><td>+2 000</td><td>18 000</td><td>0</td><td>18 000</td></tr>
+            <tr><td>7 oct.</td><td>1,0990</td><td>−2 500</td><td>15 500</td><td>0</td><td>15 500</td></tr>
+            <tr><td>8 oct.</td><td>1,0800</td><td>−9 500</td><td>6 000</td><td>10 000</td><td>16 000</td></tr>
+            <tr><td>9 oct.</td><td>1,0860</td><td>+3 000</td><td>19 000</td><td>0</td><td>19 000</td></tr>
+          </table>
+          </div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Résultats</b> : variation × 500 000 (4 × 125 000). Le 8 octobre, le solde (6 000) passe sous 12 000 : appel de <code>16 000 − 6 000 = 10 000 USD</code>.</div></div>
+          <div class="step"><div class="sn">4</div><div class="sc"><b>L'affirmation est fausse.</b> On ne compare pas le solde au deposit mais à la <b>marge de maintenance</b> (12 000 USD) ; 6 000 &lt; 12 000, donc appel de marge, et il faut reconstituer le <b>deposit</b> : 10 000 USD à verser.</div></div>
+          <div class="step"><div class="sn">5</div><div class="sc"><b>Résultat global</b> : <code>(1,0860 − 1,1000) × 500 000 = −7 000 USD</code>. <b>Vérification</b> : versé <code>16 000 + 10 000 = 26 000 USD</code>, récupéré <code>19 000 USD</code> : <code>−7 000 USD</code>.</div></div>
+          <div class="step"><div class="sn">✓</div><div class="sc"><b>Trésorerie.</b> Les pertes sont réglées <b>chaque jour</b> : une baisse passagère impose des appels de marge immédiats (10 000 USD le 8 octobre) avant tout retournement. Avec un fort levier (550 000 USD pour 16 000 de deposit), ces appels peuvent être lourds ; faute de les payer, la position est liquidée et la perte devient définitive, même si l'anticipation se révèle juste ensuite.</div></div>
+        </div>
+      </div>
+
+      <!-- EXERCICE 5 -->
+      <div class="annale">
+        <div class="an-tag">Exercice 5 · Ratio de couverture · base</div>
+        <h3>Fender et la couverture du risque de change</h3>
+        <div class="enonce">
+          Fender (États-Unis) doit encaisser <b>1 250 000 GBP</b> dans trois mois et craint une dépréciation de la livre. Futures GBP/USD du CME. À la mise en place : S<sub>0</sub> = 1,2600 ; F<sub>0</sub> = 1,2650 ; T = 62 500 GBP ; échéance décembre N ; encaissement fin septembre N. Cov(S<sub>t</sub>, F<sub>t</sub>) = 0,000085 ; V(F<sub>t</sub>) = 0,000100. À l'encaissement : S<sub>t</sub> = 1,2100 ; F<sub>t</sub> = 1,2160.
+          <ul class="qlist">
+            <li>Risque supporté et position sur les Futures.</li>
+            <li>Nombre de contrats par la correspondance des volumes, puis par la minimisation de la variance.</li>
+            <li>Résultat physique et résultats consolidés des deux stratégies.</li>
+            <li>Base initiale et base à la liquidation ; explication du résultat de la première stratégie.</li>
+            <li>« Notre modèle statistique est mauvais, il aurait fallu choisir 20 contrats. » Conclusion justifiée ?</li>
+            <li>Avec 17 contrats, quel cours du Future à la liquidation aurait donné un résultat consolidé nul ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé — calculs vérifiés</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Risque</b> : créance en GBP, crainte d'une <b>baisse de la livre</b>. Position : <b>vendre</b> des Futures GBP/USD.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Volumes</b> : <code>1 250 000 ÷ 62 500 = 20 contrats</code>. <b>Variance minimale</b> : <code>h* = 0,000085 ÷ 0,0001 = 0,85</code> ; <code>0,85 × 20 = 17 contrats</code>.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Physique</b> : <code>1 250 000 × (1,2100 − 1,2600) = −62 500 USD</code>. <b>20 contrats</b> : <code>20 × 62 500 × (1,2650 − 1,2160) = +61 250</code>, global <b>−1 250 USD</b>. <b>17 contrats</b> : <code>17 × 62 500 × 0,0490 = +52 062,5</code>, global <b>−10 437,5 USD</b>.</div></div>
+          <div class="step"><div class="sn">4</div><div class="sc"><b>Base</b> initiale <code>1,2600 − 1,2650 = −0,0050</code> ; finale <code>1,2100 − 1,2160 = −0,0060</code>. Avec des volumes égaux, global = <code>Q × (b<sub>t</sub> − b<sub>0</sub>) = 1 250 000 × (−0,0010) = −1 250 USD</code> : tout le résultat de la première stratégie vient de la variation de la base.</div></div>
+          <div class="step"><div class="sn">5</div><div class="sc"><b>Conclusion non justifiée.</b> C'est un jugement <b>a posteriori</b> sur une seule réalisation des cours. Le ratio de variance minimale réduit la dispersion du résultat <b>en moyenne</b>, sur l'ensemble des scénarios possibles ; dans un autre scénario (par exemple une base qui s'améliore), 17 contrats auraient fait mieux que 20.</div></div>
+          <div class="step"><div class="sn">✓</div><div class="sc"><b>Résultat nul avec 17 contrats</b> : <code>17 × 62 500 × (1,2650 − F<sub>t</sub>) = 62 500</code>, d'où <code>1,2650 − F<sub>t</sub> = 1/17 = 0,058824</code> et <code>F<sub>t</sub> = 1,206176</code>, soit environ <b>1,2062</b>.</div></div>
+        </div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('redac')">← Questions rédigées</button>
+        <button class="btn plum" onclick="go('test')">Passer le test final →</button>
+      </div>
+    </section>
+
+    <!-- ============ MÉMO ET POINTS À VÉRIFIER ============ -->
+    <section class="view" data-view="ecarts">
+      <span class="tag">À savoir</span>
+      <h1 class="lesson-title">Mémo des formules et points à vérifier</h1>
+      <p class="subtitle">Toutes les formules sur une page, puis ce qui a été vérifié et ce qui reste à faire préciser. Si ton enseignant dit autre chose, c'est lui qui fait foi.</p>
+
+      <h2>Les formules à connaître</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Élément</th><th>Formule</th></tr>
+        <tr><td>Tick en valeur</td><td>tick × T</td></tr>
+        <tr><td>Résultat d'une position</td><td>(F<sub>vente</sub> − F<sub>achat</sub>) × T × N = ticks × tick en valeur × N</td></tr>
+        <tr><td>Deposit</td><td>limite quotidienne (ticks) × tick en valeur × N = perte maximale d'une journée</td></tr>
+        <tr><td>Appel de marge</td><td>si solde &lt; maintenance : deposit − solde</td></tr>
+        <tr><td>Contrats (volumes)</td><td>N = montant ÷ T (montant converti dans la devise du contrat)</td></tr>
+        <tr><td>Contrats (variance minimale)</td><td>h* = Cov(S, F) ÷ V(F) ; N* = h* × montant ÷ T</td></tr>
+        <tr><td>Résultat global</td><td>physique + Futures, dans la monnaie nationale</td></tr>
+        <tr><td>Base</td><td>b = S − F ; couverture vendeuse à volumes égaux : global = Q × (b<sub>t</sub> − b<sub>0</sub>)</td></tr>
+        <tr><td>Cours théorique</td><td>f = S × (1 + i<sub>USD</sub> × n/12) ÷ (1 + i<sub>EUR</sub> × n/12) ; F &gt; f surévalué (vendre), F &lt; f sous-évalué (acheter)</td></tr>
+        <tr><td>Levier</td><td>N × T × F<sub>0</sub> ÷ deposit</td></tr>
+      </table>
+      </div>
+
+      <h2>Vérifié sur sources officielles (octobre 2026)</h2>
+      <div class="callout c-retenir">
+        <div class="ct">✅ Ce qui a été vérifié</div>
+        <ul style="margin:8px 0 0 20px">
+          <li>CME Group, fiches des contrats : Euro FX = 125 000 EUR, tick de 0,00005 USD (6,25 USD) ; British Pound = 62 500 GBP, tick de 0,0001 USD (6,25 USD) ; fin de négociation deux jours ouvrés avant le 3<sup>e</sup> mercredi du mois d'échéance.</li>
+          <li>Le tick de 0,0002 USD (12,5 USD) de l'exercice 1 est celui de l'énoncé, pas la règle actuelle du CME : à l'examen, suis l'énoncé.</li>
+          <li>Tous les calculs des leçons, des exercices et du test ont été refaits par ordinateur.</li>
+        </ul>
+      </div>
+
+      <h2>Points encore à faire préciser</h2>
+      <div class="tbl-scroll">
+      <table class="tbl wrap">
+        <tr><th>Sujet</th><th>Ce que fait le site</th><th>Pourquoi le vérifier</th></tr>
+        <tr><td>Exercice 2 : cours Futures</td><td>Estimés par le cours à terme théorique (6 mois au 01/01, 1 mois au 31/05).</td><td>L'énoncé ne les donne pas : la méthode du TD peut différer, et les arrondis changent le résultat (3 214 ou 3 125 USD).</td></tr>
+        <tr><td>Exercice 3 : nombre de contrats</td><td>Conversion au cours du Future F<sub>0</sub> : 18,43, soit 18 contrats.</td><td>Convertis au spot S<sub>0</sub>, on obtient 18,52, soit 19 contrats.</td></tr>
+        <tr><td>Date du partiel</td><td>Inconnue pour l'instant.</td><td>Elle apparaîtra sur le hub dès qu'elle sera connue.</td></tr>
+      </table>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l1')">← Revoir le cours</button>
+        <button class="btn plum" onclick="go('test')">Passer le test final →</button>
+      </div>
+    </section>
+
+    <!-- ============ TEST FINAL ============ -->
+    <section class="view" data-view="test">
+      <span class="tag">Évaluation</span>
+      <h1 class="lesson-title">Test final adaptatif</h1>
+      <p class="subtitle">Trente-huit questions rédigées par le site à partir du cours et du TD, dont des calculs vérifiés.</p>
+
+      <div class="intro-card">
+        <h2>🎯 Comment le lire</h2>
+        <p>Chaque erreur rouvre la leçon correspondante. Le bilan par chapitre, en bas, te dit où réviser en priorité. Pour les calculs, arrondis comme demandé dans la question ; écris les nombres sans espace ou avec, et la virgule ou le point.</p>
+      </div>
+
+      <div id="testQuestions"></div>
+
+      <div class="lesson-nav" id="testSubmitRow">
+        <button class="btn" onclick="go('l1')">← Revoir le cours</button>
+        <button class="btn plum" onclick="gradeTest()">Valider mes réponses ✓</button>
+      </div>
+
+      <div class="result" id="testResult">
+        <div class="score-lab">Ton score</div>
+        <div class="score-big" id="scoreBig">0</div>
+        <div class="msg" id="scoreMsg"></div>
+        <div class="chapbars" id="chapBars"></div>
+        <div style="margin-top:28px"><button class="btn plum" onclick="resetTest()">↻ Reprendre le test</button></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<button class="float-retry" id="floatRetry" onclick="resetTest()">↻ Reprendre le test</button>
+<button class="print-fab" onclick="imprimerFiche()" title="Imprimer cette leçon en fiche">🖨️ Fiche</button>
+<div class="xp-pop" id="xpPop"></div>
+
+<script src="lb.js"></script>
+<script src="progress.js"></script>
+<script>
+const SUBJECT_KEY = 'Produits Dérivés II';
+
+/* ===================== ÉTAT ===================== */
+const LESSONS = [
+  {id:'l1',  t:'Forward ou Futures',           ch:1},
+  {id:'l2',  t:'Taille, échéance, tick',       ch:1},
+  {id:'l3',  t:'Deposit et appels de marge',   ch:2},
+  {id:'l4',  t:'Le compte de marge',           ch:2},
+  {id:'l5',  t:'Acheter ou vendre ?',          ch:3},
+  {id:'l6',  t:'Combien de contrats ?',        ch:3},
+  {id:'l7',  t:'Résultat global',              ch:3},
+  {id:'l8',  t:'La base et ses risques',       ch:4},
+  {id:'l9',  t:'Évaluation et arbitrage',      ch:4},
+  {id:'l10', t:'Spéculation et trésorerie',    ch:5}
+];
+const SAVE = (window.P ? P.etat() : {done:{},xp:0,last:null});
+const state = { xp: SAVE.xp||0, done: Object.assign({}, SAVE.done), view:'l1' };
+
+/* ===================== QUESTIONS RÉDIGÉES ===================== */
+const REDAC = [
+  {lesson:'l1', q:"Comparez un contrat forward et un contrat Future sur devises.",
+   crit:[
+     {t:"Forward : gré à gré, sur mesure", k:['gre a gre','sur mesure']},
+     {t:"Future : marché organisé, standardisé", k:['organise','standardis']},
+     {t:"Chambre de compensation", k:['chambre de compensation','compensation']},
+     {t:"Deposit et appels de marge", k:['deposit','depot de garantie','appel']},
+     {t:"Règlement quotidien", k:['quotidien','chaque jour','jour par jour']},
+     {t:"Dénouement avant l'échéance", k:['avant l\'echeance','liquid','revend','denou']}
+   ],
+   modele:"Les deux contrats figent aujourd'hui un cours de change pour une date future. Le <b>forward</b> se négocie de <b>gré à gré</b> avec une banque : il est <b>sur mesure</b> (montant et date choisis), sans dépôt en général, et se règle une seule fois, à l'échéance, par la livraison des devises ; il comporte un risque de contrepartie. Le <b>Future</b> se négocie sur un marché <b>organisé</b> (le CME, département IMM) : il est <b>standardisé</b> (taille, échéance, tick). La <b>chambre de compensation</b> s'interpose entre acheteurs et vendeurs et supprime le risque de contrepartie ; en échange, elle exige un <b>deposit</b> et procède à des <b>appels</b> de marge : les gains et les pertes sont réglés <b>chaque jour</b>. Le Future est le plus souvent <b>liquidé</b> avant l'échéance, par une position inverse."},
+  {lesson:'l3', q:"Expliquez le fonctionnement du système de marges sur un marché de Futures.",
+   crit:[
+     {t:"Deposit = dépôt de garantie initial", k:['deposit','depot de garantie']},
+     {t:"Couvre la perte maximale d'une journée", k:['perte maximale','limite','journee']},
+     {t:"Marge de maintenance (plancher)", k:['maintenance']},
+     {t:"Appel de marge pour revenir au deposit", k:['appel']},
+     {t:"Réévaluation quotidienne au cours de compensation", k:['quotidien','chaque jour','compensation']},
+     {t:"Restitution des gains", k:['restitution','gain','credit']}
+   ],
+   modele:"À l'ouverture d'une position, l'opérateur verse un <b>deposit</b> (<b>dépôt de garantie</b>) sur son compte de marge. Il est calculé pour couvrir la <b>perte maximale</b> d'une <b>journée</b> : <b>limite</b> de variation quotidienne en ticks × tick en valeur × nombre de contrats. Chaque soir, la <b>chambre de compensation</b> réévalue la position au cours de compensation : le résultat du jour est crédité ou débité (règlement <b>quotidien</b>). Les gains font l'objet de <b>restitutions</b>, retirables ou laissées sur le compte. Si le solde passe sous la marge de <b>maintenance</b> (un pourcentage du deposit), un <b>appel</b> de marge oblige l'opérateur à verser de quoi ramener le compte au deposit. Ainsi la chambre n'est jamais exposée au défaut d'un opérateur."},
+  {lesson:'l6', q:"Comment détermine-t-on le nombre de contrats Futures à négocier pour une couverture ?",
+   crit:[
+     {t:"Correspondance des volumes : montant ÷ taille", k:['volume','taille']},
+     {t:"Conversion dans la devise du contrat", k:['conver','devise du contrat']},
+     {t:"Ratio de couverture h* = Cov ÷ Var", k:['covariance','cov','ratio']},
+     {t:"Minimisation de la variance", k:['variance']},
+     {t:"Arrondi à l'entier : risque résiduel", k:['arrondi','residuel','entier']}
+   ],
+   modele:"Deux méthodes. La correspondance des <b>volumes</b> divise le montant à couvrir, exprimé dans la devise du contrat (on le <b>convertit</b> au besoin), par la <b>taille</b> T d'un contrat : N = montant ÷ T. La minimisation de la <b>variance</b> tient compte de ce que le spot et le Future ne bougent pas exactement ensemble : on calcule le <b>ratio</b> de couverture optimal h* = <b>Cov</b>(S, F) ÷ V(F), puis N* = h* × montant ÷ T. Une entreprise totalement averse au risque retient cette méthode. Dans les deux cas, on <b>arrondit</b> à l'<b>entier</b> le plus proche : la couverture se fait par excès ou par défaut, ce qui laisse un risque <b>résiduel</b>."},
+  {lesson:'l8', q:"Quelles sont les limites de la couverture par les Futures ?",
+   crit:[
+     {t:"Base = S − F", k:['base']},
+     {t:"Risque de base : liquidation avant l'échéance (E > t)", k:['avant l\'echeance','e > t','e>t','echeance']},
+     {t:"Convergence seulement à l'échéance", k:['converg']},
+     {t:"Risques résiduels : quantité non multiple de la taille", k:['residuel','multiple','exces','defaut']},
+     {t:"Possibilité de liquider avant si le spot est favorable", k:['liquider','favorable']}
+   ],
+   modele:"La couverture par les Futures présente deux limites. 1) Le risque de <b>base</b> : la base est l'écart S − F. L'<b>échéance</b> des CAT E est souvent différente de la date de liquidation de la position physique t ; comme on choisit E &gt; t, on dénoue la position <b>avant l'échéance</b>. Or spot et Future évoluent différemment et ne <b>convergent</b> qu'à l'échéance : en cas de gain sur les Futures, la perte spot est compensée ; en cas de perte, elle s'alourdit. 2) Les risques <b>résiduels</b> : la quantité de sous-jacent est rarement un <b>multiple</b> de la taille T, on couvre par <b>excès</b> ou par <b>défaut</b>. Enfin, si les cours spot évoluent de manière <b>favorable</b>, l'opérateur peut <b>liquider</b> avant l'échéance pour limiter les pertes sur les CAT et profiter du gain spot."},
+  {lesson:'l9', q:"Comment évaluer un contrat Future sur devises et en tirer un arbitrage ?",
+   crit:[
+     {t:"Cours forward théorique par la parité des taux", k:['parite','theorique','forward']},
+     {t:"Formule avec les taux des deux devises", k:['taux','1 +','(1+']},
+     {t:"F > f : surévalué, vendre le Future", k:['surevalu']},
+     {t:"F < f : sous-évalué, acheter le Future", k:['sous-evalu','sous evalu']},
+     {t:"Opération synthétique : emprunt, change au comptant, placement", k:['emprunt','placement','placer','synthetique']}
+   ],
+   modele:"On compare le cours du Future F au cours <b>forward</b> <b>théorique</b> f pour la même échéance n = E − t, donné par la <b>parité</b> des <b>taux</b> d'intérêt : f<sub>EUR/USD</sub> = S × (1 + i<sub>USD</sub> × n/12) ÷ (1 + i<sub>EUR</sub> × n/12). Si F &gt; f, le Future est <b>surévalué</b> : on le vend et l'on achète à terme de façon <b>synthétique</b> (<b>emprunt</b> de dollars, achat d'euros au comptant, <b>placement</b> des euros jusqu'à l'échéance) ; le gain sans risque vaut (F − f) × T par contrat. Si F &lt; f, il est <b>sous-évalué</b> : on l'achète et l'on vend à terme synthétiquement. Ces arbitrages ramènent F vers f."},
+  {lesson:'l10', q:"Pourquoi une position spéculative en Futures peut-elle créer des difficultés de trésorerie ?",
+   crit:[
+     {t:"Effet de levier (notionnel ÷ deposit)", k:['levier','notionnel']},
+     {t:"Règlement quotidien des pertes", k:['quotidien','chaque jour','chaque soir']},
+     {t:"Appels de marge sous la maintenance", k:['appel','maintenance']},
+     {t:"Liquidation forcée si on ne paie pas", k:['liquid','defaut']},
+     {t:"Même si l'anticipation est juste à terme", k:['retournement','a terme','raison','juste']}
+   ],
+   modele:"Le Future offre un fort effet de <b>levier</b> : avec un deposit réduit, on contrôle une valeur <b>notionnelle</b> élevée (550 000 USD pour 16 000 USD dans l'exercice Valrhona). Or les pertes sont réglées <b>chaque jour</b> : dès que le solde du compte passe sous la marge de <b>maintenance</b>, un <b>appel</b> de marge doit être payé immédiatement pour revenir au deposit. Une baisse passagère peut donc exiger des versements importants avant tout <b>retournement</b>. Si l'entreprise ne peut pas payer, sa position est <b>liquidée</b> et la perte devient définitive, même si son anticipation se révèle <b>juste</b> à terme."}
+];
+
+/* ===================== TEST FINAL ===================== */
+const TEST = [
+  {ch:'Le marché des Futures', lesson:'l1', type:'qcm',
+   q:"Sur quel type de marché se négocie un contrat Future sur devises ?",
+   opts:["De gré à gré, avec sa banque","Sur un marché organisé, comme le CME","Uniquement entre banques centrales","Sur le marché interbancaire au comptant"], correct:1,
+   ex:"Le Future est négocié sur un marché organisé (CME, département IMM) ; le forward, lui, est négocié de gré à gré."},
+  {ch:'Le marché des Futures', lesson:'l1', type:'qcm',
+   q:"Quel rôle joue la chambre de compensation ?",
+   opts:["Elle fixe les taux d'intérêt","Elle conseille les entreprises sur leur couverture","Elle est la contrepartie de tous les acheteurs et de tous les vendeurs","Elle livre les devises au comptant"], correct:2,
+   ex:"Elle s'interpose entre acheteurs et vendeurs : acheteur de tous les vendeurs, vendeur de tous les acheteurs. Elle supprime le risque de contrepartie grâce aux dépôts et aux appels de marge."},
+  {ch:'Le marché des Futures', lesson:'l1', type:'qcm',
+   q:"Comment une entreprise couverte par des Futures dénoue-t-elle le plus souvent sa position ?",
+   opts:["Par la livraison des devises à l'échéance","En prenant la position inverse avant l'échéance","En demandant le remboursement du deposit","Elle ne peut pas la dénouer"], correct:1,
+   ex:"Le Future est le plus souvent liquidé avant l'échéance, par une position inverse, à la date où l'entreprise encaisse ou paie ses devises."},
+  {ch:'Le marché des Futures', lesson:'l1', type:'qcm',
+   q:"L'International Monetary Market (IMM) est :",
+   opts:["Le département devises du Chicago Mercantile Exchange","Une banque centrale américaine","Une agence de notation","Le marché interbancaire de Londres"], correct:0,
+   ex:"L'IMM est le département du CME, créé en 1972, où sont nés les premiers Futures sur devises."},
+  {ch:'Le marché des Futures', lesson:'l2', type:'num',
+   q:"Contrat EUR/USD de 125 000 EUR, tick de 0,00005 USD. Que vaut un tick, en USD ?",
+   answer:6.25, tol:0.001, unit:"USD",
+   ex:"Tick en valeur = tick × taille = 0,00005 × 125 000 = 6,25 USD."},
+  {ch:'Le marché des Futures', lesson:'l2', type:'num',
+   q:"Achat de 3 contrats EUR/USD (125 000 EUR) à 1,0850, revente à 1,0910. Résultat en USD ?",
+   answer:2250, tol:0.5, unit:"USD",
+   ex:"(1,0910 − 1,0850) × 125 000 × 3 = 0,0060 × 375 000 = +2 250 USD."},
+  {ch:'Le marché des Futures', lesson:'l2', type:'qcm',
+   q:"Un vendeur de Futures gagne quand :",
+   opts:["Le cours du Future monte","Le cours du Future baisse","Le cours au comptant monte","Le deposit augmente"], correct:1,
+   ex:"Le vendeur a fixé un prix de vente : il gagne si le cours baisse, de (F vente − F rachat) × T × N."},
+  {ch:'Système de marges', lesson:'l3', type:'num',
+   q:"15 contrats GBP, tick en valeur 12,5 USD, limite quotidienne de 50 ticks. Quel deposit couvre la perte maximale d'une journée ? (en USD)",
+   answer:9375, tol:0.5, unit:"USD",
+   ex:"Deposit = 50 × 12,5 × 15 = 9 375 USD."},
+  {ch:'Système de marges', lesson:'l3', type:'num',
+   q:"Deposit 9 375 USD, marge de maintenance 80 %. Quelle est la marge de maintenance ? (en USD)",
+   answer:7500, tol:0.5, unit:"USD",
+   ex:"80 % × 9 375 = 7 500 USD."},
+  {ch:'Système de marges', lesson:'l3', type:'qcm',
+   q:"Quand l'opérateur reçoit-il un appel de marge ?",
+   opts:["Dès que son solde passe sous le deposit","Dès que son solde passe sous la marge de maintenance","Chaque soir, quel que soit le solde","Seulement à l'échéance du contrat"], correct:1,
+   ex:"L'appel se déclenche quand le solde passe sous la marge de maintenance, pas sous le deposit."},
+  {ch:'Système de marges', lesson:'l3', type:'qcm',
+   q:"Le montant d'un appel de marge est égal à :",
+   opts:["Marge de maintenance − solde","Deposit − solde","La perte du jour","Deposit − marge de maintenance"], correct:1,
+   ex:"L'appel ramène le compte au deposit : deposit − solde."},
+  {ch:'Système de marges', lesson:'l4', type:'num',
+   q:"Exercice 1 : le 06-01, le solde avant appel est de 1 500 USD (deposit 9 375, maintenance 7 500). Montant de l'appel de marge ? (en USD)",
+   answer:7875, tol:0.5, unit:"USD",
+   ex:"1 500 < 7 500 : appel de 9 375 − 1 500 = 7 875 USD."},
+  {ch:'Système de marges', lesson:'l4', type:'num',
+   q:"Exercice 1 : acheteur de 15 contrats GBP (62 500). Le cours passe de 1,5030 à 1,5120. Résultat du jour ? (en USD)",
+   answer:8437.5, tol:0.5, unit:"USD",
+   ex:"(1,5120 − 1,5030) × 62 500 × 15 = 0,0090 × 937 500 = +8 437,5 USD."},
+  {ch:'Système de marges', lesson:'l4', type:'num',
+   q:"Exercice 4 (Valrhona) : solde de 6 000 USD le 8 octobre, deposit 16 000, maintenance 12 000. Appel de marge ? (en USD)",
+   answer:10000, tol:0.5, unit:"USD",
+   ex:"6 000 < 12 000 : appel de 16 000 − 6 000 = 10 000 USD."},
+  {ch:'Système de marges', lesson:'l4', type:'num',
+   q:"Exercice 4 : 4 contrats achetés à 1,1000 et liquidés à 1,0860 (125 000 EUR). Résultat global ? (en USD, signe compris)",
+   answer:-7000, tol:0.5, unit:"USD",
+   ex:"(1,0860 − 1,1000) × 500 000 = −7 000 USD. Vérification : versé 16 000 + 10 000 = 26 000, récupéré 19 000."},
+  {ch:'Couverture', lesson:'l5', type:'qcm',
+   q:"Airbus (européen) doit encaisser 2 500 000 USD. Quelle position sur les Futures EUR/USD ?",
+   opts:["Vendre, car il encaisse des devises","Acheter, car il craint la baisse de l'USD, donc la hausse de EUR/USD","Aucune, l'USD est la monnaie de cotation","Vendre des Futures GBP/USD"], correct:1,
+   ex:"Airbus craint la baisse du dollar, c'est-à-dire la hausse de EUR/USD : il achète des Futures EUR/USD, qui gagnent dans ce cas."},
+  {ch:'Couverture', lesson:'l5', type:'qcm',
+   q:"Fender (américain) doit encaisser 1 250 000 GBP. Quelle position ?",
+   opts:["Acheter des Futures GBP/USD","Vendre des Futures GBP/USD","Acheter des Futures EUR/USD","Ne rien faire"], correct:1,
+   ex:"Fender craint la baisse de la livre : il vend des Futures GBP/USD, qui gagnent si le cours baisse."},
+  {ch:'Couverture', lesson:'l5', type:'qcm',
+   q:"Un importateur européen doit payer des USD dans six mois. Il :",
+   opts:["Achète des Futures EUR/USD","Vend des Futures EUR/USD","Achète des Futures GBP/USD","Vend des USD au comptant aujourd'hui"], correct:1,
+   ex:"Il craint la hausse de l'USD, donc la baisse de EUR/USD : il vend des Futures EUR/USD."},
+  {ch:'Couverture', lesson:'l6', type:'num',
+   q:"Exercice 3 : 2 500 000 USD à couvrir, F0 = 1,0850, contrats de 125 000 EUR. Nombre de contrats par la correspondance des volumes (entier le plus proche) ?",
+   answer:18, tol:0, unit:"contrats",
+   ex:"2 500 000 ÷ 1,0850 ÷ 125 000 = 18,43, soit 18 contrats."},
+  {ch:'Couverture', lesson:'l6', type:'num',
+   q:"Cov(S, F) = 0,000085 et V(F) = 0,0001. Quel est le ratio de couverture optimal h* ?",
+   answer:0.85, tol:0.001, unit:"",
+   ex:"h* = Cov(S, F) ÷ V(F) = 0,000085 ÷ 0,0001 = 0,85."},
+  {ch:'Couverture', lesson:'l6', type:'num',
+   q:"Exercice 5 : 1 250 000 GBP, T = 62 500, h* = 0,85. Nombre de contrats selon la variance minimale ?",
+   answer:17, tol:0, unit:"contrats",
+   ex:"0,85 × 1 250 000 ÷ 62 500 = 17 contrats."},
+  {ch:'Couverture', lesson:'l6', type:'num',
+   q:"Exercice 2 : σS,F = 1,5 ; σ²F = 1,25 ; créance de 1 000 000 EUR ; T = 125 000 EUR. Nombre de contrats (entier le plus proche) ?",
+   answer:10, tol:0, unit:"contrats",
+   ex:"h* = 1,5 ÷ 1,25 = 1,2 ; N = 1,2 × 1 000 000 ÷ 125 000 = 9,6, soit 10 contrats."},
+  {ch:'Couverture', lesson:'l7', type:'num',
+   q:"Exercice 5 : physique −62 500 USD ; 20 contrats vendus à 1,2650 et rachetés à 1,2160 (T = 62 500). Résultat global ? (en USD, signe compris)",
+   answer:-1250, tol:0.5, unit:"USD",
+   ex:"Futures : 20 × 62 500 × 0,0490 = +61 250 USD ; global −62 500 + 61 250 = −1 250 USD."},
+  {ch:'Couverture', lesson:'l7', type:'num',
+   q:"Exercice 5 avec 17 contrats : résultat global ? (en USD, signe compris)",
+   answer:-10437.5, tol:0.5, unit:"USD",
+   ex:"Futures : 17 × 62 500 × 0,0490 = +52 062,5 ; global −62 500 + 52 062,5 = −10 437,5 USD."},
+  {ch:'Couverture', lesson:'l7', type:'num',
+   q:"Exercice 3 (Airbus) : physique en euros, 2 500 000 ÷ 1,12 − 2 500 000 ÷ 1,08 ? (en EUR, au centime, signe compris)",
+   answer:-82671.96, tol:0.02, unit:"EUR",
+   ex:"2 232 142,86 − 2 314 814,81 = −82 671,96 EUR."},
+  {ch:'Couverture', lesson:'l7', type:'num',
+   q:"Exercice 3 : 18 contrats achetés à 1,0850 et revendus à 1,1240, gain converti au spot de 1,12. Gain des Futures en euros ? (au centime)",
+   answer:78348.21, tol:0.02, unit:"EUR",
+   ex:"18 × 125 000 × 0,0390 = 87 750 USD ; 87 750 ÷ 1,12 = 78 348,21 EUR."},
+  {ch:'Couverture', lesson:'l7', type:'num',
+   q:"Exercice 3 : résultat global consolidé d'Airbus ? (en EUR, à l'euro près, signe compris)",
+   answer:-4323.74, tol:1, unit:"EUR",
+   ex:"78 348,21 − 82 671,96 = −4 323,74 EUR (environ −4 324 EUR)."},
+  {ch:'Base et évaluation', lesson:'l8', type:'num',
+   q:"S = 1,2100 et F = 1,2160. Quelle est la base ? (signe compris)",
+   answer:-0.006, tol:0.00001, unit:"",
+   ex:"b = S − F = 1,2100 − 1,2160 = −0,0060."},
+  {ch:'Base et évaluation', lesson:'l8', type:'qcm',
+   q:"D'où vient le risque de base ?",
+   opts:["Du défaut possible de la chambre de compensation","De la liquidation de la position avant l'échéance du Future, alors que spot et Future n'ont pas convergé","De l'arrondi du nombre de contrats","Des appels de marge"], correct:1,
+   ex:"L'opérateur choisit E > t et dénoue avant l'échéance : la base S − F n'est pas encore nulle et a pu varier."},
+  {ch:'Base et évaluation', lesson:'l8', type:'qcm',
+   q:"Les « risques résiduels » de la couverture viennent :",
+   opts:["De la variation de la base","De ce que la quantité couverte n'est pas un multiple de la taille du contrat","Des taux d'intérêt","De la limite de variation quotidienne"], correct:1,
+   ex:"La quantité q_S est rarement un multiple de T : on couvre par excès ou par défaut."},
+  {ch:'Base et évaluation', lesson:'l8', type:'qcm',
+   q:"Couverture vendeuse à volumes égaux : la base passe de −0,0050 à −0,0060 sur 1 250 000 GBP. Résultat global ?",
+   opts:["+1 250 USD","−1 250 USD","−12 500 USD","0"], correct:1,
+   ex:"Q × (bt − b0) = 1 250 000 × (−0,0010) = −1 250 USD."},
+  {ch:'Base et évaluation', lesson:'l9', type:'num',
+   q:"S EUR/USD = 1,25 ; i USD = 2,25 % ; i EUR = 3,5 % ; échéance 6 mois. Cours forward théorique (4 décimales) ?",
+   answer:1.2423, tol:0.00006, unit:"",
+   ex:"1,25 × (1 + 2,25 % × 6/12) ÷ (1 + 3,5 % × 6/12) = 1,25 × 1,01125 ÷ 1,0175 = 1,2423."},
+  {ch:'Base et évaluation', lesson:'l9', type:'qcm',
+   q:"Le Future cote 1,2500 et le cours théorique vaut 1,2423. Le Future est :",
+   opts:["Sous-évalué : on l'achète","Surévalué : on le vend","Au prix d'équilibre","Impossible à arbitrer"], correct:1,
+   ex:"F > f : le Future est surévalué. On le vend et l'on achète à terme synthétiquement."},
+  {ch:'Base et évaluation', lesson:'l9', type:'qcm',
+   q:"F < f. Quel arbitrage ?",
+   opts:["Vendre le Future, emprunter des USD, acheter des EUR au comptant","Acheter le Future, emprunter des EUR, les vendre au comptant et placer les USD","Ne rien faire","Acheter des EUR au comptant et les conserver"], correct:1,
+   ex:"Le Future est sous-évalué : on l'achète, et l'on vend à terme synthétiquement (emprunt d'EUR, vente au comptant, placement des USD)."},
+  {ch:'Base et évaluation', lesson:'l9', type:'num',
+   q:"Exercice 5, 17 contrats : quel cours du Future à la liquidation donnerait un résultat consolidé nul ? (4 décimales)",
+   answer:1.2062, tol:0.00006, unit:"",
+   ex:"17 × 62 500 × (1,2650 − Ft) = 62 500, donc Ft = 1,2650 − 1/17 = 1,2062."},
+  {ch:'Spéculation', lesson:'l10', type:'num',
+   q:"Exercice 4 : valeur notionnelle de 4 contrats EUR/USD (125 000 EUR) achetés à 1,1000 ? (en USD)",
+   answer:550000, tol:0.5, unit:"USD",
+   ex:"4 × 125 000 × 1,1000 = 550 000 USD."},
+  {ch:'Spéculation', lesson:'l10', type:'qcm',
+   q:"« Mon compte contient encore 6 000 USD, je n'ai rien à verser » (deposit 16 000, maintenance 12 000). C'est :",
+   opts:["Correct, le solde est positif","Faux : le solde est sous la maintenance, il faut verser 10 000 USD","Faux : il faut verser 6 000 USD","Correct jusqu'à l'échéance"], correct:1,
+   ex:"6 000 < 12 000 : appel de marge, qui ramène le compte au deposit de 16 000 USD, soit 10 000 USD à verser."},
+  {ch:'Spéculation', lesson:'l10', type:'qcm',
+   q:"Pourquoi un spéculateur peut-il manquer de trésorerie même s'il a raison à terme ?",
+   opts:["Parce que les gains ne sont versés qu'à l'échéance","Parce que les pertes sont réglées chaque jour par des appels de marge","Parce que le deposit est perdu à l'ouverture","Parce que la chambre de compensation prélève une commission quotidienne"], correct:1,
+   ex:"Le règlement est quotidien : une baisse passagère impose des appels de marge immédiats, avant tout retournement ; faute de paiement, la position est liquidée."}
+];
+
+/* ===================== NAVIGATION ===================== */
+/* ===================== NAVIGATION ===================== */
+function buildNav(){
+  [1,2,3,4,5].forEach(ch=>{
+    const nav = document.getElementById('navList'+ch);
+    if(!nav) return;
+    nav.innerHTML = '';
+    LESSONS.forEach((l,i)=>{
+      if(l.ch!==ch) return;
+      const d = document.createElement('div');
+      d.className = 'nav-item' + (state.done[l.id]?' done':'');
+      d.dataset.view = l.id;
+      d.onclick = ()=>go(l.id);
+      d.innerHTML = '<span class="num">'+(state.done[l.id]?'✓':(i+1))+'</span><span class="lab">'+l.t+'</span>';
+      nav.appendChild(d);
+    });
+  });
+  highlightNav();
+}
+function highlightNav(){
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.dataset.view===state.view));
+}
+function go(view){
+  state.view = view;
+  if(window.P && /^l\d+$/.test(view)) P.derniereLecon(view);
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active', v.dataset.view===view));
+  highlightNav();
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(window.innerWidth<=880) closeSidebar();
+}
+function imprimerFiche(){ window.print(); }
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+/* ===================== XP ===================== */
+function addXp(n){
+  state.xp += n;
+  if(window.P) P.ajouterXp(n);
+  document.getElementById('xpVal').textContent = state.xp;
+  popXp('+'+n+' XP');
+}
+function popXp(txt){
+  const p = document.getElementById('xpPop');
+  p.textContent = '★ '+txt;
+  p.classList.add('show');
+  clearTimeout(p._t);
+  p._t = setTimeout(()=>p.classList.remove('show'),1400);
+}
+function updateProgress(){
+  const pct = Math.round(Object.keys(state.done).length/LESSONS.length*100);
+  document.getElementById('progFill').style.width = pct+'%';
+  document.getElementById('progPct').textContent = pct+' %';
+}
+
+/* ===================== MINI-QUIZ ===================== */
+function pick(btn){
+  const quiz = btn.closest('.quiz');
+  if(quiz.classList.contains('answered')) return;
+  quiz.classList.add('answered');
+  const correct = btn.dataset.correct === 'true';
+  quiz.querySelectorAll('.opt').forEach(o=>{
+    o.disabled = true;
+    if(o.dataset.correct === 'true') o.classList.add('right');
+  });
+  if(!correct) btn.classList.add('wrong');
+  const fb = quiz.querySelector('.feedback');
+  if(fb) fb.hidden = false;
+  if(window.P){
+    const sec = quiz.closest('.view');
+    const lec = sec ? sec.dataset.view : '?';
+    const rang = sec ? [...sec.querySelectorAll('.quiz')].indexOf(quiz) : 0;
+    P.noterReponse('quiz:'+lec+':'+rang, correct, 'Leçon '+lec.replace('l',''));
+  }
+  if(correct) addXp(10);
+}
+function validate(id, quizCount){
+  const sec = document.querySelector('.view[data-view="'+id+'"]');
+  const answered = sec.querySelectorAll('.quiz.answered').length;
+  if(answered < quizCount){
+    popXp("Réponds aux "+quizCount+" quiz d'abord");
+    sec.querySelectorAll('.quiz:not(.answered)').forEach(q=>{ q.style.boxShadow='0 0 0 2px var(--plum)'; setTimeout(()=>q.style.boxShadow='',1200); });
+    return;
+  }
+  if(!state.done[id]){ state.done[id]=true; if(window.P) P.marquerLecon(id); addXp(50); buildNav(); updateProgress(); }
+  const idx = LESSONS.findIndex(l=>l.id===id);
+  const next = LESSONS[idx+1];
+  if(next) go(next.id); else go('redac');
+}
+
+function sansAccent(s){ return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[’']/g,"'"); }
+function renderRedac(){
+  const host = document.getElementById('redacList');
+  host.innerHTML = REDAC.map((r,i)=>
+    '<div class="annale redac" id="rd'+i+'">'+
+      '<div class="an-tag">Question '+(i+1)+'/'+REDAC.length+' · '+LESSONS.find(l=>l.id===r.lesson).t+'</div>'+
+      '<h3>'+r.q+'</h3>'+
+      '<label class="sr" for="rd'+i+'in">Ta réponse</label>'+
+      '<textarea id="rd'+i+'in" rows="6" placeholder="Rédige ta réponse ici, en phrases complètes…"></textarea>'+
+      '<div class="redac-btns"><button class="btn primary" onclick="corrigerRedac('+i+')">Corriger ma réponse</button>'+
+      '<button class="btn" onclick="go(\''+r.lesson+'\')">📖 Revoir la leçon</button></div>'+
+      '<div class="corrige" id="rd'+i+'cor"></div>'+
+    '</div>').join('');
+}
+function corrigerRedac(i){
+  const r = REDAC[i];
+  const txt = ' '+sansAccent(document.getElementById('rd'+i+'in').value)+' ';
+  const cor = document.getElementById('rd'+i+'cor');
+  if(txt.trim().length < 15){ popXp('Rédige au moins une phrase'); return; }
+  let ok = 0;
+  const lignes = r.crit.map(c=>{
+    const trouve = c.k.some(k=>txt.indexOf(sansAccent(k))>=0);
+    if(trouve) ok++;
+    return '<li class="'+(trouve?'ok':'ko')+'"><span aria-hidden="true">'+(trouve?'✓':'✗')+'</span> '+c.t+(trouve?'':' — <i>absent de ta réponse</i>')+'</li>';
+  }).join('');
+  const pct = Math.round(ok/r.crit.length*100);
+  const verdict = pct>=80 ? 'Réponse complète' : pct>=50 ? 'Réponse partielle' : 'Réponse insuffisante';
+  cor.innerHTML =
+    '<div class="redac-score '+(pct>=80?'ok':pct>=50?'mid':'ko')+'">'+verdict+' : '+ok+'/'+r.crit.length+' notions-clés</div>'+
+    '<ul class="crit">'+lignes+'</ul>'+
+    '<div class="corrige-head">✅ Réponse modèle</div>'+
+    '<p class="modele">'+r.modele+'</p>';
+  cor.classList.add('show');
+  if(window.P) P.noterReponse('redac:'+i, pct>=80, 'Questions rédigées');
+  if(!corrigerRedac.fait) corrigerRedac.fait = {};
+  if(!corrigerRedac.fait[i]){ corrigerRedac.fait[i]=1; addXp(5+ok*3); }
+}
+
+/* ===================== TEST FINAL ===================== */
+function renderTest(){
+  const c = document.getElementById('testQuestions');
+  c.innerHTML = '';
+  TEST.forEach((q,i)=>{
+    const div = document.createElement('div');
+    div.className = 'test-q'; div.id = 'tq'+i;
+    let body = '';
+    if(q.type==='qcm'){
+      body = '<div class="topt">' + q.opts.map((o,j)=>
+        '<button onclick="selOpt('+i+','+j+')" id="tq'+i+'o'+j+'">'+o+'</button>').join('') + '</div>';
+    } else {
+      body = '<input type="text" inputmode="decimal" autocomplete="off" class="num-input" id="tq'+i+'in" placeholder="…" aria-label="Ta réponse"><span class="unit">'+(q.unit||'')+'</span>';
+    }
+    div.innerHTML =
+      '<div class="tq-head"><span class="tq-num">Question '+(i+1)+'/'+TEST.length+'</span><span class="tq-chap">'+q.ch+'</span></div>'+
+      '<div class="tq-q">'+q.q+'</div>'+ body +
+      '<div class="remed" id="tq'+i+'rem"><div class="rt">⚠️ À revoir</div><div class="ra" id="tq'+i+'ra"></div>'+
+      '<div class="remed-btns"><button class="btn" onclick="go(\''+q.lesson+'\')">📖 Revoir la leçon</button>'+
+      '<button class="btn primary" onclick="dismissRemed('+i+')">Continuer →</button></div></div>';
+    c.appendChild(div);
+  });
+  document.getElementById('testResult').classList.remove('show');
+  document.getElementById('testSubmitRow').style.display = 'flex';
+  document.getElementById('floatRetry').classList.remove('show');
+  TEST._answers = {};
+}
+function selOpt(qi, oi){
+  if(document.getElementById('tq'+qi).classList.contains('graded')) return;
+  TEST._answers = TEST._answers || {};
+  TEST._answers[qi] = oi;
+  TEST[qi].opts.forEach((_,j)=>document.getElementById('tq'+qi+'o'+j).classList.toggle('sel', j===oi));
+}
+function lireNombre(v){ return parseFloat(String(v).replace(/[\s\u00a0\u202f]/g,'').replace(/\u2212/g,'-').replace(',', '.')); }   // « 1 000 », « 1,96 »
+function gradeTest(){
+  TEST._answers = TEST._answers || {};
+  let score = 0; const chap = {};
+  TEST.forEach((q,i)=>{
+    const box = document.getElementById('tq'+i);
+    box.classList.add('graded');
+    let ok = false;
+    if(q.type==='qcm'){
+      ok = TEST._answers[i] === q.correct;
+      q.opts.forEach((_,j)=>{ const b=document.getElementById('tq'+i+'o'+j); b.disabled=true;
+        if(j===q.correct) b.classList.add('sel'); });
+    } else {
+      const val = lireNombre(document.getElementById('tq'+i+'in').value);
+      ok = !isNaN(val) && Math.abs(val - q.answer) <= (q.tol||0) + 1e-9;
+      document.getElementById('tq'+i+'in').disabled = true;
+    }
+    if(window.P) P.noterReponse('test:'+i, ok, q.ch);
+    chap[q.ch] = chap[q.ch] || {ok:0,tot:0};
+    chap[q.ch].tot++;
+    if(ok){ score++; chap[q.ch].ok++; box.classList.add('ok'); }
+    else { box.classList.add('ko');
+      document.getElementById('tq'+i+'ra').innerHTML = q.ex;
+      document.getElementById('tq'+i+'rem').classList.add('show'); }
+  });
+  showResult(score, chap);
+}
+function dismissRemed(i){ document.getElementById('tq'+i+'rem').classList.remove('show'); }
+function showResult(score, chap){
+  document.getElementById('testSubmitRow').style.display = 'none';
+  document.getElementById('scoreBig').textContent = score+'/'+TEST.length;
+  let msg, col; const pct = score/TEST.length*100;
+  if(pct>=90){ msg="Excellent — tu es prêt pour les questions rédigées."; col=getCss('--teal'); }
+  else if(pct>=70){ msg="Très bon niveau. Revois les chapitres en orange ci-dessous."; col=getCss('--teal'); }
+  else if(pct>=50){ msg="Bon début. Concentre tes révisions sur les chapitres faibles."; col=getCss('--amber'); }
+  else { msg="Il reste du travail. Reprends les leçons signalées, puis réessaie."; col=getCss('--rust'); }
+  document.getElementById('scoreBig').style.color = col;
+  document.getElementById('scoreMsg').textContent = msg;
+  const bars = document.getElementById('chapBars');
+  bars.innerHTML = '';
+  Object.keys(chap).forEach(name=>{
+    const c = chap[name];
+    const p = Math.round(c.ok/c.tot*100);
+    const bc = p>=67?getCss('--teal'):p>=34?getCss('--amber'):getCss('--rust');
+    bars.innerHTML += '<div class="chapbar"><div class="cbl"><span>'+name+'</span><span>'+c.ok+'/'+c.tot+'</span></div>'+
+      '<div class="cbt"><div class="cbf" style="width:0;background:'+bc+'" data-w="'+p+'"></div></div></div>';
+  });
+  document.getElementById('testResult').classList.add('show');
+  document.getElementById('floatRetry').classList.add('show');
+  setTimeout(()=>document.querySelectorAll('.cbf').forEach(b=>b.style.width=b.dataset.w+'%'),120);
+  addXp(score*20);
+  if(window.P) P.meilleurScore('Test final', score, TEST.length);
+  document.getElementById('testResult').scrollIntoView({behavior:'smooth'});
+  if(window.LB){ try{ LB.record({subject:SUBJECT_KEY, mode:'Test final', correct:score, total:TEST.length, xp:state.xp}); }catch(e){} }
+}
+function resetTest(){ renderTest(); go('test'); }
+function getCss(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+
+/* ===================== APPLICATIONS ===================== */
+function toggleCorrige(btn){
+  const cor = btn.nextElementSibling;
+  const open = cor.classList.toggle('show');
+  btn.textContent = open ? 'Masquer le corrigé' : 'Voir le corrigé';
+}
+
+/* ===================== INIT ===================== */
+buildNav();
+updateProgress();
+renderRedac();
+renderTest();
+go((window.P && SAVE.last && document.querySelector('.view[data-view="'+SAVE.last+'"]')) ? SAVE.last : 'l1');
+try{ document.getElementById('lb-id-slot').appendChild(LB.idButton()); }catch(e){}
+</script>
+<script src="banque.js"></script>
+<script src="ui.js"></script>
+</body>
+</html>

@@ -25,6 +25,8 @@ CONTENU DE CE DOSSIER
   • produits_derives.html .............. Produits Dérivés I — Forward (ch. 1-3,
                                          15 leçons, générateur de calculs à
                                          l'infini, applications du cours et TD 2)
+  • produits_derives_2.html ............ Produits Dérivés II — Futures (10 leçons,
+                                         5 exercices du TD corrigés, test)
   • entrainement_changes.html .......... Mode entraînement Produits Dérivés, séparé
                                          du cours : 13 notions de calcul générées
                                          (comptant et terme), aides, correction
@@ -44,7 +46,7 @@ CONTENU DE CE DOSSIER
   • glossaire.html ..................... 132 sigles et notions, liés aux leçons
   • ui.css / ui.js ..................... Socle commun : navigation, thème, recherche
   • progress.js ........................ Progression, XP, historique, révision espacée
-  • banque.js .......................... 408 questions et 132 fiches (fichier GÉNÉRÉ)
+  • banque.js .......................... 536 questions et 132 fiches (fichier GÉNÉRÉ)
   • revision.html ...................... Entraînement du jour + flashcards
   • stats.html ......................... Tableau de bord de progression
   • sw.js .............................. Fonctionnement hors ligne
@@ -278,6 +280,24 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  7.4.0            NOUVELLE MATIÈRE : PRODUITS DÉRIVÉS II — FUTURES
+                   (produits_derives_2.html, subject-id produits-derives-2).
+                   10 leçons en 5 chapitres : marché des Futures (CME, IMM,
+                   tick), système de marges (deposit, maintenance, appels,
+                   compte de marge), couverture (position, nombre de contrats,
+                   ratio de variance minimale, résultat global), base et
+                   évaluation (risque de base, risques résiduels, parité des
+                   taux, arbitrage), spéculation et trésorerie. 20 mini-quiz,
+                   les 5 exercices du TD de S. Sabkha corrigés pas à pas,
+                   6 questions rédigées, test final de 38 questions, mémo.
+                   Identité : vert olive #4C5816, emblème ⇄ ; photo provisoire
+                   (celle de Produits Dérivés I, copie img/sujet-produits-
+                   derives-2.webp) faute d'accès aux images Unsplash. 58 questions
+                   ajoutées à banque.js (BeQuick, révision espacée). Déclarée dans
+                   theme.css, ui.js, progress.js, lb.js, revision.html,
+                   stats.html, bequick.html, index.html, acces-admin.html, sw.js.
+                   Pas encore de date de partiel ni de vidéo de présentation.
+                   L'ancienne matière s'affiche partout « Produits Dérivés I ».
   7.3.2            BeQuick sans spoiler : les parties en cours n'apparaissent plus
                    dans aucun classement, et le classement du soir (onglet Ce soir,
                    calendrier, podium du hub, cumul) reste caché tant qu'on n'a pas
