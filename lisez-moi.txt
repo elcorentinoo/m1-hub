@@ -282,7 +282,8 @@ La version s'affiche en bas du menu de navigation.
 HISTORIQUE
   7.4.0            NOUVELLE MATIÈRE : PRODUITS DÉRIVÉS II — FUTURES
                    (produits_derives_2.html, subject-id produits-derives-2).
-                   Partiel le 18 novembre, avec Produits Dérivés I. Conventions
+                   Vidéo de présentation 6r-4xpJ3KuU (8 min). Partiel le 18
+                   novembre, avec Produits Dérivés I. Conventions
                    du TD : exercice 2 avec F = forward théorique, exercice 3 à
                    18 contrats (19 = sur-couverture, +28,94 EUR). Photo de
                    Produits Dérivés I assombrie (titre à 2,3:1 → 5,3:1 minimum).

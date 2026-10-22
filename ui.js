@@ -297,7 +297,8 @@
     'es-banque':             {yt:'8DjZuDmS22I', duree:'8 min'},
     'marketing-numerique':   {yt:'suhvus2KxpY', duree:'10 min'},
     'etudes-marche':         {yt:'Czg3Q9YZK9U', duree:'8 min'},
-    'systeme-bancaire':      {yt:'kV5Ruf3QC4I', duree:'9 min'}
+    'systeme-bancaire':      {yt:'kV5Ruf3QC4I', duree:'9 min'},
+    'produits-derives-2':    {yt:'6r-4xpJ3KuU', duree:'8 min'}
   };
   function lireLocal(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
   function ecrireLocal(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
