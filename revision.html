@@ -165,6 +165,10 @@ let MODE = 'espacee', MAT = 'Toutes', SESSION = null;
 const TAILLE = 15;
 
 function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+/* 7.5.0 : nombres au format français (1 234,56 ; vrai signe moins), autant de décimales que la réponse attendue */
+function nombreFr(x){ const d = Math.min(6, (String(Math.abs(x)).split('.')[1]||'').length);
+  return Number(x).toLocaleString('fr-FR',{minimumFractionDigits:d, maximumFractionDigits:d}).replace('-','\u2212'); }
+function lireNombre(v){ return parseFloat(String(v).replace(/[\s\u00a0\u202f]/g,'').replace(/\u2212/g,'-').replace(',','.')); }
 function pool(){
   const tout = MODE==='flash' ? window.CARTES : window.BANQUE;
   return MAT==='Toutes' ? tout : tout.filter(x=>LAB[x.m]===MAT);
@@ -231,7 +235,7 @@ function afficher(){
       <div class="actions"><button class="btn navy big" style="width:100%;justify-content:center" onclick="reveler()">Afficher la réponse</button></div>`;
   } else if(q.type==='num'){
     corps = `<div class="qtxt">${esc(q.q)}</div>
-      <div class="numrow"><input type="number" step="any" id="rep" placeholder="ta réponse"
+      <div class="numrow"><input type="text" inputmode="decimal" autocomplete="off" id="rep" placeholder="ta réponse" aria-label="Ta réponse"
         onkeydown="if(event.key==='Enter')valider()"><span style="font-family:DM Mono;color:var(--muted)">${esc(q.unit||'')}</span>
         <button class="btn primary" onclick="valider()">Vérifier</button></div>`;
   } else {
@@ -242,7 +246,7 @@ function afficher(){
   host.innerHTML = `<div class="prog"><i style="width:${pct}%"></i></div>
     <div class="qcard">
       <div class="qmeta">
-        <span class="src">${esc(LAB[q.m]||'')} · ${esc(q.ch)}</span>
+        <span class="fx-groupe"><span class="src">${esc(LAB[q.m]||'')} · ${esc(q.ch)}</span>${window.M1Formules ? M1Formules.bouton(q.m) : ''}</span>
         <span class="cnt">${S.i+1}/${S.items.length} · ${statut}</span>
       </div>
       ${corps}
@@ -279,11 +283,11 @@ function repondre(j){
 }
 function valider(){
   const q = SESSION.items[SESSION.i];
-  const v = parseFloat(String(document.getElementById('rep').value).replace(',','.'));
+  const v = lireNombre(document.getElementById('rep').value);
   if(isNaN(v)) return;
-  const ok = Math.abs(v - q.answer) <= (q.tol||0);
+  const ok = Math.abs(v - q.answer) <= (q.tol||0) + 1e-9;
   document.getElementById('rep').disabled = true;
-  finQuestion(ok, `<div class="reveal ${ok?'ok':'ko'}"><div class="rt">${ok?'✅ Juste':'❌ Raté — attendu : '+q.answer+' '+esc(q.unit||'')}</div><p>${esc(q.ex||'')}</p></div>`);
+  finQuestion(ok, `<div class="reveal ${ok?'ok':'ko'}"><div class="rt">${ok?'✅ Juste':'❌ Raté — attendu : '+nombreFr(q.answer)+' '+esc(q.unit||'')}</div><p>${esc(q.ex||'')}</p></div>`);
 }
 function reveler(){
   const q = SESSION.items[SESSION.i];
@@ -326,6 +330,7 @@ function retour(){
 }
 renderAccueil();
 </script>
+<script src="formules.js"></script>
 <script src="ui.js"></script>
 </body>
 </html>

@@ -239,10 +239,13 @@ function dateLongue(jour){ const [y,m,d] = jour.split('-').map(Number); return n
 function puces(sids){ return '<div class="puces-mat">'+sids.map(s=>'<span class="pm" data-sid="'+s+'"><i aria-hidden="true"></i>'+esc(NOMS[s]||s)+'</span>').join('')+'</div>'; }
 function verifier(q, rep){
   if(q.type === 'qcm') return rep === q.correct;
-  const v = parseFloat(String(rep).replace(/[\s  ]/g,'').replace(',','.'));
+  const v = parseFloat(String(rep).replace(/[\s\u00a0\u202f]/g,'').replace(/\u2212/g,'-').replace(',','.'));
   return !isNaN(v) && Math.abs(v - q.answer) <= (q.tol||0) + 1e-9;
 }
-function bonneReponse(q){ return q.type === 'qcm' ? q.opts[q.correct] : String(q.answer).replace('.',',')+(q.unit?' '+q.unit:''); }
+/* 7.5.0 : réponse attendue au format français (1 234,56 ; vrai signe moins), autant de décimales que la réponse */
+function nombreFr(x){ const d = Math.min(6, (String(Math.abs(x)).split('.')[1]||'').length);
+  return Number(x).toLocaleString('fr-FR',{minimumFractionDigits:d, maximumFractionDigits:d}).replace('-','\u2212'); }
+function bonneReponse(q){ return q.type === 'qcm' ? q.opts[q.correct] : nombreFr(q.answer)+(q.unit?' '+q.unit:''); }
 
 let PARTIE = null;    // la ligne du serveur
 let JEU = null;       // la session en cours sur cet écran

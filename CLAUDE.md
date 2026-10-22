@@ -103,6 +103,9 @@ après toute modification de couleur ou de photo.
 - Tableau de bord `/admin` (7.3.0) — `acces-admin.html`, données par la
   fonction `acces-admin` (action `tableau`) ; suivi envoyé par `ui.js`
   (`envoyerSuivi`) ; tables et fonctions dans `supabase/admin.sql`.
+- `formules.js` (7.5.0) — fiches de formules Forward et Futures, en MathML,
+  ouvertes par le bouton « i » (révision et pages Produits Dérivés I et II,
+  jamais dans BeQuick).
 - `sw.js` — hors ligne. Toute nouvelle page doit être ajoutée à `FICHIERS`
   (sauf les pages d'accès, jamais mises en cache).
 

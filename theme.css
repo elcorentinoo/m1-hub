@@ -532,7 +532,7 @@ body.ds-cours .view{ animation:dsApparait .45s var(--ressort); }
 }
 .ds-cadre .ph{ z-index:-2; }
 .ds-cadre .voile-g{ z-index:-1; }
-.ds-cadre .haut{ position:absolute; top:16px; left:16px; right:16px; display:flex; justify-content:space-between; gap:10px; }
+.ds-cadre .haut{ position:absolute; top:16px; left:16px; right:16px; display:flex; justify-content:space-between; gap:10px; z-index:1; }  /* 7.5.0 : au-dessus de .corps, qui captait les clics des pilules */
 .ds-pil{
   display:inline-flex; align-items:center; gap:9px; height:44px; padding:0 18px; border-radius:999px;
   color:var(--nuit); text-decoration:none; font-size:14px; font-weight:500; cursor:pointer; border:none;
@@ -926,3 +926,82 @@ html.bq-verrouille, html.bq-verrouille body{ overflow:hidden; }
   text-decoration:none !important; font-size:1.05rem; }
 .bqv-l{ display:inline-block; margin-top:14px; color:var(--nuit) !important; font-size:.95rem; text-decoration:underline; }
 .bqv-b:focus-visible, .bqv-l:focus-visible{ outline:3px solid var(--nuit); outline-offset:3px; }
+
+/* ───────────── LE « i » : RAPPEL DES FORMULES (7.5.0) ─────────────
+   formules.js. Bouton rond aux couleurs de la matière (data-sid),
+   fiche blanche : feuille en bas sur téléphone, fenêtre centrée sur
+   ordinateur. Équations en MathML, police mathématique du système. */
+.fx-i{
+  position:relative; flex:none; width:30px; height:30px; border-radius:50%; padding:0; cursor:pointer;
+  display:inline-grid; place-items:center; background:var(--m-soft); color:var(--m);
+  border:1px solid var(--m-clair); font-size:15px; font-weight:600; line-height:1; letter-spacing:0; text-transform:none;
+  transition:background .2s, color .2s;
+}
+.fx-i::before{ content:''; position:absolute; inset:-7px; border-radius:50%; }   /* zone de toucher de 44 px */
+.fx-i:hover{ background:var(--m); color:var(--blanc); }
+.fx-i:focus-visible, .fx-pil:focus-visible, .fx-fermer:focus-visible, .fx-onglets button:focus-visible, .fx-corps:focus-visible{
+  outline:3px solid var(--m); outline-offset:2px;
+}
+.fx-ligne{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.fx-groupe{ display:inline-flex; align-items:center; gap:8px; }
+.fx-pil .fx-rond{
+  width:24px; height:24px; border-radius:50%; display:inline-grid; place-items:center;
+  background:var(--m); color:var(--blanc); font-size:13px; font-weight:600;
+}
+:root.fx-ouvert, :root.fx-ouvert body{ overflow:hidden; }
+.fx-fond{
+  position:fixed; inset:0; z-index:1001; background:var(--nuit-ombre);
+  backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  display:flex; align-items:center; justify-content:center; padding:24px;
+}
+.fx-fond[hidden]{ display:none; }
+.fx-fiche{
+  width:min(780px,100%); max-height:min(86vh,900px); display:flex; flex-direction:column;
+  background:var(--blanc); color:var(--txt); border-radius:var(--r-lg); box-shadow:var(--shadow-lg); overflow:hidden;
+  animation:fx-entre .28s var(--ressort);
+}
+@keyframes fx-entre{ from{ opacity:0; transform:translateY(14px) scale(.98); } }
+.fx-haut{ display:flex; align-items:flex-start; justify-content:space-between; gap:14px; padding:22px 24px 12px; }
+.fx-kick{ font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--m); font-weight:500; }
+:root .fx-haut h2{ margin:4px 0 0; font-size:1.55rem; font-weight:300; color:var(--txt); letter-spacing:-.02em; line-height:1.15; }
+.fx-fermer{
+  flex:none; width:44px; height:44px; border-radius:50%; border:0; background:var(--surface2); color:var(--txt);
+  font-size:16px; cursor:pointer;
+}
+.fx-fermer:hover{ background:var(--surface3); }
+.fx-onglets{ display:flex; gap:6px; margin:0 24px 6px; padding:4px; background:var(--surface2); border-radius:999px; align-self:flex-start; }
+.fx-onglets button{
+  min-height:40px; padding:0 20px; border:0; border-radius:999px; background:transparent; color:var(--txt2);
+  font-size:14.5px; font-weight:500; cursor:pointer;
+}
+.fx-onglets button[aria-selected="true"]{ background:var(--m); color:var(--blanc); }
+.fx-corps{ overflow-y:auto; overscroll-behavior:contain; padding:8px 24px 28px; }
+.fx-bloc + .fx-bloc{ margin-top:8px; }
+:root .fx-bloc h3{ margin:18px 0 10px; font-size:12.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--m); font-weight:600; }
+.fx-f{ border:1px solid var(--stroke); border-radius:20px; padding:14px 16px 12px; margin-bottom:10px; }
+:root .fx-f h4{ margin:0 0 4px; font-size:1rem; font-weight:500; color:var(--txt); }
+.fx-eq{ overflow-x:auto; overflow-y:hidden; padding:2px 0; }
+:root body .fx-eq math, :root body .fx-eq math *{
+  font-family:'STIX Two Math','Cambria Math','Latin Modern Math','DejaVu Sans',math,serif !important;
+}
+.fx-eq math{ font-size:1.18rem; color:var(--txt); margin:8px 0; }
+.fx-ou{ margin:6px 0 0; font-size:.92rem; color:var(--txt2); line-height:1.5; }
+.fx-ex{ margin:8px 0 0; font-size:.9rem; color:var(--txt); background:var(--m-soft); border-radius:12px; padding:8px 12px; }
+.fx-ou b, .fx-ex b{ color:var(--txt); font-weight:600; }
+.fx-tab{ width:100%; border-collapse:collapse; margin:8px 0 2px; font-size:.92rem; }
+.fx-tab th{ text-align:left; color:var(--txt3); font-weight:500; font-size:12px; letter-spacing:.08em; text-transform:uppercase; padding:6px 8px; border-bottom:1px solid var(--stroke); }
+.fx-tab td{ padding:8px; border-bottom:1px solid var(--stroke); color:var(--txt); vertical-align:top; }
+@media(max-width:640px){
+  .fx-fond{ align-items:flex-end; padding:0; }
+  .fx-fiche{ width:100%; max-height:88vh; border-radius:var(--r-lg) var(--r-lg) 0 0; animation-name:fx-monte; }
+  @keyframes fx-monte{ from{ transform:translateY(40px); opacity:0; } }
+  .fx-haut{ padding:18px 16px 10px; }
+  .fx-onglets{ margin:0 16px 6px; }
+  .fx-corps{ padding:6px 16px calc(24px + env(safe-area-inset-bottom)); }
+  .fx-f{ padding:12px 12px 10px; }
+  .fx-eq math{ font-size:1.05rem; }
+}
+@media(prefers-reduced-motion:reduce){ .fx-fiche{ animation:none; } }
+@media print{ .fx-i, .fx-pil, .fx-fond{ display:none !important; } }
+.fx-lab{ display:block; margin-top:8px; font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--txt3); font-weight:500; }
+.fx-lab + math{ margin-top:2px; }

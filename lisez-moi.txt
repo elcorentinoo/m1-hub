@@ -11,6 +11,8 @@ CONTENU DE CE DOSSIER
   • img/ ............................... les images de secours du site (WebP)
   • lb.js .............................. identité (pseudo) + classement Supabase
   • bequick.html / bequick.js .......... BeQuick, le défi du soir (18 h 30 – 22 h)
+  • formules.js ....................... le « i » : rappel des formules Forward et
+                                         Futures (MathML), 7.5.0
   • calendrier.js ...................... les dates de partiels (seul endroit à modifier)
   • chat.js ............................ la messagerie de la promo (7.1.0)
   • netlify/functions/acces-jeton.mjs .. le jeton Supabase de la messagerie
@@ -280,6 +282,22 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  7.5.0            PRODUITS DÉRIVÉS II : QUESTIONS REFAITES ET RAPPEL DES FORMULES.
+                   Test final (39 questions) et 20 mini-quiz réécrits : de petites
+                   situations autonomes avec leurs propres chiffres (EUR/USD,
+                   GBP/USD, JPY, CHF), plus aucun « Exercice 3 : … » ; toutes les
+                   notions (sens, tick, deposit, maintenance, appel, solde, nombre
+                   de contrats, h*, résultats physique/Futures/global, base,
+                   risques résiduels, F et f, levier, trésorerie). Résultats
+                   arrondis à l'unité ou à 4 décimales, explications « formule
+                   puis application », chaque réponse vérifiée par script.
+                   banque.js régénéré pour cette matière (59 questions).
+                   Bouton « i » (formules.js) : fiche Forward et fiche Futures,
+                   équations en MathML, sur les pages des deux cours (cadre photo,
+                   mini-quiz, test final) et sur les cartes de révision de ces
+                   deux matières. Styles dans theme.css. Réponses attendues
+                   affichées en français (78 348,21) dans la révision et BeQuick ;
+                   la révision accepte la virgule et les espaces.
   7.4.0            NOUVELLE MATIÈRE : PRODUITS DÉRIVÉS II — FUTURES
                    (produits_derives_2.html, subject-id produits-derives-2).
                    Vidéo de présentation 6r-4xpJ3KuU (8 min). Partiel le 18

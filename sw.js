@@ -13,7 +13,7 @@
    ⚠️ Cette valeur doit rester IDENTIQUE à VERSION_APP,
       en haut de ui.js.
    ════════════════════════════════════════════════════════════ */
-const VERSION = '7.4.0';        // « Thaler »
+const VERSION = '7.5.0';        // « Thaler »
 const CACHE_APP  = 'm1-app-'+VERSION;      // les fichiers du site
 const CACHE_EXT  = 'm1-ext-'+VERSION;      // polices et bibliothèques externes
 
@@ -46,6 +46,7 @@ const FICHIERS = [
   'banque.js',
   'calendrier.js',
   'bequick.js',
+  'formules.js',
   'chat.js',
   'manifest.webmanifest',
   'icons/icon-192.png',
