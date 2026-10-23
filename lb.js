@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════════════
    lb.js — Identité (pseudo) + classements partagés via Supabase
-   HUB M1 MBAF — Conseiller Patrimoine Agence
+   A+ — site de révisions (M1 MBAF, Conseiller Patrimoine Agence)
    ════════════════════════════════════════════════════════════════════
    ⚠️  Les identifiants ci-dessous sont ceux de ton projet Supabase
        existant (celui du hub LP Banque). Tu peux :

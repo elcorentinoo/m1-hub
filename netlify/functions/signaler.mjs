@@ -74,7 +74,7 @@ export default async (req) => {
     ['Appareil', appareil(req.headers.get('user-agent')) + ' · clé ' + id.slice(0, 8)]
   ].filter(l => l[1]);
 
-  const sujet = 'Hub M1 · erreur signalée' + (d.matiere ? ' — ' + d.matiere : '') + ' (' + pseudo + ')';
+  const sujet = 'A+ · erreur signalée' + (d.matiere ? ' — ' + d.matiere : '') + ' (' + pseudo + ')';
   const texte = d.message + '\n\n'
     + (d.question ? '— Question —\n' + d.question + '\n\n' : '')
     + lignes.map(l => l[0] + ' : ' + l[1]).join('\n')
