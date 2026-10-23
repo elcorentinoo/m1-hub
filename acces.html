@@ -74,24 +74,31 @@ button.sec{background:var(--surface2);color:var(--nuit);border:2px solid var(--s
   <div id="sansCle">
     <p class="ou">Pas encore de clé ?</p>
     <button type="button" class="sec" id="bEssai">Essayer 24 h sans clé</button>
-    <button type="button" class="sec" id="bDemander">Demander une clé</button>
+    <button type="button" class="sec" id="bDemander">Demander l'accès</button>
     <div class="msg" id="msgEssai" role="status" aria-live="polite"></div>
   </div>
   <form id="fDem" class="f2" autocomplete="off" hidden>
-    <h2>Demander une clé</h2>
-    <p>Ta demande part par e-mail à l'administrateur, qui te répondra avec ta clé.</p>
-    <label for="dNom">Ton nom</label>
-    <input id="dNom" maxlength="60" autocomplete="name" required>
+    <h2>Demander l'accès</h2>
+    <p>L'administrateur reçoit ta demande sur son téléphone. Dès qu'il l'accepte, cet appareil s'ouvre tout seul : pas de clé à taper.</p>
+    <div class="motif" id="dAvert" hidden></div>
+    <label for="dPseudo">Ton pseudo</label>
+    <input id="dPseudo" autocomplete="nickname" spellcheck="false" placeholder="ex. Léa M." maxlength="24" required>
+    <div class="aide">Celui des classements et de BeQuick : toute la promo le verra.</div>
     <label for="dNiv">Ton niveau</label>
-    <select id="dNiv"><option value="">Choisir…</option><option value="licence">Licence (LP ABF)</option><option value="m1">M1 MBAF</option><option value="m2">M2</option></select>
-    <label for="dCon">Comment te répondre ?</label>
-    <input id="dCon" maxlength="120" autocomplete="email" placeholder="e-mail, téléphone…" required>
+    <select id="dNiv" required><option value="">Choisir…</option><option value="licence">Licence (LP ABF)</option><option value="m1">M1 MBAF</option></select>
     <label for="dMsg">Message (facultatif)</label>
-    <textarea id="dMsg" maxlength="1000"></textarea>
+    <textarea id="dMsg" maxlength="200" placeholder="ex. Je suis en M1 cette année"></textarea>
     <div class="piege" aria-hidden="true"><label for="dSite">Site web</label><input id="dSite" tabindex="-1" autocomplete="off"></div>
     <button type="submit" id="bDem">Envoyer la demande</button>
     <div class="msg" id="msgDem" role="status" aria-live="polite"></div>
   </form>
+  <section id="attente" class="f2" hidden>
+    <h2 id="aTitre">Demande envoyée</h2>
+    <p id="aTexte"></p>
+    <button type="button" class="sec" id="bVerifier">Vérifier maintenant</button>
+    <button type="button" class="sec" id="bRedemander" hidden>Faire une nouvelle demande</button>
+    <div class="msg" id="msgAtt" role="status" aria-live="polite"></div>
+  </section>
   <p class="pied">Une clé ne sert qu'une fois : elle autorise cet appareil. Pour un autre appareil, demande une nouvelle clé.</p>
   <p class="pied">Tes progrès (leçons, temps de révision, résultats) sont partagés avec l'administrateur du site.</p>
   <p class="slogan">Révise. Vise le AAA.</p>
@@ -136,6 +143,7 @@ try{ const p = localStorage.getItem('lb_name'); if(p) $('pseudo').value = p; }ca
 
 /* ── Niveaux, essai de 24 h, demande de clé (hub multi-promos) ── */
 const Q = new URLSearchParams(location.search), MOTIF = Q.get('motif');
+const NOMS_NIV = {licence:'Licence', m1:'M1', m2:'M2'};
 const NOM_ESSAI = {systeme_bancaire:'Système bancaire français', 'licence/droit-bancaire':'Droit bancaire (Licence)'};
 function infoAcces(){
   const m = document.cookie.match(/(?:^|;\s*)acces_info=([^;]+)/);
@@ -147,18 +155,18 @@ const essaiFini = () => { const d = parseInt(jetonEssai(), 10); return d > 0 && 
 function motif(html){ $('motif').innerHTML = html; $('motif').hidden = false; }
 function finEssai(){
   $('titre').textContent = 'Ton essai est terminé';
-  $('intro').textContent = "Pour continuer, entre une clé d'accès, ou demande-la avec le formulaire ci-dessous.";
-  $('sansCle').hidden = true; $('fDem').hidden = false;
+  $('intro').textContent = "Pour continuer, entre une clé d'accès, ou demande l'accès avec le formulaire ci-dessous.";
+  $('sansCle').hidden = true; ouvrirDemande();
 }
 if(MOTIF === 'niveau'){
   motif("Cette page est réservée à une autre promo que celle de ta clé. <a href=\"/niveaux.html\">Retour à l'accueil</a>");
   $('sansCle').hidden = true;
 }else if(MOTIF === 'demande'){
   /* depuis le hub central : une clé qui veut l'espace d'un autre niveau */
-  $('titre').textContent = 'Demander une clé';
-  $('intro').textContent = "Ta demande part par e-mail à l'administrateur, qui te répondra avec ta clé.";
-  $('f').hidden = true; $('sansCle').hidden = true; $('fDem').hidden = false;
-  if(['licence','m1','m2'].includes(Q.get('niveau'))) $('dNiv').value = Q.get('niveau');
+  $('titre').textContent = "Demander l'accès";
+  $('intro').textContent = "Pour un autre niveau, fais une demande : l'administrateur la valide depuis son téléphone.";
+  $('f').hidden = true; $('sansCle').hidden = true; ouvrirDemande();
+  if(['licence','m1'].includes(Q.get('niveau'))) $('dNiv').value = Q.get('niveau');
 }else if(MOTIF === 'essai'){
   const i = infoAcces(), mats = ['licence','m1','m2'].map(n=>i.get(n)).filter(Boolean).map(m=>NOM_ESSAI[m] || m.replace(/_/g,' '));
   const fin = +i.get('fin');
@@ -169,7 +177,7 @@ if(MOTIF === 'niveau'){
 }else if(MOTIF === 'essai-fini' || essaiFini()){
   finEssai();
 }
-$('bDemander').addEventListener('click', ()=>{ $('fDem').hidden = false; $('bDemander').hidden = true; $('dNom').focus(); });
+$('bDemander').addEventListener('click', ()=>{ ouvrirDemande(); $('dPseudo').focus(); });
 $('bEssai').addEventListener('click', async ()=>{
   const b = $('bEssai'), m = $('msgEssai');
   b.disabled = true; m.textContent = '';
@@ -180,27 +188,99 @@ $('bEssai').addEventListener('click', async ()=>{
     if(d.ok){ m.className = 'msg ok'; m.textContent = "C'est parti pour 24 h ! Ouverture d'AAA…"; setTimeout(()=>location.replace('/niveaux.html'), 500); return; }
     if(d.erreur === 'fini'){ finEssai(); b.disabled = false; return; }
     m.className = 'msg ko';
-    m.textContent = d.erreur === 'limite' ? "Trop d'essais depuis ce réseau aujourd'hui. Demande plutôt une clé." : 'Le serveur ne répond pas. Réessaie dans un instant.';
+    m.textContent = d.erreur === 'limite' ? "Trop d'essais depuis ce réseau aujourd'hui. Demande plutôt l'accès." : 'Le serveur ne répond pas. Réessaie dans un instant.';
   }catch(e){ m.className = 'msg ko'; m.textContent = "Pas de connexion internet : l'essai se démarre en ligne."; }
   b.disabled = false;
 });
+/* ── Demande d'accès validée depuis /admin (8.1.0) ──
+   Le jeton de la demande est dans un cookie HttpOnly (m1_demande) et en
+   mémoire locale ; l'état est revérifié toutes les 15 s et à chaque retour. */
 const OUVERT = Date.now();
+let SUIVI = null;
+const jetonDemande = () => { try{ return localStorage.getItem('m1_demande') || ''; }catch(e){ return ''; } };
+const garderDemande = j => { try{ if(j) localStorage.setItem('m1_demande', j); else localStorage.removeItem('m1_demande'); }catch(e){} };
+async function appelDemande(corps){
+  const r = await fetch('/.netlify/functions/acces-demande', {method:'POST', headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(Object.assign({jeton:jetonDemande()}, corps))});
+  return r.json().catch(()=>({ok:false}));
+}
+function montrerAttente(titre, texte, redemander){
+  ['f','sansCle','fDem'].forEach(id=>$(id).hidden = true);
+  $('motif').hidden = true; $('intro').hidden = true;
+  $('titre').textContent = 'Demande d\'accès';
+  $('attente').hidden = false; $('aTitre').textContent = titre; $('aTexte').textContent = texte;
+  $('bVerifier').hidden = !!redemander; $('bRedemander').hidden = !redemander;
+}
+function ouvrirDemande(){
+  $('attente').hidden = true; $('fDem').hidden = false; $('bDemander').hidden = true;
+  $('f').hidden = MOTIF === 'demande'; $('intro').hidden = false;
+  try{ const p = localStorage.getItem('lb_name'); if(p && !$('dPseudo').value) $('dPseudo').value = p; }catch(e){}
+  const i = infoAcces();
+  if(i.get('statut') === 'cle'){
+    $('dAvert').textContent = "Cet appareil a déjà une clé "+(NOMS_NIV[i.get('niveau')] || '')+". Si ta demande est acceptée, il passera dans l'espace du niveau demandé.";
+    $('dAvert').hidden = false;
+  }
+}
+function arreterSuivi(){ if(SUIVI){ clearInterval(SUIVI); SUIVI = null; } }
+async function verifier(silencieux){
+  let d;
+  try{ d = await appelDemande({action:'etat'}); }
+  catch(e){ if(!silencieux){ $('msgAtt').className = 'msg ko'; $('msgAtt').textContent = 'Pas de connexion internet.'; } return; }
+  $('msgAtt').textContent = '';
+  if(d.statut === 'attente'){
+    montrerAttente('Demande envoyée', 'En attente de validation par l\'administrateur. Demande au nom de « '+(d.pseudo || '')+' » ('+(NOMS_NIV[d.niveau] || '')+
+      '). Cette page se met à jour toute seule : tu peux la laisser ouverte, ou revenir plus tard.');
+    if(!SUIVI) SUIVI = setInterval(()=>{ if(!document.hidden) verifier(true); }, 15000);
+  }else if(d.statut === 'acceptee'){
+    arreterSuivi(); garderDemande('');
+    try{ localStorage.setItem('lb_name', d.pseudo); }catch(e){}
+    montrerAttente('Demande acceptée !', 'Bienvenue '+d.pseudo+' ! Ouverture d\'AAA…');
+    $('bVerifier').hidden = true;
+    setTimeout(()=>location.replace('/niveaux.html'), 800);
+  }else if(d.statut === 'refusee'){
+    arreterSuivi();
+    montrerAttente('Demande refusée', "L'administrateur n'a pas accepté cette demande. Tu pourras en faire une nouvelle demain.", false);
+    $('bVerifier').hidden = true;
+  }else if(d.statut === 'expiree'){
+    arreterSuivi(); garderDemande('');
+    montrerAttente('Demande expirée', "Elle est restée 7 jours sans réponse. Tu peux en faire une nouvelle.", true);
+  }else if(d.statut === 'deja'){
+    arreterSuivi(); garderDemande('');
+    montrerAttente('Accès déjà remis', "Cette demande a déjà ouvert l'accès sur un appareil. Pour celui-ci, fais une nouvelle demande.", true);
+  }else if(d.statut === 'aucune'){
+    arreterSuivi(); garderDemande('');
+    if(!silencieux) ouvrirDemande();
+  }else if(!silencieux){ $('msgAtt').className = 'msg ko'; $('msgAtt').textContent = 'Le serveur ne répond pas. Réessaie dans un instant.'; }
+}
+$('bVerifier').addEventListener('click', ()=>verifier(false));
+$('bRedemander').addEventListener('click', ouvrirDemande);
 $('fDem').addEventListener('submit', async e=>{
   e.preventDefault();
   const b = $('bDem'), m = $('msgDem');
-  const corps = {nom:$('dNom').value.trim(), niveau:$('dNiv').value, contact:$('dCon').value.trim(), message:$('dMsg').value.trim(), site:$('dSite').value, t:Date.now() - OUVERT};
-  if(corps.nom.length < 2){ m.className = 'msg ko'; m.textContent = 'Indique ton nom.'; $('dNom').focus(); return; }
-  if(corps.contact.length < 3){ m.className = 'msg ko'; m.textContent = 'Indique comment te répondre.'; $('dCon').focus(); return; }
+  const corps = {action:'envoyer', pseudo:$('dPseudo').value.trim(), niveau:$('dNiv').value, message:$('dMsg').value.trim(), site:$('dSite').value, t:Date.now() - OUVERT};
+  if(corps.pseudo.length < 2){ m.className = 'msg ko'; m.textContent = 'Choisis un pseudo d’au moins 2 caractères.'; $('dPseudo').focus(); return; }
+  if(!corps.niveau){ m.className = 'msg ko'; m.textContent = 'Choisis ton niveau.'; $('dNiv').focus(); return; }
   b.disabled = true; m.textContent = '';
   try{
-    const r = await fetch('/.netlify/functions/acces-demande', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(corps)});
-    const d = await r.json().catch(()=>({}));
-    if(d.ok){ m.className = 'msg ok'; m.textContent = 'Demande envoyée. Tu recevras ta clé par le moyen indiqué.'; $('fDem').querySelectorAll('input,select,textarea').forEach(x=>x.disabled = true); return; }
+    const d = await appelDemande(corps);
+    if(d.ok){
+      if(d.jeton) garderDemande(d.jeton);
+      try{ localStorage.setItem('lb_name', corps.pseudo); }catch(err){}
+      await verifier(true);
+      if($('attente').hidden) montrerAttente('Demande envoyée', 'En attente de validation par l\'administrateur.');
+      b.disabled = false; return;
+    }
     m.className = 'msg ko';
-    m.textContent = d.erreur === 'limite' ? "Beaucoup de demandes aujourd'hui : réessaie demain." : d.erreur === 'champs' ? 'Vérifie ton nom et ton contact.' : "L'envoi n'a pas marché. Réessaie dans un instant.";
+    m.textContent = d.erreur === 'limite' ? "Beaucoup de demandes aujourd'hui depuis ce réseau : réessaie demain."
+                  : d.erreur === 'refusee' ? "Ta demande a été refusée aujourd'hui : tu pourras en refaire une demain."
+                  : d.erreur === 'champs' ? 'Vérifie ton pseudo et ton niveau.' : "L'envoi n'a pas marché. Réessaie dans un instant.";
   }catch(err){ m.className = 'msg ko'; m.textContent = 'Pas de connexion internet.'; }
   b.disabled = false;
 });
+/* à chaque ouverture (et retour sur la page) : une demande en cours ? */
+if(jetonDemande()) verifier(true);
+document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && (SUIVI || jetonDemande())) verifier(true); });
+window.addEventListener('pageshow', e=>{ if(e.persisted && jetonDemande()) verifier(true); });
 if(MOTIF !== 'essai-fini' && MOTIF !== 'demande' && !essaiFini()) $('cle').focus();
 </script>
 </body>
