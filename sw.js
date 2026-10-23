@@ -41,6 +41,7 @@ const FICHIERS = [
   'ui.css',
   'theme.css',
   'ui.js',
+  'sources.js',
   'lb.js',
   'progress.js',
   'banque.js',

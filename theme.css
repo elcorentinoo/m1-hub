@@ -625,6 +625,9 @@ body.ds-cours .print-fab{ display:none !important; }
 .ds-fv{ font-size:12px; color:var(--txt3); }
 .ds-credits{ flex-basis:100%; font-size:12px; color:var(--txt3); }
 .ds-credits a{ color:var(--txt2); }
+.ds-sources{ margin:40px 8px 0; padding-top:14px; border-top:1px solid var(--stroke); font-size:12px; line-height:1.7; color:var(--txt3); }
+.ds-sources .t{ font-weight:600; color:var(--txt2); margin-right:4px; }
+.ds-sources a{ color:var(--txt2); }
 @media(max-width:760px){ .ds-foot{ flex-direction:column; align-items:flex-start; margin:40px 10px 100px; } }
 
 /* ═══════════ PAGES D'OUTILS ET GÉNÉRATEURS ═══════════ */

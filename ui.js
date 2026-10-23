@@ -284,6 +284,23 @@
       window.go('intro');
     }
     majCours();
+    construireSources(sid);
+  }
+
+  /* ---------- SOURCES OFFICIELLES en bas du cours ----------
+     Déclarées une seule fois par matière dans sources.js
+     (textes officiels seulement), affichées discrètement
+     à la fin de la page, comme les crédits photo. */
+  function construireSources(sid){
+    chargerScript('sources.js').then(()=>{
+      const l = (window.M1_SOURCES || {})[sid], main = document.querySelector('.main');
+      if(!l || !l.length || !main || document.querySelector('.ds-sources')) return;
+      const f = document.createElement('footer');
+      f.className = 'ds-sources';
+      f.innerHTML = '<span class="t">Sources officielles</span> '+
+        l.map(s=>'<a href="'+s[1]+'" target="_blank" rel="noopener">'+echap(s[0])+'</a>').join(' · ');
+      main.appendChild(f);
+    });
   }
 
   /* ---------- PRÉSENTATION DU COURS (6.3.0) ----------
