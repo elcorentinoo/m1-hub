@@ -27,18 +27,64 @@ export function nouvelleCle(){
   let s = ''; for(let i=0;i<9;i++) s += ALPHABET[crypto.randomInt(ALPHABET.length)];
   return s.slice(0,3)+'-'+s.slice(3,6)+'-'+s.slice(6);
 }
-export function cookieAcces(secret, id){
-  const chk = Math.floor(Date.now()/1000);
-  const sig = crypto.createHmac('sha256', secret).update(id+'.'+chk).digest('base64url');
-  return 'm1_acces='+id+'.'+chk+'.'+sig+'; Max-Age='+UN_AN+'; Path=/; HttpOnly; Secure; SameSite=Lax';
+/* Cookie signé de l'appareil. Format historique (6.5.0) : « id.chk.sig ».
+   Depuis le hub multi-promos, on y ajoute « .niveau.annee.admin.sig2 » : l'ancien
+   code, qui ne lit que les trois premiers morceaux, l'accepte toujours (retour
+   arrière sans danger) ; un cookie à trois morceaux est lu comme M1 2026-2027. */
+export const NIVEAUX = ['licence', 'm1', 'm2'];
+export const PAR_DEFAUT = {niveau:'m1', annee:'2026-2027'};
+const signe = (secret, txt) => crypto.createHmac('sha256', secret).update(txt).digest('base64url');
+export const niveauOk = n => NIVEAUX.includes(n);
+export function anneeOk(a){
+  const m = /^(\d{4})-(\d{4})$/.exec(String(a||''));
+  return !!m && +m[2] === +m[1] + 1 && +m[1] >= 2020 && +m[1] < 2100;
 }
-/* Identifiant de clé porté par le cookie signé, ou null s'il est absent ou falsifié. */
-export function lireCookie(secret, entete){
+export function cookieAcces(secret, id, niveau, annee, admin){
+  if(!niveauOk(niveau)) niveau = PAR_DEFAUT.niveau;
+  if(!anneeOk(annee)) annee = PAR_DEFAUT.annee;
+  const chk = Math.floor(Date.now()/1000);
+  const base = id+'.'+chk, ext = niveau+'.'+annee+'.'+(admin ? 1 : 0);
+  return 'm1_acces='+base+'.'+signe(secret, base)+'.'+ext+'.'+signe(secret, base+'.'+ext)+
+         '; Max-Age='+UN_AN+'; Path=/; HttpOnly; Secure; SameSite=Lax';
+}
+/* Cookie lisible par le navigateur (pas une preuve : la porte, c'est m1_acces).
+   statut=cle&niveau=m1&annee=2026-2027, ou statut=essai&fin=<secondes>&m1=<matière>… */
+export function cookieInfo(params){
+  return 'acces_info='+encodeURIComponent(new URLSearchParams(params).toString())+'; Max-Age='+UN_AN+'; Path=/; Secure; SameSite=Lax';
+}
+/* {id, niveau, annee, admin} portés par le cookie signé, ou null s'il est absent ou falsifié. */
+export function lireAcces(secret, entete){
   const m = String(entete||'').match(/(?:^|;\s*)m1_acces=([^;]+)/); if(!m) return null;
-  const [id, chk, sig] = m[1].split('.');
+  const [id, chk, sig, niveau, annee, adm, sig2] = m[1].split('.');
   if(!id || !chk || !sig || !/^[0-9a-f-]{36}$/.test(id)) return null;
-  const attendu = crypto.createHmac('sha256', secret).update(id+'.'+chk).digest('base64url');
-  return memeTexte(sig, attendu) ? id : null;
+  if(!memeTexte(sig, signe(secret, id+'.'+chk))) return null;
+  if(sig2 && niveauOk(niveau) && anneeOk(annee) && /^[01]$/.test(adm) &&
+     memeTexte(sig2, signe(secret, id+'.'+chk+'.'+niveau+'.'+annee+'.'+adm)))
+    return {id, chk:+chk, niveau, annee, admin: adm === '1'};
+  return {id, chk:+chk, niveau:PAR_DEFAUT.niveau, annee:PAR_DEFAUT.annee, admin:false};
+}
+/* Identifiant de clé porté par le cookie signé, ou null (appelants historiques). */
+export function lireCookie(secret, entete){ const c = lireAcces(secret, entete); return c ? c.id : null; }
+/* État de la clé en base : {valide, niveau, annee, admin}. Repli tant que
+   supabase/acces-niveaux.sql n'est pas lancé : M1 2026-2027, jamais admin. */
+export async function etatCle(id){
+  try{ return await rpc('acces_etat', {p_id:id}); }
+  catch(e){
+    if(e.status !== 404) throw e;
+    const valide = await rpc('acces_valide', {p_id:id});
+    return {valide: valide !== false, niveau:PAR_DEFAUT.niveau, annee:PAR_DEFAUT.annee, admin:false};
+  }
+}
+/* Adresse IP du visiteur, hachée avec le secret : sert seulement aux limites anti-abus. */
+export function empreinteIP(secret, req, context){
+  const ip = (context && context.ip) || req.headers.get('x-nf-client-connection-ip') || (req.headers.get('x-forwarded-for')||'').split(',')[0].trim() || 'inconnue';
+  return signe(secret, 'ip.'+ip).slice(0, 22);
+}
+/* Compteur du jour (table acces_limites) : true tant que « max » n'est pas dépassé.
+   Si la base ne répond pas, on laisse passer (le champ piège reste actif). */
+export async function sousLaLimite(jeton, cle, max){
+  try{ return (await rpc('acces_limite', {p_jeton:jeton, p_cle:cle, p_max:max})) !== false; }
+  catch(e){ console.log('[limite]', e.message); return true; }
 }
 export function memeTexte(a, b){
   const x = Buffer.from(String(a||'')), y = Buffer.from(String(b||''));
