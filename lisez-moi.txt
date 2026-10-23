@@ -283,6 +283,10 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  7.6.3            CONTENU NEUTRE. Plus aucune mention de l'IAE Vannes sur le
+                   site : Études de marché (titre « L'introduction du cours »,
+                   modèle d'introduction de questionnaire, corrigé de la
+                   question rédigée associée). Les sources citées restent.
   7.6.2            ICÔNE D'ONGLET. Safari sur ordinateur n'affichait aucune
                    icône : il cherche favicon.ico, absent, et seules les pages
                    d'accès déclaraient une icône. Nouveau favicon.ico (16, 32,
