@@ -48,6 +48,7 @@ const FICHIERS = [
   'bequick.js',
   'formules.js',
   'chat.js',
+  'signaler.js',
   'manifest.webmanifest',
   'favicon.ico',
   'icons/favicon-32.png',
