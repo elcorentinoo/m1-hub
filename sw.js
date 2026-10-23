@@ -43,6 +43,7 @@ const FICHIERS = [
   'ui.js',
   'lb.js',
   'progress.js',
+  'synchro.js',
   'banque.js',
   'calendrier.js',
   'bequick.js',

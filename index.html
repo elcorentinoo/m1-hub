@@ -622,6 +622,8 @@ async function renderBeQuick(){
 
 bootGate();
 renderTout();
+/* progression reçue d'un autre appareil (synchro.js) */
+window.addEventListener('m1progression', ()=>renderTout());
 renderBeQuick();
 setInterval(renderBeQuick, 1000);
 </script>

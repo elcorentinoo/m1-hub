@@ -3,7 +3,8 @@
    · leçons validées, XP, meilleurs scores, dernière leçon vue
    · historique des réponses (socle des stats et de la révision
      espacée)
-   Tout est stocké sur l'appareil, rien n'est envoyé au serveur.
+   Tout est stocké sur l'appareil ; synchro.js la partage ensuite
+   entre les appareils du même pseudo quand le réseau est là.
    La matière est identifiée par l'attribut subject-id du <html>.
    ════════════════════════════════════════════════════════════ */
 window.P = (function(){
@@ -232,6 +233,8 @@ window.P = (function(){
       o.rep = o.rep.filter(r=>r.m!==id);
       Object.keys(o.plan).forEach(k=>{ if(k.startsWith(id+':')) delete o.plan[k]; });
     } else { o.mat = {}; o.rep = []; o.plan = {}; }
+    /* trace de la remise à zéro : synchro.js la transmet aux autres appareils */
+    o.raz = o.raz || {}; o.raz[id || '*'] = Date.now();
     ecrire(o);
   }
 
