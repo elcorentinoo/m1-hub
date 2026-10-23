@@ -3,6 +3,33 @@
 Document de passation entre sessions Claude. À lire en entier avant toute
 action, avec `CLAUDE.md`. Décisions prises avec Corentin le 23 octobre 2026.
 
+## Ordre de travail (demandé par Corentin, 23 octobre 2026)
+
+**Mise à jour qualité** (publication unique à la fin)
+
+1. Nom du site : brainstorming avec lui (l'idée du « + » plaît ; Le Coffre,
+   Capital, Dividende, Plus-value, Actif, Cap Partiels refusés), puis adresse
+   gratuite en renommant le projet Netlify (`<nom>.netlify.app`) et nom
+   affiché dans le site (logo, titre, manifeste). **En premier.**
+2. A1 — Sources en bas de chaque cours.
+3. A3 — Lien discret « Contact / signaler une erreur » → e-mail à Corentin.
+4. A4 — Progression partagée entre appareils via le pseudo.
+5. A6 — Sauvegarde hebdomadaire de la base Supabase.
+6. Bilan récapitulatif (liste oui / non), puis publication unique sur `main`.
+
+**Hub multi-promos** (après la publication)
+
+7. Choix du niveau à l'arrivée + une couleur par niveau.
+8. Clés liées à un niveau et à une année ; clés M1 actuelles rattachées au M1.
+9. Seule la clé de Corentin est administratrice ; `/admin` général ou par promo.
+10. Sans clé : essai de 24 h, une matière par niveau, puis demande de clé.
+11. Licence : reprise de `partielslpabf11.netlify.app`.
+12. Espace M2 « Prochainement ».
+
+Suivi : à la demande de Corentin, A1, A3, A4 et A6 sont menés en parallèle
+par quatre sessions de travail (branches `qualite-a1`, `qualite-a3`,
+`qualite-a4`, `qualite-a6`), fusionnées dans `maj-qualite` par la cheffe.
+
 ## Règles de travail (décidées par Corentin)
 
 - **Rien sans son accord.** Chaque demande d'avis ou d'approbation se fait
