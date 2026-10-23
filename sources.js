@@ -4,6 +4,35 @@
    Banque de France, ACPR, AMF, EUR-Lex, CNIL, INSEE…) — jamais de nom de
    professeur ni de support de cours. */
 window.M1_SOURCES = {
+  'es-banque': [
+    ['Légifrance — Code pénal, art. 226-13 (secret professionnel)', 'https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006417945'],
+    ['Légifrance — Code monétaire et financier, art. L312-1-1 (convention de compte)', 'https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000038614561'],
+    ['service-public — Droits de succession', 'https://www.service-public.gouv.fr/particuliers/vosdroits/F14198'],
+    ['Légifrance — CGI, art. 990 I (assurance vie au décès)', 'https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000038836524'],
+    ['Légifrance — CGI, art. 757 B (primes versées après 70 ans)', 'https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000047288569'],
+    ['service-public — Prélèvements sociaux sur les revenus du patrimoine', 'https://www.service-public.gouv.fr/particuliers/vosdroits/F2329'],
+    ['Légifrance — Code des assurances, art. L113-2 (déclaration de sinistre)', 'https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006792617'],
+    ['economie.gouv.fr — Assurance emprunteur et questionnaire de santé', 'https://www.economie.gouv.fr/particuliers/gerer-mon-argent/emprunter-et-sassurer/assurance-emprunteur-questionnaire-de-sante-quand-est-ce-obligatoire'],
+    ['service-public — Crédit à la consommation', 'https://www.service-public.gouv.fr/particuliers/vosdroits/F2451'],
+    ['service-public — Crédit immobilier', 'https://www.service-public.gouv.fr/particuliers/vosdroits/F2436']
+  ],
+  'fiscalite-particulier': [
+    ['service-public — Domicile fiscal', 'https://www.service-public.gouv.fr/particuliers/vosdroits/F62'],
+    ['BOFiP — Domicile fiscal (BOI-IR-CHAMP-10)', 'https://bofip.impots.gouv.fr/bofip/1911-PGP.html/identifiant=BOI-IR-CHAMP-10-20160728'],
+    ['impots.gouv.fr — Déclarer un enfant majeur', 'https://www.impots.gouv.fr/particulier/questions/mon-enfant-est-majeur-comment-le-declarer'],
+    ['service-public — Quotient familial et nombre de parts', 'https://www.service-public.gouv.fr/particuliers/vosdroits/F35120'],
+    ['BOFiP — Demi-parts supplémentaires (invalidité)', 'https://bofip.impots.gouv.fr/bofip/2136-PGP.html/identifiant=BOI-IR-LIQ-10-20-20-20-20230608'],
+    ['impots.gouv.fr — Location vide : micro-foncier', 'https://www.impots.gouv.fr/particulier/location-vide-de-meubles'],
+    ['Légifrance — CGI, art. 156 (déficit global)', 'https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000043662638']
+  ],
+  'droits-particuliers': [
+    ['Légifrance — Code civil, art. 311 (période légale de conception)', 'https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006424630'],
+    ['Légifrance — Code civil, art. 112 à 132 (absence)', 'https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006070721/LEGISCTA000006117694/'],
+    ['Légifrance — Code de la propriété intellectuelle, art. L123-1', 'https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006278937'],
+    ['service-public — Changer de nom de famille', 'https://www.service-public.gouv.fr/particuliers/vosdroits/F36379'],
+    ['service-public — Changer de prénom', 'https://www.service-public.gouv.fr/particuliers/vosdroits/F885'],
+    ['service-public — Nationalité française par mariage', 'https://www.service-public.gouv.fr/particuliers/vosdroits/F2726']
+  ],
   'marche-particuliers': [
     ['economie.gouv.fr — Les livrets réglementés', 'https://www.economie.gouv.fr/particuliers/gerer-mon-argent/gerer-mon-budget-et-mon-epargne/livret-comment-ca-marche'],
     ['economie.gouv.fr — Le plan d\'épargne logement (PEL)', 'https://www.economie.gouv.fr/particuliers/gerer-mon-argent/gerer-mon-budget-et-mon-epargne/plan-epargne-logement-pel-comment-ca-marche'],
