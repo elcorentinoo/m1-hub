@@ -95,6 +95,9 @@ après toute modification de couleur ou de photo.
 - `theme.css` — la charte. `ui.css` — la coquille.
 - `progress.js` — progression locale. `lb.js` — identité (pseudo) et
   classement Supabase.
+- `synchro.js` — progression partagée entre les appareils d'un même pseudo
+  (chargé par `ui.js`) : fusion élément par élément avec `supabase/progression.sql`,
+  identité par la clé (jeton `acces-jeton`), lien clé → pseudo figé à la 1re synchro.
 - `banque.js` — banque de révision espacée et de BeQuick, **générée** depuis
   les pages de cours (tableau `TEST` et mini-quiz) : ne pas éditer à la main.
 - `supabase/chat-plus.sql` — réponses et réactions du chat (7.2.0).

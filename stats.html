@@ -197,7 +197,7 @@ function render(){
     });
   }
 
-  h += `<div class="note">Ces chiffres sont enregistrés <b>uniquement sur cet appareil</b>. Ils ne partent sur aucun serveur et ne sont visibles que par toi — contrairement au classement, qui lui est partagé.</div>`;
+  h += `<div class="note">Ces chiffres sont enregistrés sur cet appareil et <b>partagés entre tes appareils</b> connectés avec le même pseudo (téléphone, ordinateur). Ils ne sont pas montrés aux autres étudiants — contrairement au classement.</div>`;
 
   h += `<div class="danger"><button class="btn" onclick="raz()">Effacer toute ma progression</button></div>`;
 
@@ -206,11 +206,14 @@ function render(){
 }
 
 function raz(){
-  if(!confirm("Effacer définitivement ta progression, tes XP et ton historique de réponses ?\n\nCette action est irréversible.")) return;
+  if(!confirm("Effacer définitivement ta progression, tes XP et ton historique de réponses, sur tous tes appareils ?\n\nCette action est irréversible.")) return;
   P.reinitialiser();
+  if(window.M1Synchro) M1Synchro.synchroniser({force:true});
   render();
 }
 render();
+/* progression reçue d'un autre appareil (synchro.js) */
+window.addEventListener('m1progression', render);
 </script>
 <script src="banque.js"></script>
 <script src="ui.js"></script>

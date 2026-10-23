@@ -1019,6 +1019,8 @@
     demarrerChat();
     verrouBeQuick();
     demarrerSuivi();
+    /* A4 : progression partagée entre les appareils du même pseudo */
+    if(window.P && P._lire) setTimeout(()=>chargerScript('synchro.js'), 4000);
     /* 7.2.0 : pas de zoom sur téléphone (pincer ni double-tap), le site est déjà à la bonne taille */
     document.addEventListener('gesturestart', e=>e.preventDefault(), {passive:false});
   }
