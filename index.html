@@ -41,7 +41,7 @@ body{overflow-x:hidden}
 
 /* ════════ LE GRAND CADRE PHOTO ════════ */
 .cadre{ position:relative; height:640px; border-radius:var(--r-xl); overflow:hidden; color:var(--blanc); isolation:isolate; box-shadow:var(--shadow-lg) }
-.cadre .ph{ z-index:-2 }
+.cadre .ph{ z-index:-2; --ph-lum:.7 }  /* photo assombrie (8.0.0) : « Bonjour » et intro à 5,4:1 minimum, mesurés au pixel le plus clair */
 .cadre .voile-bas{ z-index:-1 }
 .c-stats{ position:absolute; top:16px; left:50%; transform:translateX(-50%); display:flex; padding:6px 8px; border-radius:999px; color:var(--nuit); white-space:nowrap; background:var(--verre-fort) }
 .c-stats div{ padding:4px 18px; border-right:1px solid var(--stroke2) }
