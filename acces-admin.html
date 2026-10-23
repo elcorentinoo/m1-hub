@@ -172,16 +172,8 @@ select{font:inherit;padding:10px 12px;border-radius:14px;border:2px solid var(--
       <div class="msg" id="msgTrans" role="status"></div>
     </section>
     <section class="carte">
-      <h2>Générer des clés</h2>
-      <form id="fGen" class="ligne" autocomplete="off">
-        <div><label for="nom">Note (facultatif)</label><input id="nom" maxlength="60" placeholder="ex. envoyée à Léa — le pseudo s'ajoute tout seul"></div>
-        <div class="moyen"><label for="gNiv">Niveau</label><select id="gNiv"><option value="licence">Licence</option><option value="m1" selected>M1</option><option value="m2">M2</option></select></div>
-        <div class="moyen"><label for="gAn">Année</label><select id="gAn"></select></div>
-        <div class="court"><label for="nb">Combien ?</label><input id="nb" type="number" min="1" max="100" value="1"></div>
-        <button type="submit" id="bGen">Générer</button>
-      </form>
-      <div id="resultat"></div>
-      <div class="msg" id="msgGen" role="status"></div>
+      <h2>Nouveaux accès</h2>
+      <p class="sous" style="margin:0">Les nouveaux accès passent uniquement par l'onglet « Demandes » : l'étudiant demande l'accès depuis son appareil, tu acceptes, son appareil s'ouvre tout seul. Les clés déjà créées restent valables.</p>
     </section>
 
     <section class="carte">
@@ -374,11 +366,6 @@ $('bDevenir').addEventListener('click', async ()=>{
   }catch(err){ $('msgTrans').className = 'msg ko'; $('msgTrans').textContent = texteErreur(err); }
   b.disabled = false;
 });
-/* Années proposées à la génération : l'année universitaire en cours et la suivante. */
-(function(){
-  const d = new Date(), y = d.getMonth() >= 8 ? d.getFullYear() : d.getFullYear() - 1;
-  $('gAn').innerHTML = [y, y+1].map(a=>'<option>'+a+'-'+(a+1)+'</option>').join('');
-})();
 function majPromos(){
   const s = $('promo'), ks = [...new Set(CLES.map(promoDe))].sort();
   if(PROMO && !ks.includes(PROMO)) ks.push(PROMO);
@@ -429,23 +416,6 @@ document.querySelectorAll('.filtres button[data-f]').forEach(b=>b.addEventListen
 $('bMaj').addEventListener('click', ()=>charger());
 $('cherche').addEventListener('input', dessiner);
 
-$('fGen').addEventListener('submit', async e=>{
-  e.preventDefault();
-  const b = $('bGen'); b.disabled = true; $('msgGen').textContent = '';
-  try{
-    const d = await appel('generer', {nom:$('nom').value, nombre:$('nb').value, niveau:$('gNiv').value, annee:$('gAn').value});
-    const tout = d.cles.join('\n');
-    $('resultat').innerHTML = '<div class="nouvelles">'+d.cles.map(c=>'<code>'+esc(c)+'</code>').join('')+'</div>'+
-      '<button type="button" class="sec" id="bCopier">Copier '+(d.cles.length > 1 ? 'les '+d.cles.length+' clés' : 'la clé')+'</button>'+
-      '<div class="avert">'+esc(nomPromo(d.niveau+'|'+d.annee))+' : valable jusqu\'au 31 août '+esc(String(d.annee).slice(5))+'. Note-les maintenant : pour la sécurité, le site ne garde qu\'une empreinte et ne pourra plus les réafficher.</div>';
-    $('bCopier').onclick = async ()=>{
-      try{ await navigator.clipboard.writeText(tout); $('bCopier').textContent = 'Copié ✓'; }
-      catch(err){ $('msgGen').className = 'msg ko'; $('msgGen').textContent = 'Copie impossible : sélectionne les clés à la main.'; }
-    };
-    await charger();
-  }catch(err){ $('msgGen').className = 'msg ko'; $('msgGen').textContent = texteErreur(err); }
-  b.disabled = false;
-});
 
 /* ═══════════ TABLEAU DE BORD (7.3.0) ═══════════
    Toutes les données arrivent d'un coup (action « tableau » de la fonction

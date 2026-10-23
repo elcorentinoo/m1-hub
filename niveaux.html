@@ -54,6 +54,8 @@ a.niv:hover{ transform:translateY(-4px); color:var(--nuit) }
 .msg-niv .liens{ display:flex; flex-wrap:wrap; gap:10px; margin-top:12px }
 .msg-niv .liens a{ display:inline-flex; padding:10px 18px; border-radius:999px; text-decoration:none; font-weight:500; font-size:14px; background:var(--niv); color:var(--blanc) }
 .msg-niv .liens a.sec{ background:var(--surface2); color:var(--nuit) }
+.msg-niv .petit{ margin:10px 0 0; font-size:13px }
+.msg-niv .petit a{ color:var(--nuit); font-weight:500 }
 .pied{ text-align:center; color:var(--txt3); font-size:13px; margin-top:28px }
 .pied a{ color:var(--nuit); font-weight:500 }
 #ajouter{ margin-top:10px }
@@ -116,7 +118,7 @@ a.niv:hover{ transform:translateY(-4px); color:var(--nuit) }
   </div>
   <div class="msg-niv" id="msgNiv" role="status" aria-live="polite" hidden></div>
   <p class="pied">Tu reviens ici à chaque ouverture du site, ou avec « Changer de niveau » depuis l'accueil de ton espace.</p>
-  <p class="pied" id="ajouter" hidden><a href="acces.html?motif=ajouter">Ajouter une clé d'un autre niveau</a></p>
+  <p class="pied" id="ajouter" hidden><a href="acces.html?motif=demande">Demander l'accès à un autre niveau</a> · <a href="acces.html?motif=ajouter">J'ai déjà une clé</a></p>
 </main>
 
 <script src="niveau.js"></script>
@@ -136,11 +138,11 @@ const msg = document.getElementById('msgNiv');
 function reserve(n){
   msg.setAttribute('data-niv', n);
   msg.innerHTML = '<span class="rond" aria-hidden="true">'+SIG[n]+'</span><div>'+
-    "<b>L'espace "+NOM[n]+' est réservé aux clés '+NOM[n]+'.</b>'+
-    '<p>Ta clé ouvre l\'espace '+NOM[cle]+'. Pour accéder aussi à celui-ci, ajoute une clé '+NOM[n]+' : tu gardes ton espace actuel.</p>'+
-    '<div class="liens"><a href="acces.html?motif=ajouter&amp;niveau='+n+'">J\'ai une clé '+NOM[n]+'</a>'+
-    '<a class="sec" href="acces.html?motif=demande&amp;niveau='+n+'">Demander l\'accès</a>'+
-    '<a class="sec" href="'+NIVEAU.espace(cle)+'">Aller à mon espace '+NOM[cle]+'</a></div></div>';
+    "<b>L'espace "+NOM[n]+' est réservé à la promo '+NOM[n]+'.</b>'+
+    '<p>Ton accès ouvre l\'espace '+NOM[cle]+'. Demande l\'accès à celui-ci : s\'il est accepté, il s\'ajoute au tien.</p>'+
+    '<div class="liens"><a href="acces.html?motif=demande&amp;niveau='+n+'">Demander l\'accès '+NOM[n]+'</a>'+
+    '<a class="sec" href="'+NIVEAU.espace(cle)+'">Aller à mon espace '+NOM[cle]+'</a></div>'+
+    '<p class="petit"><a href="acces.html?motif=ajouter&amp;niveau='+n+'">J\'ai déjà une clé '+NOM[n]+'</a></p></div>';
   msg.hidden = false;
   msg.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
@@ -153,7 +155,7 @@ document.querySelectorAll('.niv').forEach(a=>{
   if(tiens.includes(n) && n !== 'm2'){ a.classList.add('tien'); a.querySelector('.niv-tag').hidden = false; }
   if(ferme){
     a.classList.add('autre');
-    const t = a.querySelector('.niv-tag'); t.textContent = 'Clé '+NOM[n]; t.hidden = false;
+    const t = a.querySelector('.niv-tag'); t.textContent = 'Accès '+NOM[n]; t.hidden = false;
     a.querySelector('.go').firstChild.textContent = 'Réservé ';
   }
   a.addEventListener('click', e=>{

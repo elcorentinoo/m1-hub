@@ -1,5 +1,5 @@
 /* acces-admin — gestion des clés d'accès, pour Corentin seul (6.5.0)
-   POST {action:'moi'|'liste'|'generer'|'revoquer'|'retablir'|'admin'|'devenir_admin'
+   POST {action:'moi'|'liste'|'revoquer'|'retablir'|'admin'|'devenir_admin'
          |'chat_supprimer'|'tableau'|'associer'|'dissocier'|'note'|'bq_reset'
          |'demandes'|'demande_accepter'|'demande_refuser'|'push_abonner'|'push_retirer'|'push_essai', mdp?, ...}
    Qui peut entrer (hub multi-promos) :
@@ -46,16 +46,9 @@ export default async (req) => {
   try{
     if(d.action === 'moi') return ok({appareil:q.cle});
     if(d.action === 'liste') return ok({cles:await rpc('acces_admin', {p_jeton:JETON, p_action:'liste', p_donnees:{}})});
-    if(d.action === 'generer'){
-      const n = Math.max(1, Math.min(100, parseInt(d.nombre, 10) || 1));
-      const nom = String(d.nom||'').trim().slice(0, 60);
-      const niveau = NIVEAUX.includes(d.niveau) ? d.niveau : PAR_DEFAUT.niveau;
-      const annee = anneeOk(d.annee) ? d.annee : PAR_DEFAUT.annee;
-      const cles = Array.from({length:n}, ()=>nouvelleCle());
-      await rpc('acces_admin', {p_jeton:JETON, p_action:'creer', p_donnees:{cles:cles.map((c,i)=>({
-        hash:empreinte(c), suffixe:c.slice(-3), nom: n > 1 && nom ? nom+' '+(i+1) : nom, niveau, annee }))}});
-      return ok({cles, niveau, annee});
-    }
+    /* 8.2.0 : plus de génération de clés, les nouveaux accès passent par les demandes
+       (les clés déjà créées restent valables). */
+    if(d.action === 'generer') return json({ok:false, erreur:'generation_fermee'}, 410);
     if(d.action === 'revoquer' || d.action === 'retablir'){
       if(!/^[0-9a-f-]{36}$/.test(String(d.id||''))) return json({ok:false}, 400);
       await rpc('acces_admin', {p_jeton:JETON, p_action:d.action, p_donnees:{id:d.id}});
