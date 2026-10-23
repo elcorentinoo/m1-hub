@@ -1,8 +1,9 @@
 /* acces-activer — consomme une clé d'accès et autorise l'appareil (6.5.0)
    POST {cle, pseudo} → 200 + cookie m1_acces si la clé existe et n'a jamais
    servi ; le pseudo est rattaché à la clé. Depuis le hub multi-promos, le
-   cookie porte aussi le niveau et l'année de la clé (réponse : {niveau, annee}). */
-import {rpc, empreinte, normaliser, cookieAcces, cookieInfo, etatCle, PAR_DEFAUT, appareil, lireCorps} from '../acces.mjs';
+   cookie porte aussi le niveau et l'année de la clé (réponse : {niveau, annee}).
+   8.2.0 : si l'appareil a déjà une clé valide, la nouvelle s'ajoute (m1_acces_plus). */
+import {rpc, empreinte, normaliser, etatCle, poserCle, PAR_DEFAUT, appareil, lireCorps} from '../acces.mjs';
 
 const json = (obj, status, cookies=[]) => {
   const h = new Headers({'Content-Type':'application/json', 'Cache-Control':'no-store'});
@@ -27,8 +28,10 @@ export default async (req) => {
     if(p) await rpc('acces_pseudo', {p_id:id, p_pseudo:p}).catch(e=>console.log('[acces-activer] pseudo', e.message));
     const e = await etatCle(id).catch(()=>PAR_DEFAUT);
     const niveau = e.niveau || PAR_DEFAUT.niveau, annee = e.annee || PAR_DEFAUT.annee;
-    return json({ok:true, niveau, annee}, 200, [cookieAcces(secret, id, niveau, annee, !!e.admin),
-      cookieInfo({statut:'cle', niveau, annee}), 'm1_essai=; Max-Age=0; Path=/; HttpOnly; Secure; SameSite=Lax']);
+    /* 8.2.0 : sur un appareil qui a déjà une clé valide, la nouvelle s'AJOUTE (autre niveau) */
+    const pose = await poserCle(secret, req.headers.get('cookie'), {id, niveau, annee, admin:!!e.admin});
+    return json({ok:true, niveau, annee, ajoute:pose.ajoute, niveaux:pose.niveaux}, 200,
+      pose.cookies.concat('m1_essai=; Max-Age=0; Path=/; HttpOnly; Secure; SameSite=Lax'));
   }catch(e){
     console.log('[acces-activer]', e.message);
     return json({ok:false, erreur:'serveur'}, 502);

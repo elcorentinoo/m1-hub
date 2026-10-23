@@ -65,6 +65,50 @@ export function lireAcces(secret, entete){
 }
 /* Identifiant de clé porté par le cookie signé, ou null (appelants historiques). */
 export function lireCookie(secret, entete){ const c = lireAcces(secret, entete); return c ? c.id : null; }
+/* Clés supplémentaires de l'appareil (8.2.0, plusieurs niveaux) : cookie signé
+   « m1_acces_plus » = entrées « id.chk.niveau.annee.admin.sig » séparées par « ~ ».
+   m1_acces reste la clé principale (pseudo, progression) ; l'ancien code ignore
+   ce cookie : au pire l'appareil ne garde que son niveau principal. */
+const MAX_PLUS = 4;
+export function lirePlus(secret, entete){
+  const m = String(entete||'').match(/(?:^|;\s*)m1_acces_plus=([^;]+)/); if(!m) return [];
+  const vus = new Set();
+  return m[1].split('~').map(e=>{
+    const [id, chk, niveau, annee, adm, sig] = e.split('.');
+    if(!/^[0-9a-f-]{36}$/.test(id||'') || !/^\d+$/.test(chk||'') || !niveauOk(niveau) || !anneeOk(annee) || !/^[01]$/.test(adm||'') || !sig) return null;
+    if(!memeTexte(sig, signe(secret, 'plus.'+[id, chk, niveau, annee, adm].join('.'))) || vus.has(id)) return null;
+    vus.add(id);
+    return {id, chk:+chk, niveau, annee, admin: adm === '1'};
+  }).filter(Boolean).slice(0, MAX_PLUS);
+}
+export function cookiePlus(secret, liste){
+  if(!liste.length) return 'm1_acces_plus=; Max-Age=0; Path=/; HttpOnly; Secure; SameSite=Lax';
+  const v = liste.slice(0, MAX_PLUS).map(k=>{
+    const chk = k.chk || Math.floor(Date.now()/1000), x = [k.id, chk, k.niveau, k.annee, k.admin ? 1 : 0].join('.');
+    return x+'.'+signe(secret, 'plus.'+x);
+  }).join('~');
+  return 'm1_acces_plus='+v+'; Max-Age='+UN_AN+'; Path=/; HttpOnly; Secure; SameSite=Lax';
+}
+/* Niveaux couverts par l'appareil (principal d'abord, sans doublon). */
+export const niveauxDe = (principale, plus) => [...new Set([principale && principale.niveau, ...plus.map(k=>k.niveau)].filter(Boolean))];
+/* Une clé vient d'être activée (clé tapée ou demande acceptée) pour cet appareil.
+   S'il a déjà une clé principale valide (autre clé), la nouvelle S'AJOUTE dans
+   m1_acces_plus ; sinon elle devient la clé principale. Renvoie les cookies. */
+export async function poserCle(secret, entete, k){
+  const p = lireAcces(secret, entete);
+  let plus = lirePlus(secret, entete).filter(x=>x.id !== k.id);
+  const ep = p && p.id !== k.id ? await etatCle(p.id).catch(()=>null) : null;
+  if(ep && ep.valide){
+    plus = [Object.assign({}, k, {chk:0})].concat(plus).slice(0, MAX_PLUS);
+    const prin = {niveau:ep.niveau || p.niveau, annee:ep.annee || p.annee};
+    const niveaux = niveauxDe(prin, plus);
+    return {ajoute:true, niveaux, cookies:[cookiePlus(secret, plus),
+      cookieInfo(Object.assign({statut:'cle', niveau:prin.niveau, annee:prin.annee, niveaux:niveaux.join(',')}, (ep.admin || plus.some(x=>x.admin)) ? {admin:1} : {}))]};
+  }
+  const niveaux = niveauxDe(k, plus);
+  return {ajoute:false, niveaux, cookies:[cookieAcces(secret, k.id, k.niveau, k.annee, !!k.admin), cookiePlus(secret, plus),
+    cookieInfo(Object.assign({statut:'cle', niveau:k.niveau, annee:k.annee, niveaux:niveaux.join(',')}, (k.admin || plus.some(x=>x.admin)) ? {admin:1} : {}))]};
+}
 /* État de la clé en base : {valide, niveau, annee, admin}. Repli tant que
    supabase/acces-niveaux.sql n'est pas lancé : M1 2026-2027, jamais admin. */
 export async function etatCle(id){

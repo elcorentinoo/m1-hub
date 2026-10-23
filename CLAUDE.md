@@ -142,6 +142,32 @@ Sans lui, on arrive sur `acces.html`, qui demande la clé **et** le pseudo.
   `ADMIN_MDP`, `VAPID_PRIVATE`. **Ne jamais les écrire dans le dépôt.**
 - Restent ouverts sans clé : `acces.html`, `/admin`, `/.netlify/*`, `sw.js`,
   le manifeste et les icônes.
+- **Niveaux et années** (8.0.0, `supabase/acces-niveaux.sql`) : chaque clé a
+  un niveau (`licence`, `m1`, `m2`) et une année universitaire (valable
+  jusqu'au 31 août de la 2e année). Cookie `m1_acces` : `id.chk.sig` (ancien
+  format, lu comme M1 2026-2027) + `.niveau.annee.admin.sig2`. La porte
+  cloisonne par niveau (`PAGES` en tête de `acces.js` ; page absente =
+  commune). Cookie lisible `acces_info` (affichage seulement) :
+  `statut=cle&niveau=m1&annee=…&niveaux=m1,licence[&admin=1]` ou
+  `statut=essai&fin=…` ; lu par `niveau.js`.
+- **Plusieurs niveaux par appareil** (8.2.0) : une clé d'un autre niveau
+  activée (ou une demande acceptée) sur un appareil qui a déjà une clé valide
+  s'AJOUTE dans un 2e cookie signé `m1_acces_plus` (au plus 4 clés) ;
+  `m1_acces` reste la clé principale (pseudo, progression, chat). Chaque clé
+  est revérifiée chaque jour ; révoquer l'une ne retire que son niveau (si la
+  principale tombe, une clé ajoutée prend sa place). Outils : `poserCle`,
+  `lirePlus` dans `netlify/acces.mjs`. Lien « J'ai une clé … » / « Ajouter une
+  clé d'un autre niveau » → `acces.html?motif=ajouter`.
+- **Clé administratrice** : colonne `admin` ; `/admin` s'ouvre sans mot de
+  passe sur l'appareil admin ; `ADMIN_MDP` ne sert que tant qu'aucune clé
+  admin n'existe. Une clé admin voit tous les niveaux.
+- **Essai de 24 h** sans clé (`acces-essai`, cookie `m1_essai`, matière
+  d'essai par niveau : `ESSAI` en tête de `acces.js`).
+- **Demandes d'accès** (8.1.0, `supabase/acces-demandes.sql`) :
+  `acces-demande` (pseudo, niveau, cookie `m1_demande`), notification Web Push
+  aux appareils admin (table `acces_admin_push`, bouton dans /admin),
+  onglet « Demandes » de /admin : Accepter crée une clé déjà activée pour
+  l'appareil demandeur.
 
 ## Vérifications attendues avant livraison
 

@@ -124,6 +124,12 @@ $('f').addEventListener('submit', async e=>{
     const r = await fetch('/.netlify/functions/acces-activer', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({cle, pseudo})});
     const d = await r.json().catch(()=>({}));
     if(d.ok){
+      if(d.ajoute){
+        /* 8.2.0 : clé d'un autre niveau ajoutée ; pseudo et progression restent ceux de la 1re clé */
+        m.className = 'msg ok'; m.textContent = 'Clé '+(NOMS_NIV[d.niveau] || '')+' ajoutée ! Tu gardes aussi ton espace actuel.';
+        setTimeout(()=>location.replace(Q.get('r') ? retour() : (ESPACE[d.niveau] || '/niveaux.html')), 900);
+        return;
+      }
       /* même mémoire que le reste du site (lb.js) : le hub ne redemandera pas le pseudo */
       try{ localStorage.setItem('lb_name', pseudo); }catch(err){}
       m.className = 'msg ok'; m.textContent = 'Bienvenue '+pseudo+' ! Ouverture d\'AAA…';
@@ -144,6 +150,7 @@ try{ const p = localStorage.getItem('lb_name'); if(p) $('pseudo').value = p; }ca
 /* ── Niveaux, essai de 24 h, demande de clé (hub multi-promos) ── */
 const Q = new URLSearchParams(location.search), MOTIF = Q.get('motif');
 const NOMS_NIV = {licence:'Licence', m1:'M1', m2:'M2'};
+const ESPACE = {licence:'/licence.html', m1:'/index.html', m2:'/m2.html'};
 const NOM_ESSAI = {systeme_bancaire:'Système bancaire français', 'licence/droit-bancaire':'Droit bancaire (Licence)'};
 function infoAcces(){
   const m = document.cookie.match(/(?:^|;\s*)acces_info=([^;]+)/);
@@ -159,8 +166,17 @@ function finEssai(){
   $('sansCle').hidden = true; ouvrirDemande();
 }
 if(MOTIF === 'niveau'){
-  motif("Cette page est réservée à une autre promo que celle de ta clé. <a href=\"/niveaux.html\">Retour à l'accueil</a>");
+  motif("Cette page est réservée à une autre promo que celle de ta clé. <a href=\"/acces.html?motif=ajouter\">J'ai une clé pour cet espace</a> · <a href=\"/niveaux.html\">Retour à l'accueil</a>");
+  $('sansCle').hidden = true; $('f').hidden = true; $('intro').hidden = true;
+}else if(MOTIF === 'ajouter'){
+  /* 8.2.0 : un appareil qui a déjà une clé en ajoute une d'un autre niveau */
+  const n = NOMS_NIV[Q.get('niveau')] || '';
+  $('titre').textContent = 'Ajouter une clé'+(n ? ' '+n : '');
+  $('intro').textContent = "Entre ta clé"+(n ? ' '+n : '')+" : elle s'ajoute à celle de cet appareil. Tu gardes ton espace actuel, ton pseudo et ta progression.";
   $('sansCle').hidden = true;
+  let p = ''; try{ p = localStorage.getItem('lb_name') || ''; }catch(e){}
+  if(p.trim().length >= 2){ $('pseudo').value = p; $('pseudo').closest('form').querySelectorAll('[for="pseudo"], #pseudo, .aide').forEach(x=>x.hidden = true); }
+  $('b').textContent = 'Ajouter la clé';
 }else if(MOTIF === 'demande'){
   /* depuis le hub central : une clé qui veut l'espace d'un autre niveau */
   $('titre').textContent = "Demander l'accès";
@@ -217,7 +233,7 @@ function ouvrirDemande(){
   try{ const p = localStorage.getItem('lb_name'); if(p && !$('dPseudo').value) $('dPseudo').value = p; }catch(e){}
   const i = infoAcces();
   if(i.get('statut') === 'cle'){
-    $('dAvert').textContent = "Cet appareil a déjà une clé "+(NOMS_NIV[i.get('niveau')] || '')+". Si ta demande est acceptée, il passera dans l'espace du niveau demandé.";
+    $('dAvert').textContent = "Cet appareil a déjà une clé "+(NOMS_NIV[i.get('niveau')] || '')+". Si ta demande est acceptée, le niveau demandé s'ajoutera : tu gardes ton espace actuel.";
     $('dAvert').hidden = false;
   }
 }
@@ -233,10 +249,10 @@ async function verifier(silencieux){
     if(!SUIVI) SUIVI = setInterval(()=>{ if(!document.hidden) verifier(true); }, 15000);
   }else if(d.statut === 'acceptee'){
     arreterSuivi(); garderDemande('');
-    try{ localStorage.setItem('lb_name', d.pseudo); }catch(e){}
-    montrerAttente('Demande acceptée !', 'Bienvenue '+d.pseudo+' ! Ouverture d\'AAA…');
+    if(!d.ajoute) try{ localStorage.setItem('lb_name', d.pseudo); }catch(e){}
+    montrerAttente('Demande acceptée !', d.ajoute ? 'Niveau '+(NOMS_NIV[d.niveau] || '')+' ajouté : tu gardes aussi ton espace actuel.' : 'Bienvenue '+d.pseudo+' ! Ouverture d\'AAA…');
     $('bVerifier').hidden = true;
-    setTimeout(()=>location.replace('/niveaux.html'), 800);
+    setTimeout(()=>location.replace(d.ajoute ? (ESPACE[d.niveau] || '/niveaux.html') : '/niveaux.html'), 800);
   }else if(d.statut === 'refusee'){
     arreterSuivi();
     montrerAttente('Demande refusée', "L'administrateur n'a pas accepté cette demande. Tu pourras en faire une nouvelle demain.", false);

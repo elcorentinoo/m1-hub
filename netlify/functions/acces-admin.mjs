@@ -10,7 +10,7 @@
    l'empreinte est dans la base). Les clés générées ne sont renvoyées
    qu'une fois, en clair : la base n'en garde que l'empreinte. */
 import {envoyerUn, cles, abonnementValide} from '../push.mjs';
-import {rpc, empreinte, nouvelleCle, memeTexte, lireCorps, json, lireAcces, etatCle, cookieAcces,
+import {rpc, empreinte, nouvelleCle, memeTexte, lireCorps, json, lireAcces, lirePlus, etatCle, cookieAcces,
         NIVEAUX, anneeOk, PAR_DEFAUT} from '../acces.mjs';
 
 async function qui(req, d, MDP, JETON){
@@ -19,6 +19,11 @@ async function qui(req, d, MDP, JETON){
   const e = c ? await etatCle(c.id).catch(()=>null) : null;
   const cle = c && e && e.valide ? {id:c.id, niveau:e.niveau, annee:e.annee, admin:!!e.admin} : null;
   if(cle && cle.admin) return {mode:'cle', cle};
+  /* 8.2.0 : la clé admin peut aussi être une clé ajoutée (m1_acces_plus) */
+  for(const k of secret ? lirePlus(secret, req.headers.get('cookie')) : []){
+    const ek = await etatCle(k.id).catch(()=>null);
+    if(ek && ek.valide && ek.admin) return {mode:'cle', cle:{id:k.id, niveau:ek.niveau, annee:ek.annee, admin:true}};
+  }
   if(MDP && d.mdp && memeTexte(d.mdp, MDP)){
     let existe = false;                       // acces-niveaux.sql pas encore lancé : pas de clé admin
     try{ existe = (await rpc('acces_admin', {p_jeton:JETON, p_action:'admin_existe', p_donnees:{}})) === true; }catch(err){}

@@ -276,7 +276,7 @@ function dessinerDemandes(){
     '<div class="dem"><b>'+esc(d.pseudo)+'</b> · '+esc(NIV_DEM[d.niveau] || d.niveau)+
     '<div class="q">'+date(d.cree)+' · '+esc(d.appareil || 'appareil inconnu')+'</div>'+
     (d.message ? '<div class="q">« '+esc(d.message)+' »</div>' : '')+
-    (d.cle_actuelle ? '<div class="note">Cet appareil a déjà une clé '+esc(NIV_DEM[d.cle_actuelle.niveau] || '')+(d.cle_actuelle.pseudo ? ' ('+esc(d.cle_actuelle.pseudo)+')' : '')+' : accepter le fera passer au niveau choisi.</div>' : '')+
+    (d.cle_actuelle ? '<div class="note">Cet appareil a déjà une clé '+esc(NIV_DEM[d.cle_actuelle.niveau] || '')+(d.cle_actuelle.pseudo ? ' ('+esc(d.cle_actuelle.pseudo)+')' : '')+' : accepter AJOUTERA ce niveau (sa clé actuelle reste valable).</div>' : '')+
     '<div class="actions"><div><label for="niv-'+d.id+'">Niveau</label><select id="niv-'+d.id+'">'+
       ['licence','m1','m2'].map(n=>'<option value="'+n+'"'+(n === d.niveau ? ' selected' : '')+'>'+NIV_DEM[n]+'</option>').join('')+'</select></div>'+
     '<button type="button" data-dem="accepter" data-id="'+d.id+'">Accepter</button>'+
