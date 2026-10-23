@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="robots" content="noindex">
-<title>Accès réservé — Hub M1 MBAF</title>
+<title>Accès réservé — AAA</title>
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -18,8 +18,10 @@
 body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 16px;
   font-family:'Outfit',system-ui,sans-serif;background:var(--fond);color:var(--nuit)}
 .carte{width:min(440px,100%);background:var(--blanc);border-radius:var(--r-xl);box-shadow:var(--shadow-lg);padding:34px 28px 28px;text-align:center}
-.logo{width:64px;height:64px;border-radius:50%;background:var(--nuit);color:var(--blanc);display:grid;place-items:center;
-  margin:0 auto 18px;font-weight:600;font-size:20px;letter-spacing:.02em}
+.logo{width:64px;height:64px;border-radius:50%;background:var(--nuit);color:var(--blanc);display:flex;align-items:center;justify-content:center;
+  margin:0 auto 18px;font-weight:400;font-size:19px;letter-spacing:.01em;line-height:1}
+.logo i{font-style:normal;font-weight:600}
+.slogan{margin:8px 0 0;font-size:.85rem;font-weight:500;color:var(--txt2)}
 h1{font-weight:300;font-size:2rem;line-height:1.15;margin:0 0 10px}
 p{color:var(--txt2);line-height:1.5;margin:0 0 22px}
 label{display:block;text-align:left;font-size:.85rem;font-weight:500;color:var(--txt2);margin:0 0 6px 4px}
@@ -56,10 +58,10 @@ button.sec{background:var(--surface2);color:var(--nuit);border:2px solid var(--s
 </head>
 <body>
 <main class="carte">
-  <div class="logo" aria-hidden="true">M1</div>
+  <div class="logo" aria-hidden="true">AA<i>A</i></div>
   <h1 id="titre">Accès réservé</h1>
   <div class="motif" id="motif" role="status" hidden></div>
-  <p id="intro">Le hub de révision est réservé aux étudiants. Entre la clé d'accès qu'on t'a donnée et ton pseudo.</p>
+  <p id="intro">AAA est réservé aux étudiants. Entre la clé d'accès qu'on t'a donnée et ton pseudo.</p>
   <form id="f" autocomplete="off">
     <label for="cle">Clé d'accès</label>
     <input id="cle" name="cle" inputmode="text" autocapitalize="characters" spellcheck="false" placeholder="XXX-XXX-XXX" maxlength="13" required>
@@ -91,7 +93,8 @@ button.sec{background:var(--surface2);color:var(--nuit);border:2px solid var(--s
     <div class="msg" id="msgDem" role="status" aria-live="polite"></div>
   </form>
   <p class="pied">Une clé ne sert qu'une fois : elle autorise cet appareil. Pour un autre appareil, demande une nouvelle clé.</p>
-  <p class="pied">Tes progrès (leçons, temps de révision, résultats) sont partagés avec l'administrateur du hub.</p>
+  <p class="pied">Tes progrès (leçons, temps de révision, résultats) sont partagés avec l'administrateur du site.</p>
+  <p class="slogan">Révise. Vise le AAA.</p>
 </main>
 <script>
 const $ = id => document.getElementById(id);
@@ -115,7 +118,7 @@ $('f').addEventListener('submit', async e=>{
     if(d.ok){
       /* même mémoire que le reste du site (lb.js) : le hub ne redemandera pas le pseudo */
       try{ localStorage.setItem('lb_name', pseudo); }catch(err){}
-      m.className = 'msg ok'; m.textContent = 'Bienvenue '+pseudo+' ! Ouverture du hub…';
+      m.className = 'msg ok'; m.textContent = 'Bienvenue '+pseudo+' ! Ouverture d\'AAA…';
       setTimeout(()=>location.replace(retour()), 500);
       return;
     }
@@ -167,7 +170,7 @@ $('bEssai').addEventListener('click', async ()=>{
     const r = await fetch('/.netlify/functions/acces-essai', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({jeton:jetonEssai()})});
     const d = await r.json().catch(()=>({}));
     if(d.jeton) try{ localStorage.setItem('m1_essai', d.jeton); }catch(e){}
-    if(d.ok){ m.className = 'msg ok'; m.textContent = "C'est parti pour 24 h ! Ouverture du hub…"; setTimeout(()=>location.replace('/'), 500); return; }
+    if(d.ok){ m.className = 'msg ok'; m.textContent = "C'est parti pour 24 h ! Ouverture d'AAA…"; setTimeout(()=>location.replace('/'), 500); return; }
     if(d.erreur === 'fini'){ finEssai(); b.disabled = false; return; }
     m.className = 'msg ko';
     m.textContent = d.erreur === 'limite' ? "Trop d'essais depuis ce réseau aujourd'hui. Demande plutôt une clé." : 'Le serveur ne répond pas. Réessaie dans un instant.';

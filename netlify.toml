@@ -1,5 +1,5 @@
 # ════════════════════════════════════════════════════════════
-#  Configuration Netlify du hub M1 MBAF
+#  Configuration Netlify du site AAA
 #
 #  Site statique : aucune étape de construction. Netlify publie
 #  simplement le contenu du dépôt tel quel.

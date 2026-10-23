@@ -1,5 +1,5 @@
 /* ════════════════════════════════════════════════════════════
-   sw.js — fonctionnement hors ligne du hub M1 MBAF
+   sw.js — fonctionnement hors ligne du site AAA
 
    ⚠️ LA VERSION CI-DESSOUS DOIT CHANGER À CHAQUE MISE À JOUR.
       Sans cela, les navigateurs servent l'ancienne version
@@ -158,7 +158,7 @@ self.addEventListener('fetch', e=>{
    notification illisible, on affiche un message neutre (7.1.1).
    Un clic ouvre (ou ramène au premier plan) la page. */
 self.addEventListener('push', e=>{
-  let m = {title:'🔔 Hub M1 MBAF', body:'Du nouveau sur le hub.', url:'/', tag:'hub'};
+  let m = {title:'🔔 AAA', body:'Du nouveau sur AAA.', url:'/', tag:'hub'};
   try{ if(e.data) m = Object.assign(m, e.data.json()); }catch(err){}
   /* 7.2.0 : un message du chat met une pastille sur l'icône de l'app */
   const pastille = /^chat/.test(m.tag || '') && self.navigator.setAppBadge ? self.navigator.setAppBadge().catch(()=>{}) : null;
