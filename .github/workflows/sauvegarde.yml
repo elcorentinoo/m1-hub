@@ -1,0 +1,65 @@
+# ════════════════════════════════════════════════════════════════════
+#  Sauvegarde hebdomadaire des tables Supabase (chantier A6).
+#
+#  Chaque dimanche vers 4 h (heure de Paris), ou à la demande (onglet
+#  Actions → « Sauvegarde Supabase » → Run workflow) : copie de toutes
+#  les tables, chiffrée (7z, AES-256, noms de fichiers cachés) avec la
+#  phrase de passe SAUVEGARDE_PHRASE, rangée 90 jours comme « artefact »
+#  du workflow. Le dépôt est public : rien n'est écrit en clair, ni dans
+#  le dépôt, ni dans le journal.
+#
+#  Ne commite rien (droit en lecture seule) : aucune publication Netlify,
+#  aucun crédit consommé. Restauration : .github/sauvegarde/LISEZ-MOI.md
+# ════════════════════════════════════════════════════════════════════
+name: Sauvegarde Supabase
+
+on:
+  schedule:
+    - cron: '17 2 * * 0'     # dimanche 02:17 UTC (3 h 17 l'hiver, 4 h 17 l'été)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sauvegarde
+  cancel-in-progress: false
+
+jobs:
+  sauvegarde:
+    if: github.repository == 'elcorentinoo/m1-hub'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lecture des tables
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_CLE: ${{ secrets.SUPABASE_CLE }}
+        run: python3 .github/sauvegarde/sauvegarder.py "$RUNNER_TEMP/copie"
+
+      - name: Chiffrement
+        env:
+          PHRASE: ${{ secrets.SAUVEGARDE_PHRASE }}
+        run: |
+          if [ "${#PHRASE}" -lt 16 ]; then
+            echo "::error::Secret SAUVEGARDE_PHRASE absent ou trop court (16 caractères minimum)."; exit 1
+          fi
+          command -v 7z >/dev/null || { sudo apt-get update -q && sudo apt-get install -y -q p7zip-full; }
+          cp .github/sauvegarde/LISEZ-MOI.md "$RUNNER_TEMP/copie/"
+          NOM="sauvegarde-$(date -u +%Y-%m-%d)"
+          echo "NOM=$NOM" >> "$GITHUB_ENV"
+          mkdir -p "$RUNNER_TEMP/envoi"
+          cd "$RUNNER_TEMP/copie"
+          7z a -t7z -mhe=on -p"$PHRASE" "$RUNNER_TEMP/envoi/$NOM.7z" . > /dev/null
+          7z t -p"$PHRASE" "$RUNNER_TEMP/envoi/$NOM.7z" > /dev/null   # l'archive s'ouvre bien
+          rm -rf "$RUNNER_TEMP/copie"
+          ls -l "$RUNNER_TEMP/envoi"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.NOM }}
+          path: ${{ runner.temp }}/envoi/*.7z
+          retention-days: 90
+          if-no-files-found: error
