@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="fr" data-niveau="licence" subject-id="l-crises-financieres">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>Crises Financières · Mode entraînement</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+:root{
+  
+  /* Couleurs principales adaptées pour "Crises Financières" (Rust/Rouille) */
+  --primary:var(--rust); --primary-l:var(--rust-soft); --primary-d:var(--rust);
+  --secondary:var(--navy); --secondary-l:var(--navy-soft); --secondary-d:var(--navy); --ok-l:var(--teal-soft); --err:var(--rust); --err-l:var(--rust-soft);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans',sans-serif; background:var(--paper); color:var(--ink);
+  line-height:1.65; font-size:16px;
+  background-image:radial-gradient(var(--line) 0.5px, transparent 0.5px);
+  background-size:22px 22px;
+}
+
+/* ── TOP BAR ── */
+#topbar{
+  position:sticky; top:0; z-index:50;
+  background:color-mix(in srgb, var(--fond) 92%, transparent); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:12px 24px; display:flex; align-items:center; gap:18px;
+}
+#topbar .logo{
+  font-family:'Fraunces',serif; font-weight:900; font-size:18px;
+  color:var(--primary-d); letter-spacing:-.5px; white-space:nowrap;
+}
+#topbar .logo span{color:var(--amber)}
+#topbar .hub{font-family:'DM Mono',monospace; font-size:12px; color:var(--muted); text-decoration:none; white-space:nowrap; padding:5px 10px; border-radius:8px; border:1px solid var(--line); transition:all .15s}
+#topbar .hub:hover{color:var(--primary-d); border-color:var(--line2); background:var(--blanc)}
+.top-progress{flex:1; max-width:420px}
+.top-progress-bar{height:6px; background:var(--line); border-radius:6px; overflow:hidden}
+.top-progress-fill{height:100%; background:linear-gradient(90deg,var(--primary),var(--gold)); border-radius:6px; transition:width .5s cubic-bezier(.4,0,.2,1); width:0%}
+.top-progress-txt{font-size:11px; color:var(--muted); margin-top:3px; font-family:'DM Mono',monospace}
+.top-xp{
+  font-family:'DM Mono',monospace; font-size:13px; font-weight:500;
+  background:var(--amber-l); color:var(--amber); padding:5px 12px; border-radius:20px;
+  border:1px solid var(--line2); white-space:nowrap;
+}
+
+/* ── LAYOUT ── */
+#content{max-width:760px; margin:0 auto; padding:40px 28px 120px; min-width:0}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.view{animation:fade .4s ease}
+
+/* ── HOME ── */
+.home-tag{font-family:'DM Mono',monospace; font-size:12px; letter-spacing:1px; text-transform:uppercase; color:var(--amber); font-weight:500; display:flex; align-items:center; gap:8px; margin-bottom:10px}
+.home-tag::before{content:''; width:24px; height:2px; background:var(--amber)}
+.home h1{font-family:'Fraunces',serif; font-weight:900; font-size:2.3rem; line-height:1.08; letter-spacing:-1px; margin-bottom:10px}
+.home h1 .acc{color:var(--amber)}
+.home-sub{font-size:16.5px; color:var(--ink2); margin-bottom:30px; max-width:560px}
+
+.mode-card{background:var(--blanc); border:1.5px solid var(--line); border-radius:18px; padding:24px; margin-bottom:18px; box-shadow:var(--shadow); position:relative; overflow:hidden; transition:border-color .2s, box-shadow .2s}
+.mode-card:hover{box-shadow:var(--shadow-lg); border-color:var(--line2)}
+.mode-card::before{content:''; position:absolute; top:0; left:0; bottom:0; width:5px}
+.mode-card.m-primary::before{background:var(--primary)}
+.mode-card.m-secondary::before{background:var(--secondary)}
+.mode-head{display:flex; align-items:center; gap:14px; margin-bottom:8px}
+.mode-icon{width:50px; height:50px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:26px; flex-shrink:0}
+.m-primary .mode-icon{background:var(--primary-l)} .m-secondary .mode-icon{background:var(--secondary-l)}
+.mode-head h2{font-family:'Fraunces',serif; font-weight:700; font-size:1.3rem; color:var(--ink); letter-spacing:-.3px}
+.mode-card p{font-size:14.5px; color:var(--ink2); margin-bottom:16px}
+.mode-card p:last-of-type{margin-bottom:0}
+.chip-row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+.start-chip{padding:10px 18px; border-radius:11px; font-family:'DM Sans',sans-serif; font-weight:600; font-size:14px; cursor:pointer; border:1.5px solid var(--line2); background:var(--paper); color:var(--ink2); transition:all .15s}
+.start-chip:hover{transform:translateY(-2px); box-shadow:var(--shadow)}
+.m-primary .start-chip:hover{border-color:var(--primary); color:var(--primary-d); background:var(--primary-l)}
+.m-secondary .start-chip.solo{background:var(--secondary); color:var(--blanc); border-color:var(--secondary); width:100%; justify-content:center; display:flex; align-items:center; gap:8px}
+.m-secondary .start-chip.solo:hover{background:var(--secondary-d)}
+.mode-card.m-gold::before{background:var(--gold)}
+.m-gold .mode-icon{background:var(--amber-soft)}
+.m-gold .start-chip:hover{border-color:var(--gold); color:var(--amber); background:var(--amber-soft)}
+.m-gold .start-chip.solo{background:var(--gold); color:var(--blanc); border-color:var(--gold); width:100%; justify-content:center; display:flex; align-items:center; gap:8px}
+.m-gold .start-chip.solo:hover{background:var(--amber)}
+.chip-lbl{font-size:12.5px; color:var(--muted); font-family:'DM Mono',monospace; margin-right:4px}
+.end-link{display:block; margin:8px auto 0; background:none; border:none; color:var(--muted); font-family:'DM Mono',monospace; font-size:12px; cursor:pointer; text-decoration:underline; text-underline-offset:3px}
+.end-link:hover{color:var(--primary)}
+.level-select{background:var(--blanc); border:1.5px solid var(--line); border-radius:16px; padding:18px 20px; margin-bottom:24px; box-shadow:var(--shadow)}
+.level-lbl{font-family:'DM Mono',monospace; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--amber); font-weight:500}
+.level-seg{display:flex; gap:8px; margin:12px 0 10px; flex-wrap:wrap}
+.seg{flex:1; min-width:110px; padding:11px 10px; border-radius:11px; border:1.5px solid var(--line2); background:var(--paper); color:var(--ink2); font-family:'DM Sans',sans-serif; font-weight:600; font-size:14px; cursor:pointer; transition:all .15s}
+.seg:hover{border-color:var(--primary); color:var(--primary-d)}
+.seg.on{background:var(--primary); color:var(--blanc); border-color:var(--primary); box-shadow:var(--shadow)}
+.level-desc{font-size:13.5px; color:var(--ink2); margin:0}
+
+/* ── CALLOUTS ── */
+.callout{border-radius:14px; padding:16px 18px; margin:18px 0; border:1px solid; font-size:14.5px}
+.callout .c-label{font-family:'DM Mono',monospace; font-size:11px; font-weight:500; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px; display:flex; align-items:center; gap:7px}
+.callout.key{background:var(--primary-l); border-color:var(--rust-clair)}
+.callout.key .c-label{color:var(--primary-d)}
+.callout p:last-child{margin-bottom:0}
+
+/* ── NAV BUTTONS ── */
+.nav-btn{padding:13px 26px; border-radius:12px; font-family:'DM Sans',sans-serif; font-weight:600; font-size:14px; cursor:pointer; border:1.5px solid var(--line2); background:var(--blanc); color:var(--ink2); transition:all .15s; display:inline-flex; align-items:center; gap:8px}
+.nav-btn:hover{border-color:var(--primary); color:var(--primary-d)}
+.nav-btn.primary{background:var(--primary); color:var(--blanc); border-color:var(--primary)}
+.nav-btn.primary:hover{background:var(--primary-d); transform:translateY(-2px); box-shadow:var(--shadow)}
+
+/* ── QUESTION CARD ── */
+.q-card{background:var(--blanc); border:1.5px solid var(--line2); border-radius:18px; padding:28px; box-shadow:var(--shadow-lg); margin:8px 0 24px; position:relative}
+.info-btn{position:absolute; top:18px; right:18px; width:34px; height:34px; border-radius:50%; background:var(--secondary-l); color:var(--secondary); font-family:'Fraunces',serif; font-weight:700; font-size:18px; font-style:italic; border:1.5px solid var(--secondary); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; z-index:10}
+.info-btn:hover{background:var(--secondary); color:var(--blanc); transform:scale(1.05)}
+.q-counter{font-family:'DM Mono',monospace; font-size:12px; color:var(--secondary); letter-spacing:1px; margin-bottom:8px}
+.q-theme{font-size:11px; color:var(--muted); margin-bottom:14px; font-family:'DM Mono',monospace}
+.q-text{font-family:'Fraunces',serif; font-weight:600; font-size:1.22rem; color:var(--ink); margin-bottom:6px; line-height:1.35}
+.q-data{background:var(--paper2); border-radius:8px; padding:10px 14px; font-family:'DM Mono',monospace; font-size:13px; color:var(--ink2); margin:14px 0; line-height:1.7}
+.q-data b{color:var(--gold)}
+
+/* progress in session */
+.s-progress{margin-bottom:22px}
+.s-progress-bar{height:8px; background:var(--line); border-radius:8px; overflow:hidden}
+.s-progress-fill{height:100%; background:linear-gradient(90deg,var(--secondary),var(--primary)); transition:width .4s; border-radius:8px}
+.s-progress-txt{font-size:12px; color:var(--muted); margin-top:6px; font-family:'DM Mono',monospace; text-align:center}
+
+/* QCM options */
+.opts{display:flex; flex-direction:column; gap:9px; margin-top:16px}
+.opt{display:flex; align-items:center; gap:12px; padding:12px 15px; background:var(--blanc); border:1.5px solid var(--line); border-radius:10px; cursor:pointer; transition:all .15s; font-size:14.5px; user-select:none}
+.opt:hover:not(.locked){border-color:var(--secondary); transform:translateX(3px)}
+.opt .letter{flex-shrink:0; width:24px; height:24px; border-radius:6px; border:1.5px solid var(--line2); display:flex; align-items:center; justify-content:center; font-family:'DM Mono',monospace; font-size:12px; font-weight:500; color:var(--muted)}
+.opt.locked{cursor:default}
+.opt.correct{background:var(--ok-l); border-color:var(--ok); color:var(--ok)}
+.opt.correct .letter{background:var(--ok); color:var(--blanc); border-color:var(--ok)}
+.opt.wrong{background:var(--err-l); border-color:var(--err); color:var(--err)}
+.opt.wrong .letter{background:var(--err); color:var(--blanc); border-color:var(--err)}
+.opt.reveal{background:var(--ok-l); border-color:var(--ok); color:var(--ok)}
+
+/* calc input */
+.input-row{display:flex; gap:10px; align-items:center; margin-top:16px}
+.calc-input{flex:1; max-width:260px; background:var(--blanc); border:1.5px solid var(--line2); border-radius:10px; padding:12px 15px; font-family:'DM Mono',monospace; font-size:15px; color:var(--ink); outline:none}
+.calc-input:focus{border-color:var(--secondary)}
+.calc-unit{font-family:'DM Mono',monospace; color:var(--muted); font-size:15px}
+.submit-btn{margin-top:20px; width:100%; padding:14px; background:var(--secondary); color:var(--blanc); border:none; border-radius:12px; font-family:'DM Sans',sans-serif; font-weight:700; font-size:15px; cursor:pointer; transition:all .15s}
+.submit-btn:hover{background:var(--secondary-d); transform:translateY(-1px)}
+.submit-btn:disabled{opacity:.4; cursor:not-allowed; transform:none}
+
+.help-btn{background:transparent; border:1.5px dashed var(--line2); color:var(--ink2); padding:10px 16px; border-radius:10px; font-family:'DM Sans',sans-serif; font-weight:600; font-size:14px; cursor:pointer; transition:all .2s; margin-top:14px; display:inline-flex; align-items:center; gap:8px; width:100%; justify-content:center}
+.help-btn:hover{border-color:var(--primary); color:var(--primary); background:var(--primary-l)}
+
+/* formulaire / mémo */
+.formulaire-panel{display:none; background:var(--paper); border:1.5px solid var(--line2); border-radius:12px; padding:20px; margin-top:22px; box-shadow:var(--shadow)}
+.formulaire-panel.show{display:block; animation:fade .3s}
+.formulaire-title{font-family:'Fraunces',serif; font-weight:700; color:var(--secondary); font-size:1.1rem; margin-bottom:14px; border-bottom:1px solid var(--line); padding-bottom:8px}
+.eq-item{padding:12px 16px; border-radius:8px; margin-bottom:10px; transition:all .3s ease; border:1.5px solid transparent; background:var(--blanc)}
+.eq-item .eq-name{font-size:13px; color:var(--ink); font-weight:600; margin-bottom:4px}
+.eq-item .eq-desc{font-size:13px; color:var(--ink2);}
+.eq-item.highlight{background:var(--ok-l); border-color:var(--ok); box-shadow:0 2px 8px color-mix(in srgb, var(--teal) 15%, transparent); transform:translateX(4px)}
+
+/* correction */
+.corrige{display:none; margin-top:22px; border-radius:14px; padding:18px 20px; border:1.5px solid; animation:fade .35s}
+.corrige.show{display:block}
+.corrige.ok{background:var(--ok-l); border-color:var(--teal-clair)}
+.corrige.no{background:var(--rust-l); border-color:var(--rust-clair)}
+.corrige-head{font-family:'Fraunces',serif; font-weight:700; font-size:16px; margin-bottom:6px; display:flex; align-items:center; gap:8px}
+.corrige.ok .corrige-head{color:var(--ok)}
+.corrige.no .corrige-head{color:var(--err)}
+.corrige .yours{font-size:13px; color:var(--err); font-family:'DM Mono',monospace; margin-bottom:10px}
+.corrige p{font-size:14px; color:var(--ink2); margin:4px 0 10px}
+.step{display:flex; gap:12px; margin-bottom:10px; align-items:flex-start}
+.step-n{flex-shrink:0; width:22px; height:22px; border-radius:50%; background:var(--primary); color:var(--blanc); font-family:'DM Mono',monospace; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; margin-top:1px}
+.step-txt{flex:1; font-size:14px; color:var(--ink2)}
+.step-txt code{background:color-mix(in srgb, var(--nuit) 5%, transparent); padding:2px 7px; border-radius:5px; font-family:'DM Mono',monospace; font-size:12.5px; color:var(--primary-d)}
+.result-line{margin-top:12px; padding:12px 16px; background:var(--blanc); border-radius:10px; font-family:'DM Mono',monospace; font-size:14.5px; font-weight:600; color:var(--primary-d); border:1px solid var(--rust-clair)}
+.corrige .next{margin-top:16px}
+
+/* result screen */
+.result-screen{text-align:center}
+.result-emoji{font-size:72px; margin-bottom:8px}
+.result-score{font-family:'Fraunces',serif; font-weight:900; font-size:3.5rem; color:var(--primary-d); line-height:1}
+.result-score span{font-size:1.4rem; color:var(--muted)}
+.result-title{font-family:'Fraunces',serif; font-weight:700; font-size:1.6rem; margin:12px 0 8px}
+.result-msg{color:var(--ink2); font-size:15px; max-width:480px; margin:0 auto 24px}
+.result-breakdown{background:var(--blanc); border:1px solid var(--line); border-radius:14px; padding:20px; margin:24px 0; text-align:left; box-shadow:var(--shadow)}
+.result-breakdown h3{font-family:'Fraunces',serif; font-size:15px; margin-bottom:14px; color:var(--ink)}
+.bd-row{display:flex; align-items:center; gap:12px; padding:9px 0; border-bottom:1px solid var(--line)}
+.bd-row:last-child{border-bottom:none}
+.bd-name{flex:1; font-size:14px}
+.bd-bar{width:120px; height:7px; background:var(--line); border-radius:5px; overflow:hidden}
+.bd-bar-fill{height:100%; border-radius:5px}
+.bd-score{font-family:'DM Mono',monospace; font-size:13px; font-weight:500; width:42px; text-align:right}
+
+@media(max-width:760px){
+  #content{padding:28px 18px 100px}
+  .home h1{font-size:1.85rem}
+  .top-progress{display:none}
+}
+</style>
+<link rel="stylesheet" href="../ui.css">
+<link rel="stylesheet" href="../theme.css">
+<link rel="stylesheet" href="../licence.css">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#ECEEF6">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/favicon-32.png">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+</head>
+<body>
+
+<div id="topbar">
+  <div class="logo">Crises<span>Fin</span> · Entraînement</div>
+  <a class="hub" href="../licence.html">← Hub</a>
+  <div class="top-progress">
+    <div class="top-progress-bar"><div class="top-progress-fill" id="topfill"></div></div>
+    <div class="top-progress-txt" id="toptxt">Choisis un mode</div>
+  </div>
+  <div class="top-xp" id="xp">✦ 0 XP</div>
+</div>
+
+<main id="content"></main>
+
+<script>
+// ════════════════════════════════════════════════════════════════════════
+// HELPERS
+// ════════════════════════════════════════════════════════════════════════
+const pick = a => a[Math.floor(Math.random()*a.length)];
+const randint = (a,b) => Math.floor(Math.random()*(b-a+1))+a;
+const fr = (x,d) => Number(x).toLocaleString('fr-FR',{minimumFractionDigits:d,maximumFractionDigits:d});
+const eur = x => fr(x,2)+'\u00A0€';
+const eur0 = x => Number(x).toLocaleString('fr-FR')+'\u00A0€';
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// BANQUE DE QUESTIONS PAR NIVEAU (Mix QCM et entrées numériques)
+// ════════════════════════════════════════════════════════════════════════
+
+const GENS = {
+
+// ═══════════════ NIVEAU 1 · Bases, Vocabulaire & Dates ═══════════════
+1: [
+  () => ({
+    kind:'qcm', theme:'Bases & Vocabulaire', eqId:'eq-vocab',
+    q:"Laquelle de ces définitions correspond à la <strong>Stagflation</strong> ?",
+    opts:["Deux trimestres consécutifs de croissance négative","Croissance quasi-nulle de très longue durée","Stagnation économique accompagnée d'une forte inflation","Une ruée bancaire généralisée"],
+    correct:2, fb:"La stagflation est le pire des deux mondes : stagnation (chômage) + inflation forte. Le cas d'école est la crise pétrolière des années 1970."
+  }),
+  () => ({
+    kind:'qcm', theme:'Bases & Vocabulaire', eqId:'eq-vocab',
+    q:"Qu'est-ce qu'un <strong>Bank run</strong> (ruée bancaire) ?",
+    opts:["Les banques ferment définitivement","Les clients retirent leur cash en masse, paniqués","L'État rachète les banques en difficulté","La Banque centrale injecte des liquidités"],
+    correct:1, fb:"Une ruée bancaire se produit quand les clients paniquent et veulent tous retirer leur argent en même temps. La banque n'ayant jamais tout le cash en caisse, elle risque l'effondrement."
+  }),
+  () => ({
+    kind:'qcm', theme:'Le Bilan', eqId:'eq-bilan',
+    q:"Où se trouvent les <strong>dépôts des clients</strong> dans le bilan d'une banque ?",
+    opts:["À l'actif (la banque possède cet argent)","Au passif (la banque doit cet argent aux clients)","Dans les fonds propres","Hors bilan"],
+    correct:1, fb:"Les dépôts sont une ressource pour la banque, elle a donc une dette envers toi : c'est au PASSIF."
+  }),
+  () => ({
+    kind:'qcm', theme:'Le Bilan', eqId:'eq-bilan',
+    q:"Vrai ou faux : une banque dont les fonds propres sont positifs ne peut pas faire faillite.",
+    opts:["Vrai, elle est totalement couverte","Faux, elle peut être solvable mais illiquide"],
+    correct:1, fb:"Une banque solvable (FP > 0) peut tout à fait faire faillite si elle manque de liquidités immédiates pour répondre à une panique (ex: SVB)."
+  }),
+  () => ({
+    kind:'qcm', theme:'Histoire', eqId:'eq-dates',
+    q:"Laquelle de ces crises est considérée comme la <strong>première bulle spéculative</strong> documentée de l'histoire ?",
+    opts:["La crise de Florence (1345)","Le système de Law (1720)","La bulle des tulipes (1637)","Le krach de l'Union Générale (1881)"],
+    correct:2, fb:"La tulipomanie de 1637 aux Pays-Bas est le premier grand exemple de bulle spéculative (un actif acheté uniquement pour être revendu plus cher)."
+  }),
+  () => ({
+    kind:'num', theme:'Histoire', eqId:'eq-dates', unit:'(année)',
+    q:"En quelle année a eu lieu la célèbre banqueroute du système de <strong>John Law</strong> en France ?",
+    expected:1720, tol:0,
+    steps:["Le système de Law a commencé en 1716 et a explosé en <strong>1720</strong>, ruinant de nombreux actionnaires."], result:"Année = 1720"
+  }),
+  () => ({
+    kind:'num', theme:'Histoire', eqId:'eq-dates', unit:'%',
+    q:"Après l'éclatement de la bulle des tulipes, à quel pourcentage de son prix final s'est revendu le bulbe en moyenne ?",
+    expected:3.5, tol:0.5,
+    steps:["Le prix s'est totalement effondré. Le marché s'est liquidé à environ <strong>3,5 %</strong> du prix atteint au pic de la bulle."], result:"Pourcentage = 3,5 %"
+  }),
+  () => ({
+    kind:'num', theme:'Réglementation', eqId:'eq-bilan', unit:'trimestres',
+    q:"Combien de trimestres consécutifs de croissance négative faut-il au minimum pour déclarer officiellement une <strong>récession</strong> ?",
+    expected:2, tol:0,
+    steps:["La définition technique d'une récession est de <strong>2 trimestres consécutifs</strong> de baisse du PIB."], result:"Trimestres = 2"
+  }),
+  () => {
+    // Calcul de fonds propres dynamique
+    const actif = pick([100, 150, 200, 300, 500]);
+    const passif = actif - randint(2, 15);
+    const fp = actif - passif;
+    return {
+      kind:'num', theme:'Le Bilan', eqId:'eq-bilan', unit:'€',
+      q:`Une banque possède <b>${actif} €</b> d'actifs (crédits, titres) et a <b>${passif} €</b> de dettes (dépôts, emprunts interbancaires).<br>À combien s'élèvent ses <strong>fonds propres</strong> ?`,
+      expected:fp, tol:0,
+      steps:[`Fonds Propres = Actif Total − Passif (hors FP)`,`${actif} − ${passif} = ${fp} €`], result:`Fonds propres = ${fp} €`
+    };
+  }
+],
+
+// ═══════════════ NIVEAU 2 · Théories et Auteurs ═══════════════
+2: [
+  () => ({
+    kind:'qcm', theme:'Théories', eqId:'eq-friedman',
+    q:"Pour les <strong>Monétaristes</strong> (Friedman & Schwartz), quelle est la cause profonde des crises systémiques ?",
+    opts:["L'asymétrie d'information sur les marchés","L'effondrement de la masse monétaire et l'inaction de la Banque centrale","La spéculation irrationnelle des ménages","L'épuisement du régime d'accumulation"],
+    correct:1, fb:"Friedman estime que la panique initiale n'est pas le vrai problème : c'est l'inaction de la Banque Centrale (qui laisse la masse monétaire s'effondrer) qui transforme une secousse en dépression."
+  }),
+  () => ({
+    kind:'qcm', theme:'Théories', eqId:'eq-mishkin',
+    q:"Quel est le concept clé utilisé par le néo-keynésien <strong>Frederic Mishkin</strong> pour expliquer le <i>credit crunch</i> ?",
+    opts:["Le Minsky moment","L'aléa moral","L'asymétrie d'information","La vélocité de la monnaie"],
+    correct:2, fb:"L'asymétrie d'information. En temps de crise, la banque ne sait plus qui est solvable ou non (brouillard total). Dans le doute, elle ne prête plus à personne : c'est le credit crunch."
+  }),
+  () => ({
+    kind:'qcm', theme:'Théories', eqId:'eq-minsky',
+    q:"Dans la théorie de Hyman Minsky, à quoi correspond le stade <strong>Ponzi</strong> ?",
+    opts:["Une situation saine où les revenus dépassent les dépenses","Une arnaque pyramidale illégale montée par une banque","L'acteur doit s'endetter en permanence juste pour rembourser ses anciennes dettes","La Banque centrale refuse de prêter aux banques"],
+    correct:2, fb:"Dans la grille de Minsky (Finance / Edge / Ponzi), le stade Ponzi désigne une situation ultra-fragile où les cash-flows sortants sont supérieurs aux entrants, forçant le refinancement perpétuel."
+  }),
+  () => ({
+    kind:'qcm', theme:'Théories', eqId:'eq-friedman',
+    q:"Qu'est-ce que l'<strong>aléa moral</strong> en finance ?",
+    opts:["La fraude fiscale systémique des dirigeants","Le fait de prendre des risques excessifs sachant qu'on sera sauvé en cas de problème","L'absence de réglementation sur les produits dérivés","Le refus des banques de prêter aux plus pauvres"],
+    correct:1, fb:"L'aléa moral (moral hazard) survient quand un acteur ne supporte pas les conséquences de ses propres risques. S'il sait que la Banque centrale le sauvera toujours, il prendra trop de risques."
+  }),
+  () => ({
+    kind:'qcm', theme:'Histoire', eqId:'eq-dates',
+    q:"Quel est l'apport historique majeur lié à la chute du <strong>Système de Law (1720)</strong> ?",
+    opts:["La création des premières banques d'affaires","La naissance de la monnaie fiduciaire (rupture entre la monnaie et l'or)","L'invention du marché à terme","La mise en place de la titrisation"],
+    correct:1, fb:"John Law a fait imprimer de la monnaie massivement pour racheter la dette publique, rompant le lien avec l'or. C'est l'ancêtre direct de notre monnaie fiduciaire actuelle (qui repose sur la confiance)."
+  }),
+  () => ({
+    kind:'qcm', theme:'Théories', eqId:'eq-minsky',
+    q:"Lequel de ces économistes affirme que <i>« Plus ça change, plus c'est la même chose »</i> (les crises ont toujours des mécanismes structurels identiques) ?",
+    opts:["Robert Boyer","Milton Friedman","Frederic Mishkin","Michel Aglietta"],
+    correct:3, fb:"Michel Aglietta, figure de l'école régulationniste, soutient que les crises révèlent toujours les mêmes dysfonctionnements profonds de la structure capitaliste, contrairement à Boyer qui les voit comme spécifiques à chaque époque."
+  }),
+  () => ({
+    kind:'num', theme:'Réglementation', eqId:'eq-bilan', unit:'%',
+    q:"Les crises bancaires américaines du 19ᵉ siècle ont mené à long terme à l'imposition de ratios prudentiels (Bâle III). Quel est le <strong>seuil minimal de fonds propres</strong> exigé aujourd'hui ?",
+    expected:10.5, tol:0,
+    steps:["Bâle III impose aux banques de détenir au moins <strong>10,5 %</strong> de fonds propres par rapport à leurs actifs pondérés des risques."], result:"Ratio = 10,5 %"
+  })
+],
+
+// ═══════════════ NIVEAU 3 · Mécanismes & Études de cas (Subprimes, SVB) ═══════════════
+3: [
+  () => ({
+    kind:'qcm', theme:'Études de cas', eqId:'eq-mishkin',
+    q:"Dans la crise des <strong>Subprimes</strong>, quel mécanisme a le plus contribué à créer une asymétrie d'information massive (rendant la crise mondiale) ?",
+    opts:["La baisse des taux directeurs de la Fed","La titrisation (regroupement de crédits dans des produits structurés opaques)","L'existence des NINJA","Le défaut de Fannie Mae"],
+    correct:1, fb:"La titrisation (MBS, CDO) a mélangé les crédits 'pourris' avec d'autres crédits. Résultat : plus aucune banque ne savait ce qu'elle ou ses concurrentes détenaient vraiment dans son bilan."
+  }),
+  () => ({
+    kind:'qcm', theme:'Études de cas', eqId:'eq-vocab',
+    q:"Que signifie l'acronyme <strong>NINJA</strong> dans le cadre des prêts immobiliers américains avant 2008 ?",
+    opts:["Non-Interest Non-Judicial Asset","New Investment Network for Junior Agents","No Income, No Job, no Asset","Negative Income Net Joint Asset"],
+    correct:2, fb:"No Income, No Job, no Asset : des emprunteurs sans revenus, sans emploi et sans patrimoine. On leur prêtait quand même car le collatéral (la maison) prenait constamment de la valeur."
+  }),
+  () => ({
+    kind:'qcm', theme:'Études de cas', eqId:'eq-dates',
+    q:"Quel mécanisme spécifique explique l'effondrement de la banque <strong>Union Générale en 1881</strong> ?",
+    opts:["Le risque de change sur des devises étrangères","L'inflation galopante en France","Le double effet : les actions ferroviaires s'effondrent à l'actif (titres détenus) ET au passif (capital de la banque et confiance des déposants)","La titrisation de crédits agricoles"],
+    correct:2, fb:"L'Union Générale investissait l'argent de ses déposants dans le rail, et sa propre action montait avec cet engouement. Quand le rail a chuté, l'actif et le passif de la banque ont été détruits simultanément."
+  }),
+  () => ({
+    kind:'qcm', theme:'Études de cas', eqId:'eq-vocab',
+    q:"Pourquoi la banque américaine <strong>SVB</strong> a-t-elle coulé en 48h en mars 2023 ?",
+    opts:["Elle a fait des prêts frauduleux à des startups tech","La Fed a remonté ses taux, dépréciant son portefeuille d'anciennes obligations, forçant la banque à vendre à perte lors d'une ruée des dépôts","Son dirigeant s'est enfui avec la caisse","Une cyberattaque a vidé ses réserves"],
+    correct:1, fb:"C'est une crise de liquidité causée par un risque de taux : la hausse brutale des taux de la Fed a fait chuter la valeur des obligations d'État à l'actif de SVB."
+  }),
+  () => ({
+    kind:'qcm', theme:'Études de cas', eqId:'eq-minsky',
+    q:"Quel est le <strong>collatéral</strong> dans un prêt hypothécaire tel qu'il a été pratiqué massivement avant la crise des subprimes ?",
+    opts:["Le salaire futur de l'emprunteur","Les biens personnels (voiture, comptes) de l'emprunteur","Une assurance publique (GSE)","Le bien immobilier financé lui-même"],
+    correct:3, fb:"Dans un prêt hypothécaire 'à l'américaine', c'est la maison elle-même qui garantit le prêt. Si l'emprunteur ne paie plus, on saisit la maison. D'où la panique quand les prix immobiliers ont chuté."
+  }),
+  () => ({
+    kind:'num', theme:'Histoire & Monétaristes', eqId:'eq-friedman', unit:'paniques',
+    q:"Combien de paniques bancaires successives les économistes Friedman et Schwartz ont-ils comptabilisées entre 1930 et 1933 après le krach de 1929 ?",
+    expected:4, tol:0,
+    steps:["Dans leur ouvrage de référence, ils identifient <strong>4 vagues successives</strong> de paniques bancaires qui ont détruit un tiers de la masse monétaire américaine."], result:"Nombre de paniques = 4"
+  }),
+  () => ({
+    kind:'qcm', theme:'Études de cas', eqId:'eq-friedman',
+    q:"Comment la grille de lecture monétariste juge-t-elle le krach boursier de 1987 (lundi noir) comparé à celui de 1929 ?",
+    opts:["1987 est une crise systémique pire que 1929","1987 est une pseudo-crise qui ne justifiait pas une intervention massive (pas de contagion bancaire)","1987 et 1929 sont strictement identiques"],
+    correct:1, fb:"Pour Friedman, 1987 est restée une secousse boursière (pseudo-crise). La Fed n'a pas eu besoin de sauver tout le système, évitant ainsi l'aléa moral, contrairement à 1929 qui était une vraie crise macroéconomique."
+  })
+]
+
+};
+
+function genPool(){ return GENS[state.level] || GENS[1]; }
+
+// ════════════════════════════════════════════════════════════════════════
+// FICHE MÉMO (Remplace le formulaire de maths)
+// ════════════════════════════════════════════════════════════════════════
+const FORMULAIRE = `
+  <div class="formulaire-panel" id="formulaire-panel">
+    <div class="formulaire-title">📘 Fiche Mémo · Auteurs & Concepts</div>
+    <div class="eq-item" id="eq-bilan">
+      <div class="eq-name">Bilan Bancaire & Bâle III</div>
+      <div class="eq-desc"><strong>Actif</strong> = Emplois (Crédits, Titres). <strong>Passif</strong> = Ressources (Dépôts).<br>Fonds Propres = Actif - Passif. Minimum vital (Bâle III) : 10,5%.</div>
+    </div>
+    <div class="eq-item" id="eq-vocab">
+      <div class="eq-name">Le Vocabulaire des Crises</div>
+      <div class="eq-desc"><strong>Récession</strong> : 2 trim. négatifs. <strong>Stagnation</strong> : %nul. <strong>Stagflation</strong> : Stagnation + Inflation forte. <strong>Credit Crunch</strong> : Arrêt brutal des crédits.</div>
+    </div>
+    <div class="eq-item" id="eq-dates">
+      <div class="eq-name">Dates Historiques</div>
+      <div class="eq-desc"><strong>1345</strong> Florence. <strong>1637</strong> Tulipes (1ère bulle). <strong>1720</strong> Law (Monnaie fiduciaire). <strong>1881</strong> Union Générale. <strong>1929</strong> Krach. <strong>2023</strong> SVB.</div>
+    </div>
+    <div class="eq-item" id="eq-friedman">
+      <div class="eq-name">École Monétariste (Friedman)</div>
+      <div class="eq-desc">Crise = effondrement de la masse monétaire causé par l'inaction de la Banque Centrale. <i>Aléa moral</i> = Prise de risque encouragée par les sauvetages.</div>
+    </div>
+    <div class="eq-item" id="eq-mishkin">
+      <div class="eq-name">Néo-Keynésiens (Mishkin)</div>
+      <div class="eq-desc">Crise = rupture de confiance due à <i>l'asymétrie d'information</i> entre banque/client (ou banque/banque), provoquant un gel des prêts.</div>
+    </div>
+    <div class="eq-item" id="eq-minsky">
+      <div class="eq-name">Régulationnistes & Minsky</div>
+      <div class="eq-desc">Aglietta/Boyer : La crise est inhérente au capitalisme. Minsky classe la fragilité : <i>Finance</i> (sain) > <i>Edge</i> (limite) > <i>Ponzi</i> (doit emprunter pour rembourser).</div>
+    </div>
+  </div>`;
+
+// ════════════════════════════════════════════════════════════════════════
+// MOTEUR
+// ════════════════════════════════════════════════════════════════════════
+const state = {mode:null, label:'', count:0, queue:[], idx:0, score:0, answered:[], xp:0, infinite:false, streak:0, best:0, lastGen:-1, level:2};
+
+const LEVEL_NAME = {1:'Facile', 2:'Intermédiaire', 3:'Difficile'};
+const LEVEL_DESC = {
+  1:"Dates clés, vocabulaire basique (récession, stagflation) et équilibres simples du bilan bancaire.",
+  2:"Les trois grandes écoles (Monétaristes, Keynésiens, Régulationnistes), les auteurs et les concepts théoriques (Minsky, Aléa moral).",
+  3:"Questions pièges et mécanismes profonds des grandes crises (SVB, Subprimes, Union Générale, enchaînement causal)."
+};
+
+function nextCalc(){
+  const pool=genPool();
+  let g; do{ g=randint(0,pool.length-1); }while(pool.length>1 && g===state.lastGen);
+  state.lastGen=g; return pool[g]();
+}
+function setLevel(l){ state.level=l; renderHome(); }
+
+function updateTop(){
+  document.getElementById('xp').textContent = `✦ ${state.xp} XP`;
+  if(state.mode && state.queue.length){
+    if(state.infinite){
+      const done=state.answered.length, acc=done?Math.round(state.score/done*100):0;
+      document.getElementById('topfill').style.width = acc + '%';
+      document.getElementById('toptxt').textContent = `${state.label} · ${state.score}/${done} justes · 🔥${state.streak}`;
+    } else {
+      const pct = Math.round(state.idx / state.queue.length * 100);
+      document.getElementById('topfill').style.width = pct + '%';
+      document.getElementById('toptxt').textContent = `${state.label} · ${Math.min(state.idx+1,state.queue.length)}/${state.queue.length}`;
+    }
+  }
+}
+
+// ── ÉCRAN D'ACCUEIL ──
+function renderHome(){
+  document.getElementById('topfill').style.width = '0%';
+  document.getElementById('toptxt').textContent = 'Choisis un mode';
+  const c = document.getElementById('content');
+  c.innerHTML = `
+    <div class="view home">
+      <div class="home-tag">Mode entraînement · Crises Financières</div>
+      <h1>Prêt pour le <span class="acc">partiel</span> ?<br>Entraîne-toi en conditions.</h1>
+      <p class="home-sub">Révise l'histoire bancaire et les grandes théories économiques (Friedman, Mishkin, Minsky) grâce à cette base de questions aléatoires.</p>
+
+      <div class="level-select">
+        <span class="level-lbl">⚙️ Cibler tes révisions</span>
+        <div class="level-seg">
+          <button class="seg ${state.level===1?'on':''}" onclick="setLevel(1)">1 · Dates & Vocab</button>
+          <button class="seg ${state.level===2?'on':''}" onclick="setLevel(2)">2 · Auteurs & Théories</button>
+          <button class="seg ${state.level===3?'on':''}" onclick="setLevel(3)">3 · Études de cas</button>
+        </div>
+        <p class="level-desc">${LEVEL_DESC[state.level]}</p>
+      </div>
+
+      <div class="mode-card m-primary">
+        <div class="mode-head"><div class="mode-icon">🎯</div><h2>Série Rapide</h2></div>
+        <p>Un tirage aléatoire de QCM et de questions de mémoire (dates, taux) sur le niveau choisi. Idéal pour des sessions courtes.</p>
+        <div class="chip-row">
+          <span class="chip-lbl">Série de</span>
+          <button class="start-chip" onclick="startSession('calc',5)">5 questions</button>
+          <button class="start-chip" onclick="startSession('calc',10)">10 questions</button>
+        </div>
+      </div>
+
+      <div class="mode-card m-gold">
+        <div class="mode-head"><div class="mode-icon">♾️</div><h2>Mode Libre · à l'infini</h2></div>
+        <p>Des questions qui s'enchaînent <strong>sans fin</strong>, une par une, sur le niveau sélectionné. Bilan par thème quand tu décides d'arrêter.</p>
+        <div class="chip-row">
+          <button class="start-chip solo" onclick="startSession('infini',0)">Démarrer l'entraînement libre →</button>
+        </div>
+      </div>
+
+      <div class="mode-card m-secondary">
+        <div class="mode-head"><div class="mode-icon">🎓</div><h2>Examen blanc global</h2></div>
+        <p>Conditions d'examen : 12 questions qui <strong>mélangent les 3 niveaux</strong> d'un coup. De Florence (1345) à SVB (2023), avec bilan complet à la fin.</p>
+        <div class="chip-row">
+          <button class="start-chip solo" onclick="startSession('exam',12)">Lancer l'examen blanc →</button>
+        </div>
+      </div>
+
+      <div class="callout key">
+        <div class="c-label">🔑 Comment t'en servir</div>
+        <p>Prends le temps de lire l'explication après chaque réponse ! Le bouton « i » ouvre la fiche mémo des auteurs et concepts. L'indice 💡 cible la théorie à utiliser pour répondre.</p>
+      </div>
+    </div>`;
+}
+
+// ── DÉMARRAGE D'UNE SÉRIE ──
+function buildQueue(mode,count){
+  if(mode==='exam'){
+    // Mélange forcé des 3 niveaux
+    const out=[];
+    for(let i=0;i<count;i++){
+      const lvl = (i%3)+1;
+      const pool = GENS[lvl];
+      out.push(pool[randint(0,pool.length-1)]());
+    }
+    return shuffle(out);
+  } else {
+    const out=[]; for(let i=0;i<count;i++) out.push(nextCalc());
+    return out;
+  }
+}
+
+function startSession(mode,count){
+  state.mode=mode; state.count=count;
+  state.infinite = (mode==='infini');
+  state.label = mode==='calc'?'Série Rapide':(mode==='infini'?'Mode Libre':'Examen blanc');
+  state.streak=0; state.best=0; state.lastGen=-1; state.sessionXP=0;
+  state.queue = state.infinite ? [nextCalc()] : buildQueue(mode,count);
+  state.idx=0; state.score=0; state.answered=[];
+  renderQ();
+}
+
+// ── RENDU D'UNE QUESTION ──
+function renderQ(){
+  if(!state.infinite && state.idx>=state.queue.length){ renderResult(); return; }
+  if(state.infinite && !state.queue[state.idx]){ state.queue[state.idx]=nextCalc(); }
+  const q=state.queue[state.idx];
+  const c=document.getElementById('content');
+
+  const done=state.answered.length;
+  const acc = done ? Math.round(state.score/done*100) : 0;
+  const fillW = state.infinite ? acc : Math.round(state.idx/state.queue.length*100);
+  const progTxt = state.infinite
+    ? `Question n° ${state.idx+1} · ${state.score}/${done} justes · 🔥 série ${state.streak}`
+    : `Question ${state.idx+1} / ${state.queue.length} · Score : ${state.score}`;
+  const endLink = state.infinite ? `<button class="end-link" onclick="renderResult()">Terminer &amp; voir le bilan</button>` : '';
+
+  let answer='';
+  if(q.kind==='qcm'){
+    answer = `<div class="opts">` + q.opts.map((o,i)=>
+      `<div class="opt" onclick="selectQcm(this,${i})"><span class="letter">${String.fromCharCode(65+i)}</span> ${o}</div>`).join('') + `</div>`;
+  } else {
+    answer = `
+      ${q.data?`<div class="q-data">${q.data}</div>`:''}
+      <div class="input-row">
+        <input class="calc-input" id="calc-input" type="number" step="0.1" placeholder="ta réponse"
+          oninput="enableSubmit()" onkeydown="if(event.key==='Enter')submitCalc()">
+        <span class="calc-unit">${q.unit||''}</span>
+      </div>
+      <button class="submit-btn" id="submit-btn" onclick="submitCalc()" disabled>Valider</button>`;
+  }
+
+  c.innerHTML = `
+    <div class="view">
+      <div class="s-progress">
+        <div class="s-progress-bar"><div class="s-progress-fill" style="width:${fillW}%"></div></div>
+        <div class="s-progress-txt">${progTxt}</div>
+        ${endLink}
+      </div>
+      <div class="q-card">
+        <button class="info-btn" onclick="toggleFormulaire()" title="Fiche Mémo">i</button>
+        <div class="q-counter">📚 ${state.mode==='exam'?'Examen Global':'Niveau '+state.level} · ${state.infinite?'n°':'Question'} ${state.idx+1}</div>
+        <div class="q-theme">📘 ${q.theme}</div>
+        <div class="q-text">${q.q}</div>
+        ${answer}
+        <button class="help-btn" id="help-btn" onclick="useHelp('${q.eqId}')">💡 Indice mémo</button>
+        ${FORMULAIRE}
+        <div class="corrige" id="corrige"></div>
+      </div>
+    </div>`;
+  window.scrollTo({top:0});
+}
+
+function enableSubmit(){
+  const inp=document.getElementById('calc-input'), btn=document.getElementById('submit-btn');
+  if(inp&&btn) btn.disabled = inp.value.trim()==='';
+}
+
+function selectQcm(el,idx){
+  const card=el.closest('.q-card');
+  if(card.dataset.locked) return;
+  card.dataset.locked='1';
+  const q=state.queue[state.idx];
+  const ok=(idx===q.correct);
+  state.answered.push({theme:q.theme, ok});
+  if(ok){ state.score++; state.xp+=8; state.sessionXP=(state.sessionXP||0)+8; state.streak++; state.best=Math.max(state.best,state.streak); } else { state.streak=0; }
+  card.querySelectorAll('.opt').forEach((o,j)=>{
+    o.classList.add('locked');
+    if(j===q.correct) o.classList.add(ok&&j===idx?'correct':'reveal');
+    if(j===idx&&!ok) o.classList.add('wrong');
+  });
+  showCorrection(ok,q,null);
+}
+
+function submitCalc(){
+  const card=document.querySelector('.q-card');
+  if(card.dataset.locked) return;
+  const q=state.queue[state.idx];
+  const inp=document.getElementById('calc-input');
+  const val=parseFloat(inp.value.replace(',','.'));
+  if(isNaN(val)){ inp.style.borderColor='var(--err)'; return; }
+  card.dataset.locked='1';
+  const ok=Math.abs(val-q.expected)<=q.tol;
+  state.answered.push({theme:q.theme, ok});
+  if(ok){ state.score++; state.xp+=12; state.sessionXP=(state.sessionXP||0)+12; state.streak++; state.best=Math.max(state.best,state.streak); } else { state.streak=0; }
+  inp.style.borderColor = ok?'var(--ok)':'var(--err)';
+  inp.style.background = ok?'var(--ok-l)':'var(--err-l)';
+  document.getElementById('submit-btn').disabled=true;
+  showCorrection(ok,q,val);
+}
+
+function showCorrection(ok,q,yourVal){
+  document.getElementById('help-btn').style.display='none';
+  document.getElementById('formulaire-panel').classList.remove('show');
+  const box=document.getElementById('corrige');
+  const last=(!state.infinite && state.idx===state.queue.length-1);
+  const nextLbl=last?'Voir mon résultat 🎯':'Question suivante →';
+
+  let inner='';
+  inner += `<div class="corrige-head">${ok?'✅ Exact !':'❌ Pas tout à fait'}</div>`;
+  if(q.kind==='num'){
+    if(!ok) inner += `<div class="yours">Ta réponse : ${fr(yourVal, 1)} ${q.unit||''}</div>`;
+    inner += q.steps.map((s,i)=>`<div class="step"><div class="step-n">${i+1}</div><div class="step-txt">${s}</div></div>`).join('');
+    inner += `<div class="result-line">${q.result}</div>`;
+  } else {
+    inner += `<p>${q.fb}</p>`;
+  }
+  inner += `<button class="nav-btn primary next" onclick="nextQ()">${nextLbl}</button>`;
+  if(state.infinite) inner += ` <button class="nav-btn" style="margin-left:8px" onclick="renderResult()">Terminer 🎯</button>`;
+  box.className = 'corrige show ' + (ok?'ok':'no');
+  box.innerHTML = inner;
+}
+
+function nextQ(){ state.idx++; updateTop(); renderQ(); }
+
+// ── FORMULAIRE / INDICE ──
+function toggleFormulaire(){ document.getElementById('formulaire-panel').classList.toggle('show'); }
+function useHelp(eqId){
+  const panel=document.getElementById('formulaire-panel');
+  panel.classList.add('show');
+  document.querySelectorAll('.eq-item').forEach(el=>el.classList.remove('highlight'));
+  const t=document.getElementById(eqId);
+  if(t){ t.classList.add('highlight'); t.scrollIntoView({behavior:'smooth',block:'center'}); }
+}
+
+// ── RÉSULTAT ──
+function renderResult(){
+  const total=state.answered.length;
+  if(total===0){ renderHome(); return; }
+  const score=state.score, pct=Math.round(score/total*100);
+  const byTheme={};
+  state.answered.forEach(a=>{ if(!byTheme[a.theme]) byTheme[a.theme]={ok:0,tot:0}; byTheme[a.theme].tot++; if(a.ok) byTheme[a.theme].ok++; });
+
+  let emoji,title,msg;
+  if(pct>=90){emoji='🏆';title='Maîtrise totale !';msg='Tu connais tes auteurs et tes mécanismes sur le bout des doigts.';}
+  else if(pct>=70){emoji='🎯';title='Très solide !';msg='Bonne compréhension d\'ensemble. Révise les points en orange pour le 20/20.';}
+  else if(pct>=50){emoji='📈';title='Sur la bonne voie';msg='Les bases sont là, mais certaines théories ou dates se mélangent encore.';}
+  else {emoji='📚';title='Encore un peu de travail';msg='Il y a des confusions entre les différentes écoles. Relis bien le cours avant de réessayer.';}
+  if(state.infinite) msg += ` Meilleure série : 🔥 ${state.best} d'affilée.`;
+
+  let bd='';
+  Object.entries(byTheme).forEach(([th,d])=>{
+    const p=Math.round(d.ok/d.tot*100);
+    const col=p>=70?'var(--ok)':p>=40?'var(--amber)':'var(--err)';
+    bd += `<div class="bd-row"><div class="bd-name">${th}</div>
+      <div class="bd-bar"><div class="bd-bar-fill" style="width:${p}%;background:${col}"></div></div>
+      <div class="bd-score" style="color:${col}">${d.ok}/${d.tot}</div></div>`;
+  });
+
+  document.getElementById('topfill').style.width='100%';
+  document.getElementById('toptxt').textContent='Résultat';
+
+  document.getElementById('content').innerHTML = `
+    <div class="view result-screen">
+      <div class="result-emoji">${emoji}</div>
+      <div class="result-score">${score}<span> / ${total}</span></div>
+      <div class="result-title">${title}</div>
+      <div class="result-msg">${msg} <strong>(${pct}% de réussite)</strong></div>
+      <div class="result-breakdown"><h3>📊 Ton bilan par thème</h3>${bd}</div>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <button class="nav-btn primary" onclick="startSession('${state.mode}',${state.count})">${state.infinite?'Reprendre l\'entraînement ♾️':'Relancer une série 🔄'}</button>
+        <button class="nav-btn" onclick="renderHome()">Changer de niveau</button>
+        <button class="nav-btn" onclick="location.href='crises-financieres.html'">Revoir la leçon</button>
+      </div>
+    </div>`;
+  window.scrollTo({top:0});
+}
+
+// INIT
+renderHome();
+</script>
+<script src="../lb.js"></script>
+<script src="../progress.js"></script>
+<script src="../ui.js"></script>
+</body>
+</html>

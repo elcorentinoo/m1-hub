@@ -46,6 +46,7 @@ body{overflow-x:hidden}
 .m-emb{ position:absolute; left:16px; top:16px; width:46px; height:46px; border-radius:50%; background:var(--m); color:var(--blanc); display:grid; place-items:center; font-size:19px; box-shadow:0 0 0 4px var(--blanc-22) }
 .m-emb::before{ content:var(--emb) }
 .m-info{ position:absolute; left:12px; right:12px; bottom:12px; border-radius:22px; padding:16px 18px }
+.mcard .m-info{ background:var(--blanc) }  /* panneau blanc plein : le verre sur photo sombre laissait l’étiquette à 4,1:1 (6,4:1 au pire ainsi, mesuré au pixel) */
 .m-tag{ font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; font-weight:600; color:var(--m) }
 .mcard h3{ font-size:1.15rem !important; font-weight:500 !important; line-height:1.2; margin:4px 0 6px; color:var(--nuit) }
 .m-pied{ font-size:13px; color:var(--txt2); font-weight:500 }
@@ -71,7 +72,8 @@ body{overflow-x:hidden}
 /* générateurs */
 .gens{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px }
 .gen{ display:flex; align-items:center; gap:14px; padding:16px 18px; border-radius:22px; background:var(--blanc); color:var(--nuit); text-decoration:none; box-shadow:var(--shadow) }
-.gen .gi{ width:42px; height:42px; border-radius:50%; background:var(--m); flex:none }
+.gen .gi{ width:42px; height:42px; border-radius:50%; background:var(--m); flex:none; display:grid; place-items:center; color:var(--blanc); font-size:17px }
+.gen .gi::before{ content:var(--emb) }
 .gen small{ display:block; color:var(--txt3); font-size:13px }
 
 @media(max-width:1080px){ .mats{ grid-template-columns:repeat(2,minmax(0,1fr)) } }
@@ -98,28 +100,29 @@ body{overflow-x:hidden}
 <main class="page">
   <div class="barre">
     <a class="pil verre" href="niveaux.html"><span class="mk" aria-hidden="true">L</span>Licence · changer de niveau</a>
+    <span id="lb-id-slot"></span>
   </div>
 
   <section class="cadre" aria-labelledby="titre">
     <div class="ph"></div><div class="voile-bas"></div>
     <div class="sur">Licence professionnelle Assurance Banque Finance</div>
     <h1 id="titre">Espace <b>Licence</b></h1>
-    <p class="intro">Tes cours, leurs quiz et le défi du soir de la promo. L'espace se remplit : les premières matières arrivent bientôt.</p>
+    <p class="intro">Tes neuf matières, leurs quiz et leurs entraînements, et le défi du soir de la promo.</p>
     <div class="logo-rond" aria-hidden="true">L</div>
   </section>
 
   <section class="sec" id="matieres">
-    <div class="st"><h2>Mes <b>cours</b></h2><p>Chaque matière aura sa couleur et son emblème, repris dans toutes ses leçons.</p></div>
+    <div class="st"><h2>Mes <b>cours</b></h2><p>Leçons expliquées, schémas, exemples résolus, quiz et test final adaptatif, matière par matière.</p></div>
     <div class="mats" id="grid-matieres"></div>
   </section>
 
   <section class="sec" id="bequick">
     <a class="bqc" href="bequick.html?niveau=licence" aria-describedby="bqTxt">
       <div>
-        <div class="sur">Le défi du soir · bientôt</div>
+        <div class="sur">Le défi du soir · 18 h 30</div>
         <h2>Be<b>Quick</b></h2>
-        <p id="bqTxt">15 questions à 18 h 30, du lundi au vendredi, la même série pour toute la promo de Licence. Il ouvrira avec les premiers cours.</p>
-        <span class="bqb">Bientôt</span>
+        <p id="bqTxt">15 questions à 18 h 30, du lundi au vendredi, la même série pour toute la promo de Licence. 10 minutes, une seule chance.</p>
+        <span class="bqb">Jouer au BeQuick</span>
       </div>
       <div class="d" aria-hidden="true">
         <div class="bqp"><span class="r">1</span>Ton pseudo ici ?</div>
@@ -130,19 +133,58 @@ body{overflow-x:hidden}
   </section>
 
   <section class="sec" id="entrainement" hidden>
-    <div class="st"><h2>Entraî<b>nement</b></h2></div>
+    <div class="st"><h2>Entraî<b>nement</b></h2><p>Calculs générés à l'infini, QCM de cours et examens blancs, corrigés pas à pas.</p></div>
     <div class="gens" id="grid-entrainement"></div>
   </section>
 </main>
 
 <script src="niveau.js"></script>
+<script src="lb.js"></script>
+<script src="progress.js"></script>
 <script>
 /* ════════════════════════════════════════════════════════════════
    MATIÈRES DE LA LICENCE — un objet par cours, comme MATIERES dans
    index.html : {file, sid, nb, badge, title, court, desc, stats}.
    ════════════════════════════════════════════════════════════════ */
-const MATIERES_LICENCE = [];
-const ENTRAINEMENTS_LICENCE = [];   // {file, sid, title, detail}
+const MATIERES_LICENCE = [
+  {file:"licence/maths_fi.html", sid:"l-maths-fi", nb:7, badge:"Calculs", title:"Mathématiques financières", court:"Maths fi",
+   desc:"Intérêts simples et composés, actualisation, le piège des taux équivalents, annuités, rentes perpétuelles, emprunts indivis et TAEG. Avec des annales corrigées.",
+   stats:"7 leçons · test · annales"},
+  {file:"licence/politique-monetaire.html", sid:"l-politique-monetaire", nb:8, badge:"Macro", title:"Politique monétaire", court:"Politique monétaire",
+   desc:"Le rôle de la BCE, SEBC et Eurosystème, la cible d'inflation, le corridor des taux, la transmission des taux directeurs et les mesures non conventionnelles.",
+   stats:"8 leçons · test · annales"},
+  {file:"licence/droit-bancaire.html", sid:"l-droit-bancaire", nb:8, badge:"Juridique", title:"Droit bancaire", court:"Droit bancaire",
+   desc:"La banque et ses responsabilités, le secret bancaire, le contrat et les personnes, le compte, les moyens de paiement, le crédit, la succession.",
+   stats:"8 leçons · test · annales"},
+  {file:"licence/risques_bancaires.html", sid:"l-risques-bancaires", nb:10, badge:"Prudentiel", title:"Gestion des risques bancaires", court:"Risques bancaires",
+   desc:"Les neuf risques bancaires, la surveillance du secteur, le ratio de solvabilité Bâle III, les coussins, le LCR, le ratio de levier, la VaR et les stress tests.",
+   stats:"10 leçons · test · annales"},
+  {file:"licence/finance_internationale.html", sid:"l-finance-internationale", nb:8, badge:"Marchés", title:"Finance internationale", court:"Finance internationale",
+   desc:"Le marché des changes qui ne ferme jamais, cotations au certain et à l'incertain, retourner et croiser une cotation, taux croisés, change à terme, options.",
+   stats:"8 leçons · test · annales"},
+  {file:"licence/crises-financieres.html", sid:"l-crises-financieres", nb:8, badge:"Histoire et mécanismes", title:"Crises financières et bancaires", court:"Crises financières",
+   desc:"Le schéma qui explique la plupart des crises bancaires, le vocabulaire, les grandes crises de l'histoire et les écoles de pensée, jusqu'aux subprimes.",
+   stats:"8 leçons · test · cas pratiques"},
+  {file:"licence/fiscalite.html", sid:"l-fiscalite", nb:8, badge:"Impôts", title:"Fiscalité des particuliers", court:"Fiscalité",
+   desc:"Le quotient familial et le calcul des parts, la cascade du revenu brut au RNGI, salaires, fonciers et plus-values, le barème, la décote, les prélèvements sociaux.",
+   stats:"8 leçons · test · annales"},
+  {file:"licence/marche_des_capitaux.html", sid:"l-marche-capitaux", nb:10, badge:"Marchés", title:"Marché des capitaux", court:"Marché des capitaux",
+   desc:"Le financement de l'économie, marchés monétaire et financier, primaire et secondaire, actions, obligations, options, futures, les participants et les subprimes.",
+   stats:"10 leçons · test · annales"},
+  {file:"licence/banque_patrimoine_assurance.html", sid:"l-banque-patrimoine", nb:8, badge:"Examens blancs", title:"Banque · Patrimoine · Assurance", court:"Banque · Patrimoine",
+   desc:"Entrée en relation, crédits et épargne (bloc 2), PNB, débiteurs et satisfaction client (bloc 3) : sujets type ESBanque, réponse rédigée et corrigé modèle.",
+   stats:"8 leçons · test · examens blancs"}
+];
+const ENTRAINEMENTS_LICENCE = [   // {file, sid, title, detail}
+  {file:"licence/maths_fi_entrainement.html", sid:"l-maths-fi", title:"Mathématiques financières", detail:"Calculs générés à l'infini, QCM et examen blanc"},
+  {file:"licence/politique_monetaire_entrainement.html", sid:"l-politique-monetaire", title:"Politique monétaire", detail:"QCM de cours et examen blanc"},
+  {file:"licence/droit_bancaire_entrainement.html", sid:"l-droit-bancaire", title:"Droit bancaire", detail:"QCM, réponses courtes et examen blanc"},
+  {file:"licence/risques_bancaires_entrainement.html", sid:"l-risques-bancaires", title:"Gestion des risques", detail:"VaR, RWA, solvabilité, LCR : calculs et QCM"},
+  {file:"licence/finance_internationale_entrainement.html", sid:"l-finance-internationale", title:"Finance internationale", detail:"Cotations, taux croisés, change à terme : calculs et QCM"},
+  {file:"licence/crises_financieres_entrainement.html", sid:"l-crises-financieres", title:"Crises financières", detail:"Trois niveaux, mécanismes et histoire"},
+  {file:"licence/fiscalite_entrainement.html", sid:"l-fiscalite", title:"Fiscalité", detail:"Parts, barème, PFU, prélèvements sociaux : calculs et QCM"},
+  {file:"licence/marche_des_capitaux_entrainement.html", sid:"l-marche-capitaux", title:"Marché des capitaux", detail:"QCM de cours et examen blanc"}
+];
 
 const echapH = s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function carte(m){
@@ -150,7 +192,7 @@ function carte(m){
   return `<a class="mcard" data-sid="${echapH(m.sid)}" href="${echapH(m.file)}">
     <div class="ph"></div><span class="m-emb" aria-hidden="true"></span>
     <div class="m-info verre"><div class="m-tag">${echapH(m.badge)}</div><h3>${echapH(m.title)}</h3>
-    <div class="m-pied">${c ? c.lecons.n : 0}/${m.nb} leçons</div></div></a>`;
+    <div class="m-pied">${c && c.lecons.n ? c.lecons.n+'/'+m.nb+' leçons' : echapH(m.stats)}</div></div></a>`;
 }
 document.getElementById('grid-matieres').innerHTML = MATIERES_LICENCE.length
   ? MATIERES_LICENCE.map(carte).join('')
@@ -162,5 +204,7 @@ if(ENTRAINEMENTS_LICENCE.length){
     `<a class="gen" href="${echapH(e.file)}" data-sid="${echapH(e.sid)}"><span class="gi" aria-hidden="true"></span><span><b>${echapH(e.title)}</b><small>${echapH(e.detail)}</small></span></a>`).join('');
 }
 </script>
+<script>try{ document.getElementById('lb-id-slot').appendChild(LB.idButton()); }catch(e){}</script>
+<script src="ui.js"></script>
 </body>
 </html>

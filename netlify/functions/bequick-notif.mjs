@@ -26,8 +26,8 @@ export const MESSAGE = {
   tag: 'bequick'
 };
 
-/* ajouter 'licence' (puis 'm2') quand leur BeQuick ouvre */
-export const NIVEAUX_ACTIFS = ['m1'];
+/* niveaux dont le BeQuick est ouvert (8.0.0 : Licence ; ajouter 'm2' quand le sien ouvrira) */
+export const NIVEAUX_ACTIFS = ['m1', 'licence'];
 const PROMO = {licence:'toute la promo de Licence', m2:'toute la promo de M2'};
 export function messageDe(niveau, base = MESSAGE){
   if(niveau === 'm1' || !PROMO[niveau]) return base;

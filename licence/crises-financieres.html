@@ -1,0 +1,1981 @@
+<!DOCTYPE html>
+<html lang="fr" data-niveau="licence" subject-id="l-crises-financieres">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>Crises financières et bancaires</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+:root{
+  --ink-soft: var(--txt2);}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.6;
+  font-size: 16px;
+  min-height: 100vh;
+}
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--paper2); }
+::-webkit-scrollbar-thumb { background: var(--line); border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: var(--amber); }
+
+/* ============ NAV ============ */
+nav.topbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+  padding: 12px 24px;
+  display: flex; align-items: center; gap: 24px;
+}
+.logo {
+  display: flex; align-items: center; gap: 12px;
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--navy);
+}
+.logo-mark {
+  width: 36px; height: 36px;
+  background: var(--rust); color: var(--paper);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Fraunces', serif; font-weight: 700; font-size: 18px;
+}
+.progress-wrap { flex: 1; max-width: 400px; }
+.progress-label { font-size: 12px; color: var(--ink-soft); margin-bottom: 4px; display: flex; justify-content: space-between; }
+.progress-bar { height: 8px; background: var(--paper2); border-radius: 4px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--teal), var(--amber)); width: 0%; transition: width 0.5s; }
+.xp {
+  background: var(--ink); color: var(--paper);
+  padding: 6px 14px; border-radius: 20px;
+  font-family: 'DM Mono', monospace; font-size: 13px;
+  display: flex; align-items: center; gap: 6px;
+}
+.xp::before { content: "★"; color: var(--amber); }
+.mobile-toggle { display: none; background: none; border: 1px solid var(--line); padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 18px; }
+
+/* ============ LAYOUT ============ */
+.layout { display: flex; padding-top: 64px; min-height: 100vh; }
+aside.sidebar {
+  width: 280px;
+  background: var(--paper2);
+  border-right: 1px solid var(--line);
+  padding: 24px 16px;
+  position: fixed; top: 64px; bottom: 0; left: 0;
+  overflow-y: auto;
+}
+.sidebar-section { margin-bottom: 24px; }
+.sidebar-title {
+  font-family: 'Fraunces', serif;
+  font-size: 13px; text-transform: uppercase;
+  color: var(--ink-soft); letter-spacing: 1px;
+  margin-bottom: 8px; padding: 0 8px;
+}
+.lesson-link {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: 8px;
+  text-decoration: none; color: var(--ink);
+  font-size: 14px; margin-bottom: 2px;
+  cursor: pointer; transition: background 0.2s;
+}
+.lesson-link:hover { background: var(--paper); }
+.lesson-link.active { background: var(--teal); color: var(--paper); }
+.lesson-link.active .check { background: var(--paper); color: var(--teal); }
+.check {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--paper); border: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; flex-shrink: 0; color: var(--teal);
+}
+.lesson-link.done .check { background: var(--teal); color: var(--paper); border-color: var(--teal); }
+.lesson-link.done .check::before { content: "✓"; font-weight: bold; }
+.special-link {
+  display: block; padding: 10px 12px; border-radius: 8px;
+  text-decoration: none; color: var(--ink); font-size: 14px;
+  margin-bottom: 4px; cursor: pointer; transition: background 0.2s;
+  border: 1px solid var(--line); background: var(--paper);
+}
+.special-link:hover { background: var(--paper2); }
+.special-link.test { border-color: var(--plum); color: var(--plum); }
+.special-link.test:hover { background: var(--plum-soft); }
+.special-link.annales { border-color: var(--amber); color: var(--amber); }
+.special-link.annales:hover { background: var(--amber-soft); }
+
+main.content {
+  margin-left: 280px;
+  padding: 40px 48px 80px;
+  max-width: 900px;
+  width: 100%;
+}
+
+/* ============ LESSON CONTENT ============ */
+.lesson { display: none; animation: fadeIn 0.4s; }
+.lesson.active { display: block; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.tag {
+  display: inline-block;
+  background: var(--ink); color: var(--paper);
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; padding: 4px 10px;
+  border-radius: 4px; letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+h1.lesson-title {
+  font-family: 'Fraunces', serif;
+  font-size: 38px; line-height: 1.15;
+  color: var(--navy); margin-bottom: 8px;
+  font-weight: 600;
+}
+.lesson-subtitle {
+  font-family: 'Fraunces', serif;
+  font-size: 20px; color: var(--ink-soft);
+  font-style: italic; margin-bottom: 28px;
+  font-weight: 400;
+}
+.lesson p {
+  margin-bottom: 16px;
+  font-size: 16px;
+}
+.lesson h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 26px; color: var(--navy);
+  margin: 32px 0 12px;
+  font-weight: 600;
+}
+.lesson h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 19px; color: var(--teal);
+  margin: 24px 0 8px;
+  font-weight: 600;
+}
+.lesson strong { color: var(--ink); font-weight: 600; }
+.lesson em { font-style: italic; color: var(--ink-soft); }
+
+/* ============ CALLOUTS ============ */
+.callout {
+  border-left: 4px solid;
+  padding: 16px 20px;
+  margin: 20px 0;
+  border-radius: 0 8px 8px 0;
+  font-size: 15px;
+}
+.callout-title {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 13px; text-transform: uppercase;
+  letter-spacing: 1px; margin-bottom: 6px;
+  display: flex; align-items: center; gap: 6px;
+}
+.callout-analogie { background: var(--amber-soft); border-color: var(--amber); }
+.callout-analogie .callout-title { color: var(--amber); }
+.callout-retenir { background: var(--teal-soft); border-color: var(--teal); }
+.callout-retenir .callout-title { color: var(--teal); }
+.callout-piege { background: var(--rust-soft); border-color: var(--rust); }
+.callout-piege .callout-title { color: var(--rust); }
+.callout-info { background: var(--navy-soft); border-color: var(--navy); }
+.callout-info .callout-title { color: var(--navy); }
+
+/* ============ FORMULE ============ */
+.formule {
+  background: var(--ink); color: var(--paper);
+  padding: 20px 24px; border-radius: 8px;
+  margin: 20px 0;
+  font-family: 'DM Mono', monospace;
+  font-size: 15px; line-height: 1.7;
+}
+.formule .var { color: var(--amber); }
+.formule .num { color: var(--teal-clair); }
+.formule .lbl { color: var(--amber-clair); font-size: 12px; display: block; margin-top: 8px; }
+
+/* ============ EXEMPLE ============ */
+.exemple {
+  background: var(--paper2); border: 1px solid var(--line);
+  border-radius: 8px; padding: 20px;
+  margin: 20px 0;
+}
+.exemple-title {
+  font-family: 'Fraunces', serif; font-weight: 600;
+  color: var(--navy); font-size: 17px; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.exemple-title::before { content: ""; width: 6px; height: 24px; background: var(--amber); border-radius: 3px; }
+.etape {
+  display: flex; gap: 14px; margin-bottom: 14px;
+  align-items: flex-start;
+}
+.etape-num {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--teal); color: var(--paper);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Mono', monospace; font-weight: 600;
+  font-size: 13px; flex-shrink: 0;
+}
+.etape-content { flex: 1; padding-top: 2px; }
+.etape-content code {
+  background: var(--paper); border: 1px solid var(--line);
+  padding: 2px 6px; border-radius: 4px;
+  font-family: 'DM Mono', monospace; font-size: 13px;
+}
+
+/* ============ TABLEAU ============ */
+.table-wrap { overflow-x: auto; margin: 20px 0; }
+table {
+  width: 100%; border-collapse: collapse;
+  background: var(--paper);
+  border: 1px solid var(--line); border-radius: 8px;
+  overflow: hidden;
+  font-size: 14px;
+}
+table th {
+  background: var(--navy); color: var(--paper);
+  padding: 10px 14px; text-align: left;
+  font-family: 'Fraunces', serif; font-weight: 600;
+}
+table td {
+  padding: 10px 14px;
+  border-top: 1px solid var(--line);
+  vertical-align: top;
+}
+table tr:nth-child(even) td { background: var(--paper2); }
+
+/* ============ SCHEMAS ============ */
+.schema {
+  background: var(--paper); border: 1px solid var(--line);
+  border-radius: 8px; padding: 24px;
+  margin: 20px 0;
+  text-align: center;
+}
+.schema-title {
+  font-family: 'Fraunces', serif; font-weight: 600;
+  color: var(--navy); font-size: 15px;
+  margin-bottom: 16px;
+}
+.schema svg { max-width: 100%; height: auto; }
+
+/* Bilan visuel */
+.bilan-visuel {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 0; margin: 24px 0;
+  border-radius: 8px; overflow: hidden;
+  border: 2px solid var(--navy);
+}
+.bilan-col { padding: 18px; }
+.bilan-actif { background: var(--teal-soft); border-right: 2px solid var(--navy); }
+.bilan-passif { background: var(--amber-soft); }
+.bilan-head {
+  font-family: 'Fraunces', serif; font-weight: 700;
+  font-size: 15px; margin-bottom: 10px;
+  text-transform: uppercase; letter-spacing: 1px;
+  text-align: center;
+}
+.bilan-actif .bilan-head { color: var(--teal); }
+.bilan-passif .bilan-head { color: var(--amber); }
+.bilan-item {
+  background: var(--paper); padding: 8px 12px;
+  margin-bottom: 6px; border-radius: 4px;
+  font-size: 13px;
+}
+.bilan-item.fp { background: var(--ink); color: var(--paper); font-weight: 600; }
+
+/* Flèche cycle */
+.cycle {
+  display: flex; flex-direction: column; gap: 8px;
+  margin: 20px 0;
+}
+.cycle-item {
+  background: var(--paper2); border-left: 4px solid var(--rust);
+  padding: 12px 16px; border-radius: 0 8px 8px 0;
+  font-size: 14px;
+  position: relative;
+}
+.cycle-item::before {
+  content: attr(data-num);
+  position: absolute; left: -16px; top: 50%; transform: translateY(-50%);
+  background: var(--rust); color: var(--paper);
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Mono', monospace; font-weight: 600;
+  font-size: 12px;
+}
+.cycle { padding-left: 16px; }
+.cycle-arrow { text-align: center; color: var(--rust); font-size: 20px; }
+
+/* ============ QUIZ ============ */
+.quiz {
+  background: var(--plum-soft);
+  border: 2px solid var(--plum);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 24px 0;
+}
+.quiz-label {
+  display: inline-block;
+  background: var(--plum); color: var(--paper);
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  padding: 3px 10px; border-radius: 4px;
+  letter-spacing: 1px; margin-bottom: 10px;
+}
+.quiz-question {
+  font-family: 'Fraunces', serif; font-weight: 600;
+  font-size: 17px; color: var(--ink);
+  margin-bottom: 14px;
+}
+.quiz-options { display: flex; flex-direction: column; gap: 8px; }
+.quiz-opt {
+  background: var(--paper); border: 1px solid var(--line);
+  padding: 12px 16px; border-radius: 8px;
+  cursor: pointer; font-size: 14px;
+  transition: all 0.2s; text-align: left;
+  font-family: inherit;
+}
+.quiz-opt:hover { border-color: var(--plum); }
+.quiz-opt.correct { background: var(--teal-soft); border-color: var(--teal); }
+.quiz-opt.wrong { background: var(--rust-soft); border-color: var(--rust); }
+.quiz-opt:disabled { cursor: default; }
+.quiz-feedback {
+  margin-top: 12px; padding: 12px;
+  border-radius: 8px; font-size: 14px;
+  display: none;
+}
+.quiz-feedback.show { display: block; animation: fadeIn 0.3s; }
+.quiz-feedback.ok { background: var(--teal-soft); color: var(--teal); border-left: 4px solid var(--teal); }
+.quiz-feedback.ko { background: var(--rust-soft); color: var(--rust); border-left: 4px solid var(--rust); }
+
+/* ============ NAV BUTTONS ============ */
+.nav-buttons {
+  display: flex; justify-content: space-between;
+  align-items: center; margin-top: 48px;
+  padding-top: 24px; border-top: 1px solid var(--line);
+  gap: 16px;
+}
+.btn {
+  padding: 12px 24px; border-radius: 8px;
+  font-family: inherit; font-size: 14px;
+  font-weight: 600; cursor: pointer;
+  text-decoration: none; display: inline-flex;
+  align-items: center; gap: 8px;
+  border: none; transition: all 0.2s;
+}
+.btn-primary { background: var(--teal); color: var(--paper); }
+.btn-primary:hover { background: var(--teal); }
+.btn-secondary {
+  background: var(--paper); color: var(--ink);
+  border: 1px solid var(--line);
+}
+.btn-secondary:hover { background: var(--paper2); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.xp-gain {
+  background: var(--amber); color: var(--paper);
+  padding: 8px 14px; border-radius: 20px;
+  font-family: 'DM Mono', monospace; font-size: 12px;
+  font-weight: 600;
+}
+
+/* ============ TEST FINAL ============ */
+.test-intro, .test-result {
+  background: var(--paper2); border: 1px solid var(--line);
+  border-radius: 12px; padding: 32px; text-align: center;
+}
+.test-question {
+  background: var(--paper); border: 1px solid var(--line);
+  border-radius: 12px; padding: 24px;
+  margin-bottom: 16px;
+}
+.test-question-num {
+  font-family: 'DM Mono', monospace;
+  color: var(--ink-soft); font-size: 13px;
+  margin-bottom: 8px;
+}
+.test-input {
+  width: 200px; padding: 10px 14px;
+  border: 1px solid var(--line); border-radius: 8px;
+  font-family: 'DM Mono', monospace; font-size: 15px;
+  background: var(--paper2);
+}
+.remediation {
+  background: var(--rust-soft); border: 2px solid var(--rust);
+  border-radius: 8px; padding: 16px;
+  margin-top: 12px;
+  display: none;
+}
+.remediation.show { display: block; animation: fadeIn 0.3s; }
+.remediation-title {
+  font-family: 'Fraunces', serif; font-weight: 600;
+  color: var(--rust); margin-bottom: 8px;
+}
+.remediation-actions {
+  margin-top: 12px; display: flex; gap: 8px;
+}
+.score-bar-wrap { margin: 12px 0; text-align: left; }
+.score-bar-label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; }
+.score-bar { height: 12px; background: var(--paper2); border-radius: 6px; overflow: hidden; }
+.score-bar-fill { height: 100%; transition: width 1s ease-out; }
+
+/* ============ FLOATING BUTTON ============ */
+.float-resume {
+  position: fixed; bottom: 24px; right: 24px;
+  background: var(--plum); color: var(--paper);
+  padding: 14px 22px; border-radius: 30px;
+  font-weight: 600; cursor: pointer; border: none;
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--nuit) 15%, transparent);
+  display: none; z-index: 50;
+  font-family: inherit; font-size: 14px;
+}
+.float-resume.show { display: block; animation: fadeIn 0.3s; }
+
+/* ============ ANNALES ============ */
+.annale {
+  background: var(--paper); border: 1px solid var(--line);
+  border-radius: 12px; padding: 24px;
+  margin-bottom: 20px;
+}
+.annale-num {
+  display: inline-block;
+  background: var(--amber); color: var(--paper);
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  padding: 4px 10px; border-radius: 4px;
+  margin-bottom: 8px; letter-spacing: 1px;
+}
+.annale-titre {
+  font-family: 'Fraunces', serif; font-weight: 600;
+  color: var(--navy); font-size: 19px; margin-bottom: 12px;
+}
+.annale-enonce {
+  background: var(--paper2); padding: 16px;
+  border-radius: 8px; margin-bottom: 12px;
+  font-size: 14px;
+}
+.annale-correction { display: none; margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--line); }
+.annale-correction.show { display: block; animation: fadeIn 0.3s; }
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 900px) {
+  aside.sidebar { transform: translateX(-100%); transition: transform 0.3s; z-index: 90; }
+  aside.sidebar.open { transform: translateX(0); }
+  main.content { margin-left: 0; padding: 24px 20px 80px; }
+  .mobile-toggle { display: block; }
+  h1.lesson-title { font-size: 28px; }
+  .bilan-visuel { grid-template-columns: 1fr; }
+  .bilan-actif { border-right: none; border-bottom: 2px solid var(--navy); }
+}
+</style>
+<link rel="stylesheet" href="../ui.css">
+<link rel="stylesheet" href="../theme.css">
+<link rel="stylesheet" href="../licence.css">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#ECEEF6">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/favicon-32.png">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+</head>
+<body>
+
+<!-- ============ TOPBAR ============ -->
+<nav class="topbar">
+  <button class="mobile-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+  <div class="logo">
+    <div class="logo-mark">C</div>
+    <span>Crises financières</span>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>Progression</span>
+      <span id="progress-pct">0%</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  </div>
+  <div class="xp" id="xp-counter">0 XP</div>
+</nav>
+
+<div class="layout">
+
+<!-- ============ SIDEBAR ============ -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-title">Leçons</div>
+    <div class="lesson-link" data-lesson="0" onclick="goLesson(0)"><div class="check">1</div>Le bilan bancaire</div>
+    <div class="lesson-link" data-lesson="1" onclick="goLesson(1)"><div class="check">2</div>Vocabulaire des crises</div>
+    <div class="lesson-link" data-lesson="2" onclick="goLesson(2)"><div class="check">3</div>Crises historiques (1)</div>
+    <div class="lesson-link" data-lesson="3" onclick="goLesson(3)"><div class="check">4</div>Crises historiques (2)</div>
+    <div class="lesson-link" data-lesson="4" onclick="goLesson(4)"><div class="check">5</div>Théorie monétariste</div>
+    <div class="lesson-link" data-lesson="5" onclick="goLesson(5)"><div class="check">6</div>Néo-keynésiens</div>
+    <div class="lesson-link" data-lesson="6" onclick="goLesson(6)"><div class="check">7</div>Régulationnistes & Minsky</div>
+    <div class="lesson-link" data-lesson="7" onclick="goLesson(7)"><div class="check">8</div>La crise des subprimes</div>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-title">Évaluation</div>
+    <div class="special-link test" onclick="goTest()">📝 Test final (10 questions)</div>
+    <div class="special-link annales" onclick="goAnnales()">📚 Cas pratiques type examen</div>
+  </div>
+</aside>
+
+<!-- ============ MAIN ============ -->
+<main class="content">
+
+<!-- ============ LEÇON 1 : BILAN ============ -->
+<section class="lesson active" data-id="0">
+  <div class="tag">CHAPITRE 1 · LES BASES</div>
+  <h1 class="lesson-title">Le bilan bancaire, la photo qui explique tout</h1>
+  <div class="lesson-subtitle">Comprendre ce schéma, c'est comprendre 80% des crises bancaires</div>
+
+  <div class="callout callout-analogie">
+    <div class="callout-title">💡 Analogie · Le frigo et le placard</div>
+    Imagine ton frigo. À <strong>droite</strong>, ce qu'il <em>contient</em> (les yaourts, le poulet) : c'est ce qui est <em>à toi</em>, ce que tu as acheté avec ton argent. À <strong>gauche</strong>, ce qui a permis de remplir ce frigo (ton salaire, l'argent que t'ont prêté tes parents). Pour le bilan d'une banque, c'est pareil : à gauche on liste <em>ce qu'elle possède</em> (l'ACTIF), à droite <em>d'où vient l'argent</em> (le PASSIF). Les deux doivent toujours être à l'équilibre.
+  </div>
+
+  <p>Une banque, à la différence d'une boulangerie, ne vend pas un produit physique. Son métier, c'est <strong>transformer</strong> des ressources courtes (tes dépôts, que tu peux retirer à tout moment) en emplois longs (des crédits sur 20 ans). Le <strong>bilan</strong> est la photographie de ce métier à un instant T.</p>
+
+  <div class="schema">
+    <div class="schema-title">Le bilan d'une banque, version visuelle</div>
+    <div class="bilan-visuel">
+      <div class="bilan-col bilan-actif">
+        <div class="bilan-head">ACTIF (emplois)</div>
+        <div class="bilan-item">💰 Crédits accordés aux clients</div>
+        <div class="bilan-item">📄 Titres détenus (obligations, actions)</div>
+        <div class="bilan-item">🏦 Réserves à la banque centrale</div>
+        <div class="bilan-item">💵 Liquidités en caisse</div>
+      </div>
+      <div class="bilan-col bilan-passif">
+        <div class="bilan-head">PASSIF (ressources)</div>
+        <div class="bilan-item">👥 Dépôts des clients</div>
+        <div class="bilan-item">🔁 Emprunts interbancaires (Euribor, €STR)</div>
+        <div class="bilan-item fp">🛡️ FONDS PROPRES (capital + bénéfices)</div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Le rôle critique des fonds propres</h2>
+  <p>Les <strong>fonds propres</strong>, c'est le <em>matelas de sécurité</em> de la banque. Ils servent à <strong>absorber les pertes</strong> quand les choses tournent mal (clients qui ne remboursent pas, actifs qui perdent de la valeur). Tant que ce matelas existe, la banque tient. Quand il devient négatif, elle est en <strong>faillite</strong>.</p>
+
+  <div class="formule">
+    <span class="var">Fonds Propres</span> = <span class="num">Actif total</span> − <span class="num">Passif (hors FP)</span>
+    <span class="lbl">Si FP &gt; 0 → banque solvable · Si FP &lt; 0 → banqueroute</span>
+  </div>
+
+  <div class="exemple">
+    <div class="exemple-title">Exemple chiffré · Une banque qui encaisse des pertes</div>
+    <div class="etape"><div class="etape-num">1</div><div class="etape-content">Bilan initial : <code>Actif = 100€</code> (crédits) · <code>Passif = 90€</code> (dépôts) · <code>FP = 10€</code>.</div></div>
+    <div class="etape"><div class="etape-num">2</div><div class="etape-content">5 clients ne remboursent pas leur crédit → perte de <code>5€</code> à l'actif.</div></div>
+    <div class="etape"><div class="etape-num">3</div><div class="etape-content">L'actif tombe à <code>95€</code>. Pour équilibrer, on pioche dans les fonds propres : <code>FP = 95 − 90 = 5€</code>. La banque tient encore.</div></div>
+    <div class="etape"><div class="etape-num">4</div><div class="etape-content">Si la perte est de <code>12€</code> au lieu de 5€ : actif = <code>88€</code>, donc <code>FP = 88 − 90 = −2€</code>. La banque est <strong>insolvable</strong>.</div></div>
+  </div>
+
+  <div class="callout callout-retenir">
+    <div class="callout-title">🔑 À retenir</div>
+    <strong>Fonds propres positifs</strong> = banque solvable. <strong>Fonds propres négatifs</strong> = banqueroute. Le seuil réglementaire actuel (Bâle III) impose <strong>au minimum 10,5%</strong> de fonds propres sur les actifs pondérés.
+  </div>
+
+  <div class="callout callout-piege">
+    <div class="callout-title">⚠️ Piège fréquent</div>
+    Ne confonds pas <strong>liquidité</strong> et <strong>solvabilité</strong>. Une banque peut être <em>solvable</em> (fonds propres positifs) mais <em>illiquide</em> (pas de cash dispo) → elle peut quand même couler si elle ne peut pas honorer les retraits. C'est exactement ce qui est arrivé à SVB en 2023.
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz" data-quiz="q1-1">
+    <div class="quiz-label">MINI-QUIZ 1/3</div>
+    <div class="quiz-question">Une banque a 200€ d'actif et 195€ de passif (hors FP). Combien valent ses fonds propres ?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">395€</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, true)">5€</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">−5€</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">200€</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz" data-quiz="q1-2">
+    <div class="quiz-label">MINI-QUIZ 2/3</div>
+    <div class="quiz-question">Où se trouvent les <em>dépôts des clients</em> dans le bilan d'une banque ?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">À l'actif (la banque les possède)</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, true)">Au passif (la banque les doit aux clients)</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Dans les fonds propres</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Hors-bilan</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz" data-quiz="q1-3">
+    <div class="quiz-label">MINI-QUIZ 3/3</div>
+    <div class="quiz-question">Vrai ou faux : une banque solvable ne peut jamais faire faillite.</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Vrai</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, true)">Faux — un problème de liquidité peut la couler malgré des FP positifs</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="btn btn-secondary" disabled>← Précédent</button>
+    <span class="xp-gain">+10 XP à la validation</span>
+    <button class="btn btn-primary" onclick="validateLesson(0)">Suivant →</button>
+  </div>
+</section>
+
+<!-- ============ LEÇON 2 : VOCABULAIRE ============ -->
+<section class="lesson" data-id="1">
+  <div class="tag">CHAPITRE 1 · LES BASES</div>
+  <h1 class="lesson-title">Savoir nommer la crise avant de la comprendre</h1>
+  <div class="lesson-subtitle">Le vocabulaire indispensable pour ne pas confondre récession et stagflation</div>
+
+  <div class="callout callout-analogie">
+    <div class="callout-title">💡 Analogie · Le médecin et son diagnostic</div>
+    Un médecin ne dit pas "vous êtes malade", il dit "vous avez une grippe", "une angine", "une pneumonie". Chaque mot précis correspond à une situation différente, avec un traitement différent. En économie c'est pareil : <strong>stagnation</strong>, <strong>récession</strong>, <strong>stagflation</strong>, ce ne sont pas des synonymes. Apprends à les distinguer comme un docteur reconnaît ses pathologies.
+  </div>
+
+  <h2>Les 9 mots à connaître par cœur</h2>
+
+  <div class="callout callout-info">
+    <div class="callout-title">📘 Crise bancaire</div>
+    Situation où des banques font faillite (ou risquent de faire faillite) au point que <strong>l'État doit intervenir</strong> pour sauver le système financier. Sans intervention, c'est l'effet domino.
+  </div>
+
+  <div class="callout callout-info">
+    <div class="callout-title">📘 Ruée bancaire (<em>bank run</em>)</div>
+    Les clients se précipitent en masse au guichet pour retirer leur argent, paniqués par la rumeur d'une faillite. Le problème : la banque n'a <strong>jamais</strong> tout le cash en caisse — l'argent est prêté ailleurs. Plus de demande de cash → plus de panique → encore plus de demande.
+  </div>
+
+  <div class="callout callout-info">
+    <div class="callout-title">📘 Banqueroute</div>
+    La faillite d'une banque : elle ne peut plus payer ses dettes, ses fonds propres sont à zéro ou négatifs.
+  </div>
+
+  <div class="callout callout-info">
+    <div class="callout-title">📘 Récession</div>
+    <strong>2 trimestres consécutifs</strong> avec un taux de croissance du PIB <strong>négatif</strong>. L'économie rétrécit pendant au moins 6 mois.
+  </div>
+
+  <div class="callout callout-info">
+    <div class="callout-title">📘 Stagnation</div>
+    Croissance <strong>nulle</strong> (PIB qui ne bouge plus, ni en haut, ni en bas). Pas de récession, mais pas de progrès.
+  </div>
+
+  <div class="callout callout-info">
+    <div class="callout-title">📘 Stagnation séculaire</div>
+    Stagnation qui <strong>dure très longtemps</strong>, avec sous-emploi chronique et inflation faible voire déflation. Le "scénario japonais" des années 1990-2010.
+  </div>
+
+  <div class="callout callout-info">
+    <div class="callout-title">📘 Stagflation</div>
+    Le pire des deux mondes : <strong>stagnation + inflation forte</strong> en même temps. Cas typique : crise pétrolière des années 1970.
+  </div>
+
+  <div class="callout callout-info">
+    <div class="callout-title">📘 Instabilité financière</div>
+    Fluctuations <strong>cycliques, durables et de forte amplitude</strong> sur les marchés. Quand l'instabilité devient trop forte, elle débouche sur une crise.
+  </div>
+
+  <div class="callout callout-info">
+    <div class="callout-title">📘 Risque systémique</div>
+    Quand <strong>la chute d'un acteur entraîne la chute de tout le système</strong>. Une banque tombe → elle ne rembourse pas les autres → effet domino → tout s'effondre.
+  </div>
+
+  <h2>Les 7 signes qu'on est en pleine crise</h2>
+  <p>À apprendre <strong>dans l'ordre</strong> : ils s'enchaînent comme les symptômes d'une maladie.</p>
+
+  <div class="cycle">
+    <div class="cycle-item" data-num="1"><strong>Ruées bancaires</strong> — Les clients se précipitent pour retirer leur cash</div>
+    <div class="cycle-item" data-num="2"><strong>Fermeture temporaire</strong> — Les banques ferment leurs guichets pour stopper la panique</div>
+    <div class="cycle-item" data-num="3"><strong>Défaut des clients</strong> — Les emprunteurs ne remboursent plus leurs crédits</div>
+    <div class="cycle-item" data-num="4"><strong>Détérioration des bilans</strong> — Les pertes s'accumulent, les fonds propres fondent</div>
+    <div class="cycle-item" data-num="5"><strong>Contagion</strong> — Les faillites se propagent d'une banque à l'autre</div>
+    <div class="cycle-item" data-num="6"><strong>Crise systémique</strong> — Tout le système financier vacille</div>
+    <div class="cycle-item" data-num="7"><strong>Intervention de l'État</strong> — Le gouvernement injecte de l'argent pour sauver les banques</div>
+  </div>
+
+  <h3>Les indicateurs à surveiller (signaux d'alerte AVANT la crise)</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Indicateur</th><th>Ce qu'il signale</th></tr>
+      <tr><td><strong>Cours boursiers</strong></td><td>Bulle si flambée non justifiée par les fondamentaux</td></tr>
+      <tr><td><strong>Prix des actifs</strong></td><td>Anormalement hauts = bulle possible</td></tr>
+      <tr><td><strong>Taux d'intérêt</strong></td><td>Bouger brusquement = risque sur les portefeuilles d'obligations</td></tr>
+      <tr><td><strong>Marché des prêts hypothécaires</strong></td><td>Volume excessif = surchauffe immobilière</td></tr>
+      <tr><td><strong>Prix de l'immobilier</strong></td><td>Hausse incontrôlée = bulle immo (cas des subprimes)</td></tr>
+    </table>
+  </div>
+
+  <div class="callout callout-piege">
+    <div class="callout-title">⚠️ Piège fréquent</div>
+    À l'examen, on te demande souvent de distinguer <strong>récession</strong> et <strong>stagnation</strong>. <em>Récession</em> = PIB qui <strong>baisse</strong> (négatif). <em>Stagnation</em> = PIB qui <strong>ne bouge plus</strong> (nul). Confondre les deux est une erreur classique.
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz" data-quiz="q2-1">
+    <div class="quiz-label">MINI-QUIZ 1/3</div>
+    <div class="quiz-question">Le Japon a connu pendant 20 ans une croissance quasi-nulle avec inflation faible. Quel terme décrit le mieux cette situation ?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Récession</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Stagflation</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, true)">Stagnation séculaire</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Crise systémique</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz" data-quiz="q2-2">
+    <div class="quiz-label">MINI-QUIZ 2/3</div>
+    <div class="quiz-question">Combien de trimestres consécutifs de PIB négatif faut-il pour parler officiellement de récession ?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">1</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, true)">2</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">3</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">4</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz" data-quiz="q2-3">
+    <div class="quiz-label">MINI-QUIZ 3/3</div>
+    <div class="quiz-question">La crise pétrolière des années 1970 a vu coexister chômage massif et inflation à 2 chiffres. Comment appelle-t-on cette situation ?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Récession</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, true)">Stagflation</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Déflation</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Hyperinflation</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="btn btn-secondary" onclick="goLesson(0)">← Précédent</button>
+    <span class="xp-gain">+10 XP à la validation</span>
+    <button class="btn btn-primary" onclick="validateLesson(1)">Suivant →</button>
+  </div>
+</section>
+
+<!-- ============ LEÇON 3 : CRISES HISTORIQUES (1) ============ -->
+<section class="lesson" data-id="2">
+  <div class="tag">CHAPITRE 2 · HISTOIRE</div>
+  <h1 class="lesson-title">Quand les rois ne remboursent plus et les tulipes valent plus qu'une maison</h1>
+  <div class="lesson-subtitle">Florence 1345 · Tulipes 1637 · Système de Law 1720</div>
+
+  <div class="callout callout-analogie">
+    <div class="callout-title">💡 Analogie · Toujours la même histoire</div>
+    Toutes les crises se ressemblent. Imagine qu'à chaque fois quelqu'un te raconte la même histoire avec des personnages différents : il y a toujours <strong>une bulle</strong> (quelque chose qui monte trop vite), <strong>une confiance excessive</strong> (tout le monde y croit), <strong>un déclencheur</strong> (la goutte qui fait déborder) et <strong>l'effondrement</strong>. Si tu retiens cette trame, tu connais 70% des crises.
+  </div>
+
+  <h2>🏛 Florence, 1345 — la première grande faillite bancaire</h2>
+  <p>Deux familles florentines, les <strong>Bardi</strong> et les <strong>Peruzzi</strong>, dominent la finance européenne. Elles prêtent énormément au <strong>roi d'Angleterre</strong> (qui finance ses guerres contre la France) et à la <strong>ville de Florence</strong>. Sauf que ni l'un ni l'autre ne remboursent : ce sont les premiers <strong>prêts non performants</strong> documentés de l'histoire bancaire.</p>
+  <p>Les apporteurs de capitaux paniquent quand ils découvrent l'ampleur des dettes irrécouvrables, retirent leurs fonds → les deux banques font faillite en cascade.</p>
+
+  <div class="callout callout-retenir">
+    <div class="callout-title">🔑 À retenir</div>
+    Leçon universelle : <strong>ne jamais prêter au-delà de la capacité de remboursement</strong> de l'emprunteur, même s'il s'agit d'un roi. Le risque de défaut ne disparaît pas avec le prestige du débiteur.
+  </div>
+
+  <h2>🌷 Pays-Bas, 1637 — la bulle des tulipes</h2>
+  <p>Aux Pays-Bas du 17e, la <strong>tulipe</strong> devient l'objet de luxe à la mode. Les bulbes s'échangent à prix d'or. Les gens achètent non pas pour planter, mais pour <strong>revendre plus cher</strong> — c'est de la pure spéculation sur la <em>valeur anticipée</em>.</p>
+  <p>On invente un <strong>marché à terme</strong> : on achète aujourd'hui une tulipe qui sera livrée plus tard. La tulipe, normalement saisonnière, devient un actif financier qu'on peut négocier <strong>toute l'année</strong>. Pire : ça se négocie au <strong>bar</strong>, sans autorité de marché. C'est un marché de gré à gré totalement déréglementé.</p>
+
+  <div class="schema">
+    <div class="schema-title">Le cycle d'une bulle spéculative</div>
+    <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 30 170 Q 100 160, 180 130 T 350 50 L 380 40 L 410 50 L 440 100 L 480 150 L 530 170" fill="none" stroke-width="3" style="stroke:var(--rust)"/>
+      <circle cx="30" cy="170" r="5" style="fill:var(--teal)"/>
+      <text x="30" y="190" font-family="DM Sans" font-size="11" text-anchor="middle">Calme</text>
+      <circle cx="180" cy="130" r="5" style="fill:var(--amber)"/>
+      <text x="180" y="190" font-family="DM Sans" font-size="11" text-anchor="middle">Engouement</text>
+      <circle cx="380" cy="40" r="6" style="fill:var(--rust)"/>
+      <text x="380" y="25" font-family="DM Sans" font-size="11" text-anchor="middle" font-weight="bold" style="fill:var(--rust)">PIC (3,5%×prix final)</text>
+      <circle cx="530" cy="170" r="5" style="fill:var(--nuit)"/>
+      <text x="530" y="190" font-family="DM Sans" font-size="11" text-anchor="middle">Ruine</text>
+    </svg>
+  </div>
+
+  <p>Quand la confiance s'effondre (raison inconnue, peut-être une mauvaise enchère), <strong>plus personne ne veut acheter</strong>. Liquidation finale catastrophique : la tulipe se revend à <strong>3,5% de son prix initial</strong>.</p>
+
+  <div class="callout callout-retenir">
+    <div class="callout-title">🔑 À retenir</div>
+    C'est la <strong>première bulle spéculative</strong> documentée. À chaque fois qu'un actif s'achète juste pour être revendu plus cher (pas pour son usage), méfiance. C'est aussi un <strong>risque de marché</strong> : le prix de liquidation peut s'écrouler très loin du prix d'achat.
+  </div>
+
+  <h2>👑 France, 1720 — le système de Law</h2>
+  <p>La France croule sous la <strong>dette publique</strong> après les guerres de Louis XIV. <strong>John Law</strong>, un Écossais, propose une solution révolutionnaire : créer la <strong>Banque générale</strong>, qui deviendra ensuite <strong>Banque royale</strong> (sous contrôle de l'État).</p>
+  <p>Mécanisme : la banque <strong>imprime énormément de monnaie</strong> à taux faibles, émet des actions (que tout le monde s'arrache), et avec ce cash rachète les obligations d'État. La dette publique fond.</p>
+
+  <div class="formule">
+Bilan de Law avant : masse monétaire = <span class="num">400 millions</span>
+Bilan de Law après : masse monétaire = <span class="num">1 milliard</span>
+<span class="lbl">Soit un X 2,5 en quelques années — pure création monétaire</span>
+  </div>
+
+  <p>La banque collecte même les <strong>impôts</strong> : confiance maximale. Le cours de l'action Law explose. Mais c'est une <strong>bulle</strong> : un jour la confiance se fissure, les détenteurs veulent convertir leurs actions en or, la banque n'a pas assez d'or → faillite.</p>
+
+  <div class="callout callout-retenir">
+    <div class="callout-title">🔑 À retenir · Leçon historique majeure</div>
+    Law fait <strong>sauter le lien entre la monnaie et l'or</strong>. C'est le début de la <strong>monnaie fiduciaire</strong> : la monnaie a de la valeur parce qu'on y croit (du latin <em>fiducia</em> = confiance), pas parce qu'elle est adossée à un métal précieux. C'est l'ancêtre de notre euro et du dollar actuels.
+  </div>
+
+  <div class="callout callout-piege">
+    <div class="callout-title">⚠️ Piège fréquent</div>
+    On confond souvent Law (1720) avec la crise de Florence (1345). Astuce mnémo : <strong>Florence = prêt non performant</strong> (un roi ne paye pas), <strong>Law = bulle monétaire</strong> (trop d'argent imprimé).
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz" data-quiz="q3-1">
+    <div class="quiz-label">MINI-QUIZ 1/3</div>
+    <div class="quiz-question">Quelle est la leçon principale de la crise de Florence (1345) ?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Les bulles spéculatives finissent toujours par éclater</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, true)">Le risque de défaut, même d'un roi, peut couler une banque</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Il faut séparer banque commerciale et banque d'affaires</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">La monnaie doit être adossée à l'or</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz" data-quiz="q3-2">
+    <div class="quiz-label">MINI-QUIZ 2/3</div>
+    <div class="quiz-question">À combien de % de leur prix initial les tulipes se sont-elles revendues après l'éclatement de la bulle ?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">35%</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, true)">3,5%</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">50%</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">0,35%</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz" data-quiz="q3-3">
+    <div class="quiz-label">MINI-QUIZ 3/3</div>
+    <div class="quiz-question">Quel apport historique majeur est associé au système de Law (1720) ?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">L'invention du chèque bancaire</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">La création de la Banque de France</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, true)">La naissance de la monnaie fiduciaire (rupture monnaie/or)</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Le premier ratio prudentiel</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="btn btn-secondary" onclick="goLesson(1)">← Précédent</button>
+    <span class="xp-gain">+15 XP à la validation</span>
+    <button class="btn btn-primary" onclick="validateLesson(2)">Suivant →</button>
+  </div>
+</section>
+
+<!-- ============ LEÇON 4 : CRISES HISTORIQUES (2) ============ -->
+<section class="lesson" data-id="3">
+  <div class="tag">CHAPITRE 2 · HISTOIRE</div>
+  <h1 class="lesson-title">L'ère industrielle puis l'ère financière : les crises modernes</h1>
+  <div class="lesson-subtitle">Union Générale 1881 · Crises US 19e · 1929 · SVB 2023</div>
+
+  <h2>🚂 France, 1881 — l'Union Générale et le rail</h2>
+  <p><strong>Eugène Bontoux</strong> (ex-Rothschild) reprend la banque <strong>Union Générale</strong> en 1878 et investit massivement dans les <strong>obligations et actions ferroviaires</strong>. L'idée : le chemin de fer va révolutionner l'économie, miser dessus est gagnant à coup sûr.</p>
+  <p>Le cours de l'action passe de <strong>500€ à 3000€</strong> en 3 ans. Plus l'action monte, plus les gens déposent à la banque (confiance), plus la banque investit dans le rail, plus le cours monte. C'est un cercle auto-entretenu typique d'une <strong>bulle</strong>.</p>
+
+  <div class="callout callout-piege">
+    <div class="callout-title">⚠️ Piège fréquent · Le mécanisme du "double effet"</div>
+    Quand un actif est à la fois à l'<strong>actif</strong> du bilan (titres détenus) <strong>et</strong> indirectement au <strong>passif</strong> (via la confiance qu'il génère pour attirer les dépôts), sa chute fait <strong>double effet</strong> : pertes à l'actif + retraits massifs au passif. C'est le mécanisme caché de toutes les bulles bancaires.
+  </div>
+
+  <p><strong>Le déclencheur</strong> : l'État français freine son plan d'investissement dans le ferroviaire. Les actions chutent <strong>à l'actif</strong> (titres détenus) <strong>et au passif</strong> (capital de la banque) en même temps → effondrement.</p>
+
+  <h2>🏦 États-Unis, 19e siècle — paniques en série</h2>
+  <p>Aux USA, ouvrir une banque ne nécessite presque aucun <strong>fonds propres</strong>. Résultat : des milliers de petites banques fragiles qui s'effondrent à la moindre panique régionale.</p>
+
+  <div class="callout callout-retenir">
+    <div class="callout-title">🔑 À retenir · Héritage réglementaire</div>
+    Conséquence à long terme : les <strong>fonds propres minimaux ont été progressivement relevés à 10,5%</strong> (seuil prudentiel actuel, hérité de Bâle III). C'est l'héritage direct de ces crises américaines du 19e.
+  </div>
+
+  <h2>📉 États-Unis, 1929 — la mère de toutes les crises</h2>
+  <p>Le <strong>jeudi 24 octobre 1929</strong> ("Jeudi noir"), la Bourse de New York s'effondre. Mais ce qui suit est encore plus grave : les économistes <strong>Friedman &amp; Schwartz</strong> ont compté <strong>4 paniques bancaires successives</strong> entre 1930 et 1933.</p>
+
+  <h3>Le mécanisme en chaîne</h3>
+  <div class="cycle">
+    <div class="cycle-item" data-num="1">Les clients retirent leur cash en masse</div>
+    <div class="cycle-item" data-num="2">Le <strong>passif</strong> (dépôts) s'effondre</div>
+    <div class="cycle-item" data-num="3">La banque doit réduire son <strong>actif</strong> pour équilibrer</div>
+    <div class="cycle-item" data-num="4">Elle <strong>arrête de faire des crédits</strong></div>
+    <div class="cycle-item" data-num="5">La <strong>masse monétaire</strong> de tout le pays s'effondre</div>
+    <div class="cycle-item" data-num="6">L'économie réelle est étranglée : faillites en série, chômage à 25%</div>
+  </div>
+
+  <div class="callout callout-retenir">
+    <div class="callout-title">🔑 À retenir</div>
+    La crise de 1929 est <strong>la référence absolue</strong> pour la théorie monétariste (qu'on verra à la leçon 5). Si à l'examen on te demande un exemple de crise systémique, c'est <em>celui-là</em> qu'il faut citer en priorité.
+  </div>
+
+  <h2>💻 SVB (Silicon Valley Bank), 2023 — la crise la plus récente</h2>
+  <p>SVB est la banque chouchou des <strong>startups tech américaines</strong>. À son passif : les énormes dépôts des GAFA et de l'écosystème tech. À son actif : des <strong>obligations d'État anciennes, à taux faibles</strong> (achetées quand les taux étaient à 0%).</p>
+
+  <p>Quand la Fed remonte ses taux brutalement en 2022-2023 pour lutter contre l'inflation, ces obligations anciennes <strong>perdent énormément de valeur</strong> (mécanique obligataire : quand les taux montent, les anciennes obligations à faible taux deviennent moins attractives, donc leur prix baisse).</p>
+
+  <p>Les startups, ayant moins de cash en 2023, veulent retirer leurs dépôts. SVB doit <strong>vendre ses obligations à perte</strong> pour les rembourser → les pertes mangent les fonds propres → la banque coule en <strong>48 heures</strong>.</p>
+
+  <div class="schema">
+    <div class="schema-title">SVB : la cascade de risques cumulés</div>
+    <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
+      <rect x="20" y="20" width="160" height="60" rx="8" stroke-width="2" style="fill:var(--navy-soft);stroke:var(--navy)"/>
+      <text x="100" y="45" font-family="DM Sans" font-size="13" text-anchor="middle" font-weight="600">Risque de TAUX</text>
+      <text x="100" y="63" font-family="DM Sans" font-size="10" text-anchor="middle">Oblig anciennes ↓</text>
+      <rect x="220" y="20" width="160" height="60" rx="8" stroke-width="2" style="fill:var(--plum-soft);stroke:var(--plum)"/>
+      <text x="300" y="45" font-family="DM Sans" font-size="13" text-anchor="middle" font-weight="600">CONCENTRATION</text>
+      <text x="300" y="63" font-family="DM Sans" font-size="10" text-anchor="middle">Que des startups tech</text>
+      <rect x="420" y="20" width="160" height="60" rx="8" stroke-width="2" style="fill:var(--rust-soft);stroke:var(--rust)"/>
+      <text x="500" y="45" font-family="DM Sans" font-size="13" text-anchor="middle" font-weight="600">RUÉE</text>
+      <text x="500" y="63" font-family="DM Sans" font-size="10" text-anchor="middle">Retraits massifs</text>
+      <path d="M 180 50 L 220 50" stroke-width="2" marker-end="url(#arrow)" style="stroke:var(--nuit)"/>
+      <path d="M 380 50 L 420 50" stroke-width="2" marker-end="url(#arrow)" style="stroke:var(--nuit)"/>
+      <rect x="200" y="130" width="200" height="60" rx="8" style="fill:var(--nuit);stroke:var(--nuit)"/>
+      <text x="300" y="155" font-family="DM Sans" font-size="14" text-anchor="middle" font-weight="600" style="fill:var(--fond)">FAILLITE en 48h</text>
+      <text x="300" y="175" font-family="DM Sans" font-size="11" text-anchor="middle" style="fill:var(--amber-clair)">Mars 2023</text>
+      <path d="M 100 80 L 280 130" stroke-width="2" marker-end="url(#arrow)" style="stroke:var(--nuit)"/>
+      <path d="M 300 80 L 300 130" stroke-width="2" marker-end="url(#arrow)" style="stroke:var(--nuit)"/>
+      <path d="M 500 80 L 320 130" stroke-width="2" marker-end="url(#arrow)" style="stroke:var(--nuit)"/>
+      <defs>
+        <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+          <path d="M0,0 L9,3 L0,6" style="fill:var(--nuit)"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <div class="callout callout-retenir">
+    <div class="callout-title">🔑 À retenir</div>
+    SVB combine <strong>3 risques en un</strong> : <em>risque de taux</em> (obligations anciennes qui se déprécient) + <em>risque de liquidité</em> (incapacité de fournir le cash demandé) + <em>concentration des déposants</em> (tous dans le même secteur, qui paniquent ensemble).
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz" data-quiz="q4-1">
+    <div class="quiz-label">MINI-QUIZ 1/3</div>
+    <div class="quiz-question">Combien de paniques bancaires successives Friedman & Schwartz ont-ils comptées lors de la crise de 1929 ?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">2</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">3</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, true)">4</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">5</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz" data-quiz="q4-2">
+    <div class="quiz-label">MINI-QUIZ 2/3</div>
+    <div class="quiz-question">Pourquoi les obligations à l'actif de SVB ont-elles perdu de la valeur en 2022-2023 ?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Parce que l'État américain a fait défaut</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, true)">Parce que la Fed a remonté ses taux, dépréciant les anciennes obligations à taux faible</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Parce que SVB a mal géré son trading</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Parce que les startups ont retiré leurs obligations</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz" data-quiz="q4-3">
+    <div class="quiz-label">MINI-QUIZ 3/3</div>
+    <div class="quiz-question">Quel est l'héritage réglementaire des crises bancaires américaines du 19e siècle ?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">La séparation entre banque de dépôt et banque d'affaires</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, true)">L'imposition d'un seuil minimal de fonds propres (10,5% aujourd'hui)</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">La création du FMI</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">L'abandon de l'étalon-or</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="btn btn-secondary" onclick="goLesson(2)">← Précédent</button>
+    <span class="xp-gain">+15 XP à la validation</span>
+    <button class="btn btn-primary" onclick="validateLesson(3)">Suivant →</button>
+  </div>
+</section>
+
+<!-- ============ LEÇON 5 : MONÉTARISTES ============ -->
+<section class="lesson" data-id="4">
+  <div class="tag">CHAPITRE 3 · THÉORIES</div>
+  <h1 class="lesson-title">« Tout est une question de monnaie »</h1>
+  <div class="lesson-subtitle">La théorie monétariste de Friedman & Schwartz</div>
+
+  <div class="callout callout-analogie">
+    <div class="callout-title">💡 Analogie · Le robinet d'eau</div>
+    Imagine l'économie comme un jardin qui a besoin d'eau pour pousser. La <strong>monnaie</strong>, c'est l'eau. Quand le robinet est coupé (masse monétaire qui chute), les plantes meurent — peu importe qu'elles soient en bonne santé. Pour les monétaristes, la crise n'est pas un problème de plantes (les banques) ou de jardinier (les clients), c'est un problème de <strong>plomberie</strong> : il faut qu'une autorité (la Banque centrale) rouvre le robinet.
+  </div>
+
+  <h2>L'idée centrale</h2>
+  <p>Pour les monétaristes, les crises arrivent parce que la <strong>masse monétaire (M3) chute brutalement</strong>. Le mécanisme est implacable :</p>
+
+  <div class="cycle">
+    <div class="cycle-item" data-num="1">Panique bancaire → ruée des clients pour retirer leur cash</div>
+    <div class="cycle-item" data-num="2">La <strong>monnaie scripturale</strong> (celle créée par les banques via le crédit) est détruite</div>
+    <div class="cycle-item" data-num="3">Il y a moins d'argent en circulation → la masse monétaire s'effondre</div>
+    <div class="cycle-item" data-num="4">Moins d'argent = moins d'investissement = moins de consommation</div>
+    <div class="cycle-item" data-num="5">L'économie se <strong>contracte</strong></div>
+  </div>
+
+  <div class="formule">
+Si <span class="var">M3</span> ↓ et <span class="var">V</span> (vitesse de circulation) ↓
+→ alors <span class="var">Inflation</span> ↓ et activité ↓
+<span class="lbl">Théorie quantitative de la monnaie · M × V = P × Y</span>
+  </div>
+
+  <h2>La solution monétariste</h2>
+  <p>Si le problème vient d'un effondrement de la masse monétaire, la <strong>solution est évidente</strong> : la Banque centrale doit intervenir massivement pour <strong>réinjecter de la monnaie</strong>. Selon Friedman, la grande erreur de la Fed en 1929 a été <strong>l'inaction</strong>, qui a transformé un krach boursier en dépression mondiale.</p>
+
+  <div class="callout callout-retenir">
+    <div class="callout-title">🔑 À retenir</div>
+    Pour les monétaristes, la cause profonde de la crise <strong>n'est pas la panique elle-même</strong>, mais l'<strong>inaction prévisible de la BC</strong>. Si la BC est crédible et prête à intervenir, les paniques ne se transforment pas en crises systémiques.
+  </div>
+
+  <h2>Distinction cruciale : pseudo-crise vs crise réelle</h2>
+  <p>Friedman insiste sur le fait que <strong>toutes les crises ne se valent pas</strong>. Une BC ne doit pas intervenir n'importe comment : il y a un risque d'<strong>aléa moral</strong> (les banques prennent trop de risques si elles savent qu'elles seront toujours sauvées).</p>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th></th><th>Pseudo-crise</th><th>Crise réelle</th></tr>
+      <tr><td><strong>Ampleur</strong></td><td>Microéconomique, localisée</td><td>Macroéconomique, généralisée</td></tr>
+      <tr><td><strong>Impact</strong></td><td>Limité (perte de richesse seulement)</td><td>Paniques bancaires, risque systémique</td></tr>
+      <tr><td><strong>Coûts</strong></td><td>Faibles</td><td>Forts</td></tr>
+      <tr><td><strong>Intervention BC</strong></td><td>Pas requise (créerait de l'aléa moral)</td><td>Requise (évite le risque systémique)</td></tr>
+      <tr><td><strong>Exemple</strong></td><td>Krach boursier de 1987</td><td>Crise de 1929</td></tr>
+    </table>
+  </div>
+
+  <div class="callout callout-piege">
+    <div class="callout-title">⚠️ Piège fréquent · L'aléa moral</div>
+    <strong>Aléa moral</strong> = quand un acteur prend plus de risques parce qu'il sait qu'il ne supportera pas les conséquences. Si la BC sauve <em>toutes</em> les banques systématiquement, elles auront tendance à prendre des risques excessifs. D'où la règle : <strong>n'intervenir que pour les vraies crises</strong> systémiques.
+  </div>
+
+  <div class="exemple">
+    <div class="exemple-title">Cas d'application · 1929 vs 1987</div>
+    <div class="etape"><div class="etape-num">1</div><div class="etape-content"><strong>1987 (krach boursier "lundi noir") :</strong> chute brutale de Wall Street, mais limitée aux marchés. Pas de panique bancaire généralisée. → <em>Pseudo-crise</em>, intervention modérée.</div></div>
+    <div class="etape"><div class="etape-num">2</div><div class="etape-content"><strong>1929 :</strong> krach boursier suivi de 4 paniques bancaires, effondrement de la masse monétaire de 30%, faillites en cascade. → <em>Crise réelle</em> qui aurait exigé une action massive de la Fed.</div></div>
+    <div class="etape"><div class="etape-num">3</div><div class="etape-content"><strong>Leçon de Friedman :</strong> la Fed n'a pas fait ce qu'il fallait en 1929 → la dépression a duré 10 ans. En 2008, Bernanke (élève des thèses monétaristes) a injecté massivement → la crise a été contenue en 2 ans.</div></div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz" data-quiz="q5-1">
+    <div class="quiz-label">MINI-QUIZ 1/3</div>
+    <div class="quiz-question">Pour les monétaristes, quelle est la <em>cause profonde</em> d'une crise systémique comme 1929 ?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Les bulles spéculatives</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">L'asymétrie d'information</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, true)">L'inaction de la Banque centrale face à la chute de la masse monétaire</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Le mauvais comportement des banques commerciales</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz" data-quiz="q5-2">
+    <div class="quiz-label">MINI-QUIZ 2/3</div>
+    <div class="quiz-question">Qu'est-ce que l'aléa moral en contexte bancaire ?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">L'usage frauduleux des fonds des clients</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, true)">La prise de risques excessive parce qu'on sait qu'on sera sauvé en cas de problème</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">L'asymétrie d'information entre banque et client</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Le refus d'intervention de la BC</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz" data-quiz="q5-3">
+    <div class="quiz-label">MINI-QUIZ 3/3</div>
+    <div class="quiz-question">Selon la grille monétariste, le krach boursier de 1987 est plutôt :</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this, true)">Une pseudo-crise (n'exige pas d'intervention massive de la BC)</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Une crise réelle (intervention massive obligatoire)</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Une crise systémique majeure</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Une crise de change</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="btn btn-secondary" onclick="goLesson(3)">← Précédent</button>
+    <span class="xp-gain">+15 XP à la validation</span>
+    <button class="btn btn-primary" onclick="validateLesson(4)">Suivant →</button>
+  </div>
+</section>
+
+<!-- ============ LEÇON 6 : NÉO-KEYNÉSIENS ============ -->
+<section class="lesson" data-id="5">
+  <div class="tag">CHAPITRE 3 · THÉORIES</div>
+  <h1 class="lesson-title">« Tout est une question de confiance »</h1>
+  <div class="lesson-subtitle">La théorie néo-keynésienne de Mishkin : asymétrie d'information et credit crunch</div>
+
+  <div class="callout callout-analogie">
+    <div class="callout-title">💡 Analogie · Le brouillard sur l'autoroute</div>
+    Imagine que tu roules à 130 km/h sur l'autoroute. Soudain, brouillard épais. Que fais-tu ? Tu freines, tu ralentis, tu n'oses plus dépasser personne. Pourtant la route est la même qu'avant — c'est juste que tu ne <em>vois plus</em>. C'est exactement ce que vivent les banques en période de crise : elles ne voient plus la solvabilité de leurs clients. Par précaution, elles <strong>arrêtent de prêter</strong>. C'est le <em>credit crunch</em>.
+  </div>
+
+  <h2>L'idée centrale : l'asymétrie d'information</h2>
+  <p>Pour les néo-keynésiens, le cœur du problème n'est pas la monnaie mais l'<strong>information</strong>. Quand une banque prête à un client, elle ne sait jamais parfaitement s'il est solvable ou non. Le client, lui, sait. C'est ce qu'on appelle l'<strong>asymétrie d'information</strong>.</p>
+
+  <p>En temps normal, la banque accepte ce risque (elle a des outils : score crédit, garanties, etc.). Mais en période de crise, l'incertitude devient telle que la banque <strong>cesse carrément de prêter</strong>, même aux bons clients. C'est le <strong>credit crunch</strong> (littéralement : "écrasement du crédit").</p>
+
+  <div class="schema">
+    <div class="schema-title">Le mécanisme du credit crunch</div>
+    <svg viewBox="0 0 600 180" xmlns="http://www.w3.org/2000/svg">
+      <rect x="20" y="20" width="140" height="60" rx="8" stroke-width="2" style="fill:var(--navy-soft);stroke:var(--navy)"/>
+      <text x="90" y="45" font-family="DM Sans" font-size="12" text-anchor="middle" font-weight="600">Crise éclate</text>
+      <text x="90" y="62" font-family="DM Sans" font-size="10" text-anchor="middle">Incertitude ↑</text>
+      <rect x="200" y="20" width="180" height="60" rx="8" stroke-width="2" style="fill:var(--plum-soft);stroke:var(--plum)"/>
+      <text x="290" y="40" font-family="DM Sans" font-size="12" text-anchor="middle" font-weight="600">Asymétrie d'info</text>
+      <text x="290" y="58" font-family="DM Sans" font-size="10" text-anchor="middle">Banque ↔ client</text>
+      <text x="290" y="72" font-family="DM Sans" font-size="10" text-anchor="middle">+ Banque ↔ banque</text>
+      <rect x="420" y="20" width="160" height="60" rx="8" stroke-width="2" style="fill:var(--rust-soft);stroke:var(--rust)"/>
+      <text x="500" y="45" font-family="DM Sans" font-size="12" text-anchor="middle" font-weight="600">Credit crunch</text>
+      <text x="500" y="62" font-family="DM Sans" font-size="10" text-anchor="middle">+ effet domino</text>
+      <path d="M 160 50 L 200 50" stroke-width="2" marker-end="url(#arrow2)" style="stroke:var(--nuit)"/>
+      <path d="M 380 50 L 420 50" stroke-width="2" marker-end="url(#arrow2)" style="stroke:var(--nuit)"/>
+      <text x="300" y="130" font-family="Fraunces" font-size="14" text-anchor="middle" font-style="italic" style="fill:var(--nuit)">"Dans le doute, on ne prête plus à personne"</text>
+      <defs>
+        <marker id="arrow2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+          <path d="M0,0 L9,3 L0,6" style="fill:var(--nuit)"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <h2>La définition de Mishkin</h2>
+  <div class="formule">
+"Une crise financière est une <span class="var">rupture massive des marchés financiers</span>, caractérisée par de fortes chutes du prix des actifs et des faillites d'entreprises."
+<span class="lbl">— Frederic Mishkin, économiste américain, théoricien des crises</span>
+  </div>
+
+  <h2>L'évolution post-2013 : la défiance entre banques</h2>
+  <p>Après la crise de 2008, les néo-keynésiens ont enrichi la théorie : l'asymétrie d'information existe aussi <strong>entre les banques elles-mêmes</strong>. Elles ne se font plus confiance, ne se prêtent plus entre elles sur le marché interbancaire → <strong>effet domino</strong>.</p>
+
+  <div class="exemple">
+    <div class="exemple-title">Cas d'application · Lehman Brothers, septembre 2008</div>
+    <div class="etape"><div class="etape-num">1</div><div class="etape-content">Lehman Brothers fait faillite le 15 septembre 2008.</div></div>
+    <div class="etape"><div class="etape-num">2</div><div class="etape-content">Toutes les banques découvrent qu'elles ont des produits structurés liés aux subprimes dans leur bilan, mais <strong>impossible de chiffrer les pertes exactes</strong> (asymétrie d'info maximale).</div></div>
+    <div class="etape"><div class="etape-num">3</div><div class="etape-content">Les banques arrêtent de se prêter entre elles → le marché interbancaire <strong>gèle complètement</strong>.</div></div>
+    <div class="etape"><div class="etape-num">4</div><div class="etape-content">Les taux interbancaires (LIBOR à l'époque) explosent → crise de liquidité généralisée → faillites en cascade évitées <em>in extremis</em> par les BC.</div></div>
+  </div>
+
+  <div class="callout callout-retenir">
+    <div class="callout-title">🔑 À retenir</div>
+    Pour les néo-keynésiens, la solution n'est pas <em>seulement</em> monétaire (comme chez Friedman). Il faut aussi <strong>restaurer la confiance</strong> : transparence, régulation des produits structurés, supervision bancaire, fonds de garantie des dépôts. C'est la philosophie de <strong>Bâle III</strong> et de la réglementation post-2008.
+  </div>
+
+  <div class="callout callout-piege">
+    <div class="callout-title">⚠️ Piège fréquent</div>
+    Ne confonds pas la théorie monétariste et la théorie néo-keynésienne : les deux veulent l'intervention de la BC, mais pour des raisons différentes. <strong>Monétariste</strong> : réinjecter de la monnaie pour stopper la contraction. <strong>Néo-keynésien</strong> : restaurer la confiance et faire fonctionner les marchés.
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz" data-quiz="q6-1">
+    <div class="quiz-label">MINI-QUIZ 1/3</div>
+    <div class="quiz-question">Comment appelle-t-on l'arrêt brutal des prêts bancaires en période de crise ?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Bank run</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, true)">Credit crunch</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Aléa moral</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Sélection adverse</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz" data-quiz="q6-2">
+    <div class="quiz-label">MINI-QUIZ 2/3</div>
+    <div class="quiz-question">Selon Mishkin, une crise financière se caractérise principalement par :</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Une hausse brutale des taux directeurs</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, true)">Une rupture massive des marchés financiers + fortes chutes des prix d'actifs + faillites d'entreprises</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Une dévaluation monétaire</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Une hausse des fonds propres réglementaires</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz" data-quiz="q6-3">
+    <div class="quiz-label">MINI-QUIZ 3/3</div>
+    <div class="quiz-question">Quelle évolution les néo-keynésiens ont-ils apportée à leur théorie après la crise de 2008 ?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">L'abandon de l'idée d'asymétrie d'information</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, true)">L'extension de l'asymétrie d'information aux relations entre banques (et plus seulement banque-client)</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">L'adoption complète de la théorie monétariste</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">La fin de l'intervention de la BC</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="btn btn-secondary" onclick="goLesson(4)">← Précédent</button>
+    <span class="xp-gain">+15 XP à la validation</span>
+    <button class="btn btn-primary" onclick="validateLesson(5)">Suivant →</button>
+  </div>
+</section>
+
+<!-- ============ LEÇON 7 : RÉGULATIONNISTES + MINSKY ============ -->
+<section class="lesson" data-id="6">
+  <div class="tag">CHAPITRE 3 · THÉORIES</div>
+  <h1 class="lesson-title">« C'est le système lui-même qui est malade »</h1>
+  <div class="lesson-subtitle">Régulationnistes (Boyer, Aglietta) et les 3 stades de Minsky</div>
+
+  <div class="callout callout-analogie">
+    <div class="callout-title">💡 Analogie · Le pont qui s'use</div>
+    Imagine un pont autoroutier. Tu peux passer dessus mille fois sans problème, mais si tu ne fais jamais l'entretien, un jour il s'effondre. Pour les régulationnistes, le capitalisme financier est ce pont : ses fissures s'accumulent silencieusement <strong>de l'intérieur</strong>. Les crises ne sont pas des accidents ponctuels, ce sont les effondrements <strong>inévitables</strong> d'une structure usée.
+  </div>
+
+  <h2>L'idée centrale</h2>
+  <p>L'école régulationniste est <strong>française</strong> (très marquée par Marx). Pour ses théoriciens, les crises ne sont ni des problèmes monétaires (Friedman), ni des problèmes de confiance (Mishkin). Ce sont des <strong>crises structurelles</strong> du capitalisme lui-même : le <strong>régime d'accumulation des richesses</strong> finit toujours par produire ses propres contradictions, donc ses propres crises.</p>
+
+  <h2>Le débat interne : Boyer vs Aglietta</h2>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th>Robert Boyer</th><th>Michel Aglietta</th></tr>
+      <tr>
+        <td>Chaque crise est <strong>différente</strong>, dépend du régime d'accumulation de l'époque (fordiste, financiarisé, etc.)</td>
+        <td>« <strong>Plus ça change, plus c'est la même chose</strong> ». Les mécanismes profonds se répètent à travers l'histoire.</td>
+      </tr>
+      <tr>
+        <td>Analyse historique fine, différenciée</td>
+        <td>Analyse universelle, structurelle</td>
+      </tr>
+    </table>
+  </div>
+
+  <h2>Les 3 stades du financement (Minsky)</h2>
+  <p>Le théoricien américain <strong>Hyman Minsky</strong> (souvent rattaché à l'école régulationniste) a proposé une grille géniale : selon le rapport entre cash flows entrants et sortants d'un acteur financier, on identifie <strong>3 stades</strong>, du plus sain au plus dangereux.</p>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th>Stade</th><th>Cash flows</th><th>Description</th><th>Niveau de fragilité</th></tr>
+      <tr>
+        <td><strong>1. Finance</strong> (sain)</td>
+        <td>Entrants &gt; Sortants</td>
+        <td>On gagne plus qu'on ne dépense, on accumule du capital</td>
+        <td>🟢 Solide</td>
+      </tr>
+      <tr>
+        <td><strong>2. Edge</strong> (à la limite)</td>
+        <td>Entrants = Sortants</td>
+        <td>On rembourse juste ce qu'il faut, pas de marge</td>
+        <td>🟡 Précaire</td>
+      </tr>
+      <tr>
+        <td><strong>3. Ponzi</strong> (fragile)</td>
+        <td>Sortants &gt; Entrants</td>
+        <td>On doit emprunter en permanence pour rembourser → la moindre secousse fait tout sauter</td>
+        <td>🔴 Explosif</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="callout callout-retenir">
+    <div class="callout-title">🔑 À retenir · La "Minsky moment"</div>
+    Plus un système financier monte vers le stade <strong>Ponzi</strong>, plus il est <strong>fragile</strong>. Le crédit bancaire alimente cette montée (les banques prêtent toujours plus, ce qui dope les prix des actifs, ce qui pousse à emprunter encore plus) → ça crée des <strong>bulles</strong> qui finissent par éclater. Le moment de bascule s'appelle le <em>Minsky moment</em>.
+  </div>
+
+  <h2>Le cycle régulationniste appliqué aux subprimes (Aglietta, 2008)</h2>
+  <div class="cycle">
+    <div class="cycle-item" data-num="1">Baisse du prix de l'immobilier (&gt; 20%)</div>
+    <div class="cycle-item" data-num="2">Pertes massives sur crédits immobiliers (&gt; 750 Md$)</div>
+    <div class="cycle-item" data-num="3">Dégradation des notations des <em>monolines</em> (assureurs de crédit)</div>
+    <div class="cycle-item" data-num="4">Dégradation des notations en chaîne, in. commerce, crédit conso</div>
+    <div class="cycle-item" data-num="5"><strong>Credit crunch bancaire généralisé</strong></div>
+    <div class="cycle-item" data-num="6">Pertes massives sur le crédit conso</div>
+    <div class="cycle-item" data-num="7">Equity value des ménages négative → faillites personnelles</div>
+  </div>
+
+  <h2>Synthèse comparative des 3 théories</h2>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th>École</th><th>Cause principale</th><th>Solution préconisée</th><th>Auteurs clés</th></tr>
+      <tr>
+        <td><strong>Monétariste</strong></td>
+        <td>Effondrement de la masse monétaire</td>
+        <td>Intervention de la BC</td>
+        <td>Friedman & Schwartz</td>
+      </tr>
+      <tr>
+        <td><strong>Néo-keynésienne</strong></td>
+        <td>Asymétrie d'information → credit crunch</td>
+        <td>Régulation, transparence</td>
+        <td>Mishkin</td>
+      </tr>
+      <tr>
+        <td><strong>Régulationniste</strong></td>
+        <td>Crise structurelle du capitalisme</td>
+        <td>Changer le régime d'accumulation</td>
+        <td>Boyer, Aglietta, Minsky</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="callout callout-piege">
+    <div class="callout-title">⚠️ Piège fréquent</div>
+    À l'examen, on te demandera souvent quel auteur défend quelle thèse. Mnémo simple : <strong>Friedman = monnaie</strong> (M comme Money), <strong>Mishkin = info</strong> (asymétrie), <strong>Boyer/Aglietta = structure</strong> (régulation).
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz" data-quiz="q7-1">
+    <div class="quiz-label">MINI-QUIZ 1/3</div>
+    <div class="quiz-question">Dans la classification de Minsky, à quel stade un acteur doit-il emprunter en permanence pour rembourser ses dettes ?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Finance</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Edge</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, true)">Ponzi</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Stagflation</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz" data-quiz="q7-2">
+    <div class="quiz-label">MINI-QUIZ 2/3</div>
+    <div class="quiz-question">Quelle est la position d'Aglietta sur les crises ?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Chaque crise est différente, il faut analyser le régime d'accumulation spécifique</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, true)">"Plus ça change, plus c'est la même chose" — les mécanismes profonds se répètent</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Les crises viennent de la monnaie</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Les crises viennent de l'asymétrie d'information</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz" data-quiz="q7-3">
+    <div class="quiz-label">MINI-QUIZ 3/3</div>
+    <div class="quiz-question">Pour quelle école la solution des crises passe par "changer le régime d'accumulation" ?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Monétariste</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Néo-keynésienne</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, true)">Régulationniste</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Classique</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="btn btn-secondary" onclick="goLesson(5)">← Précédent</button>
+    <span class="xp-gain">+15 XP à la validation</span>
+    <button class="btn btn-primary" onclick="validateLesson(6)">Suivant →</button>
+  </div>
+</section>
+
+<!-- ============ LEÇON 8 : SUBPRIMES ============ -->
+<section class="lesson" data-id="7">
+  <div class="tag">CHAPITRE 4 · ÉTUDE DE CAS</div>
+  <h1 class="lesson-title">2007-2011 : l'étude de cas centrale</h1>
+  <div class="lesson-subtitle">La crise des subprimes décortiquée en 9 étapes</div>
+
+  <div class="callout callout-analogie">
+    <div class="callout-title">💡 Analogie · Le château de cartes</div>
+    Imagine un château de cartes posé sur une table. Tu rajoutes des cartes, encore et encore. Pendant un temps, ça tient. Mais chaque carte ajoutée fragilise l'ensemble. Un courant d'air, et tout s'effondre d'un coup. La crise des subprimes, c'est exactement ça : des millions de crédits empilés les uns sur les autres, "enjolivés" par la titrisation, qui s'effondrent en cascade quand l'immobilier baisse.
+  </div>
+
+  <h2>Le vocabulaire à connaître</h2>
+
+  <div class="callout callout-info">
+    <div class="callout-title">📘 Subprime</div>
+    Crédit immobilier accordé à des emprunteurs <strong>peu solvables</strong>, mal notés. Le contraire d'un crédit prime (= bonne qualité).
+  </div>
+
+  <div class="callout callout-info">
+    <div class="callout-title">📘 Prêt hypothécaire</div>
+    Le <strong>collatéral (garantie) du prêt = le bien immobilier lui-même</strong>, pas le revenu de l'emprunteur. Si tu ne rembourses pas, la banque saisit la maison. Système courant aux USA, marginal en France.
+  </div>
+
+  <div class="callout callout-info">
+    <div class="callout-title">📘 NINJA (<em>No Income, No Job, no Asset</em>)</div>
+    Profil d'emprunteur typique des subprimes : <strong>pas de revenu, pas d'emploi, pas de patrimoine</strong>. Sur le papier, personne ne devrait leur prêter. Et pourtant, pendant la bulle, on l'a fait — parce que la garantie (la maison) prenait de la valeur.
+  </div>
+
+  <div class="callout callout-info">
+    <div class="callout-title">📘 Titrisation (finance structurée)</div>
+    Mécanisme qui consiste à <strong>regrouper plein de crédits subprimes</strong> en un seul produit financier (un CDO, par exemple) qu'on revend sur les marchés. Le crédit pourri est "enjolivé" — on lui colle de bonnes notes des agences de notation — et il se retrouve dans le portefeuille de banques du monde entier.
+  </div>
+
+  <div class="callout callout-info">
+    <div class="callout-title">📘 GSE (<em>Government Sponsored Enterprise</em>)</div>
+    Entreprises parapubliques américaines (Fannie Mae, Freddie Mac) qui <strong>rachètent</strong> et <strong>garantissent</strong> une grande partie des prêts hypothécaires. Quand elles tombent en 2008, l'État américain doit intervenir massivement.
+  </div>
+
+  <h2>Le mécanisme — pas à pas</h2>
+  <p>Voici la <strong>spirale</strong> qui a mené à la crise. Apprends-la dans l'ordre, c'est la grande question d'examen :</p>
+
+  <div class="cycle">
+    <div class="cycle-item" data-num="1"><strong>Les banques accordent des crédits à des NINJA</strong> — Elles savent que ces crédits sont risqués, mais ce n'est pas grave : la garantie, c'est la maison qui prend de la valeur.</div>
+    <div class="cycle-item" data-num="2"><strong>Plus de crédits → plus de demande immobilière</strong> — Tout le monde achète, l'offre n'arrive pas à suivre.</div>
+    <div class="cycle-item" data-num="3"><strong>Bulle immobilière</strong> — Les prix de l'immobilier flambent.</div>
+    <div class="cycle-item" data-num="4"><strong>Cercle vicieux</strong> — Comme la maison vaut plus cher, le client peut emprunter <em>encore plus</em> (sa garantie a augmenté). → Encore plus de crédits → prix qui montent → garanties qui montent → encore plus de crédits...</div>
+    <div class="cycle-item" data-num="5"><strong>Titrisation</strong> — Les banques revendent ces crédits pourris au monde entier sous forme de produits structurés bien notés.</div>
+    <div class="cycle-item" data-num="6"><strong>Retournement (2007)</strong> — Les prix de l'immobilier baissent de plus de 20%. Les NINJA ne remboursent plus. Les saisies se multiplient → encore plus d'offre sur le marché → prix qui baissent encore.</div>
+    <div class="cycle-item" data-num="7"><strong>Pertes massives</strong> — Plus de 750 milliards de dollars de pertes sur les crédits immobiliers.</div>
+    <div class="cycle-item" data-num="8"><strong>Effet domino (2008)</strong> — Les agences de notation dégradent les produits structurés, les banques découvrent leurs pertes, elles ne se font plus confiance → <em>credit crunch</em> bancaire généralisé.</div>
+    <div class="cycle-item" data-num="9"><strong>Contagion à l'économie réelle</strong> — Plus de crédits → plus de consommation → faillites d'entreprises → chômage → equity value des ménages négative.</div>
+  </div>
+
+  <h2>Pourquoi cette crise est <em>la</em> crise à savoir raconter</h2>
+  <p>Parce qu'elle <strong>combine les 3 théories</strong> à elle seule. C'est l'argument à sortir à l'examen pour montrer que tu maîtrises :</p>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th>Théorie</th><th>Lecture des subprimes</th></tr>
+      <tr><td><strong>Monétariste</strong></td><td>Création monétaire excessive via le crédit, masse monétaire qui s'emballe puis s'effondre</td></tr>
+      <tr><td><strong>Néo-keynésienne</strong></td><td>Asymétrie d'information sur les produits titrisés (personne ne sait ce qu'il y a vraiment dans les CDO) → credit crunch</td></tr>
+      <tr><td><strong>Régulationniste</strong></td><td>Régime d'accumulation financiarisé, stade Ponzi atteint à grande échelle (NINJA qui empruntent pour rembourser leurs précédents emprunts)</td></tr>
+    </table>
+  </div>
+
+  <div class="callout callout-retenir">
+    <div class="callout-title">🔑 À retenir · La phrase qui fait gagner des points</div>
+    À l'examen, écris quelque chose comme : <em>"La crise des subprimes constitue un cas d'école qui valide les trois grandes lectures théoriques : la chute brutale de la masse monétaire (Friedman), l'asymétrie d'information sur les produits structurés (Mishkin), et l'aboutissement Ponzi d'un régime d'accumulation financiarisé (Aglietta)."</em>
+  </div>
+
+  <div class="callout callout-piege">
+    <div class="callout-title">⚠️ Piège fréquent · Confusion CDO/MBS</div>
+    Les <strong>MBS</strong> (Mortgage-Backed Securities) sont des titres adossés à un panier de prêts hypothécaires. Les <strong>CDO</strong> (Collateralized Debt Obligations) sont des titres adossés à <em>plusieurs MBS</em> — c'est de la titrisation de titrisation, encore plus opaque. Ne les confonds pas si tu les mentionnes.
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz" data-quiz="q8-1">
+    <div class="quiz-label">MINI-QUIZ 1/3</div>
+    <div class="quiz-question">Que signifie l'acronyme NINJA dans le contexte des subprimes ?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">New Investor, New Job Available</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, true)">No Income, No Job, no Asset</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">National Investment Network for Junior Agents</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Non-Insured Non-Joint Asset</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz" data-quiz="q8-2">
+    <div class="quiz-label">MINI-QUIZ 2/3</div>
+    <div class="quiz-question">Dans un prêt hypothécaire à l'américaine, quel est le collatéral du prêt ?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Le revenu de l'emprunteur</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, true)">Le bien immobilier lui-même</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Un dépôt de garantie en cash</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Une assurance privée</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz" data-quiz="q8-3">
+    <div class="quiz-label">MINI-QUIZ 3/3</div>
+    <div class="quiz-question">Pourquoi la titrisation a-t-elle accéléré la crise des subprimes ?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Elle a réduit la masse monétaire</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, true)">Elle a dispersé les crédits pourris dans tout le système financier mondial, en les "enjolivant"</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Elle a fait baisser les taux d'intérêt</button>
+      <button class="quiz-opt" onclick="answerQuiz(this, false)">Elle a empêché les banques de prêter</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="btn btn-secondary" onclick="goLesson(6)">← Précédent</button>
+    <span class="xp-gain">+20 XP à la validation</span>
+    <button class="btn btn-primary" onclick="validateLesson(7)">Terminer →</button>
+  </div>
+</section>
+
+<!-- ============ TEST FINAL ============ -->
+<section class="lesson" data-id="test">
+  <div class="tag">ÉVALUATION FINALE</div>
+  <h1 class="lesson-title">Test final · 10 questions</h1>
+  <div class="lesson-subtitle">Mix QCM + calculs. Tolérance ±5% sur les nombres. Bonne chance !</div>
+
+  <div id="test-intro" class="test-intro">
+    <h2 style="margin-top:0">Prêt à valider tes connaissances ?</h2>
+    <p style="margin: 16px 0">Tu vas répondre à <strong>10 questions</strong> mêlant QCM et calculs. Si tu te trompes, une remédiation s'affiche pour te permettre de comprendre et de revoir la leçon concernée.</p>
+    <button class="btn btn-primary" onclick="startTest()">🚀 Commencer le test</button>
+  </div>
+
+  <div id="test-questions" style="display:none"></div>
+
+  <div id="test-result" class="test-result" style="display:none"></div>
+</section>
+
+<!-- ============ ANNALES ============ -->
+<section class="lesson" data-id="annales">
+  <div class="tag">CAS PRATIQUES</div>
+  <h1 class="lesson-title">Cas pratiques type examen</h1>
+  <div class="lesson-subtitle">Sujets-types formulés à partir du cours · Essaie avant de regarder le corrigé !</div>
+
+  <div class="callout callout-info">
+    <div class="callout-title">📚 Mode d'emploi</div>
+    Ces cas pratiques reproduisent le style des questions d'examen en LP Banque. <strong>Essaie de répondre d'abord</strong>, sans regarder le corrigé. C'est la <em>révision active</em> — beaucoup plus efficace que la relecture passive.
+  </div>
+
+  <!-- Annale 1 -->
+  <div class="annale">
+    <div class="annale-num">SUJET 1 · DISSERTATION</div>
+    <div class="annale-titre">« Dans quelle mesure la crise des subprimes valide-t-elle les apports théoriques des trois grandes écoles d'analyse des crises bancaires ? »</div>
+    <div class="annale-enonce">
+      <strong>Consigne :</strong> Rédigez une réponse structurée en 3 parties, en mobilisant les auteurs clés. (≈ 4 pages, 1h)
+    </div>
+    <button class="btn btn-secondary" onclick="toggleCorr(this)">Voir le corrigé →</button>
+    <div class="annale-correction">
+      <h3>Plan suggéré + arguments clés</h3>
+      <p><strong>Introduction :</strong> définir la crise des subprimes (2007-2011), rappeler son ampleur (750 Md$ de pertes, faillite de Lehman Brothers, récession mondiale). Annoncer la problématique : cette crise est un terrain d'analyse exceptionnel parce qu'elle agrège plusieurs mécanismes que les théoriciens avaient identifiés séparément.</p>
+
+      <h3>I. La lecture monétariste : un effondrement de la masse monétaire que la Fed a su éviter</h3>
+      <p>Avant la crise : <strong>création monétaire massive</strong> via le crédit subprime. Pendant la crise : risque d'effondrement de M3 type 1929. Cette fois, Bernanke (élève de Friedman) <strong>intervient massivement</strong> (QE, baisse des taux à 0) → la contraction monétaire est évitée. La crise dure 2 ans au lieu de 10. <em>Validation partielle de Friedman.</em></p>
+
+      <h3>II. La lecture néo-keynésienne : l'asymétrie d'information au cœur du credit crunch</h3>
+      <p>Le rôle de la titrisation a généré une <strong>opacité maximale</strong> : ni les banques, ni les régulateurs ne savaient ce qu'il y avait vraiment dans les CDO. Après Lehman Brothers (sept. 2008), les banques arrêtent de se prêter entre elles → <strong>credit crunch</strong>. Mishkin valide pleinement.</p>
+
+      <h3>III. La lecture régulationniste : l'aboutissement d'un régime d'accumulation financiarisé</h3>
+      <p>Aglietta (2008) lit la crise comme le <strong>moment Ponzi</strong> d'un régime où les ménages NINJA empruntent pour rembourser leurs emprunts précédents. La structure même du capitalisme financiarisé produit ses crises.</p>
+
+      <p><strong>Conclusion :</strong> les 3 grilles sont <strong>complémentaires</strong> plutôt que concurrentes. La force du modèle Aglietta est d'englober les deux autres : la financiarisation produit à la fois l'instabilité monétaire (Friedman) et l'opacité informationnelle (Mishkin).</p>
+
+      <div class="callout callout-retenir">
+        <div class="callout-title">🔑 Conseil méthodo</div>
+        Ne te contente pas de citer les théories : <strong>applique-les à la crise des subprimes</strong> avec des faits concrets (Lehman Brothers, 750 Md$, QE de Bernanke, etc.). C'est ce qui distingue un 12 d'un 16.
+      </div>
+    </div>
+  </div>
+
+  <!-- Annale 2 -->
+  <div class="annale">
+    <div class="annale-num">SUJET 2 · CAS PRATIQUE</div>
+    <div class="annale-titre">Analyse de bilan d'une banque en difficulté</div>
+    <div class="annale-enonce">
+      <strong>Énoncé :</strong> La banque Alpha présente le bilan suivant (en M€) au 31/12/N :
+      <ul style="margin: 10px 0 0 20px">
+        <li>Crédits accordés : 850</li>
+        <li>Titres détenus (obligations) : 200</li>
+        <li>Liquidités : 50</li>
+        <li>Dépôts clients : 920</li>
+        <li>Emprunts interbancaires : 100</li>
+      </ul>
+      <p style="margin-top:10px"><strong>Questions :</strong></p>
+      <p>1. Calculez les fonds propres de la banque Alpha.<br>
+      2. Suite à la remontée des taux, le portefeuille obligataire perd 18% de sa valeur. Calculez les nouveaux fonds propres. La banque est-elle encore solvable ?<br>
+      3. À quelle situation historique pouvez-vous rapprocher ce cas ?</p>
+    </div>
+    <button class="btn btn-secondary" onclick="toggleCorr(this)">Voir le corrigé →</button>
+    <div class="annale-correction">
+      <div class="exemple">
+        <div class="exemple-title">Question 1 — Calcul des fonds propres</div>
+        <div class="etape"><div class="etape-num">1</div><div class="etape-content">Actif total = <code>850 + 200 + 50 = 1100 M€</code></div></div>
+        <div class="etape"><div class="etape-num">2</div><div class="etape-content">Passif hors FP = <code>920 + 100 = 1020 M€</code></div></div>
+        <div class="etape"><div class="etape-num">3</div><div class="etape-content"><strong>Fonds propres = 1100 − 1020 = 80 M€</strong></div></div>
+        <div class="etape"><div class="etape-num">4</div><div class="etape-content">Ratio FP/Actif = <code>80/1100 = 7,3%</code> → <strong>en dessous du seuil prudentiel de 10,5%</strong> (Bâle III). La banque est solvable mais sous-capitalisée.</div></div>
+      </div>
+
+      <div class="exemple">
+        <div class="exemple-title">Question 2 — Impact de la dépréciation obligataire</div>
+        <div class="etape"><div class="etape-num">1</div><div class="etape-content">Perte sur obligations = <code>200 × 18% = 36 M€</code></div></div>
+        <div class="etape"><div class="etape-num">2</div><div class="etape-content">Nouvelle valeur des titres = <code>200 − 36 = 164 M€</code></div></div>
+        <div class="etape"><div class="etape-num">3</div><div class="etape-content">Nouvel actif = <code>850 + 164 + 50 = 1064 M€</code></div></div>
+        <div class="etape"><div class="etape-num">4</div><div class="etape-content"><strong>Nouveaux FP = 1064 − 1020 = 44 M€</strong></div></div>
+        <div class="etape"><div class="etape-num">5</div><div class="etape-content">La banque est <strong>encore solvable</strong> (FP positifs) mais son ratio tombe à <code>44/1064 = 4,1%</code>, très en dessous du seuil prudentiel. Elle est en danger.</div></div>
+      </div>
+
+      <div class="callout callout-retenir">
+        <div class="callout-title">Question 3 — Rapprochement historique</div>
+        Ce cas est <strong>typiquement celui de SVB en mars 2023</strong> : portefeuille obligataire déprécié par la remontée des taux, fonds propres qui s'effritent. Si en plus les déposants paniquent (ruée) et exigent leur cash, la banque doit vendre encore plus d'obligations à perte → spirale fatale.
+      </div>
+    </div>
+  </div>
+
+  <!-- Annale 3 -->
+  <div class="annale">
+    <div class="annale-num">SUJET 3 · QUESTION DE COURS</div>
+    <div class="annale-titre">« Expliquez le mécanisme de Minsky et appliquez-le à un cas historique de votre choix. »</div>
+    <div class="annale-enonce">
+      <strong>Consigne :</strong> Réponse argumentée d'environ 1 page. Mobilisez le vocabulaire précis (Finance / Edge / Ponzi).
+    </div>
+    <button class="btn btn-secondary" onclick="toggleCorr(this)">Voir le corrigé →</button>
+    <div class="annale-correction">
+      <h3>Éléments de réponse</h3>
+      <p><strong>1. Présentation du cadre Minsky.</strong> L'économiste américain Hyman Minsky a proposé une grille d'analyse des cycles financiers fondée sur le rapport entre les <em>cash flows entrants</em> et <em>cash flows sortants</em> d'un acteur financier. Trois stades sont identifiés :</p>
+      <ul style="margin-left:20px">
+        <li><strong>Finance</strong> (sain) : Entrants &gt; Sortants. L'acteur dégage des bénéfices, accumule du capital.</li>
+        <li><strong>Edge</strong> (à la limite) : Entrants = Sortants. L'acteur rembourse juste ce qu'il faut.</li>
+        <li><strong>Ponzi</strong> (fragile) : Sortants &gt; Entrants. L'acteur doit emprunter pour rembourser → tout l'édifice repose sur la confiance, donc sur la possibilité permanente de se refinancer.</li>
+      </ul>
+      <p><strong>2. Mécanisme central.</strong> Le crédit bancaire alimente la montée d'un système vers le stade Ponzi : plus on prête, plus les prix d'actifs montent, plus on peut emprunter (garanties valorisées). Mais ce système devient hyper-fragile : la moindre secousse (hausse des taux, baisse d'un prix d'actif) déclenche le <em>Minsky moment</em>, c'est-à-dire la prise de conscience collective que le château est en train de tomber.</p>
+      <p><strong>3. Application : la crise des subprimes (2007-2008).</strong> Les NINJA américains sont l'incarnation parfaite du stade Ponzi : ils empruntent pour rembourser leurs précédentes dettes, sur la base de la valorisation croissante de leur bien immobilier. Quand l'immobilier baisse (déclencheur, 2007), tout l'édifice s'effondre. Aglietta (2008) théorise explicitement les subprimes comme un <em>Minsky moment</em> à l'échelle macro.</p>
+
+      <div class="callout callout-piege">
+        <div class="callout-title">⚠️ Piège à éviter</div>
+        Ne dis pas que "Ponzi = arnaque". Dans le cadre Minsky, <em>Ponzi</em> ne signifie pas fraude (comme Madoff) mais simplement <em>structure de financement dépendant du renouvellement continu de la dette</em>. C'est une fragilité, pas une malhonnêteté.
+      </div>
+    </div>
+  </div>
+
+  <!-- Annale 4 -->
+  <div class="annale">
+    <div class="annale-num">SUJET 4 · QCM RAPIDE</div>
+    <div class="annale-titre">Série de 5 questions courtes pour s'auto-évaluer</div>
+    <div class="annale-enonce">
+      Réponds mentalement, puis vérifie :
+      <ol style="margin: 10px 0 0 20px">
+        <li>Quel est le seuil minimal de fonds propres imposé par Bâle III ?</li>
+        <li>Donne le nom des deux familles florentines impliquées dans la crise de 1345.</li>
+        <li>Quelle est la définition exacte d'une récession ?</li>
+        <li>Cite les 4 paniques bancaires de 1929 et leurs théoriciens.</li>
+        <li>Différencie un MBS d'un CDO.</li>
+      </ol>
+    </div>
+    <button class="btn btn-secondary" onclick="toggleCorr(this)">Voir le corrigé →</button>
+    <div class="annale-correction">
+      <p><strong>1.</strong> Seuil de fonds propres Bâle III : <strong>10,5%</strong> des actifs pondérés.</p>
+      <p><strong>2.</strong> Les <strong>Bardi</strong> et les <strong>Peruzzi</strong>, ruinées par le défaut du roi d'Angleterre Édouard III.</p>
+      <p><strong>3.</strong> Une récession = <strong>2 trimestres consécutifs</strong> de taux de croissance du PIB négatif.</p>
+      <p><strong>4.</strong> Les 4 paniques bancaires de 1929-1933 ont été comptées par <strong>Friedman &amp; Schwartz</strong> dans leur "Monetary History of the United States" (1963). Ce sont les références absolues de l'école monétariste.</p>
+      <p><strong>5.</strong> Un <strong>MBS</strong> (Mortgage-Backed Security) est un titre adossé à un panier de prêts hypothécaires. Un <strong>CDO</strong> (Collateralized Debt Obligation) est un titre adossé à <em>plusieurs MBS</em> ou autres dettes — c'est de la titrisation au carré, beaucoup plus opaque.</p>
+    </div>
+  </div>
+
+</section>
+
+</main>
+</div>
+
+<button class="float-resume" id="float-resume" onclick="resumeTest()">↻ Reprendre le test</button>
+
+<script>
+// ============ ÉTAT ============
+const state = {
+  currentLesson: 0,
+  completedLessons: new Set(),
+  xp: 0,
+  totalLessons: 8,
+  quizAnswered: new Set(),
+  testAnswers: {},
+  testCurrentQ: 0,
+  testFinished: false
+};
+
+// ============ NAVIGATION ============
+function goLesson(n) {
+  document.querySelectorAll('.lesson').forEach(l => l.classList.remove('active'));
+  document.querySelector(`.lesson[data-id="${n}"]`).classList.add('active');
+  state.currentLesson = n;
+  updateSidebar();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goTest() {
+  document.querySelectorAll('.lesson').forEach(l => l.classList.remove('active'));
+  document.querySelector('.lesson[data-id="test"]').classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goAnnales() {
+  document.querySelectorAll('.lesson').forEach(l => l.classList.remove('active'));
+  document.querySelector('.lesson[data-id="annales"]').classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateSidebar() {
+  document.querySelectorAll('.lesson-link').forEach(link => {
+    const id = parseInt(link.dataset.lesson);
+    link.classList.toggle('active', id === state.currentLesson);
+    link.classList.toggle('done', state.completedLessons.has(id));
+  });
+  const pct = Math.round((state.completedLessons.size / state.totalLessons) * 100);
+  document.getElementById('progress-pct').textContent = pct + '%';
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('xp-counter').textContent = state.xp + ' XP';
+}
+
+function validateLesson(n) {
+  if (!state.completedLessons.has(n)) {
+    state.completedLessons.add(n);
+    const xpGains = [10, 10, 15, 15, 15, 15, 15, 20];
+    state.xp += xpGains[n] || 10;
+  }
+  if (n < state.totalLessons - 1) {
+    goLesson(n + 1);
+  } else {
+    goTest();
+  }
+  updateSidebar();
+}
+
+// ============ QUIZ ============
+function answerQuiz(btn, isCorrect) {
+  const quiz = btn.closest('.quiz');
+  if (state.quizAnswered.has(quiz.dataset.quiz)) return;
+  state.quizAnswered.add(quiz.dataset.quiz);
+  const feedback = quiz.querySelector('.quiz-feedback');
+  quiz.querySelectorAll('.quiz-opt').forEach(o => o.disabled = true);
+  if (isCorrect) {
+    btn.classList.add('correct');
+    feedback.className = 'quiz-feedback show ok';
+    feedback.innerHTML = '<strong>✓ Bravo !</strong> +5 XP';
+    state.xp += 5;
+  } else {
+    btn.classList.add('wrong');
+    quiz.querySelectorAll('.quiz-opt').forEach(o => {
+      if (o.getAttribute('onclick').includes('true')) o.classList.add('correct');
+    });
+    feedback.className = 'quiz-feedback show ko';
+    feedback.innerHTML = '<strong>✗ Raté.</strong> La bonne réponse est en vert. Relis le passage du cours juste avant.';
+  }
+  updateSidebar();
+}
+
+// ============ TEST FINAL ============
+const TEST_QUESTIONS = [
+  {
+    type: 'qcm',
+    q: 'Une banque a 500€ d\'actif, 470€ de dépôts et 20€ d\'emprunts interbancaires. Quels sont ses fonds propres ?',
+    opts: ['490€', '10€', '30€', '−10€'],
+    correct: 1,
+    lesson: 0,
+    remediation: 'FP = Actif − Passif (hors FP) = 500 − (470+20) = 10€.'
+  },
+  {
+    type: 'qcm',
+    q: 'Quel auteur est associé à la théorie monétariste des crises ?',
+    opts: ['Mishkin', 'Aglietta', 'Friedman', 'Minsky'],
+    correct: 2,
+    lesson: 4,
+    remediation: 'Friedman (avec Schwartz) est la figure majeure de l\'école monétariste. Mishkin = néo-keynésien, Aglietta = régulationniste, Minsky = précurseur post-keynésien rattaché aux régulationnistes.'
+  },
+  {
+    type: 'qcm',
+    q: 'À quel stade de Minsky un acteur doit-il s\'endetter en permanence pour rembourser ses dettes ?',
+    opts: ['Finance', 'Edge', 'Ponzi', 'Crash'],
+    correct: 2,
+    lesson: 6,
+    remediation: 'Stade Ponzi : cash flows sortants > entrants → refinancement permanent obligatoire. C\'est le stade le plus fragile.'
+  },
+  {
+    type: 'qcm',
+    q: 'Que se passe-t-il quand les fonds propres d\'une banque deviennent négatifs ?',
+    opts: ['Elle est solvable mais illiquide', 'Elle est en banqueroute (insolvable)', 'Elle bénéficie d\'un sauvetage automatique', 'Elle peut continuer normalement'],
+    correct: 1,
+    lesson: 0,
+    remediation: 'FP négatifs = passif > actif = la banque ne peut plus rembourser ses dettes même si elle vendait tout. C\'est la définition de la banqueroute.'
+  },
+  {
+    type: 'qcm',
+    q: 'Pour les néo-keynésiens, le credit crunch est causé principalement par :',
+    opts: ['Une baisse de la masse monétaire', 'L\'asymétrie d\'information', 'Une hausse des taux directeurs', 'Une bulle spéculative'],
+    correct: 1,
+    lesson: 5,
+    remediation: 'Asymétrie d\'information = la banque ne sait pas si le client est solvable → par précaution elle cesse de prêter → credit crunch.'
+  },
+  {
+    type: 'num',
+    q: 'Lors de la liquidation finale, à quel pourcentage du prix initial les tulipes se sont-elles revendues en 1637 ? (réponse en %, ex: 50)',
+    correct: 3.5,
+    tol: 0.5,
+    lesson: 2,
+    remediation: 'Les tulipes ont été liquidées à 3,5% de leur prix initial. C\'est un chiffre emblématique à retenir.'
+  },
+  {
+    type: 'qcm',
+    q: 'Combien de paniques bancaires successives Friedman & Schwartz ont-ils comptées entre 1930 et 1933 ?',
+    opts: ['2', '3', '4', '5'],
+    correct: 2,
+    lesson: 3,
+    remediation: '4 paniques bancaires successives entre 1930 et 1933, documentées dans "A Monetary History of the United States" (1963).'
+  },
+  {
+    type: 'qcm',
+    q: 'Quel est l\'apport historique majeur du système de Law (1720) ?',
+    opts: ['L\'invention du chèque', 'La création de la BCE', 'La naissance de la monnaie fiduciaire (rupture monnaie/or)', 'Le premier ratio prudentiel'],
+    correct: 2,
+    lesson: 2,
+    remediation: 'Law fait sauter le lien monnaie-or → début de la monnaie fiduciaire (qui tire sa valeur de la confiance, pas de l\'or).'
+  },
+  {
+    type: 'qcm',
+    q: 'Que signifie NINJA dans le contexte des subprimes ?',
+    opts: ['No Income, No Job, no Asset', 'New Investor No Joint Account', 'Negative Income Net Joint Asset', 'No Insurance No Joint Audit'],
+    correct: 0,
+    lesson: 7,
+    remediation: 'NINJA = No Income, No Job, no Asset. Profil d\'emprunteur sans revenu, sans emploi, sans patrimoine — pourtant servi pendant la bulle.'
+  },
+  {
+    type: 'num',
+    q: 'Quel est le seuil minimum de fonds propres imposé par Bâle III ? (en %, ex: 5)',
+    correct: 10.5,
+    tol: 0.5,
+    lesson: 3,
+    remediation: 'Bâle III impose un seuil minimum de 10,5% de fonds propres sur les actifs pondérés. C\'est l\'héritage des crises bancaires américaines du 19e siècle.'
+  }
+];
+
+function startTest() {
+  document.getElementById('test-intro').style.display = 'none';
+  document.getElementById('test-questions').style.display = 'block';
+  state.testAnswers = {};
+  state.testFinished = false;
+  renderTest();
+}
+
+function renderTest() {
+  const container = document.getElementById('test-questions');
+  container.innerHTML = '';
+  TEST_QUESTIONS.forEach((q, i) => {
+    const div = document.createElement('div');
+    div.className = 'test-question';
+    div.dataset.idx = i;
+    let inner = `<div class="test-question-num">Question ${i+1}/10 · Leçon ${q.lesson+1}</div>`;
+    inner += `<div class="quiz-question">${q.q}</div>`;
+    if (q.type === 'qcm') {
+      inner += '<div class="quiz-options">';
+      q.opts.forEach((opt, k) => {
+        inner += `<button class="quiz-opt" onclick="answerTest(${i}, ${k})">${opt}</button>`;
+      });
+      inner += '</div>';
+    } else {
+      inner += `<input type="number" step="0.1" class="test-input" placeholder="Ta réponse" id="num-${i}">`;
+      inner += ` <button class="btn btn-primary" onclick="answerTestNum(${i})">Valider</button>`;
+    }
+    inner += `<div class="remediation" id="rem-${i}">
+      <div class="remediation-title">⚠️ Réponse incorrecte — Remédiation</div>
+      <div class="rem-text"></div>
+      <div class="remediation-actions">
+        <button class="btn btn-secondary" onclick="goLesson(${q.lesson}); window.scrollTo(0,0)">Revoir la leçon ${q.lesson+1}</button>
+        <button class="btn btn-primary" onclick="continueTest(${i})">Continuer →</button>
+      </div>
+    </div>`;
+    container.appendChild(div);
+    div.innerHTML += inner;
+  });
+  const submitBtn = document.createElement('div');
+  submitBtn.style.textAlign = 'center';
+  submitBtn.style.marginTop = '20px';
+  submitBtn.innerHTML = '<button class="btn btn-primary" onclick="finishTest()" style="padding: 16px 40px; font-size: 16px">🏁 Terminer le test et voir mon score</button>';
+  container.appendChild(submitBtn);
+}
+
+function answerTest(i, k) {
+  const q = TEST_QUESTIONS[i];
+  if (state.testAnswers[i] !== undefined) return;
+  state.testAnswers[i] = k;
+  const card = document.querySelector(`.test-question[data-idx="${i}"]`);
+  const opts = card.querySelectorAll('.quiz-opt');
+  opts.forEach(o => o.disabled = true);
+  if (k === q.correct) {
+    opts[k].classList.add('correct');
+  } else {
+    opts[k].classList.add('wrong');
+    opts[q.correct].classList.add('correct');
+    const rem = document.getElementById(`rem-${i}`);
+    rem.querySelector('.rem-text').textContent = q.remediation;
+    rem.classList.add('show');
+    document.getElementById('float-resume').classList.add('show');
+  }
+}
+
+function answerTestNum(i) {
+  const q = TEST_QUESTIONS[i];
+  const input = document.getElementById(`num-${i}`);
+  const val = parseFloat(input.value);
+  if (isNaN(val)) { alert('Saisis une valeur numérique'); return; }
+  if (state.testAnswers[i] !== undefined) return;
+  state.testAnswers[i] = val;
+  input.disabled = true;
+  const isCorrect = Math.abs(val - q.correct) <= q.tol;
+  if (isCorrect) {
+    input.style.background = 'var(--teal-soft)';
+    input.style.borderColor = 'var(--teal)';
+  } else {
+    input.style.background = 'var(--rust-soft)';
+    input.style.borderColor = 'var(--rust)';
+    const rem = document.getElementById(`rem-${i}`);
+    rem.querySelector('.rem-text').textContent = q.remediation + ` (Bonne réponse : ${q.correct})`;
+    rem.classList.add('show');
+    document.getElementById('float-resume').classList.add('show');
+  }
+}
+
+function continueTest(i) {
+  const next = document.querySelector(`.test-question[data-idx="${i+1}"]`);
+  if (next) next.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function resumeTest() {
+  document.getElementById('float-resume').classList.remove('show');
+  const firstUnanswered = TEST_QUESTIONS.findIndex((q, i) => state.testAnswers[i] === undefined);
+  if (firstUnanswered >= 0) {
+    document.querySelector(`.test-question[data-idx="${firstUnanswered}"]`).scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+function finishTest() {
+  let score = 0;
+  let perLesson = {};
+  TEST_QUESTIONS.forEach((q, i) => {
+    let correct = false;
+    if (q.type === 'qcm') correct = state.testAnswers[i] === q.correct;
+    else correct = state.testAnswers[i] !== undefined && Math.abs(state.testAnswers[i] - q.correct) <= q.tol;
+    if (correct) score++;
+    perLesson[q.lesson] = perLesson[q.lesson] || { ok: 0, total: 0 };
+    perLesson[q.lesson].total++;
+    if (correct) perLesson[q.lesson].ok++;
+  });
+
+  document.getElementById('test-questions').style.display = 'none';
+  document.getElementById('float-resume').classList.remove('show');
+  const result = document.getElementById('test-result');
+  result.style.display = 'block';
+
+  const pct = Math.round(score * 10);
+  let msg, emoji;
+  if (score >= 9) { msg = 'Excellent ! Tu maîtrises le sujet à fond. Tu vises clairement une super note.'; emoji = '🏆'; }
+  else if (score >= 7) { msg = 'Très bon score ! Quelques imprécisions à corriger, mais tu es bien armé.'; emoji = '💪'; }
+  else if (score >= 5) { msg = 'Score moyen. Revois les leçons où tu as raté des questions, puis refais le test.'; emoji = '📚'; }
+  else { msg = 'Il faut revoir les bases. Reprends les leçons une par une, c\'est jouable !'; emoji = '🔄'; }
+
+  let bilan = `<div style="font-size:60px;margin-bottom:8px">${emoji}</div>`;
+  bilan += `<h2 style="margin:0;font-family:Fraunces,serif;font-size:42px;color:var(--navy)">${score}/10</h2>`;
+  bilan += `<p style="margin: 12px 0 20px; font-size: 17px; color: var(--ink-soft)">${msg}</p>`;
+  bilan += '<h3 style="margin-top:24px;font-family:Fraunces,serif;color:var(--navy)">Bilan par chapitre</h3>';
+
+  const lessonNames = [
+    'Le bilan bancaire', 'Vocabulaire', 'Crises historiques (1)', 'Crises historiques (2)',
+    'Théorie monétariste', 'Néo-keynésiens', 'Régulationnistes & Minsky', 'Subprimes'
+  ];
+  Object.keys(perLesson).sort().forEach(lid => {
+    const p = perLesson[lid];
+    const pctL = (p.ok / p.total) * 100;
+    let col = pctL >= 75 ? 'var(--teal)' : pctL >= 50 ? 'var(--amber)' : 'var(--rust)';
+    bilan += `<div class="score-bar-wrap">
+      <div class="score-bar-label"><span>${lessonNames[lid]}</span><span>${p.ok}/${p.total}</span></div>
+      <div class="score-bar"><div class="score-bar-fill" style="width:${pctL}%;background:${col}"></div></div>
+    </div>`;
+  });
+
+  bilan += '<div style="margin-top:24px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">';
+  bilan += '<button class="btn btn-secondary" onclick="resetTest()">↻ Refaire le test</button>';
+  bilan += '<button class="btn btn-primary" onclick="goAnnales()">📚 Voir les cas pratiques</button>';
+  bilan += '</div>';
+  result.innerHTML = bilan;
+
+  state.testFinished = true;
+  state.xp += score * 10;
+  updateSidebar();
+}
+
+function resetTest() {
+  state.testAnswers = {};
+  state.testCurrentQ = 0;
+  state.testFinished = false;
+  document.getElementById('test-result').style.display = 'none';
+  document.getElementById('test-intro').style.display = 'block';
+}
+
+// ============ ANNALES ============
+function toggleCorr(btn) {
+  const corr = btn.nextElementSibling;
+  corr.classList.toggle('show');
+  btn.textContent = corr.classList.contains('show') ? 'Masquer le corrigé' : 'Voir le corrigé →';
+}
+
+// ============ INIT ============
+updateSidebar();
+</script>
+
+<script src="../lb.js"></script>
+<script src="../progress.js"></script>
+<script src="../ui.js"></script>
+</body>
+</html>

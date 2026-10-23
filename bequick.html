@@ -234,13 +234,15 @@ main{max-width:980px;margin:0 auto;padding:12px 16px 120px;min-width:0}
 <script src="lb.js"></script>
 <script src="progress.js"></script>
 <script src="banque.js"></script>
+<script>/* Licence (8.0.0) : ses questions, chargées seulement pour son BeQuick */
+if(document.documentElement.getAttribute('data-niveau') === 'licence') document.write('<script src="banque-licence.js"><\/script>');</script>
 <script src="calendrier.js"></script>
 <script src="bequick.js"></script>
 <script>
 /* ════════════════════════════════════════════════════════════
    BeQuick — la page
    ════════════════════════════════════════════════════════════ */
-const NOMS = {'marche-particuliers':'Marché des Particuliers','produits-derives':'Produits Dérivés I','produits-derives-2':'Produits Dérivés II','marketing-numerique':'Marketing Numérique','es-banque':'ES Banque','fiscalite-particulier':'Fiscalité du Particulier','droits-particuliers':'Droits des Particuliers','etudes-marche':'Études de marché','systeme-bancaire':'Le système bancaire français'};
+const NOMS = {'marche-particuliers':'Marché des Particuliers','produits-derives':'Produits Dérivés I','produits-derives-2':'Produits Dérivés II','marketing-numerique':'Marketing Numérique','es-banque':'ES Banque','fiscalite-particulier':'Fiscalité du Particulier','droits-particuliers':'Droits des Particuliers','etudes-marche':'Études de marché','systeme-bancaire':'Le système bancaire français','l-maths-fi':'Mathématiques financières','l-politique-monetaire':'Politique monétaire','l-droit-bancaire':'Droit bancaire','l-risques-bancaires':'Gestion des risques bancaires','l-finance-internationale':'Finance internationale','l-crises-financieres':'Crises financières','l-fiscalite':'Fiscalité des particuliers','l-marche-capitaux':'Marché des capitaux','l-banque-patrimoine':'Banque · Patrimoine · Assurance'};
 const $ = id => document.getElementById(id);
 /* hors M1 : la promo du niveau joué */
 const PROMO = {licence:'toute la promo de Licence', m2:'toute la promo de M2'}[BQ.NIV];

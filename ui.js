@@ -14,10 +14,16 @@
   const NOM_VERSION = 'Thaler';
   window.APP_VERSION = VERSION_APP;
 
-  /* Accueil de l'espace de la page (8.0.0) : le hub de son niveau (M1 :
-     index.html, inchangé). Le hub central de tous les niveaux est
-     niveaux.html, où l'on arrive en ouvrant le site. */
-  const ACCUEIL = {licence:'licence.html', m2:'m2.html'}[document.documentElement.getAttribute('data-niveau')] || 'index.html';
+  /* ---------- NIVEAU DE LA PAGE (8.0.0) ----------
+     Les pages de Licence vivent dans licence/ et chargent « ../ui.js » :
+     R est le chemin de la racine du site vu de la page ('' en M1, '../'
+     en Licence), préfixé à chaque lien et à chaque script chargé ici.
+     LICENCE : l'en-tête, le menu et la recherche sont ceux de la Licence. */
+  const R = ((document.currentScript && document.currentScript.getAttribute('src')) || '').replace(/ui\.js(\?.*)?$/, '');
+  const LICENCE = document.documentElement.getAttribute('data-niveau') === 'licence';
+  /* Accueil de l'espace de la page : le hub de son niveau (M1 : index.html,
+     inchangé) ; le hub central de tous les niveaux est niveaux.html. */
+  const ACCUEIL = R + ({licence:'licence.html', m2:'m2.html'}[document.documentElement.getAttribute('data-niveau')] || 'index.html');
 
   /* ---------- 1. THÈME ---------- */
   /* Le site est entièrement sombre depuis la 2.1.0 : plus de bascule,
@@ -49,6 +55,29 @@
     {g:'Outils',   href:'classement.html',   ico:'🏆', t:'Classement',    s:'Qui révise le plus ?'}
   ];
 
+  /* Licence (8.0.0) : ses neuf matières et leurs entraînements, dans licence/ */
+  const PAGES_LICENCE = [
+    {g:'hub', href:'licence.html', ico:'🏠', t:'Accueil Licence', s:"L'accueil et tes matières", hub:true},
+    {g:'Cours', href:'licence/maths_fi.html',                    ico:'%',  t:'Mathématiques financières', s:'Taux, annuités, emprunts, TAEG'},
+    {g:'Cours', href:'licence/politique-monetaire.html',         ico:'€',  t:'Politique monétaire',       s:'BCE, inflation, taux directeurs'},
+    {g:'Cours', href:'licence/droit-bancaire.html',              ico:'⚖',  t:'Droit bancaire',            s:'Responsabilités, secret, compte, crédit'},
+    {g:'Cours', href:'licence/risques_bancaires.html',           ico:'◆',  t:'Gestion des risques bancaires', s:'Bâle III, solvabilité, LCR'},
+    {g:'Cours', href:'licence/finance_internationale.html',      ico:'⇆',  t:'Finance internationale',    s:'Cotations, taux croisés, change à terme'},
+    {g:'Cours', href:'licence/crises-financieres.html',          ico:'↘',  t:'Crises financières et bancaires', s:'Mécanismes et grandes crises'},
+    {g:'Cours', href:'licence/fiscalite.html',                   ico:'§',  t:'Fiscalité des particuliers', s:'Quotient familial, RNGI, barème'},
+    {g:'Cours', href:'licence/marche_des_capitaux.html',         ico:'↗',  t:'Marché des capitaux',       s:'Marchés monétaire et financier'},
+    {g:'Cours', href:'licence/banque_patrimoine_assurance.html', ico:'◇',  t:'Banque · Patrimoine · Assurance', s:'Blocs 2 et 3, examens blancs'},
+    {g:'Entraînement', href:'bequick.html?niveau=licence',       ico:'⚡', t:'BeQuick',                   s:'Le défi du soir · 18 h 30 – 22 h'},
+    {g:'Entraînement', href:'licence.html#entrainement',         ico:'🎯', t:'Entraînements',             s:'Calculs générés, QCM, examens blancs'},
+    {g:'Outils', href:'niveaux.html',    ico:'⇄',  t:'Changer de niveau', s:'Licence, M1, M2'}
+  ];
+  const ENTETE_LICENCE = [
+    {href:'licence.html',                t:'Accueil'},
+    {href:'licence.html#matieres',       t:'Mes cours'},
+    {href:'licence.html#entrainement',   t:'Entraînement'},
+    {href:'bequick.html?niveau=licence', t:'BeQuick'}
+  ];
+
   /* Les liens de l'en-tête : un sous-ensemble de PAGES, toujours dans cet ordre. */
   const ENTETE = [
     {href:ACCUEIL,                    t:'Accueil'},
@@ -59,6 +88,13 @@
     {href:'ressourcerie.html',        t:'Ressourcerie'},
     {href:'glossaire.html',           t:'Glossaire'}
   ];
+
+  const MENU = LICENCE ? PAGES_LICENCE : PAGES;
+  const LIENS = LICENCE ? ENTETE_LICENCE : ENTETE;
+  /* lien vu de la page : chemin de la racine devant, sauf pour une ancre */
+  const lien = h => h[0] === '#' ? h : R + h;
+  /* lien qui désigne la page affichée (en Licence, le niveau suit dans l'adresse) */
+  const estIci = (h, ici) => LICENCE ? h.split('#')[0].split('/').pop() === ici + (ici === 'bequick.html' ? location.search : '') : h === ici;
 
   function pageActuelle(){
     const f = location.pathname.split('/').pop() || 'index.html';
@@ -79,11 +115,11 @@
 
     let html = '<div class="dh"><b>Navigation</b><button onclick="uiFermerMenu()" aria-label="Fermer">✕</button></div>';
     let groupe = null;
-    PAGES.forEach(p=>{
+    MENU.forEach(p=>{
       if(p.g !== groupe && p.g !== 'hub'){ html += '<h5>'+p.g+'</h5>'; groupe = p.g; }
-      const actif = p.href === ici ? ' here' : '';
+      const actif = estIci(p.href, ici) ? ' here' : '';
       const extra = p.hub ? ' ui-hub' : '';
-      html += '<a class="ui-link'+extra+actif+'" href="'+p.href+'">'+
+      html += '<a class="ui-link'+extra+actif+'" href="'+lien(p.href)+'">'+
                 '<span class="ei">'+p.ico+'</span>'+
                 '<span class="et">'+p.t+'<span class="es">'+p.s+'</span></span>'+
               '</a>';
@@ -126,14 +162,14 @@
   function construireEntete(){
     if(document.querySelector('.ds-header')) return;
     const ici = pageActuelle();
-    const hub = ici === 'index.html';
+    const hub = ici === 'index.html' || (LICENCE && ici === 'licence.html');
 
     const h = document.createElement('header');
     h.className = 'ds-header';
 
-    const liens = ENTETE.filter(l=>!l.hubOnly || hub).map(l=>{
-      const actif = (l.href === ici) ? ' on' : '';
-      return '<a class="ds-l'+actif+'" href="'+l.href+'">'+l.t+'</a>';
+    const liens = LIENS.filter(l=>!l.hubOnly || hub).map(l=>{
+      const actif = estIci(l.href, ici) && !(LICENCE && l.href.includes('#')) ? ' on' : '';
+      return '<a class="ds-l'+actif+'" href="'+lien(hub && LICENCE && l.href.startsWith('licence.html#') ? l.href.slice(12) : l.href)+'">'+l.t+'</a>';
     }).join('');
 
     h.innerHTML =
@@ -180,7 +216,7 @@
     if(document.querySelector('.sidebar')) return;      // pages de cours : elles ont déjà leur propre fin
     const f = document.createElement('footer');
     f.className = 'ds-foot';
-    const liens = ENTETE.filter(l=>!l.hubOnly).map(l=>'<a href="'+l.href+'">'+l.t+'</a>').join('');
+    const liens = LIENS.filter(l=>!l.hubOnly).map(l=>'<a href="'+lien(l.href)+'">'+l.t+'</a>').join('');
     f.innerHTML =
       '<a class="ds-logo" href="'+ACCUEIL+'" aria-label="Révise. Vise le AAA. — accueil">'+LOGO+'Révise.<b>Vise le AAA.</b></a>'+
       '<nav class="ds-fnav">'+liens+'</nav>'+
@@ -223,20 +259,24 @@
     const ici = pageActuelle();
     const t = document.createElement('nav');
     t.className = 'ds-tab verre'; t.setAttribute('aria-label','Navigation rapide');
-    const L = [
-      [ACCUEIL,'maison','Accueil'], ['index.html#matieres','grille','Cours'],
+    const L = LICENCE ? [
+      ['licence.html','maison','Accueil'], ['licence.html#matieres','grille','Cours'],
+      ['bequick.html?niveau=licence','eclair','BeQuick'], ['licence.html#entrainement','cible','Entraînement']
+    ] : [
+      [ACCUEIL.slice(R.length),'maison','Accueil'], ['index.html#matieres','grille','Cours'],
       ['bequick.html','eclair','BeQuick'], ['revision.html','boucle','Révision']
     ];
     t.innerHTML = L.map(l=>{
-      const on = (l[0]===ici) ? ' on' : '';
-      return '<a class="'+on+'" href="'+l[0]+'" aria-label="'+l[2]+'">'+ic(l[1])+(on?'<span>'+l[2]+'</span>':'')+'</a>';
+      const on = estIci(l[0], ici) && !(LICENCE && l[0].includes('#')) ? ' on' : '';
+      return '<a class="'+on+'" href="'+lien(l[0])+'" aria-label="'+l[2]+'">'+ic(l[1])+(on?'<span>'+l[2]+'</span>':'')+'</a>';
     }).join('') + '<button type="button" aria-label="Ouvrir la navigation" onclick="uiOuvrirMenu()">'+ic('menu')+'</button>';
     document.body.appendChild(t);
     document.body.classList.add('ds-a-tab');
   }
 
   /* ---------- PAGES DE COURS : cadre photo, progression, suite ---------- */
-  const NOMS = {'marche-particuliers':'Marché des Particuliers','produits-derives':'Produits Dérivés I','produits-derives-2':'Produits Dérivés II','marketing-numerique':'Marketing Numérique','es-banque':'ES Banque','fiscalite-particulier':'Fiscalité du Particulier','droits-particuliers':'Droits des particuliers','etudes-marche':'Études de marché','systeme-bancaire':'Le système bancaire français'};
+  const NOMS = {'marche-particuliers':'Marché des Particuliers','produits-derives':'Produits Dérivés I','produits-derives-2':'Produits Dérivés II','marketing-numerique':'Marketing Numérique','es-banque':'ES Banque','fiscalite-particulier':'Fiscalité du Particulier','droits-particuliers':'Droits des particuliers','etudes-marche':'Études de marché','systeme-bancaire':'Le système bancaire français',
+    'l-maths-fi':'Mathématiques financières','l-politique-monetaire':'Politique monétaire','l-droit-bancaire':'Droit bancaire','l-risques-bancaires':'Gestion des risques bancaires','l-finance-internationale':'Finance internationale','l-crises-financieres':'Crises financières et bancaires','l-fiscalite':'Fiscalité des particuliers','l-marche-capitaux':'Marché des capitaux','l-banque-patrimoine':'Banque · Patrimoine · Assurance'};
   function estLecon(v){ return /^l\d+$/.test(v||''); }
   function sequence(){
     const vus = {}, out = [];
@@ -251,7 +291,42 @@
     if(estLecon(it.v)) return 'Leçon '+(seq.filter(x=>estLecon(x.v)).indexOf(it)+1);
     return it.lab;
   }
+  /* ---------- PAGES DE LICENCE : cadre photo (8.0.0) ----------
+     Les pages reprises du site de la LP gardent leur propre navigation
+     (menu de gauche, leçons, test) : on pose seulement, en tête de leur
+     contenu, le cadre photo de la matière et ses pilules. « Sommaire »
+     ouvre leur menu de gauche sur téléphone (leur ancien bouton était
+     dans la barre du haut, remplacée par l'en-tête commun). */
+  function construireCadreLicence(){
+    const sid = document.documentElement.getAttribute('subject-id') || '';
+    const main = document.querySelector('main');
+    if(!/^l-/.test(sid) || !main || document.querySelector('.ds-cadre')) return;
+    const fichier = location.pathname.split('/').pop() || '';
+    const entr = /_entrainement\.html$/.test(fichier);
+    const titre = (document.title || '').split(/\s[—·|-]\s/)[0].trim();
+    document.body.classList.add('l-cours');
+    const burger = document.querySelector('.ds-gone .burger, .ds-gone .hamburger, .ds-gone .menu-btn, .ds-gone #burger, .ds-gone #menuBtn, .ds-gone [onclick*="toggleSidebar"], .ds-gone [onclick*="toggleMenu"], .ds-gone [onclick*="openSidebar"], .ds-gone .mobile-toggle');
+    const c = document.createElement('section');
+    c.className = 'ds-cadre l-cadre';
+    c.style.viewTransitionName = 'mat-'+sid;
+    c.innerHTML =
+      '<div class="ph"></div><div class="voile-g"></div>'+
+      '<div class="haut">'+
+        '<a class="ds-pil verre" href="'+R+'licence.html#'+(entr ? 'entrainement' : 'matieres')+'">'+ic('retour')+'<span class="txt">'+(entr ? 'Entraînement' : 'Mes cours')+'</span></a>'+
+        (burger ? '<button type="button" class="ds-pil verre l-som">'+ic('liste')+'<span class="txt">Sommaire</span></button>' : '')+
+      '</div>'+
+      '<div class="corps"><div class="ds-kick"><span class="ds-emb" aria-hidden="true"></span><span>'+echap(NOMS[sid]||'')+(entr ? ' · Entraînement' : '')+'</span></div>'+
+      '<h1>'+echap(entr ? 'S\u2019entraîner' : (NOMS[sid] || titre))+'</h1></div>';
+    main.insertBefore(c, main.firstChild);
+    /* certaines pages réécrivent tout leur contenu à chaque leçon : le cadre revient en tête */
+    new MutationObserver(()=>{ if(main.firstChild !== c) main.insertBefore(c, main.firstChild); }).observe(main, {childList:true});
+    const b = c.querySelector('.l-som');
+    if(b) b.addEventListener('click', ()=>burger.click());
+    document.title = (entr ? 'Entraînement · ' : '') + (NOMS[sid] || titre) + ' — Licence';
+  }
+
   function construireCours(){
+    if(LICENCE) return construireCadreLicence();
     const main = document.querySelector('.main'), side = document.querySelector('.sidebar');
     if(!main || !side || document.querySelector('.ds-cadre') || typeof window.go !== 'function') return;
     const sid = document.documentElement.getAttribute('subject-id') || '';
@@ -301,7 +376,7 @@
      (textes officiels seulement), affichées discrètement
      à la fin de la page, comme les crédits photo. */
   function construireSources(sid){
-    chargerScript('sources.js').then(()=>{
+    chargerScript(R+'sources.js').then(()=>{
       const l = (window.M1_SOURCES || {})[sid], main = document.querySelector('.main');
       if(!l || !l.length || !main || document.querySelector('.ds-sources')) return;
       const f = document.createElement('footer');
@@ -455,7 +530,7 @@
   function enregistrerSW(){
     if(!('serviceWorker' in navigator)) return;
     if(location.protocol === 'file:') return;         // inutile hors serveur
-    navigator.serviceWorker.register('sw.js').then(reg=>{
+    navigator.serviceWorker.register(R+'sw.js').then(reg=>{
       reg.addEventListener('updatefound', ()=>{
         const sw = reg.installing;
         if(!sw) return;
@@ -514,7 +589,10 @@
   ];
   const norm = s=>String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
 
+  /* Licence : ses pages, sans les sigles ni les leçons du M1 */
+  const INDEX_LICENCE = PAGES_LICENCE.map(p=>({t:p.t, s:p.s, u:p.href, i:p.ico}));
   function indexComplet(){
+    if(LICENCE) return INDEX_LICENCE.map(o=>Object.assign({}, o, {u:lien(o.u)}));
     const out = INDEX.slice();
     // les leçons et le glossaire, si banque.js est chargé
     if(window.CARTES) window.CARTES.forEach(c=>{
@@ -634,15 +712,22 @@
      ouvert, partiel proche, révisions du jour, nouveautés du site.
      Le panneau propose aussi d'activer l'alerte de 18 h 30 sur le
      téléphone (notification envoyée même site fermé). */
+  /* src : un script de la racine vu de la page (licence/ : « ../ »). Chaque
+     chargement est mémorisé (8.0.0) : un second appel attend la fin du premier
+     au lieu de repartir aussitôt (la cloche et le verrou BeQuick demandent les
+     mêmes scripts en même temps). Un script écrit dans la page est déjà prêt. */
+  const _scripts = {};
   function chargerScript(src){
-    return new Promise(ok=>{
+    return _scripts[src] || (_scripts[src] = new Promise(ok=>{
       if(document.querySelector('script[src="'+src+'"]')) return ok();
       const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = ok; document.head.appendChild(s);
-    });
+    }));
   }
   async function pretBQ(){
-    if(!window.ECHEANCES) await chargerScript('calendrier.js');
-    if(!window.BQ) await chargerScript('bequick.js');
+    if(!window.ECHEANCES) await chargerScript(R+'calendrier.js');
+    /* Licence : ses questions (banque séparée) avant le moteur BeQuick */
+    if(LICENCE && !window.BANQUE_LICENCE) await chargerScript(R+'banque-licence.js');
+    if(!window.BQ) await chargerScript(R+'bequick.js');
     return window.BQ || null;
   }
   function vues(){ try{ return JSON.parse(localStorage.getItem('notif_vues') || '[]'); }catch(e){ return []; } }
@@ -684,7 +769,7 @@
     const pn = document.getElementById('ds-notifs'); if(!pn) return;
     const v = new Set(vues());
     const liste = _alertes.length
-      ? _alertes.map(a=>'<a class="ds-n'+(v.has(a.id)?'':' neuf')+(a.fort?' fort':'')+'" href="'+a.url+'"'+(a.chat?' data-chat="1"':'')+'><span class="ni" aria-hidden="true">'+a.ico+'</span><span class="nt"><b>'+echap(a.titre)+'</b><small>'+echap(a.texte||'')+'</small></span></a>').join('')
+      ? _alertes.map(a=>'<a class="ds-n'+(v.has(a.id)?'':' neuf')+(a.fort?' fort':'')+'" href="'+(/^(https?:|\/|#)/.test(a.url) ? a.url : R+a.url)+'"'+(a.chat?' data-chat="1"':'')+'><span class="ni" aria-hidden="true">'+a.ico+'</span><span class="nt"><b>'+echap(a.titre)+'</b><small>'+echap(a.texte||'')+'</small></span></a>').join('')
       : '<div class="ds-n-vide">Rien de neuf pour l\'instant.</div>';
     pn.innerHTML = '<div class="ds-n-tete"><b>Notifications</b><button type="button" class="ds-n-x" aria-label="Fermer">✕</button></div>'+
       '<div class="ds-n-liste">'+liste+'</div><div class="ds-n-push" id="ds-n-push"></div>';
@@ -749,10 +834,10 @@
      « Mes cours » et « Entraînement » sont des sections de l'accueil :
      la pilule active (en-tête et barre basse) suit la section visible. */
   function suivreSections(){
-    if(pageActuelle() !== 'index.html') return;
+    if(pageActuelle() !== 'index.html' && !(LICENCE && pageActuelle() === 'licence.html')) return;
     const secs = ['matieres','entrainement'].map(id=>document.getElementById(id)).filter(Boolean);
     if(!secs.length) return;
-    const ancre = h=>{ h = h || ''; if(h === 'index.html' || h === './') return ''; const i = h.indexOf('#'); return (i >= 0 && (h.startsWith('#') || h.startsWith('index.html#'))) ? h.slice(i+1) : null; };
+    const ancre = h=>{ h = h || ''; if(h === 'index.html' || h === './' || (LICENCE && h === 'licence.html')) return ''; const i = h.indexOf('#'); return (i >= 0 && (h.startsWith('#') || h.startsWith('index.html#') || (LICENCE && h.startsWith('licence.html#')))) ? h.slice(i+1) : null; };
     function maj(){
       const y = innerHeight * 0.4; let actif = '';
       secs.forEach(s=>{ const r = s.getBoundingClientRect(); if(r.top <= y && r.bottom > y) actif = s.id; });
@@ -843,7 +928,7 @@
     const fichier = (location.pathname.split('/').pop() || '').replace(/\.html$/, '');
     const sid = document.documentElement.getAttribute('subject-id');
     const revision = fichier === 'revision';
-    if(!revision && (!sid || /^entrainement_/.test(fichier))) return;
+    if(!revision && (!sid || /^entrainement_/.test(fichier) || /_entrainement$/.test(fichier))) return;
     clearTimeout(verrouMinuterie);
     await pretBQ();
     if(!window.BQ) return;
@@ -874,8 +959,8 @@
         '<h1 id="bqv-t">'+(o.enCours ? 'Termine d\'abord ta série' : (o.revision ? 'Révision en pause' : 'Cours en pause'))+'</h1>'+
         '<p>'+quoi+' jusqu\'à ce que tu aies joué ta série, sur n\'importe quel appareil, ou jusqu\'à 22 h. Comme ça, c\'est juste pour tout le monde.</p>'+
         (o.joint ? '' : '<p class="bqv-petit">Pas de connexion : impossible de vérifier ta partie pour l\'instant.</p>')+
-        '<a class="bqv-b" href="bequick.html">'+(o.enCours ? 'Reprendre ma série' : 'Jouer au BeQuick')+'</a>'+
-        '<a class="bqv-l" href="index.html">Retour à l\'accueil</a>'+
+        '<a class="bqv-b" href="'+R+(window.BQ ? BQ.URL_BQ : 'bequick.html')+'">'+(o.enCours ? 'Reprendre ma série' : 'Jouer au BeQuick')+'</a>'+
+        '<a class="bqv-l" href="'+ACCUEIL+'">Retour à l\'accueil</a>'+
       '</div>';
     let v = document.getElementById('bq-verrou');
     if(!v){
@@ -999,7 +1084,7 @@
      chat.js n'est chargé qu'au premier clic sur la bulle, ou en différé
      si cet appareil a déjà un jeton de messagerie (pour la pastille des
      non-lus). Sans jeton, rien n'est chargé : aucun coût. */
-  function chargerChat(){ return chargerScript('chat.js').then(()=>window.M1Chat || null); }
+  function chargerChat(){ return chargerScript(R+'chat.js').then(()=>window.M1Chat || null); }
   function ouvrirChat(){ fermerNotifs(); return chargerChat().then(c=>{ if(c) c.ouvrir(); }); }
   function basculerChat(e){
     if(e) e.stopPropagation();
@@ -1047,8 +1132,8 @@
     verrouBeQuick();
     demarrerSuivi();
     /* A4 : progression partagée entre les appareils du même pseudo */
-    if(window.P && P._lire) setTimeout(()=>chargerScript('synchro.js'), 4000);
-    chargerScript('signaler.js');   /* A3 : « Signaler une erreur » sous les questions */
+    if(window.P && P._lire) setTimeout(()=>chargerScript(R+'synchro.js'), 4000);
+    chargerScript(R+'signaler.js');   /* A3 : « Signaler une erreur » sous les questions */
     /* 7.2.0 : pas de zoom sur téléphone (pincer ni double-tap), le site est déjà à la bonne taille */
     document.addEventListener('gesturestart', e=>e.preventDefault(), {passive:false});
   }

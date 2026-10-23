@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="fr" data-niveau="licence" subject-id="l-maths-fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>Maths Fi · Mode entraînement — Partiel</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+:root{ --ok-l:var(--teal-soft); --err:var(--rust); --err-l:var(--rust-soft);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans',sans-serif; background:var(--paper); color:var(--ink);
+  line-height:1.65; font-size:16px;
+  background-image:radial-gradient(var(--line) 0.5px, transparent 0.5px);
+  background-size:22px 22px;
+}
+
+/* ── TOP BAR ── */
+#topbar{
+  position:sticky; top:0; z-index:50;
+  background:color-mix(in srgb, var(--fond) 92%, transparent); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:12px 24px; display:flex; align-items:center; gap:18px;
+}
+#topbar .logo{
+  font-family:'Fraunces',serif; font-weight:900; font-size:18px;
+  color:var(--teal-d); letter-spacing:-.5px; white-space:nowrap;
+}
+#topbar .logo span{color:var(--amber)}
+#topbar .hub{font-family:'DM Mono',monospace; font-size:12px; color:var(--muted); text-decoration:none; white-space:nowrap; padding:5px 10px; border-radius:8px; border:1px solid var(--line); transition:all .15s}
+#topbar .hub:hover{color:var(--teal-d); border-color:var(--line2); background:var(--blanc)}
+.top-progress{flex:1; max-width:420px}
+.top-progress-bar{height:6px; background:var(--line); border-radius:6px; overflow:hidden}
+.top-progress-fill{height:100%; background:linear-gradient(90deg,var(--teal),var(--gold)); border-radius:6px; transition:width .5s cubic-bezier(.4,0,.2,1); width:0%}
+.top-progress-txt{font-size:11px; color:var(--muted); margin-top:3px; font-family:'DM Mono',monospace}
+.top-xp{
+  font-family:'DM Mono',monospace; font-size:13px; font-weight:500;
+  background:var(--amber-l); color:var(--amber); padding:5px 12px; border-radius:20px;
+  border:1px solid var(--line2); white-space:nowrap;
+}
+
+/* ── LAYOUT ── */
+#content{max-width:760px; margin:0 auto; padding:40px 28px 120px; min-width:0}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.view{animation:fade .4s ease}
+
+/* ── HOME ── */
+.home-tag{font-family:'DM Mono',monospace; font-size:12px; letter-spacing:1px; text-transform:uppercase; color:var(--amber); font-weight:500; display:flex; align-items:center; gap:8px; margin-bottom:10px}
+.home-tag::before{content:''; width:24px; height:2px; background:var(--amber)}
+.home h1{font-family:'Fraunces',serif; font-weight:900; font-size:2.3rem; line-height:1.08; letter-spacing:-1px; margin-bottom:10px}
+.home h1 .acc{color:var(--amber)}
+.home-sub{font-size:16.5px; color:var(--ink2); margin-bottom:30px; max-width:560px}
+
+.mode-card{background:var(--blanc); border:1.5px solid var(--line); border-radius:18px; padding:24px; margin-bottom:18px; box-shadow:var(--shadow); position:relative; overflow:hidden; transition:border-color .2s, box-shadow .2s}
+.mode-card:hover{box-shadow:var(--shadow-lg); border-color:var(--line2)}
+.mode-card::before{content:''; position:absolute; top:0; left:0; bottom:0; width:5px}
+.mode-card.m-teal::before{background:var(--teal)}
+.mode-card.m-plum::before{background:var(--plum)}
+.mode-card.m-navy::before{background:var(--navy)}
+.mode-head{display:flex; align-items:center; gap:14px; margin-bottom:8px}
+.mode-icon{width:50px; height:50px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:26px; flex-shrink:0}
+.m-teal .mode-icon{background:var(--teal-l)} .m-plum .mode-icon{background:var(--plum-l)} .m-navy .mode-icon{background:var(--navy-l)}
+.mode-head h2{font-family:'Fraunces',serif; font-weight:700; font-size:1.3rem; color:var(--ink); letter-spacing:-.3px}
+.mode-card p{font-size:14.5px; color:var(--ink2); margin-bottom:16px}
+.mode-card p:last-of-type{margin-bottom:0}
+.chip-row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+.start-chip{padding:10px 18px; border-radius:11px; font-family:'DM Sans',sans-serif; font-weight:600; font-size:14px; cursor:pointer; border:1.5px solid var(--line2); background:var(--paper); color:var(--ink2); transition:all .15s}
+.start-chip:hover{transform:translateY(-2px); box-shadow:var(--shadow)}
+.m-teal .start-chip:hover{border-color:var(--teal); color:var(--teal-d); background:var(--teal-l)}
+.m-plum .start-chip:hover{border-color:var(--plum); color:var(--plum); background:var(--plum-l)}
+.m-navy .start-chip.solo{background:var(--navy); color:var(--blanc); border-color:var(--navy); width:100%; justify-content:center; display:flex; align-items:center; gap:8px}
+.m-navy .start-chip.solo:hover{background:var(--navy)}
+.chip-lbl{font-size:12.5px; color:var(--muted); font-family:'DM Mono',monospace; margin-right:4px}
+
+/* ── CALLOUTS ── */
+.callout{border-radius:14px; padding:16px 18px; margin:18px 0; border:1px solid; font-size:14.5px}
+.callout .c-label{font-family:'DM Mono',monospace; font-size:11px; font-weight:500; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px; display:flex; align-items:center; gap:7px}
+.callout.key{background:var(--teal-l); border-color:var(--teal-clair)}
+.callout.key .c-label{color:var(--teal-d)}
+.callout p:last-child{margin-bottom:0}
+
+/* ── NAV BUTTONS ── */
+.nav-btn{padding:13px 26px; border-radius:12px; font-family:'DM Sans',sans-serif; font-weight:600; font-size:14px; cursor:pointer; border:1.5px solid var(--line2); background:var(--blanc); color:var(--ink2); transition:all .15s; display:inline-flex; align-items:center; gap:8px}
+.nav-btn:hover{border-color:var(--teal); color:var(--teal-d)}
+.nav-btn.primary{background:var(--teal); color:var(--blanc); border-color:var(--teal)}
+.nav-btn.primary:hover{background:var(--teal-d); transform:translateY(-2px); box-shadow:var(--shadow)}
+
+/* ── QUESTION CARD ── */
+.q-card{background:var(--blanc); border:1.5px solid var(--line2); border-radius:18px; padding:28px; box-shadow:var(--shadow-lg); margin:8px 0 24px; position:relative}
+.info-btn{position:absolute; top:18px; right:18px; width:34px; height:34px; border-radius:50%; background:var(--navy-l); color:var(--navy); font-family:'Fraunces',serif; font-weight:700; font-size:18px; font-style:italic; border:1.5px solid var(--navy); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; z-index:10}
+.info-btn:hover{background:var(--navy); color:var(--blanc); transform:scale(1.05)}
+.q-counter{font-family:'DM Mono',monospace; font-size:12px; color:var(--plum); letter-spacing:1px; margin-bottom:8px}
+.q-theme{font-size:11px; color:var(--muted); margin-bottom:14px; font-family:'DM Mono',monospace}
+.q-text{font-family:'Fraunces',serif; font-weight:600; font-size:1.22rem; color:var(--ink); margin-bottom:6px; line-height:1.35}
+.q-data{background:var(--paper2); border-radius:8px; padding:10px 14px; font-family:'DM Mono',monospace; font-size:13px; color:var(--ink2); margin:14px 0; line-height:1.7}
+.q-data b{color:var(--gold)}
+
+/* progress in session */
+.s-progress{margin-bottom:22px}
+.s-progress-bar{height:8px; background:var(--line); border-radius:8px; overflow:hidden}
+.s-progress-fill{height:100%; background:linear-gradient(90deg,var(--plum),var(--teal)); transition:width .4s; border-radius:8px}
+.s-progress-txt{font-size:12px; color:var(--muted); margin-top:6px; font-family:'DM Mono',monospace; text-align:center}
+
+/* QCM options */
+.opts{display:flex; flex-direction:column; gap:9px; margin-top:16px}
+.opt{display:flex; align-items:center; gap:12px; padding:12px 15px; background:var(--blanc); border:1.5px solid var(--line); border-radius:10px; cursor:pointer; transition:all .15s; font-size:14.5px; user-select:none}
+.opt:hover:not(.locked){border-color:var(--plum); transform:translateX(3px)}
+.opt .letter{flex-shrink:0; width:24px; height:24px; border-radius:6px; border:1.5px solid var(--line2); display:flex; align-items:center; justify-content:center; font-family:'DM Mono',monospace; font-size:12px; font-weight:500; color:var(--muted)}
+.opt.locked{cursor:default}
+.opt.correct{background:var(--ok-l); border-color:var(--ok); color:var(--ok)}
+.opt.correct .letter{background:var(--ok); color:var(--blanc); border-color:var(--ok)}
+.opt.wrong{background:var(--err-l); border-color:var(--err); color:var(--err)}
+.opt.wrong .letter{background:var(--err); color:var(--blanc); border-color:var(--err)}
+.opt.reveal{background:var(--ok-l); border-color:var(--ok); color:var(--ok)}
+
+/* calc input */
+.input-row{display:flex; gap:10px; align-items:center; margin-top:16px}
+.calc-input{flex:1; max-width:260px; background:var(--blanc); border:1.5px solid var(--line2); border-radius:10px; padding:12px 15px; font-family:'DM Mono',monospace; font-size:15px; color:var(--ink); outline:none}
+.calc-input:focus{border-color:var(--plum)}
+.calc-unit{font-family:'DM Mono',monospace; color:var(--muted); font-size:15px}
+.submit-btn{margin-top:20px; width:100%; padding:14px; background:var(--plum); color:var(--blanc); border:none; border-radius:12px; font-family:'DM Sans',sans-serif; font-weight:700; font-size:15px; cursor:pointer; transition:all .15s}
+.submit-btn:hover{background:var(--plum-deep); transform:translateY(-1px)}
+.submit-btn:disabled{opacity:.4; cursor:not-allowed; transform:none}
+
+.help-btn{background:transparent; border:1.5px dashed var(--line2); color:var(--ink2); padding:10px 16px; border-radius:10px; font-family:'DM Sans',sans-serif; font-weight:600; font-size:14px; cursor:pointer; transition:all .2s; margin-top:14px; display:inline-flex; align-items:center; gap:8px; width:100%; justify-content:center}
+.help-btn:hover{border-color:var(--ok); color:var(--ok); background:var(--ok-l)}
+
+/* formulaire */
+.formulaire-panel{display:none; background:var(--paper); border:1.5px solid var(--line2); border-radius:12px; padding:20px; margin-top:22px; box-shadow:var(--shadow)}
+.formulaire-panel.show{display:block; animation:fade .3s}
+.formulaire-title{font-family:'Fraunces',serif; font-weight:700; color:var(--navy); font-size:1.1rem; margin-bottom:14px; border-bottom:1px solid var(--line); padding-bottom:8px}
+.eq-item{padding:12px 16px; border-radius:8px; margin-bottom:10px; transition:all .3s ease; border:1.5px solid transparent; background:var(--blanc)}
+.eq-item .eq-name{font-size:12px; color:var(--muted); font-family:'DM Mono',monospace; text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px}
+.eq-item.highlight{background:var(--ok-l); border-color:var(--ok); box-shadow:0 2px 8px color-mix(in srgb, var(--teal) 15%, transparent); transform:translateX(4px)}
+
+/* correction */
+.corrige{display:none; margin-top:22px; border-radius:14px; padding:18px 20px; border:1.5px solid; animation:fade .35s}
+.corrige.show{display:block}
+.corrige.ok{background:var(--ok-l); border-color:var(--teal-clair)}
+.corrige.no{background:var(--rust-l); border-color:var(--rust-clair)}
+.corrige-head{font-family:'Fraunces',serif; font-weight:700; font-size:16px; margin-bottom:6px; display:flex; align-items:center; gap:8px}
+.corrige.ok .corrige-head{color:var(--teal-d)}
+.corrige.no .corrige-head{color:var(--rust)}
+.corrige .yours{font-size:13px; color:var(--rust); font-family:'DM Mono',monospace; margin-bottom:10px}
+.corrige p{font-size:14px; color:var(--ink2); margin:4px 0 10px}
+.step{display:flex; gap:12px; margin-bottom:10px; align-items:flex-start}
+.step-n{flex-shrink:0; width:22px; height:22px; border-radius:50%; background:var(--teal); color:var(--blanc); font-family:'DM Mono',monospace; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; margin-top:1px}
+.step-txt{flex:1; font-size:14px; color:var(--ink2)}
+.step-txt code{background:color-mix(in srgb, var(--nuit) 5%, transparent); padding:2px 7px; border-radius:5px; font-family:'DM Mono',monospace; font-size:12.5px; color:var(--teal-d)}
+.result-line{margin-top:12px; padding:12px 16px; background:var(--blanc); border-radius:10px; font-family:'DM Mono',monospace; font-size:14.5px; font-weight:600; color:var(--teal-d); border:1px solid var(--teal-clair)}
+.corrige .next{margin-top:16px}
+
+/* result screen */
+.result-screen{text-align:center}
+.result-emoji{font-size:72px; margin-bottom:8px}
+.result-score{font-family:'Fraunces',serif; font-weight:900; font-size:3.5rem; color:var(--teal-d); line-height:1}
+.result-score span{font-size:1.4rem; color:var(--muted)}
+.result-title{font-family:'Fraunces',serif; font-weight:700; font-size:1.6rem; margin:12px 0 8px}
+.result-msg{color:var(--ink2); font-size:15px; max-width:480px; margin:0 auto 24px}
+.result-breakdown{background:var(--blanc); border:1px solid var(--line); border-radius:14px; padding:20px; margin:24px 0; text-align:left; box-shadow:var(--shadow)}
+.result-breakdown h3{font-family:'Fraunces',serif; font-size:15px; margin-bottom:14px; color:var(--ink)}
+.bd-row{display:flex; align-items:center; gap:12px; padding:9px 0; border-bottom:1px solid var(--line)}
+.bd-row:last-child{border-bottom:none}
+.bd-name{flex:1; font-size:14px}
+.bd-bar{width:120px; height:7px; background:var(--line); border-radius:5px; overflow:hidden}
+.bd-bar-fill{height:100%; border-radius:5px}
+.bd-score{font-family:'DM Mono',monospace; font-size:13px; font-weight:500; width:42px; text-align:right}
+
+.meta-chips{display:flex; gap:10px; justify-content:flex-start; flex-wrap:wrap; margin:18px 0 4px}
+.meta-chips .chip{background:var(--paper2); border:1px solid var(--line2); padding:7px 14px; border-radius:20px; font-size:13px; color:var(--ink2); display:flex; align-items:center; gap:6px}
+
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--line2); border-radius:4px}
+
+@media(max-width:760px){
+  #content{padding:28px 18px 100px}
+  .home h1{font-size:1.85rem}
+  .top-progress{display:none}
+}
+</style>
+<link rel="stylesheet" href="../ui.css">
+<link rel="stylesheet" href="../theme.css">
+<link rel="stylesheet" href="../licence.css">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#ECEEF6">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/favicon-32.png">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+</head>
+<body>
+
+<div id="topbar">
+  <div class="logo">Maths<span>Fi</span> · Entraînement</div>
+  <a class="hub" href="../licence.html">← Hub</a>
+  <div class="top-progress">
+    <div class="top-progress-bar"><div class="top-progress-fill" id="topfill"></div></div>
+    <div class="top-progress-txt" id="toptxt">Choisis un mode</div>
+  </div>
+  <div class="top-xp" id="xp">✦ 0 XP</div>
+</div>
+
+<main id="content"></main>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+<script>
+// ════════════════════════════════════════════════════════════════════════
+// HELPERS
+// ════════════════════════════════════════════════════════════════════════
+const pick = a => a[Math.floor(Math.random()*a.length)];
+const randint = (a,b) => Math.floor(Math.random()*(b-a+1))+a;
+const round = (x,d=2) => Math.round(x*Math.pow(10,d))/Math.pow(10,d);
+const fr = (x,d) => Number(x).toLocaleString('fr-FR',{minimumFractionDigits:d,maximumFractionDigits:d});
+const eur = x => fr(x,2)+'\u00A0€';
+const eur0 = x => Number(x).toLocaleString('fr-FR')+'\u00A0€';
+const gp = x => Number(x).toLocaleString('fr-FR',{maximumFractionDigits:2})+'\u00A0%';
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// GÉNÉRATEURS DE CALCULS  (numéros tirés au hasard, réponse calculée)
+// chaque générateur renvoie un objet question entièrement résolu
+// ════════════════════════════════════════════════════════════════════════
+const PER = [{p:12,lbl:'mensuel'},{p:4,lbl:'trimestriel'},{p:2,lbl:'semestriel'}];
+
+const GENS = [
+
+// 1 — Intérêt composé : valeur acquise
+function(){
+  const C0=pick([1000,1500,2000,2500,3000,5000,8000,10000,12000,15000,20000]);
+  const t=pick([2,2.5,3,3.5,4,4.5,5,6]); const n=randint(3,10); const td=t/100;
+  const f=Math.pow(1+td,n); const Cn=C0*f;
+  return {kind:'calc', theme:'Intérêt composé', eqId:'eq-ic', unit:'€',
+    q:`Vous placez <b>${eur0(C0)}</b> pendant <b>${n} ans</b> à <b>${gp(t)}/an</b> en intérêts composés.<br>Quelle est la <strong>valeur acquise</strong> Cₙ ?`,
+    data:`C₀ = ${eur(C0)} · t = ${gp(t)} · n = ${n} ans`,
+    expected:round(Cn,2), tol:Math.max(1,Cn*0.0009),
+    steps:[
+      `On capitalise : <code>Cₙ = C₀ × (1 + t)ⁿ</code>`,
+      `<code>(1 + ${fr(td,4)})^${n} = ${fr(f,5)}</code>`,
+      `<code>${eur0(C0)} × ${fr(f,5)}</code>`],
+    result:`Cₙ = ${eur(Cn)}`};
+},
+
+// 2 — Intérêt simple : valeur acquise (durée en mois)
+function(){
+  const C0=pick([1000,1500,2000,2400,3000,3600,4000,5000,6000]);
+  const t=pick([2,3,3.6,4,5,6]); const m=pick([3,4,6,8,9,10]); const td=t/100;
+  const I=C0*td*(m/12); const Cn=C0+I;
+  return {kind:'calc', theme:'Intérêt simple', eqId:'eq-is', unit:'€',
+    q:`Vous placez <b>${eur0(C0)}</b> à <b>${gp(t)}/an</b> en <strong>intérêts simples</strong> pendant <b>${m} mois</b>.<br>Quelle est la valeur acquise ?`,
+    data:`C₀ = ${eur(C0)} · t = ${gp(t)} (annuel) · n = ${m} mois`,
+    expected:round(Cn,2), tol:Math.max(1,Cn*0.0009),
+    steps:[
+      `Le taux est annuel → on met la durée en années : <code>n = ${m}/12 = ${fr(m/12,4)}</code>`,
+      `Intérêts : <code>I = C₀ × t × n = ${eur0(C0)} × ${fr(td,4)} × ${fr(m/12,4)} = ${eur(I)}</code>`,
+      `<code>Cₙ = C₀ + I = ${eur0(C0)} + ${fr(I,2)}</code>`],
+    result:`Cₙ = ${eur(Cn)}`};
+},
+
+// 3 — Actualisation
+function(){
+  const Cn=pick([10000,15000,20000,25000,30000,40000,50000]);
+  const t=pick([2,3,4,5,6]); const n=randint(3,8); const td=t/100;
+  const fInv=Math.pow(1+td,-n); const C0=Cn*fInv;
+  return {kind:'calc', theme:'Actualisation', eqId:'eq-actu', unit:'€',
+    q:`Quelle somme placer aujourd'hui à <b>${gp(t)}/an</b> (intérêts composés) pour disposer de <b>${eur0(Cn)}</b> dans <b>${n} ans</b> ?`,
+    data:`Cₙ = ${eur(Cn)} · t = ${gp(t)} · n = ${n} ans · cherche C₀`,
+    expected:round(C0,2), tol:Math.max(1,C0*0.0009),
+    steps:[
+      `On actualise : <code>C₀ = Cₙ × (1 + t)⁻ⁿ</code>`,
+      `<code>(1 + ${fr(td,4)})⁻${n} = ${fr(fInv,6)}</code>  (= 1 / ${fr(Math.pow(1+td,n),5)})`,
+      `<code>${eur0(Cn)} × ${fr(fInv,6)}</code>`],
+    result:`C₀ = ${eur(C0)}`};
+},
+
+// 4 — Taux équivalent
+function(){
+  const t=pick([3,4,5,6,8,10,12]); const per=pick(PER); const td=t/100;
+  const f=Math.pow(1+td,1/per.p); const te=(f-1)*100;
+  return {kind:'calc', theme:'Taux équivalent / proportionnel', eqId:'eq-tequiv', unit:'%',
+    q:`Le taux annuel est de <b>${gp(t)}</b>. Quel est le taux <b>${per.lbl}</b> <strong>équivalent</strong> (intérêts composés) ?<br><span style="font-size:13px;color:var(--muted)">Réponse en %, 3 à 4 décimales.</span>`,
+    data:`t annuel = ${gp(t)} · p = ${per.p} sous-périodes/an`,
+    expected:round(te,4), tol:0.012,
+    steps:[
+      `Taux équivalent (composé) : <code>tₑ = (1 + t)^(1/p) − 1</code>`,
+      `<code>(1 + ${fr(td,2)})^(1/${per.p}) = ${fr(f,6)}</code>`,
+      `<code>${fr(f,6)} − 1 = ${fr(te/100,6)}</code>`],
+    result:`tₑ = ${fr(te,4)} %  (≠ ${gp(t/per.p)} de la division !)`};
+},
+
+// 5 — Taux proportionnel (IS)
+function(){
+  const t=pick([3.6,4,6,8,9,10,12]); const per=pick(PER); const tp=t/per.p;
+  return {kind:'calc', theme:'Taux équivalent / proportionnel', eqId:'eq-tprop', unit:'%',
+    q:`En <strong>intérêts simples</strong>, le taux annuel est de <b>${gp(t)}</b>. Quel est le taux <b>${per.lbl}</b> <strong>proportionnel</strong> ? (en %)`,
+    data:`t annuel = ${gp(t)} · p = ${per.p}`,
+    expected:round(tp,4), tol:0.02,
+    steps:[
+      `Taux proportionnel (intérêts simples) : <code>t_p = t / p</code>`,
+      `<code>${gp(t)} / ${per.p} = ${fr(tp,4)} %</code>`],
+    result:`t_p = ${fr(tp,4)} %  (la division n'est valable qu'en intérêts simples)`};
+},
+
+// 6 — Valeur actuelle d'annuités
+function(){
+  const a=pick([200,300,500,800,1000,1200,1500]); const tm=pick([0.3,0.4,0.5,0.6,0.8,1]);
+  const m=pick([12,18,24,36,48,60]); const td=tm/100;
+  const fInv=Math.pow(1+td,-m); const coef=(1-fInv)/td; const V0=a*coef;
+  return {kind:'calc', theme:'Annuités', eqId:'eq-v0-ann', unit:'€',
+    q:`Combien faut-il placer aujourd'hui pour percevoir <b>${eur0(a)}/mois</b> pendant <b>${m} mois</b>, au taux de <b>${gp(tm)}/mois</b> ?`,
+    data:`a = ${eur(a)} · t = ${gp(tm)}/mois · n = ${m} mois · cherche V₀`,
+    expected:round(V0,2), tol:Math.max(1,V0*0.0009),
+    steps:[
+      `Valeur actuelle d'annuités : <code>V₀ = a × [1 − (1+t)⁻ⁿ] / t</code>`,
+      `<code>(1+${fr(td,4)})⁻${m} = ${fr(fInv,6)}</code>`,
+      `<code>[1 − ${fr(fInv,6)}] / ${fr(td,4)} = ${fr(coef,5)}</code>`,
+      `<code>${eur0(a)} × ${fr(coef,5)}</code>`],
+    result:`V₀ = ${eur(V0)}`};
+},
+
+// 7 — Valeur acquise d'annuités
+function(){
+  const a=pick([100,150,200,250,300,500]); const tm=pick([0.3,0.4,0.5,0.6,0.8]);
+  const m=pick([12,24,36,48,60,120]); const td=tm/100;
+  const f=Math.pow(1+td,m); const coef=(f-1)/td; const Vn=a*coef;
+  return {kind:'calc', theme:'Annuités', eqId:'eq-vn-ann', unit:'€',
+    q:`Vous épargnez <b>${eur0(a)}/mois</b> pendant <b>${m} mois</b> au taux de <b>${gp(tm)}/mois</b>.<br>Quel <strong>capital</strong> avez-vous constitué (valeur acquise) ?`,
+    data:`a = ${eur(a)} · t = ${gp(tm)}/mois · n = ${m} mois · cherche Vₙ`,
+    expected:round(Vn,2), tol:Math.max(1,Vn*0.0009),
+    steps:[
+      `Valeur acquise d'annuités : <code>Vₙ = a × [(1+t)ⁿ − 1] / t</code>`,
+      `<code>(1+${fr(td,4)})^${m} = ${fr(f,6)}</code>`,
+      `<code>[${fr(f,6)} − 1] / ${fr(td,4)} = ${fr(coef,5)}</code>`,
+      `<code>${eur0(a)} × ${fr(coef,5)}</code>`],
+    result:`Vₙ = ${eur(Vn)}`};
+},
+
+// 8 — Rente perpétuelle constante
+function(){
+  const a=pick([600,900,1000,1200,1500,2000,3000]); const t=pick([2,3,4,5,6]); const td=t/100;
+  const V0=a/td;
+  return {kind:'calc', theme:'Rentes perpétuelles', eqId:'eq-rente-perp', unit:'€',
+    q:`Quelle est la valeur d'une <strong>rente perpétuelle</strong> versant <b>${eur0(a)}/an</b>, au taux de <b>${gp(t)}/an</b> ?`,
+    data:`a = ${eur(a)} · t = ${gp(t)} · n → ∞`,
+    expected:round(V0,2), tol:Math.max(1,V0*0.0009),
+    steps:[
+      `Quand n → ∞, la formule se simplifie : <code>V₀ = a / t</code>`,
+      `<code>${eur0(a)} / ${fr(td,4)}</code>`],
+    result:`V₀ = ${eur(V0)}`};
+},
+
+// 9 — Rente perpétuelle géométrique
+function(){
+  const a1=pick([600,800,900,1000,1200,1500]); const g=pick([1,2,3]);
+  const t=pick([4,5,6,8].filter(x=>x>g)); const td=t/100, gd=g/100;
+  const V0=a1/(td-gd);
+  return {kind:'calc', theme:'Rentes perpétuelles', eqId:'eq-rente-perp', unit:'€',
+    q:`<strong>Rente perpétuelle croissante</strong> : premier flux <b>${eur0(a1)}</b>, croissance <b>${gp(g)}/an</b>, taux d'actualisation <b>${gp(t)}/an</b>.<br>Valeur actuelle ?`,
+    data:`a₁ = ${eur(a1)} · g = ${gp(g)} · t = ${gp(t)}`,
+    expected:round(V0,2), tol:Math.max(1,V0*0.0009),
+    steps:[
+      `Condition t > g : <code>${gp(t)} > ${gp(g)}</code> ✓`,
+      `<code>V₀ = a₁ / (t − g)</code>`,
+      `<code>${eur0(a1)} / (${fr(td,4)} − ${fr(gd,4)}) = ${eur0(a1)} / ${fr(td-gd,4)}</code>`],
+    result:`V₀ = ${eur(V0)}`};
+},
+
+// 10 — Emprunt : annuité constante
+function(){
+  const V0=pick([5000,8000,10000,12000,15000,20000,30000]); const t=pick([2,3,4,5,6]);
+  const n=randint(3,10); const td=t/100;
+  const fInv=Math.pow(1+td,-n); const a=V0*td/(1-fInv);
+  return {kind:'calc', theme:'Emprunts', eqId:'eq-emprunt', unit:'€',
+    q:`Emprunt de <b>${eur0(V0)}</b> au taux de <b>${gp(t)}/an</b>, remboursable en <b>${n} annuités constantes</b>.<br>Montant de l'annuité ?`,
+    data:`V₀ = ${eur(V0)} · t = ${gp(t)} · n = ${n} ans · cherche a`,
+    expected:round(a,2), tol:Math.max(1,a*0.0009),
+    steps:[
+      `<code>a = V₀ × t / [1 − (1+t)⁻ⁿ]</code>`,
+      `<code>(1+${fr(td,4)})⁻${n} = ${fr(fInv,5)}</code>`,
+      `<code>${eur0(V0)} × ${fr(td,4)} / [1 − ${fr(fInv,5)}]</code>`],
+    result:`a = ${eur(a)}`};
+},
+
+// 11 — Emprunt in fine : total des intérêts
+function(){
+  const V0=pick([50000,80000,100000,120000,150000,180000,200000]); const t=pick([1,1.5,2,3,4,5]);
+  const n=randint(2,5); const td=t/100; const Ian=V0*td; const I=Ian*n;
+  return {kind:'calc', theme:'Emprunts', eqId:'eq-infine', unit:'€',
+    q:`Emprunt <strong>in fine</strong> de <b>${eur0(V0)}</b> à <b>${gp(t)}/an</b> sur <b>${n} ans</b>.<br>Total des <strong>intérêts</strong> payés ?`,
+    data:`V₀ = ${eur(V0)} · t = ${gp(t)} · n = ${n} ans · remboursement in fine`,
+    expected:round(I,2), tol:Math.max(1,I*0.0009),
+    steps:[
+      `En in fine, le capital n'est jamais amorti avant la fin : les intérêts sont constants.`,
+      `Intérêts par an : <code>V₀ × t = ${eur0(V0)} × ${fr(td,4)} = ${eur(Ian)}</code>`,
+      `Sur ${n} ans : <code>${n} × ${eur(Ian)}</code>`],
+    result:`Total intérêts = ${eur(I)}`};
+},
+
+// 12 — Recherche du taux (IC)
+function(){
+  const C0=pick([2000,2400,3000,5000,8000,10000]); const n=randint(2,6); const t=pick([2,3,4,5,6]);
+  const td=t/100; const Cn=round(C0*Math.pow(1+td,n),2);
+  const ratio=Cn/C0; const tCalc=(Math.pow(ratio,1/n)-1)*100;
+  return {kind:'calc', theme:'Recherche de taux', eqId:'eq-ic', unit:'%',
+    q:`Un capital de <b>${eur0(C0)}</b> devient <b>${eur(Cn)}</b> après <b>${n} ans</b> en intérêts composés.<br>Quel est le <strong>taux annuel</strong> ? (en %)`,
+    data:`C₀ = ${eur(C0)} · Cₙ = ${eur(Cn)} · n = ${n} ans · cherche t`,
+    expected:round(tCalc,4), tol:0.1,
+    steps:[
+      `On part de <code>Cₙ = C₀ (1+t)ⁿ</code> → <code>(1+t)ⁿ = Cₙ/C₀ = ${fr(ratio,5)}</code>`,
+      `<code>1+t = ${fr(ratio,5)}^(1/${n}) = ${fr(Math.pow(ratio,1/n),5)}</code>`,
+      `<code>t = ${fr(Math.pow(ratio,1/n)-1,5)} ≈ ${fr(tCalc,2)} %</code>`],
+    result:`t ≈ ${fr(tCalc,2)} %`};
+},
+
+// 13 — Emprunt amortissements constants : 1re annuité
+function(){
+  const V0=pick([6000,8000,10000,12000,15000,20000]); const t=pick([2,3,4,5,6]); const n=randint(4,8);
+  const td=t/100; const A=V0/n; const I1=V0*td; const a1=A+I1;
+  return {kind:'calc', theme:'Emprunts', eqId:'eq-emprunt', unit:'€',
+    q:`Emprunt de <b>${eur0(V0)}</b> sur <b>${n} ans</b> à <b>${gp(t)}/an</b>, remboursé par <strong>amortissements constants</strong>.<br>Montant de la <strong>1ʳᵉ annuité</strong> ?`,
+    data:`V₀ = ${eur(V0)} · t = ${gp(t)} · n = ${n} ans · amortissement constant`,
+    expected:round(a1,2), tol:Math.max(1,a1*0.0009),
+    steps:[
+      `Amortissement constant : <code>A = V₀ / n = ${eur0(V0)} / ${n} = ${eur(A)}</code>`,
+      `Intérêts de l'année 1 (sur le capital total) : <code>I₁ = V₀ × t = ${eur0(V0)} × ${fr(td,4)} = ${eur(I1)}</code>`,
+      `<code>a₁ = A + I₁ = ${fr(A,2)} + ${fr(I1,2)}</code>`],
+    result:`a₁ = ${eur(a1)}`};
+},
+
+];
+
+// ════════════════════════════════════════════════════════════════════════
+// BANQUE DE QCM DE COURS
+// ════════════════════════════════════════════════════════════════════════
+const QCM = [
+{theme:'Bases', eqId:'eq-actu', q:"Une banque dit : « ce capital vaudra 5 200 € dans 3 ans ». Pour savoir ce qu'il vaut aujourd'hui, on…", opts:["capitalise (on va vers le futur)","actualise (on revient au présent)","calcule un intérêt simple"], correct:1, fb:"On ramène une somme future au présent → on actualise (on divise par (1+t)ⁿ)."},
+{theme:'Intérêt simple / composé', eqId:'eq-ic', q:"Rien n'est précisé, la durée est de 5 ans. Par convention, on calcule…", opts:["en intérêts simples","en intérêts composés","peu importe, c'est identique"], correct:1, fb:"Au-delà d'un an et sans précision, la convention est l'intérêt composé. (En dessous d'un an : intérêt simple.)"},
+{theme:'Intérêt simple / composé', eqId:'eq-ic', q:"Sur exactement 1 an, intérêt simple et intérêt composé donnent…", opts:["un résultat différent","le même résultat","un résultat plus faible en composé"], correct:1, fb:"Sur une seule période, (1+t)¹ = 1+t : les deux méthodes coïncident."},
+{theme:'Intérêt simple / composé', eqId:'eq-ic', q:"L'« effet boule de neige » (les intérêts produisent à leur tour des intérêts) correspond…", opts:["à l'intérêt simple","à l'intérêt composé","au taux proportionnel"], correct:1, fb:"En composé, chaque période les intérêts s'ajoutent au capital et produisent à leur tour des intérêts."},
+{theme:'Taux équivalent / proportionnel', eqId:'eq-tequiv', q:"Le taux mensuel équivalent (intérêts composés) à un taux annuel de 12 % est :", opts:["1,0000 % (= 12/12)","0,9489 % (= 1,12^(1/12) − 1)","1,2000 %"], correct:1, fb:"En composé on prend la racine 12ᵉ : 1,12^(1/12) − 1 = 0,9489 %. Diviser par 12 ne vaut qu'en intérêts simples."},
+{theme:'Taux équivalent / proportionnel', eqId:'eq-tprop', q:"Le taux proportionnel (t/p) est réservé…", opts:["aux intérêts composés","aux intérêts simples","aux rentes perpétuelles"], correct:1, fb:"La simple division t/p n'est exacte qu'en intérêts simples. En composé on utilise le taux équivalent."},
+{theme:'Taux équivalent / proportionnel', eqId:'eq-tequiv', q:"Pourquoi diviser le taux par 12 surestime-t-il le taux mensuel réel en composé ?", opts:["parce que 1,01^12 = 1,1268 > 1,12","parce que la division arrondit toujours vers le haut","ce n'est pas une surestimation"], correct:0, fb:"Placer à 1 %/mois composé donne 1,01¹² = 12,68 %/an, pas 12 % : la division surestime le taux."},
+{theme:'Actualisation', eqId:'eq-actu', q:"Actualiser une somme future en intérêts composés, c'est mathématiquement…", opts:["multiplier par (1+t)ⁿ","multiplier par (1+t)⁻ⁿ (donc diviser)","soustraire les intérêts"], correct:1, fb:"Actualiser = revenir au présent = multiplier par (1+t)⁻ⁿ, c'est-à-dire diviser par (1+t)ⁿ."},
+{theme:'Annuités', eqId:'eq-v0-ann', q:"« Combien placer aujourd'hui pour recevoir 1 200 €/mois pendant 2 ans ? » C'est un calcul de…", opts:["valeur acquise Vₙ","valeur actuelle V₀","intérêt simple"], correct:1, fb:"On ramène des flux futurs au présent → valeur actuelle V₀."},
+{theme:'Annuités', eqId:'eq-vn-ann', q:"« J'épargne 200 €/mois, quel capital dans 3 ans ? » C'est un calcul de…", opts:["valeur acquise Vₙ","valeur actuelle V₀","rente perpétuelle"], correct:0, fb:"On projette des versements vers le futur → valeur acquise Vₙ."},
+{theme:'Annuités', eqId:'eq-vn-ann', q:"La valeur acquise Vₙ d'une suite d'annuités donne le capital…", opts:["à la date du tout premier versement","à la date du dernier versement","un an après le dernier versement"], correct:1, fb:"Vₙ est calculée à la date du dernier versement. Pour un capital un an plus tard, on multiplie encore par (1+t)."},
+{theme:'Annuités', eqId:'eq-v0-ann', q:"Pour appliquer directement les formules d'annuités, il faut que…", opts:["le taux et les versements aient la même périodicité","le taux soit toujours annuel","les versements soient annuels"], correct:0, fb:"Taux et versements doivent partager la même période (sinon il faut d'abord convertir le taux)."},
+{theme:'Rentes perpétuelles', eqId:'eq-rente-perp', q:"Pour une rente perpétuelle géométrique, la valeur actuelle est finie si…", opts:["t = g","t < g","t > g"], correct:2, fb:"Il faut t > g, sinon la somme diverge (valeur infinie)."},
+{theme:'Rentes perpétuelles', eqId:'eq-rente-perp', q:"La valeur d'une rente perpétuelle constante de montant a au taux t est :", opts:["a × t","a / t","a × (1+t)"], correct:1, fb:"V₀ = a / t : quand n → ∞, le terme (1+t)⁻ⁿ disparaît et la formule s'effondre."},
+{theme:'Rentes perpétuelles', eqId:'eq-rente-perp', q:"L'énoncé donne une raison q = 1,04. Dans la formule, on utilise…", opts:["q = 1,04 directement","le taux g = q − 1 = 0,04","g = q = 0,04"], correct:1, fb:"La raison q n'est pas le taux : g = q − 1. Confondre les deux fausse tout le calcul."},
+{theme:'Emprunts', eqId:'eq-emprunt', q:"Dans un emprunt indivis, la relation fondamentale par échéance est :", opts:["annuité = amortissement + intérêts","annuité = amortissement − intérêts","annuité = capital × durée"], correct:0, fb:"Chaque annuité aₖ = amortissement Aₖ + intérêts Iₖ."},
+{theme:'Emprunts', eqId:'eq-emprunt', q:"Les intérêts d'une échéance se calculent sur…", opts:["le capital initial emprunté","le capital restant dû en début de période","l'annuité de la période"], correct:1, fb:"Iₖ = V₍ₖ₋₁₎ × t : toujours sur le capital qui reste à rembourser."},
+{theme:'Emprunts', eqId:'eq-infine', q:"Quelle modalité de remboursement coûte le PLUS cher en intérêts ?", opts:["amortissements constants","annuités constantes","in fine"], correct:2, fb:"En in fine, le capital n'est jamais amorti avant la fin : les intérêts portent toujours sur le capital total."},
+{theme:'Emprunts', eqId:'eq-emprunt', q:"Quelle modalité coûte le MOINS cher en intérêts ?", opts:["amortissements constants","in fine","annuités constantes"], correct:0, fb:"Les amortissements constants font baisser le capital dû plus vite → moins d'intérêts au total."},
+{theme:'Emprunts', eqId:'eq-emprunt', q:"En remboursement par amortissements constants, l'annuité…", opts:["est constante","décroît dans le temps","croît dans le temps"], correct:1, fb:"L'amortissement est fixe mais les intérêts baissent (capital dû qui diminue) → annuités décroissantes."},
+{theme:'TAEG', eqId:'eq-emprunt', q:"Le TAEG (Taux Annuel Effectif Global)…", opts:["est toujours ≥ au taux nominal","est toujours < au taux nominal","est égal au taux nominal"], correct:0, fb:"Le TAEG inclut le taux nominal + assurance + frais : il est donc toujours supérieur ou égal au nominal."},
+{theme:'TAEG', eqId:'eq-emprunt', q:"Le TAEG sert à mesurer…", opts:["le rendement d'un placement","le coût réel et total d'un crédit","la durée d'un emprunt"], correct:1, fb:"C'est l'indicateur légal du coût total d'un crédit, qui permet de comparer des offres entre elles."},
+{theme:'Bases', eqId:'eq-ic', q:"« 100 € aujourd'hui ou 100 € dans un an ? » Pourquoi préférer aujourd'hui ?", opts:["pour l'inflation uniquement","parce que l'argent placé rapporte : il a une valeur dans le temps","aucune différence en réalité"], correct:1, fb:"C'est le principe central : 100 € placés valent davantage dans un an. L'argent a une valeur temporelle."},
+{theme:'Bases', eqId:'eq-ic', q:"Capitaliser, c'est…", opts:["aller du présent vers le futur (×)","aller du futur vers le présent (÷)","calculer une mensualité"], correct:0, fb:"Capitaliser = avancer dans le temps en multipliant par (1+t)ⁿ. Actualiser fait l'inverse."},
+];
+
+// ════════════════════════════════════════════════════════════════════════
+// FORMULAIRE
+// ════════════════════════════════════════════════════════════════════════
+const FORMULAIRE = `
+  <div class="formulaire-panel" id="formulaire-panel">
+    <div class="formulaire-title">📘 Formulaire d'examen</div>
+    <div class="eq-item" id="eq-is"><div class="eq-name">Intérêt simple</div>$$ I = C_0 \\times t \\times n $$</div>
+    <div class="eq-item" id="eq-ic"><div class="eq-name">Intérêt composé (valeur acquise)</div>$$ C_n = C_0 \\times (1 + t)^n $$</div>
+    <div class="eq-item" id="eq-actu"><div class="eq-name">Actualisation</div>$$ C_0 = C_n \\times (1 + t)^{-n} $$</div>
+    <div class="eq-item" id="eq-tequiv"><div class="eq-name">Taux équivalent (composé)</div>$$ t_e = (1 + t)^{\\frac{1}{p}} - 1 $$</div>
+    <div class="eq-item" id="eq-tprop"><div class="eq-name">Taux proportionnel (simple)</div>$$ t_p = \\frac{t}{p} $$</div>
+    <div class="eq-item" id="eq-v0-ann"><div class="eq-name">Valeur actuelle d'annuités</div>$$ V_0 = a \\times \\frac{1 - (1+t)^{-n}}{t} $$</div>
+    <div class="eq-item" id="eq-vn-ann"><div class="eq-name">Valeur acquise d'annuités</div>$$ V_n = a \\times \\frac{(1+t)^n - 1}{t} $$</div>
+    <div class="eq-item" id="eq-rente-perp"><div class="eq-name">Rente perpétuelle</div>$$ V_0 = \\frac{a}{t} \\quad ; \\quad V_0 = \\frac{a_1}{t - g} $$</div>
+    <div class="eq-item" id="eq-emprunt"><div class="eq-name">Emprunt — annuité constante</div>$$ a = V_0 \\times \\frac{t}{1 - (1+t)^{-n}} $$</div>
+    <div class="eq-item" id="eq-infine"><div class="eq-name">Emprunt in fine — intérêts/an</div>$$ I_{an} = V_0 \\times t $$</div>
+  </div>`;
+
+// ════════════════════════════════════════════════════════════════════════
+// MOTEUR
+// ════════════════════════════════════════════════════════════════════════
+const state = {mode:null, label:'', count:0, queue:[], idx:0, score:0, answered:[], xp:0};
+
+function renderMath(el){
+  if(window.renderMathInElement){
+    renderMathInElement(el||document.getElementById('content'), {
+      delimiters:[{left:"$$",right:"$$",display:true},{left:"$",right:"$",display:false}],
+      throwOnError:false
+    });
+  }
+}
+
+function updateTop(){
+  document.getElementById('xp').textContent = `✦ ${state.xp} XP`;
+  if(state.mode && state.queue.length){
+    const pct = Math.round(state.idx / state.queue.length * 100);
+    document.getElementById('topfill').style.width = pct + '%';
+    document.getElementById('toptxt').textContent = `${state.label} · ${Math.min(state.idx+1,state.queue.length)}/${state.queue.length}`;
+  }
+}
+
+// ── ÉCRAN D'ACCUEIL ──
+function renderHome(){
+  document.getElementById('topfill').style.width = '0%';
+  document.getElementById('toptxt').textContent = 'Choisis un mode';
+  const c = document.getElementById('content');
+  c.innerHTML = `
+    <div class="view home">
+      <div class="home-tag">Mode entraînement · Maths Financières</div>
+      <h1>Prêt pour le <span class="acc">partiel</span> ?<br>Entraîne-toi en conditions.</h1>
+      <p class="home-sub">Des exercices générés à l'infini avec des chiffres différents à chaque fois, corrigés pas à pas. Choisis ton mode et lance une série.</p>
+
+      <div class="mode-card m-teal">
+        <div class="mode-head"><div class="mode-icon">🧮</div><h2>Calculs variés</h2></div>
+        <p>Tirage aléatoire sur tout le programme : intérêts simples et composés, actualisation, taux équivalent, annuités, rentes perpétuelles, emprunts, recherche de taux. Numéros différents à chaque tirage — tu ne peux pas apprendre par cœur.</p>
+        <div class="chip-row">
+          <span class="chip-lbl">Série de</span>
+          <button class="start-chip" onclick="startSession('calc',5)">5 calculs</button>
+          <button class="start-chip" onclick="startSession('calc',10)">10 calculs</button>
+          <button class="start-chip" onclick="startSession('calc',15)">15 calculs</button>
+        </div>
+      </div>
+
+      <div class="mode-card m-plum">
+        <div class="mode-head"><div class="mode-icon">📚</div><h2>QCM de cours</h2></div>
+        <p>Les réflexes de cours : quelle formule choisir, les pièges (taux équivalent vs proportionnel, raison vs taux), le coût des modalités d'emprunt, le TAEG, les conditions des rentes perpétuelles. ${QCM.length} questions au total.</p>
+        <div class="chip-row">
+          <span class="chip-lbl">Série de</span>
+          <button class="start-chip" onclick="startSession('qcm',10)">10 questions</button>
+          <button class="start-chip" onclick="startSession('qcm',15)">15 questions</button>
+          <button class="start-chip" onclick="startSession('qcm',${QCM.length})">Toutes (${QCM.length})</button>
+        </div>
+      </div>
+
+      <div class="mode-card m-navy">
+        <div class="mode-head"><div class="mode-icon">🎯</div><h2>Examen blanc</h2></div>
+        <p>Conditions du partiel : un mix de calculs et de questions de cours d'affilée, sans repasser par le menu. 12 questions, bilan par thème à la fin.</p>
+        <div class="chip-row">
+          <button class="start-chip solo" onclick="startSession('exam',12)">Lancer l'examen blanc →</button>
+        </div>
+      </div>
+
+      <div class="callout key">
+        <div class="c-label">🔑 Comment t'en servir</div>
+        <p>Pose ta réponse <strong>avant</strong> de valider. Le bouton « i » ouvre le formulaire d'examen, l'indice 💡 surligne la formule à utiliser. Chaque calcul est corrigé pas à pas, juste ou faux.</p>
+      </div>
+    </div>`;
+}
+
+// ── DÉMARRAGE D'UNE SÉRIE ──
+function buildQueue(mode,count){
+  if(mode==='qcm'){
+    return shuffle(QCM).slice(0,count).map(q=>Object.assign({},q,{kind:'qcm'}));
+  }
+  if(mode==='calc'){
+    const out=[]; let last=-1;
+    for(let i=0;i<count;i++){
+      let g; do{ g=randint(0,GENS.length-1); }while(GENS.length>1 && g===last);
+      last=g; out.push(GENS[g]());
+    }
+    return out;
+  }
+  // exam : mix ~60% calculs
+  const nCalc=Math.ceil(count*0.6), nQcm=count-nCalc;
+  const calcs=[]; let last=-1;
+  for(let i=0;i<nCalc;i++){ let g; do{ g=randint(0,GENS.length-1); }while(GENS.length>1 && g===last); last=g; calcs.push(GENS[g]()); }
+  const qcms=shuffle(QCM).slice(0,nQcm).map(q=>Object.assign({},q,{kind:'qcm'}));
+  return shuffle(calcs.concat(qcms));
+}
+
+function startSession(mode,count){
+  state.mode=mode; state.count=count;
+  state.label = mode==='calc'?'Calculs':(mode==='qcm'?'QCM':'Examen blanc');
+  state.queue = buildQueue(mode,count);
+  state.idx=0; state.score=0; state.answered=[];
+  renderQ();
+}
+
+// ── RENDU D'UNE QUESTION ──
+function renderQ(){
+  if(state.idx>=state.queue.length){ renderResult(); return; }
+  const q=state.queue[state.idx];
+  const pct=Math.round(state.idx/state.queue.length*100);
+  const c=document.getElementById('content');
+
+  let answer='';
+  if(q.kind==='qcm'){
+    answer = `<div class="opts">` + q.opts.map((o,i)=>
+      `<div class="opt" onclick="selectQcm(this,${i})"><span class="letter">${String.fromCharCode(65+i)}</span> ${o}</div>`).join('') + `</div>`;
+  } else {
+    answer = `
+      ${q.data?`<div class="q-data">${q.data}</div>`:''}
+      <div class="input-row">
+        <input class="calc-input" id="calc-input" type="text" inputmode="decimal" placeholder="ta réponse"
+          oninput="enableSubmit()" onkeydown="if(event.key==='Enter')submitCalc()">
+        <span class="calc-unit">${q.unit||''}</span>
+      </div>
+      <button class="submit-btn" id="submit-btn" onclick="submitCalc()" disabled>Valider</button>`;
+  }
+
+  c.innerHTML = `
+    <div class="view">
+      <div class="s-progress">
+        <div class="s-progress-bar"><div class="s-progress-fill" style="width:${pct}%"></div></div>
+        <div class="s-progress-txt">Question ${state.idx+1} / ${state.queue.length} · Score : ${state.score}</div>
+      </div>
+      <div class="q-card">
+        <button class="info-btn" onclick="toggleFormulaire()" title="Formulaire d'examen">i</button>
+        <div class="q-counter">${q.kind==='calc'?'🧮 Calcul':'📚 QCM'} · Question ${state.idx+1}</div>
+        <div class="q-theme">📘 ${q.theme}</div>
+        <div class="q-text">${q.q}</div>
+        ${answer}
+        <button class="help-btn" id="help-btn" onclick="useHelp('${q.eqId}')">💡 Indice : quelle formule utiliser ?</button>
+        ${FORMULAIRE}
+        <div class="corrige" id="corrige"></div>
+      </div>
+    </div>`;
+  renderMath();
+  window.scrollTo({top:0});
+}
+
+function enableSubmit(){
+  const inp=document.getElementById('calc-input'), btn=document.getElementById('submit-btn');
+  if(inp&&btn) btn.disabled = inp.value.trim()==='';
+}
+
+function selectQcm(el,idx){
+  const card=el.closest('.q-card');
+  if(card.dataset.locked) return;
+  card.dataset.locked='1';
+  const q=state.queue[state.idx];
+  const ok=(idx===q.correct);
+  state.answered.push({theme:q.theme, ok});
+  if(ok){ state.score++; state.xp+=8; }
+  card.querySelectorAll('.opt').forEach((o,j)=>{
+    o.classList.add('locked');
+    if(j===q.correct) o.classList.add(ok&&j===idx?'correct':'reveal');
+    if(j===idx&&!ok) o.classList.add('wrong');
+  });
+  showCorrection(ok,q,null);
+}
+
+function submitCalc(){
+  const card=document.querySelector('.q-card');
+  if(card.dataset.locked) return;
+  const q=state.queue[state.idx];
+  const inp=document.getElementById('calc-input');
+  const raw=inp.value.replace(/\s/g,'').replace(/€|%/g,'').replace(',','.');
+  const val=parseFloat(raw);
+  if(isNaN(val)){ inp.style.borderColor='var(--err)'; return; }
+  card.dataset.locked='1';
+  const ok=Math.abs(val-q.expected)<=q.tol;
+  state.answered.push({theme:q.theme, ok});
+  if(ok){ state.score++; state.xp+=12; }
+  inp.style.borderColor = ok?'var(--ok)':'var(--err)';
+  inp.style.background = ok?'var(--ok-l)':'var(--err-l)';
+  document.getElementById('submit-btn').disabled=true;
+  showCorrection(ok,q,val);
+}
+
+function showCorrection(ok,q,yourVal){
+  document.getElementById('help-btn').style.display='none';
+  document.getElementById('formulaire-panel').classList.remove('show');
+  const box=document.getElementById('corrige');
+  const last=(state.idx===state.queue.length-1);
+  const nextLbl=last?'Voir mon résultat 🎯':'Question suivante →';
+
+  let inner='';
+  if(q.kind==='calc'){
+    inner += `<div class="corrige-head">${ok?'✅ Correct !':'❌ Pas tout à fait'}</div>`;
+    if(!ok) inner += `<div class="yours">Ta réponse : ${fr(yourVal, q.unit==='%'?4:2)} ${q.unit||''}</div>`;
+    inner += q.steps.map((s,i)=>`<div class="step"><div class="step-n">${i+1}</div><div class="step-txt">${s}</div></div>`).join('');
+    inner += `<div class="result-line">${q.result}</div>`;
+  } else {
+    inner += `<div class="corrige-head">${ok?'✅ Exact !':'❌ Pas tout à fait'}</div>`;
+    inner += `<p>${q.fb}</p>`;
+  }
+  inner += `<button class="nav-btn primary next" onclick="nextQ()">${nextLbl}</button>`;
+  box.className = 'corrige show ' + (ok?'ok':'no');
+  box.innerHTML = inner;
+  renderMath(box);
+}
+
+function nextQ(){ state.idx++; updateTop(); renderQ(); }
+
+// ── FORMULAIRE / INDICE ──
+function toggleFormulaire(){ document.getElementById('formulaire-panel').classList.toggle('show'); renderMath(); }
+function useHelp(eqId){
+  const panel=document.getElementById('formulaire-panel');
+  panel.classList.add('show'); renderMath(panel);
+  document.querySelectorAll('.eq-item').forEach(el=>el.classList.remove('highlight'));
+  const t=document.getElementById(eqId);
+  if(t){ t.classList.add('highlight'); t.scrollIntoView({behavior:'smooth',block:'center'}); }
+}
+
+// ── RÉSULTAT ──
+function renderResult(){
+  const total=state.queue.length, score=state.score, pct=Math.round(score/total*100);
+  const byTheme={};
+  state.answered.forEach(a=>{ if(!byTheme[a.theme]) byTheme[a.theme]={ok:0,tot:0}; byTheme[a.theme].tot++; if(a.ok) byTheme[a.theme].ok++; });
+
+  let emoji,title,msg;
+  if(pct>=90){emoji='🏆';title='Maîtrise totale !';msg='Tu es prêt pour le partiel.';}
+  else if(pct>=70){emoji='🎯';title='Très solide !';msg='Bonne maîtrise d\'ensemble, peaufine les thèmes en orange.';}
+  else if(pct>=50){emoji='📈';title='Sur la bonne voie';msg='Les bases sont là. Reprends les thèmes faibles puis relance une série.';}
+  else {emoji='📚';title='Encore un peu de travail';msg='Pas de panique : revois les leçons du parcours, puis réentraîne-toi ici.';}
+
+  let bd='';
+  Object.entries(byTheme).forEach(([th,d])=>{
+    const p=Math.round(d.ok/d.tot*100);
+    const col=p>=70?'var(--ok)':p>=40?'var(--amber)':'var(--err)';
+    bd += `<div class="bd-row"><div class="bd-name">${th}</div>
+      <div class="bd-bar"><div class="bd-bar-fill" style="width:${p}%;background:${col}"></div></div>
+      <div class="bd-score" style="color:${col}">${d.ok}/${d.tot}</div></div>`;
+  });
+
+  document.getElementById('topfill').style.width='100%';
+  document.getElementById('toptxt').textContent='Résultat';
+
+  document.getElementById('content').innerHTML = `
+    <div class="view result-screen">
+      <div class="result-emoji">${emoji}</div>
+      <div class="result-score">${score}<span> / ${total}</span></div>
+      <div class="result-title">${title}</div>
+      <div class="result-msg">${msg} <strong>(${pct}% de réussite)</strong></div>
+      <div class="result-breakdown"><h3>📊 Ton bilan par thème</h3>${bd}</div>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <button class="nav-btn primary" onclick="startSession('${state.mode}',${state.count})">Relancer une série 🔄</button>
+        <button class="nav-btn" onclick="renderHome()">Changer de mode</button>
+        <button class="nav-btn" onclick="location.href='maths_fi.html'">Revoir les leçons</button>
+      </div>
+    </div>`;
+  window.scrollTo({top:0});
+}
+
+// INIT
+renderHome();
+</script>
+<script src="../lb.js"></script>
+<script src="../progress.js"></script>
+<script src="../ui.js"></script>
+</body>
+</html>

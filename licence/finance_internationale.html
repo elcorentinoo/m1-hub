@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="fr" data-niveau="licence" subject-id="l-finance-internationale">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>Finance Internationale — LP Banque</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans',sans-serif; background:var(--paper); color:var(--ink);
+  line-height:1.6; font-size:16px;
+}
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-track{background:var(--paper2)}
+::-webkit-scrollbar-thumb{background:var(--line);border-radius:6px;border:2px solid var(--paper2)}
+::-webkit-scrollbar-thumb:hover{background:var(--stroke2)}
+
+/* ===== NAV ===== */
+.nav{
+  position:fixed;top:0;left:0;right:0;height:64px;z-index:100;
+  background:color-mix(in srgb, var(--fond) 92%, transparent);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:20px;padding:0 22px;
+}
+.nav .brand{display:flex;align-items:center;gap:11px;font-family:'Fraunces',serif;font-weight:600}
+.nav .logo{
+  width:36px;height:36px;border-radius:9px;background:var(--teal);
+  display:grid;place-items:center;color:var(--blanc);font-size:20px;flex-shrink:0;
+  box-shadow:0 2px 0 var(--teal-d);
+}
+.nav .brand .t1{font-size:16px;line-height:1.1}
+.nav .brand .t2{font-size:11px;color:var(--amber);font-family:'DM Mono',monospace;letter-spacing:.5px}
+.nav .grow{flex:1}
+.progress-wrap{display:flex;align-items:center;gap:10px;min-width:160px}
+.progress-wrap .lbl{font-size:11px;color:var(--txt3);font-family:'DM Mono',monospace;white-space:nowrap}
+.bar{flex:1;height:8px;background:var(--paper2);border-radius:6px;overflow:hidden;border:1px solid var(--line);min-width:90px}
+.bar > i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--teal),var(--teal));transition:width .6s cubic-bezier(.2,.8,.2,1)}
+.xp{
+  display:flex;align-items:center;gap:7px;background:var(--paper2);
+  border:1px solid var(--line);border-radius:20px;padding:6px 13px;
+  font-family:'DM Mono',monospace;font-size:13px;font-weight:500;
+}
+.xp .star{color:var(--amber)}
+.xp b{color:var(--ink)}
+.burger{display:none;background:none;border:1px solid var(--line);border-radius:8px;width:38px;height:38px;font-size:18px;cursor:pointer;color:var(--ink)}
+
+/* ===== LAYOUT ===== */
+.shell{display:flex;padding-top:64px;min-height:100vh}
+.sidebar{
+  width:268px;flex-shrink:0;position:sticky;top:64px;height:calc(100vh - 64px);
+  overflow-y:auto;background:var(--paper2);border-right:1px solid var(--line);padding:20px 14px;
+}
+.side-h{font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:1.4px;text-transform:uppercase;color:var(--txt3);margin:6px 8px 10px}
+.side-h:not(:first-child){margin-top:22px}
+.lesson-link{
+  display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:9px;
+  cursor:pointer;font-size:14px;color:var(--ink);transition:background .15s;margin-bottom:2px;
+}
+.lesson-link:hover{background:var(--stroke)}
+.lesson-link.active{background:var(--teal);color:var(--blanc)}
+.lesson-link.active .num{background:color-mix(in srgb, var(--blanc) 25%, transparent);color:var(--blanc)}
+.lesson-link .num{
+  width:24px;height:24px;border-radius:7px;background:var(--stroke);color:var(--txt3);
+  display:grid;place-items:center;font-family:'DM Mono',monospace;font-size:12px;flex-shrink:0;font-weight:500;
+}
+.lesson-link.done .num{background:var(--teal);color:var(--blanc)}
+.lesson-link.active.done .num{background:var(--blanc);color:var(--teal)}
+.lesson-link .check{margin-left:auto;color:var(--blanc);font-size:13px;opacity:0}
+.lesson-link.done .check{opacity:1;color:var(--teal)}
+.lesson-link.active.done .check{color:var(--blanc)}
+.special-link{
+  display:flex;align-items:center;gap:10px;padding:11px;border-radius:9px;cursor:pointer;
+  font-size:14px;font-weight:600;margin-bottom:4px;border:1px dashed var(--line);transition:.15s;
+}
+.special-link.test{color:var(--plum)} .special-link.test:hover{background:var(--plum-soft);border-color:var(--plum)}
+.special-link.annales{color:var(--navy)} .special-link.annales:hover{background:var(--navy-soft);border-color:var(--navy)}
+.special-link.active.test{background:var(--plum);color:var(--blanc);border-style:solid}
+.special-link.active.annales{background:var(--navy);color:var(--blanc);border-style:solid}
+
+/* ===== MAIN ===== */
+.main{flex:1;min-width:0;display:flex;justify-content:center;padding:38px 30px 90px}
+.page{max-width:720px;width:100%;display:none;animation:fade .4s ease}
+.page.show{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.tag{display:inline-block;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--amber);background:var(--amber-soft);border:1px solid var(--amber-soft);border-radius:20px;padding:5px 13px;margin-bottom:18px}
+h1.title{font-family:'Fraunces',serif;font-weight:600;font-size:33px;line-height:1.15;letter-spacing:-.4px;margin-bottom:8px}
+.subtitle{font-size:17px;color:var(--txt3);margin-bottom:26px;font-weight:400}
+.page p{margin-bottom:15px}
+.page p b{color:var(--navy);font-weight:600}
+.section-lead{font-family:'Fraunces',serif;font-weight:600;font-size:20px;margin:30px 0 12px;color:var(--ink)}
+
+/* callouts */
+.callout{border-radius:13px;padding:16px 18px;margin:20px 0;border:1px solid;position:relative}
+.callout .c-h{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;margin-bottom:6px;font-family:'DM Sans'}
+.callout p{margin:0;font-size:15px}
+.callout.analogy{background:var(--amber-soft);border-color:var(--amber-clair)} .callout.analogy .c-h{color:var(--amber)}
+.callout.keep{background:var(--teal-soft);border-color:var(--teal-clair)} .callout.keep .c-h{color:var(--teal)}
+.callout.trap{background:var(--rust-soft);border-color:var(--rust-clair)} .callout.trap .c-h{color:var(--rust)}
+
+/* formula box */
+.formula{
+  background:var(--nuit);color:var(--surface2);border-radius:13px;padding:20px 22px;margin:22px 0;
+  font-family:'DM Mono',monospace;box-shadow:inset 0 0 0 1px var(--nuit), 0 6px 18px color-mix(in srgb, var(--nuit) 12%, transparent);
+}
+.formula .f-lbl{font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--amber);margin-bottom:11px;font-weight:500}
+.formula .eq{font-size:18px;line-height:1.7;color:var(--amber-soft)}
+.formula .eq .hl{color:var(--teal-clair)}
+.formula .leg{font-size:12.5px;color:var(--txt3);margin-top:12px;line-height:1.7}
+.formula .leg span{color:var(--amber-clair)}
+
+/* worked example */
+.worked{background:var(--paper2);border:1px solid var(--line);border-radius:13px;padding:18px 20px;margin:22px 0}
+.worked .w-h{font-family:'Fraunces',serif;font-weight:600;font-size:16px;margin-bottom:4px;color:var(--navy)}
+.worked .w-enonce{font-size:14.5px;color:var(--txt2);font-style:italic;margin-bottom:14px;padding-bottom:12px;border-bottom:1px dashed var(--line)}
+.step{display:flex;gap:13px;margin-bottom:13px;align-items:flex-start}
+.step .s-n{width:25px;height:25px;border-radius:50%;background:var(--teal);color:var(--blanc);display:grid;place-items:center;font-family:'DM Mono',monospace;font-size:12.5px;flex-shrink:0;font-weight:500;margin-top:1px}
+.step .s-b{font-size:14.5px}
+.step .s-b .calc{font-family:'DM Mono',monospace;background:var(--blanc);border:1px solid var(--line);border-radius:7px;padding:2px 7px;font-size:13px;display:inline-block;margin-top:3px;color:var(--navy)}
+.result-pill{display:inline-block;background:var(--teal);color:var(--blanc);font-family:'DM Mono',monospace;font-size:14px;padding:6px 14px;border-radius:8px;font-weight:500;margin-top:4px}
+
+/* tables */
+.tbl{width:100%;border-collapse:collapse;margin:20px 0;font-size:14px;border:1px solid var(--line);border-radius:11px;overflow:hidden}
+.tbl th{background:var(--navy);color:var(--blanc);text-align:left;padding:11px 13px;font-weight:600;font-size:13px}
+.tbl td{padding:10px 13px;border-top:1px solid var(--line)}
+.tbl tr:nth-child(even) td{background:var(--paper2)}
+.tbl td:first-child{font-weight:600;color:var(--navy)}
+.tbl .mono{font-family:'DM Mono',monospace;font-size:13px}
+
+/* quiz */
+.quiz{background:var(--fond);border:1px solid var(--m-clair);border-radius:13px;padding:17px 19px;margin:18px 0}
+.quiz .q-tag{font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--plum);margin-bottom:9px;display:flex;align-items:center;gap:7px}
+.quiz .q-txt{font-weight:600;font-size:15.5px;margin-bottom:13px}
+.q-opts{display:flex;flex-direction:column;gap:8px}
+.q-opt{
+  text-align:left;background:var(--blanc);border:1.5px solid var(--m-clair);border-radius:9px;padding:11px 14px;
+  cursor:pointer;font-size:14.5px;font-family:'DM Sans';color:var(--ink);transition:.13s;
+}
+.q-opt:hover:not(:disabled){border-color:var(--plum);background:var(--fond)}
+.q-opt.correct{background:var(--teal-soft);border-color:var(--teal);color:var(--teal);font-weight:600}
+.q-opt.wrong{background:var(--rust-soft);border-color:var(--rust);color:var(--rust)}
+.q-opt:disabled{cursor:default}
+.q-fb{margin-top:11px;font-size:13.5px;padding:10px 13px;border-radius:8px;display:none}
+.q-fb.ok{display:block;background:var(--teal-soft);color:var(--teal);border:1px solid var(--teal-clair)}
+.q-fb.no{display:block;background:var(--rust-soft);color:var(--rust);border:1px solid var(--rust-clair)}
+.q-num input{font-family:'DM Mono',monospace;font-size:15px;padding:10px 13px;border:1.5px solid var(--m-clair);border-radius:9px;width:160px;background:var(--blanc)}
+.q-num input:focus{outline:none;border-color:var(--plum)}
+.q-num .qbtn{margin-left:8px;background:var(--plum);color:var(--blanc);border:none;border-radius:9px;padding:11px 17px;font-family:'DM Sans';font-weight:600;cursor:pointer;font-size:14px}
+
+/* nav buttons */
+.lesson-nav{display:flex;justify-content:space-between;align-items:center;margin-top:36px;padding-top:22px;border-top:1px solid var(--line);gap:12px;flex-wrap:wrap}
+.btn{border:none;border-radius:10px;padding:12px 20px;font-family:'DM Sans';font-weight:600;cursor:pointer;font-size:14.5px;transition:.15s;display:inline-flex;align-items:center;gap:8px}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.btn.ghost{background:transparent;border:1.5px solid var(--line);color:var(--txt3)}
+.btn.ghost:hover:not(:disabled){border-color:var(--ink);color:var(--ink)}
+.btn.solid{background:var(--teal);color:var(--blanc);box-shadow:0 2px 0 var(--teal-d)}
+.btn.solid:hover{transform:translateY(-1px);box-shadow:0 4px 0 var(--teal-d)}
+.btn.solid.done{background:var(--amber);box-shadow:0 2px 0 var(--amber)}
+.btn.plum{background:var(--plum);color:var(--blanc);box-shadow:0 2px 0 var(--plum-deep)}
+.btn.plum:hover{transform:translateY(-1px)}
+
+/* svg viz */
+.viz{background:var(--paper2);border:1px solid var(--line);border-radius:13px;padding:18px;margin:22px 0;text-align:center}
+.viz svg{max-width:100%;height:auto}
+.viz .v-cap{font-size:12px;color:var(--txt3);margin-top:8px;font-family:'DM Mono',monospace}
+
+/* ===== TEST ===== */
+.test-intro{text-align:center;padding:10px 0 24px}
+.test-q{background:var(--fond);border:1px solid var(--m-clair);border-radius:13px;padding:20px;margin:16px 0}
+.test-q .tq-n{font-family:'DM Mono',monospace;color:var(--plum);font-size:12px;margin-bottom:9px;letter-spacing:1px}
+.test-q .tq-txt{font-weight:600;font-size:16px;margin-bottom:14px}
+.remediation{background:var(--amber-soft);border:1px solid var(--amber-clair);border-radius:11px;padding:15px 17px;margin-top:13px;display:none}
+.remediation.show{display:block;animation:fade .35s}
+.remediation .r-h{font-weight:700;color:var(--rust);font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:7px}
+.remediation p{font-size:14px;margin-bottom:11px}
+.remediation .r-btns{display:flex;gap:9px;flex-wrap:wrap}
+.remediation .mini{font-size:13px;padding:8px 14px;border-radius:8px;border:none;cursor:pointer;font-weight:600;font-family:'DM Sans'}
+.remediation .mini.rev{background:var(--amber);color:var(--blanc)}
+.remediation .mini.cont{background:transparent;border:1.5px solid var(--amber);color:var(--amber)}
+
+.float-retry{
+  position:fixed;bottom:24px;right:24px;background:var(--plum);color:var(--blanc);border:none;
+  border-radius:30px;padding:14px 22px;font-family:'DM Sans';font-weight:700;font-size:14px;
+  cursor:pointer;box-shadow:0 6px 20px color-mix(in srgb, var(--plum) 40%, transparent);display:none;z-index:90;align-items:center;gap:8px;
+}
+.float-retry.show{display:inline-flex;animation:fade .4s}
+
+.result-card{text-align:center;padding:14px}
+.result-card .score-big{font-family:'Fraunces',serif;font-size:64px;font-weight:600;line-height:1;color:var(--teal)}
+.result-card .score-sub{font-family:'DM Mono',monospace;color:var(--txt3);margin:6px 0 24px}
+.result-msg{font-size:17px;margin-bottom:26px;font-weight:500}
+.chap-bilan{text-align:left;max-width:480px;margin:0 auto}
+.cb-row{margin-bottom:13px}
+.cb-row .cb-top{display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:5px}
+.cb-row .cb-bar{height:10px;background:var(--paper2);border-radius:6px;overflow:hidden;border:1px solid var(--line)}
+.cb-row .cb-bar i{display:block;height:100%;border-radius:6px}
+
+/* ===== ANNALES ===== */
+.annale-ex{background:var(--paper2);border:1px solid var(--line);border-radius:13px;padding:20px;margin:18px 0}
+.annale-ex .ae-tag{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--navy);text-transform:uppercase;margin-bottom:8px}
+.annale-ex .ae-enonce{font-size:15px;margin-bottom:14px}
+.annale-ex .ae-enonce .data{font-family:'DM Mono',monospace;background:var(--blanc);border:1px solid var(--line);padding:1px 6px;border-radius:5px;font-size:13.5px}
+.reveal-btn{background:var(--navy);color:var(--blanc);border:none;border-radius:9px;padding:10px 17px;font-weight:600;cursor:pointer;font-family:'DM Sans';font-size:14px}
+.corrige{display:none;margin-top:15px;padding-top:15px;border-top:1px dashed var(--line);animation:fade .35s}
+.corrige.show{display:block}
+.corrige .cor-h{font-family:'Fraunces',serif;font-weight:600;color:var(--teal);margin-bottom:11px;font-size:15px}
+
+.note-box{background:var(--navy-soft);border:1px solid var(--m-clair);border-radius:11px;padding:14px 16px;font-size:13.5px;color:var(--navy);margin-bottom:20px}
+
+@media(max-width:880px){
+  .sidebar{position:fixed;left:0;top:64px;z-index:95;transform:translateX(-100%);transition:transform .3s;box-shadow:6px 0 24px color-mix(in srgb, var(--nuit) 12%, transparent)}
+  .sidebar.open{transform:translateX(0)}
+  .burger{display:block}
+  .progress-wrap{display:none}
+  .main{padding:26px 18px 90px}
+  h1.title{font-size:27px}
+  .nav .brand .t2{display:none}
+}
+</style>
+<link rel="stylesheet" href="../ui.css">
+<link rel="stylesheet" href="../theme.css">
+<link rel="stylesheet" href="../licence.css">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#ECEEF6">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/favicon-32.png">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+</head>
+<body>
+
+<nav class="nav topbar">
+  <button class="burger" onclick="toggleSide()">☰</button>
+  <div class="brand">
+    <div class="logo">₣</div>
+    <div>
+      <div class="t1">Finance Internationale</div>
+      <div class="t2">LICENCE LP ABF</div>
+    </div>
+  </div>
+  <div class="grow"></div>
+  <div class="progress-wrap">
+    <span class="lbl">Parcours</span>
+    <div class="bar"><i id="globalBar"></i></div>
+    <span class="lbl" id="globalPct">0%</span>
+  </div>
+  <div class="xp"><span class="star">★</span> <b id="xpVal">0</b> XP</div>
+</nav>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="side-h">Leçons</div>
+    <div id="lessonMenu"></div>
+    <div class="side-h">Évaluation</div>
+    <div class="special-link test" data-page="test" onclick="goPage('test')">🎯 <span>Test final adaptatif</span></div>
+    <div class="special-link annales" data-page="annales" onclick="goPage('annales')">📜 <span>Annales corrigées</span></div>
+  </aside>
+
+  <main class="main" id="main"><!-- pages injected --></main>
+</div>
+
+<button class="float-retry" id="floatRetry" onclick="goPage('test');resetTest()">↻ Reprendre le test</button>
+
+<script>
+/* =========================================================
+   DONNÉES — Leçons
+   ========================================================= */
+const LESSONS = [
+{
+  id:0, tag:"Chapitre 1 · Fondamentaux",
+  title:"Le plus grand marché du monde ne ferme jamais",
+  subtitle:"Où, quand et avec qui s'échangent les devises",
+  body:`
+  <div class="callout analogy"><div class="c-h">💡 Analogie</div>
+  <p>Le marché des changes est un relais mondial. Quand Tokyo baisse le rideau, Londres ouvre le sien, puis New York prend le flambeau. Le soleil ne se couche jamais sur le marché : il tourne avec les fuseaux horaires.</p></div>
+
+  <p>Le marché des changes est un marché <b>OTC</b> (de gré à gré). Il n'existe aucune bourse centrale. Les transactions se nouent directement entre intervenants, partout sur la planète. Le marché tourne donc <b>24h/24</b>, du dimanche soir au vendredi soir.</p>
+  <p>Son volume dépasse <b>9 500 milliards de dollars</b> échangés chaque jour (BRI, 2025). Trois places concentrent l'essentiel des flux. La livraison au comptant n'est jamais instantanée : elle s'effectue à <b>J+2</b> jours ouvrés.</p>
+
+  <div class="viz">
+    <svg viewBox="0 0 560 150" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" style="fill:var(--teal)"/></marker></defs>
+      <text x="280" y="20" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" style="fill:var(--txt3)">LE RELAIS DES PLACES (24h/24)</text>
+      <g font-family="DM Sans" font-size="13" text-anchor="middle" style="fill:var(--nuit)">
+        <rect x="40" y="55" width="120" height="56" rx="10" style="fill:var(--blanc);stroke:var(--stroke)"/><text x="100" y="80" font-weight="700">Tokyo</text><text x="100" y="98" font-size="11" style="fill:var(--txt3)">Asie</text>
+        <rect x="220" y="55" width="120" height="56" rx="10" style="fill:var(--teal);stroke:var(--teal-d)"/><text x="280" y="80" font-weight="700" style="fill:var(--blanc)">Londres</text><text x="280" y="98" font-size="11" style="fill:var(--teal-soft)">38% du volume</text>
+        <rect x="400" y="55" width="120" height="56" rx="10" style="fill:var(--blanc);stroke:var(--stroke)"/><text x="460" y="80" font-weight="700">New York</text><text x="460" y="98" font-size="11" style="fill:var(--txt3)">19%</text>
+      </g>
+      <line x1="162" y1="83" x2="216" y2="83" stroke-width="2" marker-end="url(#ar)" style="stroke:var(--teal)"/>
+      <line x1="342" y1="83" x2="396" y2="83" stroke-width="2" marker-end="url(#ar)" style="stroke:var(--teal)"/>
+    </svg>
+    <div class="v-cap">Londres 38% · New York 19% · Singapour 9%</div>
+  </div>
+
+  <p class="section-lead">Qui intervient ?</p>
+  <p>Les <b>banques</b> jouent le rôle de teneurs de marché (market makers) : elles affichent en continu un prix d'achat et un prix de vente. Autour d'elles gravitent les <b>banques centrales</b>, les <b>investisseurs institutionnels</b>, les <b>entreprises</b> qui couvrent leurs flux commerciaux, et les <b>particuliers</b>.</p>
+
+  <div class="callout keep"><div class="c-h">🔑 À retenir</div>
+  <p>Marché OTC, ouvert 24h/24, plus de 9 500 Mds$/jour. Londres domine. Le comptant se règle à J+2 ouvrés. Les banques sont les teneurs de marché.</p></div>
+
+  <div class="callout trap"><div class="c-h">⚠️ Piège fréquent</div>
+  <p>« Comptant » ne veut pas dire « immédiat ». La livraison des devises se fait à <b>J+2</b>, pas le jour même. Le terme « comptant » s'oppose à « terme », pas à « différé ».</p></div>
+  `,
+  quizzes:[
+    {q:"Quel est l'ordre de grandeur du volume quotidien du marché des changes (BRI 2025) ?",opts:["≈ 95 milliards $","≈ 950 milliards $","≈ 9 500 milliards $","≈ 95 000 milliards $"],a:2,fb:"Plus de 9 500 Mds$ échangés chaque jour : c'est de loin le plus grand marché financier mondial."},
+    {q:"La livraison au comptant intervient à :",opts:["J (le jour même)","J+1","J+2 jours ouvrés","J+5"],a:2,fb:"Le comptant se règle à J+2 jours ouvrés. Comptant ≠ immédiat."},
+    {q:"Quelle est la première place de change mondiale ?",opts:["New York","Tokyo","Singapour","Londres"],a:3,fb:"Londres concentre environ 38% du volume, devant New York (19%)."}
+  ]
+},
+{
+  id:1, tag:"Chapitre 2 · Cotations",
+  title:"Qui vaut 1 ? Tout dépend d'où l'on regarde",
+  subtitle:"Au certain, à l'incertain, et la logique bid/ask",
+  body:`
+  <div class="callout analogy"><div class="c-h">💡 Analogie</div>
+  <p>Coter « au certain », c'est fixer votre monnaie à 1 et compter combien d'étrangers elle achète : « avec 1 €, j'ai 1,08 $ ». À l'incertain, c'est l'inverse : « combien d'euros pour 1 $ ? ». La devise mise à 1 est la <b>devise directrice</b>.</p></div>
+
+  <p>Une <b>cotation au certain</b> exprime : 1 unité de monnaie nationale = X devises étrangères. L'euro, le dollar et la livre sont généralement cotés au certain. À l'<b>incertain</b>, c'est 1 unité de devise étrangère qui vaut X unités de monnaie nationale (par exemple USD/CAD à Montréal).</p>
+  <p>Une banque affiche toujours deux prix. Le <b>bid</b> est le cours acheteur : le prix auquel elle <b>achète</b>. L'<b>ask</b> est le cours vendeur : le prix auquel elle <b>vend</b>. L'écart entre les deux est le <b>spread</b>, qui rémunère la banque.</p>
+
+  <div class="formula">
+    <div class="f-lbl">Spread</div>
+    <div class="eq">Spread = <span class="hl">Ask</span> − <span class="hl">Bid</span></div>
+    <div class="leg"><span>Bid</span> = cours acheteur (la banque achète) · <span>Ask</span> = cours vendeur (la banque vend)</div>
+  </div>
+
+  <div class="viz">
+    <svg viewBox="0 0 560 130" xmlns="http://www.w3.org/2000/svg">
+      <line x1="60" y1="70" x2="500" y2="70" stroke-width="2" style="stroke:var(--stroke)"/>
+      <circle cx="170" cy="70" r="6" style="fill:var(--teal)"/><circle cx="390" cy="70" r="6" style="fill:var(--rust)"/>
+      <text x="170" y="50" text-anchor="middle" font-family="DM Mono,monospace" font-size="13" font-weight="600" style="fill:var(--teal)">BID 1,0850</text>
+      <text x="170" y="95" text-anchor="middle" font-family="DM Sans" font-size="11" style="fill:var(--txt3)">la banque ACHÈTE</text>
+      <text x="390" y="50" text-anchor="middle" font-family="DM Mono,monospace" font-size="13" font-weight="600" style="fill:var(--rust)">ASK 1,0853</text>
+      <text x="390" y="95" text-anchor="middle" font-family="DM Sans" font-size="11" style="fill:var(--txt3)">la banque VEND</text>
+      <line x1="170" y1="112" x2="390" y2="112" stroke-width="1.5" style="stroke:var(--amber)"/>
+      <text x="280" y="127" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" style="fill:var(--amber)">spread = 0,0003</text>
+    </svg>
+    <div class="v-cap">Le client est toujours du « mauvais côté » du spread</div>
+  </div>
+
+  <div class="worked">
+    <div class="w-h">Exemple résolu</div>
+    <div class="w-enonce">EUR/USD coté 1,0850 – 1,0853. Un client veut acheter des dollars (donc vendre des euros). Quel cours s'applique ?</div>
+    <div class="step"><div class="s-n">1</div><div class="s-b">On se place du point de vue de la <b>banque</b>, jamais du client.</div></div>
+    <div class="step"><div class="s-n">2</div><div class="s-b">Le client vend ses euros → la banque <b>achète</b> les euros.</div></div>
+    <div class="step"><div class="s-n">3</div><div class="s-b">La banque achète = elle applique le <b>bid</b>.<br><span class="calc">Cours retenu = 1,0850</span></div></div>
+    <div class="step"><div class="s-n">4</div><div class="s-b"><span class="result-pill">Le client cède ses EUR à 1,0850 — le côté défavorable</span></div></div>
+  </div>
+
+  <div class="callout keep"><div class="c-h">🔑 À retenir</div>
+  <p>Banque achète au <b>bid</b> (bas), vend à l'<b>ask</b> (haut). Au certain = la monnaie nationale est fixée à 1. Le client subit toujours le spread.</p></div>
+
+  <div class="callout trap"><div class="c-h">⚠️ Piège fréquent</div>
+  <p>Au certain ou à l'incertain dépend du <b>pays où l'on se place</b>. EUR/CHF en Suisse est une cotation <b>à l'incertain</b> pour le Suisse (1 € = X CHF, sa monnaie nationale est la contrepartie).</p></div>
+  `,
+  quizzes:[
+    {q:"Une cotation « au certain » signifie :",opts:["1 devise étrangère = X monnaie nationale","1 monnaie nationale = X devises étrangères","Le cours est garanti sans spread","La banque ne prend pas de marge"],a:1,fb:"Au certain : la monnaie nationale est fixée à 1 unité, on compte les devises étrangères en face."},
+    {q:"Un client souhaite acheter des euros à sa banque. Quel cours lui applique-t-elle ?",opts:["Le bid (cours acheteur)","L'ask (cours vendeur)","La moyenne bid-ask","Le cours spot officiel"],a:1,fb:"Le client achète → la banque vend → elle applique l'ask. Le client est du mauvais côté."},
+    {q:"Le spread se calcule par :",opts:["Bid − Ask","Ask − Bid","Bid ÷ Ask","(Bid + Ask) ÷ 2"],a:1,fb:"Spread = Ask − Bid. Il est toujours positif et rémunère le teneur de marché."}
+  ]
+},
+{
+  id:2, tag:"Chapitre 3 · Inversion",
+  title:"Retourner la cotation sans inverser ses erreurs",
+  subtitle:"Passer de A/B à B/A : on inverse ET on croise",
+  body:`
+  <div class="callout analogy"><div class="c-h">💡 Analogie</div>
+  <p>Inverser une cotation, c'est comme se regarder dans un miroir : non seulement la valeur se retourne (on prend l'inverse), mais la gauche devient la droite. Le bid et l'ask <b>échangent leur place</b>.</p></div>
+
+  <p>Pour passer de la cotation GBP/EUR à EUR/GBP, on ne se contente pas de prendre l'inverse des chiffres. Le cours le plus bas devient le plus haut. Il faut donc <b>croiser</b> bid et ask en même temps qu'on les inverse.</p>
+
+  <div class="formula">
+    <div class="f-lbl">Inversion de cotation</div>
+    <div class="eq">Nouveau <span class="hl">bid</span> = 1 ÷ ancien <span class="hl">ask</span><br>Nouveau <span class="hl">ask</span> = 1 ÷ ancien <span class="hl">bid</span></div>
+    <div class="leg">On inverse la valeur <span>et</span> on croise les deux côtés.</div>
+  </div>
+
+  <div class="worked">
+    <div class="w-h">Exemple résolu</div>
+    <div class="w-enonce">GBP/EUR = 1,1644 – 1,1647. Donnez la cotation inverse EUR/GBP.</div>
+    <div class="step"><div class="s-n">1</div><div class="s-b">Nouveau bid = 1 ÷ ancien ask <span class="calc">1 ÷ 1,1647 = 0,8585</span></div></div>
+    <div class="step"><div class="s-n">2</div><div class="s-b">Nouveau ask = 1 ÷ ancien bid <span class="calc">1 ÷ 1,1644 = 0,8587</span></div></div>
+    <div class="step"><div class="s-n">3</div><div class="s-b"><span class="result-pill">EUR/GBP = 0,8585 – 0,8587</span></div></div>
+  </div>
+
+  <div class="callout keep"><div class="c-h">🔑 À retenir</div>
+  <p>Nouveau bid = 1/ancien ask ; nouveau ask = 1/ancien bid. Le spread reste cohérent (bid &lt; ask) uniquement si l'on a bien croisé.</p></div>
+
+  <div class="callout trap"><div class="c-h">⚠️ Piège fréquent</div>
+  <p>Inverser sans croiser. Si vous écrivez « nouveau bid = 1/ancien bid », vous obtenez un bid supérieur à l'ask : cotation impossible. Le croisement est obligatoire.</p></div>
+  `,
+  quizzes:[
+    {q:"Pour inverser une cotation, le nouveau bid est égal à :",opts:["1 ÷ ancien bid","1 ÷ ancien ask","ancien bid","ancien ask ÷ 2"],a:1,fb:"Nouveau bid = 1 ÷ ancien ask. On inverse et on croise."},
+    {q:"USD/CHF = 0,8920 – 0,8925. Le nouveau bid de CHF/USD vaut (4 décimales) :",num:true,a:1.1204,tol:0.01,fb:"1 ÷ 0,8925 = 1,1204. (On prend l'inverse de l'ancien ask.)"},
+    {q:"Pourquoi croise-t-on bid et ask lors de l'inversion ?",opts:["Par convention comptable","Pour que le spread reste positif (bid < ask)","Pour annuler la marge de la banque","Ce n'est pas obligatoire"],a:1,fb:"Sans croisement, le bid deviendrait supérieur à l'ask : la cotation serait incohérente."}
+  ]
+},
+{
+  id:3, tag:"Chapitre 4 · Cross rates",
+  title:"Construire un taux qui n'existe pas directement",
+  subtitle:"Passer d'une paire à l'autre via une devise pivot",
+  body:`
+  <div class="callout analogy"><div class="c-h">💡 Analogie</div>
+  <p>Aucun vol direct entre deux petites villes ? On passe par un grand hub. La <b>devise pivot</b> est ce hub : elle relie deux paires connues pour en reconstituer une troisième.</p></div>
+
+  <p>Un <b>cross rate</b> se déduit de deux cotations partageant une devise commune. Trois cas se présentent, selon le sens de la devise pivot dans chaque paire. La règle décide si l'on <b>divise</b> ou si l'on <b>multiplie</b>.</p>
+
+  <table class="tbl">
+    <tr><th>Situation</th><th>Bid du cross</th><th>Ask du cross</th></tr>
+    <tr><td>Pivot au certain dans les deux</td><td class="mono">bid ÷ ask</td><td class="mono">ask ÷ bid</td></tr>
+    <tr><td>Pivot à l'incertain dans les deux</td><td class="mono">bid ÷ ask</td><td class="mono">ask ÷ bid</td></tr>
+    <tr><td>Une cotation dans chaque sens</td><td class="mono">bid × bid</td><td class="mono">ask × ask</td></tr>
+  </table>
+
+  <div class="worked">
+    <div class="w-h">Exemple résolu — une cotation dans chaque sens</div>
+    <div class="w-enonce">EUR/USD = 1,0800 – 1,0805 et USD/CHF = 0,9120 – 0,9123. Calculez EUR/CHF.</div>
+    <div class="step"><div class="s-n">1</div><div class="s-b">Le dollar est en sens opposé dans les deux paires (contrepartie puis directrice) → on <b>multiplie</b>.</div></div>
+    <div class="step"><div class="s-n">2</div><div class="s-b">Bid = bid × bid <span class="calc">1,0800 × 0,9120 = 0,9850</span></div></div>
+    <div class="step"><div class="s-n">3</div><div class="s-b">Ask = ask × ask <span class="calc">1,0805 × 0,9123 = 0,9857</span></div></div>
+    <div class="step"><div class="s-n">4</div><div class="s-b"><span class="result-pill">EUR/CHF = 0,9850 – 0,9857</span> · spread 0,0007</div></div>
+    <div class="step"><div class="s-n">5</div><div class="s-b">Vérification : 0,0007 &gt; les spreads d'origine (0,0005 et 0,0003). ✓</div></div>
+  </div>
+
+  <div class="callout keep"><div class="c-h">🔑 À retenir</div>
+  <p>Pivot dans le <b>même sens</b> dans les deux paires → division (bid÷ask). Pivot en sens <b>opposé</b> → multiplication (bid×bid). Le spread croisé est toujours plus large.</p></div>
+
+  <div class="callout trap"><div class="c-h">⚠️ Piège fréquent</div>
+  <p>Se tromper de sens de pivot et diviser au lieu de multiplier. Réflexe de contrôle : <b>si le spread obtenu n'est pas plus large que les deux spreads de départ, le calcul est faux.</b></p></div>
+  `,
+  quizzes:[
+    {q:"Quand la devise pivot est cotée dans le même sens (au certain) dans les deux paires, le bid du cross vaut :",opts:["bid × bid","ask × ask","bid ÷ ask","ask ÷ bid"],a:2,fb:"Pivot dans le même sens → division : bid ÷ ask."},
+    {q:"EUR/USD = 1,0900 – 1,0905 et USD/JPY = 156,00 – 156,05. Le bid de EUR/JPY vaut (≈) :",num:true,a:170.04,tol:0.5,fb:"Sens opposé → multiplication : bid×bid = 1,0900 × 156,00 = 170,04."},
+    {q:"Le spread d'un cross rate doit toujours être :",opts:["Plus étroit que les spreads d'origine","Identique aux spreads d'origine","Plus large que les spreads d'origine","Nul"],a:2,fb:"Le cross cumule les marges : son spread est forcément plus large. C'est le test de cohérence."}
+  ]
+},
+{
+  id:4, tag:"Chapitre 5 · Terme",
+  title:"Fixer aujourd'hui un cours pour demain",
+  subtitle:"Taux forward, report et déport",
+  body:`
+  <div class="callout analogy"><div class="c-h">💡 Analogie</div>
+  <p>Réserver dès maintenant le prix de votre plein d'essence pour dans 3 mois. Le prix futur ne tombe pas du ciel : il dépend de ce que rapporte l'argent de chaque côté en attendant. Le différentiel de <b>taux d'intérêt</b> fait tout.</p></div>
+
+  <p>Le <b>cours à terme</b> (forward) se déduit du cours comptant et des taux d'intérêt des deux devises. Il ne reflète aucune anticipation : c'est un pur calcul d'arbitrage de taux.</p>
+
+  <div class="formula">
+    <div class="f-lbl">Cours à terme</div>
+    <div class="eq">F = S × ( 1 + <span class="hl">r_B</span> × t/360 ) ÷ ( 1 + <span class="hl">r_A</span> × t/360 )</div>
+    <div class="leg">S = taux spot · <span>r_A</span> = taux devise directrice · <span>r_B</span> = taux contrepartie · t = jours (ou /12 si en mois)</div>
+  </div>
+
+  <table class="tbl">
+    <tr><th></th><th>Report (premium)</th><th>Déport (discount)</th></tr>
+    <tr><td>Condition</td><td>Forward &gt; Spot</td><td>Forward &lt; Spot</td></tr>
+    <tr><td>Taux d'intérêt</td><td class="mono">r_dir &lt; r_contre</td><td class="mono">r_dir &gt; r_contre</td></tr>
+  </table>
+
+  <div class="formula">
+    <div class="f-lbl">Report / Déport en %</div>
+    <div class="eq">% = ( F − S ) ÷ S × ( 360 / t ) × 100</div>
+    <div class="leg">Points de swap = F − S · Vérification : report annualisé ≈ <span>r_contre − r_dir</span></div>
+  </div>
+
+  <div class="viz">
+    <svg viewBox="0 0 560 120" xmlns="http://www.w3.org/2000/svg">
+      <line x1="60" y1="60" x2="500" y2="60" stroke-width="2" style="stroke:var(--nuit)"/>
+      <circle cx="120" cy="60" r="7" style="fill:var(--teal)"/><circle cx="440" cy="60" r="7" style="fill:var(--amber)"/>
+      <text x="120" y="40" text-anchor="middle" font-family="DM Sans" font-size="13" font-weight="700" style="fill:var(--teal)">Aujourd'hui</text>
+      <text x="120" y="88" text-anchor="middle" font-family="DM Sans" font-size="11" style="fill:var(--txt3)">cours fixé · aucun flux</text>
+      <text x="440" y="40" text-anchor="middle" font-family="DM Sans" font-size="13" font-weight="700" style="fill:var(--amber)">Échéance</text>
+      <text x="440" y="88" text-anchor="middle" font-family="DM Sans" font-size="11" style="fill:var(--txt3)">livraison des devises</text>
+    </svg>
+    <div class="v-cap">Le contrat forward : on s'engage maintenant, on livre plus tard</div>
+  </div>
+
+  <div class="worked">
+    <div class="w-h">Exemple résolu</div>
+    <div class="w-enonce">Spot EUR/USD = 1,1000. Taux EUR (directrice) = 2%, taux USD (contrepartie) = 4%, échéance 90 jours. Calculez le forward, puis report ou déport.</div>
+    <div class="step"><div class="s-n">1</div><div class="s-b">F = 1,1000 × (1 + 0,04×90/360) ÷ (1 + 0,02×90/360)</div></div>
+    <div class="step"><div class="s-n">2</div><div class="s-b"><span class="calc">F = 1,1000 × 1,0100 ÷ 1,0050 = 1,1055</span></div></div>
+    <div class="step"><div class="s-n">3</div><div class="s-b">F &gt; S et r_dir (2%) &lt; r_contre (4%) → <b>report</b>.</div></div>
+    <div class="step"><div class="s-n">4</div><div class="s-b">% = (1,1055 − 1,1000)/1,1000 × 360/90 × 100 <span class="calc">= 0,005 × 4 × 100 = 2%</span></div></div>
+    <div class="step"><div class="s-n">5</div><div class="s-b"><span class="result-pill">F = 1,1055 · report de 2%</span> ≈ r_contre − r_dir (4−2). ✓</div></div>
+  </div>
+
+  <div class="callout keep"><div class="c-h">🔑 À retenir</div>
+  <p>Comparer F et S d'abord, puis justifier par le différentiel de taux. Report = F&gt;S = r_dir&lt;r_contre. Le report annualisé ≈ r_contre − r_dir.</p></div>
+
+  <div class="callout trap"><div class="c-h">⚠️ Piège fréquent</div>
+  <p>Inverser r_A et r_B, ou se tromper de convention : <b>/360 pour des jours, /12 pour des mois.</b> Vérifiez toujours la convention donnée par l'énoncé avant de calculer.</p></div>
+  `,
+  quizzes:[
+    {q:"On constate Forward > Spot. On est en situation de :",opts:["Déport","Report","Parité","Spread négatif"],a:1,fb:"Forward > Spot = report (premium). Cela implique r_directrice < r_contrepartie."},
+    {q:"Spot = 1,2000 ; r_dir = 3% ; r_contre = 5% ; t = 180 j. Le forward vaut (≈) :",num:true,a:1.2118,tol:0.01,fb:"F = 1,2000 × (1+0,05×0,5)/(1+0,03×0,5) = 1,2000 × 1,025/1,015 ≈ 1,2118."},
+    {q:"Si la devise directrice a un taux supérieur à la contrepartie, on observe :",opts:["Un report","Un déport","Aucun écart","Une cotation au certain"],a:1,fb:"r_dir > r_contre → déport : le forward est inférieur au spot."}
+  ]
+},
+{
+  id:5, tag:"Chapitre 6 · Instruments",
+  title:"Forward, futures, options, swaps : choisir son arme",
+  subtitle:"Engagement ferme ou optionnel, OTC ou organisé",
+  body:`
+  <div class="callout analogy"><div class="c-h">💡 Analogie</div>
+  <p>Comme des contrats d'assurance : certains vous engagent fermement (forward, futures), d'autres vous laissent le choix (option, warrant). Certains sont sur mesure (OTC), d'autres standardisés en rayon (marché organisé).</p></div>
+
+  <p>Tous les instruments à terme servent à figer une opération future, mais ils diffèrent par leur <b>marché</b>, leur <b>engagement</b> et leur <b>dénouement</b>.</p>
+
+  <table class="tbl">
+    <tr><th>Instrument</th><th>Marché</th><th>Engagement</th><th>Dénouement</th></tr>
+    <tr><td>Forward</td><td>Gré à gré (OTC)</td><td>Ferme</td><td>Devises ou cash</td></tr>
+    <tr><td>Futures</td><td>Organisé + chambre</td><td>Ferme</td><td>Rarement effectif</td></tr>
+    <tr><td>Option</td><td>OTC ou organisé</td><td>Optionnel (acheteur)</td><td>Au choix de l'acheteur</td></tr>
+    <tr><td>Swap de devises</td><td>OTC</td><td>Ferme</td><td>Principal + intérêts</td></tr>
+    <tr><td>Warrant</td><td>Organisé</td><td>Optionnel</td><td>Maturité longue</td></tr>
+  </table>
+
+  <p>Le <b>future</b> se distingue du forward par la <b>chambre de compensation</b>, qui s'interpose entre les parties et garantit la bonne fin. Cette standardisation explique qu'il soit rarement dénoué par livraison physique.</p>
+
+  <div class="callout keep"><div class="c-h">🔑 À retenir</div>
+  <p>Forward et futures = engagement ferme. Option et warrant = engagement optionnel pour l'acheteur. Le future est le seul à passer par une chambre de compensation.</p></div>
+
+  <div class="callout trap"><div class="c-h">⚠️ Piège fréquent</div>
+  <p>Croire que « ferme » signifie « livré physiquement ». Le future est un engagement <b>ferme</b>, mais il est le plus souvent soldé en cash avant l'échéance, sans livraison de devises.</p></div>
+  `,
+  quizzes:[
+    {q:"Quel instrument fait intervenir une chambre de compensation ?",opts:["Le forward","Le future","Le swap de devises","L'option OTC"],a:1,fb:"Le future est négocié sur marché organisé avec chambre de compensation qui garantit la contrepartie."},
+    {q:"Pour l'acheteur, l'engagement est optionnel dans le cas :",opts:["Du forward","Du swap","De l'option et du warrant","Du future"],a:2,fb:"Seules l'option et le warrant laissent le choix d'exercer ou non à l'acheteur."},
+    {q:"Un swap de devises se dénoue par :",opts:["Le seul versement d'une prime","L'échange du principal et des intérêts","Une compensation systématique en cash","Aucun flux"],a:1,fb:"Le swap de devises porte sur l'échange du principal et des intérêts entre les parties."}
+  ]
+},
+{
+  id:6, tag:"Chapitre 7 · Options",
+  title:"Le droit, mais jamais l'obligation",
+  subtitle:"Call, put, options européennes et américaines",
+  body:`
+  <div class="callout analogy"><div class="c-h">💡 Analogie</div>
+  <p>Verser des arrhes pour réserver un appartement : vous payez une <b>prime</b> qui vous donne le droit d'acheter. Si vous renoncez, vous perdez seulement la prime. Le vendeur, lui, est tenu de vous laisser acheter si vous le décidez.</p></div>
+
+  <p>Un <b>call</b> donne le droit d'<b>acheter</b> la devise directrice. Un <b>put</b> donne le droit de la <b>vendre</b>. L'acheteur verse une <b>prime</b> au vendeur en échange de ce droit. Le vendeur, lui, a une <b>obligation</b> si l'acheteur exerce.</p>
+  <p>Une option <b>européenne</b> ne s'exerce qu'à l'échéance. Une option <b>américaine</b> s'exerce à tout moment jusqu'à l'échéance.</p>
+
+  <div class="viz">
+    <svg viewBox="0 0 560 150" xmlns="http://www.w3.org/2000/svg">
+      <rect x="40" y="35" width="220" height="90" rx="11" stroke-width="1.5" style="fill:var(--blanc);stroke:var(--teal)"/>
+      <text x="150" y="62" text-anchor="middle" font-family="DM Sans" font-size="15" font-weight="700" style="fill:var(--teal)">CALL</text>
+      <text x="150" y="86" text-anchor="middle" font-family="DM Sans" font-size="12.5" style="fill:var(--nuit)">Droit d'ACHETER</text>
+      <text x="150" y="106" text-anchor="middle" font-family="DM Sans" font-size="12.5" style="fill:var(--txt3)">la devise directrice</text>
+      <rect x="300" y="35" width="220" height="90" rx="11" stroke-width="1.5" style="fill:var(--blanc);stroke:var(--rust)"/>
+      <text x="410" y="62" text-anchor="middle" font-family="DM Sans" font-size="15" font-weight="700" style="fill:var(--rust)">PUT</text>
+      <text x="410" y="86" text-anchor="middle" font-family="DM Sans" font-size="12.5" style="fill:var(--nuit)">Droit de VENDRE</text>
+      <text x="410" y="106" text-anchor="middle" font-family="DM Sans" font-size="12.5" style="fill:var(--txt3)">la devise directrice</text>
+    </svg>
+    <div class="v-cap">L'acheteur paie une prime · le vendeur subit l'obligation</div>
+  </div>
+
+  <div class="worked">
+    <div class="w-h">Exemple raisonné</div>
+    <div class="w-enonce">Une entreprise achète un call EUR/USD strike 1,10, prime 0,02. À l'échéance, EUR/USD = 1,15. Exerce-t-elle ?</div>
+    <div class="step"><div class="s-n">1</div><div class="s-b">Le call donne le droit d'acheter l'euro à 1,10.</div></div>
+    <div class="step"><div class="s-n">2</div><div class="s-b">Le marché est à 1,15 : acheter à 1,10 est avantageux → elle <b>exerce</b>.</div></div>
+    <div class="step"><div class="s-n">3</div><div class="s-b">Gain brut = 1,15 − 1,10 = 0,05 ; net de prime <span class="calc">0,05 − 0,02 = 0,03</span></div></div>
+    <div class="step"><div class="s-n">4</div><div class="s-b"><span class="result-pill">Gain net de 0,03 par euro</span> · si le marché était sous 1,10, elle abandonnerait l'option (perte = prime)</div></div>
+  </div>
+
+  <div class="callout keep"><div class="c-h">🔑 À retenir</div>
+  <p>Call = droit d'acheter, put = droit de vendre, toujours sur la <b>directrice</b>. Acheteur = droit + prime payée. Vendeur = obligation + prime reçue. Européenne à l'échéance, américaine à tout moment.</p></div>
+
+  <div class="callout trap"><div class="c-h">⚠️ Piège fréquent</div>
+  <p>Inverser droit et obligation. C'est l'<b>acheteur</b> qui détient le droit ; le <b>vendeur</b> subit l'obligation. Ne pas confondre non plus européenne (échéance seule) et américaine (à tout moment).</p></div>
+  `,
+  quizzes:[
+    {q:"Un call donne le droit de :",opts:["Vendre la devise directrice","Acheter la devise directrice","Vendre la contrepartie sans prime","Acheter à n'importe quel prix"],a:1,fb:"Call = droit d'ACHETER la devise directrice. Put = droit de vendre."},
+    {q:"Qui subit une obligation dans une option ?",opts:["L'acheteur","Le vendeur","La chambre de compensation","Personne"],a:1,fb:"L'acheteur a le droit, le vendeur a l'obligation (s'il y a exercice). L'acheteur verse la prime."},
+    {q:"Une option américaine peut être exercée :",opts:["Uniquement à l'échéance","À tout moment jusqu'à l'échéance","Uniquement le premier jour","Jamais"],a:1,fb:"Américaine = à tout moment jusqu'à l'échéance. Européenne = à l'échéance seulement."}
+  ]
+},
+{
+  id:7, tag:"Chapitre 8 · Opérations",
+  title:"Profit sans risque ou pari sur l'avenir",
+  subtitle:"Arbitrage et spéculation",
+  body:`
+  <div class="callout analogy"><div class="c-h">💡 Analogie</div>
+  <p>L'<b>arbitrage</b>, c'est acheter une console moins chère dans un pays pour la revendre aussitôt plus cher ailleurs : gain certain, immédiat. La <b>spéculation</b>, c'est l'acheter en pariant qu'elle vaudra plus cher dans trois mois : gain espéré, mais incertain.</p></div>
+
+  <p>L'<b>arbitrage</b> exploite un écart de prix <b>temporaire</b> pour réaliser un gain certain et sans risque. Il peut être <b>géographique</b> (même paire sur deux places) ou <b>triangulaire</b> (via les cross rates). La <b>spéculation</b>, elle, parie sur la hausse ou la baisse d'une devise et accepte le risque.</p>
+
+  <div class="formula">
+    <div class="f-lbl">Résultat net d'une spéculation (avec cash)</div>
+    <div class="eq">RN = (cours vente − cours achat) × montant<br>+ <span class="hl">intérêts placement</span> devise achetée<br>− <span class="hl">coût d'opportunité</span> devise vendue</div>
+    <div class="leg">Ne jamais oublier le coût d'opportunité de la devise cédée.</div>
+  </div>
+
+  <div class="worked">
+    <div class="w-h">Exemple résolu — spéculation</div>
+    <div class="w-enonce">Un opérateur place 1 000 000 USD, anticipe une hausse de l'euro. Spot EUR/USD = 1,1000 ; 90 jours plus tard EUR/USD = 1,1300. Placement EUR à 2%/an, coût d'opportunité USD 1%/an.</div>
+    <div class="step"><div class="s-n">1</div><div class="s-b">Achat d'euros <span class="calc">1 000 000 ÷ 1,1000 = 909 090,91 €</span></div></div>
+    <div class="step"><div class="s-n">2</div><div class="s-b">Intérêts placement EUR (90 j) <span class="calc">909 090,91 × 0,02 × 90/360 = 4 545,45 €</span></div></div>
+    <div class="step"><div class="s-n">3</div><div class="s-b">Gain de change <span class="calc">(1,1300 − 1,1000) × 909 090,91 = 27 272,73 $</span></div></div>
+    <div class="step"><div class="s-n">4</div><div class="s-b">Intérêts EUR reconvertis <span class="calc">4 545,45 × 1,1300 = 5 136,36 $</span></div></div>
+    <div class="step"><div class="s-n">5</div><div class="s-b">Coût d'opportunité USD <span class="calc">1 000 000 × 0,01 × 90/360 = 2 500 $</span></div></div>
+    <div class="step"><div class="s-n">6</div><div class="s-b"><span class="result-pill">RN = 27 272,73 + 5 136,36 − 2 500 = 29 909 $</span></div></div>
+  </div>
+
+  <div class="callout keep"><div class="c-h">🔑 À retenir</div>
+  <p>Arbitrage = gain certain sur écart temporaire (géographique ou triangulaire). Spéculation = pari risqué. Le résultat net intègre toujours le gain de change, les intérêts gagnés <b>et</b> le coût d'opportunité.</p></div>
+
+  <div class="callout trap"><div class="c-h">⚠️ Piège fréquent</div>
+  <p>Oublier le <b>coût d'opportunité</b> de la devise vendue. En cédant ses dollars, l'opérateur renonce à ce qu'ils auraient rapporté : ce manque à gagner se déduit du résultat.</p></div>
+  `,
+  quizzes:[
+    {q:"L'arbitrage se caractérise par :",opts:["Un pari risqué sur le futur","Un gain certain exploitant un écart temporaire","Une perte garantie","Le paiement d'une prime"],a:1,fb:"L'arbitrage est sans risque : il exploite un écart de prix temporaire pour un gain certain."},
+    {q:"Un arbitrage triangulaire passe par :",opts:["Deux places différentes pour la même paire","Les cross rates","Une chambre de compensation","Une option de change"],a:1,fb:"Le triangulaire utilise les cross rates ; le géographique compare deux places pour une même paire."},
+    {q:"Dans le résultat net d'une spéculation, on déduit :",opts:["La prime d'option","Le coût d'opportunité de la devise vendue","Le spread du cross rate","Les points de swap"],a:1,fb:"On déduit le coût d'opportunité de la devise cédée : le rendement auquel on a renoncé."}
+  ]
+}
+];
+
+/* =========================================================
+   TEST FINAL
+   ========================================================= */
+const TEST = [
+  {chap:"Marché", txt:"Le marché des changes est un marché organisé centralisé.", type:"qcm", opts:["Vrai","Faux"], a:1, rem:"Faux : c'est un marché OTC (de gré à gré), décentralisé et ouvert 24h/24.", lesson:0},
+  {chap:"Marché", txt:"La livraison au comptant s'effectue à :", type:"qcm", opts:["J","J+1","J+2 ouvrés","J+3"], a:2, rem:"Le comptant se règle à J+2 jours ouvrés. « Comptant » ≠ « immédiat ».", lesson:0},
+  {chap:"Cotation", txt:"Un client vend des euros à sa banque. Elle lui applique :", type:"qcm", opts:["L'ask","Le bid","La moyenne","Le forward"], a:1, rem:"Le client vend → la banque achète → bid. Le client est du mauvais côté du spread.", lesson:1},
+  {chap:"Inversion", txt:"GBP/EUR = 1,2500 – 1,2510. Le nouveau bid de EUR/GBP vaut (4 déc.) :", type:"num", a:0.7994, tol:0.01, rem:"Nouveau bid = 1 ÷ ancien ask = 1 ÷ 1,2510 = 0,7994.", lesson:2},
+  {chap:"Cross", txt:"EUR/USD = 1,0800 – 1,0805 et USD/CHF = 0,9000 – 0,9005. Le bid de EUR/CHF vaut :", type:"num", a:0.9720, tol:0.01, rem:"Sens opposé → multiplication : bid × bid = 1,0800 × 0,9000 = 0,9720.", lesson:3},
+  {chap:"Terme", txt:"Si la devise directrice a un taux supérieur à la contrepartie, on observe :", type:"qcm", opts:["Un report","Un déport","La parité","Aucun écart"], a:1, rem:"r_dir > r_contre → déport (Forward < Spot).", lesson:4},
+  {chap:"Terme", txt:"Spot = 1,2000 ; r_dir = 3% ; r_contre = 5% ; t = 180 j. Le forward vaut (≈) :", type:"num", a:1.2118, tol:0.01, rem:"F = 1,2000 × (1+0,05×0,5)/(1+0,03×0,5) ≈ 1,2118. Report car r_dir < r_contre.", lesson:4},
+  {chap:"Instruments", txt:"Quel instrument fait intervenir une chambre de compensation ?", type:"qcm", opts:["Forward","Future","Swap","Option OTC"], a:1, rem:"Le future, négocié sur marché organisé, passe par une chambre de compensation.", lesson:5},
+  {chap:"Options", txt:"Un call donne le droit de :", type:"qcm", opts:["Vendre la directrice","Acheter la directrice","Acheter sans prime","Vendre la contrepartie"], a:1, rem:"Call = droit d'acheter la devise directrice. L'acheteur paie une prime.", lesson:6},
+  {chap:"Opérations", txt:"L'arbitrage procure :", type:"qcm", opts:["Un gain incertain","Un gain certain sur écart temporaire","Une perte","Une prime"], a:1, rem:"L'arbitrage est sans risque : gain certain en exploitant un écart de prix temporaire.", lesson:7}
+];
+
+/* =========================================================
+   ANNALES (exercices type examen)
+   ========================================================= */
+const ANNALES = [
+  {tag:"Exercice 1 · Inversion de cotation",
+   enonce:`On cote <span class="data">USD/CHF = 0,8920 – 0,8925</span>. Donnez la cotation inverse CHF/USD.`,
+   cor:`<div class="step"><div class="s-n">1</div><div class="s-b">Nouveau bid = 1 ÷ ancien ask <span class="calc">1 ÷ 0,8925 = 1,1204</span></div></div>
+        <div class="step"><div class="s-n">2</div><div class="s-b">Nouveau ask = 1 ÷ ancien bid <span class="calc">1 ÷ 0,8920 = 1,1211</span></div></div>
+        <div class="step"><div class="s-n">3</div><div class="s-b"><span class="result-pill">CHF/USD = 1,1204 – 1,1211</span></div></div>`},
+  {tag:"Exercice 2 · Cross rate",
+   enonce:`<span class="data">EUR/USD = 1,0920 – 1,0924</span> et <span class="data">USD/JPY = 156,20 – 156,25</span>. Calculez EUR/JPY et vérifiez le spread.`,
+   cor:`<div class="step"><div class="s-n">1</div><div class="s-b">Le dollar est en sens opposé (contrepartie puis directrice) → multiplication.</div></div>
+        <div class="step"><div class="s-n">2</div><div class="s-b">Bid = bid × bid <span class="calc">1,0920 × 156,20 = 170,57</span></div></div>
+        <div class="step"><div class="s-n">3</div><div class="s-b">Ask = ask × ask <span class="calc">1,0924 × 156,25 = 170,69</span></div></div>
+        <div class="step"><div class="s-n">4</div><div class="s-b"><span class="result-pill">EUR/JPY = 170,57 – 170,69</span> · spread 0,12 plus large que les deux d'origine ✓</div></div>`},
+  {tag:"Exercice 3 · Forward + report/déport",
+   enonce:`Spot <span class="data">EUR/USD = 1,1000</span>. Taux EUR (directrice) = 3%, taux USD (contrepartie) = 1,5%, échéance 90 jours. Calculez le forward, dites s'il y a report ou déport, puis le % annualisé.`,
+   cor:`<div class="step"><div class="s-n">1</div><div class="s-b">F = 1,1000 × (1 + 0,015×90/360) ÷ (1 + 0,03×90/360)</div></div>
+        <div class="step"><div class="s-n">2</div><div class="s-b"><span class="calc">F = 1,1000 × 1,00375 ÷ 1,0075 = 1,0959</span></div></div>
+        <div class="step"><div class="s-n">3</div><div class="s-b">F &lt; S et r_dir (3%) &gt; r_contre (1,5%) → <b>déport</b>.</div></div>
+        <div class="step"><div class="s-n">4</div><div class="s-b">% = (1,0959 − 1,1000)/1,1000 × 360/90 × 100 <span class="calc">≈ −1,49%</span></div></div>
+        <div class="step"><div class="s-n">5</div><div class="s-b"><span class="result-pill">F = 1,0959 · déport ≈ −1,5%</span> = r_contre − r_dir (1,5 − 3). ✓</div></div>`},
+  {tag:"Exercice 4 · Cross rate (pivot au certain dans les deux)",
+   enonce:`<span class="data">EUR/USD = 1,0800 – 1,0805</span> et <span class="data">EUR/GBP = 0,8500 – 0,8504</span>. Calculez GBP/USD.`,
+   cor:`<div class="step"><div class="s-n">1</div><div class="s-b">L'euro est pivot, au certain dans les deux paires (même sens) → division.</div></div>
+        <div class="step"><div class="s-n">2</div><div class="s-b">Bid = bid ÷ ask <span class="calc">1,0800 ÷ 0,8504 = 1,2700</span></div></div>
+        <div class="step"><div class="s-n">3</div><div class="s-b">Ask = ask ÷ bid <span class="calc">1,0805 ÷ 0,8500 = 1,2712</span></div></div>
+        <div class="step"><div class="s-n">4</div><div class="s-b"><span class="result-pill">GBP/USD = 1,2700 – 1,2712</span> · spread 0,0012 &gt; les deux d'origine ✓</div></div>`},
+  {tag:"Exercice 5 · Spéculation",
+   enonce:`Un opérateur place <span class="data">1 000 000 USD</span>, anticipe une hausse de l'euro. Spot EUR/USD = 1,1000 ; 90 j plus tard = 1,1300. Placement EUR 2%/an, coût d'opportunité USD 1%/an. Résultat net ?`,
+   cor:`<div class="step"><div class="s-n">1</div><div class="s-b">Achat EUR <span class="calc">1 000 000 ÷ 1,1000 = 909 090,91 €</span></div></div>
+        <div class="step"><div class="s-n">2</div><div class="s-b">Gain de change <span class="calc">(1,1300 − 1,1000) × 909 090,91 = 27 272,73 $</span></div></div>
+        <div class="step"><div class="s-n">3</div><div class="s-b">Intérêts EUR reconvertis <span class="calc">909 090,91 × 0,02 × 0,25 × 1,1300 = 5 136,36 $</span></div></div>
+        <div class="step"><div class="s-n">4</div><div class="s-b">Coût d'opportunité USD <span class="calc">1 000 000 × 0,01 × 0,25 = 2 500 $</span></div></div>
+        <div class="step"><div class="s-n">5</div><div class="s-b"><span class="result-pill">RN = 27 272,73 + 5 136,36 − 2 500 ≈ 29 909 $</span></div></div>`}
+];
+
+/* =========================================================
+   ÉTAT + MOTEUR
+   ========================================================= */
+let xp = 0;
+const done = new Set();
+const answeredQuiz = new Set();      // "lesson-quizIndex"
+let currentPage = 'l0';
+
+function addXP(n){ xp += n; document.getElementById('xpVal').textContent = xp; }
+function updateGlobal(){
+  let count=0; done.forEach(v=>{ if(typeof v==='number') count++; });
+  const pct = Math.round(count / LESSONS.length * 100);
+  document.getElementById('globalBar').style.width = pct + '%';
+  document.getElementById('globalPct').textContent = pct + '%';
+}
+
+/* ---- build sidebar ---- */
+const menu = document.getElementById('lessonMenu');
+LESSONS.forEach((l,i)=>{
+  const d = document.createElement('div');
+  d.className = 'lesson-link';
+  d.dataset.page = 'l'+i;
+  d.innerHTML = `<span class="num">${i+1}</span><span>${shortTitle(l.title)}</span><span class="check">✓</span>`;
+  d.onclick = ()=>goPage('l'+i);
+  menu.appendChild(d);
+});
+function shortTitle(t){ return t.length>34 ? t.slice(0,32)+'…' : t; }
+
+/* ---- build pages ---- */
+const main = document.getElementById('main');
+LESSONS.forEach((l,i)=>{
+  const p = document.createElement('section');
+  p.className = 'page'; p.id = 'page-l'+i;
+  let quizHTML = '';
+  l.quizzes.forEach((qz,qi)=>{
+    quizHTML += renderQuiz(i,qi,qz);
+  });
+  p.innerHTML = `
+    <span class="tag">${l.tag}</span>
+    <h1 class="title">${l.title}</h1>
+    <div class="subtitle">${l.subtitle}</div>
+    ${l.body}
+    <p class="section-lead">Mini-quiz</p>
+    ${quizHTML}
+    <div class="lesson-nav">
+      <button class="btn ghost" ${i===0?'disabled':''} onclick="goPage('l${i-1}')">← Précédent</button>
+      <button class="btn solid" id="valid-${i}" onclick="completeLesson(${i})">Valider la leçon · +25 XP</button>
+      <button class="btn ghost" onclick="goPage('${i<LESSONS.length-1?'l'+(i+1):'test'}')">${i<LESSONS.length-1?'Suivant →':'Vers le test →'}</button>
+    </div>`;
+  main.appendChild(p);
+});
+
+/* ---- test page ---- */
+const testPage = document.createElement('section');
+testPage.className='page'; testPage.id='page-test';
+main.appendChild(testPage);
+renderTestIntro();
+
+/* ---- annales page ---- */
+const annPage = document.createElement('section');
+annPage.className='page'; annPage.id='page-annales';
+let annHTML = `<span class="tag">Annales</span><h1 class="title">Annales corrigées</h1>
+  <div class="subtitle">Mode révision active : cherchez avant de dérouler le corrigé</div>
+  <div class="note-box">Ces exercices reproduisent les types tombés à l'examen (inversion, cross rate, forward, report/déport, spéculation). Dès que tu me transmets les vrais sujets PDF, je les substitue ici à l'identique.</div>`;
+ANNALES.forEach((ex,i)=>{
+  annHTML += `<div class="annale-ex">
+    <div class="ae-tag">${ex.tag}</div>
+    <div class="ae-enonce">${ex.enonce}</div>
+    <button class="reveal-btn" onclick="toggleCor(${i})" id="revbtn-${i}">Voir le corrigé</button>
+    <div class="corrige" id="cor-${i}"><div class="cor-h">Corrigé détaillé</div>${ex.cor}</div>
+  </div>`;
+});
+annPage.innerHTML = annHTML;
+main.appendChild(annPage);
+
+/* ---- quiz renderer ---- */
+function renderQuiz(li,qi,qz){
+  if(qz.num){
+    return `<div class="quiz q-num" id="q-${li}-${qi}">
+      <div class="q-tag">⬡ Quiz ${qi+1}</div>
+      <div class="q-txt">${qz.q}</div>
+      <input type="text" id="in-${li}-${qi}" placeholder="ta réponse">
+      <button class="qbtn" onclick="checkNum(${li},${qi},${qz.a},${qz.tol})">Vérifier</button>
+      <div class="q-fb" id="fb-${li}-${qi}"></div>
+    </div>`;
+  }
+  let opts = qz.opts.map((o,oi)=>`<button class="q-opt" onclick="checkOpt(this,${li},${qi},${oi},${qz.a})">${o}</button>`).join('');
+  return `<div class="quiz" id="q-${li}-${qi}">
+    <div class="q-tag">⬡ Quiz ${qi+1}</div>
+    <div class="q-txt">${qz.q}</div>
+    <div class="q-opts">${opts}</div>
+    <div class="q-fb" id="fb-${li}-${qi}"></div>
+  </div>`;
+}
+function checkOpt(btn,li,qi,chosen,ans){
+  const box = document.getElementById('q-'+li+'-'+qi);
+  box.querySelectorAll('.q-opt').forEach(b=>b.disabled=true);
+  const fb = document.getElementById('fb-'+li+'-'+qi);
+  const correct = LESSONS[li].quizzes[qi].fb;
+  if(chosen===ans){
+    btn.classList.add('correct');
+    fb.className='q-fb ok'; fb.textContent='✓ '+correct;
+    awardQuiz(li,qi);
+  } else {
+    btn.classList.add('wrong');
+    box.querySelectorAll('.q-opt')[ans].classList.add('correct');
+    fb.className='q-fb no'; fb.textContent='✗ '+correct;
+  }
+}
+function checkNum(li,qi,ans,tol){
+  const raw = document.getElementById('in-'+li+'-'+qi).value.replace(',','.').trim();
+  const fb = document.getElementById('fb-'+li+'-'+qi);
+  const v = parseFloat(raw);
+  const info = LESSONS[li].quizzes[qi].fb;
+  if(isNaN(v)){ fb.className='q-fb no'; fb.textContent='Saisis une valeur numérique.'; return; }
+  if(Math.abs(v-ans) <= tol){
+    fb.className='q-fb ok'; fb.textContent='✓ '+info;
+    awardQuiz(li,qi);
+  } else {
+    fb.className='q-fb no'; fb.textContent='✗ '+info;
+  }
+}
+function awardQuiz(li,qi){
+  const k = li+'-'+qi;
+  if(!answeredQuiz.has(k)){ answeredQuiz.add(k); addXP(10); }
+}
+
+/* ---- lesson completion ---- */
+function completeLesson(i){
+  if(!done.has(i)){
+    done.add(i); addXP(25);
+    const link = document.querySelector('.lesson-link[data-page="l'+i+'"]');
+    link.classList.add('done');
+    const btn = document.getElementById('valid-'+i);
+    btn.classList.add('done'); btn.innerHTML='✓ Leçon validée';
+    updateGlobal();
+  }
+}
+
+/* ---- navigation ---- */
+function goPage(pg){
+  currentPage = pg;
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('show'));
+  document.getElementById('page-'+pg).classList.add('show');
+  document.querySelectorAll('.lesson-link,.special-link').forEach(l=>l.classList.toggle('active', l.dataset.page===pg));
+  document.getElementById('main').scrollTo&&window.scrollTo({top:0,behavior:'smooth'});
+  window.scrollTo(0,0);
+  if(window.innerWidth<=880) document.getElementById('sidebar').classList.remove('open');
+}
+function toggleSide(){ document.getElementById('sidebar').classList.toggle('open'); }
+
+/* =========================================================
+   TEST FINAL — logique adaptative
+   ========================================================= */
+function renderTestIntro(){
+  testPage.innerHTML = `
+    <span class="tag">Évaluation finale</span>
+    <h1 class="title">Test final adaptatif</h1>
+    <div class="subtitle">10 questions · QCM et calculs · remédiation immédiate en cas d'erreur</div>
+    <div class="test-intro">
+      <p>À chaque erreur, une bannière t'explique la notion et te propose de revoir la leçon concernée. Le score et le bilan par chapitre s'affichent à la fin.</p>
+      <button class="btn plum" style="margin-top:10px" onclick="startTest()">Commencer le test →</button>
+    </div>`;
+}
+let testState = [];
+function startTest(){
+  testState = TEST.map(()=>({answered:false, ok:false}));
+  document.getElementById('floatRetry').classList.remove('show');
+  let html = `<span class="tag">Évaluation finale</span><h1 class="title">Test final adaptatif</h1>
+    <div class="subtitle">Réponds à chaque question — corrige-toi grâce aux remédiations</div>`;
+  TEST.forEach((t,i)=>{
+    let body;
+    if(t.type==='num'){
+      body = `<input type="text" id="tin-${i}" placeholder="ta réponse" style="font-family:DM Mono,monospace;font-size:15px;padding:10px 13px;border:1.5px solid var(--m-clair);border-radius:9px;width:160px;background:var(--blanc)">
+              <button class="qbtn" style="margin-left:8px;background:var(--plum);color:var(--blanc);border:none;border-radius:9px;padding:11px 17px;font-weight:600;cursor:pointer" onclick="answerTest(${i},'num')">Valider</button>`;
+    } else {
+      body = `<div class="q-opts">`+t.opts.map((o,oi)=>`<button class="q-opt" onclick="answerTest(${i},'qcm',${oi})">${o}</button>`).join('')+`</div>`;
+    }
+    html += `<div class="test-q" id="tq-${i}">
+      <div class="tq-n">Question ${i+1}/10 · ${t.chap}</div>
+      <div class="tq-txt">${t.txt}</div>
+      ${body}
+      <div class="remediation" id="rem-${i}">
+        <div class="r-h">⚠️ À revoir</div>
+        <p id="rem-txt-${i}"></p>
+        <div class="r-btns">
+          <button class="mini rev" onclick="goPage('l${t.lesson}')">Revoir la leçon</button>
+          <button class="mini cont" onclick="hideRem(${i})">Continuer</button>
+        </div>
+      </div>
+    </div>`;
+  });
+  html += `<div class="lesson-nav"><span></span><button class="btn plum" onclick="finishTest()">Voir mon résultat →</button></div>`;
+  testPage.innerHTML = html;
+  window.scrollTo(0,0);
+}
+function answerTest(i,type,chosen){
+  const t = TEST[i]; const st = testState[i];
+  const q = document.getElementById('tq-'+i);
+  let ok;
+  if(type==='num'){
+    const v = parseFloat(document.getElementById('tin-'+i).value.replace(',','.').trim());
+    ok = !isNaN(v) && Math.abs(v - t.a) <= t.tol;
+    document.getElementById('tin-'+i).disabled = true;
+    q.querySelector('.qbtn').disabled = true;
+  } else {
+    const btns = q.querySelectorAll('.q-opt');
+    btns.forEach(b=>b.disabled=true);
+    ok = (chosen===t.a);
+    btns[chosen].classList.add(ok?'correct':'wrong');
+    if(!ok) btns[t.a].classList.add('correct');
+  }
+  st.answered=true; st.ok=ok;
+  if(!ok){
+    document.getElementById('rem-txt-'+i).textContent = t.rem;
+    document.getElementById('rem-'+i).classList.add('show');
+    document.getElementById('floatRetry').classList.add('show');
+  } else {
+    if(!st.scored){ st.scored=true; addXP(15); }
+  }
+}
+function hideRem(i){ document.getElementById('rem-'+i).classList.remove('show'); }
+function resetTest(){ startTest(); }
+function finishTest(){
+  const score = testState.filter(s=>s.ok).length;
+  // bilan par chapitre
+  const chaps = {};
+  TEST.forEach((t,i)=>{
+    if(!chaps[t.chap]) chaps[t.chap]={tot:0,ok:0};
+    chaps[t.chap].tot++; if(testState[i] && testState[i].ok) chaps[t.chap].ok++;
+  });
+  let msg, col;
+  if(score>=9){ msg="Maîtrise solide — tu es prêt pour le partiel."; col="var(--teal)"; }
+  else if(score>=7){ msg="Bon niveau. Revois les chapitres en jaune."; col="var(--teal)"; }
+  else if(score>=5){ msg="Base correcte, mais consolide les notions faibles."; col="var(--amber)"; }
+  else { msg="Reprends les leçons signalées avant de réessayer."; col="var(--rust)"; }
+
+  let bilan='';
+  Object.keys(chaps).forEach(c=>{
+    const r = chaps[c]; const pct = Math.round(r.ok/r.tot*100);
+    const bc = pct>=100?'var(--teal)':pct>=50?'var(--amber)':'var(--rust)';
+    bilan += `<div class="cb-row"><div class="cb-top"><span>${c}</span><span class="mono" style="font-family:DM Mono,monospace">${r.ok}/${r.tot}</span></div>
+      <div class="cb-bar"><i style="width:${pct}%;background:${bc}"></i></div></div>`;
+  });
+
+  if(score>=7){ done.add('test'); }
+  document.getElementById('floatRetry').classList.remove('show');
+  testPage.innerHTML = `
+    <span class="tag">Résultat</span>
+    <h1 class="title">Bilan du test</h1>
+    <div class="result-card">
+      <div class="score-big" style="color:${col}">${score}<span style="font-size:30px;color:var(--stroke2)">/10</span></div>
+      <div class="score-sub">${Math.round(score*10)}% de réussite</div>
+      <div class="result-msg">${msg}</div>
+      <div class="chap-bilan">${bilan}</div>
+      <div style="margin-top:28px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        <button class="btn plum" onclick="startTest()">↻ Reprendre le test</button>
+        <button class="btn ghost" onclick="goPage('l0')">Revoir les leçons</button>
+      </div>
+    </div>`;
+  window.scrollTo(0,0);
+}
+
+/* ---- annales toggle ---- */
+function toggleCor(i){
+  const c = document.getElementById('cor-'+i);
+  const b = document.getElementById('revbtn-'+i);
+  c.classList.toggle('show');
+  b.textContent = c.classList.contains('show') ? 'Masquer le corrigé' : 'Voir le corrigé';
+}
+
+/* ---- init ---- */
+goPage('l0');
+updateGlobal();
+</script>
+<script src="../lb.js"></script>
+<script src="../progress.js"></script>
+<script src="../ui.js"></script>
+</body>
+</html>

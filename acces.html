@@ -136,7 +136,7 @@ try{ const p = localStorage.getItem('lb_name'); if(p) $('pseudo').value = p; }ca
 
 /* ── Niveaux, essai de 24 h, demande de clé (hub multi-promos) ── */
 const Q = new URLSearchParams(location.search), MOTIF = Q.get('motif');
-const NOM_ESSAI = {systeme_bancaire:'Système bancaire français'};
+const NOM_ESSAI = {systeme_bancaire:'Système bancaire français', 'licence/droit-bancaire':'Droit bancaire (Licence)'};
 function infoAcces(){
   const m = document.cookie.match(/(?:^|;\s*)acces_info=([^;]+)/);
   try{ return m ? new URLSearchParams(decodeURIComponent(m[1])) : new URLSearchParams(); }catch(e){ return new URLSearchParams(); }
