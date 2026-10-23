@@ -1,5 +1,5 @@
 /* acces-admin — gestion des clés d'accès, pour Corentin seul (6.5.0)
-   POST {action:'moi'|'liste'|'generer'|'revoquer'|'retablir'|'admin'|'devenir_admin'
+   POST {action:'moi'|'liste'|'revoquer'|'retablir'|'admin'|'devenir_admin'
          |'chat_supprimer'|'tableau'|'associer'|'dissocier'|'note'|'bq_reset'
          |'demandes'|'demande_accepter'|'demande_refuser'|'push_abonner'|'push_retirer'|'push_essai', mdp?, ...}
    Qui peut entrer (hub multi-promos) :
@@ -10,7 +10,7 @@
    l'empreinte est dans la base). Les clés générées ne sont renvoyées
    qu'une fois, en clair : la base n'en garde que l'empreinte. */
 import {envoyerUn, cles, abonnementValide} from '../push.mjs';
-import {rpc, empreinte, nouvelleCle, memeTexte, lireCorps, json, lireAcces, etatCle, cookieAcces,
+import {rpc, empreinte, nouvelleCle, memeTexte, lireCorps, json, lireAcces, lirePlus, etatCle, cookieAcces,
         NIVEAUX, anneeOk, PAR_DEFAUT} from '../acces.mjs';
 
 async function qui(req, d, MDP, JETON){
@@ -19,6 +19,11 @@ async function qui(req, d, MDP, JETON){
   const e = c ? await etatCle(c.id).catch(()=>null) : null;
   const cle = c && e && e.valide ? {id:c.id, niveau:e.niveau, annee:e.annee, admin:!!e.admin} : null;
   if(cle && cle.admin) return {mode:'cle', cle};
+  /* 8.2.0 : la clé admin peut aussi être une clé ajoutée (m1_acces_plus) */
+  for(const k of secret ? lirePlus(secret, req.headers.get('cookie')) : []){
+    const ek = await etatCle(k.id).catch(()=>null);
+    if(ek && ek.valide && ek.admin) return {mode:'cle', cle:{id:k.id, niveau:ek.niveau, annee:ek.annee, admin:true}};
+  }
   if(MDP && d.mdp && memeTexte(d.mdp, MDP)){
     let existe = false;                       // acces-niveaux.sql pas encore lancé : pas de clé admin
     try{ existe = (await rpc('acces_admin', {p_jeton:JETON, p_action:'admin_existe', p_donnees:{}})) === true; }catch(err){}
@@ -41,16 +46,9 @@ export default async (req) => {
   try{
     if(d.action === 'moi') return ok({appareil:q.cle});
     if(d.action === 'liste') return ok({cles:await rpc('acces_admin', {p_jeton:JETON, p_action:'liste', p_donnees:{}})});
-    if(d.action === 'generer'){
-      const n = Math.max(1, Math.min(100, parseInt(d.nombre, 10) || 1));
-      const nom = String(d.nom||'').trim().slice(0, 60);
-      const niveau = NIVEAUX.includes(d.niveau) ? d.niveau : PAR_DEFAUT.niveau;
-      const annee = anneeOk(d.annee) ? d.annee : PAR_DEFAUT.annee;
-      const cles = Array.from({length:n}, ()=>nouvelleCle());
-      await rpc('acces_admin', {p_jeton:JETON, p_action:'creer', p_donnees:{cles:cles.map((c,i)=>({
-        hash:empreinte(c), suffixe:c.slice(-3), nom: n > 1 && nom ? nom+' '+(i+1) : nom, niveau, annee }))}});
-      return ok({cles, niveau, annee});
-    }
+    /* 8.2.0 : plus de génération de clés, les nouveaux accès passent par les demandes
+       (les clés déjà créées restent valables). */
+    if(d.action === 'generer') return json({ok:false, erreur:'generation_fermee'}, 410);
     if(d.action === 'revoquer' || d.action === 'retablir'){
       if(!/^[0-9a-f-]{36}$/.test(String(d.id||''))) return json({ok:false}, 400);
       await rpc('acces_admin', {p_jeton:JETON, p_action:d.action, p_donnees:{id:d.id}});

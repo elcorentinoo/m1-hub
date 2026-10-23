@@ -13,7 +13,7 @@
        activation de clé (acces-activer). */
 import crypto from 'node:crypto';
 import {rpc, lireCorps, json, empreinteIP, sousLaLimite, appareil, nettoyerPseudo, lireAcces, etatCle,
-        cookieAcces, cookieInfo, memeTexte} from '../acces.mjs';
+        poserCle, memeTexte} from '../acces.mjs';
 import {envoyerUn, cles} from '../push.mjs';
 
 const SEPT_JOURS = 7 * 86400;
@@ -69,11 +69,10 @@ export default async (req, context) => {
       const r = await rpc('acces_demande', {p_jeton:JETON, p_action:'recuperer', p_donnees:{id}});
       if(!r || !r.ok) return json({ok:true, statut:'deja'});
       const annee = e.annee || '2026-2027';
-      return reponse({ok:true, statut:'acceptee', pseudo:e.pseudo, niveau:e.niveau, annee}, 200, [
-        cookieAcces(secret, r.cle_id, e.niveau, annee, false),
-        cookieInfo({statut:'cle', niveau:e.niveau, annee}),
-        'm1_essai=; Max-Age=0; Path=/; HttpOnly; Secure; SameSite=Lax',
-        cookieDemande('', 0)]);
+      /* 8.2.0 : un appareil qui a déjà une clé garde son niveau et AJOUTE celui-ci */
+      const pose = await poserCle(secret, req.headers.get('cookie'), {id:r.cle_id, niveau:e.niveau, annee, admin:false});
+      return reponse({ok:true, statut:'acceptee', pseudo:e.pseudo, niveau:e.niveau, annee, ajoute:pose.ajoute, niveaux:pose.niveaux}, 200,
+        pose.cookies.concat('m1_essai=; Max-Age=0; Path=/; HttpOnly; Secure; SameSite=Lax', cookieDemande('', 0)));
     }
 
     if(d.action === 'envoyer'){

@@ -43,6 +43,7 @@ button[disabled]{opacity:.6;cursor:wait}
 .motif a{color:var(--nuit);font-weight:500}
 button.sec{background:var(--surface2);color:var(--nuit);border:2px solid var(--stroke2)}
 .ou{margin:18px 0 0;font-size:.85rem;color:var(--txt3)}
+.ou a{color:var(--nuit);font-weight:500}
 .f2{margin-top:22px;text-align:left}
 .f2 h2{font-weight:400;font-size:1.3rem;margin:0 0 6px;text-align:center}
 .f2 p{margin:0 0 14px;text-align:center}
@@ -61,8 +62,14 @@ button.sec{background:var(--surface2);color:var(--nuit);border:2px solid var(--s
   <div class="logo" aria-hidden="true">AA<i>A</i></div>
   <h1 id="titre">Accès réservé</h1>
   <div class="motif" id="motif" role="status" hidden></div>
-  <p id="intro">AAA est réservé aux étudiants. Entre la clé d'accès qu'on t'a donnée et ton pseudo.</p>
-  <form id="f" autocomplete="off">
+  <p id="intro">AAA est réservé aux étudiants. Demande l'accès : l'administrateur la valide depuis son téléphone et cet appareil s'ouvre tout seul.</p>
+  <div id="sansCle">
+    <button type="button" id="bDemander">Demander l'accès</button>
+    <button type="button" class="sec" id="bEssai">Essayer gratuitement 24 h</button>
+    <div class="msg" id="msgEssai" role="status" aria-live="polite"></div>
+  </div>
+  <p class="ou" id="lienCle"><a href="#" id="aCle">J'ai déjà une clé</a></p>
+  <form id="f" autocomplete="off" hidden>
     <label for="cle">Clé d'accès</label>
     <input id="cle" name="cle" inputmode="text" autocapitalize="characters" spellcheck="false" placeholder="XXX-XXX-XXX" maxlength="13" required>
     <label for="pseudo" class="l2">Ton pseudo</label>
@@ -71,12 +78,6 @@ button.sec{background:var(--surface2);color:var(--nuit);border:2px solid var(--s
     <button type="submit" id="b">Entrer</button>
     <div class="msg" id="msg" role="status" aria-live="polite"></div>
   </form>
-  <div id="sansCle">
-    <p class="ou">Pas encore de clé ?</p>
-    <button type="button" class="sec" id="bEssai">Essayer 24 h sans clé</button>
-    <button type="button" class="sec" id="bDemander">Demander l'accès</button>
-    <div class="msg" id="msgEssai" role="status" aria-live="polite"></div>
-  </div>
   <form id="fDem" class="f2" autocomplete="off" hidden>
     <h2>Demander l'accès</h2>
     <p>L'administrateur reçoit ta demande sur son téléphone. Dès qu'il l'accepte, cet appareil s'ouvre tout seul : pas de clé à taper.</p>
@@ -99,7 +100,7 @@ button.sec{background:var(--surface2);color:var(--nuit);border:2px solid var(--s
     <button type="button" class="sec" id="bRedemander" hidden>Faire une nouvelle demande</button>
     <div class="msg" id="msgAtt" role="status" aria-live="polite"></div>
   </section>
-  <p class="pied">Une clé ne sert qu'une fois : elle autorise cet appareil. Pour un autre appareil, demande une nouvelle clé.</p>
+  <p class="pied">L'accès est lié à cet appareil. Pour un autre appareil (téléphone, ordinateur), fais une nouvelle demande d'accès.</p>
   <p class="pied">Tes progrès (leçons, temps de révision, résultats) sont partagés avec l'administrateur du site.</p>
   <p class="slogan">Révise. Vise le AAA.</p>
 </main>
@@ -124,6 +125,12 @@ $('f').addEventListener('submit', async e=>{
     const r = await fetch('/.netlify/functions/acces-activer', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({cle, pseudo})});
     const d = await r.json().catch(()=>({}));
     if(d.ok){
+      if(d.ajoute){
+        /* 8.2.0 : clé d'un autre niveau ajoutée ; pseudo et progression restent ceux de la 1re clé */
+        m.className = 'msg ok'; m.textContent = 'Clé '+(NOMS_NIV[d.niveau] || '')+' ajoutée ! Tu gardes aussi ton espace actuel.';
+        setTimeout(()=>location.replace(Q.get('r') ? retour() : (ESPACE[d.niveau] || '/niveaux.html')), 900);
+        return;
+      }
       /* même mémoire que le reste du site (lb.js) : le hub ne redemandera pas le pseudo */
       try{ localStorage.setItem('lb_name', pseudo); }catch(err){}
       m.className = 'msg ok'; m.textContent = 'Bienvenue '+pseudo+' ! Ouverture d\'AAA…';
@@ -144,6 +151,7 @@ try{ const p = localStorage.getItem('lb_name'); if(p) $('pseudo').value = p; }ca
 /* ── Niveaux, essai de 24 h, demande de clé (hub multi-promos) ── */
 const Q = new URLSearchParams(location.search), MOTIF = Q.get('motif');
 const NOMS_NIV = {licence:'Licence', m1:'M1', m2:'M2'};
+const ESPACE = {licence:'/licence.html', m1:'/index.html', m2:'/m2.html'};
 const NOM_ESSAI = {systeme_bancaire:'Système bancaire français', 'licence/droit-bancaire':'Droit bancaire (Licence)'};
 function infoAcces(){
   const m = document.cookie.match(/(?:^|;\s*)acces_info=([^;]+)/);
@@ -155,17 +163,26 @@ const essaiFini = () => { const d = parseInt(jetonEssai(), 10); return d > 0 && 
 function motif(html){ $('motif').innerHTML = html; $('motif').hidden = false; }
 function finEssai(){
   $('titre').textContent = 'Ton essai est terminé';
-  $('intro').textContent = "Pour continuer, entre une clé d'accès, ou demande l'accès avec le formulaire ci-dessous.";
+  $('intro').textContent = "Pour continuer, demande l'accès avec le formulaire ci-dessous.";
   $('sansCle').hidden = true; ouvrirDemande();
 }
 if(MOTIF === 'niveau'){
-  motif("Cette page est réservée à une autre promo que celle de ta clé. <a href=\"/niveaux.html\">Retour à l'accueil</a>");
-  $('sansCle').hidden = true;
+  motif("Cette page est réservée à une autre promo que celle de ta clé. <a href=\"/acces.html?motif=demande\">Demander l'accès à cet espace</a> · <a href=\"/acces.html?motif=ajouter\">J'ai déjà une clé pour cet espace</a> · <a href=\"/niveaux.html\">Retour à l'accueil</a>");
+  $('sansCle').hidden = true; $('lienCle').hidden = true; $('intro').hidden = true;
+}else if(MOTIF === 'ajouter'){
+  /* 8.2.0 : un appareil qui a déjà une clé en ajoute une d'un autre niveau */
+  const n = NOMS_NIV[Q.get('niveau')] || '';
+  $('titre').textContent = 'Ajouter une clé'+(n ? ' '+n : '');
+  $('intro').textContent = "Entre ta clé"+(n ? ' '+n : '')+" : elle s'ajoute à celle de cet appareil. Tu gardes ton espace actuel, ton pseudo et ta progression.";
+  $('sansCle').hidden = true; $('lienCle').hidden = true; $('f').hidden = false;
+  let p = ''; try{ p = localStorage.getItem('lb_name') || ''; }catch(e){}
+  if(p.trim().length >= 2){ $('pseudo').value = p; $('pseudo').closest('form').querySelectorAll('[for="pseudo"], #pseudo, .aide').forEach(x=>x.hidden = true); }
+  $('b').textContent = 'Ajouter la clé';
 }else if(MOTIF === 'demande'){
   /* depuis le hub central : une clé qui veut l'espace d'un autre niveau */
   $('titre').textContent = "Demander l'accès";
-  $('intro').textContent = "Pour un autre niveau, fais une demande : l'administrateur la valide depuis son téléphone.";
-  $('f').hidden = true; $('sansCle').hidden = true; ouvrirDemande();
+  $('intro').textContent = "Fais une demande : l'administrateur la valide depuis son téléphone. Si tu as déjà accès à un autre niveau, celui-ci s'y ajoutera.";
+  $('sansCle').hidden = true; ouvrirDemande();
   if(['licence','m1'].includes(Q.get('niveau'))) $('dNiv').value = Q.get('niveau');
 }else if(MOTIF === 'essai'){
   const i = infoAcces(), mats = ['licence','m1','m2'].map(n=>i.get(n)).filter(Boolean).map(m=>NOM_ESSAI[m] || m.replace(/_/g,' '));
@@ -178,6 +195,16 @@ if(MOTIF === 'niveau'){
   finEssai();
 }
 $('bDemander').addEventListener('click', ()=>{ ouvrirDemande(); $('dPseudo').focus(); });
+/* 8.2.0 : les nouveaux accès passent par les demandes ; une clé déjà reçue reste utilisable */
+$('aCle').addEventListener('click', e=>{
+  e.preventDefault();
+  if(infoAcces().get('statut') === 'cle'){
+    const n = Q.get('niveau');
+    location.href = '/acces.html?motif=ajouter'+(['licence','m1','m2'].includes(n) ? '&niveau='+n : '');
+    return;
+  }
+  $('f').hidden = false; $('lienCle').hidden = true; $('cle').focus();
+});
 $('bEssai').addEventListener('click', async ()=>{
   const b = $('bEssai'), m = $('msgEssai');
   b.disabled = true; m.textContent = '';
@@ -205,19 +232,19 @@ async function appelDemande(corps){
   return r.json().catch(()=>({ok:false}));
 }
 function montrerAttente(titre, texte, redemander){
-  ['f','sansCle','fDem'].forEach(id=>$(id).hidden = true);
+  ['f','sansCle','fDem','lienCle'].forEach(id=>$(id).hidden = true);
   $('motif').hidden = true; $('intro').hidden = true;
   $('titre').textContent = 'Demande d\'accès';
   $('attente').hidden = false; $('aTitre').textContent = titre; $('aTexte').textContent = texte;
   $('bVerifier').hidden = !!redemander; $('bRedemander').hidden = !redemander;
 }
 function ouvrirDemande(){
-  $('attente').hidden = true; $('fDem').hidden = false; $('bDemander').hidden = true;
-  $('f').hidden = MOTIF === 'demande'; $('intro').hidden = false;
+  $('attente').hidden = true; $('fDem').hidden = false; $('sansCle').hidden = true;
+  $('f').hidden = true; $('lienCle').hidden = false; $('intro').hidden = false;
   try{ const p = localStorage.getItem('lb_name'); if(p && !$('dPseudo').value) $('dPseudo').value = p; }catch(e){}
   const i = infoAcces();
   if(i.get('statut') === 'cle'){
-    $('dAvert').textContent = "Cet appareil a déjà une clé "+(NOMS_NIV[i.get('niveau')] || '')+". Si ta demande est acceptée, il passera dans l'espace du niveau demandé.";
+    $('dAvert').textContent = "Cet appareil a déjà une clé "+(NOMS_NIV[i.get('niveau')] || '')+". Si ta demande est acceptée, le niveau demandé s'ajoutera : tu gardes ton espace actuel.";
     $('dAvert').hidden = false;
   }
 }
@@ -233,10 +260,10 @@ async function verifier(silencieux){
     if(!SUIVI) SUIVI = setInterval(()=>{ if(!document.hidden) verifier(true); }, 15000);
   }else if(d.statut === 'acceptee'){
     arreterSuivi(); garderDemande('');
-    try{ localStorage.setItem('lb_name', d.pseudo); }catch(e){}
-    montrerAttente('Demande acceptée !', 'Bienvenue '+d.pseudo+' ! Ouverture d\'AAA…');
+    if(!d.ajoute) try{ localStorage.setItem('lb_name', d.pseudo); }catch(e){}
+    montrerAttente('Demande acceptée !', d.ajoute ? 'Niveau '+(NOMS_NIV[d.niveau] || '')+' ajouté : tu gardes aussi ton espace actuel.' : 'Bienvenue '+d.pseudo+' ! Ouverture d\'AAA…');
     $('bVerifier').hidden = true;
-    setTimeout(()=>location.replace('/niveaux.html'), 800);
+    setTimeout(()=>location.replace(d.ajoute ? (ESPACE[d.niveau] || '/niveaux.html') : '/niveaux.html'), 800);
   }else if(d.statut === 'refusee'){
     arreterSuivi();
     montrerAttente('Demande refusée', "L'administrateur n'a pas accepté cette demande. Tu pourras en faire une nouvelle demain.", false);
@@ -281,7 +308,7 @@ $('fDem').addEventListener('submit', async e=>{
 if(jetonDemande()) verifier(true);
 document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && (SUIVI || jetonDemande())) verifier(true); });
 window.addEventListener('pageshow', e=>{ if(e.persisted && jetonDemande()) verifier(true); });
-if(MOTIF !== 'essai-fini' && MOTIF !== 'demande' && !essaiFini()) $('cle').focus();
+if(MOTIF === 'ajouter') $('cle').focus();
 </script>
 </body>
 </html>

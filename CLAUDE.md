@@ -127,14 +127,22 @@ après toute modification de couleur ou de photo.
 
 Tout le site est derrière une porte : `netlify/edge-functions/acces.js`
 vérifie avant chaque fichier un cookie signé posé à l'activation d'une clé.
-Sans lui, on arrive sur `acces.html`, qui demande la clé **et** le pseudo.
+Sans lui, on arrive sur `acces.html` : « Demander l'accès » (bouton
+principal, 8.2.0), essai de 24 h, et « J'ai déjà une clé » en lien discret
+(clé **et** pseudo).
+
+- **Nouveaux accès uniquement par demande** (8.2.0, décision de Corentin) :
+  plus de génération de clés (ni dans /admin, ni par la fonction `acces-admin`,
+  qui répond 410 à `generer`). Les clés déjà créées, utilisées ou non, restent
+  valables. Ne plus inviter à « demander une clé » : parler de « demande
+  d'accès ».
 
 - Une clé (`XXX-XXX-XXX`) = un appareil : consommée à la première
   utilisation, l'appareil reste autorisé un an, revérifié chaque jour.
   Un même pseudo peut avoir plusieurs clés (téléphone, ordinateur).
 - Gestion réservée à Corentin : `/admin` (ou « /admin » + Entrée dans la
-  recherche, jamais proposé). Génération illimitée, liste avec pseudo et
-  appareil, révocation (effet sous 24 h). Mot de passe : variable Netlify.
+  recherche, jamais proposé). Demandes d'accès à accepter, liste des clés
+  avec pseudo et appareil, révocation (effet sous 24 h), filtre par promo.
 - Fonctions : `acces-activer`, `acces-admin`, `acces-pseudo` ; outils communs
   dans `netlify/acces.mjs`. Base : `supabase/acces.sql` (table `acces_cles`,
   empreintes SHA-256 seulement, jamais les clés en clair).
@@ -142,6 +150,33 @@ Sans lui, on arrive sur `acces.html`, qui demande la clé **et** le pseudo.
   `ADMIN_MDP`, `VAPID_PRIVATE`. **Ne jamais les écrire dans le dépôt.**
 - Restent ouverts sans clé : `acces.html`, `/admin`, `/.netlify/*`, `sw.js`,
   le manifeste et les icônes.
+- **Niveaux et années** (8.0.0, `supabase/acces-niveaux.sql`) : chaque clé a
+  un niveau (`licence`, `m1`, `m2`) et une année universitaire (valable
+  jusqu'au 31 août de la 2e année). Cookie `m1_acces` : `id.chk.sig` (ancien
+  format, lu comme M1 2026-2027) + `.niveau.annee.admin.sig2`. La porte
+  cloisonne par niveau (`PAGES` en tête de `acces.js` ; page absente =
+  commune). Cookie lisible `acces_info` (affichage seulement) :
+  `statut=cle&niveau=m1&annee=…&niveaux=m1,licence[&admin=1]` ou
+  `statut=essai&fin=…` ; lu par `niveau.js`.
+- **Plusieurs niveaux par appareil** (8.2.0) : une clé d'un autre niveau
+  activée (ou une demande acceptée) sur un appareil qui a déjà une clé valide
+  s'AJOUTE dans un 2e cookie signé `m1_acces_plus` (au plus 4 clés) ;
+  `m1_acces` reste la clé principale (pseudo, progression, chat). Chaque clé
+  est revérifiée chaque jour ; révoquer l'une ne retire que son niveau (si la
+  principale tombe, une clé ajoutée prend sa place). Outils : `poserCle`,
+  `lirePlus` dans `netlify/acces.mjs`. Sur le hub central, le bouton principal
+  est « Demander l'accès Licence » (la demande acceptée s'ajoute) ; « J'ai
+  déjà une clé Licence » (lien discret) → `acces.html?motif=ajouter`.
+- **Clé administratrice** : colonne `admin` ; `/admin` s'ouvre sans mot de
+  passe sur l'appareil admin ; `ADMIN_MDP` ne sert que tant qu'aucune clé
+  admin n'existe. Une clé admin voit tous les niveaux.
+- **Essai de 24 h** sans clé (`acces-essai`, cookie `m1_essai`, matière
+  d'essai par niveau : `ESSAI` en tête de `acces.js`).
+- **Demandes d'accès** (8.1.0, `supabase/acces-demandes.sql`) :
+  `acces-demande` (pseudo, niveau, cookie `m1_demande`), notification Web Push
+  aux appareils admin (table `acces_admin_push`, bouton dans /admin),
+  onglet « Demandes » de /admin : Accepter crée une clé déjà activée pour
+  l'appareil demandeur.
 
 ## Vérifications attendues avant livraison
 

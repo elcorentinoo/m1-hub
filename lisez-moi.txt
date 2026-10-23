@@ -304,6 +304,18 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  8.2.0            PLUSIEURS NIVEAUX PAR APPAREIL. Une clé Licence ajoutée sur
+                   un appareil qui a déjà une clé M1 (ou l'inverse) AJOUTE le
+                   niveau au lieu de le remplacer ; chaque clé reste
+                   révocable seule. Pareil pour une demande d'accès acceptée.
+                   « J'ai une clé Licence » et « Ajouter une clé d'un autre
+                   niveau » sur le hub central. Pseudo et progression : ceux
+                   de la première clé. Aucun changement de base.
+                   NOUVEAUX ACCÈS PAR DEMANDE SEULEMENT : plus de génération
+                   de clés dans /admin ; « Demander l'accès » devient le
+                   bouton principal (aussi pour ajouter un niveau), « J'ai
+                   déjà une clé » en lien discret. Les clés déjà créées,
+                   utilisées ou non, restent valables.
   8.1.0            DEMANDE D'ACCÈS SANS E-MAIL. « Demander l'accès » (pseudo,
                    niveau Licence ou M1, message) remplace le formulaire par
                    e-mail. Les appareils administrateurs reçoivent une

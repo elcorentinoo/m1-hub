@@ -19,8 +19,13 @@
    fonction acces-essai), limité à l'accueil et à la matière d'essai
    de chaque niveau (tableau ESSAI ci-dessous).
 
+   Plusieurs niveaux (8.2.0) : les clés ajoutées sur l'appareil sont dans
+   un 2e cookie signé « m1_acces_plus » (m1_acces reste la principale) ;
+   chacune est revérifiée chaque jour, une clé révoquée ne retire que son
+   niveau. L'ancien code ignore ce cookie.
+
    Cookie lisible « acces_info » (affichage seulement, jamais une
-   preuve) : statut=cle&niveau=m1&annee=2026-2027, ou
+   preuve) : statut=cle&niveau=m1&annee=2026-2027&niveaux=m1,licence, ou
    statut=essai&fin=<secondes>&m1=systeme_bancaire…
 
    Variable d'environnement : ACCES_SECRET (signature des cookies).
@@ -72,6 +77,27 @@ async function lire(req, secret){
     return {id, chk:+chk, niveau, annee, admin: adm === '1', ancien:false};
   return Object.assign({id, chk:+chk, ancien:true}, DEFAUT);       // cookie 6.5.0 : M1
 }
+/* Clés ajoutées (8.2.0) : cookie m1_acces_plus = « id.chk.niveau.annee.admin.sig »
+   séparées par « ~ » (signature préfixée « plus. »). Une page d'un niveau est
+   ouverte si au moins une clé valide de l'appareil couvre ce niveau. */
+const PLUS = 'm1_acces_plus', MAX_PLUS = 4;
+async function lirePlus(req, secret){
+  const v = lireBrut(req, PLUS); if(!v) return [];
+  const vus = new Set(), l = [];
+  for(const e of v.split('~')){
+    const [id, chk, niveau, annee, adm, sig] = e.split('.');
+    if(!/^[0-9a-f-]{36}$/.test(id||'') || !/^\d+$/.test(chk||'') || !NIVEAUX.includes(niveau) || !anneeOk(annee) || !/^[01]$/.test(adm||'') || !sig) continue;
+    if(vus.has(id) || !egal(sig, await signer(secret, 'plus.'+[id, chk, niveau, annee, adm].join('.')))) continue;
+    vus.add(id); l.push({id, chk:+chk, niveau, annee, admin: adm === '1'});
+  }
+  return l.slice(0, MAX_PLUS);
+}
+async function cookiePlus(secret, l){
+  if(!l.length) return PLUS+'=; Max-Age=0; Path=/; HttpOnly; Secure; SameSite=Lax';
+  const v = [];
+  for(const k of l){ const x = [k.id, k.chk, k.niveau, k.annee, k.admin ? 1 : 0].join('.'); v.push(x+'.'+await signer(secret, 'plus.'+x)); }
+  return PLUS+'='+v.join('~')+'; Max-Age='+UN_AN+'; Path=/; HttpOnly; Secure; SameSite=Lax';
+}
 /* Essai : « debut.sig », signature distincte de celle des clés. */
 async function lireEssai(req, secret){
   const v = lireBrut(req, ESSAI_COOKIE); if(!v) return null;
@@ -114,16 +140,18 @@ function versAcces(req, motif, effacer){
   const url = new URL(req.url);
   const navigation = req.method === 'GET' && ((req.headers.get('accept')||'').includes('text/html') || req.headers.get('sec-fetch-mode') === 'navigate');
   const entetes = {'Cache-Control':'no-store'};
-  if(effacer) entetes['Set-Cookie'] = COOKIE+'=; Max-Age=0; Path=/; HttpOnly; Secure; SameSite=Lax';
+  const efface = effacer ? [COOKIE, 'm1_acces_plus'].map(n=>n+'=; Max-Age=0; Path=/; HttpOnly; Secure; SameSite=Lax') : [];
   if(navigation){
     const cible = url.pathname + url.search, q = new URLSearchParams();
     if(motif) q.set('motif', motif);
     if(cible && cible !== '/') q.set('r', cible);
     entetes.Location = '/acces.html' + (q.toString() ? '?'+q : '');
-    return new Response(null, {status:302, headers:entetes});
+    const h = new Headers(entetes); efface.forEach(c=>h.append('Set-Cookie', c));
+    return new Response(null, {status:302, headers:h});
   }
   entetes['Content-Type'] = 'text/plain; charset=utf-8';
-  return new Response('Accès réservé.', {status:401, headers:entetes});
+  const h = new Headers(entetes); efface.forEach(c=>h.append('Set-Cookie', c));
+  return new Response('Accès réservé.', {status:401, headers:h});
 }
 /* Ajoute des Set-Cookie à la réponse de la page demandée. */
 async function suite(context, cookies){
@@ -144,20 +172,37 @@ export default async (req, context) => {
   const url = new URL(req.url);
   const page = estPage(url), nom = page ? nomPage(url) : '';
 
-  /* 1. Appareil à clé */
-  let c = await lire(req, secret);
-  if(c){
-    const cookies = [];
-    if(Math.floor(Date.now()/1000) - c.chk >= UN_JOUR){
+  /* 1. Appareil à clé : la principale (m1_acces) et les clés ajoutées (m1_acces_plus) */
+  let c = await lire(req, secret), plus = await lirePlus(req, secret);
+  if(c || plus.length){
+    const cookies = [], maintenant = Math.floor(Date.now()/1000);
+    let changePrin = false, changePlus = false;
+    if(c && maintenant - c.chk >= UN_JOUR){
       const e = await etat(c.id);
-      if(e && e.valide === false) return versAcces(req, null, true);
-      if(e) c = Object.assign(c, {niveau:e.niveau, annee:e.annee, admin:!!e.admin});
-      cookies.push(await cookieAcces(secret, c.id, c));
+      if(e && e.valide === false) c = null;
+      else{ if(e) Object.assign(c, {niveau:e.niveau, annee:e.annee, admin:!!e.admin}); c.chk = maintenant; changePrin = true; }
+      if(!c) changePrin = true;
     }
+    const gardees = [];
+    for(const k of plus){
+      if(maintenant - k.chk < UN_JOUR){ gardees.push(k); continue; }
+      const e = await etat(k.id);
+      changePlus = true;
+      if(e && e.valide === false) continue;            // clé révoquée ou périmée : seul ce niveau part
+      if(e) Object.assign(k, {niveau:e.niveau, annee:e.annee, admin:!!e.admin});
+      k.chk = maintenant; gardees.push(k);
+    }
+    plus = gardees;
+    /* plus de clé principale valide : une clé ajoutée prend sa place */
+    if(!c && plus.length){ c = plus.shift(); changePrin = changePlus = true; }
+    if(!c) return versAcces(req, null, true);
+    if(changePrin) cookies.push(await cookieAcces(secret, c.id, c));
+    if(changePlus) cookies.push(await cookiePlus(secret, plus));
+    const niveaux = [...new Set([c.niveau, ...plus.map(k=>k.niveau)])], admin = c.admin || plus.some(k=>k.admin);
     if(page){
       const niv = niveauDePage(nom);
-      if(niv && niv !== c.niveau && !c.admin) return versAcces(req, 'niveau', false);
-      cookies.push(...info(req, Object.assign({statut:'cle', niveau:c.niveau, annee:c.annee}, c.admin ? {admin:1} : {})));
+      if(niv && !niveaux.includes(niv) && !admin) return versAcces(req, 'niveau', false);
+      cookies.push(...info(req, Object.assign({statut:'cle', niveau:c.niveau, annee:c.annee, niveaux:niveaux.join(',')}, admin ? {admin:1} : {})));
     }
     return suite(context, cookies);
   }
