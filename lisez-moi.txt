@@ -270,9 +270,13 @@ session séparée, version MAJEURE) :
   • clés associées à un niveau ; accès par année
     universitaire ; /admin aussi par clé ;
   • Licence : reprise du site partielslpabf11.netlify.app dans
-    une direction artistique proche, sans mot de passe ;
-  • comptes personnels liés à une clé, avec essai gratuit de
-    24 h : seulement à partir de l'année 2027-2028.
+    une direction artistique proche, sans mot de passe, sans
+    vidéos de présentation mais avec BeQuick ;
+  • pas de comptes : la clé fait office de compte (principe
+    actuel) ; sans clé, essai de 24 h limité à une matière par
+    niveau, puis demande de clé par contact (e-mail à Corentin) ;
+  • seule la clé de Corentin est administratrice.
+Détail des décisions : feuille-de-route.md.
 
 ────────────────────────────────────────────────────────────
   VERSIONS DU SITE
