@@ -154,7 +154,7 @@ const G = [
 {s:'LJ', d:'Livret Jeune', m:'mp', l:'l4', t:"Livret réglementé réservé aux jeunes."},
 {s:'LEE', d:'Livret Épargne Entreprise', m:'mp', l:'l4', t:"Livret réglementé lié à l'épargne d'entreprise."},
 {s:'PEP', d:"Plan d'Épargne Populaire", m:'mp', l:'l5', t:"Plafond de versement 92 000 €, durée conseillée 8 ans, transférable. <b>Commercialisation arrêtée en 2003</b> mais encore détenu."},
-{s:'PEA', d:"Plan d'Épargne en Actions", m:'mp', l:'l5', t:"Deux enveloppes (espèces + titres), un seul par contribuable dès 18 ans, plafond <b>150 000 €</b>, détention minimum 5 ans. Actions, ETF, OPC — pas d'obligations.", c:"le <b>PEA-PME</b>, enveloppe distincte de 75 000 € mais cumulable (225 000 € au total)."},
+{s:'PEA', d:"Plan d'Épargne en Actions", m:'mp', l:'l5', t:"Deux enveloppes (espèces + titres), un seul par contribuable dès 18 ans, plafond <b>150 000 €</b>, détention minimum 5 ans. Actions, ETF, OPC — pas d'obligations.", c:"le <b>PEA-PME</b>, enveloppe distincte plafonnée à 225 000 €, avec un plafond commun de 225 000 € pour les deux plans."},
 {s:'CTO', d:'Compte-Titres Ordinaire', m:'mp', l:'l5', t:"Sans plafond ni régime de faveur : fiscalité de droit commun sur obligations, dividendes et cessions."},
 {s:'DAT', d:'Dépôt à terme', m:'mp', l:'l4', t:"Durée de 5 à 7 ans selon les banques, retrait possible à tout moment mais sans rémunération sous 1 mois. PFU appliqué : <b>31,4 %</b>."},
 {s:'PFU', d:'Prélèvement Forfaitaire Unique', m:'mp', l:'l4', t:"La part d'imposition de la flat-tax : <b>12,8 %</b>, à laquelle s'ajoutent 17,2 % de prélèvements sociaux."},
@@ -194,11 +194,11 @@ const G = [
 {s:'Force majeure', d:'Cause exonératoire de responsabilité', m:'mp', l:'l11', t:"Trois caractères <b>cumulatifs</b> : imprévisible, irrésistible, extérieur. Avec le fait d'un tiers et la faute de la victime, c'est l'un des 3 cas d'exonération."},
 
 /* ---------- PRODUITS DÉRIVÉS ---------- */
-{s:'BRI', d:'Banque des Règlements Internationaux', m:'pd', l:'l1', t:"Publie l'enquête triennale de référence sur le marché des changes : <b>5 100 Mds USD</b> par jour en 2023."},
+{s:'BRI', d:'Banque des Règlements Internationaux', m:'pd', l:'l1', t:"Publie l'enquête triennale de référence sur le marché des changes : <b>9 600 Mds USD</b> par jour en avril 2025."},
 {s:'Spot', d:'Marché des changes au comptant', m:'pd', l:'l5', t:"Environ 37 % des opérations. Livraison au plus tard à <b>J+2 ouvrables</b>.", c:"le <b>Forward</b>, marché à terme, seul à permettre la couverture du risque de change."},
 {s:'Forward', d:'Marché des changes à terme', m:'pd', l:'l1', t:"Compartiment du marché traditionnel qui, contrairement au comptant, <b>permet la couverture</b> du risque de change."},
 {s:'OTC', d:'Over The Counter (de gré à gré)', m:'pd', l:'l3', t:"Les transactions ne sont pas officiellement standardisées et il n'existe aucune bourse centralisée. Le marché est totalement délocalisé."},
-{s:'SWIFT', d:'Society for Worldwide Interbank Financial Telecommunication', m:'pd', l:'l3', t:"Créé en <b>1977</b>. C'est un mode de <b>transmission des ordres</b>, pas un mode de paiement. Avantages sur le Télex : sécurité, rapidité, coût réduit."},
+{s:'SWIFT', d:'Society for Worldwide Interbank Financial Telecommunication', m:'pd', l:'l3', t:"Fondé en <b>1973</b>, opérationnel en <b>1977</b>. C'est un mode de <b>transmission des ordres</b>, pas un mode de paiement. Avantages sur le Télex : sécurité, rapidité, coût réduit."},
 {s:'Nostri', d:'Compte de la banque chez son correspondant', m:'pd', l:'l3', t:"« Le nôtre chez eux » : enregistre des écritures <b>en devises</b>.", c:"le compte <b>lori</b> — aucun passage n'est possible entre les deux."},
 {s:'Lori', d:'Compte du correspondant chez la banque', m:'pd', l:'l3', t:"« Le leur chez nous » : enregistre des écritures <b>en monnaie nationale</b>.", c:"le compte <b>nostri</b>, tenu en devises."},
 {s:'PC', d:'Position de change', m:'pd', l:'l4', t:"<b>Créances en devises − dettes en devises</b>, calculée par devise et par échéance. Longue (exportateur, risque de baisse), courte (importateur, risque de hausse) ou fermée (aucun risque)."},
