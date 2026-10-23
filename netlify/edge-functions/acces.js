@@ -106,7 +106,9 @@ function nomPage(url){
 const estPage = url => /(^|\/)[^.\/]*$|\.html$/.test(url.pathname);
 const dans = (liste, nom) => (liste||[]).some(x => x.endsWith('/') ? nom.startsWith(x) : nom === x);
 function niveauDePage(nom){ for(const n of NIVEAUX) if(dans(PAGES[n], nom)) return n; return null; }   // null = commune
-const pageEssai = nom => nom === 'index' || NIVEAUX.some(n => ESSAI[n] && nom === ESSAI[n]);
+/* Pendant l'essai : accueil, choix du niveau, espaces Licence et M2, et la matière d'essai de chaque niveau. */
+const PAGES_ESSAI = ['index', 'niveaux', 'licence', 'm2'];
+const pageEssai = nom => PAGES_ESSAI.includes(nom) || NIVEAUX.some(n => ESSAI[n] && nom === ESSAI[n]);
 
 function versAcces(req, motif, effacer){
   const url = new URL(req.url);
