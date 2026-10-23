@@ -34,7 +34,7 @@ body{overflow-x:hidden}
 .pil .mk{ width:32px; height:32px; border-radius:50%; background:var(--nuit); color:var(--blanc); display:grid; place-items:center; font-size:13px; font-weight:600 }
 
 .cadre{ position:relative; min-height:520px; border-radius:var(--r-xl); overflow:hidden; color:var(--blanc); isolation:isolate; box-shadow:var(--shadow-lg); padding:96px 36px 36px }
-.cadre .ph{ z-index:-2 }
+.cadre .ph{ z-index:-2; --ph-lum:.5 }  /* photo assombrie : textes à 4,5:1 mesurés au pixel */
 .cadre .voile-bas{ z-index:-1 }
 .cadre .sur{ font-size:12.5px; letter-spacing:.2em; text-transform:uppercase }
 .cadre h1{ color:var(--blanc) !important; font-weight:200 !important; font-size:clamp(3rem,8.4vw,6.4rem) !important; line-height:.98 !important; letter-spacing:-.045em !important; margin-top:10px; text-shadow:0 2px 34px var(--nuit-ombre) }

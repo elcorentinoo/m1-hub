@@ -15,7 +15,7 @@
 body{overflow-x:hidden; min-height:100vh}
 .page{ max-width:1180px; margin:0 auto; padding:16px 16px 48px }
 .cadre{ position:relative; border-radius:var(--r-xl); overflow:hidden; color:var(--blanc); isolation:isolate; box-shadow:var(--shadow-lg); padding:84px 32px 150px; text-align:center }
-.cadre .ph{ z-index:-2 }
+.cadre .ph{ z-index:-2; --ph-lum:.5 }  /* photo assombrie : textes à 4,5:1 mesurés au pixel */
 .cadre .voile-bas{ z-index:-1 }
 .cadre .sur{ font-size:12.5px; letter-spacing:.2em; text-transform:uppercase }
 .cadre h1{ color:var(--blanc) !important; font-weight:200 !important; font-size:clamp(2.6rem,7vw,5.6rem) !important; line-height:1 !important; letter-spacing:-.045em !important; margin-top:12px; text-shadow:0 2px 34px var(--nuit-ombre) }
@@ -26,7 +26,7 @@ body{overflow-x:hidden; min-height:100vh}
 .niv{ position:relative; display:flex; flex-direction:column; background:var(--blanc); border-radius:var(--r-lg); padding:26px; text-decoration:none; color:var(--nuit); box-shadow:var(--shadow-lg); transition:transform .3s var(--ressort) }
 a.niv:hover{ transform:translateY(-4px); color:var(--nuit) }
 .niv .sig{ width:72px; height:72px; border-radius:50%; background:var(--niv); color:var(--blanc); display:grid; place-items:center; font-size:24px; font-weight:500; letter-spacing:-.04em; box-shadow:0 0 0 6px var(--niv-soft) }
-.niv .tag{ position:absolute; top:22px; right:22px; padding:6px 12px; border-radius:999px; background:var(--niv-soft); color:var(--niv); font-size:12px; font-weight:600; letter-spacing:.06em; text-transform:uppercase }
+.niv .niv-tag{ position:absolute; top:22px; right:22px; padding:6px 12px; border-radius:999px; background:var(--niv-soft); color:var(--niv); font-size:12px; font-weight:600; letter-spacing:.06em; text-transform:uppercase }
 .niv h2{ font-size:1.9rem !important; font-weight:300 !important; letter-spacing:-.03em !important; margin:22px 0 4px; color:var(--niv) !important }
 .niv h2 b{ font-weight:500 }
 .niv .nom{ font-size:14px; font-weight:500; color:var(--txt2) }
@@ -67,7 +67,7 @@ a.niv:hover{ transform:translateY(-4px); color:var(--nuit) }
 
   <div class="nivs">
     <a class="niv" data-niv="licence" href="licence.html">
-      <span class="tag" hidden>Ton niveau</span>
+      <span class="niv-tag" hidden>Ton niveau</span>
       <span class="sig" aria-hidden="true">L</span>
       <h2><b>Licence</b></h2>
       <span class="nom">LP Assurance, Banque, Finance</span>
@@ -75,7 +75,7 @@ a.niv:hover{ transform:translateY(-4px); color:var(--nuit) }
       <span class="go">Entrer <i aria-hidden="true">→</i></span>
     </a>
     <a class="niv" data-niv="m1" href="index.html">
-      <span class="tag" hidden>Ton niveau</span>
+      <span class="niv-tag" hidden>Ton niveau</span>
       <span class="sig" aria-hidden="true">M1</span>
       <h2><b>Master 1</b></h2>
       <span class="nom">Monnaie Banque Assurance Finance</span>
@@ -83,7 +83,7 @@ a.niv:hover{ transform:translateY(-4px); color:var(--nuit) }
       <span class="go">Entrer <i aria-hidden="true">→</i></span>
     </a>
     <a class="niv bientot" data-niv="m2" href="m2.html">
-      <span class="tag">Prochainement</span>
+      <span class="niv-tag">Prochainement</span>
       <span class="sig" aria-hidden="true">M2</span>
       <h2><b>Master 2</b></h2>
       <span class="nom">L'espace se prépare</span>
@@ -100,7 +100,7 @@ a.niv:hover{ transform:translateY(-4px); color:var(--nuit) }
 const ici = NIVEAU.courant();
 document.querySelectorAll('.niv').forEach(a=>{
   const n = a.dataset.niv;
-  if(n === ici && n !== 'm2') a.querySelector('.tag').hidden = false;
+  if(n === ici && n !== 'm2') a.querySelector(".niv-tag").hidden = false;
   a.addEventListener('click', ()=>NIVEAU.choisir(n));
 });
 </script>
