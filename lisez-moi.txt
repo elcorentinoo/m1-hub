@@ -258,6 +258,23 @@ LE GLOSSAIRE
   leçon grâce à une ancre (#l4) gérée par ui.js.
 
 ────────────────────────────────────────────────────────────
+  PROJETS À VENIR
+────────────────────────────────────────────────────────────
+Hub multi-promos (après la grande mise à jour qualité, en
+session séparée, version MAJEURE) :
+  • à l'arrivée, choix de la promo : Licence (LP ABF), M1, M2 ;
+    chaque niveau garde ses cours, dates, classement, BeQuick
+    et chat ; design « Verre » commun, avec une couleur par
+    niveau ;
+  • /admin : vue générale ou par promo ;
+  • clés associées à un niveau ; accès par année
+    universitaire ; /admin aussi par clé ;
+  • Licence : reprise du site partielslpabf11.netlify.app dans
+    une direction artistique proche, sans mot de passe ;
+  • comptes personnels liés à une clé, avec essai gratuit de
+    24 h : seulement à partir de l'année 2027-2028.
+
+────────────────────────────────────────────────────────────
   VERSIONS DU SITE
 ────────────────────────────────────────────────────────────
 Le site fonctionne hors ligne : les navigateurs gardent donc
