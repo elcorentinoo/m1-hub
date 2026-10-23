@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr" data-niveau="m2">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Master 2 — Prochainement</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://images.unsplash.com">
+<style>
+/* Espace M2 (8.0.0) : préparé, affiché « Prochainement ». La teinte
+   bordeaux vient de data-niveau="m2" (theme.css). */
+*{margin:0;padding:0;box-sizing:border-box}
+body{overflow-x:hidden; min-height:100vh}
+.page{ max-width:1180px; margin:0 auto; padding:16px }
+.cadre{ position:relative; min-height:calc(100vh - 32px); border-radius:var(--r-xl); overflow:hidden; color:var(--blanc); isolation:isolate; box-shadow:var(--shadow-lg); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:60px 24px }
+.cadre .ph{ z-index:-2; --ph-lum:.5 }  /* photo assombrie : textes à 4,5:1 mesurés au pixel */
+.cadre .voile-bas{ z-index:-1 }
+.pastille{ display:inline-flex; align-items:center; gap:8px; padding:8px 16px; border-radius:999px; color:var(--nuit); font-size:12.5px; font-weight:600; letter-spacing:.14em; text-transform:uppercase }
+.pastille::before{ content:''; width:8px; height:8px; border-radius:50%; background:var(--m); animation:pouls 2s var(--ressort) infinite }
+@keyframes pouls{ 50%{ transform:scale(1.6); opacity:.5 } }
+@media (prefers-reduced-motion:reduce){ .pastille::before{ animation:none } }
+h1{ color:var(--blanc) !important; font-weight:200 !important; font-size:clamp(6rem,22vw,15rem) !important; line-height:.9 !important; letter-spacing:-.06em !important; margin:22px 0 8px; text-shadow:0 2px 34px var(--nuit-ombre) }
+.sous{ font-size:clamp(1.3rem,3vw,1.8rem); font-weight:300; letter-spacing:-.02em; text-shadow:0 1px 14px var(--nuit-ombre) }
+.txt{ max-width:46ch; margin:14px auto 0; font-size:15.5px; text-shadow:0 1px 14px var(--nuit-ombre) }
+.carte{ margin-top:34px; width:100%; max-width:440px; border-radius:30px; padding:22px 24px; color:var(--nuit); text-align:left }
+.carte b{ font-weight:500; font-size:16px }
+.carte ul{ list-style:none; margin-top:10px; display:grid; gap:8px; color:var(--txt2); font-size:14px }
+.carte li{ display:flex; gap:10px; align-items:center }
+.carte li::before{ content:''; width:6px; height:6px; border-radius:50%; background:var(--m); flex:none }
+.retour{ display:inline-flex; align-items:center; gap:12px; margin-top:22px; padding:8px 20px 8px 8px; border-radius:999px; background:var(--blanc); color:var(--nuit); text-decoration:none; font-weight:500; box-shadow:var(--shadow) }
+.retour i{ width:40px; height:40px; border-radius:50%; background:var(--nuit); color:var(--blanc); display:grid; place-items:center; font-style:normal }
+@media(max-width:480px){ .page{ padding:8px } .cadre{ border-radius:32px; min-height:calc(100vh - 16px) } }
+</style>
+<link rel="stylesheet" href="ui.css">
+<link rel="stylesheet" href="theme.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#ECEEF6">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+</head>
+<body>
+<main class="page">
+  <section class="cadre" aria-labelledby="titre">
+    <div class="ph"></div><div class="voile-bas"></div>
+    <span class="pastille verre">Prochainement</span>
+    <h1 id="titre">M2</h1>
+    <p class="sous">Master 2 — l'espace se prépare</p>
+    <p class="txt">Les cours du M2 arriveront ici, avec la même façon de réviser que dans les autres espaces.</p>
+    <div class="carte verre">
+      <b>Ce qui t'attendra</b>
+      <ul>
+        <li>Des leçons courtes, des quiz et un test final par matière</li>
+        <li>La révision espacée et le glossaire</li>
+        <li>Le BeQuick du soir, rien que pour la promo M2</li>
+      </ul>
+    </div>
+    <a class="retour" href="niveaux.html"><i aria-hidden="true">←</i>Choisir un autre niveau</a>
+  </section>
+</main>
+</body>
+</html>

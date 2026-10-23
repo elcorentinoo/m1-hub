@@ -1072,3 +1072,36 @@ html.bq-verrouille, html.bq-verrouille body{ overflow:hidden; }
 .empty .big, .drop .ico{ display:grid !important; place-items:center; width:64px; height:64px; margin:0 auto 12px !important;
   border-radius:50%; background:var(--surface2); color:var(--nuit); font-size:0 !important; }
 .empty .big .ico-t, .drop .ico .ico-t{ width:28px; height:28px; stroke-width:1.5; }
+
+/* ───────────── LES TROIS NIVEAUX (8.0.0, hub multi-promos) ─────────────
+   Une couleur par niveau, posée par data-niveau sur <html> : Licence vert
+   sapin, M1 bleu nuit (la teinte d'origine, inchangée), M2 bordeaux. Le
+   niveau redéfinit --nuit et ses dérivés : titres, boutons ronds, aplats,
+   encadrés de règle et BeQuick d'un espace prennent sa teinte sans
+   retoucher les pages. --niv-rgb sert aux voiles posés sur les photos.
+   Contrastes mesurés : --nuit sur blanc 15,4 / 11,7 / 13,5 ; sur le fond
+   13,3 / 10,1 / 11,7 ; --sur-nuit sur --nuit 9,4 / 8,5 / 8,8 ; --m sur
+   blanc 7,9 / 6,4 / 8,0 ; --eclair sur --nuit 10,9 / 8,3 / 9,6 (M1 / L / M2). */
+:root{ --niv-rgb:30 33 71; }
+:root[data-niveau="m1"]{
+  --niv:#1E2147; --niv-soft:#E9EBF8; --niv-nom:"M1"; --niv-rgb:30 33 71;
+}
+:root[data-niveau="licence"]{
+  --niv:#173F31; --niv-soft:#E2F1EA; --niv-nom:"L"; --niv-rgb:23 63 49;
+  --nuit:#173F31; --sur-nuit:#BFE3D3; --nuit-ombre:rgba(23,63,49,.5);
+}
+:root[data-niveau="m2"]{
+  --niv:#561729; --niv-soft:#F7E5EA; --niv-nom:"M2"; --niv-rgb:86 23 41;
+  --nuit:#561729; --sur-nuit:#F0C6D1; --nuit-ombre:rgba(86,23,41,.5);
+}
+/* couleur « matière » par défaut de l'espace (hors pages de cours, qui
+   gardent la leur via subject-id) */
+:root[data-niveau="licence"]:not([subject-id]){ --m:#266A4F; --m-soft:#E2F1EA; --m-clair:#9FD8BE; --emb:"L"; }
+:root[data-niveau="m2"]:not([subject-id]){ --m:#8C2F48; --m-soft:#F7E5EA; --m-clair:#EBB3C2; --emb:"M2"; }
+/* les voiles des photos prennent la teinte du niveau (M1 : inchangés) */
+:root[data-niveau="licence"] .voile-bas, :root[data-niveau="m2"] .voile-bas{
+  background:linear-gradient(180deg, rgb(var(--niv-rgb) / .58) 0%, rgb(var(--niv-rgb) / .5) 40%, rgb(var(--niv-rgb) / .66) 100%); }
+/* une carte de niveau (page de choix) porte la teinte de son niveau */
+[data-niv="licence"]{ --niv:#173F31; --niv-soft:#E2F1EA; --niv-m:#266A4F; --niv-rgb:23 63 49; }
+[data-niv="m1"]{ --niv:#1E2147; --niv-soft:#E9EBF8; --niv-m:#3F46A8; --niv-rgb:30 33 71; }
+[data-niv="m2"]{ --niv:#561729; --niv-soft:#F7E5EA; --niv-m:#8C2F48; --niv-rgb:86 23 41; }

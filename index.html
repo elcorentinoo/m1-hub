@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-niveau="m1">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
@@ -81,6 +81,10 @@ body{overflow-x:hidden}
 .partiel-v p{ font-size:14px; color:var(--txt2); margin:12px 0 }
 .partiel-v .meta{ display:flex; gap:18px; font-size:13.5px; color:var(--txt2); border-top:1px solid var(--stroke2); padding-top:12px }
 .partiel-v .meta b{ color:var(--nuit); font-weight:600 }
+/* la pilule de niveau (8.0.0) : M1, et le lien vers le choix du niveau */
+.c-niv{ position:absolute; left:16px; top:16px; display:inline-flex; align-items:center; gap:10px; padding:6px 16px 6px 6px; border-radius:999px; color:var(--nuit); text-decoration:none; font-size:13.5px; font-weight:500; z-index:1 }
+.c-niv .mk{ width:30px; height:30px; border-radius:50%; background:var(--niv); color:var(--blanc); display:grid; place-items:center; font-size:12px; font-weight:600 }
+.c-niv:hover{ color:var(--nuit) }
 .logo-rond{ position:absolute; right:378px; bottom:26px; width:80px; height:80px; border-radius:50%; background:var(--nuit); color:var(--blanc); display:grid; place-items:center; font-weight:600; font-size:22px; letter-spacing:-.04em; box-shadow:0 0 0 6px var(--blanc-22) }
 
 /* ════════ SECTIONS ════════ */
@@ -231,6 +235,17 @@ body{overflow-x:hidden}
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="M1 MBAF">
+<script src="niveau.js"></script>
+<script>
+/* hub multi-promos (8.0.0) : cette page reste l'espace M1, à la même
+   adresse. Une clé M1 n'est jamais redirigée ; pendant l'essai, on choisit
+   d'abord son niveau ; un niveau Licence (clé ou choix) mène à son espace. */
+(function(){
+  const N = window.NIVEAU; if(!N || N.cle() === 'm1') return;
+  if(N.essai() && !N.choisi()){ location.replace('niveaux.html'); return; }
+  if(N.courant() === 'licence') location.replace(N.espace('licence'));
+})();
+</script>
 </head>
 <body>
 
@@ -258,6 +273,7 @@ body{overflow-x:hidden}
 
     <section class="cadre" aria-label="Accueil">
       <div class="ph"></div><div class="voile-bas"></div>
+      <a class="c-niv verre" href="niveaux.html"><span class="mk" aria-hidden="true">M1</span>Changer de niveau</a>
       <div class="c-stats verre" id="cStats"></div>
       <div class="c-titre">
         <div class="sur">M1 Monnaie Banque Assurance Finance</div>
