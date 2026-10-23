@@ -1,11 +1,22 @@
-# Hub M1 MBAF — instructions du projet
+# AAA — instructions du projet
 
-Site de révisions du M1 Monnaie Banque Assurance Finance, parcours Conseiller
-Patrimoine Agence (IAE Vannes / BNP Paribas Rennes). Propriétaire : Corentin.
+**AAA** (prononcé « Triple A »), slogan « Révise. Vise le AAA. » : site de
+révisions devenu hub multi-promos — Licence (LP ABF), M1 Monnaie Banque
+Assurance Finance parcours Conseiller Patrimoine Agence (BNP Paribas Rennes),
+M2. Propriétaire : Corentin. Le double sens (AAA, meilleure note des agences
+de notation, et la note qu'on vise à l'examen) reste discret : une seule
+mention, dans le pied de page. Logo : rond `--nuit` (teinte du niveau) avec
+« AAA » en Outfit, le dernier A plus gras (`.mk.ap` dans `theme.css`,
+constante `LOGO` dans `ui.js`).
+
+Seul le **nom du site** a changé (8.0.0) : « M1 » désigne toujours le niveau.
+Les noms de fichiers, d'URL, de clés localStorage et de cookies (`m1_acces`,
+`m1_essai`, `m1_progress_v1`…) gardent leur préfixe `m1` — ne jamais les
+renommer, sinon tout le monde perd sa clé et sa progression.
 
 ## Nature du projet
 
-Site **statique** : HTML, CSS et JavaScript écrits à la main, aucune étape de
+Site **statique** (nom affiché : AAA) : HTML, CSS et JavaScript écrits à la main, aucune étape de
 construction, aucune dépendance npm. Déployé sur Netlify, qui publie la racine
 du dépôt telle quelle (voir `netlify.toml`), avec quelques fonctions Netlify
 (dossier `netlify/`) et une base Supabase pour les données partagées.

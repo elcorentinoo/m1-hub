@@ -3,14 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Choisis ton niveau</title>
+<title>AAA — Révise. Vise le AAA.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com">
 <style>
-/* Choix du niveau (8.0.0, hub multi-promos). Un grand cadre photo, puis
-   trois cartes blanches : Licence, M1, M2. Chaque carte prend la teinte
-   de son niveau par data-niv (theme.css). Aucune couleur en dur. */
+/* Le hub central AAA (8.0.0, hub multi-promos) : la page où tout le monde
+   arrive en ouvrant le site. Un grand cadre photo, puis trois cartes
+   blanches : Licence, M1, M2. Celle de la clé est mise en avant (« Ton
+   espace ») ; une clé d'un autre niveau reçoit un message clair au lieu
+   d'une erreur. Chaque carte prend la teinte de son niveau par data-niv
+   (theme.css). Aucune couleur en dur. */
 *{margin:0;padding:0;box-sizing:border-box}
 body{overflow-x:hidden; min-height:100vh}
 .page{ max-width:1180px; margin:0 auto; padding:16px 16px 48px }
@@ -35,12 +38,29 @@ a.niv:hover{ transform:translateY(-4px); color:var(--nuit) }
 .niv .go i{ width:40px; height:40px; border-radius:50%; background:var(--blanc); color:var(--niv); display:grid; place-items:center; font-style:normal }
 .niv.bientot .go{ background:var(--niv-soft); color:var(--niv) }
 .niv.bientot .go i{ background:var(--niv); color:var(--blanc) }
+/* l'espace de la clé, mis en avant */
+.niv.tien{ box-shadow:0 0 0 3px var(--niv), var(--shadow-lg) }
+.niv.autre .go{ background:var(--surface2); color:var(--txt2) }
+.niv.autre .go i{ background:var(--niv); color:var(--blanc) }
+/* la marque, en haut du cadre */
+.marque{ position:absolute; left:16px; top:16px; display:inline-flex; align-items:center; gap:10px; padding:6px 16px 6px 6px; border-radius:999px; color:var(--nuit); font-size:13.5px; font-weight:500 }
+.marque .mk{ width:34px; height:34px; border-radius:50%; background:var(--nuit); color:var(--blanc) }
+/* message : espace réservé à une autre clé */
+.msg-niv{ margin:22px 18px 0; display:flex; gap:16px; align-items:flex-start; background:var(--blanc); border-radius:var(--r-lg); padding:20px 22px; box-shadow:var(--shadow); color:var(--nuit) }
+.msg-niv[hidden]{ display:none }
+.msg-niv .rond{ width:42px; height:42px; flex:none; border-radius:50%; background:var(--niv-soft); color:var(--niv); display:grid; place-items:center; font-weight:600 }
+.msg-niv b{ font-weight:500; font-size:16px }
+.msg-niv p{ color:var(--txt2); font-size:14px; margin-top:4px }
+.msg-niv .liens{ display:flex; flex-wrap:wrap; gap:10px; margin-top:12px }
+.msg-niv .liens a{ display:inline-flex; padding:10px 18px; border-radius:999px; text-decoration:none; font-weight:500; font-size:14px; background:var(--niv); color:var(--blanc) }
+.msg-niv .liens a.sec{ background:var(--surface2); color:var(--nuit) }
 .pied{ text-align:center; color:var(--txt3); font-size:13px; margin-top:28px }
 
 @media(max-width:900px){
   .nivs{ grid-template-columns:1fr; margin:-90px 6px 0 }
-  .cadre{ padding:64px 22px 120px; text-align:left }
+  .cadre{ padding:84px 22px 120px; text-align:left }
   .cadre p{ margin-left:0 }
+  .msg-niv{ margin:18px 6px 0 }
 }
 @media(max-width:480px){
   .page{ padding:10px 8px 32px }
@@ -60,14 +80,15 @@ a.niv:hover{ transform:translateY(-4px); color:var(--nuit) }
 <main class="page">
   <section class="cadre" aria-labelledby="titre">
     <div class="ph"></div><div class="voile-bas"></div>
-    <div class="sur">Banque · Assurance · Finance</div>
-    <h1 id="titre">Choisis ton <b>niveau</b></h1>
-    <p>Chaque promo a son espace, ses cours et son défi du soir. Ton choix est retenu sur cet appareil.</p>
+    <span class="marque verre"><span class="mk ap" aria-hidden="true">AA<i>A</i></span>Révise. Vise le AAA.</span>
+    <div class="sur" id="salut">Banque · Assurance · Finance</div>
+    <h1 id="titre">Choisis ton <b>espace</b></h1>
+    <p>Chaque promo a son espace, ses cours et son défi du soir.</p>
   </section>
 
   <div class="nivs">
     <a class="niv" data-niv="licence" href="licence.html">
-      <span class="niv-tag" hidden>Ton niveau</span>
+      <span class="niv-tag" hidden>Ton espace</span>
       <span class="sig" aria-hidden="true">L</span>
       <h2><b>Licence</b></h2>
       <span class="nom">LP Assurance, Banque, Finance</span>
@@ -75,7 +96,7 @@ a.niv:hover{ transform:translateY(-4px); color:var(--nuit) }
       <span class="go">Entrer <i aria-hidden="true">→</i></span>
     </a>
     <a class="niv" data-niv="m1" href="index.html">
-      <span class="niv-tag" hidden>Ton niveau</span>
+      <span class="niv-tag" hidden>Ton espace</span>
       <span class="sig" aria-hidden="true">M1</span>
       <h2><b>Master 1</b></h2>
       <span class="nom">Monnaie Banque Assurance Finance</span>
@@ -91,17 +112,48 @@ a.niv:hover{ transform:translateY(-4px); color:var(--nuit) }
       <span class="go">Voir <i aria-hidden="true">→</i></span>
     </a>
   </div>
-  <p class="pied">Tu pourras changer de niveau à tout moment depuis l'accueil.</p>
+  <div class="msg-niv" id="msgNiv" role="status" aria-live="polite" hidden></div>
+  <p class="pied">Tu reviens ici à chaque ouverture du site, ou avec « Changer de niveau » depuis l'accueil de ton espace.</p>
 </main>
 
 <script src="niveau.js"></script>
 <script>
-/* le niveau courant est signalé ; un clic retient le choix */
-const ici = NIVEAU.courant();
+/* on arrive ici en ouvrant le site : le service worker (hors ligne et
+   mises à jour) s'installe dès cette page, comme sur l'accueil d'un espace */
+if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
+const NOM = {licence:'Licence', m1:'M1', m2:'M2'}, SIG = {licence:'L', m1:'M1', m2:'M2'};
+const cle = NIVEAU.cle(), admin = NIVEAU.admin();
+/* « Ton espace » : celui de la clé, sinon celui choisi sur cet appareil */
+const tien = cle || NIVEAU.choisi();
+let prenom = ''; try{ prenom = (localStorage.getItem('lb_name') || '').trim(); }catch(e){}
+if(prenom) document.getElementById('salut').textContent = 'Bonjour '+prenom;
+
+const msg = document.getElementById('msgNiv');
+function reserve(n){
+  msg.setAttribute('data-niv', n);
+  msg.innerHTML = '<span class="rond" aria-hidden="true">'+SIG[n]+'</span><div>'+
+    "<b>L'espace "+NOM[n]+' est réservé aux clés '+NOM[n]+'.</b>'+
+    '<p>Ta clé ouvre l\'espace '+NOM[cle]+'. Pour accéder aussi à celui-ci, demande une clé '+NOM[n]+'.</p>'+
+    '<div class="liens"><a href="acces.html?motif=demande&amp;niveau='+n+'">Demander une clé '+NOM[n]+'</a>'+
+    '<a class="sec" href="'+NIVEAU.espace(cle)+'">Aller à mon espace '+NOM[cle]+'</a></div></div>';
+  msg.hidden = false;
+  msg.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
 document.querySelectorAll('.niv').forEach(a=>{
   const n = a.dataset.niv;
-  if(n === ici && n !== 'm2') a.querySelector(".niv-tag").hidden = false;
-  a.addEventListener('click', ()=>NIVEAU.choisir(n));
+  /* une clé d'un autre niveau (hors M2, encore vide, et hors administrateur) */
+  const ferme = cle && n !== cle && n !== 'm2' && !admin;
+  if(n === tien && n !== 'm2'){ a.classList.add('tien'); a.querySelector('.niv-tag').hidden = false; }
+  if(ferme){
+    a.classList.add('autre');
+    const t = a.querySelector('.niv-tag'); t.textContent = 'Clé '+NOM[n]; t.hidden = false;
+    a.querySelector('.go').firstChild.textContent = 'Réservé ';
+  }
+  a.addEventListener('click', e=>{
+    if(ferme){ e.preventDefault(); reserve(n); return; }
+    NIVEAU.choisir(n);
+    try{ sessionStorage.setItem('aaa-espace', '1'); }catch(err){}
+  });
 });
 </script>
 </body>

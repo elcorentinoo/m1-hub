@@ -1,5 +1,5 @@
 /* ════════════════════════════════════════════════════════════
-   ui.js — socle commun du hub M1 MBAF
+   ui.js — socle commun du site AAA (révisions, toutes les promos)
    · construit le bouton de navigation et le tiroir, sur toutes les pages
    · gère le thème : clair en journée, sombre à partir de 20 h,
      le choix manuel du jour prenant le dessus
@@ -21,7 +21,9 @@
      LICENCE : l'en-tête, le menu et la recherche sont ceux de la Licence. */
   const R = ((document.currentScript && document.currentScript.getAttribute('src')) || '').replace(/ui\.js(\?.*)?$/, '');
   const LICENCE = document.documentElement.getAttribute('data-niveau') === 'licence';
-  const ACCUEIL = R + (LICENCE ? 'licence.html' : 'index.html');
+  /* Accueil de l'espace de la page : le hub de son niveau (M1 : index.html,
+     inchangé) ; le hub central de tous les niveaux est niveaux.html. */
+  const ACCUEIL = R + ({licence:'licence.html', m2:'m2.html'}[document.documentElement.getAttribute('data-niveau')] || 'index.html');
 
   /* ---------- 1. THÈME ---------- */
   /* Le site est entièrement sombre depuis la 2.1.0 : plus de bascule,
@@ -33,7 +35,7 @@
 
   /* ---------- 2. STRUCTURE DU MENU ---------- */
   const PAGES = [
-    {g:'hub', href:'index.html', ico:'🏠', t:'Hub', s:"L'accueil et tes matières", hub:true},
+    {g:'hub', href:ACCUEIL, ico:'🏠', t:'Accueil', s:"L'accueil et tes matières", hub:true},
     {g:'Cours',    href:'marche_des_particuliers.html', ico:'🏦', t:'Marché des Particuliers', s:'11 leçons · test · mini-cas'},
     {g:'Cours',    href:'produits_derives.html',        ico:'💱', t:'Produits Dérivés I',      s:'15 leçons · comptant & terme'},
     {g:'Cours',    href:'produits_derives_2.html',      ico:'⏳', t:'Produits Dérivés II',     s:'10 leçons · Futures, marges, couverture'},
@@ -78,7 +80,7 @@
 
   /* Les liens de l'en-tête : un sous-ensemble de PAGES, toujours dans cet ordre. */
   const ENTETE = [
-    {href:'index.html',               t:'Hub'},
+    {href:ACCUEIL,                    t:'Accueil'},
     {href:'#matieres',                t:'Mes cours', hubOnly:true},
     {href:'index.html#entrainement',  t:'Entraînement'},
     {href:'bequick.html',             t:'BeQuick'},
@@ -122,7 +124,7 @@
                 '<span class="et">'+p.t+'<span class="es">'+p.s+'</span></span>'+
               '</a>';
     });
-    html += '<div class="ui-ver">M1 MBAF · v'+VERSION_APP+' « '+NOM_VERSION+' »</div>';
+    html += '<div class="ui-ver">AAA · v'+VERSION_APP+' « '+NOM_VERSION+' »</div>';
     dr.innerHTML = html;
 
     document.body.appendChild(ov);
@@ -150,6 +152,9 @@
   const IC_MENU = '<path d="M3 5h14M3 10h14M3 15h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/>';
   const IC_BURG = '<path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/>';
 
+  /* Logo AAA : un rond bleu nuit (teinte du niveau, --nuit), « AAA » en Outfit, le dernier A plus gras. */
+  const LOGO = '<span class="mk ap" aria-hidden="true">AA<i>A</i></span>';
+
   /* ---------- 3. EN-TÊTE COMMUNE À TOUTES LES PAGES ----------
      On construit la même barre partout, puis on y déplace les widgets
      propres à la page (progression, XP, identité) et on masque son
@@ -169,7 +174,7 @@
 
     h.innerHTML =
       '<div class="ds-left verre">'+
-        '<a class="ds-logo" href="'+ACCUEIL+'" aria-label="Accueil du hub"><span class="mk" aria-hidden="true"></span>M1<b>MBAF</b></a>'+
+        '<a class="ds-logo" href="'+ACCUEIL+'" aria-label="Révise. Vise le AAA. — accueil">'+LOGO+'Révise.<b>Vise le AAA.</b></a>'+
       '</div>'+
       '<nav class="ds-nav verre" aria-label="Navigation principale">'+liens+'</nav>'+
       '<div class="ds-acts verre">'+
@@ -213,10 +218,11 @@
     f.className = 'ds-foot';
     const liens = LIENS.filter(l=>!l.hubOnly).map(l=>'<a href="'+lien(l.href)+'">'+l.t+'</a>').join('');
     f.innerHTML =
-      '<a class="ds-logo" href="'+ACCUEIL+'"><span class="mk"></span>M1<b>MBAF</b></a>'+
+      '<a class="ds-logo" href="'+ACCUEIL+'" aria-label="Révise. Vise le AAA. — accueil">'+LOGO+'Révise.<b>Vise le AAA.</b></a>'+
       '<nav class="ds-fnav">'+liens+'</nav>'+
-      '<div class="ds-fv">v'+VERSION_APP+' « '+NOM_VERSION+' »</div>'+
-      '<div class="ds-credits">Tes progrès (leçons, temps de révision, résultats) sont partagés avec l\'administrateur du hub.</div>'+
+      '<div class="ds-fv">AAA · v'+VERSION_APP+' « '+NOM_VERSION+' »</div>'+
+      '<div class="ds-credits ds-note">AAA : la meilleure note des agences de notation… et celle qu\'on vise au partiel.</div>'+
+      '<div class="ds-credits">Tes progrès (leçons, temps de révision, résultats) sont partagés avec l\'administrateur du site.</div>'+
       '<div class="ds-credits">Photos <a href="https://unsplash.com/?utm_source=m1_mbaf&utm_medium=referral" rel="noopener">Unsplash</a> : '+
         CREDITS.map(c=>'<a href="https://unsplash.com/@'+c[1]+'?utm_source=m1_mbaf&utm_medium=referral" rel="noopener">'+c[0]+'</a>').join(', ')+'.</div>';
     document.body.appendChild(f);
@@ -257,7 +263,7 @@
       ['licence.html','maison','Accueil'], ['licence.html#matieres','grille','Cours'],
       ['bequick.html?niveau=licence','eclair','BeQuick'], ['licence.html#entrainement','cible','Entraînement']
     ] : [
-      ['index.html','maison','Accueil'], ['index.html#matieres','grille','Cours'],
+      [ACCUEIL.slice(R.length),'maison','Accueil'], ['index.html#matieres','grille','Cours'],
       ['bequick.html','eclair','BeQuick'], ['revision.html','boucle','Révision']
     ];
     t.innerHTML = L.map(l=>{
@@ -483,7 +489,7 @@
     const t = document.getElementById('ds-titre'), k = document.getElementById('ds-kick');
     if(t) t.innerHTML = h1 ? h1.innerHTML : '';
     if(k) k.textContent = (NOMS[sid]||'') + (tag ? ' · '+tag.textContent.trim() : '');
-    document.title = (h1 ? h1.textContent.trim()+' — ' : '') + (NOMS[sid]||'M1 MBAF');
+    document.title = (h1 ? h1.textContent.trim()+' — ' : '') + (NOMS[sid]||'AAA');
     const seq = sequence(), i = seq.findIndex(x=>x.v===vue.dataset.view);
     const p = document.getElementById('ds-prec'), s = document.getElementById('ds-suiv');
     const prev = i>0 ? seq[i-1] : null, next = (i>=0 && i<seq.length-1) ? seq[i+1] : null;
@@ -572,7 +578,8 @@
 
   /* ---------- 6. RECHERCHE GLOBALE (Ctrl+K) ---------- */
   const INDEX = [
-    {t:'Hub', s:'Accueil, toutes les matières', u:'index.html', i:'🏠'},
+    {t:'Accueil', s:'AAA, toutes les matières', u:ACCUEIL, i:'🏠'},
+    {t:'Changer de niveau', s:'Le hub central : Licence, M1, M2', u:'niveaux.html', i:'🧭'},
     {t:'Révision du jour', s:'Entraînement en révision espacée, flashcards', u:'revision.html', i:'🔁'},
     {t:'Ma progression', s:'Statistiques, points faibles', u:'stats.html', i:'📈'},
     {t:'Glossaire', s:'Sigles, définitions', u:'glossaire.html', i:'🔤'},
@@ -728,7 +735,7 @@
   function nouveautes(){
     let vu = null; try{ vu = localStorage.getItem('version_vue'); }catch(e){}
     if(vu === VERSION_APP) return [];
-    return [{id:'version-'+VERSION_APP, ico:'✨', titre:'Nouveau : réactions dans le chat et suivi des progrès', texte:'Version '+VERSION_APP+' : touche un message pour réagir ou répondre. Tes progrès (leçons, temps, résultats) sont désormais partagés avec l\'administrateur du hub.', url:'index.html?chat=1', chat:true}];
+    return [{id:'version-'+VERSION_APP, ico:'✨', titre:'Nouveau : réactions dans le chat et suivi des progrès', texte:'Version '+VERSION_APP+' : touche un message pour réagir ou répondre. Tes progrès (leçons, temps, résultats) sont désormais partagés avec l\'administrateur du site.', url:'index.html?chat=1', chat:true}];
   }
   let _alertes = [];
   async function majCloche(){

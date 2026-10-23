@@ -157,7 +157,7 @@ export default async (req, context) => {
     if(page){
       const niv = niveauDePage(nom);
       if(niv && niv !== c.niveau && !c.admin) return versAcces(req, 'niveau', false);
-      cookies.push(...info(req, {statut:'cle', niveau:c.niveau, annee:c.annee}));
+      cookies.push(...info(req, Object.assign({statut:'cle', niveau:c.niveau, annee:c.annee}, c.admin ? {admin:1} : {})));
     }
     return suite(context, cookies);
   }

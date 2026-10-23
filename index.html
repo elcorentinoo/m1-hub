@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Hub M1 MBAF — Conseiller Patrimoine Agence</title>
+<title>AAA · M1 MBAF — Conseiller Patrimoine Agence</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com">
@@ -234,16 +234,22 @@ body{overflow-x:hidden}
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="M1 MBAF">
-<script src="niveau.js"></script>
+<meta name="apple-mobile-web-app-title" content="AAA">
 <script>
-/* hub multi-promos (8.0.0) : cette page reste l'espace M1, à la même
-   adresse. Une clé M1 n'est jamais redirigée ; pendant l'essai, on choisit
-   d'abord son niveau ; un niveau Licence (clé ou choix) mène à son espace. */
+/* hub central (8.0.0) : on arrive toujours sur niveaux.html, le hub de
+   tous les niveaux. Cette page reste l'espace M1, à la même adresse : on
+   y reste quand on vient d'une autre page du site (hub central, cours,
+   BeQuick…), et pour un lien précis (#ancre ou ?paramètre, notifications).
+   Une arrivée de l'extérieur (favori, icône d'écran d'accueil, lien
+   partagé, nouvel onglet, page d'accès) mène au hub central. */
 (function(){
-  const N = window.NIVEAU; if(!N || N.cle() === 'm1') return;
-  if(N.essai() && !N.choisi()){ location.replace('niveaux.html'); return; }
-  if(N.courant() === 'licence') location.replace(N.espace('licence'));
+  try{
+    if(location.hash || location.search) return;
+    let ref = null; try{ ref = document.referrer ? new URL(document.referrer) : null; }catch(e){}
+    const interne = ref && ref.origin === location.origin && !/^\/(acces|acces-admin)\.html$|^\/admin$/.test(ref.pathname);
+    let espace = false; try{ espace = sessionStorage.getItem('aaa-espace') === '1'; }catch(e){}
+    if(!interne && !espace) location.replace('niveaux.html');
+  }catch(e){}
 })();
 </script>
 </head>
@@ -253,14 +259,14 @@ body{overflow-x:hidden}
 <div id="login">
   <div class="ph"></div><div class="voile-bas"></div>
   <div class="login-card verre">
-    <span class="mk">M1</span>
+    <span class="mk ap" aria-hidden="true">AA<i>A</i></span>
     <h1>M1 Monnaie Banque Assurance Finance</h1>
     <p>Conseiller Patrimoine Agence. Un pseudo suffit : il sert au classement et à la synchronisation de ta progression entre tes appareils.</p>
     <div class="login-field">
       <label for="pseudoInput">Ton pseudo</label>
       <input type="text" id="pseudoInput" maxlength="24" placeholder="2 caractères minimum" autocomplete="off" onkeydown="if(event.key==='Enter')submitPseudo()">
     </div>
-    <button class="login-btn" onclick="submitPseudo()">Entrer dans le hub</button>
+    <button class="login-btn" onclick="submitPseudo()">Entrer dans AAA</button>
     <div class="login-err" id="loginErr">Choisis un pseudo (2 caractères minimum).</div>
     <div class="login-foot">aucun mot de passe · aucune adresse courriel</div>
   </div>
@@ -564,7 +570,7 @@ function renderEntete(){
   const p = (window.LB && LB.pseudo) ? LB.pseudo() : null;
   const mot = new Date().getHours() < 18 ? 'Bonjour' : 'Bonsoir';
   const h = document.getElementById('salut');
-  h.innerHTML = p ? mot+'<br><b>'+echapH(p)+'</b>' : 'Le <b>hub</b>';
+  h.innerHTML = p ? mot+'<br><b>'+echapH(p)+'</b>' : 'Bienvenue sur <b>AAA</b>';
   const futurs = ECHEANCES.filter(e=>e.end>Date.now()).length;
   document.getElementById('sous').textContent =
     MOTS_NB[MATIERES.length]+' matières, '+futurs+' partiel'+(futurs>1?'s':'')+' à venir. Reprends là où tu t’es arrêté : une leçon par jour suffit pour arriver serein.';
