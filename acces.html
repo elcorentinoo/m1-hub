@@ -36,14 +36,30 @@ button[disabled]{opacity:.6;cursor:wait}
 .msg{min-height:1.5em;margin:14px 0 0;font-size:.95rem}
 .msg.ko{color:var(--bad)} .msg.ok{color:var(--ok)}
 .pied{margin:22px 0 0;font-size:.85rem;color:var(--txt3)}
+/* Niveaux, essai et demande de clé (hub multi-promos) */
+.motif{margin:0 0 20px;padding:12px 16px;border-radius:18px;background:var(--surface2);color:var(--nuit);text-align:left;font-size:.95rem;line-height:1.45}
+.motif a{color:var(--nuit);font-weight:500}
+button.sec{background:var(--surface2);color:var(--nuit);border:2px solid var(--stroke2)}
+.ou{margin:18px 0 0;font-size:.85rem;color:var(--txt3)}
+.f2{margin-top:22px;text-align:left}
+.f2 h2{font-weight:400;font-size:1.3rem;margin:0 0 6px;text-align:center}
+.f2 p{margin:0 0 14px;text-align:center}
+.f2 input,.f2 select,.f2 textarea{width:100%;font:inherit;font-size:1rem;letter-spacing:normal;text-transform:none;text-align:left;
+  padding:12px 14px;border-radius:16px;border:2px solid var(--stroke2);background:var(--surface2);color:var(--nuit)}
+.f2 textarea{min-height:90px;resize:vertical}
+.f2 input:focus,.f2 select:focus,.f2 textarea:focus{outline:none;border-color:var(--nuit);background:var(--blanc)}
+.f2 label{margin-top:12px}
+.piege{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+[hidden]{display:none!important}
 </style>
 <link rel="stylesheet" href="theme.css">
 </head>
 <body>
 <main class="carte">
   <div class="logo" aria-hidden="true">M1</div>
-  <h1>Accès réservé</h1>
-  <p>Le hub de révision du M1 MBAF est réservé aux étudiants de la promo. Entre la clé d'accès qu'on t'a donnée et ton pseudo.</p>
+  <h1 id="titre">Accès réservé</h1>
+  <div class="motif" id="motif" role="status" hidden></div>
+  <p id="intro">Le hub de révision est réservé aux étudiants. Entre la clé d'accès qu'on t'a donnée et ton pseudo.</p>
   <form id="f" autocomplete="off">
     <label for="cle">Clé d'accès</label>
     <input id="cle" name="cle" inputmode="text" autocapitalize="characters" spellcheck="false" placeholder="XXX-XXX-XXX" maxlength="13" required>
@@ -52,6 +68,27 @@ button[disabled]{opacity:.6;cursor:wait}
     <div class="aide">Celui des classements et de BeQuick : toute la promo le verra.</div>
     <button type="submit" id="b">Entrer</button>
     <div class="msg" id="msg" role="status" aria-live="polite"></div>
+  </form>
+  <div id="sansCle">
+    <p class="ou">Pas encore de clé ?</p>
+    <button type="button" class="sec" id="bEssai">Essayer 24 h sans clé</button>
+    <button type="button" class="sec" id="bDemander">Demander une clé</button>
+    <div class="msg" id="msgEssai" role="status" aria-live="polite"></div>
+  </div>
+  <form id="fDem" class="f2" autocomplete="off" hidden>
+    <h2>Demander une clé</h2>
+    <p>Ta demande part par e-mail à l'administrateur, qui te répondra avec ta clé.</p>
+    <label for="dNom">Ton nom</label>
+    <input id="dNom" maxlength="60" autocomplete="name" required>
+    <label for="dNiv">Ton niveau</label>
+    <select id="dNiv"><option value="">Choisir…</option><option value="licence">Licence (LP ABF)</option><option value="m1">M1 MBAF</option><option value="m2">M2</option></select>
+    <label for="dCon">Comment te répondre ?</label>
+    <input id="dCon" maxlength="120" autocomplete="email" placeholder="e-mail, téléphone…" required>
+    <label for="dMsg">Message (facultatif)</label>
+    <textarea id="dMsg" maxlength="1000"></textarea>
+    <div class="piege" aria-hidden="true"><label for="dSite">Site web</label><input id="dSite" tabindex="-1" autocomplete="off"></div>
+    <button type="submit" id="bDem">Envoyer la demande</button>
+    <div class="msg" id="msgDem" role="status" aria-live="polite"></div>
   </form>
   <p class="pied">Une clé ne sert qu'une fois : elle autorise cet appareil. Pour un autre appareil, demande une nouvelle clé.</p>
   <p class="pied">Tes progrès (leçons, temps de révision, résultats) sont partagés avec l'administrateur du hub.</p>
@@ -92,7 +129,69 @@ $('f').addEventListener('submit', async e=>{
   b.disabled = false; b.textContent = 'Entrer';
 });
 try{ const p = localStorage.getItem('lb_name'); if(p) $('pseudo').value = p; }catch(e){}
-$('cle').focus();
+
+/* ── Niveaux, essai de 24 h, demande de clé (hub multi-promos) ── */
+const Q = new URLSearchParams(location.search), MOTIF = Q.get('motif');
+const NOM_ESSAI = {systeme_bancaire:'Système bancaire français'};
+function infoAcces(){
+  const m = document.cookie.match(/(?:^|;\s*)acces_info=([^;]+)/);
+  try{ return m ? new URLSearchParams(decodeURIComponent(m[1])) : new URLSearchParams(); }catch(e){ return new URLSearchParams(); }
+}
+function jetonEssai(){ try{ return localStorage.getItem('m1_essai') || ''; }catch(e){ return ''; } }
+/* l'essai déjà connu de cet appareil est-il fini ? (début lisible dans le jeton) */
+const essaiFini = () => { const d = parseInt(jetonEssai(), 10); return d > 0 && Date.now()/1000 >= d + 86400; };
+function motif(html){ $('motif').innerHTML = html; $('motif').hidden = false; }
+function finEssai(){
+  $('titre').textContent = 'Ton essai est terminé';
+  $('intro').textContent = "Pour continuer, entre une clé d'accès, ou demande-la avec le formulaire ci-dessous.";
+  $('sansCle').hidden = true; $('fDem').hidden = false;
+}
+if(MOTIF === 'niveau'){
+  motif("Cette page est réservée à une autre promo que celle de ta clé. <a href=\"/\">Retour à l'accueil</a>");
+  $('sansCle').hidden = true;
+}else if(MOTIF === 'essai'){
+  const i = infoAcces(), mats = ['licence','m1','m2'].map(n=>i.get(n)).filter(Boolean).map(m=>NOM_ESSAI[m] || m.replace(/_/g,' '));
+  const fin = +i.get('fin');
+  motif("Pendant l'essai, seule"+(mats.length > 1 ? 's les matières ' : ' la matière ')+'<b>'+(mats.join(', ') || "d'essai")+'</b>'+
+    (mats.length > 1 ? ' sont ouvertes' : ' est ouverte')+(fin ? " (jusqu'au "+new Date(fin*1000).toLocaleString('fr-FR', {weekday:'long', hour:'2-digit', minute:'2-digit'})+')' : '')+
+    ". <a href=\"/\">Retour à l'accueil</a>");
+  $('bEssai').hidden = true;
+}else if(MOTIF === 'essai-fini' || essaiFini()){
+  finEssai();
+}
+$('bDemander').addEventListener('click', ()=>{ $('fDem').hidden = false; $('bDemander').hidden = true; $('dNom').focus(); });
+$('bEssai').addEventListener('click', async ()=>{
+  const b = $('bEssai'), m = $('msgEssai');
+  b.disabled = true; m.textContent = '';
+  try{
+    const r = await fetch('/.netlify/functions/acces-essai', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({jeton:jetonEssai()})});
+    const d = await r.json().catch(()=>({}));
+    if(d.jeton) try{ localStorage.setItem('m1_essai', d.jeton); }catch(e){}
+    if(d.ok){ m.className = 'msg ok'; m.textContent = "C'est parti pour 24 h ! Ouverture du hub…"; setTimeout(()=>location.replace('/'), 500); return; }
+    if(d.erreur === 'fini'){ finEssai(); b.disabled = false; return; }
+    m.className = 'msg ko';
+    m.textContent = d.erreur === 'limite' ? "Trop d'essais depuis ce réseau aujourd'hui. Demande plutôt une clé." : 'Le serveur ne répond pas. Réessaie dans un instant.';
+  }catch(e){ m.className = 'msg ko'; m.textContent = "Pas de connexion internet : l'essai se démarre en ligne."; }
+  b.disabled = false;
+});
+const OUVERT = Date.now();
+$('fDem').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const b = $('bDem'), m = $('msgDem');
+  const corps = {nom:$('dNom').value.trim(), niveau:$('dNiv').value, contact:$('dCon').value.trim(), message:$('dMsg').value.trim(), site:$('dSite').value, t:Date.now() - OUVERT};
+  if(corps.nom.length < 2){ m.className = 'msg ko'; m.textContent = 'Indique ton nom.'; $('dNom').focus(); return; }
+  if(corps.contact.length < 3){ m.className = 'msg ko'; m.textContent = 'Indique comment te répondre.'; $('dCon').focus(); return; }
+  b.disabled = true; m.textContent = '';
+  try{
+    const r = await fetch('/.netlify/functions/acces-demande', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(corps)});
+    const d = await r.json().catch(()=>({}));
+    if(d.ok){ m.className = 'msg ok'; m.textContent = 'Demande envoyée. Tu recevras ta clé par le moyen indiqué.'; $('fDem').querySelectorAll('input,select,textarea').forEach(x=>x.disabled = true); return; }
+    m.className = 'msg ko';
+    m.textContent = d.erreur === 'limite' ? "Beaucoup de demandes aujourd'hui : réessaie demain." : d.erreur === 'champs' ? 'Vérifie ton nom et ton contact.' : "L'envoi n'a pas marché. Réessaie dans un instant.";
+  }catch(err){ m.className = 'msg ko'; m.textContent = 'Pas de connexion internet.'; }
+  b.disabled = false;
+});
+if(MOTIF !== 'essai-fini' && !essaiFini()) $('cle').focus();
 </script>
 </body>
 </html>

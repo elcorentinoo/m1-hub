@@ -17,6 +17,8 @@
 --
 --  À lancer une fois dans Supabase → SQL Editor → New query → Run.
 --  Le relancer ne casse rien.
+--  Hub multi-promos : si tu relances ce fichier, relance ENSUITE
+--  acces-niveaux.sql (il complète les fonctions ci-dessous).
 -- ════════════════════════════════════════════════════════════════
 
 create extension if not exists pgcrypto with schema extensions;
