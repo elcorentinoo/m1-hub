@@ -113,3 +113,16 @@ Version MAJEURE (prochain nom de monnaie libre : Guinée).
   progression locale et les favoris. Changement éventuel à la rentrée 2027,
   avec les nouvelles clés. `CONTACT` de `netlify/push.mjs` et de
   `supabase/functions/chat-notif` à mettre à jour à ce moment-là.
+
+## État au 23 octobre, 14 h 20 (pause : limite d'utilisation)
+
+Fusionné dans `maj-qualite`, vérifié (Chromium, 0 erreur, 0 débordement) :
+A1 sources + 17 corrections de cours, A3 signaler une erreur, A4
+progression partagée, A6 sauvegarde, hub-niveaux, hub-acces, nom AAA,
+hub central. Reste : session Licence (`hub-licence`, session
+`session_01UiEoP59Ychqo41ZjX5qvg6`) à terminer puis fusionner ; version
+8.0.0 « Guinée » + entrée `lisez-moi.txt` (retirer « TD de S. Sabkha »
+l. ~379) ; bilan oui/non ; publication ; manipulations de Corentin :
+Resend + `RESEND_CLE`/`SIGNALER_DEST` (Netlify), SQL Supabase
+(`acces-niveaux`, `progression`, `bequick-niveaux`, `signaler`, + SQL
+Licence éventuel), 3 secrets GitHub (sauvegarde), clé admin via `/admin`.
