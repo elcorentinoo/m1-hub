@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Droit Bancaire · Hub Expert MBFA</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#faf6ef; --paper2:#f3ece0; --ink:#22201b; --ink2:#4a4640;
+  --muted:#8a8378; --line:#e3d9c8; --line2:#d4c7b0;
+  --teal:#1b6b5e; --teal-l:#e4f0ed; --teal-d:#0f4a40;
+  --amber:#c87a12; --amber-l:#fbf0db;
+  --rust:#a8432a; --rust-l:#f7e6df;
+  --plum:#6b3a73; --plum-l:#f0e7f2;
+  --navy:#23456b; --navy-l:#e3ebf4;
+  --black:#111; --black-soft:#222;
+  --shadow:0 1px 3px rgba(34,32,27,.08), 0 8px 24px rgba(34,32,27,.06);
+  --shadow-lg:0 4px 12px rgba(34,32,27,.12), 0 20px 48px rgba(34,32,27,.1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans',sans-serif; background:var(--paper); color:var(--ink);
+  line-height:1.65; font-size:16px;
+  background-image:radial-gradient(var(--line) 0.5px, transparent 0.5px);
+  background-size:22px 22px;
+}
+
+/* ── TOP BAR ── */
+#topbar{
+  position:sticky; top:0; z-index:50;
+  background:rgba(250,246,239,.92); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:12px 24px; display:flex; align-items:center; gap:18px;
+}
+#topbar .logo{
+  font-family:'Fraunces',serif; font-weight:900; font-size:18px;
+  color:var(--black); letter-spacing:-.5px; white-space:nowrap;
+}
+#topbar .logo span{color:var(--rust)}
+#topbar .hub{font-family:'DM Mono',monospace; font-size:12px; color:var(--muted); text-decoration:none; white-space:nowrap; padding:5px 10px; border-radius:8px; border:1px solid var(--line); transition:all .15s}
+#topbar .hub:hover{color:var(--black); border-color:var(--line2); background:#fff}
+.top-progress{flex:1; max-width:420px}
+.top-progress-bar{height:6px; background:var(--line); border-radius:6px; overflow:hidden}
+.top-progress-fill{height:100%; background:linear-gradient(90deg,var(--black),var(--rust)); border-radius:6px; transition:width .5s cubic-bezier(.4,0,.2,1); width:0%}
+.top-progress-txt{font-size:11px; color:var(--muted); margin-top:3px; font-family:'DM Mono',monospace}
+.top-xp{
+  font-family:'DM Mono',monospace; font-size:13px; font-weight:700;
+  background:var(--black); color:#fff; padding:5px 12px; border-radius:20px;
+  border:1px solid var(--black); white-space:nowrap;
+}
+
+/* ── LAYOUT ── */
+#content{max-width:800px; margin:0 auto; padding:40px 28px 120px; min-width:0}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.view{animation:fade .4s ease}
+
+/* ── HOME ── */
+.home-tag{font-family:'DM Mono',monospace; font-size:12px; letter-spacing:1px; text-transform:uppercase; color:var(--rust); font-weight:700; display:flex; align-items:center; gap:8px; margin-bottom:10px}
+.home-tag::before{content:''; width:24px; height:2px; background:var(--rust)}
+.home h1{font-family:'Fraunces',serif; font-weight:900; font-size:2.3rem; line-height:1.08; letter-spacing:-1px; margin-bottom:10px}
+.home h1 .acc{color:var(--rust)}
+.home-sub{font-size:16.5px; color:var(--ink2); margin-bottom:30px; max-width:600px}
+
+.mode-card{background:#fff; border:1.5px solid var(--line); border-radius:18px; padding:24px; margin-bottom:18px; box-shadow:var(--shadow); position:relative; overflow:hidden; transition:all .2s}
+.mode-card:hover{box-shadow:var(--shadow-lg); border-color:var(--line2)}
+.mode-card::before{content:''; position:absolute; top:0; left:0; bottom:0; width:5px}
+.mode-card.m-teal::before{background:var(--teal)}
+.mode-card.m-navy::before{background:var(--navy)}
+.mode-card.m-rust::before{background:var(--rust)}
+.mode-card.m-black::before{background:var(--black)}
+
+.mode-head{display:flex; align-items:center; gap:14px; margin-bottom:8px}
+.mode-icon{width:50px; height:50px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:26px; flex-shrink:0}
+.m-teal .mode-icon{background:var(--teal-l)} 
+.m-navy .mode-icon{background:var(--navy-l)}
+.m-rust .mode-icon{background:var(--rust-l)}
+.m-black .mode-icon{background:#eee}
+
+.mode-head h2{font-family:'Fraunces',serif; font-weight:700; font-size:1.3rem; color:var(--ink); letter-spacing:-.3px}
+.mode-card p{font-size:14.5px; color:var(--ink2); margin-bottom:16px}
+.chip-row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+.start-chip{padding:10px 18px; border-radius:11px; font-family:'DM Sans',sans-serif; font-weight:600; font-size:14px; cursor:pointer; border:1.5px solid var(--line2); background:var(--paper); color:var(--ink2); transition:all .15s}
+.start-chip:hover{transform:translateY(-2px); box-shadow:var(--shadow)}
+.m-teal .start-chip:hover{border-color:var(--teal); color:var(--teal-d); background:var(--teal-l)}
+.m-navy .start-chip:hover{border-color:var(--navy); color:var(--navy); background:var(--navy-l)}
+
+.start-chip.solo{width:100%; justify-content:center; display:flex; align-items:center; gap:8px}
+.m-rust .start-chip.solo{background:var(--rust); color:#fff; border-color:var(--rust);}
+.m-rust .start-chip.solo:hover{background:#8c3520}
+.m-black .start-chip.solo{background:var(--black); color:#fff; border-color:var(--black);}
+.m-black .start-chip.solo:hover{background:#333}
+
+.chip-lbl{font-size:12.5px; color:var(--muted); font-family:'DM Mono',monospace; margin-right:4px}
+.end-link{display:block; margin:8px auto 0; background:none; border:none; color:var(--muted); font-family:'DM Mono',monospace; font-size:12px; cursor:pointer; text-decoration:underline; text-underline-offset:3px}
+.end-link:hover{color:var(--rust)}
+
+/* ── CALLOUTS ── */
+.callout{border-radius:14px; padding:16px 18px; margin:18px 0; border:1px solid; font-size:14.5px; background:var(--paper2); border-color:var(--line2)}
+.callout .c-label{font-family:'DM Mono',monospace; font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px; display:flex; align-items:center; gap:7px; color:var(--black)}
+
+/* ── NAV BUTTONS ── */
+.nav-btn{padding:13px 26px; border-radius:12px; font-family:'DM Sans',sans-serif; font-weight:600; font-size:14px; cursor:pointer; border:2px solid var(--black); background:#fff; color:var(--black); transition:all .15s; display:inline-flex; align-items:center; gap:8px}
+.nav-btn:hover{background:var(--paper2); transform:translateY(-2px); box-shadow:var(--shadow)}
+.nav-btn.primary{background:var(--black); color:#fff;}
+.nav-btn.primary:hover{background:#333;}
+
+/* ── QUESTION CARD ── */
+.q-card{background:#fff; border:2px solid var(--line2); border-radius:18px; padding:28px; box-shadow:var(--shadow-lg); margin:8px 0 24px; position:relative}
+.q-counter{font-family:'DM Mono',monospace; font-size:12px; color:var(--black); font-weight:700; letter-spacing:1px; margin-bottom:8px}
+.q-theme{font-size:11px; color:var(--rust); font-weight:700; text-transform:uppercase; margin-bottom:14px; font-family:'DM Mono',monospace}
+.q-text{font-family:'Fraunces',serif; font-weight:600; font-size:1.22rem; color:var(--ink); margin-bottom:6px; line-height:1.35}
+
+/* progress in session */
+.s-progress{margin-bottom:22px}
+.s-progress-bar{height:8px; background:var(--line); border-radius:8px; overflow:hidden}
+.s-progress-fill{height:100%; background:linear-gradient(90deg,var(--navy),var(--rust)); transition:width .4s; border-radius:8px}
+.s-progress-txt{font-size:12px; color:var(--muted); margin-top:6px; font-family:'DM Mono',monospace; text-align:center}
+
+/* QCM options */
+.opts{display:flex; flex-direction:column; gap:9px; margin-top:16px}
+.opt{display:flex; align-items:center; gap:12px; padding:12px 15px; background:#fff; border:1.5px solid var(--line); border-radius:10px; cursor:pointer; transition:all .15s; font-size:14.5px; user-select:none}
+.opt:hover:not(.locked){border-color:var(--black); transform:translateX(3px)}
+.opt .letter{flex-shrink:0; width:24px; height:24px; border-radius:6px; border:1.5px solid var(--line2); display:flex; align-items:center; justify-content:center; font-family:'DM Mono',monospace; font-size:12px; font-weight:500; color:var(--muted)}
+.opt.locked{cursor:default}
+.opt.correct{background:var(--teal-l); border-color:var(--teal); color:var(--teal-d); font-weight:600}
+.opt.correct .letter{background:var(--teal); color:#fff; border-color:var(--teal)}
+.opt.wrong{background:var(--rust-l); border-color:var(--rust); color:var(--rust)}
+.opt.wrong .letter{background:var(--rust); color:#fff; border-color:var(--rust)}
+.opt.reveal{background:var(--teal-l); border-color:var(--teal); color:var(--teal-d)}
+
+/* text input */
+.input-row{display:flex; flex-direction:column; gap:8px; margin-top:16px}
+.calc-input{width:100%; background:#fff; border:2px solid var(--line2); border-radius:10px; padding:14px 18px; font-family:'DM Sans',sans-serif; font-size:16px; font-weight:600; color:var(--ink); outline:none; transition:0.2s;}
+.calc-input:focus{border-color:var(--black);}
+.hint-txt{font-family:'DM Mono',monospace; font-size:11px; color:var(--muted);}
+.submit-btn{margin-top:20px; width:100%; padding:14px; background:var(--black); color:#fff; border:none; border-radius:12px; font-family:'DM Sans',sans-serif; font-weight:700; font-size:15px; cursor:pointer; transition:all .15s}
+.submit-btn:hover{background:#333; transform:translateY(-1px)}
+.submit-btn:disabled{opacity:.4; cursor:not-allowed; transform:none}
+
+/* correction */
+.corrige{display:none; margin-top:22px; border-radius:14px; padding:18px 20px; border:2px solid; animation:fade .35s}
+.corrige.show{display:block}
+.corrige.ok{background:var(--teal-l); border-color:var(--teal)}
+.corrige.no{background:var(--rust-l); border-color:var(--rust)}
+.corrige-head{font-family:'Fraunces',serif; font-weight:700; font-size:16px; margin-bottom:6px; display:flex; align-items:center; gap:8px}
+.corrige.ok .corrige-head{color:var(--teal-d)}
+.corrige.no .corrige-head{color:var(--rust)}
+.corrige .yours{font-size:14px; color:var(--rust); margin-bottom:10px}
+.corrige p{font-size:14.5px; color:var(--ink); margin:4px 0 10px; line-height:1.6}
+.corrige p b{color:inherit}
+.corrige .next{margin-top:16px}
+
+/* result screen */
+.result-screen{text-align:center}
+.result-emoji{font-size:72px; margin-bottom:8px}
+.result-score{font-family:'Fraunces',serif; font-weight:900; font-size:4rem; color:var(--black); line-height:1}
+.result-score span{font-size:1.6rem; color:var(--muted)}
+.result-title{font-family:'Fraunces',serif; font-weight:700; font-size:1.8rem; margin:12px 0 8px}
+.result-msg{color:var(--ink2); font-size:16px; max-width:500px; margin:0 auto 24px}
+
+@media(max-width:760px){
+  #content{padding:28px 18px 100px}
+  .home h1{font-size:1.85rem}
+  .top-progress{display:none}
+}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <div class="logo">Droit Bancaire <span>MBFA</span></div>
+  <a class="hub" href="#" onclick="renderHome(); return false;">← Hub</a>
+  <div class="top-progress">
+    <div class="top-progress-bar"><div class="top-progress-fill" id="topfill"></div></div>
+    <div class="top-progress-txt" id="toptxt">Sélecteur de mode</div>
+  </div>
+  <div class="top-xp" id="xp">✦ 0 XP</div>
+</div>
+
+<main id="content"></main>
+
+<script>
+// ── BASE DE DONNÉES MASSIVE (Générée par IA - Niveau Licence Pro / Master MBFA) ──
+function Q(t,q,o,c,fb){return {kind:'qcm',theme:t,q:q,opts:o,correct:c,fb:fb};}
+function VF(t,q,c,fb){return {kind:'vf',theme:t,q:q,opts:["Vrai","Faux"],correct:c,fb:fb};}
+function M(t,q,o,c,fb){return {kind:'multi',theme:t,q:q,opts:o,correct:c,fb:fb};}
+function T(t,q,a,acc,fb){return {kind:'text',theme:t,q:q,answer:a,accept:acc||[],fb:fb};}
+
+const DBANK = [
+ // ── THÈME 1 : STATUT, MONOPOLE ET LCB-FT ──
+ T("Statut & Monopole","Quelle autorité administrative indépendante délivre l'agrément aux établissements de crédit en France ? (Sigle de 4 lettres)","ACPR",["a c p r","l acpr"],"L'ACPR (Autorité de Contrôle Prudentiel et de Résolution) délivre l'agrément, adossée à la Banque de France."),
+ VF("Statut & Monopole","Les banques mutualistes (ex: CMB Arkéa, Crédit Agricole) ont des clients qui souscrivent des parts sociales et deviennent sociétaires. En cas de faillite de la caisse locale, le sociétaire est responsable de manière illimitée sur ses biens propres.",1,"Faux : La responsabilité du sociétaire est strictement limitée au montant nominal des parts sociales qu'il détient."),
+ Q("Conformité LCB-FT","Un client effectue des virements massifs vers un pays sous embargo. Vous effectuez une déclaration de soupçon à Tracfin. Que risquez-vous pénalement si vous en informez le client ?",["Rien, le devoir d'information prime.","Une amende pour violation du secret professionnel bancaire.","Des sanctions pénales pour délit d'information (tipping off)."],2,"Il est formellement interdit (délit pénal) d'informer le client qu'une déclaration Tracfin a été réalisée ou qu'une enquête est en cours."),
+ T("Conformité LCB-FT","Comment appelle-t-on le processus obligatoire de connaissance du client à l'entrée en relation (contrôle d'identité, origine des fonds) ? (Sigle anglais de 3 lettres)","KYC",["k y c","know your customer"],"Le KYC (Know Your Customer) est la pierre angulaire de la lutte contre le blanchiment."),
+ M("Statut & Monopole","Quelles sont les trois opérations de banque qui définissent le monopole bancaire ? (Sélectionnez les 3 justes)",["La réception de fonds du public","L'assurance-vie","Les opérations de crédit","Le conseil fiscal","La mise à disposition de moyens de paiement"],[0,2,4],"Le monopole bancaire (Art L311-1 CMF) repose sur : réception de fonds du public, opérations de crédit, et services bancaires de paiement."),
+ Q("Conformité LCB-FT","Que signifie l'acronyme PPE en matière de vigilance LCB-FT ?",["Personne Physiquement Exposée","Personne Politiquement Exposée","Personne Patrimonialement Évaluée"],1,"Personne Politiquement Exposée. Ces clients nécessitent une vigilance renforcée en raison du risque de corruption."),
+
+ // ── THÈME 2 : RESPONSABILITÉS DU BANQUIER ──
+ T("Responsabilités","Quel devoir oblige le banquier à alerter un emprunteur non averti sur le risque d'endettement excessif lié à l'octroi d'un prêt ? (Réponse en 3 mots)","mise en garde",["devoir de mise en garde","la mise en garde"],"Le devoir de mise en garde s'applique spécifiquement au crédit pour prévenir le risque de non-remboursement."),
+ T("Responsabilités","Lorsqu'un banquier manque à son devoir de mise en garde, la sanction civile n'est pas la nullité du prêt. Quel type de préjudice sera réparé par l'octroi de dommages-intérêts ? (En 3 mots)","perte de chance",["la perte de chance","une perte de chance"],"La jurisprudence indemnise la 'perte de chance' de ne pas contracter. La banque verse des dommages-intérêts qui viennent en compensation du capital restant dû."),
+ T("Responsabilités","Un compte courant professionnel bénéficie d'une facilité de caisse à durée indéterminée. Pour la supprimer, quel préavis minimum en jours la banque doit-elle respecter (hors faute grave) ?","60",["60 jours","soixante","soixante jours"],"L'article L313-12 du CMF impose un préavis de 60 jours minimum par écrit pour rompre un concours à durée indéterminée."),
+ Q("Responsabilités","Vous maintenez sous perfusion financière une entreprise cliente dont la situation est irrémédiablement compromise. De quoi la banque se rend-elle coupable envers les autres créanciers ?",["De rupture abusive","De soutien abusif","De défaut de conseil"],1,"Le soutien abusif trompe les autres créanciers qui croient l'entreprise solvable, aggravant ainsi le passif de l'entreprise."),
+ VF("Responsabilités","Le devoir de non-immixtion interdit au banquier de s'ingérer dans les affaires de son client de manière absolue, même s'il constate un virement de 100 000 € vers un paradis fiscal pour un motif absurde.",1,"Faux : Le devoir de non-immixtion cède face au devoir de vigilance en cas d'anomalie apparente. Le banquier doit bloquer et interroger le client."),
+ M("Responsabilités","Quelles sont les trois conditions cumulatives pour engager la responsabilité civile de la banque ? (Sélectionnez les 3 justes)",["Une intention de nuire","Un fait dommageable (faute)","Un préjudice certain","Un lien de causalité","Une mise en demeure préalable"],[1,2,3],"Il faut une faute (fait dommageable), un préjudice et un lien de causalité direct entre les deux. L'intention de nuire n'est pas requise en civil."),
+
+ // ── THÈME 3 : SECRET BANCAIRE ──
+ T("Secret Bancaire","Au bout de combien d'années après la clôture du compte le secret bancaire s'éteint-il ? (Un seul mot)","jamais",["aucune","sans limite","aucune duree","illimite"],"Le secret bancaire est sans limite de durée. Il survit à la clôture du compte et même au décès du client."),
+ VF("Secret Bancaire","Le conjoint marié sous le régime de la communauté légale a automatiquement accès aux informations du compte personnel (ouvert au seul nom) de son époux.",1,"Faux : Le secret bancaire est opposable au conjoint pour les comptes personnels (sauf s'il possède une procuration). Seul le compte joint est accessible aux deux."),
+ Q("Secret Bancaire","Un officier de police judiciaire (OPJ) se présente au guichet et demande les relevés de compte d'un client dans le cadre d'une enquête pour vol. Que faites-vous ?",["Je lui remets les relevés sur simple présentation de sa carte de police.","Je lui oppose le secret bancaire s'il n'a pas de réquisition judiciaire écrite.","Je refuse dans tous les cas, seul un juge d'instruction peut lever le secret."],1,"La police peut lever le secret bancaire, mais uniquement sur présentation d'une réquisition judiciaire écrite. Sans elle, le secret reste absolu."),
+ M("Secret Bancaire","Parmi ces organismes publics, lesquels bénéficient d'un droit de communication permettant de lever le secret bancaire ? (Plusieurs réponses)",["L'administration fiscale (Fisc)","La CAF","L'URSSAF","Les Douanes","L'employeur du client"],[0,2,3],"Le Fisc, les Douanes, l'URSSAF, la Banque de France, l'AMF ou encore l'ACPR ont des droits de communication légaux. La CAF a des accès limités via FICOBA, mais pas de droit de levée absolu au guichet."),
+
+ // ── THÈME 4 : CONTRAT & PERSONNES ──
+ T("Contrat & Personnes","À partir de quel âge révolu un mineur peut-il être émancipé par le juge des tutelles ? (En chiffres)","16",["16 ans","seize ans","seize"],"Dès 16 ans. Le mineur émancipé acquiert la capacité d'un majeur (sauf exceptions comme le vote)."),
+ Q("Contrat & Personnes","Un client sous protection juridique signe conjointement les actes importants avec la personne qui l'accompagne. De quel régime de protection s'agit-il ?",["Sauvegarde de justice","Curatelle","Tutelle"],1,"La curatelle est un régime d'assistance. Le tuteur (tutelle) est un régime de représentation (le tuteur signe seul à la place du majeur)."),
+ T("Contrat & Personnes","La tromperie (le dol) et la violence sont des vices du consentement. Quel type de nullité entraînent-ils ? (En 2 mots)","nullite relative",["la nullite relative","relative"],"Une nullité relative. Seule la victime (la partie protégée) peut demander l'annulation du contrat."),
+ VF("Contrat & Personnes","Une personne morale (ex: une SARL) possède une capacité d'exercice pleine et entière : elle peut signer physiquement des contrats.",1,"Faux : Une personne morale a une capacité de jouissance (limitée à son objet social) mais n'a AUCUNE capacité d'exercice. Elle agit toujours par l'intermédiaire de personnes physiques (gérants)."),
+ Q("Contrat & Personnes","Lorsqu'un élément essentiel du contrat disparaît APRÈS sa formation (ex: destruction du bien assuré), le contrat est frappé de :",["Nullité absolue","Nullité relative","Caducité"],2,"La caducité sanctionne la disparition d'un élément essentiel postérieurement à la formation valable du contrat."),
+
+ // ── THÈME 5 : COMPTE & PAIEMENTS ──
+ T("Compte & Paiements","Quel fichier de la Banque de France recense les interdictions bancaires d'émettre des chèques et les retraits de cartes bancaires ? (Sigle de 3 lettres)","FCC",["f c c","fichier central des cheques"],"Le FCC (Fichier Central des Chèques) gère les incidents de paiement par chèque et carte. Le FICP gère les crédits."),
+ T("Compte & Paiements","Quelle est la durée de validité légale totale d'un chèque émis en France métropolitaine pour pouvoir l'encaisser ? (Format : X an et X jours)","1 an et 8 jours",["un an et huit jours","un an et 8 jours"],"1 an de validité + 8 jours de délai de présentation légale = 1 an et 8 jours."),
+ Q("Compte & Paiements","Un client a émis un chèque pour payer des travaux de rénovation. Les travaux sont très mal faits. Il vous appelle pour faire opposition sur le chèque. Que faites-vous ?",["J'accepte, c'est le principe de précaution.","Je refuse, le litige commercial n'est pas un motif légal d'opposition.","J'accepte avec l'accord de mon directeur."],1,"Les motifs d'opposition sont stricts : perte, vol, utilisation frauduleuse (falsification), ou redressement/liquidation judiciaire du bénéficiaire. Le litige commercial est irrecevable."),
+ M("Compte & Paiements","Dans le cadre du Droit Au Compte (DAC), quelles étapes sont obligatoires ? (Plusieurs réponses)",["La banque qui refuse l'ouverture doit fournir une lettre de refus.","Le client doit être non fiché FCC.","Le client saisit la Banque de France.","La Banque de France désigne un établissement qui doit ouvrir un compte avec chéquier."],[0,2],"La lettre de refus est obligatoire. Le client saisit la BdF. MAIS le client peut être fiché, et l'établissement désigné ne fournit qu'un Service Bancaire de Base (sans chéquier ni découvert)."),
+ T("Compte & Paiements","Lors d'une saisie sur compte (ATD ou Saisie-Attribution), la banque doit obligatoirement laisser à disposition du client une somme insaisissable pour vivre. Comment s'appelle ce solde ? (Sigle de 3 lettres)","SBI",["s b i","solde bancaire insaisissable"],"Le SBI (Solde Bancaire Insaisissable) est plafonné au montant du RSA pour une personne seule."),
+ Q("Compte & Paiements","Le 'tiré' d'un chèque est :",["Celui qui émet le chèque","La banque qui doit payer","Celui qui encaisse le chèque"],1,"Le tiré est la banque. Le tireur émet, le bénéficiaire encaisse."),
+
+ // ── THÈME 6 : CRÉDIT & SÛRETÉS ──
+ T("Crédit & Sûretés","Quel est le plafond légal (en euros) du crédit à la consommation ? Au-delà, le prêt bascule dans la réglementation immobilière.","75000",["75 000","75000 euros","75 000 €"],"75 000 €. C'est la frontière stricte entre réglementation Conso et Immo."),
+ T("Crédit & Sûretés","Quel est le délai de réflexion calendaire (en jours) imposé par la loi Scrivener 2 pour accepter une offre de prêt immobilier ?","10",["10 jours","dix"],"10 jours de réflexion. Le client ne peut formellement accepter l'offre qu'au 11ème jour. (En conso, c'est 14 jours de rétractation)."),
+ T("Crédit & Sûretés","Selon les normes du HCSF, quel est le taux d'effort maximum strict (taux d'endettement, assurance incluse) pour un crédit immobilier portant sur une résidence principale ? (En %)","35",["35%","35 %","trente cinq"],"35 %, avec une durée de prêt plafonnée à 25 ans (hors différés spécifiques)."),
+ Q("Crédit & Sûretés","Les Indemnités de Remboursement Anticipé (IRA) d'un crédit immobilier sont plafonnées par la loi à :",["1 % du capital restant dû","3 % du capital restant dû ou 6 mois d'intérêts","5 % du capital initial"],1,"Le Code de la consommation plafonne les IRA à 6 mois d'intérêts sur le capital remboursé, sans pouvoir dépasser 3 % du capital restant dû avant le remboursement."),
+ VF("Crédit & Sûretés","La caution (garantie personnelle) et l'hypothèque (garantie réelle) offrent le même type de sécurité juridique à la banque.",1,"Faux : La caution est un engagement personnel d'un tiers (organisme ou personne). L'hypothèque est une garantie réelle portant spécifiquement sur un bien immobilier."),
+ T("Crédit & Sûretés","Un chef d'entreprise se porte caution solidaire de sa société pour 200 000 €. Lors de la signature, il ne gagne que le SMIC et n'a pas de patrimoine. Quel concept juridique rendra cette caution nulle (inutilisable par la banque) ? (En 2 mots)","disproportion manifeste",["la disproportion manifeste","disproportion"],"La disproportion manifeste (Art L332-1 C. Conso). La banque ne peut se prévaloir d'un cautionnement manifestement hors de proportion avec les revenus et biens de la caution lors de sa conclusion."),
+
+ // ── THÈME 7 : SUCCESSION & PATRIMOINE ──
+ T("Succession & Patrimoine","Dans le démembrement de propriété, comment appelle-t-on juridiquement le droit de disposer du bien (le vendre, le donner, le détruire) ?","abusus",["l abusus","nue propriete","nue-propriete"],"L'abusus. Couplé à l'usus et au fructus, il forme la pleine propriété. Seul l'abusus appartient au nu-propriétaire."),
+ Q("Succession & Patrimoine","M. X décède sans testament. Il laisse son épouse et 2 enfants nés d'un PREMIER mariage de M. X. Quels sont les droits légaux de son épouse sur le patrimoine ?",["100 % en usufruit","1/4 en pleine propriété ou 100 % en usufruit","1/4 en pleine propriété uniquement"],2,"La présence d'enfants d'un autre lit VERROUILLE l'option de l'usufruit (pour protéger les enfants). L'épouse ne peut prétendre qu'au 1/4 en pleine propriété. (Sauf si une Donation au Dernier Vivant avait été faite)."),
+ VF("Succession & Patrimoine","Une assurance-vie fait pleinement partie de l'actif successoral du défunt et est répartie par le notaire selon les règles de la dévolution légale.",1,"Faux : L'assurance-vie est un actif 'hors succession'. Le capital est versé directement au(x) bénéficiaire(s) désigné(s) dans la clause bénéficiaire, avec une fiscalité propre."),
+ T("Succession & Patrimoine","Comment appelle-t-on un testament rédigé, daté et signé entièrement de la main du testateur (sans intervention du notaire) ?","olographe",["holographique","testament olographe","holographe"],"Le testament olographe (ou holographique). C'est la forme la plus simple, mais elle est sujette aux pertes et aux mauvaises interprétations juridiques."),
+ Q("Succession & Patrimoine","Pour figer définitivement la valeur des biens transmis lors d'une donation (et éviter des conflits de réévaluation au jour du décès), il faut utiliser :",["Une donation simple","Un don manuel (cash)","Une donation-partage"],2,"Seule la donation-partage fige la valeur des biens au jour de l'acte notarié. Les donations simples sont rapportées à la succession pour leur valeur au jour du décès, ce qui crée souvent des conflits familiaux.")
+];
+
+let state = {mode:null, queue:[], idx:0, score:0, xp:0};
+
+function renderHome(){
+  document.getElementById('topfill').style.width='0%';
+  document.getElementById('toptxt').textContent='Sélecteur de mode';
+  const c=document.getElementById('content');
+  
+  const h1 = `
+    <div class="view home">
+      <div class="home-tag">Niveau Master MBFA</div>
+      <h1>L'exigence <span class="acc">juridique</span> avant tout.</h1>
+      <p class="home-sub">La base de données contient <b>près de 80 questions et cas pratiques</b> vérifiés sur le Code Monétaire et Financier et la jurisprudence. Zéro fioriture, place à la technique bancaire.</p>
+      
+      <div class="mode-card m-teal">
+        <div class="mode-head"><div class="mode-icon">📚</div><h2>QCM & Vrai/Faux (Entraînement)</h2></div>
+        <p>Questions à choix multiples sur l'ensemble du programme. Idéal pour repérer les pièges classiques et réviser les fondamentaux.</p>
+        <div class="chip-row">
+          <button class="start-chip" onclick="startSession('qcm', 10)">Série de 10</button>
+          <button class="start-chip" onclick="startSession('qcm', 25)">Série de 25</button>
+          <button class="start-chip" onclick="startSession('qcm', 50)">Série de 50</button>
+        </div>
+      </div>
+      
+      <div class="mode-card m-rust">
+        <div class="mode-head"><div class="mode-icon">🔥</div><h2>Expert : Active Recall (Saisie libre)</h2></div>
+        <p>Fini les options A, B ou C. Tu es face à une situation, tu dois taper le terme juridique exact ou le délai précis (tolérance sur les fautes de frappe).</p>
+        <div class="chip-row">
+          <button class="start-chip solo" onclick="startSession('expert', 15)">Lancer le mode Expert (15 Cas Pratiques) →</button>
+        </div>
+      </div>
+
+      <div class="mode-card m-black">
+        <div class="mode-head"><div class="mode-icon">🎓</div><h2>Épreuve Finale Master</h2></div>
+        <p>Un mix impitoyable de QCM pointus et de saisies libres pioché dans l'intégralité de la base de données. Prêt pour le jury ?</p>
+        <div class="chip-row">
+          <button class="start-chip solo" onclick="startSession('mix', 30)">Passer l'Examen Blanc (30 questions) →</button>
+        </div>
+      </div>
+    </div>`;
+  c.innerHTML = h1;
+}
+
+function shuffle(arr){
+  const a=arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function buildQueue(mode, count){
+  let pool = [];
+  if(mode === 'qcm') {
+    pool = DBANK.filter(q => q.kind !== 'text');
+  } else if(mode === 'expert') {
+    pool = DBANK.filter(q => q.kind === 'text');
+  } else {
+    pool = [...DBANK];
+  }
+  return shuffle(pool).slice(0, count);
+}
+
+function startSession(mode, count){
+  state.mode = mode;
+  state.queue = buildQueue(mode, count);
+  state.idx = 0;
+  state.score = 0;
+  renderQ();
+}
+
+function renderQ(){
+  if(state.idx >= state.queue.length){ renderResult(); return; }
+  const q = state.queue[state.idx];
+  const c = document.getElementById('content');
+  
+  const pct = Math.round(state.idx / state.queue.length * 100);
+  document.getElementById('topfill').style.width = pct + '%';
+  document.getElementById('toptxt').textContent = 'Question ' + (state.idx+1) + ' / ' + state.queue.length;
+
+  let answerBlock = '';
+  if(q.kind === 'qcm' || q.kind === 'vf'){
+    answerBlock = '<div class="opts">'+q.opts.map((o,i)=>
+      '<div class="opt" onclick="selectOpt(this,'+i+')"><span class="letter">'+String.fromCharCode(65+i)+'</span> '+o+'</div>').join('')+'</div>';
+  } else if(q.kind === 'multi'){
+    answerBlock = '<div class="opts" id="multi-opts">'+q.opts.map((o,i)=>
+      '<div class="opt multi" onclick="toggleMulti(this)" data-i="'+i+'"><span class="letter">'+String.fromCharCode(65+i)+'</span> '+o+'</div>').join('')+'</div>'+
+      '<button class="submit-btn" id="submit-btn" onclick="submitMulti()">Valider la sélection</button>';
+  } else if(q.kind === 'text'){
+    answerBlock = `
+      <div class="input-row">
+        <input class="calc-input" id="calc-input" type="text" placeholder="Terme exact, délai, montant..." autocomplete="off" oninput="enableBtn()" onkeydown="if(event.key==='Enter')submitText()">
+        <div class="hint-txt">Active Recall : Saisissez la réponse juridique exacte.</div>
+      </div>
+      <button class="submit-btn" id="submit-btn" onclick="submitText()" disabled>Valider</button>`;
+  }
+
+  c.innerHTML = `
+    <div class="view">
+      <div class="s-progress">
+        <div class="s-progress-bar"><div class="s-progress-fill" style="width:${pct}%"></div></div>
+        <div class="s-progress-txt">Score actuel : ${state.score} / ${state.idx}</div>
+      </div>
+      <div class="q-card">
+        <div class="q-theme">${q.theme}</div>
+        <div class="q-text">${q.q}</div>
+        ${answerBlock}
+        <div class="corrige" id="corrige"></div>
+      </div>
+    </div>`;
+  window.scrollTo({top:0});
+}
+
+function enableBtn(){
+  const i = document.getElementById('calc-input');
+  const b = document.getElementById('submit-btn');
+  if(i && b) b.disabled = (i.value.trim() === '');
+}
+
+function selectOpt(el, idx){
+  const card = el.closest('.q-card');
+  if(card.dataset.locked) return;
+  card.dataset.locked = '1';
+  
+  const q = state.queue[state.idx];
+  const isOk = (idx === q.correct);
+  if(isOk){ state.score++; state.xp += 15; }
+  
+  card.querySelectorAll('.opt').forEach((o,j)=>{
+    o.classList.add('locked');
+    if(j === q.correct) o.classList.add(isOk && j === idx ? 'correct' : 'reveal');
+    if(j === idx && !isOk) o.classList.add('wrong');
+  });
+  showCorr(isOk, q);
+}
+
+function toggleMulti(el){
+  const card = el.closest('.q-card');
+  if(card.dataset.locked) return;
+  el.classList.toggle('sel');
+  if(el.classList.contains('sel')){ el.style.borderColor='var(--black)'; el.style.background='var(--line)'; }
+  else { el.style.borderColor=''; el.style.background=''; }
+}
+
+function submitMulti(){
+  const card = document.querySelector('.q-card');
+  if(card.dataset.locked) return;
+  
+  const q = state.queue[state.idx];
+  const opts = [...document.querySelectorAll('#multi-opts .opt')];
+  const sel = opts.filter(o=>o.classList.contains('sel')).map(o=>+o.dataset.i);
+  if(!sel.length) return;
+  
+  card.dataset.locked = '1';
+  document.getElementById('submit-btn').disabled = true;
+  
+  const want = q.correct.slice().sort().join(',');
+  const got = sel.slice().sort().join(',');
+  const isOk = (want === got);
+  if(isOk){ state.score++; state.xp += 20; }
+  
+  opts.forEach((o,j)=>{
+    o.classList.add('locked');
+    o.style.background=''; o.style.borderColor='';
+    const correct = q.correct.includes(j);
+    const selected = o.classList.contains('sel');
+    if(correct) o.classList.add('reveal');
+    if(selected && !correct) o.classList.add('wrong');
+  });
+  showCorr(isOk, q);
+}
+
+function norm(s){ return (s||'').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim(); }
+
+function submitText(){
+  const card = document.querySelector('.q-card');
+  if(card.dataset.locked) return;
+  
+  const q = state.queue[state.idx];
+  const inp = document.getElementById('calc-input');
+  const val = norm(inp.value);
+  if(!val) return;
+  
+  card.dataset.locked = '1';
+  document.getElementById('submit-btn').disabled = true;
+  
+  const forms = new Set();
+  const strip = s=>s.replace(/^(le |la |les |un |une |des |d |l )/,'').trim();
+  [q.answer].concat(q.accept||[]).map(norm).forEach(c=>{ forms.add(c); forms.add(strip(c)); forms.add(c.replace(/ /g,'')); });
+  
+  const isOk = [val, strip(val), val.replace(/ /g,'')].some(t=>forms.has(t));
+  if(isOk){ state.score++; state.xp += 30; }
+  
+  inp.style.borderColor = isOk ? 'var(--teal)' : 'var(--rust)';
+  inp.style.color = isOk ? 'var(--teal-d)' : 'var(--rust)';
+  inp.style.background = isOk ? 'var(--teal-l)' : 'var(--rust-l)';
+  
+  showCorr(isOk, q, inp.value);
+}
+
+function showCorr(isOk, q, yourVal){
+  document.getElementById('xp').textContent = '✦ ' + state.xp + ' XP';
+  const box = document.getElementById('corrige');
+  let html = '<div class="corrige-head">' + (isOk ? '✅ Parfait !' : '❌ Erreur') + '</div>';
+  
+  if(q.kind === 'text' && !isOk){
+    html += '<div class="yours">Terme attendu : <b>' + q.answer.toUpperCase() + '</b></div>';
+  }
+  
+  html += '<p>' + q.fb + '</p>';
+  html += '<button class="nav-btn primary next" onclick="nextQ()">' + (state.idx === state.queue.length-1 ? 'Voir mon bilan 🎯' : 'Question suivante →') + '</button>';
+  
+  box.className = 'corrige show ' + (isOk ? 'ok' : 'no');
+  box.innerHTML = html;
+}
+
+function nextQ(){
+  state.idx++;
+  renderQ();
+}
+
+function renderResult(){
+  document.getElementById('topfill').style.width='100%';
+  document.getElementById('toptxt').textContent='Résultat de l\'épreuve';
+  
+  const total = state.queue.length;
+  const pct = Math.round(state.score / total * 100);
+  
+  let msg = '';
+  if(pct >= 90) msg = "Niveau Master MBFA validé haut la main. Ton expertise technique est irréprochable.";
+  else if(pct >= 70) msg = "Très solide. Quelques réglages à faire sur la jurisprudence, mais les bases bancaires sont maîtrisées.";
+  else if(pct >= 50) msg = "Passable. L'exigence est forte : relis attentivement les corrections (textes de loi et jurisprudences) et recommence.";
+  else msg = "Échec critique. Le droit bancaire ne pardonne pas l'approximation. Refais la série en notant les concepts juridiques.";
+
+  document.getElementById('content').innerHTML = `
+    <div class="view result-screen">
+      <div class="result-emoji">${pct >= 70 ? '🎓' : (pct >= 50 ? '📈' : '⚠️')}</div>
+      <div class="result-score">${state.score}<span> / ${total}</span></div>
+      <div class="result-title">${pct}% de réussite</div>
+      <div class="result-msg">${msg}</div>
+      
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap; margin-top:30px;">
+        <button class="nav-btn primary" onclick="startSession('${state.mode}', ${total})">↻ Relancer l'épreuve</button>
+        <button class="nav-btn" onclick="renderHome()">Changer de mode</button>
+      </div>
+    </div>`;
+  window.scrollTo({top:0});
+}
+
+// Lancement
+renderHome();
+</script>
+</body>
+</html>

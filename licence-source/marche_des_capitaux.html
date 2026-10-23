@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="fr" subject-id="marche-des-capitaux">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marché des Capitaux — LP Banque</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#faf6ef; --paper2:#f3ece0; --ink:#22201b; --line:#e3d9c8;
+  --teal:#1b6b5e; --amber:#c87a12; --rust:#a8432a; --plum:#6b3a73; --navy:#23456b;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans',sans-serif; background:var(--paper); color:var(--ink);
+  line-height:1.6; font-size:16px;
+}
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-track{background:var(--paper2)}
+::-webkit-scrollbar-thumb{background:var(--line);border-radius:6px;border:2px solid var(--paper2)}
+::-webkit-scrollbar-thumb:hover{background:#cdbfa8}
+
+/* ===== NAV ===== */
+.nav{
+  position:fixed;top:0;left:0;right:0;height:64px;z-index:100;
+  background:rgba(250,246,239,.92);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:20px;padding:0 22px;
+}
+.nav .brand{display:flex;align-items:center;gap:11px;font-family:'Fraunces',serif;font-weight:600}
+.nav .logo{
+  width:36px;height:36px;border-radius:9px;background:var(--teal);
+  display:grid;place-items:center;color:#fff;font-size:20px;flex-shrink:0;
+  box-shadow:0 2px 0 #134d43;
+}
+.nav .brand .t1{font-size:16px;line-height:1.1}
+.nav .brand .t2{font-size:11px;color:var(--amber);font-family:'DM Mono',monospace;letter-spacing:.5px}
+.nav .grow{flex:1}
+.progress-wrap{display:flex;align-items:center;gap:10px;min-width:160px}
+.progress-wrap .lbl{font-size:11px;color:#7a7468;font-family:'DM Mono',monospace;white-space:nowrap}
+.bar{flex:1;height:8px;background:var(--paper2);border-radius:6px;overflow:hidden;border:1px solid var(--line);min-width:90px}
+.bar > i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--teal),#2a8f7e);transition:width .6s cubic-bezier(.2,.8,.2,1)}
+.xp{
+  display:flex;align-items:center;gap:7px;background:var(--paper2);
+  border:1px solid var(--line);border-radius:20px;padding:6px 13px;
+  font-family:'DM Mono',monospace;font-size:13px;font-weight:500;
+}
+.xp .star{color:var(--amber)}
+.xp b{color:var(--ink)}
+.burger{display:none;background:none;border:1px solid var(--line);border-radius:8px;width:38px;height:38px;font-size:18px;cursor:pointer;color:var(--ink)}
+
+/* ===== LAYOUT ===== */
+.shell{display:flex;padding-top:64px;min-height:100vh}
+.sidebar{
+  width:268px;flex-shrink:0;position:sticky;top:64px;height:calc(100vh - 64px);
+  overflow-y:auto;background:var(--paper2);border-right:1px solid var(--line);padding:20px 14px;
+}
+.side-h{font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:1.4px;text-transform:uppercase;color:#9a9082;margin:6px 8px 10px}
+.side-h:not(:first-child){margin-top:22px}
+.lesson-link{
+  display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:9px;
+  cursor:pointer;font-size:14px;color:var(--ink);transition:background .15s;margin-bottom:2px;
+}
+.lesson-link:hover{background:#eadfce}
+.lesson-link.active{background:var(--teal);color:#fff}
+.lesson-link.active .num{background:rgba(255,255,255,.25);color:#fff}
+.lesson-link .num{
+  width:24px;height:24px;border-radius:7px;background:#e7dcc9;color:#8a7d68;
+  display:grid;place-items:center;font-family:'DM Mono',monospace;font-size:12px;flex-shrink:0;font-weight:500;
+}
+.lesson-link.done .num{background:var(--teal);color:#fff}
+.lesson-link.active.done .num{background:#fff;color:var(--teal)}
+.lesson-link .check{margin-left:auto;color:#fff;font-size:13px;opacity:0}
+.lesson-link.done .check{opacity:1;color:var(--teal)}
+.lesson-link.active.done .check{color:#fff}
+.special-link{
+  display:flex;align-items:center;gap:10px;padding:11px;border-radius:9px;cursor:pointer;
+  font-size:14px;font-weight:600;margin-bottom:4px;border:1px dashed var(--line);transition:.15s;
+}
+.special-link.test{color:var(--plum)} .special-link.test:hover{background:#efe6f0;border-color:var(--plum)}
+.special-link.annales{color:var(--navy)} .special-link.annales:hover{background:#e4ebf2;border-color:var(--navy)}
+.special-link.active.test{background:var(--plum);color:#fff;border-style:solid}
+.special-link.active.annales{background:var(--navy);color:#fff;border-style:solid}
+
+/* ===== MAIN ===== */
+.main{flex:1;min-width:0;display:flex;justify-content:center;padding:38px 30px 90px}
+.page{max-width:720px;width:100%;display:none;animation:fade .4s ease}
+.page.show{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.tag{display:inline-block;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--amber);background:#f7ecd9;border:1px solid #ecdcbc;border-radius:20px;padding:5px 13px;margin-bottom:18px}
+h1.title{font-family:'Fraunces',serif;font-weight:600;font-size:33px;line-height:1.15;letter-spacing:-.4px;margin-bottom:8px}
+.subtitle{font-size:17px;color:#6f685b;margin-bottom:26px;font-weight:400}
+.page p{margin-bottom:15px}
+.page p b{color:var(--navy);font-weight:600}
+.section-lead{font-family:'Fraunces',serif;font-weight:600;font-size:20px;margin:30px 0 12px;color:var(--ink)}
+
+/* callouts */
+.callout{border-radius:13px;padding:16px 18px;margin:20px 0;border:1px solid;position:relative}
+.callout .c-h{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;margin-bottom:6px;font-family:'DM Sans'}
+.callout p{margin:0;font-size:15px}
+.callout.analogy{background:#fbf0df;border-color:#ecd6b0} .callout.analogy .c-h{color:var(--amber)}
+.callout.keep{background:#e6f0ec;border-color:#bfdcd2} .callout.keep .c-h{color:var(--teal)}
+.callout.trap{background:#f7e4de;border-color:#e6bdb0} .callout.trap .c-h{color:var(--rust)}
+
+/* formula box */
+.formula{
+  background:#1c1a16;color:#f3ece0;border-radius:13px;padding:20px 22px;margin:22px 0;
+  font-family:'DM Mono',monospace;box-shadow:inset 0 0 0 1px #38332a, 0 6px 18px rgba(0,0,0,.12);
+}
+.formula .f-lbl{font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;color:#c87a12;margin-bottom:11px;font-weight:500}
+.formula .eq{font-size:18px;line-height:1.7;color:#fdf6e8}
+.formula .eq .hl{color:#5dc0ad}
+.formula .leg{font-size:12.5px;color:#a59e8f;margin-top:12px;line-height:1.7}
+.formula .leg span{color:#e8c98a}
+
+/* worked example */
+.worked{background:var(--paper2);border:1px solid var(--line);border-radius:13px;padding:18px 20px;margin:22px 0}
+.worked .w-h{font-family:'Fraunces',serif;font-weight:600;font-size:16px;margin-bottom:4px;color:var(--navy)}
+.worked .w-enonce{font-size:14.5px;color:#5f594d;font-style:italic;margin-bottom:14px;padding-bottom:12px;border-bottom:1px dashed var(--line)}
+.step{display:flex;gap:13px;margin-bottom:13px;align-items:flex-start}
+.step .s-n{width:25px;height:25px;border-radius:50%;background:var(--teal);color:#fff;display:grid;place-items:center;font-family:'DM Mono',monospace;font-size:12.5px;flex-shrink:0;font-weight:500;margin-top:1px}
+.step .s-b{font-size:14.5px}
+.step .s-b .calc{font-family:'DM Mono',monospace;background:#fff;border:1px solid var(--line);border-radius:7px;padding:2px 7px;font-size:13px;display:inline-block;margin-top:3px;color:var(--navy)}
+.result-pill{display:inline-block;background:var(--teal);color:#fff;font-family:'DM Mono',monospace;font-size:14px;padding:6px 14px;border-radius:8px;font-weight:500;margin-top:4px}
+
+/* tables */
+.tbl{width:100%;border-collapse:collapse;margin:20px 0;font-size:14px;border:1px solid var(--line);border-radius:11px;overflow:hidden}
+.tbl th{background:var(--navy);color:#fff;text-align:left;padding:11px 13px;font-weight:600;font-size:13px}
+.tbl td{padding:10px 13px;border-top:1px solid var(--line)}
+.tbl tr:nth-child(even) td{background:var(--paper2)}
+.tbl td:first-child{font-weight:600;color:var(--navy)}
+.tbl .mono{font-family:'DM Mono',monospace;font-size:13px}
+
+/* quiz */
+.quiz{background:#f6eff8;border:1px solid #ddc9e2;border-radius:13px;padding:17px 19px;margin:18px 0}
+.quiz .q-tag{font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--plum);margin-bottom:9px;display:flex;align-items:center;gap:7px}
+.quiz .q-txt{font-weight:600;font-size:15.5px;margin-bottom:13px}
+.q-opts{display:flex;flex-direction:column;gap:8px}
+.q-opt{
+  text-align:left;background:#fff;border:1.5px solid #e3d3e7;border-radius:9px;padding:11px 14px;
+  cursor:pointer;font-size:14.5px;font-family:'DM Sans';color:var(--ink);transition:.13s;
+}
+.q-opt:hover:not(:disabled){border-color:var(--plum);background:#fbf7fc}
+.q-opt.correct{background:#e6f0ec;border-color:var(--teal);color:#13534a;font-weight:600}
+.q-opt.wrong{background:#f7e4de;border-color:var(--rust);color:#8c3320}
+.q-opt:disabled{cursor:default}
+.q-fb{margin-top:11px;font-size:13.5px;padding:10px 13px;border-radius:8px;display:none}
+.q-fb.ok{display:block;background:#e6f0ec;color:#13534a;border:1px solid #bfdcd2}
+.q-fb.no{display:block;background:#f7e4de;color:#8c3320;border:1px solid #e6bdb0}
+.q-num input{font-family:'DM Mono',monospace;font-size:15px;padding:10px 13px;border:1.5px solid #e3d3e7;border-radius:9px;width:160px;background:#fff}
+.q-num input:focus{outline:none;border-color:var(--plum)}
+.q-num .qbtn{margin-left:8px;background:var(--plum);color:#fff;border:none;border-radius:9px;padding:11px 17px;font-family:'DM Sans';font-weight:600;cursor:pointer;font-size:14px}
+
+/* nav buttons */
+.lesson-nav{display:flex;justify-content:space-between;align-items:center;margin-top:36px;padding-top:22px;border-top:1px solid var(--line);gap:12px;flex-wrap:wrap}
+.btn{border:none;border-radius:10px;padding:12px 20px;font-family:'DM Sans';font-weight:600;cursor:pointer;font-size:14.5px;transition:.15s;display:inline-flex;align-items:center;gap:8px}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.btn.ghost{background:transparent;border:1.5px solid var(--line);color:#6f685b}
+.btn.ghost:hover:not(:disabled){border-color:var(--ink);color:var(--ink)}
+.btn.solid{background:var(--teal);color:#fff;box-shadow:0 2px 0 #134d43}
+.btn.solid:hover{transform:translateY(-1px);box-shadow:0 4px 0 #134d43}
+.btn.solid.done{background:var(--amber);box-shadow:0 2px 0 #9a5d0c}
+.btn.plum{background:var(--plum);color:#fff;box-shadow:0 2px 0 #4f2956}
+.btn.plum:hover{transform:translateY(-1px)}
+
+/* svg viz */
+.viz{background:var(--paper2);border:1px solid var(--line);border-radius:13px;padding:18px;margin:22px 0;text-align:center}
+.viz svg{max-width:100%;height:auto}
+.viz .v-cap{font-size:12px;color:#8a8174;margin-top:8px;font-family:'DM Mono',monospace}
+
+/* ===== TEST ===== */
+.test-intro{text-align:center;padding:10px 0 24px}
+.test-q{background:#f6eff8;border:1px solid #ddc9e2;border-radius:13px;padding:20px;margin:16px 0}
+.test-q .tq-n{font-family:'DM Mono',monospace;color:var(--plum);font-size:12px;margin-bottom:9px;letter-spacing:1px}
+.test-q .tq-txt{font-weight:600;font-size:16px;margin-bottom:14px}
+.remediation{background:#fbf0df;border:1px solid #ecd6b0;border-radius:11px;padding:15px 17px;margin-top:13px;display:none}
+.remediation.show{display:block;animation:fade .35s}
+.remediation .r-h{font-weight:700;color:var(--rust);font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:7px}
+.remediation p{font-size:14px;margin-bottom:11px}
+.remediation .r-btns{display:flex;gap:9px;flex-wrap:wrap}
+.remediation .mini{font-size:13px;padding:8px 14px;border-radius:8px;border:none;cursor:pointer;font-weight:600;font-family:'DM Sans'}
+.remediation .mini.rev{background:var(--amber);color:#fff}
+.remediation .mini.cont{background:transparent;border:1.5px solid var(--amber);color:var(--amber)}
+
+.float-retry{
+  position:fixed;bottom:24px;right:24px;background:var(--plum);color:#fff;border:none;
+  border-radius:30px;padding:14px 22px;font-family:'DM Sans';font-weight:700;font-size:14px;
+  cursor:pointer;box-shadow:0 6px 20px rgba(107,58,115,.4);display:none;z-index:90;align-items:center;gap:8px;
+}
+.float-retry.show{display:inline-flex;animation:fade .4s}
+
+.result-card{text-align:center;padding:14px}
+.result-card .score-big{font-family:'Fraunces',serif;font-size:64px;font-weight:600;line-height:1;color:var(--teal)}
+.result-card .score-sub{font-family:'DM Mono',monospace;color:#8a8174;margin:6px 0 24px}
+.result-msg{font-size:17px;margin-bottom:26px;font-weight:500}
+.chap-bilan{text-align:left;max-width:480px;margin:0 auto}
+.cb-row{margin-bottom:13px}
+.cb-row .cb-top{display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:5px}
+.cb-row .cb-bar{height:10px;background:var(--paper2);border-radius:6px;overflow:hidden;border:1px solid var(--line)}
+.cb-row .cb-bar i{display:block;height:100%;border-radius:6px}
+
+/* ===== ANNALES ===== */
+.annale-ex{background:var(--paper2);border:1px solid var(--line);border-radius:13px;padding:20px;margin:18px 0}
+.annale-ex .ae-tag{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--navy);text-transform:uppercase;margin-bottom:8px}
+.annale-ex .ae-enonce{font-size:15px;margin-bottom:14px}
+.annale-ex .ae-enonce .data{font-family:'DM Mono',monospace;background:#fff;border:1px solid var(--line);padding:1px 6px;border-radius:5px;font-size:13.5px}
+.reveal-btn{background:var(--navy);color:#fff;border:none;border-radius:9px;padding:10px 17px;font-weight:600;cursor:pointer;font-family:'DM Sans';font-size:14px}
+.corrige{display:none;margin-top:15px;padding-top:15px;border-top:1px dashed var(--line);animation:fade .35s}
+.corrige.show{display:block}
+.corrige .cor-h{font-family:'Fraunces',serif;font-weight:600;color:var(--teal);margin-bottom:11px;font-size:15px}
+
+.note-box{background:#e4ebf2;border:1px solid #bcccdd;border-radius:11px;padding:14px 16px;font-size:13.5px;color:var(--navy);margin-bottom:20px}
+
+@media(max-width:880px){
+  .sidebar{position:fixed;left:0;top:64px;z-index:95;transform:translateX(-100%);transition:transform .3s;box-shadow:6px 0 24px rgba(0,0,0,.12)}
+  .sidebar.open{transform:translateX(0)}
+  .burger{display:block}
+  .progress-wrap{display:none}
+  .main{padding:26px 18px 90px}
+  h1.title{font-size:27px}
+  .nav .brand .t2{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <button class="burger" onclick="toggleSide()">☰</button>
+  <div class="brand">
+    <div class="logo">📈</div>
+    <div>
+      <div class="t1">Marché des Capitaux</div>
+      <div class="t2">LP BANQUE · IAE BRETAGNE SUD</div>
+    </div>
+  </div>
+  <div class="grow"></div>
+  <div class="progress-wrap">
+    <span class="lbl">Parcours</span>
+    <div class="bar"><i id="globalBar"></i></div>
+    <span class="lbl" id="globalPct">0%</span>
+  </div>
+  <div class="xp"><span class="star">★</span> <b id="xpVal">0</b> XP</div>
+</nav>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="side-h">Leçons</div>
+    <div id="lessonMenu"></div>
+    <div class="side-h">Évaluation</div>
+    <div class="special-link test" data-page="test" onclick="goPage('test')">🎯 <span>Test final adaptatif</span></div>
+    <div class="special-link annales" data-page="annales" onclick="goPage('annales')">📜 <span>Annales corrigées</span></div>
+  </aside>
+
+  <main class="main" id="main"><!-- pages injected --></main>
+</div>
+
+<button class="float-retry" id="floatRetry" onclick="goPage('test');resetTest()">↻ Reprendre le test</button>
+
+<script>
+/* =========================================================
+   DONNÉES — Leçons
+   ========================================================= */
+
+const LESSONS = [
+{
+  id:0, tag:"Chapitre 1 · Financement",
+  title:"Qui a trop d'argent, qui n'en a pas assez",
+  subtitle:"Capacité de financement, besoin de financement et les deux circuits",
+  body:`
+  <div class="callout analogy"><div class="c-h">💡 Analogie</div>
+  <p>Imagine un immeuble où certains locataires ont de l'épargne qui dort et d'autres ont un projet mais pas les fonds. Le <b>système financier</b> est le concierge qui met les deux en relation. Sans lui, l'argent reste immobile d'un côté et le projet meurt de l'autre.</p></div>
+
+  <p>Le système financier a un seul but : mettre en relation l'<b>offre</b> et la <b>demande</b> de capitaux. Les capitaux sont offerts par les agents dont les revenus dépassent les dépenses. Ils sont demandés par ceux dont les dépenses dépassent les revenus.</p>
+  <p>On distingue donc deux situations. Un agent à <b>capacité de financement</b> (ACF) épargne plus qu'il n'investit. Un agent à <b>besoin de financement</b> (ABF) dépense plus qu'il ne gagne et doit emprunter. Les ménages sont structurellement en capacité ; les entreprises et l'État sont souvent en besoin.</p>
+
+  <div class="formula">
+    <div class="f-lbl">La cascade du revenu au financement</div>
+    <div class="eq">Épargne = Revenu − <span class="hl">Consommation</span><br>Capacité/Besoin = Épargne − <span class="hl">Investissement</span></div>
+    <div class="leg">Si le solde est <span>positif</span> → capacité de financement · s'il est <span>négatif</span> → besoin de financement</div>
+  </div>
+
+  <div class="worked">
+    <div class="w-h">Exemple résolu — ménages français 2022 (INSEE)</div>
+    <div class="w-enonce">Revenu disponible brut = 2 110,8 Mds€ ; consommation finale = 1 825,1 Mds€ ; investissement = 185,4 Mds€. Capacité de financement ?</div>
+    <div class="step"><div class="s-n">1</div><div class="s-b">Épargne = revenu − consommation <span class="calc">2 110,8 − 1 825,1 = 285,8 Mds€</span></div></div>
+    <div class="step"><div class="s-n">2</div><div class="s-b">Capacité = épargne − investissement <span class="calc">285,8 − 185,4 = 100,4 Mds€</span></div></div>
+    <div class="step"><div class="s-n">3</div><div class="s-b"><span class="result-pill">Capacité de financement = +100,4 Mds€</span> — les ménages financent le reste de l'économie</div></div>
+  </div>
+
+  <p class="section-lead">Deux chemins pour relier ABF et ACF</p>
+  <p>Il existe deux façons de faire circuler les capitaux. Le <b>financement direct</b> (finance de marché) : l'agent en besoin émet des titres achetés directement par l'agent en capacité, sur le marché des capitaux. Le <b>financement indirect</b> (intermédié) : une banque s'interpose, collecte les dépôts et accorde des crédits.</p>
+
+  <div class="viz">
+    <svg viewBox="0 0 560 170" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#1b6b5e"/></marker></defs>
+      <rect x="30" y="65" width="130" height="46" rx="10" fill="#fff" stroke="#e3d9c8"/><text x="95" y="86" text-anchor="middle" font-family="DM Sans" font-size="12" font-weight="700">Agents à BESOIN</text><text x="95" y="102" text-anchor="middle" font-size="10.5" fill="#8a8174">(ABF)</text>
+      <rect x="400" y="65" width="130" height="46" rx="10" fill="#fff" stroke="#e3d9c8"/><text x="465" y="86" text-anchor="middle" font-family="DM Sans" font-size="12" font-weight="700">Agents à CAPACITÉ</text><text x="465" y="102" text-anchor="middle" font-size="10.5" fill="#8a8174">(ACF)</text>
+      <rect x="215" y="20" width="130" height="38" rx="9" fill="#e4f0ed" stroke="#1b6b5e"/><text x="280" y="43" text-anchor="middle" font-size="11.5" fill="#0f4a40" font-weight="600">Marché de capitaux</text>
+      <rect x="215" y="118" width="130" height="38" rx="9" fill="#fbf0db" stroke="#c87a12"/><text x="280" y="141" text-anchor="middle" font-size="11.5" fill="#8a5a08" font-weight="600">Banque (crédit)</text>
+      <line x1="160" y1="78" x2="214" y2="45" stroke="#1b6b5e" stroke-width="1.8" marker-end="url(#ar)"/>
+      <line x1="346" y1="45" x2="400" y2="78" stroke="#1b6b5e" stroke-width="1.8" marker-end="url(#ar)"/>
+      <line x1="160" y1="98" x2="214" y2="132" stroke="#c87a12" stroke-width="1.8" marker-end="url(#ar)"/>
+      <line x1="346" y1="132" x2="400" y2="98" stroke="#c87a12" stroke-width="1.8" marker-end="url(#ar)"/>
+    </svg>
+    <div class="v-cap">Chemin du haut = financement direct (marché) · chemin du bas = financement indirect (banque)</div>
+  </div>
+
+  <div class="callout keep"><div class="c-h">🔑 À retenir</div>
+  <p>ACF = épargne &gt; investissement ; ABF = dépenses &gt; revenus. Deux circuits : <b>direct</b> (titres, marché de capitaux) et <b>indirect</b> (crédit bancaire). La banque « transforme les dépôts en crédits ».</p></div>
+
+  <div class="callout trap"><div class="c-h">⚠️ Piège fréquent</div>
+  <p>Ne pas confondre financement <b>interne</b> et <b>externe</b>. L'interne, c'est l'autofinancement (bénéfices non distribués + amortissements) : pas d'endettement. L'externe passe par le marché ou la banque. Direct/indirect ne concerne que le financement <b>externe</b>.</p></div>
+  `,
+  quizzes:[
+    {q:"Un agent à capacité de financement est un agent dont :",opts:["les dépenses dépassent les revenus","l'épargne dépasse l'investissement","le crédit dépasse l'épargne","les impôts dépassent les revenus"],a:1,fb:"Capacité de financement : l'épargne est supérieure à l'investissement. L'agent dégage un excédent qu'il peut prêter."},
+    {q:"Le financement direct correspond à :",opts:["un crédit bancaire","l'émission de titres sur le marché des capitaux","l'autofinancement","une subvention de l'État"],a:1,fb:"Direct = finance de marché : l'agent en besoin émet des titres achetés par les agents en capacité, sans intermédiaire."},
+    {q:"En 2022, les ménages français avaient une capacité de financement de +100,4 Mds€. Cela signifie qu'ils :",opts:["ont emprunté 100,4 Mds€","ont financé les autres secteurs à hauteur de 100,4 Mds€","ont fait faillite","n'ont pas épargné"],a:1,fb:"Une capacité positive signifie un excédent prêté au reste de l'économie (entreprises, État)."}
+  ]
+},
+{
+  id:1, tag:"Chapitre 2 · Panorama",
+  title:"La carte des marchés de capitaux",
+  subtitle:"Monétaire ou financier, primaire ou secondaire",
+  body:`
+  <div class="callout analogy"><div class="c-h">💡 Analogie</div>
+  <p>Le marché de capitaux, c'est une gare avec deux quais. Le quai <b>monétaire</b> pour les trajets courts (moins d'un an, argent très liquide) ; le quai <b>financier</b> pour les longs trajets (moyen et long terme). Même gare, deux horizons de temps.</p></div>
+
+  <p>Les <b>marchés de capitaux</b> mettent en relation les agents détenant un excédent de capitaux et ceux qui ont un besoin de financement. Grâce à cette jonction, ils assurent le <b>financement de l'économie</b>. On les découpe selon la <b>durée</b> des capitaux échangés.</p>
+  <p>Le <b>marché monétaire</b> traite les taux d'intérêt à court terme : par convention, les échéances inférieures à un an. Le <b>marché financier</b> traite les capitaux à long terme, où se négocient les valeurs mobilières.</p>
+
+  <div class="viz">
+    <svg viewBox="0 0 560 230" xmlns="http://www.w3.org/2000/svg">
+      <rect x="205" y="12" width="150" height="36" rx="9" fill="#6b3a73" /><text x="280" y="35" text-anchor="middle" font-family="DM Sans" font-size="13" fill="#fff" font-weight="700">Marché des capitaux</text>
+      <line x1="280" y1="48" x2="280" y2="66" stroke="#b9a9c0" stroke-width="1.6"/>
+      <line x1="140" y1="66" x2="420" y2="66" stroke="#b9a9c0" stroke-width="1.6"/>
+      <line x1="140" y1="66" x2="140" y2="82" stroke="#b9a9c0" stroke-width="1.6"/>
+      <line x1="420" y1="66" x2="420" y2="82" stroke="#b9a9c0" stroke-width="1.6"/>
+      <rect x="60" y="82" width="160" height="46" rx="9" fill="#e3ebf4" stroke="#23456b"/><text x="140" y="104" text-anchor="middle" font-size="12.5" fill="#23456b" font-weight="700">Marché monétaire</text><text x="140" y="120" text-anchor="middle" font-size="10" fill="#5a6b82">court terme &lt; 1 an</text>
+      <rect x="340" y="82" width="160" height="46" rx="9" fill="#e4f0ed" stroke="#1b6b5e"/><text x="420" y="104" text-anchor="middle" font-size="12.5" fill="#0f4a40" font-weight="700">Marché financier</text><text x="420" y="120" text-anchor="middle" font-size="10" fill="#3d7a6f">moyen et long terme</text>
+      <g font-family="DM Sans" font-size="10.5" fill="#4a4640" text-anchor="middle">
+        <rect x="40" y="152" width="95" height="40" rx="8" fill="#fff" stroke="#e3d9c8"/><text x="87" y="170">TCN</text><text x="87" y="184" font-size="9" fill="#8a8174">(NEU CP/MTN)</text>
+        <rect x="145" y="152" width="95" height="40" rx="8" fill="#fff" stroke="#e3d9c8"/><text x="192" y="176">Interbancaire</text>
+        <rect x="320" y="152" width="80" height="40" rx="8" fill="#fff" stroke="#e3d9c8"/><text x="360" y="176">Actions</text>
+        <rect x="405" y="152" width="80" height="40" rx="8" fill="#fff" stroke="#e3d9c8"/><text x="445" y="176">Obligations</text>
+      </g>
+    </svg>
+    <div class="v-cap">Deux grandes branches, chacune subdivisée selon les titres échangés</div>
+  </div>
+
+  <p class="section-lead">Primaire et secondaire</p>
+  <p>Le marché financier se décompose aussi selon le moment de la vie du titre. Le <b>marché primaire</b> est celui du « neuf » : les titres y sont émis pour la première fois et les capitaux vont à l'émetteur. Le <b>marché secondaire</b> (la Bourse) est celui de l'« occasion » : les titres déjà émis s'échangent entre investisseurs, sans que l'émetteur ne reçoive d'argent.</p>
+
+  <table class="tbl">
+    <tr><th></th><th>Marché primaire</th><th>Marché secondaire</th></tr>
+    <tr><td>Autre nom</td><td>Marché des émissions</td><td>La Bourse</td></tr>
+    <tr><td>Titres</td><td class="mono">neufs</td><td class="mono">d'occasion</td></tr>
+    <tr><td>Qui encaisse ?</td><td>l'émetteur (entreprise, État)</td><td>le vendeur du titre</td></tr>
+    <tr><td>Rôle clé</td><td>financer l'économie</td><td>assurer la liquidité</td></tr>
+  </table>
+
+  <div class="callout keep"><div class="c-h">🔑 À retenir</div>
+  <p>Monétaire = court terme (&lt; 1 an) ; financier = long terme. Primaire = émission (financement) ; secondaire = échange (liquidité). Les deux sont complémentaires : sans liquidité du secondaire, personne n'achèterait sur le primaire.</p></div>
+
+  <div class="callout trap"><div class="c-h">⚠️ Piège fréquent</div>
+  <p>Croire que la Bourse « finance » les entreprises au quotidien. La Bourse est le marché <b>secondaire</b> : l'entreprise n'y touche rien. Elle n'est financée qu'au moment de l'émission (primaire), lors d'une IPO ou d'une augmentation de capital.</p></div>
+  `,
+  quizzes:[
+    {q:"Le marché monétaire traite des échéances :",opts:["supérieures à 10 ans","à moyen terme (1 à 7 ans)","inférieures à 1 an par convention","sans limite de durée"],a:2,fb:"Le marché monétaire = taux d'intérêt à court terme, par convention moins d'un an."},
+    {q:"Sur le marché secondaire, les capitaux échangés vont :",opts:["à l'entreprise émettrice","au vendeur du titre","à l'État","à la banque centrale"],a:1,fb:"Le secondaire échange des titres d'occasion : c'est le vendeur qui encaisse, pas l'émetteur."},
+    {q:"Quel rôle assure principalement le marché secondaire ?",opts:["le financement de l'économie","la liquidité des investissements","la création monétaire","la collecte de l'impôt"],a:1,fb:"Le secondaire totalise la quasi-totalité des échanges et assure la liquidité : on peut revendre son titre quand on veut."}
+  ]
+},
+{
+  id:2, tag:"Chapitre 3 · Marché monétaire",
+  title:"Là où les banques se prêtent au jour le jour",
+  subtitle:"Interbancaire, TCN et rôle de la BCE",
+  body:`
+  <div class="callout analogy"><div class="c-h">💡 Analogie</div>
+  <p>Le marché interbancaire est un club privé de banques qui se dépannent en liquidités, un peu comme des voisins qui se prêtent du sucre. Une même banque peut, dans la même semaine, prêter puis emprunter selon ses besoins de trésorerie du moment.</p></div>
+
+  <p>Le <b>marché interbancaire</b> est le marché de la <b>monnaie centrale</b>, réservé aux banques. Celles qui ont plus de liquidités que nécessaire prêtent l'excédent à celles qui en manquent. C'est un marché de <b>gré à gré</b> : les banques négocient librement entre elles, sur des durées d'un jour à un an.</p>
+  <p>Le prix de ces échanges est le taux du marché interbancaire. Historiquement, le taux au jour le jour était l'<b>EONIA</b> et les taux plus longs l'<b>Euribor</b> (1 mois, 3 mois, jusqu'à 12 mois). Une banque emprunte souvent une seule journée pour honorer ses réserves obligatoires auprès de la banque centrale.</p>
+
+  <div class="callout trap"><div class="c-h">⚠️ Note d'actualité</div>
+  <p>Le cours mentionne l'<b>EONIA</b> : c'est la référence historique. Depuis 2022, l'EONIA a été remplacé par l'<b>€STR</b> (Euro Short-Term Rate). L'Euribor, lui, reste bien en vigueur. Réponds « EONIA » si l'énoncé reprend le vocabulaire du cours.</p></div>
+
+  <p class="section-lead">Les titres de créances négociables (TCN)</p>
+  <p>Un <b>TCN</b> est un titre émis au gré de l'émetteur, négociable sur un marché réglementé ou de gré à gré, représentant un droit de créance pour une durée déterminée. La réforme de <b>juin 2016</b> a simplifié le paysage en deux catégories.</p>
+
+  <table class="tbl">
+    <tr><th>Nouvelle catégorie</th><th>Durée</th><th>Remplace</th></tr>
+    <tr><td>NEU CP <span style="font-size:11px;color:#8a8174">(court terme)</span></td><td class="mono">≤ 1 an</td><td>certificats de dépôt + billets de trésorerie</td></tr>
+    <tr><td>NEU MTN <span style="font-size:11px;color:#8a8174">(moyen terme)</span></td><td class="mono">&gt; 1 an</td><td>BMTN</td></tr>
+  </table>
+  <p><b>NEU</b> signifie « Negotiable EUropean ». La réforme a aussi ouvert le marché aux émetteurs internationaux, autorisé la documentation dans une langue financière usuelle, et élargi la liste des agences de notation reconnues par l'ESMA.</p>
+
+  <p class="section-lead">Le rôle de la BCE</p>
+  <p>La <b>BCE</b> alimente le marché interbancaire en liquidités selon ses objectifs, au premier rang desquels la <b>stabilité des prix</b>. Elle gère la quantité de monnaie en circulation. Si elle offre beaucoup de capitaux, le taux baisse et les banques se financent plus facilement ; si elle en retire, le taux monte.</p>
+
+  <div class="formula">
+    <div class="f-lbl">Les trois leviers de la BCE</div>
+    <div class="eq">1 · <span class="hl">Taux directeur</span>  ·  2 · <span class="hl">Taux des réserves obligatoires</span>  ·  3 · <span class="hl">Taux plancher</span></div>
+    <div class="leg">Elle agit sur le <span>prix</span> de la liquidité (taux) et sur les <span>quantités</span> (offre de refinancement)</div>
+  </div>
+
+  <div class="callout keep"><div class="c-h">🔑 À retenir</div>
+  <p>Interbancaire = marché de gré à gré de la monnaie centrale, réservé aux banques, de 1 jour à 1 an. TCN depuis 2016 : <b>NEU CP</b> (≤ 1 an) et <b>NEU MTN</b> (&gt; 1 an). La BCE pilote le taux et les quantités pour viser la stabilité des prix.</p></div>
+
+  <div class="callout trap"><div class="c-h">⚠️ Piège fréquent</div>
+  <p>Confondre monnaie centrale et monnaie ordinaire. Sur l'interbancaire, ce n'est pas l'argent des clients qui circule, mais la <b>monnaie banque centrale</b> — celle que les banques détiennent sur leur compte à la BCE.</p></div>
+  `,
+  quizzes:[
+    {q:"Le marché interbancaire est :",opts:["ouvert à tous les épargnants","réservé aux banques, de gré à gré","un marché boursier réglementé","géré par l'AMF"],a:1,fb:"C'est un marché de gré à gré de la monnaie centrale, réservé aux établissements de crédit."},
+    {q:"Depuis la réforme de 2016, un titre à moins d'un an s'appelle :",opts:["un BMTN","un NEU MTN","un NEU CP","une obligation"],a:2,fb:"NEU CP (Negotiable EUropean Commercial Paper) pour le court terme ; NEU MTN pour le moyen terme (> 1 an)."},
+    {q:"L'objectif prioritaire de la BCE sur le marché interbancaire est :",opts:["maximiser les profits des banques","la stabilité des prix","financer l'État","augmenter les salaires"],a:1,fb:"La BCE gère la liquidité pour viser en priorité la stabilité des prix."}
+  ]
+},
+{
+  id:3, tag:"Chapitre 4 · Marché financier",
+  title:"Émettre, revendre et fixer un cours",
+  subtitle:"Primaire, secondaire et systèmes de cotation",
+  body:`
+  <div class="callout analogy"><div class="c-h">💡 Analogie</div>
+  <p>Le marché primaire, c'est le concessionnaire qui vend la voiture neuve : l'argent va au constructeur. Le marché secondaire, c'est le site d'occasion : la voiture change de mains entre particuliers, le constructeur n'y touche rien mais sait que l'existence de ce marché rassure l'acheteur du neuf.</p></div>
+
+  <p>On appelle <b>valeur mobilière</b> un ensemble de titres émis par une personne morale, fongibles et interchangeables, pouvant être cotés en bourse, qui donnent des droits identiques par catégorie. On distingue quatre grandes catégories : les <b>actions</b>, les <b>obligations</b>, les parts d'<b>OPCVM</b>, et les <b>instruments financiers à terme</b> (options, etc.).</p>
+
+  <p class="section-lead">Le marché primaire</p>
+  <p>Aussi appelé « marché des émissions », c'est celui où sociétés en quête de fonds et investisseurs se rencontrent pour la première fois. Les nouvelles valeurs y sont proposées à la vente. Les capitaux levés sont <b>encaissés par les sociétés</b>. Il permet le financement à long terme des principaux agents économiques.</p>
+  <p>Le primaire intervient lors de quatre opérations : l'<b>introduction en bourse</b> (IPO), les <b>privatisations</b>, les <b>augmentations de capital</b> et le <b>lancement d'un emprunt obligataire</b>.</p>
+
+  <p class="section-lead">Le marché secondaire</p>
+  <p>C'est celui où s'échangent les titres d'occasion ou antérieurement émis. Il totalise la quasi-totalité des échanges et assure la <b>liquidité</b> des investissements. Il prend deux formes : les <b>marchés organisés</b> (réglementés) et les <b>marchés de gré à gré</b> (over-the-counter, OTC).</p>
+
+  <p class="section-lead">La cotation : continu vs fixing</p>
+  <p>La <b>cotation</b> attribue une valeur de marché à un titre, selon l'offre et la demande. Deux systèmes coexistent. En <b>continu</b>, le cours évolue à chaque ordre pendant toute la séance (valeurs liquides comme le CAC 40). Au <b>fixing</b>, tous les ordres sont regroupés et confrontés à un ou deux moments précis de la journée (valeurs peu liquides).</p>
+
+  <table class="tbl">
+    <tr><th>Système</th><th>Pour quelles valeurs</th><th>Principe</th></tr>
+    <tr><td>Continu</td><td>CAC 40, valeurs liquides</td><td class="mono">cours en temps réel</td></tr>
+    <tr><td>Fixing</td><td>petites valeurs, Euronext Access</td><td class="mono">1 ou 2 confrontations/jour</td></tr>
+  </table>
+  <p>C'est la <b>liquidité</b> du titre (le nombre d'échanges), et non son marché d'appartenance, qui détermine sa catégorie de cotation.</p>
+
+  <div class="callout keep"><div class="c-h">🔑 À retenir</div>
+  <p>Primaire = émission (l'émetteur encaisse) ; secondaire = échange (liquidité). Le secondaire est organisé ou de gré à gré. Cotation en continu pour les valeurs liquides, au fixing pour les moins liquides.</p></div>
+
+  <div class="callout trap"><div class="c-h">⚠️ Piège fréquent</div>
+  <p>Penser que la catégorie de cotation dépend du marché (Euronext, Growth, Access). Faux : seul le <b>critère de liquidité</b> du titre compte. Une petite valeur peu échangée sera au fixing, quel que soit son marché.</p></div>
+  `,
+  quizzes:[
+    {q:"Sur le marché primaire, les capitaux levés sont encaissés par :",opts:["les autres actionnaires","la société émettrice","la Bourse","l'AMF"],a:1,fb:"Le primaire est le marché des émissions : l'entreprise encaisse directement les fonds levés."},
+    {q:"La cotation en continu concerne surtout :",opts:["les valeurs les moins liquides","les valeurs très liquides comme le CAC 40","Euronext Access uniquement","les obligations d'État"],a:1,fb:"Le continu s'applique aux valeurs liquides ; le fixing aux valeurs peu échangées."},
+    {q:"Quelle opération relève du marché primaire ?",opts:["revendre une action en Bourse","une augmentation de capital","acheter un titre d'occasion","échanger deux actions"],a:1,fb:"Augmentation de capital, IPO, privatisation et emprunt obligataire relèvent du primaire."}
+  ]
+},
+{
+  id:4, tag:"Chapitre 5 · Actions",
+  title:"Devenir copropriétaire d'une entreprise",
+  subtitle:"Droits de l'actionnaire, cotées ou non, types d'actions",
+  body:`
+  <div class="callout analogy"><div class="c-h">💡 Analogie</div>
+  <p>Acheter une action, c'est acheter une part de pizza de l'entreprise. Tu as ta part des bénéfices (le dividende), ta voix pour décider comment on garnit la pizza (le vote), et le droit de savoir ce qui se passe en cuisine (l'information).</p></div>
+
+  <p>L'<b>action</b> est un titre qui donne à son détenteur (l'actionnaire) un <b>droit de propriété</b> sur une part du capital d'une société. Elle ouvre trois droits : <b>voter</b> aux assemblées générales, <b>recevoir des dividendes</b> quand la société est bénéficiaire, et <b>être informé</b> de la gestion pour y participer.</p>
+  <p>À la création, les associés apportent des fonds qui constituent le <b>capital social</b>. En échange, ils reçoivent des actions.</p>
+
+  <p class="section-lead">Cotées ou non cotées</p>
+  <p>Une action est <b>cotée</b> dès qu'elle peut être achetée ou vendue en Bourse : son cours varie selon l'offre et la demande. Une action <b>non cotée</b> ne s'échange pas en Bourse car la société n'a pas fait appel public à l'épargne. Son cours n'est pas publié et elle est difficile à acquérir.</p>
+
+  <div class="viz">
+    <svg viewBox="0 0 560 120" xmlns="http://www.w3.org/2000/svg">
+      <rect x="40" y="35" width="220" height="52" rx="11" fill="#e4f0ed" stroke="#1b6b5e"/><text x="150" y="60" text-anchor="middle" font-family="DM Sans" font-size="13" fill="#0f4a40" font-weight="700">Action cotée</text><text x="150" y="77" text-anchor="middle" font-size="10.5" fill="#3d7a6f">cours publié · liquide · en Bourse</text>
+      <rect x="300" y="35" width="220" height="52" rx="11" fill="#f7e6df" stroke="#a8432a"/><text x="410" y="60" text-anchor="middle" font-family="DM Sans" font-size="13" fill="#8a3624" font-weight="700">Action non cotée</text><text x="410" y="77" text-anchor="middle" font-size="10.5" fill="#a8432a">cours non publié · illiquide</text>
+    </svg>
+    <div class="v-cap">La cotation dépend de l'appel public à l'épargne</div>
+  </div>
+
+  <p class="section-lead">Les principaux types d'actions</p>
+  <p>On rencontre notamment les <b>actions ordinaires</b>, les <b>actions privilégiées</b> (preferred stocks, dividende prioritaire), les <b>actions de catégories A et B</b>, les <b>ABSA</b> (à bons de souscription d'actions), les <b>ABSO</b> et <b>ABSOC</b> (bons de souscription d'obligations, éventuellement convertibles), ainsi que les <b>certificats d'investissement</b> et les <b>parts sociales</b>.</p>
+
+  <div class="callout keep"><div class="c-h">🔑 À retenir</div>
+  <p>L'action = droit de <b>propriété</b> + trois droits (vote, dividende, information). Cotée = en Bourse, cours publié. Non cotée = pas d'appel public à l'épargne, cours non publié, illiquide.</p></div>
+
+  <div class="callout trap"><div class="c-h">⚠️ Piège fréquent</div>
+  <p>Confondre action et obligation. L'action est un titre de <b>propriété</b> (l'actionnaire est copropriétaire et prend un risque) ; l'obligation est un titre de <b>créance</b> (le porteur est prêteur, pas propriétaire). Le dividende n'est jamais garanti ; l'intérêt obligataire, oui.</p></div>
+  `,
+  quizzes:[
+    {q:"L'action confère à son détenteur :",opts:["un droit de créance","un droit de propriété sur le capital","une garantie de remboursement","un taux d'intérêt fixe"],a:1,fb:"L'action est un titre de propriété : l'actionnaire détient une part du capital de la société."},
+    {q:"Une action non cotée se caractérise par :",opts:["un cours publié quotidiennement","l'absence d'appel public à l'épargne","une liquidité élevée","une cotation au fixing"],a:1,fb:"La société n'a pas fait appel public à l'épargne : le titre ne s'échange pas en Bourse et son cours n'est pas publié."},
+    {q:"Le dividende est versé :",opts:["chaque année, quoi qu'il arrive","seulement quand la société est bénéficiaire","à la place de l'intérêt obligataire","par la banque centrale"],a:1,fb:"Le dividende dépend des bénéfices : contrairement à l'intérêt d'une obligation, il n'est pas garanti."}
+  ]
+},
+{
+  id:5, tag:"Chapitre 6 · Obligations",
+  title:"Prêter à un émetteur contre un coupon",
+  subtitle:"Caractéristiques et types d'obligations",
+  body:`
+  <div class="callout analogy"><div class="c-h">💡 Analogie</div>
+  <p>Une obligation, c'est une reconnaissance de dette formalisée. Tu prêtes une somme, on te verse des intérêts réguliers (le coupon), et on te rend le capital à la fin. Tu es le banquier de l'émetteur — mais tu ne possèdes rien de l'entreprise.</p></div>
+
+  <p>Une <b>obligation</b> est une valeur mobilière constituant un <b>titre de créance négociable à long terme</b>. C'est un contrat entre l'émetteur et le porteur. L'émetteur peut être une entreprise, une collectivité, un organisme public, une institution financière ou un État. Quand c'est un État dans sa devise, on parle d'<b>obligation souveraine</b> ou de <b>bon du Trésor</b>.</p>
+  <p>Le créancier ne dispose que de <b>deux droits</b> : percevoir les intérêts et être remboursé. Aucun droit de vote, aucune part de propriété.</p>
+
+  <div class="formula">
+    <div class="f-lbl">Les 5 caractéristiques d'une obligation</div>
+    <div class="eq"><span class="hl">Valeur nominale</span> (pair) · <span class="hl">Taux nominal</span> (coupon) · <span class="hl">Mode de remboursement</span> · <span class="hl">Maturité</span> · <span class="hl">Valeur de remboursement</span></div>
+    <div class="leg">Le taux peut être <span>fixe, variable ou nul</span> · remboursement <span>in fine</span>, par tranches, ou jamais (perpétuelle)</div>
+  </div>
+
+  <p class="section-lead">Les types d'obligations</p>
+  <p>On les classe selon l'émetteur : obligations d'<b>État</b> ou d'<b>entreprises</b> (corporate bonds). On les classe aussi selon les intérêts : à <b>taux fixe</b>, à <b>taux variable</b> (floating rate note), à <b>coupon zéro</b> (pas d'intérêt périodique, gain à l'échéance) ou <b>convertibles</b> (transformables en actions).</p>
+
+  <table class="tbl">
+    <tr><th>Critère</th><th>Types</th></tr>
+    <tr><td>Selon l'émetteur</td><td>obligations d'État · corporate bonds</td></tr>
+    <tr><td>Selon les intérêts</td><td>taux fixe · taux variable · coupon zéro · convertible</td></tr>
+  </table>
+
+  <div class="callout keep"><div class="c-h">🔑 À retenir</div>
+  <p>Obligation = titre de <b>créance</b> à long terme. Deux droits seulement : intérêts + remboursement. Cinq caractéristiques (nominal, coupon, remboursement, maturité, valeur de remboursement). Remboursement <b>in fine</b> = tout à l'échéance.</p></div>
+
+  <div class="callout trap"><div class="c-h">⚠️ Piège fréquent</div>
+  <p>Croire qu'une obligation à <b>coupon zéro</b> ne rapporte rien. Elle ne verse pas d'intérêt périodique, mais elle est émise en dessous du pair et remboursée au pair : le gain est l'écart entre prix d'achat et valeur de remboursement.</p></div>
+  `,
+  quizzes:[
+    {q:"Le porteur d'une obligation dispose :",opts:["d'un droit de vote et d'un dividende","de deux droits : intérêts et remboursement","d'une part du capital","d'un droit de gestion"],a:1,fb:"L'obligataire est un créancier : il perçoit les intérêts et récupère son capital, sans droit de propriété."},
+    {q:"Un remboursement « in fine » signifie :",opts:["par tranches annuelles","en une seule fois à l'échéance","jamais remboursé","au bon vouloir de l'émetteur"],a:1,fb:"In fine = tout le capital est remboursé en une seule fois, à l'échéance."},
+    {q:"Une obligation émise par un État dans sa propre devise est :",opts:["une action privilégiée","une obligation souveraine (bon du Trésor)","un NEU CP","une obligation convertible"],a:1,fb:"On parle d'obligation souveraine ou de bon du Trésor lorsque l'émetteur est un État dans sa devise."}
+  ]
+},
+{
+  id:6, tag:"Chapitre 7 · Options",
+  title:"Le droit, mais pas l'obligation",
+  subtitle:"Call, put, prime et moneyness",
+  body:`
+  <div class="callout analogy"><div class="c-h">💡 Analogie</div>
+  <p>Une option, c'est une réservation. Tu paies un acompte (la prime) pour garder le droit d'acheter un bien à un prix fixé. Si le prix du marché monte, tu exerces ton droit et tu gagnes. S'il baisse, tu renonces : tu ne perds que l'acompte.</p></div>
+
+  <p>Une <b>option</b> est un <b>droit</b>, non une obligation, d'acheter (<b>call</b>) ou de vendre (<b>put</b>) une quantité d'un actif — le <b>sous-jacent</b> — à un prix et une date fixés d'avance. Pour obtenir ce droit, l'acheteur paie au vendeur une <b>prime</b> (premium), non remboursable si l'option n'est pas exercée.</p>
+  <p>Le <b>risque</b> est très asymétrique. L'acheteur risque au plus la prime versée. Le vendeur, lui, encaisse au mieux la prime, mais sa perte potentielle est <b>a priori indéterminée</b>. Les options sont des produits <b>dérivés</b> : leur valeur dérive de celle du sous-jacent.</p>
+
+  <div class="formula">
+    <div class="f-lbl">La moneyness (position du prix d'exercice)</div>
+    <div class="eq"><span class="hl">À la monnaie</span> : strike = cours du sous-jacent<br><span class="hl">Dans la monnaie</span> : exercice profitable<br><span class="hl">Hors la monnaie</span> : exercice non profitable</div>
+    <div class="leg">Pour un <span>call</span> : dans la monnaie si strike &lt; cours · pour un <span>put</span> : dans la monnaie si strike &gt; cours</div>
+  </div>
+
+  <div class="worked">
+    <div class="w-h">Exemple résolu — call</div>
+    <div class="w-enonce">Un investisseur achète un call de strike 100 € en payant une prime de 5 €. À l'échéance, le sous-jacent cote 112 €. Résultat ?</div>
+    <div class="step"><div class="s-n">1</div><div class="s-b">Le call donne le droit d'acheter à 100 € un titre qui en vaut 112 → il exerce.</div></div>
+    <div class="step"><div class="s-n">2</div><div class="s-b">Gain brut à l'exercice <span class="calc">112 − 100 = 12 €</span></div></div>
+    <div class="step"><div class="s-n">3</div><div class="s-b">Résultat net après prime <span class="calc">12 − 5 = 7 €</span></div></div>
+    <div class="step"><div class="s-n">4</div><div class="s-b"><span class="result-pill">Gain net = 7 € · l'option était « dans la monnaie »</span></div></div>
+  </div>
+
+  <div class="callout keep"><div class="c-h">🔑 À retenir</div>
+  <p>Call = droit d'acheter, put = droit de vendre. L'acheteur paie une <b>prime</b> et son risque y est limité ; le vendeur subit une perte potentiellement illimitée. L'option est un produit <b>dérivé</b>, négociable durant toute sa vie.</p></div>
+
+  <div class="callout trap"><div class="c-h">⚠️ Piège fréquent</div>
+  <p>Oublier l'asymétrie du risque. Vendre une option n'est <b>pas</b> le miroir tranquille de l'achat : le gain du vendeur plafonne à la prime, mais sa perte est a priori indéterminée. Vendre est bien plus risqué qu'acheter.</p></div>
+  `,
+  quizzes:[
+    {q:"Un call donne le droit :",opts:["de vendre le sous-jacent","d'acheter le sous-jacent","d'encaisser une prime","de convertir en action"],a:1,fb:"Le call = option d'achat : droit (non obligation) d'acheter le sous-jacent au prix d'exercice."},
+    {q:"L'acheteur d'une option risque au maximum :",opts:["une perte illimitée","le montant de la prime versée","le prix d'exercice","la valeur du sous-jacent"],a:1,fb:"Le risque de l'acheteur est limité à la prime : s'il n'exerce pas, il ne perd que cet acompte."},
+    {q:"Une option d'achat est « dans la monnaie » lorsque :",opts:["le strike est supérieur au cours","le strike est inférieur au cours du sous-jacent","le strike est égal au cours","la prime est nulle"],a:1,fb:"Pour un call, dans la monnaie = prix d'exercice inférieur au cours : l'exercice est profitable."}
+  ]
+},
+{
+  id:7, tag:"Chapitre 8 · Futures",
+  title:"S'engager aujourd'hui pour livrer demain",
+  subtitle:"Contrats à terme standardisés, marge et chambre de compensation",
+  body:`
+  <div class="callout analogy"><div class="c-h">💡 Analogie</div>
+  <p>Un future, c'est réserver la récolte de blé du fermier à un prix fixé aujourd'hui, pour livraison dans six mois. Les deux parties sont <b>engagées</b> : pas de droit de se rétracter comme avec une option. On sait dès maintenant le prix qu'on paiera ou recevra.</p></div>
+
+  <p>Un <b>contrat de futures</b> est un contrat <b>standardisé</b> entre un acheteur et un vendeur, pour échanger un actif standard (le sous-jacent) à une date future. Les parties s'engagent à un prix fixé le jour de la signature (le <b>forward price</b>), avec livraison et paiement à la date future. L'acheteur a une <b>position longue</b>, le vendeur une <b>position courte</b>.</p>
+  <p>Les futures visaient d'abord les produits agricoles. Ils servent à se <b>protéger</b> contre les variations de prix ou de change, mais aussi à <b>spéculer</b>. Leur valeur varie quotidiennement ; ils s'échangent sur des marchés <b>réglementés</b>.</p>
+
+  <p class="section-lead">La marge et la chambre de compensation</p>
+  <p>Le contrat est défini par sa <b>taille</b> et son <b>échéance</b>. Un <b>dépôt de garantie</b> (margin), en liquide ou en bons du Trésor, est placé auprès de la <b>chambre de compensation</b> pour limiter le risque de défaut. Il représente entre <b>5 et 15 %</b> du montant du contrat. Si le dépôt passe sous la marge exigée, le participant doit le reconstituer, sinon la position est annulée.</p>
+
+  <table class="tbl">
+    <tr><th>À l'échéance</th><th>Quand ?</th></tr>
+    <tr><td>Livraison physique</td><td>matières premières, obligations</td></tr>
+    <tr><td>Règlement en espèces (cash settlement)</td><td>futures sur indices, sous-jacent non livrable</td></tr>
+  </table>
+
+  <div class="callout keep"><div class="c-h">🔑 À retenir</div>
+  <p>Future = contrat <b>standardisé</b>, sur marché réglementé, avec <b>engagement ferme</b> des deux parties. Position longue = acheteur, courte = vendeur. La <b>chambre de compensation</b> et le dépôt de garantie (5-15 %) neutralisent le risque de contrepartie.</p></div>
+
+  <div class="callout trap"><div class="c-h">⚠️ Piège fréquent</div>
+  <p>Confondre future et option. L'option est un <b>droit</b> (on peut renoncer contre la perte de la prime) ; le future est un <b>engagement ferme</b> des deux parties. Le future n'a pas de prime : il a un dépôt de garantie, restituable.</p></div>
+  `,
+  quizzes:[
+    {q:"Dans un contrat de futures, l'acheteur détient :",opts:["une position courte","une position longue","une option d'achat","une prime"],a:1,fb:"L'acheteur a la position longue ; le vendeur, la position courte."},
+    {q:"Le dépôt de garantie (margin) représente environ :",opts:["0 % du contrat","5 à 15 % du montant du contrat","50 % du contrat","100 % du contrat"],a:1,fb:"Le margin déposé à la chambre de compensation représente entre 5 et 15 % du montant du contrat."},
+    {q:"Quel instrument fait intervenir une chambre de compensation ?",opts:["le forward de gré à gré","le future négocié sur marché réglementé","l'option OTC","le NEU CP"],a:1,fb:"Le future, standardisé et coté, passe par une chambre de compensation qui garantit la bonne fin des opérations."}
+  ]
+},
+{
+  id:8, tag:"Chapitre 9 · Participants",
+  title:"Qui intervient sur les marchés financiers",
+  subtitle:"Investisseurs, bourses, crowdfunding, OPCVM, PSI et fonds de pension",
+  body:`
+  <div class="callout analogy"><div class="c-h">💡 Analogie</div>
+  <p>Un marché financier, c'est un grand port : des passagers (les particuliers), des cargos (les institutionnels), des capitaines agréés qui guident les navires (les PSI), et l'autorité portuaire qui contrôle tout (l'AMF). Chacun a un rôle précis.</p></div>
+
+  <p>Les <b>investisseurs</b> se répartissent en particuliers et petites entreprises, actionnaires salariés, participants de référence et <b>participants institutionnels</b> (les « zinzins », qui gèrent de gros volumes).</p>
+  <p>Les <b>entreprises de marché</b> organisent les échanges : bourses de valeurs (marchés réglementés), systèmes multilatéraux de négociation (bourses alternatives), internalisateurs systématiques.</p>
+
+  <p class="section-lead">Les acteurs de la gestion collective</p>
+  <p>Le <b>crowdfunding</b> (financement participatif), né avec internet au début des années 2000, collecte des fonds auprès des internautes via des plateformes : dons, prêts rémunérés ou prises de participation. Les <b>fonds monétaires</b> sont des OPCVM ou FIA investis en actifs court terme liquides, offrant un rendement proche du marché monétaire.</p>
+  <p>Les <b>organismes de gestion collective</b> regroupent les <b>SICAV</b> (sociétés d'investissement à capital variable) et les <b>FCP</b> (fonds communs de placement). Les <b>PSI</b> (prestataires de services d'investissement) sont agréés par l'AMF et servent d'intermédiaires : entreprises d'investissement, sociétés de gestion, banques.</p>
+  <p>Enfin, les <b>fonds de pension</b> sont caractéristiques de la retraite par <b>capitalisation</b> : ils reçoivent les cotisations des salariés et employeurs, les investissent sur les marchés, et versent des pensions à la retraite.</p>
+
+  <table class="tbl">
+    <tr><th>Acteur</th><th>Rôle</th></tr>
+    <tr><td>PSI</td><td>intermédiaire agréé par l'AMF</td></tr>
+    <tr><td>SICAV / FCP</td><td>gestion collective (OPCVM)</td></tr>
+    <tr><td>Fonds monétaires</td><td>placement court terme liquide</td></tr>
+    <tr><td>Fonds de pension</td><td>retraite par capitalisation</td></tr>
+  </table>
+
+  <div class="callout keep"><div class="c-h">🔑 À retenir</div>
+  <p>Investisseurs (particuliers, institutionnels), entreprises de marché (bourses), PSI agréés par l'<b>AMF</b>, gestion collective (SICAV/FCP = OPCVM), fonds monétaires (court terme) et fonds de pension (capitalisation). Le crowdfunding est un financement alternatif hors circuit bancaire.</p></div>
+
+  <div class="callout trap"><div class="c-h">⚠️ Piège fréquent</div>
+  <p>Confondre SICAV et FCP. La <b>SICAV</b> est une société : l'investisseur en est actionnaire. Le <b>FCP</b> est une copropriété de valeurs mobilières : l'investisseur détient des parts, sans personnalité morale. Les deux sont des OPCVM.</p></div>
+  `,
+  quizzes:[
+    {q:"Un PSI (prestataire de services d'investissement) est :",opts:["un particulier investisseur","un intermédiaire agréé par l'AMF","une obligation d'État","une plateforme de crowdfunding"],a:1,fb:"Les PSI sont agréés par l'autorité de contrôle (AMF) et servent d'intermédiaires pour les investissements."},
+    {q:"Un fonds de pension repose sur un système de retraite :",opts:["par répartition","par capitalisation","par subvention","par l'impôt"],a:1,fb:"Le fonds de pension est caractéristique de la retraite par capitalisation : les cotisations sont investies sur les marchés."},
+    {q:"Le crowdfunding peut prendre la forme :",opts:["uniquement de dons","de dons, de prêts rémunérés ou de participations","d'un crédit bancaire classique","d'une obligation souveraine"],a:1,fb:"Le financement participatif prend la forme de dons, de prêts rémunérés ou de prises de participation."}
+  ]
+},
+{
+  id:9, tag:"Chapitre 10 · Subprimes",
+  title:"Anatomie d'une crise, étage par étage",
+  subtitle:"Du crédit immobilier américain à la crise mondiale de liquidité",
+  body:`
+  <div class="callout analogy"><div class="c-h">💡 Analogie</div>
+  <p>Imagine un immeuble construit sur du sable. Chaque étage semble solide seul, mais l'ensemble repose sur des fondations pourries : des prêts accordés à des ménages incapables de rembourser. Quand le sable cède, tout l'immeuble s'effondre — et entraîne les voisins.</p></div>
+
+  <p>Le terreau de la crise se prépare au début des années 2000 : l'<b>endettement privé</b> explose, les situations économiques se <b>polarisent</b> (excédents des émergents, déficits des pays développés) et les <b>inégalités</b> se creusent.</p>
+
+  <p class="section-lead">Une crise à plusieurs étages</p>
+  <p><b>1er étage.</b> Une frénésie de prêts immobiliers accordés à des ménages fragiles. Le terme <b>subprime</b> désigne la note d'emprunteurs présentant un risque élevé de défaut.</p>
+  <p><b>2e étage.</b> Les banques revendent ces crédits à des structures ad hoc, les <b>conduits</b> ou <b>SIV</b>. En sortant les crédits de leur bilan, elles contournent les règles prudentielles.</p>
+  <p><b>3e étage.</b> Les conduits empruntent en émettant des titres adossés à ces crédits : c'est la <b>titrisation</b>. Des crédits bancaires deviennent des titres qui circulent sur les marchés.</p>
+
+  <div class="viz">
+    <svg viewBox="0 0 560 150" xmlns="http://www.w3.org/2000/svg">
+      <rect x="150" y="20" width="260" height="30" rx="6" fill="#f7e6df" stroke="#a8432a"/><text x="280" y="40" text-anchor="middle" font-size="11.5" fill="#8a3624" font-weight="600">3 · Titrisation (titres sur les marchés)</text>
+      <rect x="150" y="58" width="260" height="30" rx="6" fill="#fbf0db" stroke="#c87a12"/><text x="280" y="78" text-anchor="middle" font-size="11.5" fill="#8a5a08" font-weight="600">2 · Conduits / SIV (hors bilan)</text>
+      <rect x="150" y="96" width="260" height="30" rx="6" fill="#e4f0ed" stroke="#1b6b5e"/><text x="280" y="116" text-anchor="middle" font-size="11.5" fill="#0f4a40" font-weight="600">1 · Prêts subprime (ménages fragiles)</text>
+    </svg>
+    <div class="v-cap">Trois étages bâtis sur des fondations fragiles</div>
+  </div>
+
+  <p class="section-lead">Le déroulement</p>
+  <p>Pour calmer l'économie, la <b>Fed</b> relève son taux directeur de <b>1 % (2004) à 5,25 % (2006)</b>, ce qui fragilise les ménages. Le marché immobilier se <b>retourne en 2006</b>, les prix baissent en 2007, les défauts augmentent. En juin-juillet 2007, les agences déclassent les titres immobiliers. Le <b>9 août 2007</b>, BNP-Paribas suspend la cotation de trois de ses fonds : reconnaissance « officielle » de la crise.</p>
+  <p>Les banques cessent de se prêter entre elles : d'un problème de <b>solvabilité</b> des ménages, on passe à une crise de <b>liquidité</b>. Les banques centrales injectent d'abondantes liquidités (95 Mds€ pour la seule BCE) et multiplient les refinancements. Leurs bilans gonflent. Les finances publiques sont mobilisées, voire sacrifiées, pour se substituer à la dette privée.</p>
+
+  <div class="callout keep"><div class="c-h">🔑 À retenir</div>
+  <p>Trois étages : <b>prêts subprime</b> → <b>conduits/SIV</b> (hors bilan) → <b>titrisation</b>. Déclencheur : hausse des taux Fed (1 % → 5,25 %) et retournement immobilier 2006. Bascule d'une crise de <b>solvabilité</b> vers une crise de <b>liquidité</b>.</p></div>
+
+  <div class="callout trap"><div class="c-h">⚠️ Piège fréquent</div>
+  <p>Confondre solvabilité et liquidité. La <b>solvabilité</b> : les ménages ne peuvent plus rembourser (problème de fond). La <b>liquidité</b> : les banques, se méfiant, cessent de se prêter (problème de circulation). La crise commence par la première et se propage par la seconde.</p></div>
+  `,
+  quizzes:[
+    {q:"Le terme « subprime » désigne :",opts:["un taux d'intérêt négatif","la note d'emprunteurs à risque élevé de défaut","une obligation d'État","une agence de notation"],a:1,fb:"Subprime = note attribuée à des emprunteurs présentant un risque élevé de ne pas rembourser."},
+    {q:"La titrisation consiste à :",opts:["transformer des crédits bancaires en titres négociables","créer de la monnaie centrale","fusionner deux banques","fixer le taux directeur"],a:0,fb:"Les crédits, sortis du bilan via les conduits, sont transformés en titres qui circulent sur les marchés."},
+    {q:"Au cœur de la crise, on passe d'un problème de solvabilité à :",opts:["une crise de change","une crise de liquidité","une crise agricole","une crise de l'emploi"],a:1,fb:"Les banques se méfiant les unes des autres cessent de se prêter : la crise de solvabilité devient crise de liquidité."}
+  ]
+}
+];
+
+/* =========================================================
+   TEST FINAL
+   ========================================================= */
+const TEST = [
+  {chap:"Financement", txt:"Un agent à besoin de financement est un agent dont :", type:"qcm", opts:["l'épargne dépasse l'investissement","les dépenses dépassent les revenus","les revenus dépassent les dépenses","l'impôt dépasse la consommation"], a:1, rem:"Besoin de financement : les dépenses dépassent les revenus, l'agent doit emprunter.", lesson:0},
+  {chap:"Financement", txt:"Le financement indirect (intermédié) correspond :", type:"qcm", opts:["à l'émission de titres sur le marché","au crédit bancaire","à l'autofinancement","à une IPO"], a:1, rem:"Indirect = une banque s'interpose : elle transforme les dépôts en crédits.", lesson:0},
+  {chap:"Panorama", txt:"Le marché monétaire traite, par convention, des échéances :", type:"qcm", opts:["inférieures à 1 an","de 1 à 7 ans","supérieures à 10 ans","sans limite"], a:0, rem:"Marché monétaire = taux d'intérêt à court terme, moins d'un an.", lesson:1},
+  {chap:"Monétaire", txt:"Depuis la réforme de 2016, un TCN à plus d'un an s'appelle :", type:"qcm", opts:["un NEU CP","un NEU MTN","un BMTN","une SICAV"], a:1, rem:"NEU MTN pour le moyen terme (> 1 an) ; NEU CP pour le court terme (≤ 1 an).", lesson:2},
+  {chap:"Financier", txt:"Sur le marché primaire, les capitaux levés sont encaissés par :", type:"qcm", opts:["le vendeur du titre","la société émettrice","la Bourse","l'AMF"], a:1, rem:"Primaire = marché des émissions : l'émetteur encaisse les fonds levés.", lesson:3},
+  {chap:"Actions", txt:"L'action confère un droit de :", type:"qcm", opts:["créance","propriété sur le capital","remboursement garanti","coupon fixe"], a:1, rem:"L'action est un titre de propriété : vote, dividende, information.", lesson:4},
+  {chap:"Obligations", txt:"Un remboursement « in fine » signifie :", type:"qcm", opts:["par tranches","en une seule fois à l'échéance","jamais","à taux variable"], a:1, rem:"In fine = tout le capital est remboursé en une seule fois, à l'échéance.", lesson:5},
+  {chap:"Options", txt:"L'acheteur d'un call de strike 100 paie 6 de prime ; à l'échéance le sous-jacent cote 115. Son gain net est :", type:"num", a:9, tol:0.5, rem:"Gain brut = 115 − 100 = 15 ; net = 15 − 6 = 9.", lesson:6},
+  {chap:"Futures", txt:"Le dépôt de garantie d'un future représente environ :", type:"qcm", opts:["0 %","5 à 15 % du contrat","50 %","100 %"], a:1, rem:"Le margin déposé à la chambre de compensation vaut entre 5 et 15 % du montant du contrat.", lesson:7},
+  {chap:"Subprimes", txt:"La titrisation consiste à :", type:"qcm", opts:["créer de la monnaie centrale","transformer des crédits en titres négociables","fusionner des banques","relever le taux directeur"], a:1, rem:"Les crédits, sortis du bilan via les conduits/SIV, deviennent des titres qui circulent sur les marchés.", lesson:9}
+];
+
+/* =========================================================
+   ANNALES (exercices type examen)
+   ========================================================= */
+const ANNALES = [
+  {tag:"Exercice 1 · Capacité de financement",
+   enonce:`Un ménage a un revenu disponible de <span class="data">45 000 €</span>, consomme <span class="data">38 000 €</span> et investit <span class="data">10 000 €</span> (achat immobilier). Calculez son épargne, puis sa capacité ou son besoin de financement.`,
+   cor:`<div class="step"><div class="s-n">1</div><div class="s-b">Épargne = revenu − consommation <span class="calc">45 000 − 38 000 = 7 000 €</span></div></div>
+        <div class="step"><div class="s-n">2</div><div class="s-b">Solde = épargne − investissement <span class="calc">7 000 − 10 000 = −3 000 €</span></div></div>
+        <div class="step"><div class="s-n">3</div><div class="s-b"><span class="result-pill">Besoin de financement de 3 000 €</span> — le ménage doit emprunter le complément</div></div>`},
+  {tag:"Exercice 2 · Classer les marchés",
+   enonce:`Reliez chaque opération à son marché : (a) une PME émet des NEU CP à 3 mois ; (b) l'État lance un nouvel emprunt obligataire ; (c) un particulier revend ses actions Total en Bourse ; (d) une banque prête ses liquidités excédentaires à une autre banque pour 24 h.`,
+   cor:`<div class="step"><div class="s-n">a</div><div class="s-b">NEU CP à 3 mois → <b>marché monétaire</b> (TCN, court terme).</div></div>
+        <div class="step"><div class="s-n">b</div><div class="s-b">Nouvel emprunt obligataire → <b>marché financier primaire</b> (émission).</div></div>
+        <div class="step"><div class="s-n">c</div><div class="s-b">Revente d'actions en Bourse → <b>marché financier secondaire</b> (occasion).</div></div>
+        <div class="step"><div class="s-n">d</div><div class="s-b">Prêt de liquidités entre banques 24 h → <b>marché interbancaire</b> (monnaie centrale).</div></div>
+        <div class="step"><div class="s-n">✓</div><div class="s-b"><span class="result-pill">Monétaire · Primaire · Secondaire · Interbancaire</span></div></div>`},
+  {tag:"Exercice 3 · Option d'achat (call)",
+   enonce:`Un investisseur achète un <span class="data">call</span> de prix d'exercice <span class="data">50 €</span> en payant une prime de <span class="data">4 €</span>. Analysez son résultat si le sous-jacent cote à l'échéance : (1) 60 € ; (2) 52 € ; (3) 48 €.`,
+   cor:`<div class="step"><div class="s-n">1</div><div class="s-b">Cours 60 € : il exerce (60 > 50). Net = (60 − 50) − 4 <span class="calc">= 6 € de gain</span> — dans la monnaie.</div></div>
+        <div class="step"><div class="s-n">2</div><div class="s-b">Cours 52 € : il exerce (52 > 50). Net = (52 − 50) − 4 <span class="calc">= −2 €</span> — exercice qui limite la perte, mais prime non couverte.</div></div>
+        <div class="step"><div class="s-n">3</div><div class="s-b">Cours 48 € : il n'exerce pas (48 < 50). Perte = la prime <span class="calc">= −4 €</span> — hors la monnaie.</div></div>
+        <div class="step"><div class="s-n">✓</div><div class="s-b"><span class="result-pill">Perte plafonnée à la prime · gain potentiellement élevé</span></div></div>`},
+  {tag:"Exercice 4 · Action vs obligation",
+   enonce:`Deux titres sont proposés : une <span class="data">action</span> d'une société bénéficiaire et une <span class="data">obligation à taux fixe 4 %</span> du même émetteur. Comparez les droits et le niveau de risque du détenteur.`,
+   cor:`<div class="step"><div class="s-n">1</div><div class="s-b">Action : droit de <b>propriété</b> → vote, dividende (non garanti), information. Risque élevé, gain potentiellement illimité.</div></div>
+        <div class="step"><div class="s-n">2</div><div class="s-b">Obligation : droit de <b>créance</b> → deux droits seulement (intérêt de 4 % + remboursement). Risque plus faible, revenu connu d'avance.</div></div>
+        <div class="step"><div class="s-n">3</div><div class="s-b">En cas de faillite, l'obligataire (créancier) est remboursé <b>avant</b> l'actionnaire.</div></div>
+        <div class="step"><div class="s-n">✓</div><div class="s-b"><span class="result-pill">Propriété + risque (action) vs créance + sécurité (obligation)</span></div></div>`},
+  {tag:"Exercice 5 · La crise des subprimes en 3 étages",
+   enonce:`Reconstituez le mécanisme de la crise de 2007 en identifiant les trois étages, puis expliquez le passage d'une crise de solvabilité à une crise de liquidité.`,
+   cor:`<div class="step"><div class="s-n">1</div><div class="s-b">Étage 1 : prêts <b>subprime</b> à des ménages incapables de rembourser.</div></div>
+        <div class="step"><div class="s-n">2</div><div class="s-b">Étage 2 : revente à des <b>conduits / SIV</b> pour sortir les crédits du bilan (contournement prudentiel).</div></div>
+        <div class="step"><div class="s-n">3</div><div class="s-b">Étage 3 : <b>titrisation</b> — les crédits deviennent des titres qui circulent sur les marchés.</div></div>
+        <div class="step"><div class="s-n">4</div><div class="s-b">Déclencheur : Fed 1 % → 5,25 %, retournement immobilier 2006. Défauts des ménages = crise de <b>solvabilité</b>.</div></div>
+        <div class="step"><div class="s-n">5</div><div class="s-b">Les banques se méfient et cessent de se prêter → crise de <b>liquidité</b>. Les banques centrales injectent des liquidités (95 Mds€ BCE).</div></div>
+        <div class="step"><div class="s-n">✓</div><div class="s-b"><span class="result-pill">Subprime → conduits → titrisation · solvabilité → liquidité</span></div></div>`}
+];
+
+/* =========================================================
+   ÉTAT + MOTEUR
+   ========================================================= */
+let xp = 0;
+const done = new Set();
+const answeredQuiz = new Set();      // "lesson-quizIndex"
+let currentPage = 'l0';
+
+function addXP(n){ xp += n; document.getElementById('xpVal').textContent = xp; }
+function updateGlobal(){
+  let count=0; done.forEach(v=>{ if(typeof v==='number') count++; });
+  const pct = Math.round(count / LESSONS.length * 100);
+  document.getElementById('globalBar').style.width = pct + '%';
+  document.getElementById('globalPct').textContent = pct + '%';
+}
+
+/* ---- build sidebar ---- */
+const menu = document.getElementById('lessonMenu');
+LESSONS.forEach((l,i)=>{
+  const d = document.createElement('div');
+  d.className = 'lesson-link';
+  d.dataset.page = 'l'+i;
+  d.innerHTML = `<span class="num">${i+1}</span><span>${shortTitle(l.title)}</span><span class="check">✓</span>`;
+  d.onclick = ()=>goPage('l'+i);
+  menu.appendChild(d);
+});
+function shortTitle(t){ return t.length>34 ? t.slice(0,32)+'…' : t; }
+
+/* ---- build pages ---- */
+const main = document.getElementById('main');
+LESSONS.forEach((l,i)=>{
+  const p = document.createElement('section');
+  p.className = 'page'; p.id = 'page-l'+i;
+  let quizHTML = '';
+  l.quizzes.forEach((qz,qi)=>{
+    quizHTML += renderQuiz(i,qi,qz);
+  });
+  p.innerHTML = `
+    <span class="tag">${l.tag}</span>
+    <h1 class="title">${l.title}</h1>
+    <div class="subtitle">${l.subtitle}</div>
+    ${l.body}
+    <p class="section-lead">Mini-quiz</p>
+    ${quizHTML}
+    <div class="lesson-nav">
+      <button class="btn ghost" ${i===0?'disabled':''} onclick="goPage('l${i-1}')">← Précédent</button>
+      <button class="btn solid" id="valid-${i}" onclick="completeLesson(${i})">Valider la leçon · +25 XP</button>
+      <button class="btn ghost" onclick="goPage('${i<LESSONS.length-1?'l'+(i+1):'test'}')">${i<LESSONS.length-1?'Suivant →':'Vers le test →'}</button>
+    </div>`;
+  main.appendChild(p);
+});
+
+/* ---- test page ---- */
+const testPage = document.createElement('section');
+testPage.className='page'; testPage.id='page-test';
+main.appendChild(testPage);
+renderTestIntro();
+
+/* ---- annales page ---- */
+const annPage = document.createElement('section');
+annPage.className='page'; annPage.id='page-annales';
+let annHTML = `<span class="tag">Annales</span><h1 class="title">Annales corrigées</h1>
+  <div class="subtitle">Mode révision active : cherchez avant de dérouler le corrigé</div>
+  <div class="note-box">Ces exercices reprennent les notions du cours de M. Ben Jelili (financement, marchés monétaire et financier, actions, obligations, options, futures, participants, subprimes). Cherche la réponse avant de dérouler le corrigé.</div>`;
+ANNALES.forEach((ex,i)=>{
+  annHTML += `<div class="annale-ex">
+    <div class="ae-tag">${ex.tag}</div>
+    <div class="ae-enonce">${ex.enonce}</div>
+    <button class="reveal-btn" onclick="toggleCor(${i})" id="revbtn-${i}">Voir le corrigé</button>
+    <div class="corrige" id="cor-${i}"><div class="cor-h">Corrigé détaillé</div>${ex.cor}</div>
+  </div>`;
+});
+annPage.innerHTML = annHTML;
+main.appendChild(annPage);
+
+/* ---- quiz renderer ---- */
+function renderQuiz(li,qi,qz){
+  if(qz.num){
+    return `<div class="quiz q-num" id="q-${li}-${qi}">
+      <div class="q-tag">⬡ Quiz ${qi+1}</div>
+      <div class="q-txt">${qz.q}</div>
+      <input type="text" id="in-${li}-${qi}" placeholder="ta réponse">
+      <button class="qbtn" onclick="checkNum(${li},${qi},${qz.a},${qz.tol})">Vérifier</button>
+      <div class="q-fb" id="fb-${li}-${qi}"></div>
+    </div>`;
+  }
+  let opts = qz.opts.map((o,oi)=>`<button class="q-opt" onclick="checkOpt(this,${li},${qi},${oi},${qz.a})">${o}</button>`).join('');
+  return `<div class="quiz" id="q-${li}-${qi}">
+    <div class="q-tag">⬡ Quiz ${qi+1}</div>
+    <div class="q-txt">${qz.q}</div>
+    <div class="q-opts">${opts}</div>
+    <div class="q-fb" id="fb-${li}-${qi}"></div>
+  </div>`;
+}
+function checkOpt(btn,li,qi,chosen,ans){
+  const box = document.getElementById('q-'+li+'-'+qi);
+  box.querySelectorAll('.q-opt').forEach(b=>b.disabled=true);
+  const fb = document.getElementById('fb-'+li+'-'+qi);
+  const correct = LESSONS[li].quizzes[qi].fb;
+  if(chosen===ans){
+    btn.classList.add('correct');
+    fb.className='q-fb ok'; fb.textContent='✓ '+correct;
+    awardQuiz(li,qi);
+  } else {
+    btn.classList.add('wrong');
+    box.querySelectorAll('.q-opt')[ans].classList.add('correct');
+    fb.className='q-fb no'; fb.textContent='✗ '+correct;
+  }
+}
+function checkNum(li,qi,ans,tol){
+  const raw = document.getElementById('in-'+li+'-'+qi).value.replace(',','.').trim();
+  const fb = document.getElementById('fb-'+li+'-'+qi);
+  const v = parseFloat(raw);
+  const info = LESSONS[li].quizzes[qi].fb;
+  if(isNaN(v)){ fb.className='q-fb no'; fb.textContent='Saisis une valeur numérique.'; return; }
+  if(Math.abs(v-ans) <= tol){
+    fb.className='q-fb ok'; fb.textContent='✓ '+info;
+    awardQuiz(li,qi);
+  } else {
+    fb.className='q-fb no'; fb.textContent='✗ '+info;
+  }
+}
+function awardQuiz(li,qi){
+  const k = li+'-'+qi;
+  if(!answeredQuiz.has(k)){ answeredQuiz.add(k); addXP(10); }
+}
+
+/* ---- lesson completion ---- */
+function completeLesson(i){
+  if(!done.has(i)){
+    done.add(i); addXP(25);
+    const link = document.querySelector('.lesson-link[data-page="l'+i+'"]');
+    link.classList.add('done');
+    const btn = document.getElementById('valid-'+i);
+    btn.classList.add('done'); btn.innerHTML='✓ Leçon validée';
+    updateGlobal();
+  }
+}
+
+/* ---- navigation ---- */
+function goPage(pg){
+  currentPage = pg;
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('show'));
+  document.getElementById('page-'+pg).classList.add('show');
+  document.querySelectorAll('.lesson-link,.special-link').forEach(l=>l.classList.toggle('active', l.dataset.page===pg));
+  document.getElementById('main').scrollTo&&window.scrollTo({top:0,behavior:'smooth'});
+  window.scrollTo(0,0);
+  if(window.innerWidth<=880) document.getElementById('sidebar').classList.remove('open');
+}
+function toggleSide(){ document.getElementById('sidebar').classList.toggle('open'); }
+
+/* =========================================================
+   TEST FINAL — logique adaptative
+   ========================================================= */
+function renderTestIntro(){
+  testPage.innerHTML = `
+    <span class="tag">Évaluation finale</span>
+    <h1 class="title">Test final adaptatif</h1>
+    <div class="subtitle">10 questions · QCM et calculs · remédiation immédiate en cas d'erreur</div>
+    <div class="test-intro">
+      <p>À chaque erreur, une bannière t'explique la notion et te propose de revoir la leçon concernée. Le score et le bilan par chapitre s'affichent à la fin.</p>
+      <button class="btn plum" style="margin-top:10px" onclick="startTest()">Commencer le test →</button>
+    </div>`;
+}
+let testState = [];
+function startTest(){
+  testState = TEST.map(()=>({answered:false, ok:false}));
+  document.getElementById('floatRetry').classList.remove('show');
+  let html = `<span class="tag">Évaluation finale</span><h1 class="title">Test final adaptatif</h1>
+    <div class="subtitle">Réponds à chaque question — corrige-toi grâce aux remédiations</div>`;
+  TEST.forEach((t,i)=>{
+    let body;
+    if(t.type==='num'){
+      body = `<input type="text" id="tin-${i}" placeholder="ta réponse" style="font-family:DM Mono,monospace;font-size:15px;padding:10px 13px;border:1.5px solid #e3d3e7;border-radius:9px;width:160px;background:#fff">
+              <button class="qbtn" style="margin-left:8px;background:var(--plum);color:#fff;border:none;border-radius:9px;padding:11px 17px;font-weight:600;cursor:pointer" onclick="answerTest(${i},'num')">Valider</button>`;
+    } else {
+      body = `<div class="q-opts">`+t.opts.map((o,oi)=>`<button class="q-opt" onclick="answerTest(${i},'qcm',${oi})">${o}</button>`).join('')+`</div>`;
+    }
+    html += `<div class="test-q" id="tq-${i}">
+      <div class="tq-n">Question ${i+1}/10 · ${t.chap}</div>
+      <div class="tq-txt">${t.txt}</div>
+      ${body}
+      <div class="remediation" id="rem-${i}">
+        <div class="r-h">⚠️ À revoir</div>
+        <p id="rem-txt-${i}"></p>
+        <div class="r-btns">
+          <button class="mini rev" onclick="goPage('l${t.lesson}')">Revoir la leçon</button>
+          <button class="mini cont" onclick="hideRem(${i})">Continuer</button>
+        </div>
+      </div>
+    </div>`;
+  });
+  html += `<div class="lesson-nav"><span></span><button class="btn plum" onclick="finishTest()">Voir mon résultat →</button></div>`;
+  testPage.innerHTML = html;
+  window.scrollTo(0,0);
+}
+function answerTest(i,type,chosen){
+  const t = TEST[i]; const st = testState[i];
+  const q = document.getElementById('tq-'+i);
+  let ok;
+  if(type==='num'){
+    const v = parseFloat(document.getElementById('tin-'+i).value.replace(',','.').trim());
+    ok = !isNaN(v) && Math.abs(v - t.a) <= t.tol;
+    document.getElementById('tin-'+i).disabled = true;
+    q.querySelector('.qbtn').disabled = true;
+  } else {
+    const btns = q.querySelectorAll('.q-opt');
+    btns.forEach(b=>b.disabled=true);
+    ok = (chosen===t.a);
+    btns[chosen].classList.add(ok?'correct':'wrong');
+    if(!ok) btns[t.a].classList.add('correct');
+  }
+  st.answered=true; st.ok=ok;
+  if(!ok){
+    document.getElementById('rem-txt-'+i).textContent = t.rem;
+    document.getElementById('rem-'+i).classList.add('show');
+    document.getElementById('floatRetry').classList.add('show');
+  } else {
+    if(!st.scored){ st.scored=true; addXP(15); }
+  }
+}
+function hideRem(i){ document.getElementById('rem-'+i).classList.remove('show'); }
+function resetTest(){ startTest(); }
+function finishTest(){
+  const score = testState.filter(s=>s.ok).length;
+  // bilan par chapitre
+  const chaps = {};
+  TEST.forEach((t,i)=>{
+    if(!chaps[t.chap]) chaps[t.chap]={tot:0,ok:0};
+    chaps[t.chap].tot++; if(testState[i] && testState[i].ok) chaps[t.chap].ok++;
+  });
+  let msg, col;
+  if(score>=9){ msg="Maîtrise solide — tu es prêt pour le partiel."; col="var(--teal)"; }
+  else if(score>=7){ msg="Bon niveau. Revois les chapitres en jaune."; col="var(--teal)"; }
+  else if(score>=5){ msg="Base correcte, mais consolide les notions faibles."; col="var(--amber)"; }
+  else { msg="Reprends les leçons signalées avant de réessayer."; col="var(--rust)"; }
+
+  let bilan='';
+  Object.keys(chaps).forEach(c=>{
+    const r = chaps[c]; const pct = Math.round(r.ok/r.tot*100);
+    const bc = pct>=100?'var(--teal)':pct>=50?'var(--amber)':'var(--rust)';
+    bilan += `<div class="cb-row"><div class="cb-top"><span>${c}</span><span class="mono" style="font-family:DM Mono,monospace">${r.ok}/${r.tot}</span></div>
+      <div class="cb-bar"><i style="width:${pct}%;background:${bc}"></i></div></div>`;
+  });
+
+  if(score>=7){ done.add('test'); }
+  document.getElementById('floatRetry').classList.remove('show');
+  testPage.innerHTML = `
+    <span class="tag">Résultat</span>
+    <h1 class="title">Bilan du test</h1>
+    <div class="result-card">
+      <div class="score-big" style="color:${col}">${score}<span style="font-size:30px;color:#bcb3a3">/10</span></div>
+      <div class="score-sub">${Math.round(score*10)}% de réussite</div>
+      <div class="result-msg">${msg}</div>
+      <div class="chap-bilan">${bilan}</div>
+      <div style="margin-top:28px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        <button class="btn plum" onclick="startTest()">↻ Reprendre le test</button>
+        <button class="btn ghost" onclick="goPage('l0')">Revoir les leçons</button>
+      </div>
+    </div>`;
+  window.scrollTo(0,0);
+}
+
+/* ---- annales toggle ---- */
+function toggleCor(i){
+  const c = document.getElementById('cor-'+i);
+  const b = document.getElementById('revbtn-'+i);
+  c.classList.toggle('show');
+  b.textContent = c.classList.contains('show') ? 'Masquer le corrigé' : 'Voir le corrigé';
+}
+
+/* ---- init ---- */
+goPage('l0');
+updateGlobal();
+</script>
+</body>
+</html>

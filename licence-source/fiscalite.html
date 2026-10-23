@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="fr" subject-id="fiscalite">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fiscalité des Particuliers — LP ABF</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#faf6ef; --paper2:#f3ece0; --ink:#22201b; --line:#e3d9c8;
+  --teal:#1b6b5e; --teal-d:#134f45; --amber:#c87a12; --rust:#a8432a;
+  --plum:#6b3a73; --navy:#23456b;
+  --teal-l:#e4f0ed; --amber-l:#fbf0dc; --rust-l:#f6e4df; --plum-l:#efe6f1; --navy-l:#e2e9f1;
+  --serif:'Fraunces',Georgia,serif; --sans:'DM Sans',system-ui,sans-serif; --mono:'DM Mono',monospace;
+  --shadow:0 1px 3px rgba(34,32,27,.08),0 4px 16px rgba(34,32,27,.06);
+  --shadow-l:0 8px 36px rgba(34,32,27,.16);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;}
+
+/* scrollbar */
+::-webkit-scrollbar{width:11px;height:11px;}
+::-webkit-scrollbar-track{background:var(--paper2);}
+::-webkit-scrollbar-thumb{background:#cdbfa6;border-radius:6px;border:2px solid var(--paper2);}
+::-webkit-scrollbar-thumb:hover{background:var(--amber);}
+
+/* ── NAVBAR ─────────────────────────────────────────────── */
+.navbar{position:fixed;top:0;left:0;right:0;height:62px;background:rgba(250,246,239,.92);backdrop-filter:blur(12px);border-bottom:1.5px solid var(--line);z-index:200;display:flex;align-items:center;padding:0 22px;gap:18px;}
+.nav-logo{display:flex;align-items:center;gap:10px;cursor:pointer;}
+.nav-logo .mark{width:36px;height:36px;border-radius:9px;background:var(--teal);display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--serif);font-weight:700;font-size:19px;box-shadow:var(--shadow);}
+.nav-logo .name{font-family:var(--serif);font-weight:600;font-size:17px;color:var(--navy);line-height:1.1;}
+.nav-logo .name small{display:block;font-family:var(--sans);font-size:10px;font-weight:500;color:var(--amber);letter-spacing:.08em;text-transform:uppercase;}
+.nav-progress{flex:1;max-width:340px;display:flex;align-items:center;gap:10px;}
+.nav-progress .track{flex:1;height:7px;background:var(--paper2);border-radius:6px;overflow:hidden;border:1px solid var(--line);}
+.nav-progress .fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--amber));border-radius:6px;width:0;transition:width .5s cubic-bezier(.4,0,.2,1);}
+.nav-progress .pct{font-family:var(--mono);font-size:12px;color:var(--teal-d);font-weight:500;min-width:34px;}
+.nav-xp{margin-left:auto;display:flex;align-items:center;gap:7px;background:var(--amber-l);border:1.5px solid #e9cd9a;padding:6px 14px;border-radius:22px;font-family:var(--mono);font-size:13px;font-weight:500;color:var(--amber);}
+.nav-xp .star{font-size:14px;}
+.burger{display:none;background:none;border:none;font-size:24px;cursor:pointer;color:var(--ink);}
+
+/* ── LAYOUT ─────────────────────────────────────────────── */
+.layout{display:flex;padding-top:62px;min-height:100vh;}
+.sidebar{width:280px;flex-shrink:0;background:var(--paper2);border-right:1.5px solid var(--line);padding:24px 16px;position:fixed;top:62px;bottom:0;overflow-y:auto;transition:transform .3s;}
+.sidebar h4{font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#9c8e76;margin:0 8px 12px;}
+.sidebar h4:not(:first-child){margin-top:24px;}
+.lesson-link{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;cursor:pointer;color:var(--ink);text-decoration:none;font-size:14.5px;transition:background .15s,color .15s;margin-bottom:3px;}
+.lesson-link:hover{background:var(--teal-l);}
+.lesson-link.active{background:var(--teal);color:#fff;}
+.lesson-link.active .lnum{background:#fff;color:var(--teal);}
+.lesson-link .lnum{width:24px;height:24px;border-radius:7px;background:#ddd0bb;color:var(--ink);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;font-weight:500;flex-shrink:0;transition:all .15s;}
+.lesson-link.done .lnum{background:var(--teal);color:#fff;}
+.lesson-link.done.active .lnum{background:#fff;color:var(--teal);}
+.lesson-link .check{margin-left:auto;color:var(--teal);font-weight:700;opacity:0;transition:opacity .2s;}
+.lesson-link.done .check{opacity:1;}
+.lesson-link.active.done .check{color:#fff;}
+.special-link{display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:10px;cursor:pointer;font-size:14.5px;margin-bottom:4px;transition:all .15s;font-weight:500;}
+.special-link.test{background:var(--plum-l);color:var(--plum);}
+.special-link.test:hover{background:var(--plum);color:#fff;}
+.special-link.test.active{background:var(--plum);color:#fff;}
+.special-link.annales{background:var(--navy-l);color:var(--navy);}
+.special-link.annales:hover{background:var(--navy);color:#fff;}
+.special-link.annales.active{background:var(--navy);color:#fff;}
+.special-link .ico{font-size:17px;}
+
+/* ── MAIN ───────────────────────────────────────────────── */
+.main{margin-left:280px;flex:1;padding:38px 48px 90px;max-width:920px;}
+.view{display:none;animation:fadeIn .45s ease;}
+.view.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+/* lesson typography */
+.tag{display:inline-block;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:5px 13px;border-radius:20px;margin-bottom:18px;}
+.tag.teal{background:var(--teal-l);color:var(--teal-d);}
+.tag.amber{background:var(--amber-l);color:var(--amber);}
+.tag.plum{background:var(--plum-l);color:var(--plum);}
+.tag.navy{background:var(--navy-l);color:var(--navy);}
+.tag.rust{background:var(--rust-l);color:var(--rust);}
+h1.lesson-title{font-family:var(--serif);font-size:38px;font-weight:600;line-height:1.12;color:var(--navy);letter-spacing:-.01em;margin-bottom:10px;}
+.lesson-sub{font-size:18px;color:#6b6356;font-weight:400;margin-bottom:30px;font-family:var(--serif);font-style:italic;}
+h2.sec{font-family:var(--serif);font-size:25px;font-weight:600;color:var(--ink);margin:38px 0 14px;letter-spacing:-.01em;}
+h3.subsec{font-family:var(--sans);font-size:17px;font-weight:600;color:var(--teal-d);margin:26px 0 10px;}
+.main p{margin-bottom:14px;}
+.main strong{font-weight:600;color:var(--navy);}
+
+/* callouts */
+.callout{border-radius:13px;padding:18px 22px 18px 20px;margin:22px 0;border-left:5px solid;position:relative;}
+.callout .ctitle{font-family:var(--sans);font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:8px;letter-spacing:.01em;}
+.callout p:last-child{margin-bottom:0;}
+.callout.analogy{background:var(--amber-l);border-color:var(--amber);}
+.callout.analogy .ctitle{color:var(--amber);}
+.callout.retain{background:var(--teal-l);border-color:var(--teal);}
+.callout.retain .ctitle{color:var(--teal-d);}
+.callout.trap{background:var(--rust-l);border-color:var(--rust);}
+.callout.trap .ctitle{color:var(--rust);}
+.callout.info{background:var(--navy-l);border-color:var(--navy);}
+.callout.info .ctitle{color:var(--navy);}
+
+/* formula box */
+.formula{background:#1c1a16;color:#f5efe2;border-radius:12px;padding:18px 22px;margin:20px 0;font-family:var(--mono);font-size:15px;line-height:1.8;box-shadow:var(--shadow);overflow-x:auto;}
+.formula .flabel{font-family:var(--sans);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#c9a063;margin-bottom:8px;font-weight:500;}
+.formula .accent{color:#6ec5b4;}
+.formula .gold{color:#e0a850;}
+
+/* worked example */
+.example{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:22px 24px;margin:22px 0;box-shadow:var(--shadow);}
+.example .ex-head{font-family:var(--serif);font-weight:600;font-size:17px;color:var(--navy);margin-bottom:14px;display:flex;align-items:center;gap:9px;}
+.example .ex-head::before{content:"✎";color:var(--amber);font-size:20px;}
+.step{display:flex;gap:13px;padding:9px 0;border-bottom:1px dashed var(--line);}
+.step:last-child{border-bottom:none;}
+.step .snum{width:25px;height:25px;border-radius:50%;background:var(--teal);color:#fff;font-family:var(--mono);font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.step .stxt{flex:1;font-size:14.5px;}
+.step .stxt .calc{font-family:var(--mono);font-size:13px;color:#6b6356;display:block;margin-top:2px;}
+.step .stxt .res{font-family:var(--mono);font-weight:500;color:var(--teal-d);}
+.ex-final{margin-top:14px;padding:12px 16px;background:var(--teal-l);border-radius:10px;font-family:var(--mono);font-size:15px;font-weight:500;color:var(--teal-d);text-align:center;}
+
+/* tables */
+.tbl-wrap{overflow-x:auto;margin:20px 0;border-radius:12px;box-shadow:var(--shadow);}
+table.data{width:100%;border-collapse:collapse;background:#fff;font-size:14px;overflow:hidden;border-radius:12px;}
+table.data th{background:var(--navy);color:#fff;font-weight:600;text-align:left;padding:11px 14px;font-size:13px;}
+table.data td{padding:10px 14px;border-bottom:1px solid var(--line);}
+table.data tr:last-child td{border-bottom:none;}
+table.data tr:nth-child(even) td{background:var(--paper);}
+table.data .hl{background:var(--amber-l)!important;font-weight:500;}
+table.data .num{font-family:var(--mono);color:var(--navy);font-weight:500;}
+
+/* SVG schema container */
+.schema{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:20px;margin:22px 0;text-align:center;box-shadow:var(--shadow);}
+.schema svg{max-width:100%;height:auto;}
+.schema .cap{font-size:12px;color:#9c8e76;margin-top:10px;font-style:italic;}
+
+/* mini-quiz */
+.quiz{background:var(--plum-l);border:1.5px solid #d9c4dd;border-radius:14px;padding:20px 22px;margin:24px 0;}
+.quiz .qhead{font-family:var(--sans);font-weight:700;font-size:13px;color:var(--plum);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+.quiz .qtext{font-size:15.5px;font-weight:500;margin-bottom:14px;color:var(--ink);}
+.quiz-opts{display:flex;flex-direction:column;gap:9px;}
+.quiz-opt{background:#fff;border:1.5px solid #e0d3e3;border-radius:10px;padding:11px 16px;cursor:pointer;font-size:14.5px;transition:all .15s;display:flex;align-items:center;gap:10px;}
+.quiz-opt:hover{border-color:var(--plum);background:#faf7fb;}
+.quiz-opt.correct{background:var(--teal-l);border-color:var(--teal);color:var(--teal-d);font-weight:500;}
+.quiz-opt.wrong{background:var(--rust-l);border-color:var(--rust);color:var(--rust);}
+.quiz-opt.disabled{pointer-events:none;opacity:.6;}
+.quiz-opt .mk{width:22px;height:22px;border-radius:50%;border:1.5px solid #ccc;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;}
+.quiz-opt.correct .mk{background:var(--teal);border-color:var(--teal);color:#fff;}
+.quiz-opt.wrong .mk{background:var(--rust);border-color:var(--rust);color:#fff;}
+.quiz-input-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.quiz-input{border:1.5px solid #d9c4dd;border-radius:9px;padding:9px 14px;font-family:var(--mono);font-size:15px;width:160px;outline:none;background:#fff;}
+.quiz-input:focus{border-color:var(--plum);}
+.quiz-input.correct{border-color:var(--teal);background:var(--teal-l);}
+.quiz-input.wrong{border-color:var(--rust);background:var(--rust-l);}
+.quiz-check{background:var(--plum);color:#fff;border:none;border-radius:9px;padding:9px 20px;font-family:var(--sans);font-weight:600;font-size:14px;cursor:pointer;transition:background .15s;}
+.quiz-check:hover{background:#542d5b;}
+.quiz-fb{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:14px;display:none;}
+.quiz-fb.show{display:block;animation:fadeIn .3s;}
+.quiz-fb.ok{background:var(--teal-l);color:var(--teal-d);}
+.quiz-fb.ko{background:var(--rust-l);color:var(--rust);}
+
+/* nav buttons */
+.lesson-nav{display:flex;justify-content:space-between;align-items:center;margin-top:48px;padding-top:24px;border-top:1.5px solid var(--line);gap:14px;}
+.btn{font-family:var(--sans);font-weight:600;font-size:15px;border:none;border-radius:11px;padding:13px 26px;cursor:pointer;transition:all .18s;display:inline-flex;align-items:center;gap:9px;}
+.btn-prev{background:#fff;border:1.5px solid var(--line);color:var(--ink);}
+.btn-prev:hover{border-color:var(--teal);color:var(--teal-d);}
+.btn-next{background:var(--teal);color:#fff;}
+.btn-next:hover{background:var(--teal-d);transform:translateX(2px);}
+.btn-validate{background:var(--amber);color:#fff;}
+.btn-validate:hover{background:#a8650d;}
+.btn:disabled{opacity:.4;cursor:not-allowed;}
+.xp-pop{position:fixed;top:80px;left:50%;transform:translateX(-50%);background:var(--teal);color:#fff;padding:12px 26px;border-radius:30px;font-family:var(--mono);font-weight:500;font-size:15px;box-shadow:var(--shadow-l);z-index:300;opacity:0;pointer-events:none;transition:all .4s;}
+.xp-pop.show{opacity:1;top:90px;}
+
+/* ── TEST FINAL ─────────────────────────────────────────── */
+.test-intro{text-align:center;padding:30px 0;}
+.test-q{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:22px 26px;margin-bottom:18px;box-shadow:var(--shadow);}
+.test-q .qn{font-family:var(--mono);font-size:12px;color:var(--plum);font-weight:500;margin-bottom:6px;}
+.test-q .qt{font-size:16px;font-weight:500;margin-bottom:16px;}
+.test-q .qt .sub{display:block;font-size:13px;color:#9c8e76;font-weight:400;margin-top:4px;font-family:var(--mono);}
+.remediation{background:var(--rust-l);border:1.5px solid #e0a896;border-radius:12px;padding:16px 20px;margin-top:14px;display:none;animation:fadeIn .3s;}
+.remediation.show{display:block;}
+.remediation .rtitle{font-weight:700;color:var(--rust);font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:7px;}
+.remediation .rbtns{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;}
+.rbtn{font-size:13px;padding:8px 16px;border-radius:9px;border:none;cursor:pointer;font-weight:600;font-family:var(--sans);}
+.rbtn.review{background:var(--navy);color:#fff;}
+.rbtn.continue{background:#fff;border:1.5px solid var(--line);color:var(--ink);}
+.float-retry{position:fixed;bottom:26px;right:26px;background:var(--plum);color:#fff;border:none;border-radius:30px;padding:14px 24px;font-family:var(--sans);font-weight:600;font-size:14px;cursor:pointer;box-shadow:var(--shadow-l);z-index:150;display:none;align-items:center;gap:8px;}
+.float-retry.show{display:inline-flex;animation:fadeIn .4s;}
+
+/* result screen */
+.result-screen{text-align:center;padding:20px 0;}
+.result-score{font-family:var(--serif);font-size:72px;font-weight:700;color:var(--navy);line-height:1;}
+.result-score small{font-size:32px;color:#9c8e76;}
+.result-msg{font-size:19px;color:#6b6356;margin:10px 0 30px;font-family:var(--serif);font-style:italic;}
+.chapter-bars{max-width:560px;margin:0 auto 34px;text-align:left;}
+.cbar-row{margin-bottom:14px;}
+.cbar-label{display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:5px;}
+.cbar-label .score{font-family:var(--mono);font-weight:500;}
+.cbar-track{height:11px;background:var(--paper2);border-radius:6px;overflow:hidden;border:1px solid var(--line);}
+.cbar-fill{height:100%;border-radius:6px;transition:width .8s cubic-bezier(.4,0,.2,1);}
+
+/* annales */
+.annale{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:24px 26px;margin-bottom:20px;box-shadow:var(--shadow);}
+.annale .a-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:14px;flex-wrap:wrap;}
+.annale .a-title{font-family:var(--serif);font-size:19px;font-weight:600;color:var(--navy);}
+.annale .a-meta{font-family:var(--mono);font-size:11px;color:var(--amber);background:var(--amber-l);padding:4px 11px;border-radius:14px;white-space:nowrap;}
+.annale .a-enonce{background:var(--paper);border-radius:11px;padding:16px 18px;font-size:14.5px;line-height:1.7;margin-bottom:14px;border-left:4px solid var(--navy);}
+.annale .a-enonce ul{padding-left:20px;margin:6px 0;}
+.annale .a-enonce li{margin-bottom:3px;}
+.btn-corrige{background:var(--navy);color:#fff;border:none;border-radius:10px;padding:11px 22px;font-family:var(--sans);font-weight:600;font-size:14px;cursor:pointer;transition:background .15s;}
+.btn-corrige:hover{background:#1a3450;}
+.corrige{display:none;margin-top:16px;animation:fadeIn .35s;}
+.corrige.show{display:block;}
+.corrige .c-title{font-family:var(--sans);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--teal-d);margin-bottom:12px;display:flex;align-items:center;gap:7px;}
+
+/* intro home view */
+.home-hero{text-align:center;padding:30px 0 10px;}
+.home-hero .htag{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-bottom:14px;}
+.home-hero h1{font-family:var(--serif);font-size:52px;font-weight:700;color:var(--navy);line-height:1.05;letter-spacing:-.02em;margin-bottom:14px;}
+.home-hero p{font-size:18px;color:#6b6356;max-width:560px;margin:0 auto 28px;}
+.home-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin:30px 0;}
+.hcard{background:#fff;border:1.5px solid var(--line);border-radius:13px;padding:18px;text-align:left;box-shadow:var(--shadow);}
+.hcard .hc-ico{font-size:26px;margin-bottom:8px;}
+.hcard .hc-t{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--navy);margin-bottom:3px;}
+.hcard .hc-d{font-size:13px;color:#6b6356;}
+
+@media(max-width:880px){
+  .sidebar{transform:translateX(-100%);z-index:180;box-shadow:var(--shadow-l);width:270px;}
+  .sidebar.open{transform:translateX(0);}
+  .main{margin-left:0;padding:28px 20px 80px;}
+  .burger{display:block;}
+  .nav-progress{max-width:none;}
+  h1.lesson-title{font-size:30px;}
+  .home-hero h1{font-size:36px;}
+}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <button class="burger" onclick="toggleSidebar()" aria-label="Menu">☰</button>
+  <div class="nav-logo" onclick="goView('home')">
+    <div class="mark">€</div>
+    <div class="name">Fiscalité<small>LP ABF · IR</small></div>
+  </div>
+  <div class="nav-progress">
+    <div class="track"><div class="fill" id="globalFill"></div></div>
+    <div class="pct" id="globalPct">0%</div>
+  </div>
+  <div class="nav-xp"><span class="star">★</span><span id="xpCount">0</span> XP</div>
+</nav>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <h4>Parcours</h4>
+    <div id="lessonNav"></div>
+    <h4>Évaluation</h4>
+    <div class="special-link test" id="link-test" onclick="goView('test')"><span class="ico">🎯</span> Test final adaptatif</div>
+    <div class="special-link annales" id="link-annales" onclick="goView('annales')"><span class="ico">📚</span> Annales corrigées</div>
+  </aside>
+
+  <main class="main">
+
+    <!-- HOME -->
+    <section class="view active" id="view-home">
+      <div class="home-hero">
+        <div class="htag">Impôt sur le revenu · Prélèvements sociaux</div>
+        <h1>La fiscalité,<br>sans la migraine.</h1>
+        <p>Tout le programme IR de la LP ABF : du calcul des parts au calcul de l'impôt net, avec analogies, schémas, exemples résolus et annales corrigées.</p>
+        <button class="btn btn-next" onclick="goLesson(0)">Commencer le parcours →</button>
+      </div>
+      <div class="home-cards">
+        <div class="hcard"><div class="hc-ico">🧩</div><div class="hc-t">8 leçons</div><div class="hc-d">Des principes au calcul final, étape par étape</div></div>
+        <div class="hcard"><div class="hc-ico">🎯</div><div class="hc-t">Test adaptatif</div><div class="hc-d">10 questions + remédiation ciblée</div></div>
+        <div class="hcard"><div class="hc-ico">📚</div><div class="hc-t">Annales</div><div class="hc-d">Les vrais exercices du cours, corrigés</div></div>
+        <div class="hcard"><div class="hc-ico">★</div><div class="hc-t">XP & progression</div><div class="hc-d">Valide chaque leçon, gagne des points</div></div>
+      </div>
+      <div class="callout info">
+        <div class="ctitle">📋 Bon à savoir pour le partiel</div>
+        <p>Les barèmes (tranches IR, abattements, plafonds) sont <strong>fournis le jour de l'examen</strong> — sauf le calcul des parts. L'enjeu n'est donc pas de mémoriser les chiffres, mais de savoir <strong>quand et comment</strong> appliquer chaque règle. C'est exactement ce que ce parcours t'entraîne à faire.</p>
+      </div>
+    </section>
+
+    <!-- LESSONS injected here -->
+    <div id="lessonsContainer"></div>
+
+    <!-- TEST -->
+    <section class="view" id="view-test"></section>
+
+    <!-- ANNALES -->
+    <section class="view" id="view-annales"></section>
+
+  </main>
+</div>
+
+<div class="xp-pop" id="xpPop">+10 XP ★</div>
+<button class="float-retry" id="floatRetry" onclick="restartTest()">↻ Reprendre le test</button>
+
+<script>
+// ════════════════════════════════════════════════════════════════════════════
+//  ÉTAT
+// ════════════════════════════════════════════════════════════════════════════
+const state = { xp:0, done:{}, totalLessons:8, currentView:'home', quizDone:{} };
+
+function addXP(n){
+  state.xp += n;
+  document.getElementById('xpCount').textContent = state.xp;
+  const pop = document.getElementById('xpPop');
+  pop.textContent = `+${n} XP ★`;
+  pop.classList.add('show');
+  setTimeout(()=>pop.classList.remove('show'),1400);
+}
+function updateProgress(){
+  const d = Object.keys(state.done).length;
+  const pct = Math.round(d/state.totalLessons*100);
+  document.getElementById('globalFill').style.width = pct+'%';
+  document.getElementById('globalPct').textContent = pct+'%';
+}
+function markDone(idx){
+  if(state.done[idx]) return;
+  state.done[idx]=true;
+  document.querySelectorAll('.lesson-link')[idx]?.classList.add('done');
+  updateProgress();
+  addXP(10);
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+//  CONTENU DES LEÇONS
+// ════════════════════════════════════════════════════════════════════════════
+const LESSONS = [
+{
+  tag:"Chapitre 1 · Principes", tagClass:"teal",
+  title:"Pourquoi l'IR n'impose pas des personnes, mais des foyers",
+  sub:"Les caractéristiques fondamentales de l'impôt sur le revenu",
+  body:`
+  <div class="callout analogy">
+    <div class="ctitle">💡 Analogie</div>
+    <p>Imagine une <strong>colocation qui cuisine un seul grand repas commun</strong>. On ne calcule pas ce que chaque colocataire a mangé individuellement : on additionne tout ce qui entre dans la marmite, puis on partage selon le nombre de bouches à nourrir. L'IR fonctionne pareil : il ne taxe pas chaque personne isolément, mais <strong>le foyer fiscal</strong> dans son ensemble, en tenant compte du nombre de "bouches" (les parts).</p>
+  </div>
+
+  <p>L'article 1 A du Code Général des Impôts pose le principe : il existe <strong>un impôt annuel unique sur le revenu des personnes physiques</strong>. Cet impôt frappe le revenu net global du contribuable, c'est-à-dire la somme de huit catégories de revenus (salaires, revenus fonciers, revenus de capitaux mobiliers, plus-values, BIC, BNC, BA…).</p>
+
+  <p>Pour bien le manier, il faut avoir en tête ses <strong>sept caractéristiques</strong>. Ce sont elles qui dictent toute la logique du calcul.</p>
+
+  <div class="schema">
+    <svg viewBox="0 0 640 230" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans">
+      <rect x="250" y="12" width="140" height="42" rx="9" fill="#23456b"/>
+      <text x="320" y="38" fill="#fff" font-size="15" font-weight="600" text-anchor="middle">IMPÔT SUR LE REVENU</text>
+      <g font-size="11.5" fill="#22201b">
+        <rect x="10" y="80" width="145" height="48" rx="8" fill="#e4f0ed" stroke="#1b6b5e"/>
+        <text x="82" y="100" text-anchor="middle" font-weight="600" fill="#134f45">Impôt d'État</text>
+        <text x="82" y="116" text-anchor="middle">personnes physiques</text>
+
+        <rect x="165" y="80" width="145" height="48" rx="8" fill="#fbf0dc" stroke="#c87a12"/>
+        <text x="237" y="100" text-anchor="middle" font-weight="600" fill="#c87a12">Annuel</text>
+        <text x="237" y="116" text-anchor="middle">année civile</text>
+
+        <rect x="320" y="80" width="145" height="48" rx="8" fill="#efe6f1" stroke="#6b3a73"/>
+        <text x="392" y="100" text-anchor="middle" font-weight="600" fill="#6b3a73">Déclaratif</text>
+        <text x="392" y="116" text-anchor="middle">revenus N → N+1</text>
+
+        <rect x="475" y="80" width="155" height="48" rx="8" fill="#e2e9f1" stroke="#23456b"/>
+        <text x="552" y="100" text-anchor="middle" font-weight="600" fill="#23456b">Personnel</text>
+        <text x="552" y="116" text-anchor="middle">situation familiale</text>
+
+        <rect x="60" y="150" width="160" height="48" rx="8" fill="#e4f0ed" stroke="#1b6b5e"/>
+        <text x="140" y="170" text-anchor="middle" font-weight="600" fill="#134f45">Global &amp; synthétique</text>
+        <text x="140" y="186" text-anchor="middle">tous les revenus du foyer</text>
+
+        <rect x="240" y="150" width="160" height="48" rx="8" fill="#fbf0dc" stroke="#c87a12"/>
+        <text x="320" y="170" text-anchor="middle" font-weight="600" fill="#c87a12">Revenus disponibles</text>
+        <text x="320" y="186" text-anchor="middle">perçus dans l'année</text>
+
+        <rect x="420" y="150" width="160" height="48" rx="8" fill="#efe6f1" stroke="#6b3a73"/>
+        <text x="500" y="170" text-anchor="middle" font-weight="600" fill="#6b3a73">Progressif</text>
+        <text x="500" y="186" text-anchor="middle">barème par tranches</text>
+      </g>
+      <line x1="320" y1="54" x2="320" y2="74" stroke="#cdbfa6" stroke-width="1.5"/>
+    </svg>
+    <div class="cap">Les 7 caractéristiques structurantes de l'IR</div>
+  </div>
+
+  <h3 class="subsec">Le piège du "déclaratif" et du prélèvement à la source</h3>
+  <p>Depuis 2019, l'impôt est prélevé à la source (PAS). Beaucoup d'étudiants en concluent que l'IR n'est plus déclaratif — <strong>c'est faux</strong>. Le PAS ne change que les <em>modalités de paiement</em> : on paie en même temps qu'on perçoit. Mais on continue de <strong>déclarer</strong> ses revenus chaque printemps, et l'administration régularise ensuite.</p>
+
+  <div class="callout trap">
+    <div class="ctitle">⚠️ Piège fréquent</div>
+    <p>Ne confonds pas <strong>revenu disponible</strong>, revenu <strong>acquis</strong> et revenu <strong>perçu</strong>. Seul le revenu <strong>disponible</strong> est imposable : c'est celui dont la perception ne dépend plus que de ta volonté (l'argent est à ta disposition, même si tu ne l'as pas encore physiquement encaissé).</p>
+  </div>
+
+  <div class="callout retain">
+    <div class="ctitle">🔑 À retenir</div>
+    <p>L'IR est <strong>unique, annuel, déclaratif, personnel, global, synthétique et progressif</strong>. Son unité de base n'est jamais l'individu : c'est <strong>le foyer fiscal</strong>. Tout le reste du cours découle de ce principe.</p>
+  </div>
+  `,
+  quizzes:[
+    {type:"qcm", q:"La mise en place du prélèvement à la source en 2019 a supprimé le caractère déclaratif de l'IR.", opts:["Vrai","Faux"], correct:1, fb:"Faux ! Le PAS ne change que les modalités de paiement. On continue de déclarer ses revenus chaque année."},
+    {type:"qcm", q:"Quelle est l'unité de base du calcul de l'impôt sur le revenu ?", opts:["La personne physique","Le foyer fiscal","Le ménage au sens INSEE","Le contribuable majeur"], correct:1, fb:"C'est le foyer fiscal : on additionne les revenus de tous ses membres."},
+    {type:"qcm", q:"Un revenu est imposable lorsqu'il est…", opts:["acquis","perçu physiquement","disponible","promis par contrat"], correct:2, fb:"Le revenu disponible : sa perception ne dépend plus que de la volonté du bénéficiaire."},
+  ]
+},
+{
+  tag:"Chapitre 2 · Le cœur du sujet", tagClass:"amber",
+  title:"Le calcul des parts : la seule chose à savoir par cœur",
+  sub:"Composition du foyer fiscal et quotient familial",
+  body:`
+  <div class="callout analogy">
+    <div class="ctitle">💡 Analogie</div>
+    <p>Pense à un <strong>gâteau partagé à table</strong>. Plus il y a de convives (de parts), plus chaque assiette est petite — donc moins le morceau de chacun est "lourd" à taxer. À revenu égal, <strong>plus le nombre de parts est élevé, plus l'impôt diminue</strong>. Le calcul des parts, c'est compter combien d'assiettes on met sur la table.</p>
+  </div>
+
+  <p>C'est <strong>LE</strong> point que tu dois maîtriser sans hésitation : au partiel, les barèmes sont fournis, mais le calcul des parts, non. Le raisonnement se fait toujours en deux temps : d'abord la <strong>composition du foyer</strong> (qui en fait partie ?), puis le <strong>nombre de parts</strong>.</p>
+
+  <h3 class="subsec">Étape 1 — Qui compose le foyer ?</h3>
+  <p>Le foyer comprend <strong>le contribuable</strong> (personne seule, ou couple marié/pacsé) et ses <strong>personnes à charge</strong>. Ces dernières sont soit à charge <strong>de droit</strong> (enfants mineurs, enfants infirmes, invalides sous le toit), soit par <strong>rattachement sur option</strong> (enfants majeurs sous conditions d'âge).</p>
+
+  <h3 class="subsec">Étape 2 — Le tableau des parts</h3>
+  <div class="tbl-wrap">
+  <table class="data">
+    <tr><th>Situation</th><th>Base</th><th>1<sup>re</sup> PAC</th><th>2<sup>e</sup> PAC</th><th>3<sup>e</sup> PAC+</th></tr>
+    <tr><td><strong>Marié·e / Pacsé·e</strong></td><td class="num">2</td><td class="num">+0,5</td><td class="num">+0,5</td><td class="num">+1</td></tr>
+    <tr><td><strong>Célibataire / Divorcé·e</strong> (concubinage)</td><td class="num">1</td><td class="num">+0,5</td><td class="num">+0,5</td><td class="num">+1</td></tr>
+    <tr class="hl"><td><strong>Parent isolé</strong> (case T)</td><td class="num">1</td><td class="num">+0,5 +0,5</td><td class="num">+0,5</td><td class="num">+1</td></tr>
+    <tr><td><strong>Veuf·ve avec PAC</strong></td><td class="num">1</td><td class="num">+1,5</td><td class="num">+0,5</td><td class="num">+1</td></tr>
+  </table>
+  </div>
+
+  <p>Deux situations méritent une attention particulière. La <strong>case T (parent isolé)</strong> donne une demi-part supplémentaire sur la première personne à charge, à condition de <strong>vivre seul·e</strong> au 1<sup>er</sup> janvier et d'assumer seul·e la charge. Le <strong>veuf·ve avec personne à charge</strong> bénéficie du même quotient qu'un couple marié : sa première PAC vaut +1,5 part.</p>
+
+  <div class="formula">
+    <div class="flabel">Majoration invalidité</div>
+    +0,5 part <span class="accent">par personne</span> (contribuable ou PAC) titulaire de la carte mobilité inclusion mention « invalidité » <span class="gold">(≥ 80 %)</span> ou d'une pension d'invalidité <span class="gold">(≥ 40 %)</span>
+  </div>
+
+  <div class="example">
+    <div class="ex-head">Exemple résolu — Mme MARTIN, parent isolé</div>
+    <p style="font-size:14.5px;margin-bottom:12px;">Mme MARTIN est divorcée. Elle vit seule avec ses 2 enfants mineurs dont elle a la garde exclusive.</p>
+    <div class="step"><div class="snum">1</div><div class="stxt">Base personne seule <span class="res">1 part</span></div></div>
+    <div class="step"><div class="snum">2</div><div class="stxt">1<sup>re</sup> PAC : majoration ordinaire <span class="calc">+0,5 part</span></div></div>
+    <div class="step"><div class="snum">3</div><div class="stxt">Case T (parent isolé, 1<sup>re</sup> PAC exclusive) <span class="calc">+0,5 part supplémentaire</span></div></div>
+    <div class="step"><div class="snum">4</div><div class="stxt">2<sup>e</sup> PAC <span class="calc">+0,5 part</span></div></div>
+    <div class="ex-final">Total : 1 + 0,5 + 0,5 + 0,5 = 2,5 parts</div>
+  </div>
+
+  <div class="callout trap">
+    <div class="ctitle">⚠️ Piège fréquent</div>
+    <p>En <strong>résidence alternée</strong>, toutes les majorations sont <strong>divisées par deux</strong> (le 1<sup>er</sup> enfant vaut +0,25 au lieu de +0,5). Et attention : un <strong>veuf·ve ne peut jamais bénéficier de la case T</strong> — la condition de "vivre seul" ne s'applique pas à lui. L'état d'<strong>infirmité</strong> seul (sans carte d'invalidité) ne donne pas non plus la demi-part.</p>
+  </div>
+
+  <div class="callout retain">
+    <div class="ctitle">🔑 À retenir</div>
+    <p>Couple = 2 parts, personne seule = 1 part. Les deux premières PAC valent +0,5, à partir de la 3<sup>e</sup> c'est +1. Trois exceptions à connaître : <strong>case T</strong> (+0,5 sur la 1<sup>re</sup> PAC), <strong>veuf·ve avec PAC</strong> (1<sup>re</sup> PAC à +1,5), <strong>invalidité</strong> (+0,5 par personne).</p>
+  </div>
+  `,
+  quizzes:[
+    {type:"input", q:"M. et Mme DUPONT sont mariés avec 3 enfants mineurs. Combien de parts ?", answer:4, unit:"parts", tol:0, fb:"2 (couple) + 0,5 + 0,5 + 1 = 4 parts."},
+    {type:"input", q:"M. LEBRUN est veuf et élève seul 2 enfants mineurs. Combien de parts ?", answer:3, unit:"parts", tol:0, fb:"1 + 1,5 (1re PAC veuf) + 0,5 (2e PAC) = 3 parts."},
+    {type:"qcm", q:"Un contribuable célibataire vivant en concubinage avec 1 enfant à charge peut-il bénéficier de la case T ?", opts:["Oui","Non, il ne vit pas seul"], correct:1, fb:"Non : la case T exige de vivre seul·e au 1er janvier. Le concubinage l'exclut."},
+  ]
+},
+{
+  tag:"Chapitre 3 · La chaîne", tagClass:"navy",
+  title:"Du revenu brut au RNGI : la cascade en 4 étages",
+  sub:"Déterminer le Revenu Net Global Imposable",
+  body:`
+  <div class="callout analogy">
+    <div class="ctitle">💡 Analogie</div>
+    <p>Imagine une <strong>fontaine à étages</strong>. L'eau (tes revenus) part du haut, et à chaque étage on retire quelque chose : des déficits, des charges, des abattements. Ce qui arrive tout en bas du bassin, c'est le <strong>RNGI</strong> — la base qui sera réellement taxée. Si tu sautes un étage, tout le calcul en aval est faux.</p>
+  </div>
+
+  <p>Une fois les revenus nets de chaque catégorie déterminés, on les fait descendre dans une cascade de <strong>quatre étapes</strong>. Chaque flèche correspond à une soustraction.</p>
+
+  <div class="schema">
+    <svg viewBox="0 0 560 300" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans">
+      <g font-size="12">
+        <rect x="160" y="10" width="240" height="46" rx="9" fill="#1b6b5e"/>
+        <text x="280" y="32" fill="#fff" font-weight="600" text-anchor="middle" font-size="13">REVENU GLOBAL (RG)</text>
+        <text x="280" y="48" fill="#cfe7e1" text-anchor="middle" font-size="10.5">Σ revenus nets catégoriels</text>
+
+        <text x="415" y="78" fill="#a8432a" font-size="11" font-weight="600">− Déficits globaux (6 ans)</text>
+        <line x1="280" y1="56" x2="280" y2="76" stroke="#cdbfa6" stroke-width="2" marker-end="url(#ar)"/>
+
+        <rect x="160" y="80" width="240" height="46" rx="9" fill="#23456b"/>
+        <text x="280" y="102" fill="#fff" font-weight="600" text-anchor="middle" font-size="13">REVENU BRUT GLOBAL</text>
+        <text x="280" y="118" fill="#cdd8e6" text-anchor="middle" font-size="10.5">(RBG)</text>
+
+        <text x="415" y="148" fill="#a8432a" font-size="11" font-weight="600">− Charges déductibles</text>
+        <line x1="280" y1="126" x2="280" y2="146" stroke="#cdbfa6" stroke-width="2" marker-end="url(#ar)"/>
+
+        <rect x="160" y="150" width="240" height="46" rx="9" fill="#6b3a73"/>
+        <text x="280" y="172" fill="#fff" font-weight="600" text-anchor="middle" font-size="13">REVENU NET GLOBAL</text>
+        <text x="280" y="188" fill="#e0cfe3" text-anchor="middle" font-size="10.5">(RNG)</text>
+
+        <text x="415" y="218" fill="#a8432a" font-size="11" font-weight="600">− Abattements spéciaux</text>
+        <line x1="280" y1="196" x2="280" y2="216" stroke="#cdbfa6" stroke-width="2" marker-end="url(#ar)"/>
+
+        <rect x="160" y="220" width="240" height="50" rx="9" fill="#c87a12"/>
+        <text x="280" y="244" fill="#fff" font-weight="700" text-anchor="middle" font-size="15">RNGI</text>
+        <text x="280" y="260" fill="#f7e6cb" text-anchor="middle" font-size="10.5">base d'imposition</text>
+      </g>
+      <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#cdbfa6"/></marker></defs>
+    </svg>
+    <div class="cap">La cascade RG → RBG → RNG → RNGI</div>
+  </div>
+
+  <h3 class="subsec">Les déficits globaux (étage 1)</h3>
+  <p>Si l'année est déficitaire, on impute les déficits des <strong>6 années précédentes</strong>, en commençant par les plus anciens, dans la limite du RG de l'année. Au-delà de 6 ans, le déficit est perdu.</p>
+
+  <h3 class="subsec">Les charges déductibles (étage 2)</h3>
+  <p>Elles sont limitativement énumérées par la loi : <strong>CSG déductible</strong> sur les revenus du patrimoine (6,8 %), <strong>pensions alimentaires</strong>, <strong>cotisations d'épargne retraite</strong> (PER, PERP…), frais d'accueil d'une personne âgée. Elles ne peuvent ni créer ni augmenter un déficit global.</p>
+
+  <div class="example">
+    <div class="ex-head">Exemple résolu — Mme LEGALL, célibataire</div>
+    <p style="font-size:14.5px;margin-bottom:12px;">Salaires bruts 40 000 €, déficit global N-1 de 5 000 €, pension alimentaire versée 3 000 €.</p>
+    <div class="step"><div class="snum">1</div><div class="stxt">T&S nets : 40 000 − 4 000 (abatt. 10 %) <span class="res">= 36 000 €</span></div></div>
+    <div class="step"><div class="snum">2</div><div class="stxt">Revenu Global <span class="res">= 36 000 €</span></div></div>
+    <div class="step"><div class="snum">3</div><div class="stxt">RBG : 36 000 − 5 000 (déficit) <span class="res">= 31 000 €</span></div></div>
+    <div class="step"><div class="snum">4</div><div class="stxt">RNG : 31 000 − 3 000 (pension alim.) <span class="res">= 28 000 €</span></div></div>
+    <div class="ex-final">RNGI = 28 000 € (pas d'abattement spécial ici)</div>
+  </div>
+
+  <div class="callout trap">
+    <div class="ctitle">⚠️ Piège fréquent</div>
+    <p>Ne confonds pas <strong>charges déductibles du revenu</strong> (elles réduisent la base, étage 2) et <strong>réductions/crédits d'impôt</strong> (ils réduisent l'impôt lui-même, tout à la fin). Une pension alimentaire est une charge déductible ; un don aux œuvres est une réduction d'impôt. L'effet n'est pas du tout le même !</p>
+  </div>
+
+  <div class="callout retain">
+    <div class="ctitle">🔑 À retenir</div>
+    <p>RG <span style="font-family:var(--mono)">−</span> déficits antérieurs <span style="font-family:var(--mono)">=</span> RBG <span style="font-family:var(--mono)">−</span> charges <span style="font-family:var(--mono)">=</span> RNG <span style="font-family:var(--mono)">−</span> abattements spéciaux <span style="font-family:var(--mono)">=</span> RNGI. Mémorise l'ordre : il est imposé et toute inversion fausse le résultat.</p>
+  </div>
+  `,
+  quizzes:[
+    {type:"qcm", q:"Dans quel ordre s'enchaîne la cascade ?", opts:["RG → RNG → RBG → RNGI","RG → RBG → RNG → RNGI","RBG → RG → RNG → RNGI"], correct:1, fb:"RG → (− déficits) → RBG → (− charges) → RNG → (− abattements) → RNGI."},
+    {type:"qcm", q:"Une pension alimentaire versée à un ascendant est…", opts:["une réduction d'impôt","une charge déductible du revenu","un crédit d'impôt"], correct:1, fb:"C'est une charge déductible : elle réduit le RBG (étage 2), pas l'impôt."},
+    {type:"input", q:"RG = 50 000 €, déficit antérieur 8 000 €, charges déductibles 4 000 €. Quel est le RNG ?", answer:38000, unit:"€", tol:0, fb:"50 000 − 8 000 = 42 000 (RBG), puis − 4 000 = 38 000 € (RNG)."},
+  ]
+},
+{
+  tag:"Chapitre 4 · Revenus du travail", tagClass:"teal",
+  title:"Salaires et pensions : l'abattement qui change tout",
+  sub:"Traitements & salaires, pensions, frais réels",
+  body:`
+  <div class="callout analogy">
+    <div class="ctitle">💡 Analogie</div>
+    <p>L'abattement de 10 % sur les salaires, c'est comme un <strong>forfait kilométrique offert d'office</strong> : le fisc admet que tu as forcément des frais pour travailler (transport, repas, documentation), et il te les déduit sans demander de justificatif. Mais si tes vrais frais dépassent ce forfait, tu peux présenter la facture détaillée : ce sont les <strong>frais réels</strong>.</p>
+  </div>
+
+  <p>Les traitements et salaires bénéficient d'une <strong>déduction forfaitaire de 10 %</strong>, qui couvre les dépenses professionnelles ordinaires. Cette déduction a un plancher et un plafond.</p>
+
+  <div class="formula">
+    <div class="flabel">Déduction forfaitaire 10 % (revenus 2024)</div>
+    Déduction = salaire × 10 %<br>
+    <span class="accent">Minimum 504 €</span> · <span class="gold">Maximum 14 426 €</span> par salarié
+  </div>
+
+  <p>Chaque membre du foyer choisit <strong>individuellement</strong> entre le forfait et les frais réels. On opte pour les frais réels uniquement quand ils <strong>dépassent</strong> le forfait — sinon, le forfait est plus avantageux.</p>
+
+  <h3 class="subsec">Les pensions de retraite</h3>
+  <p>Elles aussi bénéficient d'un abattement de 10 %, mais avec des limites différentes : <strong>minimum 450 € par bénéficiaire</strong> et <strong>maximum 4 399 € par foyer fiscal</strong>. Quand deux pensions coexistent dans le foyer, le plafond se répartit au prorata.</p>
+
+  <div class="example">
+    <div class="ex-head">Exemple résolu — M. BREIZH, salaire 40 000 €</div>
+    <div class="step"><div class="snum">1</div><div class="stxt">Déduction brute : 40 000 × 10 % <span class="res">= 4 000 €</span></div></div>
+    <div class="step"><div class="snum">2</div><div class="stxt">Dans les bornes [504 ; 14 426] <span class="calc">→ retenue intégralement</span></div></div>
+    <div class="step"><div class="snum">3</div><div class="stxt">Revenu net catégoriel : 40 000 − 4 000 <span class="res">= 36 000 €</span></div></div>
+    <div class="ex-final">T&S net = 36 000 €</div>
+  </div>
+
+  <h3 class="subsec">Les frais réels : le barème kilométrique</h3>
+  <p>Quand on opte pour les frais réels, le poste principal est souvent le trajet domicile-travail, évalué via le <strong>barème kilométrique</strong> de l'administration (fourni à l'examen). Au-delà de 40 km (aller), il faut justifier l'éloignement.</p>
+
+  <div class="callout trap">
+    <div class="ctitle">⚠️ Piège fréquent</div>
+    <p>Si tu optes pour les frais réels, tu dois <strong>réintégrer les allocations pour frais d'emploi</strong> dans ton revenu imposable (elles n'étaient exonérées que sous le régime du forfait 10 %). Autre piège : le plafond de 4 399 € sur les pensions est <strong>par foyer</strong>, pas par personne — alors que le plafond salaires de 14 426 € est <strong>par salarié</strong>.</p>
+  </div>
+
+  <div class="callout retain">
+    <div class="ctitle">🔑 À retenir</div>
+    <p>Salaires : abattement 10 % (min 504 € / max 14 426 € <strong>par salarié</strong>) OU frais réels si plus avantageux. Pensions : abattement 10 % (min 450 € / max 4 399 € <strong>par foyer</strong>). On ne cumule jamais forfait et frais réels.</p>
+  </div>
+  `,
+  quizzes:[
+    {type:"input", q:"Salaire déclaré 28 000 €. Déduction forfaitaire 10 % retenue ?", answer:2800, unit:"€", tol:0, fb:"28 000 × 10 % = 2 800 €, bien dans les bornes [504 ; 14 426]."},
+    {type:"input", q:"Salaire 200 000 €. Quelle déduction forfaitaire ? (attention au plafond)", answer:14426, unit:"€", tol:0, fb:"200 000 × 10 % = 20 000 €, mais plafonné à 14 426 €."},
+    {type:"qcm", q:"Le plafond de 4 399 € sur l'abattement pensions s'apprécie…", opts:["par bénéficiaire","par foyer fiscal"], correct:1, fb:"Par foyer fiscal — contrairement au plafond salaires (14 426 €) qui est par salarié."},
+  ]
+},
+{
+  tag:"Chapitre 5 · Revenus du capital", tagClass:"plum",
+  title:"Fonciers, mobiliers, plus-values : trois logiques distinctes",
+  sub:"Revenus fonciers, RCM et plus-values des particuliers",
+  body:`
+  <div class="callout analogy">
+    <div class="ctitle">💡 Analogie</div>
+    <p>Tes placements, c'est comme un <strong>verger</strong>. Les <strong>revenus fonciers</strong> sont les fruits que tu récoltes chaque année en louant ton terrain. Les <strong>revenus mobiliers</strong> (dividendes, intérêts) sont les fruits de tes arbres financiers. Les <strong>plus-values</strong>, c'est quand tu vends un arbre entier plus cher que tu ne l'as acheté. Trois récoltes, trois fiscalités.</p>
+  </div>
+
+  <h3 class="subsec">Les revenus fonciers (location nue)</h3>
+  <p>Deux régimes. Le <strong>micro-foncier</strong> s'applique de plein droit si les recettes brutes du foyer ne dépassent pas <strong>15 000 €</strong> : abattement forfaitaire de 30 %. Le <strong>régime réel</strong> (au-delà, ou sur option) déduit les charges réelles et permet de constater un déficit foncier.</p>
+
+  <div class="formula">
+    <div class="flabel">Micro-foncier</div>
+    Revenu foncier imposable = recettes brutes × <span class="accent">70 %</span><br>
+    <span class="gold">(abattement de 30 %)</span> · condition : recettes ≤ 15 000 €
+  </div>
+
+  <div class="callout trap">
+    <div class="ctitle">⚠️ Piège fréquent — le déficit foncier</div>
+    <p>Le déficit foncier s'impute sur le <strong>revenu global</strong> dans la limite de <strong>10 700 €/an</strong>, MAIS uniquement la part qui ne provient pas des <strong>intérêts d'emprunt</strong>. La part liée aux intérêts d'emprunt n'est imputable que sur les revenus fonciers des 10 années suivantes. Il faut toujours faire le tri : on déduit d'abord les intérêts, puis les autres charges.</p>
+  </div>
+
+  <h3 class="subsec">Les revenus de capitaux mobiliers (RCM)</h3>
+  <p>Par défaut, le <strong>Prélèvement Forfaitaire Unique (PFU ou « flat tax »)</strong> de 30 % : 12,8 % d'IR + 17,2 % de prélèvements sociaux. On peut <strong>opter pour le barème progressif</strong> (option globale, case 2OP) — intéressant pour les faibles tranches, car on récupère alors l'abattement de 40 % sur les dividendes et la CSG déductible de 6,8 %.</p>
+
+  <div class="tbl-wrap">
+  <table class="data">
+    <tr><th>Critère</th><th>PFU (défaut)</th><th>Barème (option)</th></tr>
+    <tr><td>Taux IR</td><td class="num">12,8 %</td><td>Progressif</td></tr>
+    <tr><td>Assiette</td><td>Brut</td><td>Brut − abattements</td></tr>
+    <tr class="hl"><td>Abattement 40 % dividendes</td><td>Non</td><td>Oui</td></tr>
+    <tr><td>CSG déductible 6,8 %</td><td>Non</td><td>Oui</td></tr>
+  </table>
+  </div>
+
+  <h3 class="subsec">Les plus-values immobilières</h3>
+  <p>PV = prix de cession − prix d'acquisition (majoré des frais : 7,5 % forfait + 15 % travaux si bien détenu > 5 ans). On applique ensuite un <strong>abattement pour durée de détention</strong> : exonération d'IR à <strong>22 ans</strong>, exonération de prélèvements sociaux à <strong>30 ans</strong>. Taux d'IR : <strong>19 %</strong>.</p>
+
+  <div class="example">
+    <div class="ex-head">Exemple résolu — PV immobilière, détention 10 ans</div>
+    <p style="font-size:14.5px;margin-bottom:12px;">PV brute de 10 000 €, bien détenu 10 ans.</p>
+    <div class="step"><div class="snum">1</div><div class="stxt">Abattement IR : 6 % × 5 ans (de la 6<sup>e</sup> à la 10<sup>e</sup>) <span class="res">= 30 %</span></div></div>
+    <div class="step"><div class="snum">2</div><div class="stxt">PV nette : 10 000 × 70 % <span class="res">= 7 000 €</span></div></div>
+    <div class="step"><div class="snum">3</div><div class="stxt">Impôt : 7 000 × 19 % <span class="res">= 1 330 €</span></div></div>
+    <div class="ex-final">Impôt sur la PV = 1 330 €</div>
+  </div>
+
+  <div class="callout retain">
+    <div class="ctitle">🔑 À retenir</div>
+    <p>Foncier : micro (30 %) si ≤ 15 000 €, sinon réel. RCM : PFU 30 % par défaut, barème sur option (avec abatt. 40 % dividendes). PV immo : abattement durée → exo IR à 22 ans, exo PS à 30 ans, taux 19 %. PV mobilières : PFU 30 % ou barème.</p>
+  </div>
+  `,
+  quizzes:[
+    {type:"input", q:"Loyers bruts (location nue) de 12 000 €, micro-foncier. Revenu foncier imposable ?", answer:8400, unit:"€", tol:0, fb:"12 000 × 70 % = 8 400 € (abattement 30 %)."},
+    {type:"qcm", q:"Le déficit foncier provenant des intérêts d'emprunt s'impute…", opts:["sur le revenu global (10 700 €)","sur les revenus fonciers des 10 ans suivants uniquement"], correct:1, fb:"La part « intérêts d'emprunt » ne touche jamais le revenu global."},
+    {type:"qcm", q:"Une plus-value immobilière est totalement exonérée d'IR après…", opts:["15 ans","22 ans","30 ans"], correct:1, fb:"22 ans pour l'IR (30 ans pour les prélèvements sociaux)."},
+  ]
+},
+{
+  tag:"Chapitre 6 · Liquidation", tagClass:"navy",
+  title:"Du RNGI à l'impôt : le mécanisme du quotient familial",
+  sub:"Quotient familial, barème progressif et impôt brut",
+  body:`
+  <div class="callout analogy">
+    <div class="ctitle">💡 Analogie</div>
+    <p>Le quotient familial, c'est comme <strong>répartir une addition de restaurant entre convives avant de regarder le prix par personne</strong>. On divise le revenu par le nombre de parts, on regarde dans quelle "tranche de prix" tombe chaque part, puis on remultiplie. Diviser d'abord adoucit la progressivité : c'est l'avantage des familles nombreuses.</p>
+  </div>
+
+  <div class="formula">
+    <div class="flabel">Quotient familial</div>
+    QF = <span class="accent">RNGI ÷ N</span><br>
+    <span class="gold">N = nombre de parts du foyer fiscal</span>
+  </div>
+
+  <p>On applique le barème progressif au quotient (revenu d'une seule part), puis on multiplie le résultat par N. Le barème est <strong>fourni à l'examen</strong> ; l'important est de savoir l'utiliser, notamment via les <strong>formules de calcul direct</strong>.</p>
+
+  <div class="tbl-wrap">
+  <table class="data">
+    <tr><th>Tranche (QF = R/N)</th><th>Taux</th><th>Formule directe (impôt brut)</th></tr>
+    <tr><td>≤ 11 497 €</td><td class="num">0 %</td><td class="num">0</td></tr>
+    <tr><td>11 498 – 29 315 €</td><td class="num">11 %</td><td class="num">(R × 0,11) − (1 264,67 × N)</td></tr>
+    <tr class="hl"><td>29 316 – 83 823 €</td><td class="num">30 %</td><td class="num">(R × 0,30) − (6 834,52 × N)</td></tr>
+    <tr><td>83 824 – 180 294 €</td><td class="num">41 %</td><td class="num">(R × 0,41) − (16 055,05 × N)</td></tr>
+    <tr><td>&gt; 180 294 €</td><td class="num">45 %</td><td class="num">(R × 0,45) − (23 266,81 × N)</td></tr>
+  </table>
+  </div>
+
+  <div class="example">
+    <div class="ex-head">Exemple résolu — couple marié, 2 enfants, RNGI 60 000 €</div>
+    <div class="step"><div class="snum">1</div><div class="stxt">Parts : 2 + 0,5 + 0,5 <span class="res">= 3 parts</span></div></div>
+    <div class="step"><div class="snum">2</div><div class="stxt">QF : 60 000 ÷ 3 <span class="res">= 20 000 €</span> → tranche 11 %</div></div>
+    <div class="step"><div class="snum">3</div><div class="stxt">Formule directe : (60 000 × 0,11) − (1 264,67 × 3) <span class="calc">= 6 600 − 3 794 = 2 806 €</span></div></div>
+    <div class="ex-final">Impôt brut ≈ 2 805 €</div>
+  </div>
+
+  <h3 class="subsec">TMI vs taux moyen</h3>
+  <p>Le <strong>taux marginal d'imposition (TMI)</strong> est le taux de la tranche la plus haute atteinte par ton quotient. Le <strong>taux moyen</strong> est l'impôt divisé par le revenu. On confond souvent les deux : le TMI sert à raisonner sur "l'euro suivant", le taux moyen mesure le poids réel de l'impôt.</p>
+
+  <div class="callout trap">
+    <div class="ctitle">⚠️ Piège fréquent</div>
+    <p>Avec la <strong>formule directe</strong>, on multiplie déjà par N <em>dans</em> la formule (le terme " × N " s'en charge). Ne remultiplie pas une seconde fois ! La méthode "tranche par tranche", elle, calcule l'impôt d'une part puis multiplie par N à la fin. Choisis une méthode et tiens-t'y.</p>
+  </div>
+
+  <div class="callout retain">
+    <div class="ctitle">🔑 À retenir</div>
+    <p>QF = RNGI ÷ N. On applique le barème au quotient, puis on multiplie par N (ou on utilise directement la formule, qui intègre le × N). Le TMI = taux de la dernière tranche atteinte ; le taux moyen = impôt / revenu.</p>
+  </div>
+  `,
+  quizzes:[
+    {type:"input", q:"Célibataire (1 part), RNGI 30 000 €. Avec la formule directe tranche 30 % : (30 000 × 0,30) − (6 834,52 × 1). Impôt brut ?", answer:2165, unit:"€", tol:5, fb:"9 000 − 6 834,52 = 2 165 € environ."},
+    {type:"qcm", q:"Le taux marginal d'imposition (TMI) correspond…", opts:["à l'impôt divisé par le revenu","au taux de la tranche la plus élevée atteinte"], correct:1, fb:"Le TMI = taux de la dernière tranche atteinte. Le taux moyen = impôt / revenu."},
+    {type:"input", q:"Couple marié sans enfant, RNGI 50 000 €. QF ?", answer:25000, unit:"€", tol:0, fb:"50 000 ÷ 2 = 25 000 € (2 parts pour un couple)."},
+  ]
+},
+{
+  tag:"Chapitre 7 · Corrections", tagClass:"rust",
+  title:"Plafonnement, décote, réductions : les ajustements finaux",
+  sub:"Du brut au net, puis à l'impôt à payer",
+  body:`
+  <div class="callout analogy">
+    <div class="ctitle">💡 Analogie</div>
+    <p>Après avoir calculé le prix "brut" d'un panier, on applique encore des ajustements en caisse : un <strong>plafond</strong> sur certaines remises (le quotient familial), une <strong>ristourne</strong> pour les petits budgets (la décote), puis des <strong>bons de réduction</strong> (réductions et crédits d'impôt). C'est seulement à la fin du tapis qu'on connaît le montant réel à payer.</p>
+  </div>
+
+  <h3 class="subsec">Le plafonnement du quotient familial</h3>
+  <p>L'avantage tiré des parts supplémentaires est plafonné à <strong>1 791 € par demi-part</strong>. Méthode : (1) impôt avec les parts réelles, (2) impôt sans les demi-parts supplémentaires, (3) si l'écart dépasse le plafond, on retient l'impôt sans demi-parts moins le plafond.</p>
+
+  <h3 class="subsec">La décote</h3>
+  <p>Pour les ménages modestes, une décote réduit l'impôt brut.</p>
+  <div class="formula">
+    <div class="flabel">Décote 2024</div>
+    Célibataire <span class="gold">(IB &lt; 1 964 €)</span> : 889 − <span class="accent">45,25 %</span> × IB<br>
+    Couple <span class="gold">(IB &lt; 3 249 €)</span> : 1 470 − <span class="accent">45,25 %</span> × IB
+  </div>
+
+  <h3 class="subsec">Réductions vs crédits d'impôt</h3>
+  <p>La distinction est capitale : une <strong>réduction</strong> ne peut pas être remboursée si elle dépasse l'impôt dû (elle s'arrête à zéro). Un <strong>crédit</strong>, lui, est <strong>remboursé</strong> si son montant excède l'impôt.</p>
+
+  <div class="tbl-wrap">
+  <table class="data">
+    <tr><th>Dispositif</th><th>Type</th><th>Taux / plafond</th></tr>
+    <tr><td>Dons aux œuvres d'intérêt général</td><td>Réduction</td><td class="num">66 % (limite 20 % du revenu)</td></tr>
+    <tr class="hl"><td>Dons aide aux personnes en difficulté</td><td>Réduction</td><td class="num">75 % (limite 1 000 €)</td></tr>
+    <tr><td>Emploi d'un salarié à domicile</td><td>Crédit</td><td class="num">50 % (plafond 12 000 €)</td></tr>
+    <tr><td>Frais de garde &lt; 6 ans</td><td>Crédit</td><td class="num">50 % (plafond 3 500 €/enfant)</td></tr>
+    <tr><td>Frais de scolarité (étudiant)</td><td>Réduction</td><td class="num">183 € (collège 61 / lycée 151)</td></tr>
+  </table>
+  </div>
+
+  <div class="example">
+    <div class="ex-head">Exemple résolu — décote, couple, impôt brut 1 400 €</div>
+    <div class="step"><div class="snum">1</div><div class="stxt">IB = 1 400 € &lt; 3 249 € → décote applicable</div></div>
+    <div class="step"><div class="snum">2</div><div class="stxt">Décote : 1 470 − (1 400 × 45,25 %) <span class="calc">= 1 470 − 633,50 = 836,50 €</span></div></div>
+    <div class="step"><div class="snum">3</div><div class="stxt">Impôt après décote : 1 400 − 836,50 <span class="res">= 563,50 €</span></div></div>
+    <div class="ex-final">Impôt net (avant réd./crédits) = 563,50 €</div>
+  </div>
+
+  <div class="callout trap">
+    <div class="ctitle">⚠️ Piège fréquent</div>
+    <p>Un don de 850 € à une asso d'intérêt général donne une <strong>réduction</strong> de 66 % = 561 €. Mais si l'impôt dû n'est que de 300 €, tu ne récupères que 300 € — le reste est <strong>perdu</strong> (réduction non remboursable). Avec un <strong>crédit</strong> (salarié à domicile), tu aurais été <strong>remboursé</strong> de la différence. Vérifie toujours la nature du dispositif.</p>
+  </div>
+
+  <div class="callout retain">
+    <div class="ctitle">🔑 À retenir</div>
+    <p>Ordre des corrections : plafonnement QF (1 791 €/demi-part) → décote → réductions → crédits. <strong>Réduction = non remboursable, crédit = remboursable.</strong> C'est la question piège la plus fréquente du partiel.</p>
+  </div>
+  `,
+  quizzes:[
+    {type:"input", q:"Couple, impôt brut 1 000 €. Décote = 1 470 − (1 000 × 45,25 %). Montant de la décote ?", answer:1018, unit:"€", tol:5, fb:"1 470 − 452,50 = 1 017,50 €. L'impôt tombe alors à... 0 (décote > impôt → impôt nul)."},
+    {type:"qcm", q:"Un crédit d'impôt dont le montant dépasse l'impôt dû est…", opts:["perdu","remboursé au contribuable"], correct:1, fb:"Le crédit est remboursable — c'est ce qui le distingue de la réduction."},
+    {type:"qcm", q:"Le plafonnement du quotient familial limite l'avantage à…", opts:["1 791 € par demi-part","1 791 € par part","889 € par enfant"], correct:0, fb:"1 791 € par demi-part supplémentaire."},
+  ]
+},
+{
+  tag:"Chapitre 8 · Déclaration & social", tagClass:"teal",
+  title:"Déclarer, payer, et les prélèvements sociaux",
+  sub:"PAS, RFR et CSG/CRDS",
+  body:`
+  <div class="callout analogy">
+    <div class="ctitle">💡 Analogie</div>
+    <p>Le prélèvement à la source, c'est comme <strong>payer son loyer par virement automatique</strong> plutôt qu'en un gros chèque annuel : le montant part au fil de l'eau, et on régularise s'il y a eu trop ou pas assez. La <strong>CSG/CRDS</strong>, elles, sont un péage supplémentaire qui s'ajoute à l'IR sur la plupart des revenus.</p>
+  </div>
+
+  <h3 class="subsec">Le prélèvement à la source (PAS)</h3>
+  <p>Deux formes selon le revenu. Une <strong>retenue à la source</strong> pour les salaires, pensions et allocations chômage (l'employeur ou la caisse prélève). Des <strong>acomptes</strong> (mensuels ou trimestriels) pour les revenus fonciers, BIC, BNC, BA, pensions alimentaires (l'administration prélève sur le compte bancaire).</p>
+
+  <div class="callout trap">
+    <div class="ctitle">⚠️ Piège fréquent</div>
+    <p>Le taux du PAS <strong>ne tient pas compte des réductions et crédits d'impôt</strong> — d'où les régularisations. Et certains revenus sont <strong>hors champ du PAS</strong> : RCM et plus-values mobilières (imposés lors de la déclaration classique). Ne les inclus pas dans l'assiette du PAS.</p>
+  </div>
+
+  <h3 class="subsec">Les prélèvements sociaux</h3>
+  <p>La <strong>CSG</strong> et la <strong>CRDS</strong> frappent presque tous les revenus. Sur les revenus du capital, le taux global est de <strong>17,2 %</strong> (revenus 2024) : CSG 9,2 % + CRDS 0,5 % + prélèvement de solidarité 7,5 %.</p>
+
+  <div class="formula">
+    <div class="flabel">CSG sur revenus d'activité</div>
+    Taux 9,2 % dont <span class="accent">6,8 % déductibles</span> de l'IR + <span class="gold">2,4 % non déductibles</span><br>
+    Assiette : 98,25 % du salaire brut
+  </div>
+
+  <p>La CSG sur les revenus du capital n'est déductible (6,8 %) que si ces revenus sont soumis au <strong>barème progressif</strong> — pas en cas de PFU, ni pour les revenus exonérés.</p>
+
+  <h3 class="subsec">Le revenu fiscal de référence (RFR)</h3>
+  <p>Calculé à partir du RNGI, il y réintègre certains revenus exonérés, abattements (les 40 % sur dividendes) et charges (cotisations PER). Il sert à déterminer l'accès aux aides sociales (bourses, logement social) et certains avantages fiscaux.</p>
+
+  <div class="callout retain">
+    <div class="ctitle">🔑 À retenir</div>
+    <p>PAS = retenue (salaires/pensions) ou acomptes (fonciers, BIC/BNC). Hors champ : RCM et PV mobilières. Prélèvements sociaux sur le capital = <strong>17,2 %</strong> (2024). CSG déductible à 6,8 % seulement si barème progressif. Le RFR sert de référence pour les droits sociaux.</p>
+  </div>
+  `,
+  quizzes:[
+    {type:"qcm", q:"Les revenus fonciers sont soumis au PAS sous forme…", opts:["de retenue à la source","d'acomptes prélevés sur le compte"], correct:1, fb:"Acomptes (comme les BIC, BNC, pensions alimentaires)."},
+    {type:"qcm", q:"Le taux global des prélèvements sociaux sur les revenus du capital (2024) est de…", opts:["9,2 %","15,5 %","17,2 %"], correct:2, fb:"17,2 % = CSG 9,2 % + CRDS 0,5 % + prélèvement de solidarité 7,5 %."},
+    {type:"qcm", q:"La CSG sur revenus du capital est déductible à 6,8 %…", opts:["toujours","uniquement si imposition au barème progressif","jamais"], correct:1, fb:"Seulement au barème — exclus en PFU et pour les revenus exonérés."},
+  ]
+},
+];
+
+// ════════════════════════════════════════════════════════════════════════════
+//  RENDU DES LEÇONS + SIDEBAR
+// ════════════════════════════════════════════════════════════════════════════
+const lessonNavEl = document.getElementById('lessonNav');
+const lessonsContainer = document.getElementById('lessonsContainer');
+
+LESSONS.forEach((les, i)=>{
+  // sidebar link
+  const link = document.createElement('div');
+  link.className = 'lesson-link';
+  link.innerHTML = `<span class="lnum">${i+1}</span><span>${les.title.length>34?les.title.slice(0,33)+'…':les.title}</span><span class="check">✓</span>`;
+  link.onclick = ()=>goLesson(i);
+  lessonNavEl.appendChild(link);
+
+  // lesson view
+  const sec = document.createElement('section');
+  sec.className = 'view';
+  sec.id = 'view-lesson-'+i;
+  let quizHTML = '';
+  les.quizzes.forEach((qz,qi)=>{
+    const qid = `q-${i}-${qi}`;
+    if(qz.type==='qcm'){
+      quizHTML += `<div class="quiz" id="${qid}">
+        <div class="qhead">🧠 Mini-quiz ${qi+1}</div>
+        <div class="qtext">${qz.q}</div>
+        <div class="quiz-opts">
+          ${qz.opts.map((o,oi)=>`<div class="quiz-opt" onclick="answerQcm('${qid}',${oi},${qz.correct})"><span class="mk">${String.fromCharCode(65+oi)}</span>${o}</div>`).join('')}
+        </div>
+        <div class="quiz-fb" id="${qid}-fb"></div>
+      </div>`;
+    } else {
+      quizHTML += `<div class="quiz" id="${qid}">
+        <div class="qhead">🧠 Mini-quiz ${qi+1}</div>
+        <div class="qtext">${qz.q}</div>
+        <div class="quiz-input-row">
+          <input type="number" step="any" class="quiz-input" id="${qid}-inp" placeholder="…">
+          <span style="font-family:var(--mono);font-size:13px;color:#6b6356">${qz.unit||''}</span>
+          <button class="quiz-check" onclick="answerInput('${qid}',${qz.answer},${qz.tol||0})">Vérifier</button>
+        </div>
+        <div class="quiz-fb" id="${qid}-fb"></div>
+      </div>`;
+    }
+  });
+  sec.innerHTML = `
+    <span class="tag ${les.tagClass}">${les.tag}</span>
+    <h1 class="lesson-title">${les.title}</h1>
+    <div class="lesson-sub">${les.sub}</div>
+    ${les.body}
+    <h2 class="sec">Teste ta compréhension</h2>
+    ${quizHTML}
+    <div class="lesson-nav">
+      <button class="btn btn-prev" onclick="${i>0?`goLesson(${i-1})`:`goView('home')`}">← ${i>0?'Précédent':'Accueil'}</button>
+      <button class="btn btn-validate" onclick="validateLesson(${i})">✓ Valider la leçon (+10 XP)</button>
+      <button class="btn btn-next" onclick="${i<LESSONS.length-1?`goLesson(${i+1})`:`goView('test')`}">${i<LESSONS.length-1?'Suivant':'Test final'} →</button>
+    </div>`;
+  lessonsContainer.appendChild(sec);
+});
+
+// ════════════════════════════════════════════════════════════════════════════
+//  QUIZ HANDLERS
+// ════════════════════════════════════════════════════════════════════════════
+function answerQcm(qid, chosen, correct){
+  const box = document.getElementById(qid);
+  if(box.dataset.answered) return;
+  box.dataset.answered = '1';
+  const opts = box.querySelectorAll('.quiz-opt');
+  opts.forEach((o,oi)=>{
+    o.classList.add('disabled');
+    if(oi===correct) o.classList.add('correct');
+    if(oi===chosen && chosen!==correct) o.classList.add('wrong');
+  });
+  const fb = document.getElementById(qid+'-fb');
+  const les = qid.split('-'); const lesson = LESSONS[+les[1]]; const qz = lesson.quizzes[+les[2]];
+  fb.textContent = qz.fb;
+  fb.className = 'quiz-fb show ' + (chosen===correct?'ok':'ko');
+  if(chosen===correct && !state.quizDone[qid]){ state.quizDone[qid]=true; addXP(2);}
+}
+function answerInput(qid, answer, tol){
+  const box = document.getElementById(qid);
+  const inp = document.getElementById(qid+'-inp');
+  const val = parseFloat(inp.value);
+  const fb = document.getElementById(qid+'-fb');
+  const les = qid.split('-'); const lesson = LESSONS[+les[1]]; const qz = lesson.quizzes[+les[2]];
+  const ok = !isNaN(val) && Math.abs(val-answer)<=tol;
+  inp.classList.remove('correct','wrong');
+  inp.classList.add(ok?'correct':'wrong');
+  fb.textContent = (ok?'✓ Correct ! ':'✗ ') + qz.fb;
+  fb.className = 'quiz-fb show ' + (ok?'ok':'ko');
+  if(ok && !state.quizDone[qid]){ state.quizDone[qid]=true; addXP(2);}
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+//  NAVIGATION
+// ════════════════════════════════════════════════════════════════════════════
+function hideAll(){ document.querySelectorAll('.view').forEach(v=>v.classList.remove('active')); }
+function setActiveLink(idx){
+  document.querySelectorAll('.lesson-link').forEach((l,i)=>l.classList.toggle('active', i===idx));
+  document.getElementById('link-test').classList.remove('active');
+  document.getElementById('link-annales').classList.remove('active');
+}
+function goLesson(i){
+  hideAll();
+  document.getElementById('view-lesson-'+i).classList.add('active');
+  setActiveLink(i);
+  state.currentView = 'lesson-'+i;
+  window.scrollTo({top:0,behavior:'smooth'});
+  closeSidebarMobile();
+}
+function goView(v){
+  hideAll();
+  setActiveLink(-1);
+  if(v==='home'){ document.getElementById('view-home').classList.add('active'); }
+  if(v==='test'){ document.getElementById('view-test').classList.add('active'); document.getElementById('link-test').classList.add('active'); renderTest(); }
+  if(v==='annales'){ document.getElementById('view-annales').classList.add('active'); document.getElementById('link-annales').classList.add('active'); renderAnnales(); }
+  state.currentView = v;
+  window.scrollTo({top:0,behavior:'smooth'});
+  closeSidebarMobile();
+}
+function validateLesson(i){ markDone(i); }
+function toggleSidebar(){ document.getElementById('sidebar').classList.toggle('open'); }
+function closeSidebarMobile(){ if(window.innerWidth<=880) document.getElementById('sidebar').classList.remove('open'); }
+
+// ════════════════════════════════════════════════════════════════════════════
+//  TEST FINAL ADAPTATIF
+// ════════════════════════════════════════════════════════════════════════════
+const TEST_Q = [
+  {chap:"Parts", type:"input", q:"M. et Mme DURAND, mariés, ont 4 enfants mineurs. Combien de parts ?", a:5, unit:"parts", tol:0,
+   rem:"Couple = 2 parts. PAC : +0,5 (1re) +0,5 (2e) +1 (3e) +1 (4e) = +3. Total 5 parts.", lesson:1},
+  {chap:"Parts", type:"input", q:"Mme MOUCHET, veuve, élève seule 1 enfant mineur. Combien de parts ?", a:2.5, unit:"parts", tol:0,
+   rem:"Veuf·ve : 1 part + 1,5 (1re PAC = même régime que couple marié) = 2,5 parts.", lesson:1},
+  {chap:"Principes", type:"qcm", q:"L'unité de base de l'impôt sur le revenu est :", opts:["la personne physique","le foyer fiscal","le ménage"], correct:1,
+   rem:"C'est le foyer fiscal : on additionne les revenus de tous ses membres.", lesson:0},
+  {chap:"T&S", type:"input", q:"Salaire 35 000 €. Déduction forfaitaire 10 % retenue ?", a:3500, unit:"€", tol:5,
+   rem:"35 000 × 10 % = 3 500 €, dans les bornes [504 ; 14 426].", lesson:3},
+  {chap:"T&S", type:"qcm", q:"Le plafond d'abattement sur les pensions (4 399 €) s'apprécie :", opts:["par bénéficiaire","par foyer fiscal"], correct:1,
+   rem:"Par foyer fiscal (contrairement au plafond salaires de 14 426 € par salarié).", lesson:3},
+  {chap:"Foncier/RCM", type:"input", q:"Loyers bruts 13 500 € (location nue, micro-foncier). Revenu foncier imposable ?", a:9450, unit:"€", tol:5,
+   rem:"13 500 × 70 % = 9 450 € (abattement micro-foncier de 30 %).", lesson:4},
+  {chap:"Foncier/RCM", type:"qcm", q:"Par défaut, les dividendes sont imposés :", opts:["au barème progressif","au PFU de 30 %","exonérés"], correct:1,
+   rem:"PFU de 30 % par défaut (12,8 % IR + 17,2 % PS). Le barème est sur option.", lesson:4},
+  {chap:"Calcul IR", type:"input", q:"Couple marié, 2 enfants, RNGI 60 000 €. Quotient familial ?", a:20000, unit:"€", tol:0,
+   rem:"3 parts (2 + 0,5 + 0,5). QF = 60 000 ÷ 3 = 20 000 €.", lesson:5},
+  {chap:"Corrections", type:"qcm", q:"Un crédit d'impôt supérieur à l'impôt dû est :", opts:["perdu","remboursé"], correct:1,
+   rem:"Le crédit est remboursable — à la différence de la réduction qui s'arrête à zéro.", lesson:6},
+  {chap:"Social", type:"qcm", q:"Le taux global des prélèvements sociaux sur le capital (2024) est :", opts:["9,2 %","17,2 %","30 %"], correct:1,
+   rem:"17,2 % = CSG 9,2 % + CRDS 0,5 % + prélèvement de solidarité 7,5 %.", lesson:7},
+];
+let testState = {answers:{}, submitted:false};
+
+function renderTest(){
+  const v = document.getElementById('view-test');
+  if(testState.submitted){ renderTestResult(); return; }
+  let html = `
+    <span class="tag plum">Évaluation · Test final</span>
+    <h1 class="lesson-title">Test final adaptatif</h1>
+    <div class="lesson-sub">10 questions — mix QCM et calculs. En cas d'erreur, une remédiation t'oriente vers la bonne leçon.</div>
+    <div class="callout info"><div class="ctitle">📋 Rappel</div><p>Tolérance de quelques euros sur les calculs. Les barèmes sont considérés comme fournis (sauf calcul des parts). Prends ton temps !</p></div>
+  `;
+  TEST_Q.forEach((q,i)=>{
+    html += `<div class="test-q" id="tq-${i}">
+      <div class="qn">Question ${i+1} / 10 · ${q.chap}</div>
+      <div class="qt">${q.q}</div>`;
+    if(q.type==='qcm'){
+      html += `<div class="quiz-opts">${q.opts.map((o,oi)=>`<div class="quiz-opt" onclick="pickTest(${i},${oi})" id="tq-${i}-${oi}"><span class="mk">${String.fromCharCode(65+oi)}</span>${o}</div>`).join('')}</div>`;
+    } else {
+      html += `<div class="quiz-input-row"><input type="number" step="any" class="quiz-input" id="tq-${i}-inp" placeholder="…" oninput="testState.answers[${i}]=parseFloat(this.value)"><span style="font-family:var(--mono);font-size:13px;color:#6b6356">${q.unit}</span></div>`;
+    }
+    html += `<div class="remediation" id="rem-${i}">
+      <div class="rtitle">⚠️ À revoir</div>
+      <p>${q.rem}</p>
+      <div class="rbtns">
+        <button class="rbtn review" onclick="goLesson(${q.lesson})">📖 Revoir la leçon</button>
+        <button class="rbtn continue" onclick="document.getElementById('rem-${i}').classList.remove('show')">Continuer</button>
+      </div>
+    </div></div>`;
+  });
+  html += `<div style="text-align:center;margin-top:30px;"><button class="btn btn-validate" style="font-size:16px;padding:15px 40px;" onclick="submitTest()">Valider le test →</button></div>`;
+  v.innerHTML = html;
+}
+function pickTest(qi, oi){
+  if(testState.submitted) return;
+  testState.answers[qi] = oi;
+  document.querySelectorAll(`#tq-${qi} .quiz-opt`).forEach((o,i)=>o.style.outline = i===oi?'2px solid var(--plum)':'none');
+}
+function submitTest(){
+  testState.submitted = true;
+  let score = 0;
+  const chapScores = {};
+  TEST_Q.forEach((q,i)=>{
+    if(!chapScores[q.chap]) chapScores[q.chap]={ok:0,tot:0};
+    chapScores[q.chap].tot++;
+    let ok=false;
+    if(q.type==='qcm'){ ok = testState.answers[i]===q.correct; }
+    else { ok = testState.answers[i]!==undefined && Math.abs(testState.answers[i]-q.a)<=q.tol; }
+    if(ok){ score++; chapScores[q.chap].ok++; }
+    else { document.getElementById('rem-'+i)?.classList.add('show'); 
+           const tq=document.getElementById('tq-'+i); if(tq) tq.style.borderColor='var(--rust)'; }
+    if(ok){ const tq=document.getElementById('tq-'+i); if(tq) tq.style.borderColor='var(--teal)';
+            if(q.type==='qcm'){ const el=document.getElementById(`tq-${i}-${q.correct}`); if(el) el.classList.add('correct');}
+            else { const el=document.getElementById(`tq-${i}-inp`); if(el) el.classList.add('correct'); } }
+    else if(q.type==='input'){ const el=document.getElementById(`tq-${i}-inp`); if(el) el.classList.add('wrong'); }
+    else if(q.type==='qcm' && testState.answers[i]!==undefined){ const el=document.getElementById(`tq-${i}-${testState.answers[i]}`); if(el) el.classList.add('wrong'); const c=document.getElementById(`tq-${i}-${q.correct}`); if(c) c.classList.add('correct'); }
+  });
+  testState.score = score;
+  testState.chapScores = chapScores;
+  if(score===10) addXP(50); else addXP(score*3);
+  document.getElementById('floatRetry').classList.add('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+  // show summary banner at top
+  const v = document.getElementById('view-test');
+  const banner = document.createElement('div');
+  banner.className = 'callout '+(score>=7?'retain':'trap');
+  banner.style.marginBottom='24px';
+  banner.innerHTML = `<div class="ctitle">${score>=7?'🎉':'📚'} Résultat : ${score}/10</div><p>${score>=8?'Excellent niveau ! Tu maîtrises le programme.':score>=6?'Bon travail — quelques remédiations à consulter ci-dessous.':'Consulte les remédiations en rouge et reviens sur les leçons concernées.'} <a href="#" onclick="renderTestResult();return false;" style="color:inherit;font-weight:600;text-decoration:underline;">Voir le bilan détaillé →</a></p>`;
+  v.insertBefore(banner, v.children[3]);
+}
+function renderTestResult(){
+  const v = document.getElementById('view-test');
+  const score = testState.score;
+  const pct = score*10;
+  let msg = score>=8?'Tu es prêt·e pour le partiel. Bravo !':score>=6?'Bonne base — cible les chapitres en orange.':score>=4?'Encourage-toi : reprends les leçons faibles.':'Reprends le parcours depuis le début, tu vas y arriver !';
+  let bars='';
+  const colors={'Parts':'#c87a12','Principes':'#1b6b5e','T&S':'#1b6b5e','Foncier/RCM':'#6b3a73','Calcul IR':'#23456b','Corrections':'#a8432a','Social':'#1b6b5e'};
+  for(const [chap,sc] of Object.entries(testState.chapScores)){
+    const p = Math.round(sc.ok/sc.tot*100);
+    const col = p>=67?'#1b6b5e':p>=34?'#c87a12':'#a8432a';
+    bars += `<div class="cbar-row"><div class="cbar-label"><span>${chap}</span><span class="score">${sc.ok}/${sc.tot}</span></div><div class="cbar-track"><div class="cbar-fill" style="width:0;background:${col}" data-w="${p}"></div></div></div>`;
+  }
+  v.innerHTML = `
+    <div class="result-screen">
+      <span class="tag plum">Bilan du test</span>
+      <div class="result-score">${score}<small>/10</small></div>
+      <div class="result-msg">${msg}</div>
+      <div class="chapter-bars">${bars}</div>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <button class="btn btn-validate" onclick="restartTest()">↻ Refaire le test</button>
+        <button class="btn btn-prev" onclick="goView('annales')">📚 Voir les annales</button>
+      </div>
+    </div>`;
+  setTimeout(()=>{ document.querySelectorAll('.cbar-fill').forEach(b=>b.style.width=b.dataset.w+'%'); },150);
+  document.getElementById('floatRetry').classList.remove('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function restartTest(){
+  testState = {answers:{}, submitted:false};
+  document.getElementById('floatRetry').classList.remove('show');
+  renderTest();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+//  ANNALES
+// ════════════════════════════════════════════════════════════════════════════
+const ANNALES = [
+{
+  title:"Exercice — Composition des foyers fiscaux", meta:"Module 1 · Parts",
+  enonce:`<p>Déterminez le nombre de parts pour chaque cas :</p>
+  <ul>
+    <li><strong>Cas 1 :</strong> M. CAMUS et Mme SARRASIN sont pacsés. Ils ont 4 enfants nés en 2012, 2015, 2016 et 2022.</li>
+    <li><strong>Cas 2 :</strong> M. LAFONT, célibataire, perçoit une pension d'invalidité (taux 42 %). Il vit seul et a recueilli son neveu Émile, orphelin mineur, dont il assume seul la charge.</li>
+    <li><strong>Cas 3 :</strong> Mme MOUCHET, veuve, élève seule son fils Gaël (mineur). Sa fille Hélène (27 ans, étudiante) vit aussi sous son toit et demande son rattachement.</li>
+  </ul>`,
+  corrige:`
+  <div class="step"><div class="snum">1</div><div class="stxt"><strong>Cas 1 :</strong> Couple pacsé = 2 parts. 4 enfants mineurs : +0,5 +0,5 +1 +1 = +3. <span class="res">Total = 5 parts</span></div></div>
+  <div class="step"><div class="snum">2</div><div class="stxt"><strong>Cas 2 :</strong> Célibataire = 1 part. Neveu recueilli (PAC de droit, charge exclusive) : 1<sup>re</sup> PAC +0,5, + case T +0,5 (vit seul). Pension d'invalidité ≥ 40 % : +0,5. <span class="res">Total = 2,5 parts</span></div></div>
+  <div class="step"><div class="snum">3</div><div class="stxt"><strong>Cas 3 :</strong> Veuve = 1 part. Gaël (1<sup>re</sup> PAC veuve) : +1,5. Hélène (étudiante &lt; 25 ans, rattachée, 2<sup>e</sup> PAC) : +0,5. <span class="res">Total = 3 parts</span></div></div>
+  `
+},
+{
+  title:"Exercice — M. et Mme DANIELOU (T&S)", meta:"Module 2 · Salaires",
+  enonce:`<p>M. et Mme DANIELOU, mariés, 2 enfants majeurs rattachés (Léo 23 ans étudiant, Justine 19 ans).</p>
+  <ul>
+    <li>M. DANIELOU : indemnités chômage 8 500 €</li>
+    <li>Mme DANIELOU : salaires 45 550 € + prime exceptionnelle 5 200 € versée le 17 janvier 2025</li>
+    <li>Léo : salaire 5 965 € (job étudiant, option exonération jeunes ≤ 25 ans)</li>
+    <li>Justine : apprentissage 12 300 € + allocations logement 3 500 €</li>
+  </ul>
+  <p>Calculer le revenu net catégoriel T&S 2024 (déduction forfaitaire 10 %).</p>`,
+  corrige:`
+  <div class="step"><div class="snum">1</div><div class="stxt">Prime de 5 200 € versée en <strong>janvier 2025</strong> : non imposable en 2024 (principe du revenu disponible). <span class="res">Exclue</span></div></div>
+  <div class="step"><div class="snum">2</div><div class="stxt">Léo : salaire exonéré (option jeunes ≤ 25 ans, &lt; 3 SMIC mensuels). <span class="res">0 €</span></div></div>
+  <div class="step"><div class="snum">3</div><div class="stxt">Justine : apprentissage exonéré sous le SMIC annuel (21 273 €) → 0 €. Allocations logement exonérées. <span class="res">0 €</span></div></div>
+  <div class="step"><div class="snum">4</div><div class="stxt">M. DANIELOU (chômage 8 500 €) : 8 500 − 850 (10 %) <span class="res">= 7 650 €</span></div></div>
+  <div class="step"><div class="snum">5</div><div class="stxt">Mme DANIELOU (45 550 €) : 45 550 − 4 555 (10 %) <span class="res">= 40 995 €</span></div></div>
+  <div class="ex-final">Revenu net catégoriel T&S = 7 650 + 40 995 = 48 645 €</div>
+  `
+},
+{
+  title:"Exercice — Eric JAOUEN (revenus fonciers)", meta:"Module 2 bis · Foncier",
+  enonce:`<p>Eric JAOUEN, célibataire, loue un loft nu à Rennes. Au titre de l'année N :</p>
+  <ul>
+    <li>Loyers N encaissés : 17 000 € + loyers déc. N-1 encaissés en N : 1 450 €</li>
+    <li>Honoraires gérance : 1 050 € · provisions charges copropriété : 1 250 € · assurances : 850 € · taxe foncière : 780 € · téléphone : 32 €</li>
+    <li>Installation parquet flottant : 5 750 € · intérêts d'emprunt : 2 070 €</li>
+    <li>Déficit foncier N-1 reportable : 8 500 € (dont 2 800 € liés aux intérêts)</li>
+  </ul>
+  <p>Déterminer le revenu foncier imposable en N (régime réel — recettes > 15 000 €).</p>`,
+  corrige:`
+  <div class="step"><div class="snum">1</div><div class="stxt">Recettes encaissées en N : 17 000 + 1 450 (les loyers se comptent à l'encaissement) <span class="res">= 18 450 €</span></div></div>
+  <div class="step"><div class="snum">2</div><div class="stxt">Charges déductibles : 1 050 + 1 250 + 850 + 780 + 32 + 5 750 (entretien/amélioration logement) + 2 070 (intérêts) <span class="res">= 11 782 €</span></div></div>
+  <div class="step"><div class="snum">3</div><div class="stxt">Revenu foncier net N : 18 450 − 11 782 <span class="res">= 6 668 €</span></div></div>
+  <div class="step"><div class="snum">4</div><div class="stxt">Imputation du déficit foncier reportable N-1 : 6 668 − 8 500 → le report ne s'impute que sur le revenu foncier. <span class="res">RF net = 0 €</span></div></div>
+  <div class="ex-final">Revenu foncier imposable N = 0 € · Reste 1 832 € de déficit reportable sur les RF futurs</div>
+  `
+},
+{
+  title:"Exercice — M. et Mme BIZOUARN (plus-values immo)", meta:"Module 2 bis · PV",
+  enonce:`<p>Cession en 2024 d'un appartement région nantaise :</p>
+  <ul>
+    <li>Acquisition : 01/07/2015 — prix 162 000 € (pas de travaux)</li>
+    <li>Cession : 09/12/2024 — prix 295 000 €</li>
+  </ul>
+  <p>Déterminer la plus-value imposable à l'IR et l'impôt (taux 19 %). Durée de détention : 9 ans révolus.</p>`,
+  corrige:`
+  <div class="step"><div class="snum">1</div><div class="stxt">Prix d'acquisition majoré : 162 000 + 7,5 % forfait frais (12 150 €) <span class="res">= 174 150 €</span></div></div>
+  <div class="step"><div class="snum">2</div><div class="stxt">PV brute : 295 000 − 174 150 <span class="res">= 120 850 €</span></div></div>
+  <div class="step"><div class="snum">3</div><div class="stxt">Abattement IR (9 ans) : 6 % × 4 ans (de la 6<sup>e</sup> à la 9<sup>e</sup>) <span class="res">= 24 %</span></div></div>
+  <div class="step"><div class="snum">4</div><div class="stxt">PV nette imposable : 120 850 × 76 % <span class="res">= 91 846 €</span></div></div>
+  <div class="step"><div class="snum">5</div><div class="stxt">Impôt IR : 91 846 × 19 % <span class="res">= 17 451 €</span></div></div>
+  <div class="ex-final">+ Taxe sur PV élevées (PV > 50 000 €) et prélèvements sociaux 17,2 % à ajouter</div>
+  `
+},
+{
+  title:"Exercice — Famille DONVAL (calcul IR complet)", meta:"Module 3 · Synthèse",
+  enonce:`<p>M. et Mme DONVAL, mariés, 4 enfants vivant sous leur toit. Le père de Mme DONVAL (Segal, carte d'invalidité) réside aussi chez eux. Données simplifiées :</p>
+  <ul>
+    <li>Enfants : Elouan (salarié, 25 ans), Rozenn (22 ans, pacsée avec Tual étudiant), Breval (lycéen), Ganaël (collégien)</li>
+    <li>Segal LE BIHAN : pension retraite 39 500 € + pension invalidité 6 200 €, carte d'invalidité</li>
+  </ul>
+  <p>Déterminer la composition du foyer et le nombre de parts (toutes les personnes pouvant être rattachées le sont).</p>`,
+  corrige:`
+  <div class="step"><div class="snum">1</div><div class="stxt">Couple marié <span class="res">= 2 parts</span></div></div>
+  <div class="step"><div class="snum">2</div><div class="stxt">Elouan (25 ans, salarié) : ne remplit pas les conditions de rattachement (≥ 25 ans, non étudiant déclaré) → <strong>foyer distinct</strong></div></div>
+  <div class="step"><div class="snum">3</div><div class="stxt">Rozenn (22 ans) pacsée avec Tual (étudiant) : rattachement global possible (Tual étudiant &lt; 25 ans). Mais rattachement = abattement sur le revenu, pas de majoration de parts pour enfant marié/pacsé</div></div>
+  <div class="step"><div class="snum">4</div><div class="stxt">Breval (lycéen) et Ganaël (collégien), mineurs : 1<sup>re</sup> et 2<sup>e</sup> PAC <span class="res">+0,5 +0,5</span></div></div>
+  <div class="step"><div class="snum">5</div><div class="stxt">Segal (carte d'invalidité, vit sous le toit) : PAC de droit (3<sup>e</sup> PAC = +1) + majoration invalidité +0,5 <span class="res">= +1,5</span></div></div>
+  <div class="ex-final">Parts ≈ 2 + 0,5 + 0,5 + 1 + 0,5 (invalidité) = 4,5 parts · Rozenn/Tual : abattement de 6 794 € par personne rattachée</div>
+  `
+},
+];
+
+function renderAnnales(){
+  const v = document.getElementById('view-annales');
+  let html = `
+    <span class="tag navy">Révision active</span>
+    <h1 class="lesson-title">Annales corrigées</h1>
+    <div class="lesson-sub">Les exercices tirés du cours. Essaie d'abord seul·e, puis déroule le corrigé.</div>
+    <div class="callout analogy"><div class="ctitle">💡 Méthode</div><p>Cache le corrigé, prends une feuille, et traite l'exercice <strong>en conditions réelles</strong>. Tu apprends bien plus en te trompant d'abord qu'en lisant la solution directement.</p></div>
+  `;
+  ANNALES.forEach((a,i)=>{
+    html += `<div class="annale">
+      <div class="a-head"><div class="a-title">${a.title}</div><div class="a-meta">${a.meta}</div></div>
+      <div class="a-enonce">${a.enonce}</div>
+      <button class="btn-corrige" onclick="toggleCorrige(${i})" id="cbtn-${i}">Voir le corrigé →</button>
+      <div class="corrige" id="cor-${i}">
+        <div class="c-title">✓ Corrigé détaillé</div>
+        ${a.corrige}
+      </div>
+    </div>`;
+  });
+  v.innerHTML = html;
+}
+function toggleCorrige(i){
+  const cor = document.getElementById('cor-'+i);
+  const btn = document.getElementById('cbtn-'+i);
+  cor.classList.toggle('show');
+  btn.textContent = cor.classList.contains('show') ? 'Masquer le corrigé' : 'Voir le corrigé →';
+  if(cor.classList.contains('show')) addXP(1);
+}
+
+// init
+updateProgress();
+</script>
+</body>
+</html>

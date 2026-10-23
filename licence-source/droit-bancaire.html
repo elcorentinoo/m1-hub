@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="fr" subject-id="droit-bancaire">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Droit Bancaire — LP Banque</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#faf6ef; --paper2:#f3ece0; --ink:#22201b; --line:#e3d9c8;
+  --teal:#1b6b5e; --amber:#c87a12; --rust:#a8432a; --plum:#6b3a73; --navy:#23456b;
+  --teal-soft:#e3efec; --amber-soft:#f6ead4; --rust-soft:#f3e0da; --plum-soft:#ece3ef; --navy-soft:#dde6f0;
+  --shadow:0 2px 14px rgba(34,32,27,.07); --shadow-lg:0 8px 30px rgba(34,32,27,.13);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans',sans-serif; background:var(--paper); color:var(--ink);
+  line-height:1.6; -webkit-font-smoothing:antialiased;
+}
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-track{background:var(--paper2)}
+::-webkit-scrollbar-thumb{background:#cdbfa6;border-radius:6px;border:2px solid var(--paper2)}
+::-webkit-scrollbar-thumb:hover{background:var(--amber)}
+
+/* ===== TOP BAR ===== */
+.topbar{
+  position:fixed;top:0;left:0;right:0;height:62px;z-index:50;
+  background:var(--paper); border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:18px;padding:0 22px;
+}
+.brand{display:flex;align-items:center;gap:11px;font-family:'Fraunces',serif;font-weight:600;font-size:1.12rem;color:var(--navy)}
+.brand .logo{
+  width:36px;height:36px;border-radius:9px;background:var(--navy);color:#fff;
+  display:grid;place-items:center;font-size:1.15rem;flex-shrink:0;box-shadow:var(--shadow);
+}
+.brand small{display:block;font-family:'DM Sans';font-weight:500;font-size:.66rem;letter-spacing:.09em;color:var(--amber);text-transform:uppercase}
+.progress-wrap{flex:1;max-width:340px;display:flex;flex-direction:column;gap:3px}
+.progress-wrap .lab{font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:#8a8170;font-weight:600;display:flex;justify-content:space-between}
+.progress-bar{height:8px;background:var(--paper2);border-radius:5px;overflow:hidden;border:1px solid var(--line)}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),#2a8a78);transition:width .5s cubic-bezier(.4,0,.2,1)}
+.xp{
+  margin-left:auto;display:flex;align-items:center;gap:7px;background:var(--amber-soft);
+  border:1px solid #e6cf9e;color:var(--amber);font-weight:700;padding:7px 14px;border-radius:30px;font-size:.9rem;
+}
+.xp .star{font-size:1rem}
+.burger{display:none;background:none;border:1px solid var(--line);border-radius:8px;padding:7px 10px;cursor:pointer;font-size:1.1rem;color:var(--ink)}
+
+/* ===== LAYOUT ===== */
+.shell{display:flex;padding-top:62px}
+.sidebar{
+  position:fixed;top:62px;bottom:0;left:0;width:282px;background:var(--paper2);
+  border-right:1px solid var(--line);overflow-y:auto;padding:20px 14px 50px;z-index:40;transition:transform .3s;
+}
+.sidebar h4{font-family:'Fraunces',serif;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:#8a8170;margin:18px 10px 9px;font-weight:600}
+.sidebar h4:first-child{margin-top:0}
+.nav-item{
+  display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;cursor:pointer;
+  font-size:.92rem;color:var(--ink);border:1px solid transparent;transition:.16s;margin-bottom:3px;
+}
+.nav-item:hover{background:#ece3d3}
+.nav-item.active{background:#fff;border-color:var(--line);box-shadow:var(--shadow);font-weight:600;color:var(--navy)}
+.nav-item .num{
+  width:25px;height:25px;border-radius:50%;background:#fff;border:1.5px solid var(--line);flex-shrink:0;
+  display:grid;place-items:center;font-size:.78rem;font-weight:700;font-family:'DM Mono';color:#8a8170;transition:.16s;
+}
+.nav-item.active .num{background:var(--teal);color:#fff;border-color:var(--teal)}
+.nav-item.done .num{background:var(--teal);color:#fff;border-color:var(--teal)}
+.nav-item .lab{flex:1;line-height:1.25}
+.nav-item.special{background:var(--plum-soft);border-color:#d8c5dc;color:var(--plum);font-weight:600}
+.nav-item.special.active{background:var(--plum);color:#fff}
+.nav-item.special .ico{font-size:1.05rem}
+.nav-item.special2{background:var(--navy-soft);border-color:#c3d2e2;color:var(--navy);font-weight:600}
+.nav-item.special2.active{background:var(--navy);color:#fff}
+
+.main{flex:1;margin-left:282px;padding:40px 6vw 120px;max-width:920px}
+
+/* ===== LESSON CONTENT ===== */
+.view{display:none;animation:fadeIn .45s ease}
+.view.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.tag{
+  display:inline-block;font-family:'DM Mono';font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+  background:var(--navy-soft);color:var(--navy);padding:5px 12px;border-radius:20px;font-weight:500;margin-bottom:16px;
+}
+h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;font-weight:600;color:var(--ink);margin-bottom:10px;letter-spacing:-.01em}
+.subtitle{font-size:1.12rem;color:#6f6757;margin-bottom:30px;max-width:62ch}
+.main p{margin-bottom:16px;font-size:1.04rem;max-width:68ch}
+.main h2{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:600;color:var(--navy);margin:38px 0 14px;letter-spacing:-.01em}
+.main strong{font-weight:600;color:var(--ink)}
+
+/* callouts */
+.callout{border-radius:14px;padding:18px 20px 18px 22px;margin:24px 0;border-left:5px solid;position:relative;font-size:1rem}
+.callout .ct{font-weight:700;font-family:'Fraunces',serif;font-size:1.02rem;display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.callout p{margin:0;max-width:none}
+.c-analogy{background:var(--amber-soft);border-color:var(--amber);color:#5e3a06}
+.c-analogy .ct{color:var(--amber)}
+.c-retenir{background:var(--teal-soft);border-color:var(--teal);color:#0f3d36}
+.c-retenir .ct{color:var(--teal)}
+.c-piege{background:var(--rust-soft);border-color:var(--rust);color:#5e2317}
+.c-piege .ct{color:var(--rust)}
+
+/* black rule box (replaces "formule") */
+.rulebox{
+  background:#1c1a16;color:#f3ece0;border-radius:14px;padding:22px 24px;margin:26px 0;
+  font-family:'DM Mono';box-shadow:var(--shadow-lg);position:relative;overflow:hidden;
+}
+.rulebox::before{content:'RÈGLE';position:absolute;top:13px;right:18px;font-size:.62rem;letter-spacing:.2em;color:#7d7566}
+.rulebox .rb-main{font-size:1.18rem;font-weight:500;line-height:1.5;color:#fff}
+.rulebox .rb-sub{font-size:.86rem;color:#b8af9d;margin-top:10px;line-height:1.55}
+.rulebox em{color:var(--amber);font-style:normal;font-weight:500}
+
+/* tables */
+.tbl{width:100%;border-collapse:collapse;margin:22px 0;font-size:.96rem;background:#fff;border-radius:12px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line)}
+.tbl th{background:var(--navy);color:#fff;text-align:left;padding:11px 15px;font-weight:600;font-size:.86rem;letter-spacing:.02em}
+.tbl td{padding:11px 15px;border-top:1px solid var(--line);vertical-align:top}
+.tbl tr:nth-child(even) td{background:var(--paper)}
+.tbl td:first-child{font-weight:600;color:var(--navy);white-space:nowrap}
+.tbl.wrap td:first-child{white-space:normal}
+
+/* worked example */
+.example{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:26px 0;box-shadow:var(--shadow)}
+.example .ex-head{font-family:'Fraunces',serif;font-weight:600;color:var(--plum);font-size:1.08rem;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.step{display:flex;gap:14px;margin-bottom:14px}
+.step:last-child{margin-bottom:0}
+.step .sn{width:27px;height:27px;border-radius:50%;background:var(--plum);color:#fff;flex-shrink:0;display:grid;place-items:center;font-family:'DM Mono';font-weight:500;font-size:.85rem}
+.step .sc{flex:1;padding-top:1px}
+.step .sc b{color:var(--navy)}
+.ex-result{margin-top:6px;background:var(--teal-soft);border:1px solid #bcdcd4;border-radius:10px;padding:12px 16px;font-weight:600;color:#0f3d36}
+
+/* schema */
+.schema{background:#fff;border:1px solid var(--line);border-radius:14px;padding:24px;margin:26px 0;box-shadow:var(--shadow);text-align:center}
+.schema .scap{font-size:.82rem;color:#8a8170;margin-top:12px;font-style:italic}
+.schema svg{max-width:100%;height:auto}
+
+/* mini quiz */
+.quiz{background:var(--plum-soft);border:1px solid #d8c5dc;border-radius:14px;padding:20px 22px;margin:24px 0}
+.quiz .qhead{font-family:'DM Mono';font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--plum);font-weight:500;margin-bottom:9px}
+.quiz .q{font-weight:600;font-size:1.05rem;margin-bottom:14px;color:var(--ink)}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{
+  text-align:left;background:#fff;border:1.5px solid #d8c5dc;border-radius:10px;padding:11px 15px;
+  cursor:pointer;font-family:'DM Sans';font-size:.98rem;color:var(--ink);transition:.15s;
+}
+.opt:hover:not(:disabled){border-color:var(--plum);background:#fbf8fc}
+.opt:disabled{cursor:default}
+.opt.right{background:var(--teal-soft);border-color:var(--teal);color:#0f3d36;font-weight:600}
+.opt.right::after{content:' ✓';color:var(--teal);font-weight:700}
+.opt.wrong{background:var(--rust-soft);border-color:var(--rust);color:#5e2317}
+.opt.wrong::after{content:' ✗';color:var(--rust);font-weight:700}
+.feedback{margin-top:13px;padding:12px 15px;border-radius:10px;background:#fff;border:1px dashed #cbb9cf;font-size:.95rem;color:#5a4d5d}
+.feedback b{color:var(--plum)}
+
+/* nav buttons */
+.lesson-nav{display:flex;justify-content:space-between;gap:14px;margin-top:46px;padding-top:26px;border-top:1px solid var(--line)}
+.btn{
+  font-family:'DM Sans';font-weight:600;font-size:.98rem;padding:12px 22px;border-radius:11px;cursor:pointer;
+  border:1.5px solid var(--line);background:#fff;color:var(--ink);transition:.16s;display:inline-flex;align-items:center;gap:8px;
+}
+.btn:hover{border-color:#bbac90;transform:translateY(-1px)}
+.btn.primary{background:var(--teal);color:#fff;border-color:var(--teal);box-shadow:var(--shadow)}
+.btn.primary:hover{background:#155a4f}
+.btn.plum{background:var(--plum);color:#fff;border-color:var(--plum)}
+.btn.plum:hover{background:#592f60}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.xp-pop{
+  position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--amber);color:#fff;font-weight:700;padding:13px 26px;border-radius:30px;
+  box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:.4s;z-index:200;font-size:1rem;
+}
+.xp-pop.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ===== TEST ===== */
+.test-q{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:18px;box-shadow:var(--shadow);transition:.3s}
+.test-q .tq-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.test-q .tq-num{font-family:'DM Mono';font-weight:500;color:var(--navy);font-size:.9rem}
+.test-q .tq-chap{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:#8a8170;font-weight:600;background:var(--paper2);padding:4px 10px;border-radius:20px}
+.test-q .tq-q{font-weight:600;font-size:1.08rem;margin-bottom:14px}
+.test-q .num-input{font-family:'DM Mono';font-size:1.05rem;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;width:170px;background:var(--paper)}
+.test-q .num-input:focus{outline:none;border-color:var(--teal)}
+.test-q .unit{font-family:'DM Mono';color:#8a8170;margin-left:9px}
+.topt{display:flex;flex-direction:column;gap:8px}
+.topt button{text-align:left;background:var(--paper);border:1.5px solid var(--line);border-radius:10px;padding:11px 15px;cursor:pointer;font-family:'DM Sans';font-size:.98rem;transition:.15s}
+.topt button:hover{border-color:var(--teal)}
+.topt button.sel{background:var(--teal-soft);border-color:var(--teal);font-weight:600;color:#0f3d36}
+.remed{margin-top:14px;border-radius:11px;border-left:5px solid var(--rust);background:var(--rust-soft);padding:15px 18px;display:none}
+.remed.show{display:block;animation:fadeIn .35s}
+.remed .rt{font-weight:700;color:var(--rust);font-family:'Fraunces',serif;margin-bottom:5px;display:flex;align-items:center;gap:7px}
+.remed .ra{font-size:.95rem;color:#5e2317;margin-bottom:11px}
+.remed .ra b{color:#7a2d1c}
+.remed-btns{display:flex;gap:10px;flex-wrap:wrap}
+.remed-btns .btn{padding:8px 16px;font-size:.88rem}
+.test-q.ok{border-color:var(--teal);background:#fbfdfc}
+.test-q.ko{border-color:var(--rust)}
+.float-retry{
+  position:fixed;bottom:26px;right:26px;z-index:120;display:none;
+  background:var(--plum);color:#fff;border:none;font-weight:700;padding:14px 24px;border-radius:30px;
+  box-shadow:var(--shadow-lg);cursor:pointer;font-family:'DM Sans';font-size:.98rem;align-items:center;gap:9px;
+}
+.float-retry.show{display:inline-flex;animation:fadeIn .4s}
+.float-retry:hover{background:#592f60}
+
+/* result */
+.result{display:none;background:#fff;border:1px solid var(--line);border-radius:18px;padding:34px;box-shadow:var(--shadow-lg);text-align:center;animation:fadeIn .5s}
+.result.show{display:block}
+.result .score-big{font-family:'Fraunces',serif;font-size:4rem;font-weight:700;line-height:1;color:var(--teal)}
+.result .score-lab{color:#8a8170;font-weight:600;margin-bottom:8px}
+.result .msg{font-size:1.12rem;margin:14px auto 28px;max-width:46ch;color:var(--ink)}
+.chapbars{text-align:left;max-width:560px;margin:0 auto}
+.chapbar{margin-bottom:14px}
+.chapbar .cbl{display:flex;justify-content:space-between;font-size:.9rem;font-weight:600;margin-bottom:5px}
+.chapbar .cbl span:last-child{font-family:'DM Mono';color:#8a8170}
+.cbt{height:13px;background:var(--paper2);border-radius:7px;overflow:hidden;border:1px solid var(--line)}
+.cbf{height:100%;border-radius:7px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+
+/* annales */
+.annale{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px 26px;margin-bottom:22px;box-shadow:var(--shadow)}
+.annale .an-tag{font-family:'DM Mono';font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);font-weight:500}
+.annale h3{font-family:'Fraunces',serif;font-size:1.32rem;color:var(--navy);margin:6px 0 14px;font-weight:600}
+.annale .enonce{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:16px 19px;font-size:1rem;color:#3a352c}
+.annale .enonce .qlist{margin:10px 0 0 4px}
+.annale .enonce .qlist li{margin-bottom:5px;list-style:none;padding-left:22px;position:relative}
+.annale .enonce .qlist li::before{content:'▸';position:absolute;left:0;color:var(--amber);font-weight:700}
+.corrige{margin-top:14px;display:none;animation:fadeIn .4s}
+.corrige.show{display:block}
+.corrige-head{font-family:'Fraunces',serif;font-weight:600;color:var(--teal);margin-bottom:12px;display:flex;align-items:center;gap:8px;font-size:1.06rem}
+
+.intro-card{background:var(--navy);color:#f3ece0;border-radius:16px;padding:24px 26px;margin-bottom:26px}
+.intro-card h2{color:#fff;margin:0 0 8px;font-family:'Fraunces',serif;font-size:1.4rem}
+.intro-card p{color:#cdd8e6;max-width:none;margin:0}
+
+.hint{font-size:.85rem;color:#8a8170;font-style:italic;margin-top:8px}
+
+/* mobile */
+.overlay{display:none;position:fixed;inset:62px 0 0 0;background:rgba(34,32,27,.4);z-index:35}
+@media(max-width:880px){
+  .main{margin-left:0;padding:30px 22px 110px}
+  .sidebar{transform:translateX(-100%);box-shadow:var(--shadow-lg)}
+  .sidebar.open{transform:translateX(0)}
+  .overlay.show{display:block}
+  .burger{display:block}
+  .progress-wrap{max-width:none}
+  .brand small{display:none}
+  h1.lesson-title{font-size:1.8rem}
+  .xp{padding:6px 11px;font-size:.82rem}
+}
+@media(max-width:560px){
+  .progress-wrap{display:none}
+  .topbar{gap:12px}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== TOP BAR ===== -->
+<div class="topbar">
+  <button class="burger" onclick="toggleSidebar()">☰</button>
+  <div class="brand">
+    <span class="logo">⚖️</span>
+    <span>Droit Bancaire<small>LP Banque · IAE Bretagne Sud</small></span>
+  </div>
+  <div class="progress-wrap">
+    <div class="lab"><span>Progression</span><span id="progPct">0 %</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+  </div>
+  <div class="xp"><span class="star">★</span><span id="xpVal">0</span> XP</div>
+</div>
+
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<div class="shell">
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar" id="sidebar">
+    <h4>Leçons</h4>
+    <div id="navList"></div>
+    <h4>Évaluation</h4>
+    <div class="nav-item special" data-view="test" onclick="go('test')">
+      <span class="ico">🎯</span><span class="lab">Test final adaptatif</span>
+    </div>
+    <div class="nav-item special2" data-view="annales" onclick="go('annales')">
+      <span class="ico">📜</span><span class="lab">Annales corrigées</span>
+    </div>
+  </aside>
+
+  <main class="main" id="main">
+    <!-- lessons injected, plus test & annales below -->
+
+    <!-- ============ LEÇON 1 ============ -->
+    <section class="view" data-view="l1">
+      <span class="tag">Leçon 1 · La banque</span>
+      <h1 class="lesson-title">La banque, ce commerçant pas comme les autres</h1>
+      <p class="subtitle">Comprendre ce qu'est juridiquement une banque, ses trois casquettes et les deux familles de produits d'épargne.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Imaginez un grand entrepôt qui accepte vos affaires en dépôt, vous prête du matériel, et vous conseille sur vos placements. Sauf qu'ici l'entrepôt manie de l'argent. Parce que cette matière est sensible, la loi encadre chaque geste : la banque est un commerçant, mais un commerçant surveillé en permanence.</p>
+      </div>
+
+      <p>La banque est avant tout une <strong>Société Anonyme (SA)</strong> dont l'activité est fortement réglementée. Son métier historique reste l'<strong>intermédiation</strong> : elle collecte des dépôts d'un côté et octroie des crédits de l'autre. Autour de ce cœur s'ajoutent les <strong>prestations connexes</strong> (services annexes) et les <strong>prestations d'investissement</strong> (placement et gestion d'actifs financiers).</p>
+
+      <p>Selon l'opération, le banquier endosse trois statuts distincts. Il agit comme <strong>dépositaire</strong> quand on lui confie comptes et épargne. Il devient <strong>banquier prêteur</strong> lorsqu'il accorde un crédit. Il joue enfin le rôle de <strong>banquier mandataire</strong> dès qu'il conseille en gestion de portefeuille.</p>
+
+      <div class="schema">
+        <svg viewBox="0 0 620 170" xmlns="http://www.w3.org/2000/svg">
+          <g font-family="DM Sans" font-size="14">
+            <rect x="20" y="55" width="170" height="60" rx="12" fill="#dde6f0" stroke="#23456b" stroke-width="2"/>
+            <text x="105" y="80" text-anchor="middle" font-weight="700" fill="#23456b">Dépositaire</text>
+            <text x="105" y="100" text-anchor="middle" font-size="11.5" fill="#5a6b80">comptes · épargne</text>
+            <rect x="225" y="55" width="170" height="60" rx="12" fill="#e3efec" stroke="#1b6b5e" stroke-width="2"/>
+            <text x="310" y="80" text-anchor="middle" font-weight="700" fill="#1b6b5e">Prêteur</text>
+            <text x="310" y="100" text-anchor="middle" font-size="11.5" fill="#3d6b62">conso · invest. · fonct.</text>
+            <rect x="430" y="55" width="170" height="60" rx="12" fill="#f6ead4" stroke="#c87a12" stroke-width="2"/>
+            <text x="515" y="80" text-anchor="middle" font-weight="700" fill="#b3700f">Mandataire</text>
+            <text x="515" y="100" text-anchor="middle" font-size="11.5" fill="#8a5a14">conseil portefeuille</text>
+            <text x="310" y="28" text-anchor="middle" font-family="Fraunces" font-size="16" font-weight="600" fill="#22201b">Les 3 statuts du banquier</text>
+          </g>
+        </svg>
+        <div class="scap">Un même établissement, trois casquettes juridiques selon l'opération réalisée.</div>
+      </div>
+
+      <h2>Bilan ou hors-bilan : deux familles d'épargne</h2>
+      <p>La distinction structure tout le conseil patrimonial. L'<strong>épargne de bilan</strong> figure au bilan de la banque : les fonds restent dans ses livres. L'<strong>épargne hors-bilan</strong>, au contraire, est gérée pour le compte du client mais sort du bilan de l'établissement.</p>
+
+      <table class="tbl">
+        <tr><th>Famille</th><th>Produits concernés</th></tr>
+        <tr><td>Épargne de bilan</td><td>Livrets · CAT · PEL · Obligations</td></tr>
+        <tr><td>Épargne hors-bilan</td><td>Assurance vie · CTO · PEA / PEA-PME · PER</td></tr>
+      </table>
+
+      <div class="rulebox">
+        <div class="rb-main">Banque = <em>Société Anonyme</em> réglementée. 3 statuts : <em>dépositaire</em>, <em>prêteur</em>, <em>mandataire</em>.</div>
+        <div class="rb-sub">Activités : intermédiation (dépôts + crédits) · prestations connexes · prestations d'investissement.</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">📂 Cas pratique</div>
+        <div class="step"><div class="sn">1</div><div class="sc">Un client ouvre un livret, contracte un prêt auto et demande un conseil sur son PEA. <b>Combien de statuts la banque mobilise-t-elle ?</b></div></div>
+        <div class="step"><div class="sn">2</div><div class="sc">Le livret relève du statut de <b>dépositaire</b> (épargne de bilan).</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc">Le prêt auto relève du <b>banquier prêteur</b>.</div></div>
+        <div class="step"><div class="sn">4</div><div class="sc">Le conseil sur le PEA (épargne hors-bilan) relève du <b>banquier mandataire</b>.</div></div>
+        <div class="ex-result">Réponse : les 3 statuts, dans une seule et même relation client.</div>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>SA réglementée · 3 statuts (dépositaire / prêteur / mandataire) · épargne de <strong>bilan</strong> (livrets, CAT, PEL) vs <strong>hors-bilan</strong> (assurance vie, PEA, PER, CTO).</p>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Ne confondez pas le <strong>PEL</strong> (épargne de bilan) et le <strong>PER</strong> (hors-bilan). De même, l'assurance vie n'est pas un produit de bilan : elle est portée par un assureur, pas dans les livres de la banque.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Quelle est la forme juridique d'une banque ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Une SARL</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Une Société Anonyme (SA)</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Une association loi 1901</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> La banque est une SA, dont l'activité est fortement réglementée.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Lequel de ces produits relève de l'épargne <em>hors-bilan</em> ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Le PEL</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le compte à terme (CAT)</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Le PER</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> PER, PEA, assurance vie et CTO sont hors-bilan. Livrets, CAT et PEL sont au bilan.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <span></span>
+        <button class="btn primary" onclick="validate('l1',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 2 ============ -->
+    <section class="view" data-view="l2">
+      <span class="tag">Leçon 2 · Responsabilités</span>
+      <h1 class="lesson-title">Quand la banque doit rendre des comptes</h1>
+      <p class="subtitle">Responsabilité civile, pénale, devoirs d'information et de conseil : les obligations qui pèsent sur le banquier.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Un médecin engage sa responsabilité s'il prescrit sans diagnostic. Le banquier, c'est pareil : il doit comprendre votre situation avant de vous vendre un produit. Vendre d'abord et conseiller ensuite, c'est inverser l'ordre des choses — et s'exposer à devoir réparer le dommage.</p>
+      </div>
+
+      <p>La <strong>responsabilité civile contractuelle</strong> lie les deux parties au contrat. Pour l'engager, trois éléments doivent être réunis : un <strong>fait dommageable</strong> (volontaire, négligence ou imprudence), un <strong>préjudice certain</strong> (corporel, matériel ou moral) et un <strong>lien de causalité</strong> entre les deux. La responsabilité extracontractuelle obéit aux mêmes conditions, mais hors contrat.</p>
+
+      <div class="schema">
+        <svg viewBox="0 0 620 130" xmlns="http://www.w3.org/2000/svg">
+          <g font-family="DM Sans" font-size="13">
+            <rect x="20" y="40" width="150" height="55" rx="11" fill="#f3e0da" stroke="#a8432a" stroke-width="2"/>
+            <text x="95" y="63" text-anchor="middle" font-weight="700" fill="#a8432a">Fait dommageable</text>
+            <text x="95" y="81" text-anchor="middle" font-size="11" fill="#7a3221">négligence, faute…</text>
+            <text x="190" y="72" text-anchor="middle" font-size="26" fill="#8a8170">+</text>
+            <rect x="215" y="40" width="150" height="55" rx="11" fill="#f6ead4" stroke="#c87a12" stroke-width="2"/>
+            <text x="290" y="63" text-anchor="middle" font-weight="700" fill="#b3700f">Préjudice certain</text>
+            <text x="290" y="81" text-anchor="middle" font-size="11" fill="#8a5a14">corporel/matériel/moral</text>
+            <text x="385" y="72" text-anchor="middle" font-size="26" fill="#8a8170">+</text>
+            <rect x="410" y="40" width="150" height="55" rx="11" fill="#dde6f0" stroke="#23456b" stroke-width="2"/>
+            <text x="485" y="63" text-anchor="middle" font-weight="700" fill="#23456b">Lien de causalité</text>
+            <text x="485" y="81" text-anchor="middle" font-size="11" fill="#5a6b80">cause → effet</text>
+            <text x="585" y="72" text-anchor="middle" font-size="26" fill="#1b6b5e">=</text>
+            <text x="300" y="22" text-anchor="middle" font-family="Fraunces" font-size="15" font-weight="600" fill="#22201b">Responsabilité civile engagée si les 3 sont réunis</text>
+          </g>
+        </svg>
+        <div class="scap">Manque un seul élément → la responsabilité civile ne peut pas être retenue.</div>
+      </div>
+
+      <h2>Les devoirs du banquier au quotidien</h2>
+      <table class="tbl wrap">
+        <tr><th>Obligation</th><th>Contenu</th></tr>
+        <tr><td>Information / conseil</td><td>Conseiller le produit <strong>avant</strong> de le commercialiser</td></tr>
+        <tr><td>MIF (placement financier)</td><td>Questionnaire de profil : Prudent / Équilibré / Dynamique + critères ESG</td></tr>
+        <tr><td>Mise en garde (crédit)</td><td>Prévenir sur les modalités et le risque de remboursement</td></tr>
+        <tr><td>Non-immixtion</td><td>Ne pas s'immiscer dans les affaires du client</td></tr>
+        <tr><td>Vigilance & discernement</td><td>Détecter les anomalies, ne pas exécuter aveuglément</td></tr>
+        <tr><td>Secret bancaire</td><td>S'impose à tous, sans limite de durée</td></tr>
+      </table>
+
+      <div class="rulebox">
+        <div class="rb-main">Responsabilité civile = <em>fait dommageable</em> + <em>préjudice certain</em> + <em>lien de causalité</em>.</div>
+        <div class="rb-sub">Responsabilité pénale = élément <em>légal</em> + <em>matériel</em> + <em>moral</em>. Sanctions graduées : contravention → délit → crime.</div>
+      </div>
+
+      <p>Sur le plan <strong>pénal</strong>, l'infraction suppose un élément légal, matériel et moral. Les sanctions vont de la contravention au crime. Les infractions typiques du secteur sont l'abus de confiance, l'abus de faiblesse, l'escroquerie, le faux, le blanchiment, le démarchage illicite, le délit d'initié et la manipulation de cours. Quatre organismes surveillent l'activité : l'<strong>AMF</strong>, l'<strong>ACPR</strong>, la <strong>DGCCRF</strong> et l'employeur.</p>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Conseiller <strong>avant</strong> de vendre. Toujours tracer les échanges par mail : c'est la preuve indispensable en cas de litige. Civil = réparer (dommages-intérêts) · Pénal = punir (amende, prison).</p>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Le <strong>devoir de mise en garde</strong> concerne le <strong>crédit</strong> (risque de non-remboursement). Le <strong>devoir de conseil</strong> concerne l'adéquation du produit. Ne mélangez pas les deux : on vous teste souvent sur cette nuance.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/3</div>
+        <div class="q">Quel élément n'est <em>pas</em> nécessaire pour engager la responsabilité civile ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Un fait dommageable</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Un préjudice certain</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Une intention de nuire</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Un lien de causalité</button>
+        </div>
+        <div class="feedback" hidden><b>Correct.</b> L'intention n'est pas requise : une simple négligence ou imprudence suffit.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/3</div>
+        <div class="q">Le devoir de mise en garde concerne surtout…</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">Le crédit et le risque de non-remboursement</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">L'ouverture d'un livret A</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le changement d'adresse</button>
+        </div>
+        <div class="feedback" hidden><b>Oui.</b> La mise en garde alerte l'emprunteur sur le risque lié au remboursement.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 3/3</div>
+        <div class="q">Quel organisme n'est pas un organe de contrôle de la banque ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">L'AMF</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">L'ACPR</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">L'INSEE</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">La DGCCRF</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> L'INSEE produit des statistiques ; le contrôle relève de l'AMF, l'ACPR et la DGCCRF.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l1')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l2',3)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 3 ============ -->
+    <section class="view" data-view="l3">
+      <span class="tag">Leçon 3 · Secret bancaire</span>
+      <h1 class="lesson-title">Le secret bancaire et ses portes dérobées</h1>
+      <p class="subtitle">Une obligation absolue… mais qui connaît des levées précises, dans la sphère privée comme face aux autorités.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Le secret bancaire, c'est le secret médical du compte en banque. Le banquier ne raconte pas vos finances aux dîners de famille. Mais comme pour le médecin face à la justice, certaines portes s'ouvrent : le juge, le fisc ou un héritier légitime peuvent franchir le seuil.</p>
+      </div>
+
+      <p>Le secret bancaire <strong>s'impose à tous</strong>, il est <strong>opposable aux tiers</strong> et n'a <strong>aucune limite de durée</strong>. Il ne s'éteint donc jamais, même après la clôture d'un compte ou le départ d'un salarié. Mais ce principe connaît des exceptions, regroupées en deux catégories.</p>
+
+      <div class="schema">
+        <svg viewBox="0 0 620 230" xmlns="http://www.w3.org/2000/svg">
+          <g font-family="DM Sans" font-size="12.5">
+            <circle cx="310" cy="48" r="34" fill="#1b6b5e"/>
+            <text x="310" y="44" text-anchor="middle" fill="#fff" font-weight="700" font-size="12">SECRET</text>
+            <text x="310" y="58" text-anchor="middle" fill="#fff" font-size="10">sans limite</text>
+            <rect x="40" y="120" width="250" height="92" rx="12" fill="#f6ead4" stroke="#c87a12" stroke-width="2"/>
+            <text x="165" y="140" text-anchor="middle" font-weight="700" fill="#b3700f">Levées — sphère privée</text>
+            <text x="165" y="160" text-anchor="middle" font-size="11" fill="#7a5414">Procuration · caution · décès</text>
+            <text x="165" y="177" text-anchor="middle" font-size="11" fill="#7a5414">Mineur · majeur protégé</text>
+            <text x="165" y="194" text-anchor="middle" font-size="11" fill="#7a5414">Compte joint · personne morale</text>
+            <rect x="330" y="120" width="250" height="92" rx="12" fill="#dde6f0" stroke="#23456b" stroke-width="2"/>
+            <text x="455" y="140" text-anchor="middle" font-weight="700" fill="#23456b">Levées — autorités publiques</text>
+            <text x="455" y="160" text-anchor="middle" font-size="11" fill="#3a5675">ACPR · Banque de France · pénal</text>
+            <text x="455" y="177" text-anchor="middle" font-size="11" fill="#3a5675">AMF · CNIL · Comm. UE · ministères</text>
+            <text x="455" y="194" text-anchor="middle" font-size="11" fill="#3a5675">Fisc · Douanes · URSSAF</text>
+            <line x1="240" y1="78" x2="165" y2="120" stroke="#c87a12" stroke-width="2"/>
+            <line x1="380" y1="78" x2="455" y2="120" stroke="#23456b" stroke-width="2"/>
+          </g>
+        </svg>
+        <div class="scap">Le principe est absolu ; les exceptions sont limitativement énumérées.</div>
+      </div>
+
+      <div class="rulebox">
+        <div class="rb-main">Le secret bancaire <em>s'impose à tous</em>, est <em>opposable aux tiers</em> et n'a <em>aucune limite de durée</em>.</div>
+        <div class="rb-sub">Levées privées : procuration, caution, décès, mineur, majeur protégé, compte joint, personne morale. Levées publiques : ACPR, BdF, justice, AMF, CNIL, fisc, douanes, URSSAF…</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">📂 Cas pratique</div>
+        <div class="step"><div class="sn">1</div><div class="sc">Le fils d'un client décédé demande le solde du compte de son père. <b>La banque peut-elle répondre ?</b></div></div>
+        <div class="step"><div class="sn">2</div><div class="sc">Le <b>décès</b> figure parmi les levées de la sphère privée.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc">Encore faut-il vérifier la <b>qualité d'héritier</b> (acte de notoriété, dévolution successorale).</div></div>
+        <div class="ex-result">Réponse : oui, sous réserve de prouver sa qualité d'héritier.</div>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Principe : <strong>absolu et sans durée</strong>. Exceptions : deux familles, <strong>privée</strong> (lien personnel justifié) et <strong>publique</strong> (autorité légalement habilitée).</p>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Le conjoint d'un client n'a <strong>pas</strong> automatiquement accès au compte personnel de son époux. Le compte <strong>joint</strong>, oui ; le compte <strong>personnel</strong> du conjoint, non — sauf procuration ou décès.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">Le secret bancaire prend fin…</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">10 ans après la clôture du compte</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Au départ du conseiller</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Jamais : il est sans limite de durée</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Le secret bancaire est sans limite de durée et opposable aux tiers.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Laquelle de ces autorités peut lever le secret bancaire ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">L'employeur du client</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">L'administration fiscale</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le voisin du client</button>
+        </div>
+        <div class="feedback" hidden><b>Oui.</b> Le fisc, les douanes et l'URSSAF figurent parmi les autorités publiques habilitées.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l2')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l3',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 4 ============ -->
+    <section class="view" data-view="l4">
+      <span class="tag">Leçon 4 · Contrat & personnes</span>
+      <h1 class="lesson-title">Le contrat, cette loi entre deux parties</h1>
+      <p class="subtitle">Composantes d'un contrat valide, vices du consentement, capacité des personnes physiques et morales.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Un contrat, c'est une poignée de main mise par écrit. Pour qu'elle vaille, il faut trois ingrédients : être d'accord (consentement), avoir le droit de s'engager (capacité) et viser quelque chose de légal (contenu). Retirez-en un, et la poignée de main se défait.</p>
+      </div>
+
+      <p>Le contrat est la <strong>loi des parties</strong> : il s'impose à ceux qui l'ont signé (effet relatif). Trois composantes le rendent valide. Le <strong>contenu</strong> doit être licite et certain, sans déroger à l'ordre public. La <strong>capacité</strong> suppose une personne juridiquement apte à s'engager. Le <strong>consentement</strong> naît de la rencontre entre l'offre et l'acceptation, sans erreur, vice ni dol.</p>
+
+      <table class="tbl wrap">
+        <tr><th>Composante</th><th>Condition</th></tr>
+        <tr><td>Contenu</td><td>Licite et certain, ne déroge pas à l'ordre public</td></tr>
+        <tr><td>Capacité</td><td>Personne juridiquement capable (ou son représentant)</td></tr>
+        <tr><td>Consentement</td><td>Rencontre offre / acceptation, sans erreur ni dol</td></tr>
+      </table>
+
+      <h2>Les sanctions des vices</h2>
+      <p>Un vice du consentement (erreur, dol, violence) entraîne une <strong>nullité relative</strong> : seul le contractant lésé peut l'invoquer. La violation de l'ordre public entraîne une <strong>nullité absolue</strong>, que tout intéressé peut soulever. La <strong>caducité</strong>, enfin, sanctionne la disparition d'un élément essentiel après la formation du contrat.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Contrat valide = <em>contenu</em> licite + <em>capacité</em> + <em>consentement</em> libre.</div>
+        <div class="rb-sub">Vice du consentement → <em>nullité relative</em> · violation de l'ordre public → <em>nullité absolue</em> · perte d'un élément essentiel → <em>caducité</em>.</div>
+      </div>
+
+      <h2>Personnes physiques et capacité</h2>
+      <p>La personnalité juridique naît à la naissance (vivant et viable) et cesse à la mort. La <strong>capacité</strong> peut être restreinte par des régimes de protection gradués : sauvegarde de justice (temporaire), curatelle (assistance), tutelle (représentation) et habilitation familiale (micro-tutelle allégée).</p>
+
+      <table class="tbl wrap">
+        <tr><th>Régime</th><th>Définition</th></tr>
+        <tr><td>Sauvegarde de justice</td><td>Protection temporaire</td></tr>
+        <tr><td>Curatelle</td><td>La personne est assistée ou contrôlée</td></tr>
+        <tr><td>Tutelle</td><td>La personne est représentée</td></tr>
+        <tr><td>Habilitation familiale</td><td>Procédure allégée (micro-tutelle)</td></tr>
+      </table>
+
+      <p>Le <strong>mineur non émancipé</strong> est représenté par ses parents pour tous les actes. Le <strong>mineur émancipé</strong> (dès 16 ans) devient majeur en principe, mais ne peut ni voter, ni se pacser, ni aller au casino. Les <strong>personnes morales</strong>, enfin, ont une capacité de jouissance limitée à leur spécialité et n'agissent que par l'intermédiaire de personnes physiques.</p>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>3 composantes : <strong>contenu · capacité · consentement</strong>. Relative = consentement vicié (intérêt privé) · Absolue = ordre public (intérêt général). Émancipation possible <strong>dès 16 ans</strong>.</p>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p><strong>Curatelle ≠ tutelle.</strong> En curatelle la personne agit assistée ; en tutelle elle est représentée. À l'ouverture d'un compte, la mention figure sur l'acte de naissance — d'où le contrôle de capacité.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/3</div>
+        <div class="q">Un dol (tromperie) entraîne quelle sanction ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">Une nullité relative</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Une nullité absolue</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Une caducité</button>
+        </div>
+        <div class="feedback" hidden><b>Correct.</b> Le dol vicie le consentement : c'est une nullité relative, invocable par la partie lésée.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/3</div>
+        <div class="q">Une personne morale exerce ses droits…</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Toute seule, directement</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Par l'intermédiaire de personnes physiques</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Elle n'a aucun droit</button>
+        </div>
+        <div class="feedback" hidden><b>Oui.</b> La capacité d'exercice d'une PM est inexistante : elle est représentée par des personnes physiques.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 3/3</div>
+        <div class="q">À partir de quel âge l'émancipation est-elle possible ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">14 ans</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">16 ans</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">18 ans</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Dès 16 ans, le mineur émancipé est majeur en principe (avec quelques exceptions).</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l3')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l4',3)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 5 ============ -->
+    <section class="view" data-view="l5">
+      <span class="tag">Leçon 5 · Le compte bancaire</span>
+      <h1 class="lesson-title">Le compte, de l'ouverture à la clôture</h1>
+      <p class="subtitle">KYC, droit au compte, service bancaire de base, fonctionnement et clôture : le cycle de vie complet.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Ouvrir un compte, c'est comme louer un appartement : le propriétaire vérifie votre identité et votre dossier avant de remettre les clés. La banque applique la même logique avec le KYC — « connais ton client ». Et si elle refuse, l'État garantit malgré tout un toit minimum : c'est le droit au compte.</p>
+      </div>
+
+      <p>La relation repose sur l'<strong>intuitu personae</strong> (la confiance personnelle) et sur le <strong>KYC</strong> (Know Your Customer). À l'ouverture, la banque contrôle l'<strong>identité</strong> (pièce valide), la <strong>capacité</strong> (acte de naissance si nécessaire) et fait signer les conditions générales <strong>et</strong> particulières.</p>
+
+      <div class="schema">
+        <svg viewBox="0 0 620 110" xmlns="http://www.w3.org/2000/svg">
+          <g font-family="DM Sans" font-size="13">
+            <rect x="20" y="35" width="155" height="50" rx="11" fill="#e3efec" stroke="#1b6b5e" stroke-width="2"/>
+            <text x="97" y="65" text-anchor="middle" font-weight="700" fill="#1b6b5e">Ouverture</text>
+            <rect x="232" y="35" width="155" height="50" rx="11" fill="#dde6f0" stroke="#23456b" stroke-width="2"/>
+            <text x="309" y="65" text-anchor="middle" font-weight="700" fill="#23456b">Fonctionnement</text>
+            <rect x="445" y="35" width="155" height="50" rx="11" fill="#f3e0da" stroke="#a8432a" stroke-width="2"/>
+            <text x="522" y="65" text-anchor="middle" font-weight="700" fill="#a8432a">Clôture</text>
+            <path d="M175 60 L232 60" stroke="#8a8170" stroke-width="2" marker-end="url(#ar5)"/>
+            <path d="M387 60 L445 60" stroke="#8a8170" stroke-width="2" marker-end="url(#ar5)"/>
+            <defs><marker id="ar5" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#8a8170"/></marker></defs>
+          </g>
+        </svg>
+        <div class="scap">KYC à l'entrée · convention au fonctionnement · RIB pour le retour des fonds à la sortie.</div>
+      </div>
+
+      <h2>Le droit au compte (DAC)</h2>
+      <p>La banque peut refuser une ouverture <strong>sans motif</strong>, mais elle doit remettre une <strong>lettre de refus</strong>. Munie de cette attestation, la personne saisit la <strong>Banque de France</strong>, qui désigne un établissement. S'ouvre alors le <strong>service bancaire de base gratuit</strong> : carte à autorisation systématique (CBAS), deux chèques de banque par an, tenue de compte, relevé mensuel, virements et prélèvements SEPA, RIB, accès en ligne et clôture gratuite.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Refus possible <em>sans motif</em>, mais <em>lettre de refus obligatoire</em> → saisine de la <em>Banque de France</em> (droit au compte).</div>
+        <div class="rb-sub">Service de base gratuit : CBAS · 2 chèques de banque/an · relevé mensuel · virements/prélèvements SEPA · RIB · accès en ligne · clôture gratuite.</div>
+      </div>
+
+      <p>La <strong>clôture</strong> peut venir de la banque, du client, du décès du titulaire ou de la mobilité bancaire. Si le compte est créditeur, un <strong>RIB</strong> est requis pour le retour des fonds. Pour un compte joint, la demande doit émaner de <strong>tous</strong> les co-titulaires.</p>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Ouverture = <strong>intuitu personae + KYC</strong>. Refus → lettre obligatoire → <strong>Banque de France</strong>. Compte joint : accord de <strong>tous</strong> pour clôturer.</p>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Le droit au compte ne garantit pas un compte « normal » : il ouvre un <strong>service de base</strong> (carte à autorisation systématique, pas de découvert). En théorie c'est un droit ; en pratique, c'est au client d'initier la démarche avec l'attestation de refus.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">En cas de refus d'ouverture, quel organisme le client peut-il saisir ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">L'AMF</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">La Banque de France</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">La DGCCRF</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Muni de la lettre de refus, le client saisit la Banque de France au titre du droit au compte.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Pour clôturer un compte joint, il faut…</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">La demande d'un seul co-titulaire</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">La demande de tous les co-titulaires</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">L'accord du juge</button>
+        </div>
+        <div class="feedback" hidden><b>Oui.</b> La clôture d'un compte joint exige l'accord de l'ensemble des co-titulaires.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l4')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l5',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 6 ============ -->
+    <section class="view" data-view="l6">
+      <span class="tag">Leçon 6 · Moyens de paiement</span>
+      <h1 class="lesson-title">Chèque, virement, carte : qui fait quoi ?</h1>
+      <p class="subtitle">Les trois intervenants du chèque, les mentions obligatoires, le virement SEPA et la carte bancaire.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Un chèque, c'est une lettre d'ordre. Vous (le tireur) écrivez à votre banque (le tiré) : « payez telle somme à telle personne (le bénéficiaire) ». Comme toute lettre officielle, il lui faut des mentions précises, sinon le facteur — ici la banque — la refuse.</p>
+      </div>
+
+      <p>Le chèque met en scène trois acteurs : le <strong>tireur</strong> (l'émetteur, personne physique), le <strong>tiré</strong> (la banque) et le <strong>bénéficiaire</strong> (qui reçoit le paiement). Le tireur doit disposer d'une <strong>provision suffisante</strong> au moment de l'émission. À défaut, il est inscrit au <strong>FCC</strong> (Fichier Central des Chèques).</p>
+
+      <div class="schema">
+        <svg viewBox="0 0 620 120" xmlns="http://www.w3.org/2000/svg">
+          <g font-family="DM Sans" font-size="13">
+            <rect x="30" y="40" width="150" height="55" rx="11" fill="#f6ead4" stroke="#c87a12" stroke-width="2"/>
+            <text x="105" y="64" text-anchor="middle" font-weight="700" fill="#b3700f">Tireur</text>
+            <text x="105" y="82" text-anchor="middle" font-size="11" fill="#8a5a14">émetteur</text>
+            <rect x="235" y="40" width="150" height="55" rx="11" fill="#dde6f0" stroke="#23456b" stroke-width="2"/>
+            <text x="310" y="64" text-anchor="middle" font-weight="700" fill="#23456b">Tiré</text>
+            <text x="310" y="82" text-anchor="middle" font-size="11" fill="#3a5675">la banque</text>
+            <rect x="440" y="40" width="150" height="55" rx="11" fill="#e3efec" stroke="#1b6b5e" stroke-width="2"/>
+            <text x="515" y="64" text-anchor="middle" font-weight="700" fill="#1b6b5e">Bénéficiaire</text>
+            <text x="515" y="82" text-anchor="middle" font-size="11" fill="#3d6b62">reçoit le paiement</text>
+            <path d="M180 67 L235 67" stroke="#8a8170" stroke-width="2" marker-end="url(#ar6)"/>
+            <path d="M385 67 L440 67" stroke="#8a8170" stroke-width="2" marker-end="url(#ar6)"/>
+            <text x="208" y="33" text-anchor="middle" font-size="10.5" fill="#8a8170">ordonne</text>
+            <text x="413" y="33" text-anchor="middle" font-size="10.5" fill="#8a8170">paie</text>
+            <defs><marker id="ar6" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#8a8170"/></marker></defs>
+          </g>
+        </svg>
+        <div class="scap">Mentions obligatoires : « chèque », somme en lettres ET chiffres, nom et lieu du tiré, lieu et date, bénéficiaire, signature.</div>
+      </div>
+
+      <div class="rulebox">
+        <div class="rb-main">Chèque : <em>tireur</em> (émetteur) → <em>tiré</em> (banque) → <em>bénéficiaire</em>. Provision suffisante exigée à l'émission.</div>
+        <div class="rb-sub">Délai de présentation : <em>8 jours</em> (chèque émis en France) · transmission par endossement (signature au dos) · incident → inscription au <em>FCC</em>.</div>
+      </div>
+
+      <h2>Le virement et la carte bancaire</h2>
+      <p>Le <strong>virement</strong> oppose un compte débité (le donneur d'ordre, mandant) à un compte crédité (le bénéficiaire). Ses dérivés SEPA sont le prélèvement SEPA et le TIP SEPA. La <strong>carte bancaire</strong> existe en trois variantes : paiement, retrait, ou crédit (adossée à une réserve, à débit différé). L'<strong>authentification forte</strong> (3D Secure) s'impose au-delà de <strong>30 €</strong> en Europe.</p>
+
+      <table class="tbl wrap">
+        <tr><th>Situation</th><th>Responsabilité</th></tr>
+        <tr><td>Paiement non autorisé, sans négligence du client</td><td>La banque</td></tr>
+        <tr><td>Paiement par négligence du client</td><td>Le client</td></tr>
+        <tr><td>Fraude du client</td><td>Le client (la banque peut l'attaquer)</td></tr>
+      </table>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Tireur = émetteur · Tiré = <strong>banque</strong> · Bénéficiaire = encaisseur. Délai chèque : <strong>8 jours</strong>. Auth. forte au-delà de <strong>30 €</strong>. Incident chèque → <strong>FCC</strong>.</p>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Le « tiré » n'est pas le bénéficiaire : c'est la <strong>banque</strong> qui paie. Erreur classique en examen. Pensez : « tireur » tire sur la banque, « tiré » = celui qui est tiré, donc la banque.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/3</div>
+        <div class="q">Qui est le « tiré » d'un chèque ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Celui qui émet le chèque</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">La banque</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le bénéficiaire</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Le tiré est la banque ; le tireur l'émet ; le bénéficiaire l'encaisse.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/3</div>
+        <div class="q">L'authentification forte s'impose au-delà de quel montant en Europe ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">15 €</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">30 €</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">50 €</button>
+        </div>
+        <div class="feedback" hidden><b>Oui.</b> Le 3D Secure / authentification forte est requis au-dessus de 30 €.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 3/3</div>
+        <div class="q">Un chèque sans provision entraîne une inscription au…</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">FCC (Fichier Central des Chèques)</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">FICP</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">FIBEN</button>
+        </div>
+        <div class="feedback" hidden><b>Correct.</b> Le FCC recense les incidents sur chèques et cartes. Le FICP concerne les crédits.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l5')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l6',3)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 7 ============ -->
+    <section class="view" data-view="l7">
+      <span class="tag">Leçon 7 · Le crédit</span>
+      <h1 class="lesson-title">Le crédit, ses délais et ses garanties</h1>
+      <p class="subtitle">Types de crédits, devoirs du prêteur, garanties réelles et personnelles, fichiers d'incidents et règles HCSF.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Prêter de l'argent, c'est confier sa tondeuse au voisin. On veut une garantie : soit on garde un objet de valeur (garantie réelle), soit un ami se porte garant (garantie personnelle). Et on prend un délai de réflexion avant de signer, pour ne pas regretter.</p>
+      </div>
+
+      <p>Quatre familles de crédit cohabitent. Le <strong>crédit à la consommation</strong> finance biens et services, plafonné à <strong>75 000 €</strong>, avec un délai de rétractation de <strong>14 jours</strong> (compressible à 7). Le <strong>crédit immobilier</strong> (≥ 75 000 €) impose un délai de réflexion de <strong>10 jours</strong> (loi Scrivener 2), une assurance emprunteur et des IRA plafonnées. Les crédits de <strong>fonctionnement</strong> (découvert, escompte) et d'<strong>investissement</strong> complètent l'éventail professionnel.</p>
+
+      <table class="tbl wrap">
+        <tr><th>Règle</th><th>Valeur</th></tr>
+        <tr><td>Plafond crédit conso</td><td>75 000 €</td></tr>
+        <tr><td>Rétractation conso</td><td>14 jours (compressible à 7)</td></tr>
+        <tr><td>Réflexion immobilier</td><td>10 jours calendaires</td></tr>
+        <tr><td>IRA (immobilier)</td><td>3 % du capital restant dû ou 6 mensualités</td></tr>
+        <tr><td>Taux d'endettement (HCSF)</td><td>35 % (résidence principale)</td></tr>
+      </table>
+
+      <div class="schema">
+        <svg viewBox="0 0 620 150" xmlns="http://www.w3.org/2000/svg">
+          <g font-family="DM Sans" font-size="12.5">
+            <text x="310" y="22" text-anchor="middle" font-family="Fraunces" font-size="15" font-weight="600" fill="#22201b">Les garanties du crédit</text>
+            <rect x="30" y="42" width="265" height="90" rx="12" fill="#dde6f0" stroke="#23456b" stroke-width="2"/>
+            <text x="162" y="64" text-anchor="middle" font-weight="700" fill="#23456b">Garanties réelles</text>
+            <text x="162" y="86" text-anchor="middle" font-size="11.5" fill="#3a5675">Hypothèque · Privilège prêteur</text>
+            <text x="162" y="104" text-anchor="middle" font-size="11.5" fill="#3a5675">de deniers · Nantissement</text>
+            <text x="162" y="121" text-anchor="middle" font-size="11" fill="#5a6b80">(porte sur un bien)</text>
+            <rect x="325" y="42" width="265" height="90" rx="12" fill="#e3efec" stroke="#1b6b5e" stroke-width="2"/>
+            <text x="457" y="64" text-anchor="middle" font-weight="700" fill="#1b6b5e">Garanties personnelles</text>
+            <text x="457" y="86" text-anchor="middle" font-size="11.5" fill="#3d6b62">Cautionnement · OCM</text>
+            <text x="457" y="104" text-anchor="middle" font-size="11.5" fill="#3d6b62">(ex. Crédit Logement)</text>
+            <text x="457" y="121" text-anchor="middle" font-size="11" fill="#3d6b62">(un tiers s'engage)</text>
+          </g>
+        </svg>
+        <div class="scap">Réelle = on affecte un bien · Personnelle = un tiers garantit le remboursement.</div>
+      </div>
+
+      <p>Le prêteur supporte un <strong>devoir de mise en garde</strong> (risque de non-remboursement), un <strong>devoir d'information</strong> (FISE pour l'immobilier), un <strong>devoir de conseil</strong> et un devoir de <strong>non-immixtion</strong>. Deux fichiers de la Banque de France encadrent l'octroi : le <strong>FCC</strong> (chèques, cartes) et le <strong>FICP</strong> (incidents de remboursement des crédits aux particuliers).</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Conso ≤ <em>75 000 €</em>, rétractation <em>14 j</em>. Immobilier ≥ 75 000 €, réflexion <em>10 j</em>, IRA <em>3 %</em> ou <em>6 mensualités</em>.</div>
+        <div class="rb-sub">Taux d'endettement HCSF : <em>35 %</em> pour la résidence principale. Vérifier <em>FCC + FICP</em> avant tout octroi.</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-head">📂 Cas pratique — taux d'endettement</div>
+        <div class="step"><div class="sn">1</div><div class="sc">Un foyer gagne 4 000 € nets/mois et veut une mensualité de 1 500 €. <b>Le taux d'endettement passe-t-il ?</b></div></div>
+        <div class="step"><div class="sn">2</div><div class="sc">Taux d'endettement = 1 500 / 4 000 = <b>37,5 %</b>.</div></div>
+        <div class="step"><div class="sn">3</div><div class="sc">Le plafond HCSF est de <b>35 %</b> pour une résidence principale.</div></div>
+        <div class="ex-result">Réponse : non, 37,5 % &gt; 35 %. Dossier hors norme HCSF (sauf flexibilité dans la limite de 20 % des dossiers).</div>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Conso = <strong>75 000 € / 14 j</strong>. Immo = <strong>10 j / IRA 3 % ou 6 mensualités</strong>. HCSF = <strong>35 %</strong>. Garanties : réelles (bien) vs personnelles (tiers). Fichiers : <strong>FCC + FICP</strong>.</p>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p>Ne confondez pas le délai de <strong>rétractation</strong> du conso (14 j, on revient sur un engagement déjà donné) et le délai de <strong>réflexion</strong> de l'immobilier (10 j, on ne peut pas accepter avant). Un crédit accordé à un emprunteur manifestement insolvable engage la responsabilité de la banque.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/3</div>
+        <div class="q">Quel est le plafond d'un crédit à la consommation ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">21 500 €</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">75 000 €</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">100 000 €</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Le crédit conso est plafonné à 75 000 € ; au-delà, on bascule en immobilier.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/3</div>
+        <div class="q">Le cautionnement est une garantie…</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Réelle (sur un bien)</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Personnelle (un tiers s'engage)</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Fiscale</button>
+        </div>
+        <div class="feedback" hidden><b>Oui.</b> Le cautionnement est personnel : un tiers rembourse en cas de défaillance. L'hypothèque, elle, est réelle.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 3/3</div>
+        <div class="q">Avant d'octroyer un crédit, le banquier consulte…</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Uniquement le FCC</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Le FCC et le FICP</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le registre du commerce</button>
+        </div>
+        <div class="feedback" hidden><b>Correct.</b> FCC (chèques/cartes) et FICP (crédits) sont vérifiés avant tout octroi.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l6')">← Précédent</button>
+        <button class="btn primary" onclick="validate('l7',3)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 8 ============ -->
+    <section class="view" data-view="l8">
+      <span class="tag">Leçon 8 · Succession & patrimoine</span>
+      <h1 class="lesson-title">Transmettre : succession, propriété et SCI</h1>
+      <p class="subtitle">Dévolution légale, droits du conjoint survivant, testament, démembrement de propriété et SCI.</p>
+
+      <div class="callout c-analogy">
+        <div class="ct">💡 Analogie</div>
+        <p>Imaginez un gâteau (le patrimoine) qu'il faut partager au décès. Sans testament, c'est la recette de la loi qui découpe les parts dans un ordre précis. Avec testament ou donation entre époux, on peut redécouper — mais jamais déshériter complètement les enfants.</p>
+      </div>
+
+      <p>La mort, légalement constatée, met fin à la personnalité juridique et déclenche la transmission. Sans testament, la <strong>dévolution légale</strong> s'applique selon un ordre : enfants (nés ou à naître), puis ascendants et collatéraux privilégiés, puis ascendants ordinaires, puis collatéraux ordinaires.</p>
+
+      <h2>Les droits du conjoint survivant</h2>
+      <table class="tbl wrap">
+        <tr><th>Situation</th><th>Droits du conjoint</th></tr>
+        <tr><td>Sans DDV, enfants du même lit</td><td>¼ en pleine propriété OU 100 % en usufruit</td></tr>
+        <tr><td>Sans DDV, enfants d'un autre lit</td><td>¼ en pleine propriété</td></tr>
+        <tr><td>Avec DDV, enfants du même lit</td><td>¼ PP ET ¾ en usufruit</td></tr>
+        <tr><td>Avec DDV, enfants d'un autre lit</td><td>¼ PP ou 100 % usufruit</td></tr>
+      </table>
+
+      <p>Le <strong>testament</strong> prend trois formes : <strong>holographique</strong> (écrit à la main), <strong>authentique</strong> (chez le notaire, inscrit au FDV) ou <strong>mystique</strong> (rédaction non assistée, remise scellée). La <strong>donation simple</strong> n'est pas figée dans le temps (recalcul possible au décès), tandis que la <strong>donation-partage</strong> fige la valeur au jour de la donation.</p>
+
+      <h2>Le droit de propriété et son démembrement</h2>
+      <div class="schema">
+        <svg viewBox="0 0 620 130" xmlns="http://www.w3.org/2000/svg">
+          <g font-family="DM Sans" font-size="13">
+            <rect x="30" y="45" width="170" height="58" rx="11" fill="#e3efec" stroke="#1b6b5e" stroke-width="2"/>
+            <text x="115" y="70" text-anchor="middle" font-weight="700" fill="#1b6b5e">USUS</text>
+            <text x="115" y="89" text-anchor="middle" font-size="11" fill="#3d6b62">user de la chose</text>
+            <rect x="225" y="45" width="170" height="58" rx="11" fill="#f6ead4" stroke="#c87a12" stroke-width="2"/>
+            <text x="310" y="70" text-anchor="middle" font-weight="700" fill="#b3700f">FRUCTUS</text>
+            <text x="310" y="89" text-anchor="middle" font-size="11" fill="#8a5a14">jouir des fruits</text>
+            <rect x="420" y="45" width="170" height="58" rx="11" fill="#dde6f0" stroke="#23456b" stroke-width="2"/>
+            <text x="505" y="70" text-anchor="middle" font-weight="700" fill="#23456b">ABUSUS</text>
+            <text x="505" y="89" text-anchor="middle" font-size="11" fill="#3a5675">disposer / vendre</text>
+            <text x="310" y="26" text-anchor="middle" font-family="Fraunces" font-size="15" font-weight="600" fill="#22201b">Les 3 attributs de la propriété</text>
+          </g>
+        </svg>
+        <div class="scap">Usufruit = usus + fructus · Nue-propriété = abusus. Le démembrement sépare ces droits.</div>
+      </div>
+
+      <p>Le droit de propriété est <strong>absolu, perpétuel et individuel</strong>. On peut le démembrer en <strong>usufruit</strong> (usus + fructus) et <strong>nue-propriété</strong> (abusus). La <strong>SCI</strong>, enfin, permet de détenir et transmettre un patrimoine immobilier : les apports peuvent être en numéraire, en immobilier ou en industrie, et les parts donnent voix à l'assemblée générale.</p>
+
+      <div class="rulebox">
+        <div class="rb-main">Sans DDV + enfants du même lit : conjoint = <em>¼ pleine propriété</em> OU <em>100 % usufruit</em>.</div>
+        <div class="rb-sub">Propriété = usus + fructus + abusus. Démembrement : usufruit (usus+fructus) / nue-propriété (abusus). Donation-partage = valeur figée · donation simple = recalcul possible.</div>
+      </div>
+
+      <div class="callout c-retenir">
+        <div class="ct">🔑 À retenir</div>
+        <p>Dévolution : enfants → ascendants/collatéraux privilégiés → ordinaires. Conjoint sans DDV (même lit) : <strong>¼ PP ou 100 % usufruit</strong>. Démembrement : <strong>usufruit</strong> vs <strong>nue-propriété</strong>.</p>
+      </div>
+
+      <div class="callout c-piege">
+        <div class="ct">⚠️ Piège fréquent</div>
+        <p><strong>Donation simple ≠ donation-partage.</strong> La simple peut être réévaluée au décès (le prix n'est pas figé) ; la donation-partage fige la valeur au jour de l'acte. Cette nuance change tout le calcul successoral.</p>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">L'abusus correspond au droit de…</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">User de la chose</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Percevoir les revenus</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Disposer de la chose (la vendre)</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Abusus = disposer. Usus = user · Fructus = jouir des fruits. La nue-propriété, c'est l'abusus.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Un testament écrit entièrement à la main est dit…</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">Holographique</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Authentique</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Mystique</button>
+        </div>
+        <div class="feedback" hidden><b>Oui.</b> Holographique = manuscrit. Authentique = chez le notaire. Mystique = remis scellé sans témoin de rédaction.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l7')">← Précédent</button>
+        <button class="btn plum" onclick="go('test')">Passer au test final 🎯</button>
+      </div>
+    </section>
+
+    <!-- ============ TEST FINAL ============ -->
+    <section class="view" data-view="test">
+      <span class="tag">Évaluation</span>
+      <h1 class="lesson-title">Test final adaptatif</h1>
+      <p class="subtitle">10 questions sur l'ensemble du cours. En cas d'erreur, une remédiation t'explique et te renvoie à la bonne leçon.</p>
+
+      <div class="intro-card">
+        <h2>🎯 Comment ça marche</h2>
+        <p>QCM et saisies chiffrées (tolérance sur les nombres). Sélectionne ou saisis tes réponses, puis valide. Les bonnes réponses se colorent en vert, les erreurs déclenchent une bannière de remédiation avec accès direct à la leçon.</p>
+      </div>
+
+      <div id="testQuestions"></div>
+
+      <div class="lesson-nav" id="testSubmitRow">
+        <button class="btn" onclick="go('l8')">← Revoir le cours</button>
+        <button class="btn plum" onclick="gradeTest()">Valider mes réponses ✓</button>
+      </div>
+
+      <div class="result" id="testResult">
+        <div class="score-lab">Ton score</div>
+        <div class="score-big" id="scoreBig">0/10</div>
+        <div class="msg" id="scoreMsg"></div>
+        <div class="chapbars" id="chapBars"></div>
+        <div style="margin-top:28px"><button class="btn plum" onclick="resetTest()">↻ Reprendre le test</button></div>
+      </div>
+    </section>
+
+    <!-- ============ ANNALES ============ -->
+    <section class="view" data-view="annales">
+      <span class="tag">Annales</span>
+      <h1 class="lesson-title">Annales corrigées — cas pratiques</h1>
+      <p class="subtitle">Sujets d'entraînement type examen. Essaie de répondre seul, puis déroule le corrigé étape par étape.</p>
+
+      <div class="intro-card">
+        <h2>📜 Mode révision active</h2>
+        <p>Lis l'énoncé, rédige ta réponse au brouillon, <strong>puis seulement</strong> affiche le corrigé. Ces sujets sont construits à partir de ton cours — tu pourras les remplacer par tes vraies annales en me transmettant les PDF.</p>
+      </div>
+
+      <!-- Sujet 1 -->
+      <div class="annale">
+        <div class="an-tag">Sujet 1 · Responsabilité & crédit</div>
+        <h3>Le devoir de mise en garde négligé</h3>
+        <div class="enonce">
+          M. Leroy souscrit un crédit immobilier de 250 000 € auprès de sa banque. Son taux d'endettement atteint 45 %, mais la banque ne l'a jamais alerté sur ce risque. Six mois plus tard, il se trouve en situation de défaut de paiement.
+          <ul class="qlist">
+            <li>Quelle obligation la banque a-t-elle manquée ?</li>
+            <li>Quelle responsabilité peut être engagée et sous quelles conditions ?</li>
+            <li>La norme HCSF est-elle respectée ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Obligation manquée :</b> le <b>devoir de mise en garde</b>. La banque devait alerter l'emprunteur sur le risque de non-remboursement au regard de sa situation financière.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Responsabilité :</b> civile contractuelle. Les trois conditions sont réunies — fait dommageable (défaut de mise en garde), préjudice certain (surendettement), lien de causalité (le manquement a permis un crédit inadapté).</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>HCSF :</b> le taux de 45 % dépasse le plafond de 35 % pour une résidence principale. Un crédit octroyé à un emprunteur manifestement insolvable engage la banque.</div></div>
+          <div class="ex-result">Conclusion : responsabilité civile de la banque retenue ; le client peut demander des dommages-intérêts en réparation.</div>
+        </div>
+      </div>
+
+      <!-- Sujet 2 -->
+      <div class="annale">
+        <div class="an-tag">Sujet 2 · Moyens de paiement</div>
+        <h3>Le chèque sans provision</h3>
+        <div class="enonce">
+          M. Durand émet un chèque de 800 € au profit de son garagiste. Au moment de l'émission, son compte n'est crédité que de 300 €.
+          <ul class="qlist">
+            <li>Identifiez le tireur, le tiré et le bénéficiaire.</li>
+            <li>Quelle condition de fond n'est pas remplie ?</li>
+            <li>Quel fichier est concerné et quel est le délai de présentation ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Intervenants :</b> tireur = M. Durand (émetteur), tiré = sa banque, bénéficiaire = le garagiste.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Condition de fond :</b> la <b>provision suffisante</b> doit exister au moment de l'émission. Ici 300 € &lt; 800 € : la provision est insuffisante.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Conséquence :</b> inscription au <b>FCC</b> (Fichier Central des Chèques). Le délai de présentation d'un chèque émis en France est de <b>8 jours</b>.</div></div>
+          <div class="ex-result">Conclusion : chèque sans provision → incident FCC ; le tireur s'expose à une interdiction bancaire.</div>
+        </div>
+      </div>
+
+      <!-- Sujet 3 -->
+      <div class="annale">
+        <div class="an-tag">Sujet 3 · Succession</div>
+        <h3>La dévolution sans testament</h3>
+        <div class="enonce">
+          M. Martin décède en laissant son épouse et deux enfants nés de leur union. Il n'a établi ni testament ni donation entre époux. Le patrimoine net s'élève à 400 000 €.
+          <ul class="qlist">
+            <li>Quel type de dévolution s'applique ?</li>
+            <li>Quelles sont les options du conjoint survivant ?</li>
+            <li>Si le conjoint choisit le ¼ en pleine propriété, comment se répartit la succession ?</li>
+          </ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé détaillé</div>
+          <div class="step"><div class="sn">1</div><div class="sc"><b>Dévolution :</b> légale (pas de testament), avec conjoint survivant et enfants <b>du même lit</b>, <b>sans</b> donation entre époux.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc"><b>Options du conjoint :</b> ¼ en pleine propriété <b>OU</b> 100 % en usufruit.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Si ¼ PP :</b> le conjoint reçoit 400 000 × ¼ = <b>100 000 €</b> en pleine propriété. Les ¾ restants (300 000 €) se partagent entre les deux enfants, soit <b>150 000 € chacun</b>.</div></div>
+          <div class="ex-result">Conclusion : conjoint 100 000 € PP ; chaque enfant 150 000 € — sous réserve de la réserve héréditaire.</div>
+        </div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('test')">← Test final</button>
+        <button class="btn" onclick="go('l1')">Revoir les leçons →</button>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<button class="float-retry" id="floatRetry" onclick="resetTest()">↻ Reprendre le test</button>
+<div class="xp-pop" id="xpPop"></div>
+
+<script>
+/* ===================== ÉTAT (en mémoire) ===================== */
+const LESSONS = [
+  {id:'l1', t:'La banque'},
+  {id:'l2', t:'Responsabilités'},
+  {id:'l3', t:'Secret bancaire'},
+  {id:'l4', t:'Contrat & personnes'},
+  {id:'l5', t:'Le compte bancaire'},
+  {id:'l6', t:'Moyens de paiement'},
+  {id:'l7', t:'Le crédit'},
+  {id:'l8', t:'Succession & patrimoine'}
+];
+const state = { xp:0, done:{}, view:'l1' };
+
+/* ===================== NAVIGATION ===================== */
+function buildNav(){
+  const nav = document.getElementById('navList');
+  nav.innerHTML = '';
+  LESSONS.forEach((l,i)=>{
+    const d = document.createElement('div');
+    d.className = 'nav-item' + (state.done[l.id]?' done':'');
+    d.dataset.view = l.id;
+    d.onclick = ()=>go(l.id);
+    d.innerHTML = '<span class="num">'+(state.done[l.id]?'✓':(i+1))+'</span><span class="lab">'+l.t+'</span>';
+    nav.appendChild(d);
+  });
+  highlightNav();
+}
+function highlightNav(){
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.dataset.view===state.view));
+}
+function go(view){
+  state.view = view;
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active', v.dataset.view===view));
+  highlightNav();
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(window.innerWidth<=880) closeSidebar();
+}
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+/* ===================== XP & PROGRESSION ===================== */
+function addXp(n){
+  state.xp += n;
+  document.getElementById('xpVal').textContent = state.xp;
+  popXp('+'+n+' XP');
+}
+function popXp(txt){
+  const p = document.getElementById('xpPop');
+  p.textContent = '★ '+txt;
+  p.classList.add('show');
+  clearTimeout(p._t);
+  p._t = setTimeout(()=>p.classList.remove('show'),1400);
+}
+function updateProgress(){
+  const total = LESSONS.length;
+  const n = Object.keys(state.done).length;
+  const pct = Math.round(n/total*100);
+  document.getElementById('progFill').style.width = pct+'%';
+  document.getElementById('progPct').textContent = pct+' %';
+}
+
+/* ===================== MINI-QUIZ ===================== */
+function pick(btn){
+  const quiz = btn.closest('.quiz');
+  if(quiz.classList.contains('answered')) return;
+  quiz.classList.add('answered');
+  const correct = btn.dataset.correct === 'true';
+  quiz.querySelectorAll('.opt').forEach(o=>{
+    o.disabled = true;
+    if(o.dataset.correct === 'true') o.classList.add('right');
+  });
+  if(!correct) btn.classList.add('wrong');
+  const fb = quiz.querySelector('.feedback');
+  if(fb) fb.hidden = false;
+  if(correct) addXp(10);
+}
+
+/* ===================== VALIDATION LEÇON ===================== */
+function validate(id, quizCount){
+  const sec = document.querySelector('.view[data-view="'+id+'"]');
+  const answered = sec.querySelectorAll('.quiz.answered').length;
+  if(answered < quizCount){
+    popXp('Réponds aux '+quizCount+' quiz d\'abord');
+    sec.querySelectorAll('.quiz:not(.answered)').forEach(q=>{ q.style.boxShadow='0 0 0 2px var(--plum)'; setTimeout(()=>q.style.boxShadow='',1200); });
+    return;
+  }
+  if(!state.done[id]){
+    state.done[id] = true;
+    addXp(50);
+    buildNav();
+    updateProgress();
+  }
+  const idx = LESSONS.findIndex(l=>l.id===id);
+  const next = LESSONS[idx+1];
+  if(next) go(next.id); else go('test');
+}
+
+/* ===================== TEST FINAL ===================== */
+const TEST = [
+  {ch:'Banque & responsabilités', lesson:'l1', type:'qcm',
+   q:"La banque est juridiquement…",
+   opts:["Une SARL","Une Société Anonyme (SA)","Une coopérative agricole","Une association"], correct:1,
+   ex:"La banque est une Société Anonyme (SA) à l'activité fortement réglementée."},
+  {ch:'Banque & responsabilités', lesson:'l2', type:'qcm',
+   q:"Quel élément n'est PAS requis pour engager la responsabilité civile ?",
+   opts:["Un fait dommageable","Un préjudice certain","Une intention de nuire","Un lien de causalité"], correct:2,
+   ex:"La responsabilité civile suppose fait dommageable + préjudice + lien de causalité. L'intention n'est pas requise."},
+  {ch:'Secret bancaire', lesson:'l3', type:'qcm',
+   q:"Le secret bancaire…",
+   opts:["Disparaît au bout de 10 ans","Est opposable aux tiers et sans limite de durée","Ne vaut que pour les pros","Cesse au départ du conseiller"], correct:1,
+   ex:"Le secret bancaire s'impose à tous, est opposable aux tiers et n'a aucune limite de durée."},
+  {ch:'Contrat & personnes', lesson:'l4', type:'qcm',
+   q:"Un vice du consentement (erreur, dol, violence) entraîne…",
+   opts:["Une nullité absolue","Une nullité relative","Une caducité","Aucune sanction"], correct:1,
+   ex:"Un vice du consentement = nullité relative (invocable par la partie lésée). L'atteinte à l'ordre public = nullité absolue."},
+  {ch:'Contrat & personnes', lesson:'l4', type:'num',
+   q:"À partir de quel âge l'émancipation est-elle possible ? (en années)",
+   answer:16, tol:0, unit:"ans",
+   ex:"L'émancipation est possible dès 16 ans : le mineur devient majeur en principe, avec quelques exceptions."},
+  {ch:'Le compte', lesson:'l5', type:'qcm',
+   q:"En cas de refus d'ouverture de compte, le client peut saisir…",
+   opts:["L'AMF","La Banque de France","La DGCCRF","Le tribunal de commerce"], correct:1,
+   ex:"Muni de la lettre de refus, le client saisit la Banque de France au titre du droit au compte (DAC)."},
+  {ch:'Moyens de paiement', lesson:'l6', type:'num',
+   q:"Délai de présentation d'un chèque émis en France (en jours)",
+   answer:8, tol:0, unit:"jours",
+   ex:"Le délai de présentation d'un chèque émis en France est de 8 jours."},
+  {ch:'Moyens de paiement', lesson:'l6', type:'qcm',
+   q:"Le « tiré » d'un chèque désigne…",
+   opts:["L'émetteur","La banque","Le bénéficiaire","Le notaire"], correct:1,
+   ex:"Le tiré est la banque. Le tireur émet le chèque, le bénéficiaire l'encaisse."},
+  {ch:'Le crédit', lesson:'l7', type:'num',
+   q:"Taux d'endettement maximum (HCSF) pour une résidence principale (en %)",
+   answer:35, tol:0, unit:"%",
+   ex:"Le plafond HCSF est de 35 % pour la résidence principale (flexibilité possible dans la limite de 20 % des dossiers)."},
+  {ch:'Succession & patrimoine', lesson:'l8', type:'qcm',
+   q:"Conjoint survivant + enfants du même lit, sans donation entre époux : ses droits ?",
+   opts:["½ en pleine propriété","¼ PP ou 100 % usufruit","Tout en pleine propriété","Rien"], correct:1,
+   ex:"Sans DDV et avec enfants du même lit, le conjoint choisit entre ¼ en pleine propriété ou 100 % en usufruit."}
+];
+
+function renderTest(){
+  const c = document.getElementById('testQuestions');
+  c.innerHTML = '';
+  TEST.forEach((q,i)=>{
+    const div = document.createElement('div');
+    div.className = 'test-q';
+    div.id = 'tq'+i;
+    let body = '';
+    if(q.type==='qcm'){
+      body = '<div class="topt">' + q.opts.map((o,j)=>
+        '<button onclick="selOpt('+i+','+j+')" id="tq'+i+'o'+j+'">'+o+'</button>').join('') + '</div>';
+    } else {
+      body = '<input type="number" class="num-input" id="tq'+i+'in" placeholder="…"><span class="unit">'+(q.unit||'')+'</span>';
+    }
+    div.innerHTML =
+      '<div class="tq-head"><span class="tq-num">Question '+(i+1)+'/10</span><span class="tq-chap">'+q.ch+'</span></div>'+
+      '<div class="tq-q">'+q.q+'</div>'+ body +
+      '<div class="remed" id="tq'+i+'rem"><div class="rt">⚠️ À revoir</div><div class="ra" id="tq'+i+'ra"></div>'+
+      '<div class="remed-btns"><button class="btn" onclick="go(\''+q.lesson+'\')">📖 Revoir la leçon</button>'+
+      '<button class="btn primary" onclick="dismissRemed('+i+')">Continuer →</button></div></div>';
+    c.appendChild(div);
+  });
+  // reset UI
+  document.getElementById('testResult').classList.remove('show');
+  document.getElementById('testSubmitRow').style.display = 'flex';
+  document.getElementById('floatRetry').classList.remove('show');
+  document.getElementById('testQuestions').style.display = 'block';
+  TEST._answers = {};
+}
+function selOpt(qi, oi){
+  if(document.getElementById('tq'+qi).classList.contains('graded')) return;
+  TEST._answers = TEST._answers || {};
+  TEST._answers[qi] = oi;
+  TEST[qi].opts.forEach((_,j)=>document.getElementById('tq'+qi+'o'+j).classList.toggle('sel', j===oi));
+}
+function gradeTest(){
+  TEST._answers = TEST._answers || {};
+  let score = 0;
+  const chap = {};
+  TEST.forEach((q,i)=>{
+    const box = document.getElementById('tq'+i);
+    box.classList.add('graded');
+    let ok = false;
+    if(q.type==='qcm'){
+      ok = TEST._answers[i] === q.correct;
+      q.opts.forEach((_,j)=>{ const b=document.getElementById('tq'+i+'o'+j); b.disabled=true;
+        if(j===q.correct) b.classList.add('sel'); });
+    } else {
+      const val = parseFloat(document.getElementById('tq'+i+'in').value);
+      ok = !isNaN(val) && Math.abs(val - q.answer) <= (q.tol||0);
+      document.getElementById('tq'+i+'in').disabled = true;
+    }
+    chap[q.ch] = chap[q.ch] || {ok:0,tot:0};
+    chap[q.ch].tot++;
+    if(ok){ score++; chap[q.ch].ok++; box.classList.add('ok'); }
+    else {
+      box.classList.add('ko');
+      document.getElementById('tq'+i+'ra').innerHTML = q.ex;
+      document.getElementById('tq'+i+'rem').classList.add('show');
+    }
+  });
+  showResult(score, chap);
+}
+function dismissRemed(i){ document.getElementById('tq'+i+'rem').classList.remove('show'); }
+
+function showResult(score, chap){
+  document.getElementById('testSubmitRow').style.display = 'none';
+  document.getElementById('scoreBig').textContent = score+'/10';
+  let msg, col;
+  if(score>=9){ msg="Excellent — tu maîtrises le droit bancaire. Prêt pour l'examen."; col=getCss('--teal'); }
+  else if(score>=7){ msg="Très bon niveau. Revois juste les chapitres en orange ci-dessous."; col=getCss('--teal'); }
+  else if(score>=5){ msg="Bon début. Concentre tes révisions sur les chapitres faibles."; col=getCss('--amber'); }
+  else { msg="Il reste du travail. Reprends les leçons signalées, puis réessaie."; col=getCss('--rust'); }
+  document.getElementById('scoreBig').style.color = col;
+  document.getElementById('scoreMsg').textContent = msg;
+  const bars = document.getElementById('chapBars');
+  bars.innerHTML = '';
+  Object.keys(chap).forEach(name=>{
+    const c = chap[name];
+    const pct = Math.round(c.ok/c.tot*100);
+    let bc = pct>=67?getCss('--teal'):pct>=34?getCss('--amber'):getCss('--rust');
+    bars.innerHTML += '<div class="chapbar"><div class="cbl"><span>'+name+'</span><span>'+c.ok+'/'+c.tot+'</span></div>'+
+      '<div class="cbt"><div class="cbf" style="width:0;background:'+bc+'" data-w="'+pct+'"></div></div></div>';
+  });
+  document.getElementById('testResult').classList.add('show');
+  document.getElementById('floatRetry').classList.add('show');
+  setTimeout(()=>document.querySelectorAll('.cbf').forEach(b=>b.style.width=b.dataset.w+'%'),120);
+  addXp(score*20);
+  document.getElementById('testResult').scrollIntoView({behavior:'smooth'});
+}
+function resetTest(){ renderTest(); go('test'); }
+function getCss(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+
+/* ===================== ANNALES ===================== */
+function toggleCorrige(btn){
+  const cor = btn.nextElementSibling;
+  const open = cor.classList.toggle('show');
+  btn.textContent = open ? 'Masquer le corrigé' : 'Voir le corrigé';
+}
+
+/* ===================== INIT ===================== */
+buildNav();
+updateProgress();
+renderTest();
+go('l1');
+</script>
+</body>
+</html>
