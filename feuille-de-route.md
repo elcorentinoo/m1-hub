@@ -95,3 +95,16 @@ Version MAJEURE (prochain nom de monnaie libre : Guinée).
 1. Envoi d'e-mails gratuit (A3 et B6) : service à choisir avec Corentin.
 2. Récupération du contenu du site de Licence (pas de dépôt GitHub).
 3. Nom du site (brainstorming).
+
+## Décisions du 23 octobre (suite)
+
+- Nom : **A+**, slogan « Révise. Vise A+. » ; tout (A1–A6 + hub B1–B8) dans
+  une seule publication **8.0.0 « Guinée »**.
+- E-mail : Resend (A3 et demandes de clé). A4 : rattachement automatique par
+  pseudo, remise à zéro sur tous les appareils.
+- A1 : accès réseau aux sites officiels ouvert par Corentin ; corriger les
+  écarts de Produits Dérivés I ; retirer le nom d'enseignant de PD II.
+- A6 : artefact chiffré 90 jours, clé secrète Supabase en secret GitHub.
+  Dépôt **reste public** (choix de Corentin).
+- **Corentin délègue désormais toutes les décisions à la session cheffe**
+  (bilan oui/non avant publication maintenu).
