@@ -55,6 +55,7 @@ h1 .acc{color:var(--amber)}
 
 /* bilan */
 .bilan{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:10px;margin-bottom:22px}
+@media(max-width:560px){.bilan{grid-template-columns:repeat(2,1fr)}}
 .bx{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:15px 12px;
   text-align:center;box-shadow:var(--shadow)}
 .bx .n{font-family:'Fraunces',serif;font-size:1.7rem;font-weight:900;line-height:1}
@@ -177,11 +178,11 @@ function pool(){
 function renderAccueil(){
   document.getElementById('modes').innerHTML = `
     <button class="mode${MODE==='espacee'?' on':''}" onclick="setMode('espacee')">
-      <b>🔁 Révision espacée</b><span>Les questions dues aujourd'hui, ratées en priorité</span></button>
+      <b><svg class="ico-t" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 12a8 8 0 0 1 14-5.3L20 9"/><path d="M20 4v5h-5"/><path d="M20 12a8 8 0 0 1-14 5.3L4 15"/><path d="M4 20v-5h5"/></svg> Révision espacée</b><span>Les questions dues aujourd'hui, ratées en priorité</span></button>
     <button class="mode${MODE==='flash'?' on':''}" onclick="setMode('flash')">
-      <b>🃏 Flashcards</b><span>Sigles et définitions, tu t'auto-évalues</span></button>
+      <b><svg class="ico-t" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3.5" y="7.5" width="12" height="13" rx="2"/><path d="M8.5 7.5V5.6c0-.9.7-1.6 1.6-1.6h8.3c.9 0 1.6.7 1.6 1.6v9.3c0 .9-.7 1.6-1.6 1.6h-2.9"/></svg> Flashcards</b><span>Sigles et définitions, tu t'auto-évalues</span></button>
     <button class="mode${MODE==='libre'?' on':''}" onclick="setMode('libre')">
-      <b>🎲 Au hasard</b><span>Piocher sans tenir compte du planning</span></button>`;
+      <b><svg class="ico-t" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="4" y="4" width="16" height="16" rx="3.5"/><path d="M8.6 8.6h.01M15.4 15.4h.01M12 12h.01M15.4 8.6h.01M8.6 15.4h.01"/></svg> Au hasard</b><span>Piocher sans tenir compte du planning</span></button>`;
 
   const mats = ['Toutes', ...Object.values(LAB)];
   document.getElementById('filtres').innerHTML = mats.map(m=>
@@ -199,7 +200,7 @@ function renderAccueil(){
   const dispo = MODE==='libre' ? ids.length : (b.aRevoir + b.neufs);
   document.getElementById('lancer').innerHTML = dispo
     ? `<button class="btn primary big" onclick="demarrer()">Commencer — ${Math.min(TAILLE,dispo)} question${Math.min(TAILLE,dispo)>1?'s':''} →</button>`
-    : `<div class="empty"><div class="big">✅</div>Rien à réviser pour l'instant dans cette sélection.<br>
+    : `<div class="empty"><div class="big"><svg class="ico-t" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><path d="M8.3 12.3l2.5 2.5 5-5.4"/></svg></div>Rien à réviser pour l'instant dans cette sélection.<br>
        Les questions reviendront à leur échéance — ou choisis « Au hasard » pour t'entraîner quand même.</div>`;
 }
 function setMode(m){ MODE=m; renderAccueil(); }

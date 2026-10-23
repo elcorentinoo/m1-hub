@@ -10,7 +10,7 @@
 
   /* ---------- 0. VERSION ---------- */
   /* Doit rester identique à VERSION en haut de sw.js. */
-  const VERSION_APP = '7.6.0';
+  const VERSION_APP = '7.6.1';
   const NOM_VERSION = 'Thaler';
   window.APP_VERSION = VERSION_APP;
 
@@ -106,7 +106,8 @@
     return '<svg viewBox="0 0 20 20" width="17" height="17" aria-hidden="true" focusable="false">'+d+'</svg>'+
            '<span class="sr">'+lab+'</span>';
   }
-  const IC_RECH = '<circle cx="9" cy="9" r="5.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M13 13l4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>';
+  /* loupe 7.6.1 : même trait que la bulle et la cloche, petit reflet dans le verre */
+  const IC_RECH = '<g fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"><circle cx="8.75" cy="8.75" r="5.4"/><path d="M12.9 12.9L16.6 16.6"/><path d="M6.35 7.65a2.7 2.7 0 0 1 2-1.9"/></g>';
   const IC_MENU = '<path d="M3 5h14M3 10h14M3 15h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/>';
   const IC_BURG = '<path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/>';
 

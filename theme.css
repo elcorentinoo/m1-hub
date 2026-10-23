@@ -1058,3 +1058,14 @@ html.bq-verrouille, html.bq-verrouille body{ overflow:hidden; }
   .fx-guide li{ padding:10px 12px; }
 }
 @media print{ .fx-aide{ display:none !important; } }
+
+/* ---------- icônes au trait (7.6.1) : remplacent les émojis de l'interface ---------- */
+.ico-t{ width:1.15em; height:1.15em; fill:none; stroke:currentColor; stroke-width:1.7;
+  stroke-linecap:round; stroke-linejoin:round; vertical-align:-.2em; flex:none; }
+.ds-q > svg{ color:var(--nuit); flex:none; }
+.nav-item .ico .ico-t{ width:17px; height:17px; vertical-align:middle; }
+.mode b .ico-t{ margin-right:3px; }
+.mode .i .ico-t{ width:22px; height:22px; stroke-width:1.6; }
+.empty .big, .drop .ico{ display:grid !important; place-items:center; width:64px; height:64px; margin:0 auto 12px !important;
+  border-radius:50%; background:var(--surface2); color:var(--nuit); font-size:0 !important; }
+.empty .big .ico-t, .drop .ico .ico-t{ width:28px; height:28px; stroke-width:1.5; }

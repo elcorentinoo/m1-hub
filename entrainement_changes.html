@@ -197,17 +197,17 @@ details.memo .in p{margin:8px 0}
     <p>Treize notions, du marché au comptant au marché à terme : chaque exercice est tiré au hasard — nouvelles devises, nouvelles cotations, nouveaux taux d'intérêt, nouveaux montants. Tu réponds question par question, avec des aides si tu bloques, et la correction arrive tout de suite, avec le détail de ton erreur.</p>
     <div class="hero-row">
       <div class="partiel">
-        <div class="l">⏳ Partiel Produits Dérivés · <span id="cdDate">18 novembre 2026</span></div>
+        <div class="l"><svg class="ico-t" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3.5h10M7 20.5h10"/><path d="M8.5 3.5v2.8L12 12l3.5-5.7V3.5M8.5 20.5v-2.8L12 12l3.5 5.7v2.8"/></svg> Partiel Produits Dérivés · <span id="cdDate">18 novembre 2026</span></div>
         <div class="m" id="cdMain">—</div>
       </div>
-      <a class="back" href="produits_derives.html">📖 Revoir le cours →</a>
+      <a class="back" href="produits_derives.html"><svg class="ico-t" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 6.6C10 5.1 7 4.6 4 5.1v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5v-13c-3-.5-6 0-8 1.5zM12 6.6v13"/></svg> Revoir le cours →</a>
     </div>
   </header>
 
   <div class="modes" role="tablist">
-    <button class="mode on" data-mode="notion" onclick="setMode('notion')"><span class="i">🧩</span><span><span class="t">Par notion</span><span class="s">Un type de calcul, à la chaîne</span></span></button>
-    <button class="mode" data-mode="serie" onclick="setMode('serie')"><span class="i">🔟</span><span><span class="t">Série</span><span class="s">5 ou 10 exercices mélangés, avec un bilan</span></span></button>
-    <button class="mode" data-mode="cas" onclick="setMode('cas')"><span class="i">📝</span><span><span class="t">Cas complet</span><span class="s">Un sujet entier, du début à la fin</span></span></button>
+    <button class="mode on" data-mode="notion" onclick="setMode('notion')"><span class="i"><svg class="ico-t" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/></svg></span><span><span class="t">Par notion</span><span class="s">Un type de calcul, à la chaîne</span></span></button>
+    <button class="mode" data-mode="serie" onclick="setMode('serie')"><span class="i"><svg class="ico-t" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></svg></span><span><span class="t">Série</span><span class="s">5 ou 10 exercices mélangés, avec un bilan</span></span></button>
+    <button class="mode" data-mode="cas" onclick="setMode('cas')"><span class="i"><svg class="ico-t" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3.5h7l4 4v13H7z"/><path d="M14 3.5v4h4M10 12h5M10 16h5"/></svg></span><span><span class="t">Cas complet</span><span class="s">Un sujet entier, du début à la fin</span></span></button>
   </div>
 
   <!-- réglages de chaque mode -->
@@ -1054,8 +1054,8 @@ try{ const n=localStorage.getItem(K_NOTION); if(n && (n==='mix'||NOTIONS[n])) S.
 
 function buildChips(){
   const h=document.getElementById('chips');
-  h.innerHTML=Object.entries(NOTIONS).map(([k,v])=>`<button class="chip${S.notion===k?' on':''}" onclick="setNotion('${k}')">${v.ico} ${v.lab}</button>`).join('')
-    +`<button class="chip${S.notion==='mix'?' on':''}" onclick="setNotion('mix')">🎲 Au hasard</button>`;
+  h.innerHTML=Object.entries(NOTIONS).map(([k,v])=>`<button class="chip${S.notion===k?' on':''}" onclick="setNotion('${k}')">${v.lab}</button>`).join('')
+    +`<button class="chip${S.notion==='mix'?' on':''}" onclick="setNotion('mix')">Au hasard</button>`;
 }
 function setNotion(k){ S.notion=k; try{localStorage.setItem(K_NOTION,k);}catch(e){} buildChips(); startNotion(); }
 function setLen(n){ S.len=n; document.querySelectorAll('#serieLen .chip').forEach(b=>b.classList.toggle('on',+b.dataset.n===n)); }
@@ -1090,7 +1090,7 @@ function startCas(){
 
 function loadEx(ex){
   S.ex=ex; S.qi=0; ex.qs.forEach(q=>{q.state='todo'; q.aids=0;});
-  const lab = ex.n==='cas' ? '📝 Cas complet' : `${NOTIONS[ex.n].ico} ${NOTIONS[ex.n].lab}`;
+  const lab = ex.n==='cas' ? 'Cas complet' : `${NOTIONS[ex.n].lab}`;
   const progr = S.queue && S.queue.length>1 ? `Exercice ${S.exIdx+1} / ${S.queue.length}` : '';
   const table = ex.rows && ex.rows.length ? `<table class="data">${ex.thead?`<tr>${ex.thead.map(t=>`<th>${t}</th>`).join('')}</tr>`:''}${ex.rows.map(rw=>`<tr><td>${rw[0]}</td><td class="v">${rw[1]}</td></tr>`).join('')}</table>` : '';
   document.getElementById('stage').innerHTML=`<article class="ex" id="ex">
@@ -1203,11 +1203,11 @@ function bilan(){
   const tot=S.res.length, ok=S.res.filter(x=>x.ok).length, pc=tot?Math.round(ok/tot*100):0;
   const secs=Math.round((Date.now()-S.t0)/1000);
   const par={}; S.res.forEach(x=>{ par[x.n]=par[x.n]||{t:0,o:0}; par[x.n].t++; if(x.ok) par[x.n].o++; });
-  const bars=Object.entries(par).map(([k,v])=>{ const p=Math.round(v.o/v.t*100); return `<div><div class="bar-l"><span>${NOTIONS[k].ico} ${NOTIONS[k].lab}</span><span class="mono">${v.o}/${v.t}</span></div><div class="bar ${p<50?'low':p<80?'mid':''}"><i style="width:${p}%"></i></div></div>`; }).join('');
+  const bars=Object.entries(par).map(([k,v])=>{ const p=Math.round(v.o/v.t*100); return `<div><div class="bar-l"><span>${NOTIONS[k].lab}</span><span class="mono">${v.o}/${v.t}</span></div><div class="bar ${p<50?'low':p<80?'mid':''}"><i style="width:${p}%"></i></div></div>`; }).join('');
   const faibles=Object.entries(par).filter(([k,v])=>v.o/v.t<0.67).map(([k])=>k);
-  const conseil = faibles.length ? `À retravailler en mode « Par notion » : ${faibles.map(k=>`<button class="chip" onclick="setMode('notion');setNotion('${k}')">${NOTIONS[k].ico} ${NOTIONS[k].lab}</button>`).join(' ')}` : `Rien de faible dans cette série. Tente le cas complet en conditions de partiel.`;
+  const conseil = faibles.length ? `À retravailler en mode « Par notion » : ${faibles.map(k=>`<button class="chip" onclick="setMode('notion');setNotion('${k}')">${NOTIONS[k].lab}</button>`).join(' ')}` : `Rien de faible dans cette série. Tente le cas complet en conditions de partiel.`;
   const col = pc>=80?'var(--teal)':pc>=50?'var(--amber)':'var(--rust)';
-  const corrs = S.res.map((x,k)=>{ if(!S.partiel && x.ok) return ''; return `<div class="corr"><h4>${k+1}. ${NOTIONS[x.n].ico} ${x.q.prompt} ${x.ok?'✅':'❌'}</h4>${x.shown!=null?`<div class="yours">Ta réponse : ${esc(x.shown)} · attendu : ${expected(x.q)}</div>`:`<div class="yours">Correction demandée · attendu : ${expected(x.q)}</div>`}${x.q.msg?`<div class="fb-msg">${x.q.msg}</div>`:''}${stepsHtml(x.q)}</div>`; }).join('');
+  const corrs = S.res.map((x,k)=>{ if(!S.partiel && x.ok) return ''; return `<div class="corr"><h4>${k+1}. ${x.q.prompt} ${x.ok?'✅':'❌'}</h4>${x.shown!=null?`<div class="yours">Ta réponse : ${esc(x.shown)} · attendu : ${expected(x.q)}</div>`:`<div class="yours">Correction demandée · attendu : ${expected(x.q)}</div>`}${x.q.msg?`<div class="fb-msg">${x.q.msg}</div>`:''}${stepsHtml(x.q)}</div>`; }).join('');
   document.getElementById('stage').innerHTML=`<article class="ex" id="ex">
     <div class="ex-head"><span class="tag">🏁 Bilan</span>${S.partiel?'<span class="tag navy">Conditions de partiel</span>':''}<span class="prog">${Math.floor(secs/60)} min ${String(secs%60).padStart(2,'0')} s</span></div>
     <div class="ex-body">

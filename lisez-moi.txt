@@ -283,6 +283,20 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  7.6.1            FINITIONS DE DESIGN.
+                   Nouvelle loupe de recherche, bleu nuit, au même trait que la
+                   bulle et la cloche, avec un petit reflet. Le bouton du pseudo
+                   prend une icône dessinée au lieu de l'émoji 👤. Les émojis de
+                   l'interface deviennent des icônes au trait (.ico-t dans
+                   theme.css) : menu latéral des cours, modes de Révision et des
+                   entraînements, états vides de Statistiques et de la
+                   Ressourcerie ; les puces de notions des générateurs passent en
+                   texte seul. Les émojis du contenu des leçons (astuce, piège…)
+                   restent. Révision sur téléphone : compteurs en 2 × 2. Accueil :
+                   « Produits Dérivés I » ne se coupe plus avant le « I » ; plus
+                   de « — prêt » pour un partiel sans cours sur le site ;
+                   étiquettes des cartes harmonisées (format d'examen, sinon
+                   thème).
   7.6.0            BOUTON « AIDE : QUELLE FORMULE ? » (PRODUITS DÉRIVÉS I ET II).
                    Sur les questions de calcul du test final des deux cours et
                    sur leurs cartes de révision, une pilule « Aide » à côté du

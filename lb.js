@@ -134,7 +134,13 @@ const LB = (function(){
     refreshOne(b);
     return b;
   }
-  function refreshOne(b){ const p=pseudo(); b.textContent = p?('👤 '+displayName(p)):'👤 Se nommer'; }
+  const IC_PERSO='<svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true" focusable="false" style="flex:none"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="10" cy="7" r="3.2"/><path d="M4 16.5a6 6 0 0 1 12 0"/></g></svg>';
+  function refreshOne(b){
+    const p=pseudo(); b.textContent='';
+    b.insertAdjacentHTML('afterbegin',IC_PERSO);
+    b.appendChild(document.createTextNode(p?displayName(p):'Se nommer'));
+    b.style.display='inline-flex'; b.style.alignItems='center'; b.style.gap='6px';
+  }
   function refreshIdButtons(){ document.querySelectorAll('[data-lb-id]').forEach(refreshOne); }
 
   // ---------- enregistrement d'un résultat ----------

@@ -191,7 +191,7 @@ h2.sec+p{color:var(--ink2);font-size:14.5px;margin-bottom:18px}
 
   <!-- DÉPÔT -->
   <div class="drop" id="drop" onclick="document.getElementById('fileInput').click()">
-    <div class="ico">📥</div>
+    <div class="ico"><svg class="ico-t" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 4v10M8 10l4 4 4-4"/><path d="M4 14v3.5A2.5 2.5 0 0 0 6.5 20h11a2.5 2.5 0 0 0 2.5-2.5V14"/></svg></div>
     <h3>Déposer un document</h3>
     <p>Glisse un fichier ici, ou clique pour le choisir</p>
     <div class="fmt">PDF · Word · PowerPoint · Excel · images · texte — 20 Mo maximum</div>
@@ -596,8 +596,8 @@ function renderDocs(){
   const host = document.getElementById('docList');
   if(!list.length){
     host.innerHTML = DOCS.length
-      ? '<div class="empty"><div class="big">🔍</div>Aucun document ne correspond à cette recherche.</div>'
-      : '<div class="empty"><div class="big">📚</div>La ressourcerie est vide.<br>Sois le premier à déposer un document !</div>';
+      ? '<div class="empty"><div class="big"><svg class="ico-t" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.4"/><path d="M15.4 15.4L20 20"/></svg></div>Aucun document ne correspond à cette recherche.</div>'
+      : '<div class="empty"><div class="big"><svg class="ico-t" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 6.6C10 5.1 7 4.6 4 5.1v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5v-13c-3-.5-6 0-8 1.5zM12 6.6v13"/></svg></div>La ressourcerie est vide.<br>Sois le premier à déposer un document !</div>';
     return;
   }
   const me = LB.pseudo();

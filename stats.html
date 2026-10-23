@@ -129,7 +129,7 @@ const NB_LECONS = {'marche-particuliers':11,'produits-derives':15,'produits-deri
 function render(){
   const host = document.getElementById('body');
   if(!P.disponible()){
-    host.innerHTML = `<div class="empty"><div class="big">🔒</div>
+    host.innerHTML = `<div class="empty"><div class="big"><svg class="ico-t" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="5.5" y="10.5" width="13" height="9.5" rx="2.2"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></svg></div>
       Ton navigateur bloque le stockage local.<br>La progression ne peut pas être enregistrée
       (navigation privée ou réglage de confidentialité).</div>`;
     return;
@@ -137,7 +137,7 @@ function render(){
   const st = P.stats(), serie = P.serie();
 
   if(st.global.reponses === 0 && st.global.lecons === 0){
-    host.innerHTML = `<div class="empty"><div class="big">🌱</div>
+    host.innerHTML = `<div class="empty"><div class="big"><svg class="ico-t" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 20V10M10 20V4M16 20v-7"/></svg></div>
       Rien à afficher pour l'instant.<br>
       Valide une leçon ou passe un test, et tes statistiques apparaîtront ici.<br><br>
       <a href="index.html">Choisir une matière →</a></div>`;

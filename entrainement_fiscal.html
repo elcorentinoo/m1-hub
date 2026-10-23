@@ -197,17 +197,17 @@ details.memo .in p{margin:8px 0}
     <p>Neuf notions, de la composition du foyer fiscal au revenu net global imposable : chaque exercice est tiré au hasard — nouvelle famille, nouveaux âges, nouveaux montants. Tu réponds question par question, avec des aides si tu bloques, et la correction arrive tout de suite, avec le détail du raisonnement.</p>
     <div class="hero-row">
       <div class="partiel">
-        <div class="l">⏳ Partiel Fiscalité · <span id="cdDate">15 janvier 2027</span></div>
+        <div class="l"><svg class="ico-t" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3.5h10M7 20.5h10"/><path d="M8.5 3.5v2.8L12 12l3.5-5.7V3.5M8.5 20.5v-2.8L12 12l3.5 5.7v2.8"/></svg> Partiel Fiscalité · <span id="cdDate">15 janvier 2027</span></div>
         <div class="m" id="cdMain">—</div>
       </div>
-      <a class="back" href="fiscalite_particulier.html">📖 Revoir le cours →</a>
+      <a class="back" href="fiscalite_particulier.html"><svg class="ico-t" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 6.6C10 5.1 7 4.6 4 5.1v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5v-13c-3-.5-6 0-8 1.5zM12 6.6v13"/></svg> Revoir le cours →</a>
     </div>
   </header>
 
   <div class="modes" role="tablist">
-    <button class="mode on" data-mode="notion" onclick="setMode('notion')"><span class="i">🧩</span><span><span class="t">Par notion</span><span class="s">Un type de calcul, à la chaîne</span></span></button>
-    <button class="mode" data-mode="serie" onclick="setMode('serie')"><span class="i">🔟</span><span><span class="t">Série</span><span class="s">5 ou 10 exercices mélangés, avec un bilan</span></span></button>
-    <button class="mode" data-mode="cas" onclick="setMode('cas')"><span class="i">📝</span><span><span class="t">Cas complet</span><span class="s">Un foyer entier, du nombre de parts au RNGI</span></span></button>
+    <button class="mode on" data-mode="notion" onclick="setMode('notion')"><span class="i"><svg class="ico-t" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/></svg></span><span><span class="t">Par notion</span><span class="s">Un type de calcul, à la chaîne</span></span></button>
+    <button class="mode" data-mode="serie" onclick="setMode('serie')"><span class="i"><svg class="ico-t" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></svg></span><span><span class="t">Série</span><span class="s">5 ou 10 exercices mélangés, avec un bilan</span></span></button>
+    <button class="mode" data-mode="cas" onclick="setMode('cas')"><span class="i"><svg class="ico-t" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3.5h7l4 4v13H7z"/><path d="M14 3.5v4h4M10 12h5M10 16h5"/></svg></span><span><span class="t">Cas complet</span><span class="s">Un foyer entier, du nombre de parts au RNGI</span></span></button>
   </div>
 
   <div class="panel" id="pNotion">
@@ -700,8 +700,8 @@ function majSess(){
 function buildChips(){
   const host = document.getElementById('chips');
   host.innerHTML = Object.keys(NOTIONS).map(k=>
-    `<button class="chip${k===S.notion?' on':''}" data-n="${k}" onclick="setNotion('${k}')">${NOTIONS[k].ico} ${NOTIONS[k].lab}</button>`
-  ).join('') + `<button class="chip${S.notion==='mix'?' on':''}" data-n="mix" onclick="setNotion('mix')">🎲 Au hasard</button>`;
+    `<button class="chip${k===S.notion?' on':''}" data-n="${k}" onclick="setNotion('${k}')">${NOTIONS[k].lab}</button>`
+  ).join('') + `<button class="chip${S.notion==='mix'?' on':''}" data-n="mix" onclick="setNotion('mix')">Au hasard</button>`;
 }
 function setNotion(k){ S.notion=k; buildChips(); }
 function setLen(n){ S.len=n; document.querySelectorAll('#serieLen .chip').forEach(c=>c.classList.toggle('on', +c.dataset.n===n)); }
@@ -734,7 +734,7 @@ function startCas(){
 
 function loadEx(ex){
   S.ex=ex; S.qi=0; ex.qs.forEach(q=>{ q.state='todo'; q.aids=0; });
-  const lab = ex.n==='cas' ? '📝 Cas complet' : `${NOTIONS[ex.n].ico} ${NOTIONS[ex.n].lab}`;
+  const lab = ex.n==='cas' ? 'Cas complet' : `${NOTIONS[ex.n].lab}`;
   const progr = (S.queue && S.queue.length>1) ? `Exercice ${S.exIdx+1} / ${S.queue.length}` : '';
   const table = (ex.rows && ex.rows.length)
     ? `<table class="data">${ex.thead?`<tr>${ex.thead.map(t=>`<th>${t}</th>`).join('')}</tr>`:''}`

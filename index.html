@@ -372,7 +372,7 @@ const MATIERES = [
   },
   {
     file:"produits_derives_2.html", sid:"produits-derives-2", yt:"6r-4xpJ3KuU", duree:"8 min", nb:10,
-    badge:"nouveau · TD corrigé",
+    badge:"QCM · oral · écrit",
     title:"Produits Dérivés II — Futures", court:"Produits Dérivés II",
     desc:"Les contrats à terme sur devises : marché organisé et chambre de compensation, deposit et appels de marge, couverture (nombre de contrats, ratio de variance minimale), base, arbitrage et spéculation.",
     meta:"10 leçons · 5 exercices du TD · test",
@@ -420,7 +420,7 @@ const MATIERES = [
   },
   {
     file:"systeme_bancaire.html", sid:"systeme-bancaire", yt:"kV5Ruf3QC4I", duree:"9 min", nb:12,
-    badge:"nouveau cours",
+    badge:"banques, crédit & régulation",
     title:"Le système bancaire français", court:"Système bancaire",
     desc:"Les acteurs et les services bancaires, le Livret A, le crédit immobilier et à la consommation, puis la régulation : ACPR, AMF, Bâle III, banques en ligne et FinTech.",
     meta:"12 leçons · 13 rédigées · 6 cas · test",
@@ -493,6 +493,8 @@ function renderEntrainements(){
 
 
 
+/* « Produits Dérivés I » : le chiffre romain ne part jamais seul à la ligne */
+const insec = s => String(s).replace(/ (I{1,3}|IV)\b/g, '\u00a0$1');
 function jours(ms){ return Math.max(0, Math.ceil((ms-Date.now())/8.64e7)); }
 const SID_DE = f => (MATIERES.find(m=>m.file===f)||{}).sid || '';
 
@@ -505,9 +507,9 @@ function renderPiste(){
     const c = (window.P && P.completion && e.nb) ? P.completion(e.sid, e.nb) : null;
     return `<div class="ech" data-sid="${e.sid}">
       <div class="date">${e.court}<small>${e.provisoire?'provisoire':'dans '+jours(e.end)+' j'}</small></div>
-      <div><b>${e.titre}</b><span class="f">${e.format}</span>
+      <div><b>${insec(e.titre)}</b><span class="f">${e.format}</span>
         <div class="liens">${e.matiere?`<a href="${e.matiere}">Ouvrir le cours →</a>`:`<span>${e.desc}</span>`}${e.entrainement?`<a href="${e.entrainement}">S'entraîner →</a>`:''}</div></div>
-      <div class="pct">${c?c.pct+' %':'—'}<small>prêt</small></div>
+      <div class="pct">${e.matiere?(c?c.pct+' %':'—')+'<small>prêt</small>':''}</div>
       <div class="j">J-${jours(e.end)}</div>
     </div>`;
   }).join('');
@@ -532,7 +534,7 @@ function renderMetriques(g){
   MATIERES.forEach(m=>{ const c=completion(m); total+=m.nb; if(c) faites+=c.lecons.n; });
   const serie = (window.P && P.serie) ? P.serie() : 0;
   host.innerHTML = `
-    <a class="chiffre nuit" href="${ECHEANCES[0].matiere}"><div class="n">${jours(ECHEANCES[0].end)}<small>jours</small></div><div class="l">avant ${ECHEANCES[0].titre}</div></a>
+    <a class="chiffre nuit" href="${ECHEANCES[0].matiere}"><div class="n">${jours(ECHEANCES[0].end)}<small>jours</small></div><div class="l">avant ${insec(ECHEANCES[0].titre)}</div></a>
     <div class="chiffre"><div class="n">${faites}<small>/${total}</small></div><div class="l">leçons validées sur ${MATIERES.length} matières</div></div>
     <a class="chiffre" href="revision.html"><div class="n">${aRevoir()}</div><div class="l">questions à revoir aujourd'hui</div></a>
     <a class="chiffre" href="stats.html"><div class="n">${serie}<small>${serie>1?'jours':'jour'}</small></div><div class="l">de série d'affilée · ${g} % global</div></a>`;
