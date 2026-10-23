@@ -1,5 +1,5 @@
 ────────────────────────────────────────────────────────────
-  HUB M1 MBAF — Conseiller Patrimoine Agence
+  AAA (« Triple A ») — hub de révision Licence · M1 · M2
   Déploiement sur Netlify
 ────────────────────────────────────────────────────────────
 
@@ -304,6 +304,23 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  8.0.0 « Guinée » AAA, HUB MULTI-PROMOS. Le site s'appelle AAA (« Révise. Vise
+                   le AAA. ») : logo, icônes, titres ; adresse inchangée.
+                   Hub central à l'ouverture (Licence, M1, M2) ; espace
+                   Licence LP ABF (9 cours, 8 entraînements, BeQuick
+                   Licence) ; espace M2 « Prochainement ». Clés par niveau
+                   et par année (clés M1 actuelles valables jusqu'au
+                   31/08/2027), clé administratrice, /admin par promo ;
+                   essai de 24 h sans clé et demande de clé par e-mail
+                   (Resend). « Signaler une erreur » sous les questions.
+                   Progression partagée entre appareils d'un même pseudo.
+                   Sauvegarde chiffrée hebdomadaire de Supabase (GitHub
+                   Actions). Sources officielles en bas des cours M1 ;
+                   17 corrections de cours signalées « Mise à jour » (assurance
+                   vie, PEA-PME, PER, PS 18,6 %, PEL, catastrophe naturelle,
+                   clôture de compte, dates de lois, change BRI 2025, SWIFT,
+                   amendes CNIL) ; corridor BCE à jour (Licence) ; nom
+                   d'enseignant retiré.
   7.6.3            CONTENU NEUTRE. Plus aucune mention de l'IAE Vannes sur le
                    site : Études de marché (titre « L'introduction du cours »,
                    modèle d'introduction de questionnaire, corrigé de la
@@ -376,7 +393,7 @@ HISTORIQUE
                    ratio de variance minimale, résultat global), base et
                    évaluation (risque de base, risques résiduels, parité des
                    taux, arbitrage), spéculation et trésorerie. 20 mini-quiz,
-                   les 5 exercices du TD de S. Sabkha corrigés pas à pas,
+                   les 5 exercices du TD corrigés pas à pas,
                    6 questions rédigées, test final de 38 questions, mémo.
                    Identité : vert olive #4C5816, emblème ⇄ ; photo provisoire
                    (celle de Produits Dérivés I, copie img/sujet-produits-

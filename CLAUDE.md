@@ -32,8 +32,8 @@ respecte ces deux contraintes :
 2. Versionnage sémantique : MAJEURE = refonte ou fonctionnalité structurante ·
    MINEURE = nouvelle matière ou nouvelle page · CORRECTIF = correction.
    Chaque version MAJEURE porte un nom de monnaie — déjà utilisés : Obole, Sou,
-   Écu, Denier, Livre, Louis, Franc, Sesterce, Florin, Ducat, Thaler.
-   Disponibles : Guinée, Réal, Kreuzer, Piastre…
+   Écu, Denier, Livre, Louis, Franc, Sesterce, Florin, Ducat, Thaler, Guinée.
+   Disponibles : Réal, Kreuzer, Piastre…
 
 L'historique complet est dans `lisez-moi.txt`, à compléter à chaque version.
 

@@ -10,8 +10,8 @@
 
   /* ---------- 0. VERSION ---------- */
   /* Doit rester identique à VERSION en haut de sw.js. */
-  const VERSION_APP = '7.6.3';
-  const NOM_VERSION = 'Thaler';
+  const VERSION_APP = '8.0.0';
+  const NOM_VERSION = 'Guinée';
   window.APP_VERSION = VERSION_APP;
 
   /* ---------- NIVEAU DE LA PAGE (8.0.0) ----------

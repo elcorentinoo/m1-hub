@@ -500,19 +500,19 @@ strong{font-weight:600;color:var(--navy)}
     <h2 class="sec">Les trois taux directeurs</h2>
     <table class="tbl">
       <tr><th>Taux</th><th>Niveau</th><th>Fonction</th></tr>
-      <tr><td class="hcol">Facilité de prêt marginal</td><td>REFI + 1% <span style="color:var(--rust)">(plafond)</span></td><td>Prêt overnight d'urgence aux banques</td></tr>
+      <tr><td class="hcol">Facilité de prêt marginal</td><td>REFI + 0,25 pt <span style="color:var(--rust)">(plafond)</span></td><td>Prêt overnight d'urgence aux banques</td></tr>
       <tr><td class="hcol">REFI (opérations principales)</td><td>Taux central</td><td>Refinancement hebdomadaire — autour de l'ESTR</td></tr>
-      <tr><td class="hcol">Facilité de dépôt</td><td>REFI − 1% <span style="color:var(--teal)">(plancher)</span></td><td>Rémunère les dépôts des banques à la BCE</td></tr>
+      <tr><td class="hcol">Facilité de dépôt</td><td>REFI − 0,15 pt <span style="color:var(--teal)">(plancher)</span></td><td>Rémunère les dépôts des banques à la BCE</td></tr>
     </table>
 
     <div class="schema">
       <svg width="480" height="180" viewBox="0 0 480 180" xmlns="http://www.w3.org/2000/svg">
         <line x1="60" y1="20" x2="420" y2="20" stroke-width="3" style="stroke:var(--rust)"/>
-        <text x="240" y="14" font-size="12" font-family="DM Mono" text-anchor="middle" font-weight="600" style="fill:var(--rust)">Facilité de prêt marginal · REFI + 1%  (PLAFOND)</text>
+        <text x="240" y="14" font-size="12" font-family="DM Mono" text-anchor="middle" font-weight="600" style="fill:var(--rust)">Facilité de prêt marginal · REFI + 0,25 pt  (PLAFOND)</text>
         <line x1="60" y1="90" x2="420" y2="90" stroke-width="3" stroke-dasharray="6 4" style="stroke:var(--navy)"/>
         <text x="240" y="84" font-size="12" font-family="DM Mono" text-anchor="middle" font-weight="600" style="fill:var(--navy)">REFI · taux central (≈ ESTR)</text>
         <line x1="60" y1="160" x2="420" y2="160" stroke-width="3" style="stroke:var(--teal)"/>
-        <text x="240" y="176" font-size="12" font-family="DM Mono" text-anchor="middle" font-weight="600" style="fill:var(--teal)">Facilité de dépôt · REFI − 1%  (PLANCHER)</text>
+        <text x="240" y="176" font-size="12" font-family="DM Mono" text-anchor="middle" font-weight="600" style="fill:var(--teal)">Facilité de dépôt · REFI − 0,15 pt  (PLANCHER)</text>
         <rect x="150" y="24" width="180" height="62" rx="6" opacity="0.7" style="fill:var(--amber-soft)"/>
         <text x="240" y="60" font-size="13" font-family="DM Sans" text-anchor="middle" font-weight="700" style="fill:var(--amber)">CORRIDOR</text>
       </svg>
@@ -522,9 +522,9 @@ strong{font-weight:600;color:var(--navy)}
     <h2 class="sec">Exemple chiffré : où se situe le corridor ?</h2>
     <div class="example"><div class="ex-title">📐 Si le REFI est fixé à 3%</div>
       <div class="step"><div class="step-n">1</div><div class="step-body">Le REFI est le taux central : <span class="calc">REFI = 3%</span></div></div>
-      <div class="step"><div class="step-n">2</div><div class="step-body">Le plafond (prêt marginal) = REFI + 1% : <span class="calc">3% + 1% = 4%</span></div></div>
-      <div class="step"><div class="step-n">3</div><div class="step-body">Le plancher (dépôt) = REFI − 1% : <span class="calc">3% − 1% = 2%</span></div></div>
-      <div class="step"><div class="step-n">4</div><div class="step-body">Le corridor s'étend donc de <strong>2% à 4%</strong>, et le taux de marché s'y maintient.</div></div>
+      <div class="step"><div class="step-n">2</div><div class="step-body">Le plafond (prêt marginal) = REFI + 0,25 pt : <span class="calc">3% + 0,25% = 3,25%</span></div></div>
+      <div class="step"><div class="step-n">3</div><div class="step-body">Le plancher (dépôt) = REFI − 0,15 pt : <span class="calc">3% − 0,15% = 2,85%</span></div></div>
+      <div class="step"><div class="step-n">4</div><div class="step-body">Le corridor s'étend donc de <strong>2,85% à 3,25%</strong>, et le taux de marché s'y maintient.</div></div>
     </div>
 
     <h2 class="sec">L'opération principale : le MRO</h2>
@@ -537,7 +537,7 @@ strong{font-weight:600;color:var(--navy)}
     </table>
 
     <div class="callout retain"><div class="co-head">🔑 À retenir</div>
-    <p>Trois taux, deux instruments : les <strong>facilités permanentes</strong> (prêt marginal + dépôt) forment les bornes, les <strong>opérations principales (MRO)</strong> fixent le centre. Le corridor a une largeur de <strong>2 points</strong> (±1% autour du REFI).</p></div>
+    <p>Trois taux, deux instruments : les <strong>facilités permanentes</strong> (prêt marginal + dépôt) forment les bornes, les <strong>opérations principales (MRO)</strong> fixent le centre. Le corridor a une largeur de <strong>0,40 point</strong> (REFI + 0,25 au-dessus, − 0,15 en dessous, depuis le 18/09/2024 ; le corridor était plus large auparavant).</p></div>
 
     <div class="callout trap"><div class="co-head">⚠️ Piège fréquent</div>
     <p>Le MRO est un <strong>prêt garanti</strong> (prise en pension d'un titre), pas un don ni un achat ferme. La banque récupère son titre quand elle rembourse. Cette nuance « pension ≠ achat » devient cruciale au chapitre non-conventionnel.</p></div>
@@ -803,8 +803,8 @@ strong{font-weight:600;color:var(--navy)}
       <div class="corrige">
         <div class="cor-label">Corrigé déroulé</div>
         <div class="plan"><b>Plan suggéré :</b> I. Les trois taux · II. Le mécanisme d'encadrement · III. L'intérêt</div>
-        <p><strong>I. Trois taux directeurs.</strong> La facilité de prêt marginal (REFI + 1%) constitue le plafond : la BCE y prête aux banques en urgence (overnight). Le REFI est le taux central des opérations principales de refinancement. La facilité de dépôt (REFI − 1%) forme le plancher : elle rémunère les dépôts des banques à la BCE.</p>
-        <p><strong>II. Le mécanisme.</strong> Aucune banque n'emprunte au-dessus du plafond (la BCE prête moins cher) ni ne prête en dessous du plancher (la BCE rémunère mieux). Le taux interbancaire (ESTR) reste donc enfermé dans le corridor, large de 2 points.</p>
+        <p><strong>I. Trois taux directeurs.</strong> La facilité de prêt marginal (REFI + 0,25 point) constitue le plafond : la BCE y prête aux banques en urgence (overnight). Le REFI est le taux central des opérations principales de refinancement. La facilité de dépôt (REFI − 0,15 point depuis le 18 septembre 2024) forme le plancher : elle rémunère les dépôts des banques à la BCE.</p>
+        <p><strong>II. Le mécanisme.</strong> Aucune banque n'emprunte au-dessus du plafond (la BCE prête moins cher) ni ne prête en dessous du plancher (la BCE rémunère mieux). Le taux interbancaire (ESTR) reste donc enfermé dans le corridor, large de 0,40 point.</p>
         <p><strong>III. L'intérêt.</strong> Le corridor permet à la BCE de contrôler les taux courts <em>sans intervenir en permanence</em> : il suffit de fixer les bornes. C'est un pilotage indirect mais efficace de l'objectif opérationnel.</p>
       </div>
     </div>
@@ -929,7 +929,7 @@ const testQuestions=[
   {chap:"Gouvernance",type:"qcm",q:"Combien de gouverneurs votent simultanément au Conseil ?",opts:["15","20","26"],correct:0},
   {chap:"Mandat",type:"num",q:"Seuil de la cible d'inflation de la BCE (IPCH, en %) ?",answer:2,tol:0.01,unit:"%"},
   {chap:"Mandat",type:"qcm",q:"En cas de contradiction entre les deux piliers, quelle analyse tranche ?",opts:["L'analyse monétaire","L'analyse économique","Aucune"],correct:1},
-  {chap:"Instruments",type:"num",q:"Si le REFI = 3%, quel est le taux de la facilité de prêt marginal (en %) ?",answer:4,tol:0.01,unit:"%"},
+  {chap:"Instruments",type:"num",q:"Si le REFI = 3%, quel est le taux de la facilité de prêt marginal (en %) ?",answer:3.25,tol:0.01,unit:"%"},
   {chap:"Instruments",type:"qcm",q:"Le MRO est…",opts:["Un achat ferme de titres","Un prêt garanti par prise en pension","Un don de liquidités"],correct:1},
   {chap:"Non-conventionnel",type:"qcm",q:"Dans le QE, l'instrument devient…",opts:["Le taux d'intérêt","La quantité de monnaie (M0)","Les commissions"],correct:1},
   {chap:"Actions BCE",type:"qcm",q:"Que signifie le T de TLTRO ?",opts:["Term","Targeted","Total"],correct:1}
