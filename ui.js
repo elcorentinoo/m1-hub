@@ -14,6 +14,11 @@
   const NOM_VERSION = 'Thaler';
   window.APP_VERSION = VERSION_APP;
 
+  /* Accueil de l'espace de la page (8.0.0) : le hub de son niveau (M1 :
+     index.html, inchangé). Le hub central de tous les niveaux est
+     niveaux.html, où l'on arrive en ouvrant le site. */
+  const ACCUEIL = {licence:'licence.html', m2:'m2.html'}[document.documentElement.getAttribute('data-niveau')] || 'index.html';
+
   /* ---------- 1. THÈME ---------- */
   /* Le site est entièrement sombre depuis la 2.1.0 : plus de bascule,
      plus d'horaire. L'attribut est posé tout de suite pour éviter tout
@@ -24,7 +29,7 @@
 
   /* ---------- 2. STRUCTURE DU MENU ---------- */
   const PAGES = [
-    {g:'hub', href:'index.html', ico:'🏠', t:'Accueil', s:"L'accueil et tes matières", hub:true},
+    {g:'hub', href:ACCUEIL, ico:'🏠', t:'Accueil', s:"L'accueil et tes matières", hub:true},
     {g:'Cours',    href:'marche_des_particuliers.html', ico:'🏦', t:'Marché des Particuliers', s:'11 leçons · test · mini-cas'},
     {g:'Cours',    href:'produits_derives.html',        ico:'💱', t:'Produits Dérivés I',      s:'15 leçons · comptant & terme'},
     {g:'Cours',    href:'produits_derives_2.html',      ico:'⏳', t:'Produits Dérivés II',     s:'10 leçons · Futures, marges, couverture'},
@@ -46,7 +51,7 @@
 
   /* Les liens de l'en-tête : un sous-ensemble de PAGES, toujours dans cet ordre. */
   const ENTETE = [
-    {href:'index.html',               t:'Accueil'},
+    {href:ACCUEIL,                    t:'Accueil'},
     {href:'#matieres',                t:'Mes cours', hubOnly:true},
     {href:'index.html#entrainement',  t:'Entraînement'},
     {href:'bequick.html',             t:'BeQuick'},
@@ -133,7 +138,7 @@
 
     h.innerHTML =
       '<div class="ds-left verre">'+
-        '<a class="ds-logo" href="index.html" aria-label="Révise. Vise le AAA. — accueil">'+LOGO+'Révise.<b>Vise le AAA.</b></a>'+
+        '<a class="ds-logo" href="'+ACCUEIL+'" aria-label="Révise. Vise le AAA. — accueil">'+LOGO+'Révise.<b>Vise le AAA.</b></a>'+
       '</div>'+
       '<nav class="ds-nav verre" aria-label="Navigation principale">'+liens+'</nav>'+
       '<div class="ds-acts verre">'+
@@ -177,7 +182,7 @@
     f.className = 'ds-foot';
     const liens = ENTETE.filter(l=>!l.hubOnly).map(l=>'<a href="'+l.href+'">'+l.t+'</a>').join('');
     f.innerHTML =
-      '<a class="ds-logo" href="index.html" aria-label="Révise. Vise le AAA. — accueil">'+LOGO+'Révise.<b>Vise le AAA.</b></a>'+
+      '<a class="ds-logo" href="'+ACCUEIL+'" aria-label="Révise. Vise le AAA. — accueil">'+LOGO+'Révise.<b>Vise le AAA.</b></a>'+
       '<nav class="ds-fnav">'+liens+'</nav>'+
       '<div class="ds-fv">AAA · v'+VERSION_APP+' « '+NOM_VERSION+' »</div>'+
       '<div class="ds-credits ds-note">AAA : la meilleure note des agences de notation… et celle qu\'on vise au partiel.</div>'+
@@ -219,7 +224,7 @@
     const t = document.createElement('nav');
     t.className = 'ds-tab verre'; t.setAttribute('aria-label','Navigation rapide');
     const L = [
-      ['index.html','maison','Accueil'], ['index.html#matieres','grille','Cours'],
+      [ACCUEIL,'maison','Accueil'], ['index.html#matieres','grille','Cours'],
       ['bequick.html','eclair','BeQuick'], ['revision.html','boucle','Révision']
     ];
     t.innerHTML = L.map(l=>{
@@ -498,7 +503,8 @@
 
   /* ---------- 6. RECHERCHE GLOBALE (Ctrl+K) ---------- */
   const INDEX = [
-    {t:'Accueil', s:'AAA, toutes les matières', u:'index.html', i:'🏠'},
+    {t:'Accueil', s:'AAA, toutes les matières', u:ACCUEIL, i:'🏠'},
+    {t:'Changer de niveau', s:'Le hub central : Licence, M1, M2', u:'niveaux.html', i:'🧭'},
     {t:'Révision du jour', s:'Entraînement en révision espacée, flashcards', u:'revision.html', i:'🔁'},
     {t:'Ma progression', s:'Statistiques, points faibles', u:'stats.html', i:'📈'},
     {t:'Glossaire', s:'Sigles, définitions', u:'glossaire.html', i:'🔤'},
