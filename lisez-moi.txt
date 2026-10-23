@@ -283,6 +283,12 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  7.6.2            ICÔNE D'ONGLET. Safari sur ordinateur n'affichait aucune
+                   icône : il cherche favicon.ico, absent, et seules les pages
+                   d'accès déclaraient une icône. Nouveau favicon.ico (16, 32,
+                   48 px) et icons/favicon-32.png : « M1 » seul dans un carré
+                   arrondi (MBAF serait illisible à 16 px), déclarés sur toutes
+                   les pages et mis en cache hors ligne.
   7.6.1            FINITIONS DE DESIGN.
                    Nouvelle loupe de recherche, bleu nuit, au même trait que la
                    bulle et la cloche, avec un petit reflet. Le bouton du pseudo

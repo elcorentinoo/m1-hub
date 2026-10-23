@@ -13,7 +13,7 @@
    ⚠️ Cette valeur doit rester IDENTIQUE à VERSION_APP,
       en haut de ui.js.
    ════════════════════════════════════════════════════════════ */
-const VERSION = '7.6.1';        // « Thaler »
+const VERSION = '7.6.2';        // « Thaler »
 const CACHE_APP  = 'm1-app-'+VERSION;      // les fichiers du site
 const CACHE_EXT  = 'm1-ext-'+VERSION;      // polices et bibliothèques externes
 
@@ -49,6 +49,8 @@ const FICHIERS = [
   'formules.js',
   'chat.js',
   'manifest.webmanifest',
+  'favicon.ico',
+  'icons/favicon-32.png',
   'icons/icon-192.png',
   'icons/icon-512.png',
   /* Copies locales des photos de matière : affichées si Unsplash ne répond pas */
