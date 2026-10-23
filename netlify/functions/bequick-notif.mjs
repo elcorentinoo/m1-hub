@@ -12,6 +12,10 @@
    Environment variables) :
      VAPID_PUBLIC   clé publique (la même que CLE_PUSH dans bequick.js)
      VAPID_PRIVATE  clé privée — ne jamais la mettre dans le dépôt
+
+   Un BeQuick par niveau (8.0.0) : chaque téléphone reçoit l'alerte de
+   son niveau (colonne niveau de push_abonnements, 'm1' par défaut), et
+   seulement si le BeQuick de ce niveau est ouvert (NIVEAUX_ACTIFS).
    ════════════════════════════════════════════════════════════ */
 import {supa, envoyerUn, cles} from '../push.mjs';
 
@@ -22,17 +26,29 @@ export const MESSAGE = {
   tag: 'bequick'
 };
 
+/* ajouter 'licence' (puis 'm2') quand leur BeQuick ouvre */
+export const NIVEAUX_ACTIFS = ['m1'];
+const PROMO = {licence:'toute la promo de Licence', m2:'toute la promo de M2'};
+export function messageDe(niveau, base = MESSAGE){
+  if(niveau === 'm1' || !PROMO[niveau]) return base;
+  return {...base, url:'/bequick.html?niveau='+niveau, tag:base.tag+'-'+niveau,
+    body:base.body.replace('toute la promo joue la même', PROMO[niveau]+' joue la même')};
+}
+
 function heureParis(){
   const p = Object.fromEntries(new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Paris',weekday:'short',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date()).map(x=>[x.type,x.value]));
   return {h:+p.hour, mi:+p.minute, weekend:p.weekday === 'Sat' || p.weekday === 'Sun'};
 }
 
 export async function envoyerATous(publique, privee, message = MESSAGE){
-  const abonnes = await supa('push_abonnements?select=endpoint,p256dh,auth') || [];
+  /* sans la colonne niveau (bequick-niveaux.sql pas encore passé) : tout le monde est en M1 */
+  const abonnes = (await supa('push_abonnements?select=endpoint,p256dh,auth,niveau')
+    .catch(()=>supa('push_abonnements?select=endpoint,p256dh,auth')) || [])
+    .map(a=>({...a, niveau:a.niveau || 'm1'})).filter(a=>NIVEAUX_ACTIFS.includes(a.niveau));
   let ok = 0, oublies = 0, echecs = 0;
   await Promise.all(abonnes.map(async a=>{
     try{
-      const st = (await envoyerUn(a, message, publique, privee)).status;
+      const st = (await envoyerUn(a, messageDe(a.niveau, message), publique, privee)).status;
       if(st === 404 || st === 410){ oublies++; await supa('rpc/push_oublier', {method:'POST', body:{e:a.endpoint}}).catch(()=>{}); }
       else if(st >= 200 && st < 300) ok++;
       else echecs++;

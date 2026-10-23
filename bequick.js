@@ -15,6 +15,12 @@
                        horodate le départ et refuse toute réponse
                        après 10 minutes, hors de 18 h 30 – 22 h 00 ou le week-end
      push_abonnements  les téléphones qui reçoivent l'alerte
+
+   Un BeQuick par niveau (8.0.0) : Licence, M1 et M2 ont chacun leur
+   série, leur classement et leur alerte, jamais mélangés (colonne
+   niveau, 'm1' par défaut). Le M1 garde exactement le tirage d'avant
+   (même graine, mêmes matières) : seuls les autres niveaux ajoutent
+   leur nom à la graine et piochent dans leurs propres matières.
    ════════════════════════════════════════════════════════════ */
 (function(){
   const NOM = 'BeQuick';
@@ -24,6 +30,27 @@
   /* clé publique d'envoi des notifications (la clé privée est chez Netlify) */
   const CLE_PUSH = 'BGudFKvHrz5uqtu2wW2HlNTfMgpuAvXR-E0EacuHaqb-9WSJV7oLdBxpwTc7EOtx2Ffn3JdBjPr0BcqVw8T8tzA';
   const PREMIER_JOUR = '2026-10-17';                  // lancement de BeQuick
+
+  /* ---------- niveau ----------
+     Les matières de chaque niveau autre que le M1 (leurs subject-id) ;
+     le M1 prend toutes les autres matières de la banque. Ajouter ici
+     chaque matière de Licence ou de M2 quand ses questions entrent
+     dans banque.js. */
+  const MATIERES_NIVEAU = {licence:[], m2:[]};
+  const NIVEAUX = ['licence','m1','m2'];
+  /* ordre : ?niveau= dans l'adresse, puis data-niveau de la page, puis
+     le niveau de l'appareil (niveau.js), et le M1 par défaut */
+  const NIV = (()=>{
+    let n = null;
+    try{ n = new URLSearchParams(location.search).get('niveau'); }catch(e){}
+    if(!NIVEAUX.includes(n)) n = document.documentElement.getAttribute('data-niveau');
+    if(!NIVEAUX.includes(n) && window.NIVEAU) n = NIVEAU.courant();
+    return NIVEAUX.includes(n) ? n : 'm1';
+  })();
+  const AUTRES = Object.values(MATIERES_NIVEAU).flat();
+  const duNiveau = sid => NIV === 'm1' ? !AUTRES.includes(sid) : (MATIERES_NIVEAU[NIV]||[]).includes(sid);
+  const URL_BQ = NIV === 'm1' ? 'bequick.html' : 'bequick.html?niveau='+NIV;
+  const actif = () => (window.BANQUE||[]).some(q=>duNiveau(q.m));
 
   /* ---------- heure de Paris ---------- */
   const FMT = new Intl.DateTimeFormat('fr-FR',{timeZone:'Europe/Paris',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'});
@@ -99,7 +126,7 @@
   function hasard(seed){ let s = seed>>>0; return ()=>{ s |= 0; s = s + 0x6D2B79F5 | 0; let t = Math.imul(s ^ s>>>15, 1 | s); t = t + Math.imul(t ^ t>>>7, 61 | t) ^ t; return ((t ^ t>>>14)>>>0)/4294967296; }; }
   function poidsMatieres(jour){
     const t = instant(jour, OUVERTURE), ech = window.ECHEANCES || [];
-    const sids = [...new Set((window.BANQUE||[]).map(q=>q.m))].sort();
+    const sids = [...new Set((window.BANQUE||[]).map(q=>q.m))].filter(duNiveau).sort();
     const out = [];
     sids.forEach(sid=>{
       const e = ech.filter(x=>x.sid===sid);
@@ -111,7 +138,7 @@
     return out;
   }
   function tirage(jour){
-    const r = hasard(graine(NOM+jour));
+    const r = hasard(graine(NIV === 'm1' ? NOM+jour : NOM+NIV+jour));
     let pool = poidsMatieres(jour);
     const nb = pool.length >= 2 && r() < 0.5 ? 2 : 1, choisies = [];
     for(let k=0;k<nb && pool.length;k++){
@@ -138,7 +165,25 @@
     return new Promise(ok=>{ const s = document.createElement('script'); s.src = 'lb.js'; s.onload = ok; s.onerror = ok; document.head.appendChild(s); });
   }
   function cfg(){ return (typeof SUPA !== 'undefined') ? SUPA : null; }
+  /* la colonne niveau n'existe qu'une fois supabase/bequick-niveaux.sql
+     passé : en attendant, le M1 continue sans elle */
+  let sansNiveau = false;
+  const fN = () => sansNiveau ? '' : '&niveau=eq.'+NIV;
+  function sansColonne(chemin, opts){
+    chemin = chemin.replace(/&niveau=eq\.m1/g, '');
+    if(opts && opts.body && 'niveau' in opts.body){ opts = Object.assign({}, opts, {body:Object.assign({}, opts.body)}); delete opts.body.niveau; }
+    return [chemin, opts];
+  }
   async function api(chemin, opts){
+    if(sansNiveau) return api0(...sansColonne(chemin, opts));
+    try{ return await api0(chemin, opts); }
+    catch(e){
+      if(NIV !== 'm1' || !/niveau/i.test(e.message)) throw e;
+      sansNiveau = true;
+      return api0(...sansColonne(chemin, opts));
+    }
+  }
+  async function api0(chemin, opts){
     await chargerLB();
     const c = cfg(); if(!c) throw new Error('Supabase non configuré');
     opts = opts || {};
@@ -156,12 +201,12 @@
   /* la série du jour : celle du serveur si elle existe, sinon on la fige */
   async function serie(jour, figer){
     try{
-      let l = await api('bequick_jours?jour=eq.'+jour+'&select=ids,matieres');
+      let l = await api('bequick_jours?jour=eq.'+jour+fN()+'&select=ids,matieres');
       if((!l || !l.length) && figer){
         const t = tirage(jour);
         await api('bequick_jours', {method:'POST', headers:{'Prefer':'resolution=ignore-duplicates,return=minimal'},
-          body:{jour, ids:t.ids.join(','), matieres:t.matieres.join(',')}}).catch(()=>{});
-        l = await api('bequick_jours?jour=eq.'+jour+'&select=ids,matieres');
+          body:{jour, niveau:NIV, ids:t.ids.join(','), matieres:t.matieres.join(',')}}).catch(()=>{});
+        l = await api('bequick_jours?jour=eq.'+jour+fN()+'&select=ids,matieres');
       }
       if(l && l.length) return {ids:String(l[0].ids).split(',').filter(Boolean), matieres:String(l[0].matieres||'').split(',').filter(Boolean), serveur:true};
     }catch(e){}
@@ -169,7 +214,7 @@
   }
   async function maPartie(jour){
     const p = pseudo(); if(!p) return null;
-    const l = await api('bequick_parties?jour=eq.'+jour+'&pseudo_cle=eq.'+enc(cle(p))+'&select=*');
+    const l = await api('bequick_parties?jour=eq.'+jour+fN()+'&pseudo_cle=eq.'+enc(cle(p))+'&select=*');
     return (l && l[0]) || null;
   }
   /* départ : le serveur horodate ; une seconde tentative est refusée */
@@ -177,7 +222,7 @@
     const p = pseudo(); if(!p) throw new Error('Choisis d\'abord un pseudo.');
     const avant = Date.now();
     const l = await api('bequick_parties', {method:'POST', headers:{'Prefer':'return=representation'},
-      body:{jour:jourDe(), pseudo:p, pseudo_cle:cle(p)}});
+      body:{jour:jourDe(), niveau:NIV, pseudo:p, pseudo_cle:cle(p)}});
     const ligne = l && l[0];
     if(ligne && ligne.debut) decalage = Date.parse(ligne.debut) - Math.round((avant + Date.now())/2);
     return ligne;
@@ -189,7 +234,7 @@
      soir reste caché tant qu'on n'a pas fini sa propre série (ou 22 h). */
   function enCours(r){ return (r.repondues|0) < NB_Q && maintenant() < Date.parse(r.debut) + DUREE + 20000; }
   async function classement(jour){
-    const l = await api('bequick_parties?jour=eq.'+jour+'&select=pseudo,pseudo_cle,score,bonnes,repondues,debut&order=score.desc,bonnes.desc,debut.asc');
+    const l = await api('bequick_parties?jour=eq.'+jour+fN()+'&select=pseudo,pseudo_cle,score,bonnes,repondues,debut&order=score.desc,bonnes.desc,debut.asc');
     return (l || []).filter(r=>!enCours(r));
   }
   async function classementVisible(jour){
@@ -198,7 +243,7 @@
     try{ const p = await maPartie(jour); return !!p && !enCours(p); }catch(e){ return false; }
   }
   async function toutes(){
-    const l = (await api('bequick_parties?select=pseudo,pseudo_cle,score,bonnes,repondues,jour,debut&limit=20000')) || [];
+    const l = (await api('bequick_parties?select=pseudo,pseudo_cle,score,bonnes,repondues,jour,debut&limit=20000'+fN())) || [];
     const auj = jourDe(), cache = !(await classementVisible(auj));
     return l.filter(r=>!enCours(r) && !(cache && r.jour === auj));
   }
@@ -213,8 +258,9 @@
   }
 
   /* ---------- mémoire locale ---------- */
-  function lireLocal(jour){ try{ return JSON.parse(localStorage.getItem('bq_'+jour) || 'null'); }catch(e){ return null; } }
-  function ecrireLocal(jour, o){ try{ localStorage.setItem('bq_'+jour, JSON.stringify(o)); }catch(e){} }
+  const PREF = NIV === 'm1' ? 'bq_' : 'bq_'+NIV+'_';       // le M1 garde ses clés d'avant
+  function lireLocal(jour){ try{ return JSON.parse(localStorage.getItem(PREF+jour) || 'null'); }catch(e){ return null; } }
+  function ecrireLocal(jour, o){ try{ localStorage.setItem(PREF+jour, JSON.stringify(o)); }catch(e){} }
 
   /* ---------- notifications sur le téléphone ---------- */
   function b64(u){ const p = '='.repeat((4 - u.length % 4) % 4); const s = atob((u + p).replace(/-/g,'+').replace(/_/g,'/')); return Uint8Array.from(s, c=>c.charCodeAt(0)); }
@@ -241,7 +287,7 @@
     let inscrit = true;
     try{
       await api('push_abonnements', {method:'POST', headers:{'Prefer':'resolution=merge-duplicates,return=minimal'},
-        body:{endpoint:j.endpoint, p256dh:j.keys.p256dh, auth:j.keys.auth, pseudo:pseudo()}});
+        body:{endpoint:j.endpoint, p256dh:j.keys.p256dh, auth:j.keys.auth, pseudo:pseudo(), niveau:NIV}});
     }catch(e){ inscrit = false; }          // base pas encore prête : le test part quand même
     const t = await testerPush(j);
     return inscrit ? t : t+'-noninscrit';
@@ -296,9 +342,9 @@
      identifiant : une fois vue, elle ne compte plus dans la pastille. */
   function alertes(){
     const out = [], t = maintenant(), j = jourDe(t), ph = phase(t), loc = lireLocal(j);
-    if(ph === 'ouvert' && !loc) out.push({id:'bq-'+j, ico:'⚡', titre:NOM+" est ouvert jusqu'à 22 h", texte:"15 questions, 10 minutes, une seule chance. Toute la promo joue la même série.", url:'bequick.html', fort:true});
-    if(ph === 'ouvert' && loc && loc.fini) out.push({id:'bq-res-'+j, ico:'🏆', titre:"Ton "+NOM+" du jour : "+(loc.score||0).toLocaleString('fr-FR')+" points", texte:"Le classement du jour se complète jusqu'à 22 h 20.", url:'bequick.html#classement'});
-    if(ph === 'avant'){ const m = OUVERTURE - paris(t).min; if(m <= 60) out.push({id:'bq-bientot-'+j, ico:'⏳', titre:NOM+" ouvre dans "+m+" min", texte:"Rendez-vous à 18 h 30.", url:'bequick.html'}); }
+    if(ph === 'ouvert' && !loc) out.push({id:'bq-'+j, ico:'⚡', titre:NOM+" est ouvert jusqu'à 22 h", texte:"15 questions, 10 minutes, une seule chance. Toute la promo joue la même série.", url:URL_BQ, fort:true});
+    if(ph === 'ouvert' && loc && loc.fini) out.push({id:'bq-res-'+j, ico:'🏆', titre:"Ton "+NOM+" du jour : "+(loc.score||0).toLocaleString('fr-FR')+" points", texte:"Le classement du jour se complète jusqu'à 22 h 20.", url:URL_BQ+'#classement'});
+    if(ph === 'avant'){ const m = OUVERTURE - paris(t).min; if(m <= 60) out.push({id:'bq-bientot-'+j, ico:'⏳', titre:NOM+" ouvre dans "+m+" min", texte:"Rendez-vous à 18 h 30.", url:URL_BQ}); }
     (window.ECHEANCES||[]).forEach(e=>{
       const n = Math.ceil((e.end - t)/864e5);
       if(n >= 0 && n <= 7 && !e.provisoire) out.push({id:'partiel-'+e.sid+'-'+n, ico:'📅', titre:(n===0?"Partiel aujourd'hui : ":n===1?"Partiel demain : ":"Partiel dans "+n+" jours : ")+e.titre, texte:e.format, url:e.matiere || 'index.html#piste'});
@@ -312,7 +358,7 @@
     return out;
   }
 
-  window.BQ = {NOM, OUVERTURE, FERMETURE, DUREE, NB_Q, PTS_MAX, PTS_MIN, T_REF, PREMIER_JOUR,
+  window.BQ = {NOM, NIV, URL_BQ, PREF, actif, OUVERTURE, FERMETURE, DUREE, NB_Q, PTS_MAX, PTS_MIN, T_REF, PREMIER_JOUR,
     paris, maintenant, jourDe, instant, ouverture, fermeture, phase, decaleJour, points,
     estOuvre, prochaineOuverture, dernierJour, texteProchain,
     tirage, poidsMatieres, questions, serie, maPartie, demarrer, envoyer, classement, classementVisible, enCours, toutes, general,
