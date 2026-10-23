@@ -1,25 +1,20 @@
 <!DOCTYPE html>
-<html lang="fr" id="risques-bancaires">
+<html lang="fr" data-niveau="licence" subject-id="l-risques-bancaires">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gestion des Risques Bancaires — LP Banque IAE Bretagne Sud</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>Gestion des Risques Bancaires</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{
-  --paper:#faf6ef; --paper2:#f3ece0; --ink:#22201b; --line:#e3d9c8;
-  --teal:#1b6b5e; --amber:#c87a12; --rust:#a8432a; --plum:#6b3a73; --navy:#23456b;
-  --teal-soft:#e3efec; --amber-soft:#faf0dd; --rust-soft:#f7e7e2; --plum-soft:#efe6f1; --navy-soft:#e4ebf2;
-}
+
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{
   background:var(--paper); color:var(--ink);
   font-family:'DM Sans',sans-serif; line-height:1.62; font-size:16px;
 }
-::selection{background:var(--amber);color:#fff}
+::selection{background:var(--amber);color:var(--blanc)}
 ::-webkit-scrollbar{width:11px;height:11px}
 ::-webkit-scrollbar-track{background:var(--paper2)}
 ::-webkit-scrollbar-thumb{background:var(--line);border-radius:6px;border:2px solid var(--paper2)}
@@ -28,18 +23,18 @@ body{
 /* ===== NAVBAR ===== */
 .navbar{
   position:fixed;top:0;left:0;right:0;height:62px;z-index:100;
-  background:rgba(250,246,239,.94);backdrop-filter:blur(8px);
+  background:color-mix(in srgb, var(--fond) 94%, transparent);backdrop-filter:blur(8px);
   border-bottom:1px solid var(--line);
   display:flex;align-items:center;gap:18px;padding:0 22px;
 }
 .nav-logo{display:flex;align-items:center;gap:11px;font-family:'Fraunces',serif;font-weight:600;font-size:18px;color:var(--navy);white-space:nowrap}
-.nav-logo .badge{width:34px;height:34px;border-radius:9px;background:var(--teal);display:grid;place-items:center;color:#fff;font-size:18px;box-shadow:0 2px 6px rgba(27,107,94,.3)}
+.nav-logo .badge{width:34px;height:34px;border-radius:9px;background:var(--teal);display:grid;place-items:center;color:var(--blanc);font-size:18px;box-shadow:0 2px 6px color-mix(in srgb, var(--teal) 30%, transparent)}
 .nav-short{display:none}
 .nav-prog-wrap{flex:1;max-width:420px;display:flex;align-items:center;gap:10px}
 .nav-prog-bar{flex:1;height:9px;background:var(--paper2);border-radius:6px;overflow:hidden;border:1px solid var(--line)}
-.nav-prog-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),#2a9c87);border-radius:6px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.nav-prog-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal));border-radius:6px;transition:width .5s cubic-bezier(.4,0,.2,1)}
 .nav-prog-txt{font-family:'DM Mono',monospace;font-size:12px;color:var(--teal);font-weight:500;white-space:nowrap}
-.nav-xp{display:flex;align-items:center;gap:7px;background:var(--amber-soft);border:1px solid #ecd9b6;padding:7px 13px;border-radius:9px;font-family:'DM Mono',monospace;font-weight:500;color:var(--amber);white-space:nowrap}
+.nav-xp{display:flex;align-items:center;gap:7px;background:var(--amber-soft);border:1px solid var(--amber-soft);padding:7px 13px;border-radius:9px;font-family:'DM Mono',monospace;font-weight:500;color:var(--amber);white-space:nowrap}
 .nav-xp .star{font-size:15px}
 .burger{display:none;background:none;border:1px solid var(--line);border-radius:8px;width:40px;height:40px;font-size:20px;cursor:pointer;color:var(--ink)}
 
@@ -50,21 +45,21 @@ body{
   background:var(--paper2);padding:22px 0;position:sticky;top:62px;
   height:calc(100vh - 62px);overflow-y:auto;
 }
-.sb-section{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#9a8f7c;padding:0 22px;margin:18px 0 8px}
+.sb-section{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--txt3);padding:0 22px;margin:18px 0 8px}
 .sb-item{
   display:flex;align-items:center;gap:11px;padding:10px 22px;cursor:pointer;
   font-size:14.5px;color:var(--ink);border-left:3px solid transparent;transition:all .18s;
 }
-.sb-item:hover{background:rgba(27,107,94,.07)}
-.sb-item.active{background:rgba(27,107,94,.12);border-left-color:var(--teal);color:var(--teal);font-weight:600}
+.sb-item:hover{background:color-mix(in srgb, var(--teal) 7%, transparent)}
+.sb-item.active{background:color-mix(in srgb, var(--teal) 12%, transparent);border-left-color:var(--teal);color:var(--teal);font-weight:600}
 .sb-num{width:25px;height:25px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-family:'DM Mono',monospace;font-size:12px;flex-shrink:0;background:var(--paper)}
-.sb-item.active .sb-num{border-color:var(--teal);background:var(--teal);color:#fff}
-.sb-item.done .sb-num{border-color:var(--teal);background:var(--teal);color:#fff}
+.sb-item.active .sb-num{border-color:var(--teal);background:var(--teal);color:var(--blanc)}
+.sb-item.done .sb-num{border-color:var(--teal);background:var(--teal);color:var(--blanc)}
 .sb-special{margin:6px 22px;padding:11px 14px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:9px;transition:all .18s}
-.sb-test{background:var(--plum-soft);color:var(--plum);border:1px solid #d8c4dc}
-.sb-test:hover{background:#e6d6ea}
-.sb-annales{background:var(--navy-soft);color:var(--navy);border:1px solid #c5d2e0}
-.sb-annales:hover{background:#d6e1ec}
+.sb-test{background:var(--plum-soft);color:var(--plum);border:1px solid var(--m-clair)}
+.sb-test:hover{background:var(--plum-soft)}
+.sb-annales{background:var(--navy-soft);color:var(--navy);border:1px solid var(--m-clair)}
+.sb-annales:hover{background:var(--navy-soft)}
 
 /* ===== MAIN ===== */
 .main{flex:1;padding:40px 6vw 110px;max-width:1000px;overflow-x:hidden}
@@ -72,10 +67,10 @@ body{
 .view.active{display:block}
 @keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 
-.tag{display:inline-block;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;background:var(--teal);color:#fff;padding:5px 12px;border-radius:7px;margin-bottom:16px}
+.tag{display:inline-block;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;background:var(--teal);color:var(--blanc);padding:5px 12px;border-radius:7px;margin-bottom:16px}
 h1.lesson-title{font-family:'Fraunces',serif;font-size:clamp(28px,4.4vw,42px);line-height:1.12;font-weight:600;color:var(--ink);margin-bottom:10px;letter-spacing:-.01em}
-.subtitle{font-size:17px;color:#6e6557;margin-bottom:28px;font-weight:500}
-.main p{margin-bottom:15px;color:#34302a}
+.subtitle{font-size:17px;color:var(--txt3);margin-bottom:28px;font-weight:500}
+.main p{margin-bottom:15px;color:var(--nuit)}
 .main h2{font-family:'Fraunces',serif;font-size:24px;font-weight:600;color:var(--navy);margin:34px 0 14px;letter-spacing:-.01em}
 .main h3{font-family:'Fraunces',serif;font-size:19px;font-weight:600;color:var(--ink);margin:24px 0 10px}
 strong{color:var(--ink);font-weight:600}
@@ -95,18 +90,18 @@ strong{color:var(--ink);font-weight:600}
 .co-trap .co-head{color:var(--rust)}
 
 /* ===== FORMULA BOX ===== */
-.formula{background:#1c1a16;color:#f5efe2;border-radius:13px;padding:22px 24px;margin:22px 0;font-family:'DM Mono',monospace;position:relative;overflow:hidden}
-.formula::before{content:'ƒ';position:absolute;top:-14px;right:14px;font-size:80px;font-family:'Fraunces',serif;color:rgba(255,255,255,.05)}
-.formula .f-label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#c87a12;margin-bottom:10px;font-family:'DM Sans',sans-serif;font-weight:600}
-.formula .f-main{font-size:clamp(17px,2.6vw,22px);line-height:1.5;color:#fff}
-.formula .f-main .op{color:#5ec5b2}
-.formula .f-main .var{color:#e8b563}
-.formula .f-note{font-size:13px;color:#9a9486;margin-top:12px;font-family:'DM Sans',sans-serif}
+.formula{background:var(--nuit);color:var(--fond);border-radius:13px;padding:22px 24px;margin:22px 0;font-family:'DM Mono',monospace;position:relative;overflow:hidden}
+.formula::before{content:'ƒ';position:absolute;top:-14px;right:14px;font-size:80px;font-family:'Fraunces',serif;color:color-mix(in srgb, var(--blanc) 5%, transparent)}
+.formula .f-label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:10px;font-family:'DM Sans',sans-serif;font-weight:600}
+.formula .f-main{font-size:clamp(17px,2.6vw,22px);line-height:1.5;color:var(--blanc)}
+.formula .f-main .op{color:var(--teal-clair)}
+.formula .f-main .var{color:var(--amber-clair)}
+.formula .f-note{font-size:13px;color:var(--txt3);margin-top:12px;font-family:'DM Sans',sans-serif}
 
 /* ===== STEPS ===== */
 .steps{margin:20px 0;counter-reset:step}
 .step{display:flex;gap:15px;margin-bottom:14px;align-items:flex-start}
-.step-n{counter-increment:step;flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-family:'DM Mono',monospace;font-weight:500;font-size:14px}
+.step-n{counter-increment:step;flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--navy);color:var(--blanc);display:grid;place-items:center;font-family:'DM Mono',monospace;font-weight:500;font-size:14px}
 .step-n::before{content:counter(step)}
 .step-body{flex:1;padding-top:3px}
 .step-body .step-calc{font-family:'DM Mono',monospace;background:var(--paper2);border:1px solid var(--line);border-radius:8px;padding:9px 13px;margin-top:7px;display:inline-block;font-size:14px}
@@ -115,24 +110,24 @@ strong{color:var(--ink);font-weight:600}
 /* ===== TABLES ===== */
 .tbl-wrap{overflow-x:auto;margin:20px 0;border-radius:12px;border:1px solid var(--line)}
 table{width:100%;border-collapse:collapse;font-size:14px;background:var(--paper)}
-th{background:var(--navy);color:#fff;text-align:left;padding:11px 14px;font-weight:600;font-size:13px}
-td{padding:10px 14px;border-top:1px solid var(--line);color:#34302a}
-tr:nth-child(even) td{background:rgba(243,236,224,.5)}
+th{background:var(--navy);color:var(--blanc);text-align:left;padding:11px 14px;font-weight:600;font-size:13px}
+td{padding:10px 14px;border-top:1px solid var(--line);color:var(--nuit)}
+tr:nth-child(even) td{background:color-mix(in srgb, var(--surface2) 50%, transparent)}
 td.mono,th.mono{font-family:'DM Mono',monospace}
 .tbl-tot td{background:var(--amber-soft)!important;font-weight:600}
 
 /* ===== SVG SCHEMA ===== */
 .schema{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px;margin:24px 0;text-align:center}
 .schema svg{max-width:100%;height:auto}
-.schema-cap{font-size:12.5px;color:#9a8f7c;margin-top:12px;font-family:'DM Mono',monospace}
+.schema-cap{font-size:12.5px;color:var(--txt3);margin-top:12px;font-family:'DM Mono',monospace}
 
 /* ===== QUIZ ===== */
-.quiz{background:var(--plum-soft);border:1px solid #d8c4dc;border-radius:14px;padding:20px 22px;margin:22px 0}
+.quiz{background:var(--plum-soft);border:1px solid var(--m-clair);border-radius:14px;padding:20px 22px;margin:22px 0}
 .quiz-q{font-weight:600;color:var(--plum);margin-bottom:14px;display:flex;gap:9px}
 .quiz-q .qicon{flex-shrink:0}
 .quiz-opts{display:flex;flex-direction:column;gap:9px}
 .quiz-opt{background:var(--paper);border:1.5px solid var(--line);border-radius:9px;padding:11px 15px;cursor:pointer;transition:all .16s;font-size:14.5px;text-align:left}
-.quiz-opt:hover:not(.locked){border-color:var(--plum);background:#fff}
+.quiz-opt:hover:not(.locked){border-color:var(--plum);background:var(--blanc)}
 .quiz-opt.correct{background:var(--teal-soft);border-color:var(--teal);color:var(--teal);font-weight:600}
 .quiz-opt.wrong{background:var(--rust-soft);border-color:var(--rust);color:var(--rust)}
 .quiz-opt.locked{cursor:default;opacity:.85}
@@ -146,10 +141,10 @@ td.mono,th.mono{font-family:'DM Mono',monospace}
 .btn{border:none;border-radius:10px;padding:12px 22px;font-family:'DM Sans',sans-serif;font-size:14.5px;font-weight:600;cursor:pointer;transition:all .18s;display:inline-flex;align-items:center;gap:8px}
 .btn-prev{background:var(--paper2);color:var(--ink);border:1px solid var(--line)}
 .btn-prev:hover{background:var(--line)}
-.btn-next{background:var(--teal);color:#fff;box-shadow:0 3px 10px rgba(27,107,94,.28)}
-.btn-next:hover{background:#155a4f;transform:translateY(-1px)}
+.btn-next{background:var(--teal);color:var(--blanc);box-shadow:0 3px 10px color-mix(in srgb, var(--teal) 28%, transparent)}
+.btn-next:hover{background:var(--teal);transform:translateY(-1px)}
 .btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important}
-.xp-pill{font-family:'DM Mono',monospace;font-size:13px;color:var(--amber);background:var(--amber-soft);padding:6px 12px;border-radius:8px;border:1px solid #ecd9b6}
+.xp-pill{font-family:'DM Mono',monospace;font-size:13px;color:var(--amber);background:var(--amber-soft);padding:6px 12px;border-radius:8px;border:1px solid var(--amber-soft)}
 
 /* ===== ANNALES ===== */
 .annale{border:1px solid var(--line);border-radius:13px;margin-bottom:18px;overflow:hidden;background:var(--paper)}
@@ -167,24 +162,24 @@ td.mono,th.mono{font-family:'DM Mono',monospace}
 .test-q-txt{font-weight:600;font-size:16px;margin-bottom:14px}
 .test-input{font-family:'DM Mono',monospace;font-size:16px;padding:11px 14px;border:1.5px solid var(--line);border-radius:9px;width:200px;max-width:100%;background:var(--paper)}
 .test-input:focus{outline:none;border-color:var(--plum)}
-.test-unit{font-family:'DM Mono',monospace;color:#9a8f7c;margin-left:8px}
+.test-unit{font-family:'DM Mono',monospace;color:var(--txt3);margin-left:8px}
 .remediation{background:var(--rust-soft);border:1.5px solid var(--rust);border-radius:12px;padding:16px 18px;margin-top:14px;display:none}
 .remediation.show{display:block;animation:fadeIn .35s}
 .remediation .rem-head{font-weight:700;color:var(--rust);margin-bottom:7px;display:flex;align-items:center;gap:8px}
 .rem-actions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
 .btn-sm{padding:8px 15px;font-size:13px;border-radius:8px;border:none;cursor:pointer;font-weight:600;font-family:'DM Sans',sans-serif}
-.btn-revoir{background:var(--rust);color:#fff}
+.btn-revoir{background:var(--rust);color:var(--blanc)}
 .btn-continuer{background:var(--paper);color:var(--ink);border:1px solid var(--line)}
 .correct-banner{background:var(--teal-soft);border:1.5px solid var(--teal);border-radius:12px;padding:14px 18px;margin-top:14px;color:var(--teal);font-weight:600;display:none}
 .correct-banner.show{display:block;animation:fadeIn .35s}
-.float-retake{position:fixed;bottom:24px;right:24px;z-index:90;background:var(--plum);color:#fff;border:none;border-radius:30px;padding:13px 22px;font-weight:600;font-size:14px;cursor:pointer;box-shadow:0 6px 20px rgba(107,58,115,.35);display:none;align-items:center;gap:8px}
+.float-retake{position:fixed;bottom:24px;right:24px;z-index:90;background:var(--plum);color:var(--blanc);border:none;border-radius:30px;padding:13px 22px;font-weight:600;font-size:14px;cursor:pointer;box-shadow:0 6px 20px color-mix(in srgb, var(--plum) 35%, transparent);display:none;align-items:center;gap:8px}
 .float-retake.show{display:inline-flex;animation:fadeIn .4s}
 
 /* ===== RESULT ===== */
 .result-screen{display:none;text-align:center}
 .result-screen.show{display:block;animation:fadeIn .5s}
 .result-score{font-family:'Fraunces',serif;font-size:64px;font-weight:600;color:var(--teal);line-height:1}
-.result-msg{font-size:18px;color:#6e6557;margin:14px 0 30px;font-weight:500}
+.result-msg{font-size:18px;color:var(--txt3);margin:14px 0 30px;font-weight:500}
 .chapter-bars{text-align:left;max-width:560px;margin:0 auto}
 .cbar-row{margin-bottom:14px}
 .cbar-label{display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:5px}
@@ -195,18 +190,18 @@ td.mono,th.mono{font-family:'DM Mono',monospace}
 .home-hero{text-align:center;padding:30px 0 40px}
 .home-hero .htag{font-family:'DM Mono',monospace;font-size:13px;letter-spacing:.1em;color:var(--amber);text-transform:uppercase}
 .home-hero h1{font-family:'Fraunces',serif;font-size:clamp(34px,6vw,56px);font-weight:600;color:var(--ink);margin:10px 0;letter-spacing:-.02em;line-height:1.05}
-.home-hero p{font-size:17px;color:#6e6557;max-width:600px;margin:0 auto}
+.home-hero p{font-size:17px;color:var(--txt3);max-width:600px;margin:0 auto}
 .home-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px;margin-top:30px}
 .home-card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px;cursor:pointer;transition:all .2s;border-top:4px solid var(--teal)}
-.home-card:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(34,32,27,.08)}
+.home-card:hover{transform:translateY(-3px);box-shadow:0 8px 22px color-mix(in srgb, var(--nuit) 8%, transparent)}
 .home-card .hc-num{font-family:'DM Mono',monospace;color:var(--teal);font-size:13px}
 .home-card .hc-title{font-family:'Fraunces',serif;font-size:18px;font-weight:600;margin:7px 0 6px;color:var(--ink)}
-.home-card .hc-desc{font-size:13.5px;color:#7a7163}
+.home-card .hc-desc{font-size:13.5px;color:var(--txt3)}
 .home-card.done{border-top-color:var(--amber)}
 .home-card.done .hc-check{color:var(--teal);font-weight:700}
 
 @media(max-width:860px){
-  .sidebar{position:fixed;left:0;top:62px;z-index:80;transform:translateX(-100%);transition:transform .3s;box-shadow:4px 0 20px rgba(0,0,0,.12)}
+  .sidebar{position:fixed;left:0;top:62px;z-index:80;transform:translateX(-100%);transition:transform .3s;box-shadow:4px 0 20px color-mix(in srgb, var(--nuit) 12%, transparent)}
   .sidebar.open{transform:translateX(0)}
   .burger{display:grid;place-items:center}
   .nav-logo .nav-full{display:none}
@@ -215,11 +210,19 @@ td.mono,th.mono{font-family:'DM Mono',monospace}
   .main{padding:28px 20px 100px}
 }
 </style>
+<link rel="stylesheet" href="../ui.css">
+<link rel="stylesheet" href="../theme.css">
+<link rel="stylesheet" href="../licence.css">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#ECEEF6">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/favicon-32.png">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
 </head>
 <body>
 
 <!-- NAVBAR -->
-<nav class="navbar">
+<nav class="navbar topbar">
   <button class="burger" onclick="toggleSidebar()">☰</button>
   <div class="nav-logo">
     <span class="badge">🛡️</span>
@@ -249,7 +252,7 @@ td.mono,th.mono{font-family:'DM Mono',monospace}
     <!-- HOME -->
     <section class="view active" id="view-home">
       <div class="home-hero">
-        <div class="htag">LP Banque · IAE Bretagne Sud · JM Raoult</div>
+        <div class="htag">Licence LP ABF</div>
         <h1>La banque, une usine<br>à gérer le risque</h1>
         <p>Identifier, mesurer, couvrir. Dix leçons pour maîtriser les risques bancaires, des ratios de Bâle III à la VaR — avec les trois calculs qui tombent au partiel.</p>
       </div>
@@ -302,17 +305,17 @@ const lessons = [
 
   <div class="schema">
     <svg viewBox="0 0 320 320" width="280">
-      <circle cx="160" cy="160" r="150" fill="#f3ece0" stroke="#e3d9c8"/>
-      <path d="M160 160 L160 10 A150 150 0 0 1 145.5 308.3 Z" fill="#1b6b5e"/>
-      <path d="M160 160 L145.5 308.3 A150 150 0 0 1 50 271 Z" fill="#c87a12"/>
-      <path d="M160 160 L50 271 A150 150 0 0 1 10 160 Z" fill="#a8432a"/>
-      <circle cx="160" cy="160" r="70" fill="#faf6ef"/>
-      <text x="160" y="100" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff" font-weight="600">Crédit</text>
-      <text x="160" y="120" text-anchor="middle" font-family="DM Mono" font-size="18" fill="#fff" font-weight="600">85 %</text>
-      <text x="160" y="155" text-anchor="middle" font-family="Fraunces" font-size="13" fill="#22201b">Répartition</text>
-      <text x="160" y="172" text-anchor="middle" font-family="Fraunces" font-size="13" fill="#22201b">estimée</text>
-      <text x="78" y="245" text-anchor="middle" font-family="DM Mono" font-size="12" fill="#fff">Op. 10%</text>
-      <text x="55" y="200" text-anchor="middle" font-family="DM Mono" font-size="11" fill="#fff">Mar.5%</text>
+      <circle cx="160" cy="160" r="150" style="fill:var(--surface2);stroke:var(--stroke)"/>
+      <path d="M160 160 L160 10 A150 150 0 0 1 145.5 308.3 Z" style="fill:var(--teal)"/>
+      <path d="M160 160 L145.5 308.3 A150 150 0 0 1 50 271 Z" style="fill:var(--amber)"/>
+      <path d="M160 160 L50 271 A150 150 0 0 1 10 160 Z" style="fill:var(--rust)"/>
+      <circle cx="160" cy="160" r="70" style="fill:var(--fond)"/>
+      <text x="160" y="100" text-anchor="middle" font-family="DM Mono" font-size="15" font-weight="600" style="fill:var(--blanc)">Crédit</text>
+      <text x="160" y="120" text-anchor="middle" font-family="DM Mono" font-size="18" font-weight="600" style="fill:var(--blanc)">85 %</text>
+      <text x="160" y="155" text-anchor="middle" font-family="Fraunces" font-size="13" style="fill:var(--nuit)">Répartition</text>
+      <text x="160" y="172" text-anchor="middle" font-family="Fraunces" font-size="13" style="fill:var(--nuit)">estimée</text>
+      <text x="78" y="245" text-anchor="middle" font-family="DM Mono" font-size="12" style="fill:var(--blanc)">Op. 10%</text>
+      <text x="55" y="200" text-anchor="middle" font-family="DM Mono" font-size="11" style="fill:var(--blanc)">Mar.5%</text>
     </svg>
     <div class="schema-cap">Estimation des banques : 85 % crédit · 10 % opérationnel · 5 % marché</div>
   </div>
@@ -354,17 +357,17 @@ const lessons = [
 
   <div class="schema">
     <svg viewBox="0 0 460 240" width="440">
-      <rect x="20" y="20" width="420" height="46" rx="9" fill="#23456b"/>
-      <text x="230" y="42" text-anchor="middle" fill="#fff" font-family="Fraunces" font-size="14" font-weight="600">International — Comité de Bâle · FMI · OICV</text>
-      <text x="230" y="58" text-anchor="middle" fill="#cdd9e7" font-family="DM Mono" font-size="10">Normes de fonds propres, stabilité globale</text>
-      <rect x="60" y="86" width="340" height="46" rx="9" fill="#1b6b5e"/>
-      <text x="230" y="108" text-anchor="middle" fill="#fff" font-family="Fraunces" font-size="14" font-weight="600">Européen — BCE/MSU · ABE · CERS</text>
-      <text x="230" y="124" text-anchor="middle" fill="#bfe0d8" font-family="DM Mono" font-size="10">Supervision des 128 grandes banques</text>
-      <rect x="100" y="152" width="260" height="46" rx="9" fill="#c87a12"/>
-      <text x="230" y="174" text-anchor="middle" fill="#fff" font-family="Fraunces" font-size="14" font-weight="600">National — ACPR · AMF</text>
-      <text x="230" y="190" text-anchor="middle" fill="#fbe9cc" font-family="DM Mono" font-size="10">ACPR : banques · AMF : marchés</text>
-      <line x1="230" y1="66" x2="230" y2="86" stroke="#9a8f7c" stroke-width="1.5"/>
-      <line x1="230" y1="132" x2="230" y2="152" stroke="#9a8f7c" stroke-width="1.5"/>
+      <rect x="20" y="20" width="420" height="46" rx="9" style="fill:var(--navy)"/>
+      <text x="230" y="42" text-anchor="middle" font-family="Fraunces" font-size="14" font-weight="600" style="fill:var(--blanc)">International — Comité de Bâle · FMI · OICV</text>
+      <text x="230" y="58" text-anchor="middle" font-family="DM Mono" font-size="10" style="fill:var(--m-clair)">Normes de fonds propres, stabilité globale</text>
+      <rect x="60" y="86" width="340" height="46" rx="9" style="fill:var(--teal)"/>
+      <text x="230" y="108" text-anchor="middle" font-family="Fraunces" font-size="14" font-weight="600" style="fill:var(--blanc)">Européen — BCE/MSU · ABE · CERS</text>
+      <text x="230" y="124" text-anchor="middle" font-family="DM Mono" font-size="10" style="fill:var(--teal-clair)">Supervision des 128 grandes banques</text>
+      <rect x="100" y="152" width="260" height="46" rx="9" style="fill:var(--amber)"/>
+      <text x="230" y="174" text-anchor="middle" font-family="Fraunces" font-size="14" font-weight="600" style="fill:var(--blanc)">National — ACPR · AMF</text>
+      <text x="230" y="190" text-anchor="middle" font-family="DM Mono" font-size="10" style="fill:var(--amber-soft)">ACPR : banques · AMF : marchés</text>
+      <line x1="230" y1="66" x2="230" y2="86" stroke-width="1.5" style="stroke:var(--txt3)"/>
+      <line x1="230" y1="132" x2="230" y2="152" stroke-width="1.5" style="stroke:var(--txt3)"/>
     </svg>
     <div class="schema-cap">Trois étages de surveillance, du local au mondial</div>
   </div>
@@ -419,15 +422,15 @@ const lessons = [
   <h3>Les Tiers de fonds propres</h3>
   <div class="schema">
     <svg viewBox="0 0 360 200" width="340">
-      <rect x="60" y="20" width="240" height="44" fill="#1b6b5e" rx="6"/>
-      <text x="180" y="40" text-anchor="middle" fill="#fff" font-family="Fraunces" font-size="14" font-weight="600">CET1 — capital + réserves</text>
-      <text x="180" y="57" text-anchor="middle" fill="#bfe0d8" font-family="DM Mono" font-size="11">≥ 4,5 % des RWA</text>
-      <rect x="60" y="72" width="240" height="40" fill="#2a9c87" rx="6"/>
-      <text x="180" y="90" text-anchor="middle" fill="#fff" font-family="Fraunces" font-size="13">+ AT1 (hybrides) → Tier 1</text>
-      <text x="180" y="106" text-anchor="middle" fill="#dff3ee" font-family="DM Mono" font-size="11">Tier 1 ≥ 6 % des RWA</text>
-      <rect x="60" y="120" width="240" height="40" fill="#c87a12" rx="6"/>
-      <text x="180" y="138" text-anchor="middle" fill="#fff" font-family="Fraunces" font-size="13">+ Tier 2 (dettes subordonnées)</text>
-      <text x="180" y="154" text-anchor="middle" fill="#fbe9cc" font-family="DM Mono" font-size="11">Total T1+T2 ≥ 8 % des RWA</text>
+      <rect x="60" y="20" width="240" height="44" rx="6" style="fill:var(--teal)"/>
+      <text x="180" y="40" text-anchor="middle" font-family="Fraunces" font-size="14" font-weight="600" style="fill:var(--blanc)">CET1 — capital + réserves</text>
+      <text x="180" y="57" text-anchor="middle" font-family="DM Mono" font-size="11" style="fill:var(--teal-clair)">≥ 4,5 % des RWA</text>
+      <rect x="60" y="72" width="240" height="40" rx="6" style="fill:var(--teal)"/>
+      <text x="180" y="90" text-anchor="middle" font-family="Fraunces" font-size="13" style="fill:var(--blanc)">+ AT1 (hybrides) → Tier 1</text>
+      <text x="180" y="106" text-anchor="middle" font-family="DM Mono" font-size="11" style="fill:var(--teal-soft)">Tier 1 ≥ 6 % des RWA</text>
+      <rect x="60" y="120" width="240" height="40" rx="6" style="fill:var(--amber)"/>
+      <text x="180" y="138" text-anchor="middle" font-family="Fraunces" font-size="13" style="fill:var(--blanc)">+ Tier 2 (dettes subordonnées)</text>
+      <text x="180" y="154" text-anchor="middle" font-family="DM Mono" font-size="11" style="fill:var(--amber-soft)">Total T1+T2 ≥ 8 % des RWA</text>
     </svg>
     <div class="schema-cap">CET1 (4,5 %) → Tier 1 (6 %) → Total (8 %)</div>
   </div>
@@ -572,20 +575,20 @@ const lessons = [
   <p>La banque transforme un paquet de prêts en titres financiers vendus sur les marchés. Elle récupère des liquidités et se défait du risque de crédit.</p>
   <div class="schema">
     <svg viewBox="0 0 440 130" width="430">
-      <rect x="10" y="40" width="110" height="50" rx="8" fill="#1b6b5e"/>
-      <text x="65" y="62" text-anchor="middle" fill="#fff" font-family="Fraunces" font-size="13">Banque</text>
-      <text x="65" y="79" text-anchor="middle" fill="#bfe0d8" font-family="DM Mono" font-size="9">prêts</text>
-      <path d="M120 55 L180 55" stroke="#9a8f7c" stroke-width="2" marker-end="url(#ar)"/>
-      <rect x="180" y="40" width="110" height="50" rx="8" fill="#c87a12"/>
-      <text x="235" y="58" text-anchor="middle" fill="#fff" font-family="Fraunces" font-size="12">Véhicule (SPV)</text>
-      <text x="235" y="76" text-anchor="middle" fill="#fbe9cc" font-family="DM Mono" font-size="9">→ titres</text>
-      <path d="M290 55 L350 55" stroke="#9a8f7c" stroke-width="2" marker-end="url(#ar)"/>
-      <rect x="350" y="40" width="80" height="50" rx="8" fill="#23456b"/>
-      <text x="390" y="62" text-anchor="middle" fill="#fff" font-family="Fraunces" font-size="12">Marchés</text>
-      <text x="390" y="79" text-anchor="middle" fill="#cdd9e7" font-family="DM Mono" font-size="9">investisseurs</text>
-      <path d="M350 100 Q235 130 120 100" stroke="#1b6b5e" stroke-width="2" fill="none" stroke-dasharray="4" marker-end="url(#ar)"/>
-      <text x="235" y="125" text-anchor="middle" fill="#1b6b5e" font-family="DM Mono" font-size="10">liquidités</text>
-      <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#9a8f7c"/></marker></defs>
+      <rect x="10" y="40" width="110" height="50" rx="8" style="fill:var(--teal)"/>
+      <text x="65" y="62" text-anchor="middle" font-family="Fraunces" font-size="13" style="fill:var(--blanc)">Banque</text>
+      <text x="65" y="79" text-anchor="middle" font-family="DM Mono" font-size="9" style="fill:var(--teal-clair)">prêts</text>
+      <path d="M120 55 L180 55" stroke-width="2" marker-end="url(#ar)" style="stroke:var(--txt3)"/>
+      <rect x="180" y="40" width="110" height="50" rx="8" style="fill:var(--amber)"/>
+      <text x="235" y="58" text-anchor="middle" font-family="Fraunces" font-size="12" style="fill:var(--blanc)">Véhicule (SPV)</text>
+      <text x="235" y="76" text-anchor="middle" font-family="DM Mono" font-size="9" style="fill:var(--amber-soft)">→ titres</text>
+      <path d="M290 55 L350 55" stroke-width="2" marker-end="url(#ar)" style="stroke:var(--txt3)"/>
+      <rect x="350" y="40" width="80" height="50" rx="8" style="fill:var(--navy)"/>
+      <text x="390" y="62" text-anchor="middle" font-family="Fraunces" font-size="12" style="fill:var(--blanc)">Marchés</text>
+      <text x="390" y="79" text-anchor="middle" font-family="DM Mono" font-size="9" style="fill:var(--m-clair)">investisseurs</text>
+      <path d="M350 100 Q235 130 120 100" stroke-width="2" fill="none" stroke-dasharray="4" marker-end="url(#ar)" style="stroke:var(--teal)"/>
+      <text x="235" y="125" text-anchor="middle" font-family="DM Mono" font-size="10" style="fill:var(--teal)">liquidités</text>
+      <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" style="fill:var(--txt3)"/></marker></defs>
     </svg>
     <div class="schema-cap">Prêts → titres → marchés ; les liquidités reviennent à la banque</div>
   </div>
@@ -621,15 +624,15 @@ const lessons = [
 
   <div class="schema">
     <svg viewBox="0 0 380 180" width="360">
-      <line x1="40" y1="150" x2="350" y2="150" stroke="#9a8f7c" stroke-width="1.5"/>
-      <line x1="40" y1="20" x2="40" y2="150" stroke="#9a8f7c" stroke-width="1.5"/>
-      <line x1="40" y1="80" x2="350" y2="80" stroke="#1b6b5e" stroke-width="3"/>
-      <text x="300" y="72" fill="#1b6b5e" font-family="DM Mono" font-size="11">prêt taux fixe</text>
-      <line x1="40" y1="130" x2="350" y2="40" stroke="#a8432a" stroke-width="3"/>
-      <text x="280" y="38" fill="#a8432a" font-family="DM Mono" font-size="11">coût ressource ↑</text>
-      <circle cx="220" cy="80" r="5" fill="#c87a12"/>
-      <text x="220" y="105" text-anchor="middle" fill="#c87a12" font-family="DM Mono" font-size="11">marge écrasée</text>
-      <text x="195" y="170" text-anchor="middle" fill="#9a8f7c" font-family="DM Mono" font-size="10">temps →</text>
+      <line x1="40" y1="150" x2="350" y2="150" stroke-width="1.5" style="stroke:var(--txt3)"/>
+      <line x1="40" y1="20" x2="40" y2="150" stroke-width="1.5" style="stroke:var(--txt3)"/>
+      <line x1="40" y1="80" x2="350" y2="80" stroke-width="3" style="stroke:var(--teal)"/>
+      <text x="300" y="72" font-family="DM Mono" font-size="11" style="fill:var(--teal)">prêt taux fixe</text>
+      <line x1="40" y1="130" x2="350" y2="40" stroke-width="3" style="stroke:var(--rust)"/>
+      <text x="280" y="38" font-family="DM Mono" font-size="11" style="fill:var(--rust)">coût ressource ↑</text>
+      <circle cx="220" cy="80" r="5" style="fill:var(--amber)"/>
+      <text x="220" y="105" text-anchor="middle" font-family="DM Mono" font-size="11" style="fill:var(--amber)">marge écrasée</text>
+      <text x="195" y="170" text-anchor="middle" font-family="DM Mono" font-size="10" style="fill:var(--txt3)">temps →</text>
     </svg>
     <div class="schema-cap">Effet ciseau : la ressource croise puis dépasse le rendement du prêt fixe</div>
   </div>
@@ -721,13 +724,13 @@ const lessons = [
 
   <div class="schema">
     <svg viewBox="0 0 380 160" width="360">
-      <path d="M20 130 Q110 130 150 60 Q190 10 230 60 Q270 130 360 130" fill="#e3efec" stroke="#1b6b5e" stroke-width="2"/>
-      <path d="M20 130 Q70 130 95 100 L95 130 Z" fill="#a8432a" opacity="0.6"/>
-      <line x1="95" y1="20" x2="95" y2="130" stroke="#a8432a" stroke-width="1.5" stroke-dasharray="4"/>
-      <text x="60" y="148" fill="#a8432a" font-family="DM Mono" font-size="11">perte &gt; VaR</text>
-      <text x="60" y="118" fill="#a8432a" font-family="DM Mono" font-size="10">5%</text>
-      <text x="230" y="148" fill="#1b6b5e" font-family="DM Mono" font-size="11">95 % des jours</text>
-      <text x="190" y="40" text-anchor="middle" fill="#22201b" font-family="Fraunces" font-size="12">distribution des pertes</text>
+      <path d="M20 130 Q110 130 150 60 Q190 10 230 60 Q270 130 360 130" stroke-width="2" style="fill:var(--teal-soft);stroke:var(--teal)"/>
+      <path d="M20 130 Q70 130 95 100 L95 130 Z" opacity="0.6" style="fill:var(--rust)"/>
+      <line x1="95" y1="20" x2="95" y2="130" stroke-width="1.5" stroke-dasharray="4" style="stroke:var(--rust)"/>
+      <text x="60" y="148" font-family="DM Mono" font-size="11" style="fill:var(--rust)">perte &gt; VaR</text>
+      <text x="60" y="118" font-family="DM Mono" font-size="10" style="fill:var(--rust)">5%</text>
+      <text x="230" y="148" font-family="DM Mono" font-size="11" style="fill:var(--teal)">95 % des jours</text>
+      <text x="190" y="40" text-anchor="middle" font-family="Fraunces" font-size="12" style="fill:var(--nuit)">distribution des pertes</text>
     </svg>
     <div class="schema-cap">La VaR borne 95 % de la distribution ; la queue (5 %) échappe au modèle</div>
   </div>
@@ -1086,5 +1089,8 @@ function toggleCor(i){
 }
 updateProgress();
 </script>
+<script src="../lb.js"></script>
+<script src="../progress.js"></script>
+<script src="../ui.js"></script>
 </body>
 </html>

@@ -76,12 +76,28 @@ Arrivée sur `index.html` :
   M1 identiques à l'octet, insertions de l'ancien site → `m1`, niveau d'une
   partie non modifiable, unicité par (jour, niveau, pseudo).
 
+## La Licence (chantier B7, branche hub-licence)
+
+Reprise des 9 matières et 8 entraînements du site de la LP ABF.
+
+| Fichier | Rôle |
+|---|---|
+| `licence/*.html` | Les 17 pages, **squelette d'origine conservé** (menu de gauche, leçons, test, annales, générateurs). Converties une fois : `data-niveau="licence"`, `subject-id` en `l-…`, couleurs en variables de `theme.css`, chemins `../`, ancienne barre du haut remplacée par l'en-tête commun. |
+| `licence.css` | Raccords de ces pages (calage sous l'en-tête, cadre photo, tableaux sur téléphone, quelques contrastes). Aucune couleur. |
+| `theme.css` (fin) | Identité des 9 matières (`l-maths-fi`, `l-politique-monetaire`, `l-droit-bancaire`, `l-risques-bancaires`, `l-finance-internationale`, `l-crises-financieres`, `l-fiscalite`, `l-marche-capitaux`, `l-banque-patrimoine`). Photos : copies locales de `img/`. |
+| `ui.js` | « Niveau » : `R` (racine vue de la page), en-tête, tiroir, barre basse et recherche de la Licence ; cadre photo des pages Licence (`construireCadreLicence`) ; verrou BeQuick du soir pour les matières de Licence. Le M1 garde exactement ses liens. |
+| `banque-licence.js` | Questions du BeQuick Licence (`window.BANQUE_LICENCE`), **générées** depuis les tests finaux et les QCM des entraînements. Jamais dans `banque.js`. |
+| `bequick.js` | `MATIERES_NIVEAU.licence` rempli ; hors M1, une matière à petite banque est complétée par une autre (15 questions). |
+| `netlify/edge-functions/acces.js` | Matière d'essai Licence : `licence/droit-bancaire`. |
+
+Non branché pour la Licence (pages d'origine sans mémoire de progression) :
+progression des leçons (`progress.js`), classement (`lb.js`), révision espacée,
+statistiques, glossaire. Les cartes de `licence.html` affichent le contenu de
+chaque matière au lieu d'un compteur.
+
 ## Reste à faire plus tard (hors de ce chantier)
 
-- `ui.js` n'est pas encore « niveau » : en-tête, tiroir, recherche, logo et
-  verrou BeQuick (`verrouBeQuick`) sont ceux du M1. À adapter quand la
-  Licence aura des cours (liens de l'en-tête, `PAGES`, `NOMS`, et verrou qui
-  lit les matières du soir du niveau de la page).
+- `ui.js` : fait pour la Licence (voir plus haut) ; à faire pour le M2.
 - `revision.html`, `stats.html`, `classement.html`, `glossaire.html` : M1
   seulement pour l'instant.
 - `supabase/admin.sql` (tableau de bord) compte toutes les parties BeQuick

@@ -36,7 +36,13 @@
      le M1 prend toutes les autres matières de la banque. Ajouter ici
      chaque matière de Licence ou de M2 quand ses questions entrent
      dans banque.js. */
-  const MATIERES_NIVEAU = {licence:[], m2:[]};
+  const MATIERES_NIVEAU = {
+    licence:['l-maths-fi','l-politique-monetaire','l-droit-bancaire','l-risques-bancaires','l-finance-internationale',
+             'l-crises-financieres','l-fiscalite','l-marche-capitaux','l-banque-patrimoine'],
+    m2:[]};
+  /* Licence : ses questions sont dans banque-licence.js (window.BANQUE_LICENCE),
+     jamais dans banque.js ; la série du M1 ne peut donc pas les tirer. */
+  const banque = () => NIV === 'licence' ? (window.BANQUE_LICENCE||[]) : (window.BANQUE||[]);
   const NIVEAUX = ['licence','m1','m2'];
   /* ordre : ?niveau= dans l'adresse, puis data-niveau de la page, puis
      le niveau de l'appareil (niveau.js), et le M1 par défaut */
@@ -50,7 +56,7 @@
   const AUTRES = Object.values(MATIERES_NIVEAU).flat();
   const duNiveau = sid => NIV === 'm1' ? !AUTRES.includes(sid) : (MATIERES_NIVEAU[NIV]||[]).includes(sid);
   const URL_BQ = NIV === 'm1' ? 'bequick.html' : 'bequick.html?niveau='+NIV;
-  const actif = () => (window.BANQUE||[]).some(q=>duNiveau(q.m));
+  const actif = () => banque().some(q=>duNiveau(q.m));
 
   /* ---------- heure de Paris ---------- */
   const FMT = new Intl.DateTimeFormat('fr-FR',{timeZone:'Europe/Paris',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'});
@@ -126,7 +132,7 @@
   function hasard(seed){ let s = seed>>>0; return ()=>{ s |= 0; s = s + 0x6D2B79F5 | 0; let t = Math.imul(s ^ s>>>15, 1 | s); t = t + Math.imul(t ^ t>>>7, 61 | t) ^ t; return ((t ^ t>>>14)>>>0)/4294967296; }; }
   function poidsMatieres(jour){
     const t = instant(jour, OUVERTURE), ech = window.ECHEANCES || [];
-    const sids = [...new Set((window.BANQUE||[]).map(q=>q.m))].filter(duNiveau).sort();
+    const sids = [...new Set(banque().map(q=>q.m))].filter(duNiveau).sort();
     const out = [];
     sids.forEach(sid=>{
       const e = ech.filter(x=>x.sid===sid);
@@ -146,8 +152,16 @@
       while(i < pool.length-1 && v >= pool[i].poids){ v -= pool[i].poids; i++; }
       choisies.push(pool[i].sid); pool = pool.filter((_,j)=>j!==i);
     }
+    /* hors M1 (8.0.0) : une matière à petite banque se complète d'une autre
+       pour garder 15 questions (le tirage du M1 n'entre jamais ici) */
+    const nbQ = sid => banque().filter(q=>q.m===sid && (q.type==='qcm'||q.type==='num')).length;
+    while(NIV !== 'm1' && pool.length && choisies.reduce((a,sid)=>a+nbQ(sid),0) < NB_Q){
+      const tot = pool.reduce((a,x)=>a+x.poids,0); let v = r()*tot, i = 0;
+      while(i < pool.length-1 && v >= pool[i].poids){ v -= pool[i].poids; i++; }
+      choisies.push(pool[i].sid); pool = pool.filter((_,j)=>j!==i);
+    }
     const melange = arr=>{ const a = arr.slice(); for(let i=a.length-1;i>0;i--){ const j = Math.floor(r()*(i+1)); [a[i],a[j]] = [a[j],a[i]]; } return a; };
-    const parMat = choisies.map(sid=>melange((window.BANQUE||[]).filter(q=>q.m===sid && (q.type==='qcm'||q.type==='num')).map(q=>q.id)));
+    const parMat = choisies.map(sid=>melange(banque().filter(q=>q.m===sid && (q.type==='qcm'||q.type==='num')).map(q=>q.id)));
     const ids = [];
     const part = Math.ceil(NB_Q/Math.max(1,parMat.length));
     parMat.forEach(l=>ids.push(...l.slice(0, part)));
@@ -155,7 +169,7 @@
     return {matieres:choisies, ids:melange(ids.slice(0, NB_Q))};
   }
   function questions(ids){
-    const index = {}; (window.BANQUE||[]).forEach(q=>{ index[q.id] = q; });
+    const index = {}; banque().forEach(q=>{ index[q.id] = q; });
     return ids.map(id=>index[id]).filter(Boolean);
   }
 
@@ -346,11 +360,12 @@
     if(ph === 'ouvert' && loc && loc.fini) out.push({id:'bq-res-'+j, ico:'🏆', titre:"Ton "+NOM+" du jour : "+(loc.score||0).toLocaleString('fr-FR')+" points", texte:"Le classement du jour se complète jusqu'à 22 h 20.", url:URL_BQ+'#classement'});
     if(ph === 'avant'){ const m = OUVERTURE - paris(t).min; if(m <= 60) out.push({id:'bq-bientot-'+j, ico:'⏳', titre:NOM+" ouvre dans "+m+" min", texte:"Rendez-vous à 18 h 30.", url:URL_BQ}); }
     (window.ECHEANCES||[]).forEach(e=>{
+      if(NIV !== 'm1' && !duNiveau(e.sid)) return;
       const n = Math.ceil((e.end - t)/864e5);
       if(n >= 0 && n <= 7 && !e.provisoire) out.push({id:'partiel-'+e.sid+'-'+n, ico:'📅', titre:(n===0?"Partiel aujourd'hui : ":n===1?"Partiel demain : ":"Partiel dans "+n+" jours : ")+e.titre, texte:e.format, url:e.matiere || 'index.html#piste'});
     });
     try{
-      if(window.P && P.aReviser && window.BANQUE){
+      if(NIV === 'm1' && window.P && P.aReviser && window.BANQUE){
         const a = P.aReviser(window.BANQUE.map(q=>q.id));
         if(a.dus.length) out.push({id:'revision-'+j, ico:'🔁', titre:a.dus.length+" question"+(a.dus.length>1?'s':'')+" à réviser aujourd'hui", texte:"Ta révision espacée du jour.", url:'revision.html'});
       }

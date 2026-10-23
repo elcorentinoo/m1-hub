@@ -1,25 +1,14 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-niveau="licence" subject-id="l-politique-monetaire">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fiscalité · Mode entraînement</title>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>Politique Monétaire · Mode entraînement</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <style>
-:root{
-  --paper:#faf6ef; --paper2:#f3ece0; --ink:#22201b; --ink2:#4a4640;
-  --muted:#8a8378; --line:#e3d9c8; --line2:#d4c7b0;
-  --teal:#1b6b5e; --teal-l:#e4f0ed; --teal-d:#0f4a40;
-  --amber:#c87a12; --amber-l:#fbf0db;
-  --rust:#a8432a; --rust-l:#f7e6df;
-  --plum:#6b3a73; --plum-l:#f0e7f2;
-  --navy:#23456b; --navy-l:#e3ebf4;
-  --gold:#b8860b;
-  --ok:#1b7a4b; --ok-l:#e2f3e9; --err:#b23b2e; --err-l:#fae8e5;
-  --shadow:0 1px 3px rgba(34,32,27,.08), 0 8px 24px rgba(34,32,27,.06);
-  --shadow-lg:0 4px 12px rgba(34,32,27,.12), 0 20px 48px rgba(34,32,27,.1);
-}
+:root{ --ok-l:var(--teal-soft); --err:var(--rust); --err-l:var(--rust-soft);}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{
@@ -32,7 +21,7 @@ body{
 /* ── TOP BAR ── */
 #topbar{
   position:sticky; top:0; z-index:50;
-  background:rgba(250,246,239,.92); backdrop-filter:blur(10px);
+  background:color-mix(in srgb, var(--fond) 92%, transparent); backdrop-filter:blur(10px);
   border-bottom:1px solid var(--line);
   padding:12px 24px; display:flex; align-items:center; gap:18px;
 }
@@ -42,7 +31,7 @@ body{
 }
 #topbar .logo span{color:var(--amber)}
 #topbar .hub{font-family:'DM Mono',monospace; font-size:12px; color:var(--muted); text-decoration:none; white-space:nowrap; padding:5px 10px; border-radius:8px; border:1px solid var(--line); transition:all .15s}
-#topbar .hub:hover{color:var(--teal-d); border-color:var(--line2); background:#fff}
+#topbar .hub:hover{color:var(--teal-d); border-color:var(--line2); background:var(--blanc)}
 .top-progress{flex:1; max-width:420px}
 .top-progress-bar{height:6px; background:var(--line); border-radius:6px; overflow:hidden}
 .top-progress-fill{height:100%; background:linear-gradient(90deg,var(--teal),var(--gold)); border-radius:6px; transition:width .5s cubic-bezier(.4,0,.2,1); width:0%}
@@ -65,7 +54,7 @@ body{
 .home h1 .acc{color:var(--amber)}
 .home-sub{font-size:16.5px; color:var(--ink2); margin-bottom:30px; max-width:560px}
 
-.mode-card{background:#fff; border:1.5px solid var(--line); border-radius:18px; padding:24px; margin-bottom:18px; box-shadow:var(--shadow); position:relative; overflow:hidden; transition:border-color .2s, box-shadow .2s}
+.mode-card{background:var(--blanc); border:1.5px solid var(--line); border-radius:18px; padding:24px; margin-bottom:18px; box-shadow:var(--shadow); position:relative; overflow:hidden; transition:border-color .2s, box-shadow .2s}
 .mode-card:hover{box-shadow:var(--shadow-lg); border-color:var(--line2)}
 .mode-card::before{content:''; position:absolute; top:0; left:0; bottom:0; width:5px}
 .mode-card.m-teal::before{background:var(--teal)}
@@ -82,41 +71,41 @@ body{
 .start-chip:hover{transform:translateY(-2px); box-shadow:var(--shadow)}
 .m-teal .start-chip:hover{border-color:var(--teal); color:var(--teal-d); background:var(--teal-l)}
 .m-plum .start-chip:hover{border-color:var(--plum); color:var(--plum); background:var(--plum-l)}
-.m-navy .start-chip.solo{background:var(--navy); color:#fff; border-color:var(--navy); width:100%; justify-content:center; display:flex; align-items:center; gap:8px}
-.m-navy .start-chip.solo:hover{background:#15324f}
+.m-navy .start-chip.solo{background:var(--navy); color:var(--blanc); border-color:var(--navy); width:100%; justify-content:center; display:flex; align-items:center; gap:8px}
+.m-navy .start-chip.solo:hover{background:var(--navy)}
 .mode-card.m-gold::before{background:var(--gold)}
-.m-gold .mode-icon{background:#f7eccb}
-.m-gold .start-chip:hover{border-color:var(--gold); color:#8a6608; background:#f7eccb}
-.m-gold .start-chip.solo{background:var(--gold); color:#fff; border-color:var(--gold); width:100%; justify-content:center; display:flex; align-items:center; gap:8px}
-.m-gold .start-chip.solo:hover{background:#8a6608}
+.m-gold .mode-icon{background:var(--amber-soft)}
+.m-gold .start-chip:hover{border-color:var(--gold); color:var(--amber); background:var(--amber-soft)}
+.m-gold .start-chip.solo{background:var(--gold); color:var(--blanc); border-color:var(--gold); width:100%; justify-content:center; display:flex; align-items:center; gap:8px}
+.m-gold .start-chip.solo:hover{background:var(--amber)}
 .chip-lbl{font-size:12.5px; color:var(--muted); font-family:'DM Mono',monospace; margin-right:4px}
 .end-link{display:block; margin:8px auto 0; background:none; border:none; color:var(--muted); font-family:'DM Mono',monospace; font-size:12px; cursor:pointer; text-decoration:underline; text-underline-offset:3px}
 .end-link:hover{color:var(--rust)}
-.level-select{background:#fff; border:1.5px solid var(--line); border-radius:16px; padding:18px 20px; margin-bottom:24px; box-shadow:var(--shadow)}
+.level-select{background:var(--blanc); border:1.5px solid var(--line); border-radius:16px; padding:18px 20px; margin-bottom:24px; box-shadow:var(--shadow)}
 .level-lbl{font-family:'DM Mono',monospace; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--amber); font-weight:500}
 .level-seg{display:flex; gap:8px; margin:12px 0 10px; flex-wrap:wrap}
 .seg{flex:1; min-width:110px; padding:11px 10px; border-radius:11px; border:1.5px solid var(--line2); background:var(--paper); color:var(--ink2); font-family:'DM Sans',sans-serif; font-weight:600; font-size:14px; cursor:pointer; transition:all .15s}
 .seg:hover{border-color:var(--teal); color:var(--teal-d)}
-.seg.on{background:var(--teal); color:#fff; border-color:var(--teal); box-shadow:var(--shadow)}
+.seg.on{background:var(--teal); color:var(--blanc); border-color:var(--teal); box-shadow:var(--shadow)}
 .level-desc{font-size:13.5px; color:var(--ink2); margin:0}
 
 /* ── CALLOUTS ── */
 .callout{border-radius:14px; padding:16px 18px; margin:18px 0; border:1px solid; font-size:14.5px}
 .callout .c-label{font-family:'DM Mono',monospace; font-size:11px; font-weight:500; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px; display:flex; align-items:center; gap:7px}
-.callout.key{background:var(--teal-l); border-color:#b9dcd4}
+.callout.key{background:var(--teal-l); border-color:var(--teal-clair)}
 .callout.key .c-label{color:var(--teal-d)}
 .callout p:last-child{margin-bottom:0}
 
 /* ── NAV BUTTONS ── */
-.nav-btn{padding:13px 26px; border-radius:12px; font-family:'DM Sans',sans-serif; font-weight:600; font-size:14px; cursor:pointer; border:1.5px solid var(--line2); background:#fff; color:var(--ink2); transition:all .15s; display:inline-flex; align-items:center; gap:8px}
+.nav-btn{padding:13px 26px; border-radius:12px; font-family:'DM Sans',sans-serif; font-weight:600; font-size:14px; cursor:pointer; border:1.5px solid var(--line2); background:var(--blanc); color:var(--ink2); transition:all .15s; display:inline-flex; align-items:center; gap:8px}
 .nav-btn:hover{border-color:var(--teal); color:var(--teal-d)}
-.nav-btn.primary{background:var(--teal); color:#fff; border-color:var(--teal)}
+.nav-btn.primary{background:var(--teal); color:var(--blanc); border-color:var(--teal)}
 .nav-btn.primary:hover{background:var(--teal-d); transform:translateY(-2px); box-shadow:var(--shadow)}
 
 /* ── QUESTION CARD ── */
-.q-card{background:#fff; border:1.5px solid var(--line2); border-radius:18px; padding:28px; box-shadow:var(--shadow-lg); margin:8px 0 24px; position:relative}
+.q-card{background:var(--blanc); border:1.5px solid var(--line2); border-radius:18px; padding:28px; box-shadow:var(--shadow-lg); margin:8px 0 24px; position:relative}
 .info-btn{position:absolute; top:18px; right:18px; width:34px; height:34px; border-radius:50%; background:var(--navy-l); color:var(--navy); font-family:'Fraunces',serif; font-weight:700; font-size:18px; font-style:italic; border:1.5px solid var(--navy); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; z-index:10}
-.info-btn:hover{background:var(--navy); color:#fff; transform:scale(1.05)}
+.info-btn:hover{background:var(--navy); color:var(--blanc); transform:scale(1.05)}
 .q-counter{font-family:'DM Mono',monospace; font-size:12px; color:var(--plum); letter-spacing:1px; margin-bottom:8px}
 .q-theme{font-size:11px; color:var(--muted); margin-bottom:14px; font-family:'DM Mono',monospace}
 .q-text{font-family:'Fraunces',serif; font-weight:600; font-size:1.22rem; color:var(--ink); margin-bottom:6px; line-height:1.35}
@@ -131,23 +120,23 @@ body{
 
 /* QCM options */
 .opts{display:flex; flex-direction:column; gap:9px; margin-top:16px}
-.opt{display:flex; align-items:center; gap:12px; padding:12px 15px; background:#fff; border:1.5px solid var(--line); border-radius:10px; cursor:pointer; transition:all .15s; font-size:14.5px; user-select:none}
+.opt{display:flex; align-items:center; gap:12px; padding:12px 15px; background:var(--blanc); border:1.5px solid var(--line); border-radius:10px; cursor:pointer; transition:all .15s; font-size:14.5px; user-select:none}
 .opt:hover:not(.locked){border-color:var(--plum); transform:translateX(3px)}
 .opt .letter{flex-shrink:0; width:24px; height:24px; border-radius:6px; border:1.5px solid var(--line2); display:flex; align-items:center; justify-content:center; font-family:'DM Mono',monospace; font-size:12px; font-weight:500; color:var(--muted)}
 .opt.locked{cursor:default}
 .opt.correct{background:var(--ok-l); border-color:var(--ok); color:var(--ok)}
-.opt.correct .letter{background:var(--ok); color:#fff; border-color:var(--ok)}
+.opt.correct .letter{background:var(--ok); color:var(--blanc); border-color:var(--ok)}
 .opt.wrong{background:var(--err-l); border-color:var(--err); color:var(--err)}
-.opt.wrong .letter{background:var(--err); color:#fff; border-color:var(--err)}
+.opt.wrong .letter{background:var(--err); color:var(--blanc); border-color:var(--err)}
 .opt.reveal{background:var(--ok-l); border-color:var(--ok); color:var(--ok)}
 
 /* calc input */
 .input-row{display:flex; gap:10px; align-items:center; margin-top:16px}
-.calc-input{flex:1; max-width:260px; background:#fff; border:1.5px solid var(--line2); border-radius:10px; padding:12px 15px; font-family:'DM Mono',monospace; font-size:15px; color:var(--ink); outline:none}
+.calc-input{flex:1; max-width:260px; background:var(--blanc); border:1.5px solid var(--line2); border-radius:10px; padding:12px 15px; font-family:'DM Mono',monospace; font-size:15px; color:var(--ink); outline:none}
 .calc-input:focus{border-color:var(--plum)}
 .calc-unit{font-family:'DM Mono',monospace; color:var(--muted); font-size:15px}
-.submit-btn{margin-top:20px; width:100%; padding:14px; background:var(--plum); color:#fff; border:none; border-radius:12px; font-family:'DM Sans',sans-serif; font-weight:700; font-size:15px; cursor:pointer; transition:all .15s}
-.submit-btn:hover{background:#562e5d; transform:translateY(-1px)}
+.submit-btn{margin-top:20px; width:100%; padding:14px; background:var(--plum); color:var(--blanc); border:none; border-radius:12px; font-family:'DM Sans',sans-serif; font-weight:700; font-size:15px; cursor:pointer; transition:all .15s}
+.submit-btn:hover{background:var(--plum-deep); transform:translateY(-1px)}
 .submit-btn:disabled{opacity:.4; cursor:not-allowed; transform:none}
 
 .help-btn{background:transparent; border:1.5px dashed var(--line2); color:var(--ink2); padding:10px 16px; border-radius:10px; font-family:'DM Sans',sans-serif; font-weight:600; font-size:14px; cursor:pointer; transition:all .2s; margin-top:14px; display:inline-flex; align-items:center; gap:8px; width:100%; justify-content:center}
@@ -157,25 +146,25 @@ body{
 .formulaire-panel{display:none; background:var(--paper); border:1.5px solid var(--line2); border-radius:12px; padding:20px; margin-top:22px; box-shadow:var(--shadow)}
 .formulaire-panel.show{display:block; animation:fade .3s}
 .formulaire-title{font-family:'Fraunces',serif; font-weight:700; color:var(--navy); font-size:1.1rem; margin-bottom:14px; border-bottom:1px solid var(--line); padding-bottom:8px}
-.eq-item{padding:12px 16px; border-radius:8px; margin-bottom:10px; transition:all .3s ease; border:1.5px solid transparent; background:#fff}
+.eq-item{padding:12px 16px; border-radius:8px; margin-bottom:10px; transition:all .3s ease; border:1.5px solid transparent; background:var(--blanc)}
 .eq-item .eq-name{font-size:12px; color:var(--muted); font-family:'DM Mono',monospace; text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px}
-.eq-item.highlight{background:var(--ok-l); border-color:var(--ok); box-shadow:0 2px 8px rgba(27,122,75,.15); transform:translateX(4px)}
+.eq-item.highlight{background:var(--ok-l); border-color:var(--ok); box-shadow:0 2px 8px color-mix(in srgb, var(--teal) 15%, transparent); transform:translateX(4px)}
 
 /* correction */
 .corrige{display:none; margin-top:22px; border-radius:14px; padding:18px 20px; border:1.5px solid; animation:fade .35s}
 .corrige.show{display:block}
-.corrige.ok{background:var(--ok-l); border-color:#b9dcd4}
-.corrige.no{background:var(--rust-l); border-color:#e7c4b8}
+.corrige.ok{background:var(--ok-l); border-color:var(--teal-clair)}
+.corrige.no{background:var(--rust-l); border-color:var(--rust-clair)}
 .corrige-head{font-family:'Fraunces',serif; font-weight:700; font-size:16px; margin-bottom:6px; display:flex; align-items:center; gap:8px}
 .corrige.ok .corrige-head{color:var(--teal-d)}
 .corrige.no .corrige-head{color:var(--rust)}
 .corrige .yours{font-size:13px; color:var(--rust); font-family:'DM Mono',monospace; margin-bottom:10px}
 .corrige p{font-size:14px; color:var(--ink2); margin:4px 0 10px}
 .step{display:flex; gap:12px; margin-bottom:10px; align-items:flex-start}
-.step-n{flex-shrink:0; width:22px; height:22px; border-radius:50%; background:var(--teal); color:#fff; font-family:'DM Mono',monospace; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; margin-top:1px}
+.step-n{flex-shrink:0; width:22px; height:22px; border-radius:50%; background:var(--teal); color:var(--blanc); font-family:'DM Mono',monospace; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; margin-top:1px}
 .step-txt{flex:1; font-size:14px; color:var(--ink2)}
-.step-txt code{background:rgba(0,0,0,.05); padding:2px 7px; border-radius:5px; font-family:'DM Mono',monospace; font-size:12.5px; color:var(--teal-d)}
-.result-line{margin-top:12px; padding:12px 16px; background:#fff; border-radius:10px; font-family:'DM Mono',monospace; font-size:14.5px; font-weight:600; color:var(--teal-d); border:1px solid #b9dcd4}
+.step-txt code{background:color-mix(in srgb, var(--nuit) 5%, transparent); padding:2px 7px; border-radius:5px; font-family:'DM Mono',monospace; font-size:12.5px; color:var(--teal-d)}
+.result-line{margin-top:12px; padding:12px 16px; background:var(--blanc); border-radius:10px; font-family:'DM Mono',monospace; font-size:14.5px; font-weight:600; color:var(--teal-d); border:1px solid var(--teal-clair)}
 .corrige .next{margin-top:16px}
 
 /* result screen */
@@ -185,7 +174,7 @@ body{
 .result-score span{font-size:1.4rem; color:var(--muted)}
 .result-title{font-family:'Fraunces',serif; font-weight:700; font-size:1.6rem; margin:12px 0 8px}
 .result-msg{color:var(--ink2); font-size:15px; max-width:480px; margin:0 auto 24px}
-.result-breakdown{background:#fff; border:1px solid var(--line); border-radius:14px; padding:20px; margin:24px 0; text-align:left; box-shadow:var(--shadow)}
+.result-breakdown{background:var(--blanc); border:1px solid var(--line); border-radius:14px; padding:20px; margin:24px 0; text-align:left; box-shadow:var(--shadow)}
 .result-breakdown h3{font-family:'Fraunces',serif; font-size:15px; margin-bottom:14px; color:var(--ink)}
 .bd-row{display:flex; align-items:center; gap:12px; padding:9px 0; border-bottom:1px solid var(--line)}
 .bd-row:last-child{border-bottom:none}
@@ -206,12 +195,20 @@ body{
   .home h1{font-size:1.85rem}
   .top-progress{display:none}
 }
-</style></head>
+</style><link rel="stylesheet" href="../ui.css">
+<link rel="stylesheet" href="../theme.css">
+<link rel="stylesheet" href="../licence.css">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#ECEEF6">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/favicon-32.png">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+</head>
 <body>
 
 <div id="topbar">
-  <div class="logo">Fisca<span>lité</span> · Entraînement</div>
-  <a class="hub" href="index.html">← Hub</a>
+  <div class="logo">Politique <span>Monétaire</span> · Entraînement</div>
+  <a class="hub" href="../licence.html">← Hub</a>
   <div class="top-progress">
     <div class="top-progress-bar"><div class="top-progress-fill" id="topfill"></div></div>
     <div class="top-progress-txt" id="toptxt">Choisis un mode</div>
@@ -224,243 +221,39 @@ body{
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
 <script>
-const SUBJECT_KEY='Fiscalité';
-// Barème IR 2024 (par part) — helpers disponibles pour les générateurs
-function ir1(R){
-  const b=[[11294,0],[28797,0.11],[82341,0.30],[177106,0.41],[Infinity,0.45]];
-  let prev=0,t=0;
-  for(const seg of b){ const cap=seg[0],rate=seg[1]; if(R>cap){ t+=(cap-prev)*rate; prev=cap; } else { t+=(R-prev)*rate; break; } }
-  return t;
-}
-function baremeDetail(R){
-  const b=[[11294,0],[28797,0.11],[82341,0.30],[177106,0.41],[Infinity,0.45]];
-  let prev=0; const parts=[];
-  for(const seg of b){ const cap=seg[0],rate=seg[1];
-    if(R>cap){ if(rate>0) parts.push('('+fr(cap-prev,0)+'×'+fr(rate*100,0)+'%)'); prev=cap; }
-    else { if(rate>0) parts.push('('+fr(R-prev,0)+'×'+fr(rate*100,0)+'%)'); break; } }
-  return '<code>'+parts.join(' + ')+'</code>';
-}
-function partsFoyer(n){ let half=0; if(n>=1)half+=0.5; if(n>=2)half+=0.5; if(n>=3)half+=(n-2)*1; return 2+half; }
-function baremeLignes(R){
-  const b=[[0,11294,0],[11294,28797,0.11],[28797,82341,0.30],[82341,177106,0.41],[177106,Infinity,0.45]];
-  const lines=[];
-  for(const seg of b){ const lo=seg[0],hi=seg[1],rate=seg[2];
-    if(R<=lo) break;
-    const base=Math.min(R,hi)-lo; const part=base*rate;
-    lines.push('Tranche à '+fr(rate*100,0)+' % → <code>'+fr(base,0)+' × '+fr(rate*100,0)+' % = '+eur(part)+'</code>');
-    if(R<=hi) break;
-  }
-  return lines;
-}
-function tmiDe(R){ return R<=11294?0:R<=28797?11:R<=82341?30:R<=177106?41:45; }
-function formuleIR(QF){
-  if(QF<=11294) return {taux:0, c:0};
-  if(QF<=28797) return {taux:0.11, c:1242.34};
-  if(QF<=82341) return {taux:0.30, c:6713.77};
-  if(QF<=177106) return {taux:0.41, c:15771.28};
-  return {taux:0.45, c:22855.52};
-}
-
+const SUBJECT_KEY='Politique Monétaire';
 const SUBJECT = {
-  hasCalc:true,
-  lessonFile:'fiscalite.html',
-  homeTag:'Mode entraînement · Fiscalité des Particuliers',
-  h1:'Prêt pour l\'exam de <span class="acc">fiscalité</span> ?',
-  homeSub:'Parts, déductions, barème de l\'IR, quotient familial, PFU et prélèvements sociaux — des calculs générés à l\'infini, plus un QCM de cours.',
-  calcDesc:'Nombre de parts, déduction 10 %, micro-foncier, quotient familial, barème de l\'IR, PFU et prélèvements sociaux. Chiffres tirés au hasard à chaque fois.',
-  qcmDesc:'Foyer fiscal, parts, traitements & salaires, fonciers et RCM, calcul de l\'IR, crédit vs réduction, prélèvements sociaux, assurance-vie et plus-values.',
-  FORMULAIRE:`
-  <div class="formulaire-panel" id="formulaire-panel">
-    <div class="formulaire-title">📘 Formulaire · fiscalité (barème 2024)</div>
-    <div class="eq-item" id="eq-parts"><div class="eq-name">Parts du foyer</div>célibataire 1 · marié/pacsé 2 · enfants : +0,5 (1er) +0,5 (2e) +1 (à partir du 3e)</div>
-    <div class="eq-item" id="eq-ded"><div class="eq-name">Déduction forfaitaire salaires</div>10 % du salaire · plancher 504 € · plafond 14 426 € (par salarié)</div>
-    <div class="eq-item" id="eq-pension"><div class="eq-name">Abattement pensions</div>10 % · plafond 4 399 € (par foyer)</div>
-    <div class="eq-item" id="eq-micro"><div class="eq-name">Micro-foncier</div>abattement 30 % → revenu imposable = 70 % des loyers</div>
-    <div class="eq-item" id="eq-qf"><div class="eq-name">Quotient familial</div>QF = RNGI ÷ nombre de parts · IR = impôt(QF) × parts</div>
-    <div class="eq-item" id="eq-bareme"><div class="eq-name">Barème IR (par part)</div>0 % jusqu'à 11 294 · 11 % jusqu'à 28 797 · 30 % jusqu'à 82 341 · 41 % jusqu'à 177 106 · 45 % au-delà</div>
-    <div class="eq-item" id="eq-formule"><div class="eq-name">Formule rapide (par quotient)</div>On repère la tranche avec le quotient <b>R/N</b>, puis : <b>IR = (R × taux) − (montant × N)</b><br>11 % → 1 242,34 × N · 30 % → 6 713,77 × N · 41 % → 15 771,28 × N · 45 % → 22 855,52 × N</div>
-    <div class="eq-item" id="eq-pfu"><div class="eq-name">PFU (flat tax)</div>30 % = 12,8 % IR + 17,2 % PS (dividendes, intérêts, plus-values mobilières)</div>
-    <div class="eq-item" id="eq-ps"><div class="eq-name">Prélèvements sociaux</div>17,2 % sur les revenus du capital</div>
-  </div>`,
-  GENS:[
-    // Parts
-    function(){
-      const n=randint(0,4); const parts=partsFoyer(n); const half=parts-2;
-      return {kind:'calc', theme:'Quotient familial · parts', eqId:'eq-parts', unit:'parts',
-        q:`Un couple marié a <b>${n}</b> enfant${n>1?'s':''} à charge.<br>Combien de <strong>parts</strong> pour le foyer fiscal ?`,
-        data:`Couple = 2 parts · 1er et 2e enfant : +0,5 chacun · à partir du 3e : +1 par enfant`,
-        expected:parts, tol:0,
-        steps:[`Couple marié = <code>2 parts</code>`,
-          `Enfants : ${n===0?'aucun (+0)':'+'+fr(half,1)+' part(s)'}`,
-          `<code>2 + ${fr(half,1)} = ${fr(parts,1)}</code>`],
-        result:`${fr(parts,1)} parts`};
-    },
-    // Déduction 10 % salaires
-    function(){
-      const sal=pick([18000,24000,32000,40000,55000,80000,160000]);
-      let ded=sal*0.10; const cap=ded>14426; if(ded<504)ded=504; if(ded>14426)ded=14426;
-      return {kind:'calc', theme:'Traitements & salaires', eqId:'eq-ded', unit:'€',
-        q:`Salaire net imposable : <b>${eur0(sal)}</b>.<br>Montant de la <strong>déduction forfaitaire de 10 %</strong> ?`,
-        data:`Déduction = 10 % du salaire · plancher 504 € · plafond 14 426 €`,
-        expected:round(ded,2), tol:1,
-        steps:[`<code>10 % × ${eur0(sal)} = ${eur(sal*0.10)}</code>`,
-          cap?`Au-delà du plafond → on retient <code>14 426 €</code>`:`Dans les bornes [504 ; 14 426] → on retient ce montant`],
-        result:`Déduction = ${eur(ded)}`};
-    },
-    // Micro-foncier
-    function(){
-      const loy=pick([6000,8500,10000,12000,13500,14800]); const rev=loy*0.70;
-      return {kind:'calc', theme:'Revenus fonciers', eqId:'eq-micro', unit:'€',
-        q:`Loyers bruts (location nue, micro-foncier) : <b>${eur0(loy)}</b>.<br><strong>Revenu foncier imposable</strong> ?`,
-        data:`Micro-foncier : abattement forfaitaire de 30 % (régime si loyers < 15 000 €)`,
-        expected:round(rev,2), tol:1,
-        steps:[`Abattement 30 % → on impose <code>70 %</code> des loyers`,
-          `<code>${eur0(loy)} × 0,70 = ${eur(rev)}</code>`],
-        result:`Revenu foncier = ${eur(rev)}`};
-    },
-    // Quotient familial
-    function(){
-      const n=randint(0,3); const parts=partsFoyer(n); const rngi=pick([36000,48000,60000,72000,90000]); const qf=rngi/parts;
-      return {kind:'calc', theme:'Quotient familial · parts', eqId:'eq-qf', unit:'€',
-        q:`Couple marié, <b>${n}</b> enfant${n>1?'s':''}, RNGI = <b>${eur0(rngi)}</b>.<br>Calculez le <strong>quotient familial</strong>.`,
-        data:`Parts = ${fr(parts,1)} · QF = RNGI ÷ nombre de parts`,
-        expected:round(qf,2), tol:1,
-        steps:[`Nombre de parts = <code>${fr(parts,1)}</code>`,
-          `<code>QF = ${eur0(rngi)} ÷ ${fr(parts,1)} = ${eur(qf)}</code>`],
-        result:`QF = ${eur(qf)}`};
-    },
-    // PFU dividendes
-    function(){
-      const div=pick([2000,5000,8000,12000,20000]); const prel=div*0.30;
-      return {kind:'calc', theme:'Revenus de capitaux mobiliers', eqId:'eq-pfu', unit:'€',
-        q:`Un contribuable perçoit <b>${eur0(div)}</b> de dividendes, imposés au PFU.<br><strong>Montant total prélevé</strong> (IR + prélèvements sociaux) ?`,
-        data:`PFU = 30 % = 12,8 % IR + 17,2 % PS`,
-        expected:round(prel,2), tol:1,
-        steps:[`<code>PFU = 30 % × ${eur0(div)}</code>`,
-          `<code>= ${eur(prel)}</code> (dont 12,8 % IR + 17,2 % PS)`],
-        result:`Prélèvement = ${eur(prel)} · net = ${eur(div-prel)}`};
-    },
-    // PS sur plus-value
-    function(){
-      const pv=pick([3000,7500,12000,18000,25000]); const ps=pv*0.172;
-      return {kind:'calc', theme:'Prélèvements sociaux', eqId:'eq-ps', unit:'€',
-        q:`Plus-value de <b>${eur0(pv)}</b>.<br>Montant des <strong>prélèvements sociaux</strong> (17,2 %) ?`,
-        data:`PS sur le capital = 17,2 %`,
-        expected:round(ps,2), tol:1,
-        steps:[`<code>17,2 % × ${eur0(pv)}</code>`,`<code>= ${eur(ps)}</code>`],
-        result:`PS = ${eur(ps)}`};
-    },
-    // Impôt par tranches (détaillé, 1 part)
-    function(){
-      const R=pick([14000,20000,26000,33000,40000,55000,72000,95000]);
-      const ir=ir1(R); const tmi=tmiDe(R); const moyen=R?ir/R*100:0;
-      return {kind:'calc', theme:'Impôt par tranches', eqId:'eq-bareme', unit:'€',
-        q:`Revenu net imposable = <b>${eur0(R)}</b> (1 part).<br>Calculez l'<strong>impôt sur le revenu par tranches</strong>. <span style="font-size:13px;color:var(--muted)">(barème 2024)</span>`,
-        data:`0 % jusqu'à 11 294 · 11 % jusqu'à 28 797 · 30 % jusqu'à 82 341 · 41 % jusqu'à 177 106 · 45 % au-delà`,
-        expected:round(ir,2), tol:2,
-        steps:[`On découpe le revenu et on impose <b>chaque tranche à son propre taux</b> :`,
-          ...baremeLignes(R),
-          `On additionne les tranches : <code>IR = ${eur(ir)}</code>`,
-          `Taux marginal (TMI) = <code>${tmi} %</code> (taux de la dernière tranche atteinte) · taux moyen = IR ÷ revenu = <code>${fr(moyen,2)} %</code>`],
-        result:`IR ≈ ${eur(ir)} · TMI ${tmi} % · taux moyen ${fr(moyen,2)} %`};
-    },
-    // Taux marginal vs taux moyen
-    function(){
-      const R=pick([22000,30000,38000,50000,65000,85000]);
-      const ir=ir1(R); const tmi=tmiDe(R); const moyen=ir/R*100;
-      return {kind:'calc', theme:'Impôt par tranches', eqId:'eq-bareme', unit:'%',
-        q:`Revenu net imposable = <b>${eur0(R)}</b> (1 part), impôt = <b>${eur(ir)}</b>.<br>Calculez le <strong>taux moyen d'imposition</strong>. <span style="font-size:13px;color:var(--muted)">(2 décimales)</span>`,
-        data:`Taux moyen = impôt ÷ revenu imposable × 100 · TMI = ${tmi} %`,
-        expected:round(moyen,4), tol:0.05,
-        steps:[`<code>Taux moyen = ${eur(ir)} ÷ ${eur0(R)} × 100</code>`,
-          `<code>= ${fr(moyen,2)} %</code>`,
-          `À ne pas confondre avec le <b>taux marginal</b> (TMI = ${tmi} %), qui ne frappe que la dernière tranche.`],
-        result:`Taux moyen = ${fr(moyen,2)} % (TMI = ${tmi} %)`};
-    },
-    // Formule rapide par quotient (R × taux − montant × N)
-    function(){
-      const n=pick([1,1.5,2,2.5,3]);
-      const qf=pick([18000,24000,35000,50000,70000,90000,130000,200000]);
-      const R=Math.round(qf*n); const QF=R/n;
-      const f=formuleIR(QF); const ir=R*f.taux - f.c*n;
-      return {kind:'calc', theme:'Impôt — formule rapide', eqId:'eq-formule', unit:'€',
-        q:`Revenu imposable <b>R = ${eur0(R)}</b>, nombre de parts <b>N = ${fr(n,1)}</b>.<br>Calculez l'<strong>impôt brut</strong> avec la <strong>formule par quotient</strong>. <span style="font-size:13px;color:var(--muted)">(barème 2023)</span>`,
-        data:`Quotient R/N = ${eur0(R)} ÷ ${fr(n,1)} = ${eur(QF)} → tranche ${fr(f.taux*100,0)} % · formule : IR = (R × ${fr(f.taux,2)}) − (${fr(f.c,2)} × N)`,
-        expected:round(ir,2), tol:2,
-        steps:[`1) Quotient pour trouver la tranche : <code>R/N = ${eur0(R)} ÷ ${fr(n,1)} = ${eur(QF)}</code> → tranche à <b>${fr(f.taux*100,0)} %</b>`,
-          `2) Formule de la tranche : <code>IR = (R × ${fr(f.taux,2)}) − (${fr(f.c,2)} × N)</code>`,
-          `3) <code>IR = (${eur0(R)} × ${fr(f.taux,2)}) − (${fr(f.c,2)} × ${fr(n,1)}) = ${eur(ir)}</code>`],
-        result:`IR brut ≈ ${eur(ir)}`};
-    },
-    // IR célibataire (barème)
-    function(){
-      const R=pick([18000,25000,32000,45000,60000,90000]); const ir=ir1(R);
-      return {kind:'calc', theme:'Calcul de l\'IR', eqId:'eq-bareme', unit:'€',
-        q:`Célibataire (1 part), revenu net imposable = <b>${eur0(R)}</b>.<br>Calculez l'<strong>impôt brut</strong> au barème (avant décote). <span style="font-size:13px;color:var(--muted)">(barème 2024)</span>`,
-        data:`Barème par part : 0 % jusqu'à 11 294 · 11 % · 30 % · 41 % · 45 %`,
-        expected:round(ir,2), tol:5,
-        steps:[`On applique le barème tranche par tranche sur ${eur0(R)} (1 part) :`,
-          baremeDetail(R),
-          `<code>Impôt ≈ ${eur(ir)}</code>`],
-        result:`IR brut ≈ ${eur(ir)}`};
-    },
-    // IR couple (QF)
-    function(){
-      const n=randint(0,3); const parts=partsFoyer(n); const R=pick([45000,60000,80000,100000,120000]);
-      const qf=R/parts; const ir=ir1(qf)*parts;
-      return {kind:'calc', theme:'Calcul de l\'IR', eqId:'eq-bareme', unit:'€',
-        q:`Couple marié, <b>${n}</b> enfant${n>1?'s':''}, revenu net imposable = <b>${eur0(R)}</b>.<br>Calculez l'<strong>impôt brut</strong> (quotient familial, sans plafonnement ni décote). <span style="font-size:13px;color:var(--muted)">(barème 2024)</span>`,
-        data:`Parts = ${fr(parts,1)} · QF = R ÷ parts · IR = impôt(QF) × parts`,
-        expected:round(ir,2), tol:10,
-        steps:[`Parts = <code>${fr(parts,1)}</code> · QF = <code>${eur0(R)} ÷ ${fr(parts,1)} = ${eur(qf)}</code>`,
-          `Impôt pour 1 part sur le QF : ${baremeDetail(qf)} → <code>${eur(ir1(qf))}</code>`,
-          `<code>IR = ${eur(ir1(qf))} × ${fr(parts,1)} = ${eur(ir)}</code>`],
-        result:`IR brut ≈ ${eur(ir)}`};
-    },
-    // Abattement pension
-    function(){
-      const pen=pick([15000,22000,30000,48000,60000]); let ab=pen*0.10; const cap=ab>4399; if(ab>4399)ab=4399; if(ab<442)ab=442;
-      return {kind:'calc', theme:'Pensions & retraites', eqId:'eq-pension', unit:'€',
-        q:`Pensions de retraite du foyer : <b>${eur0(pen)}</b>.<br>Montant de l'<strong>abattement de 10 %</strong> ?`,
-        data:`Abattement 10 % sur pensions · plafond 4 399 € par foyer`,
-        expected:round(ab,2), tol:1,
-        steps:[`<code>10 % × ${eur0(pen)} = ${eur(pen*0.10)}</code>`,
-          cap?`Au-delà du plafond foyer → <code>4 399 €</code>`:`Sous le plafond → on retient ce montant`],
-        result:`Abattement = ${eur(ab)}`};
-    },
-    // Plus-value mobilière PFU
-    function(){
-      const g=pick([4000,9000,15000,22000,30000]); const ir=g*0.128, ps=g*0.172, tot=g*0.30;
-      return {kind:'calc', theme:'Plus-values', eqId:'eq-pfu', unit:'€',
-        q:`Plus-value mobilière de <b>${eur0(g)}</b>, imposée au PFU.<br><strong>Imposition totale</strong> ?`,
-        data:`PFU 30 % = 12,8 % IR + 17,2 % PS`,
-        expected:round(tot,2), tol:1,
-        steps:[`IR 12,8 % = <code>${eur(ir)}</code> · PS 17,2 % = <code>${eur(ps)}</code>`,
-          `<code>Total = 30 % × ${eur0(g)} = ${eur(tot)}</code>`],
-        result:`Imposition = ${eur(tot)}`};
-    }
-  ],
+  hasCalc:false,
+  lessonFile:'politique-monetaire.html',
+  homeTag:'Mode entraînement · Politique Monétaire',
+  h1:'Prêt pour l\'exam de <span class="acc">politique monétaire</span> ?',
+  homeSub:'Les institutions, le mandat, les instruments et la transmission — révisés activement, corrigés et expliqués question par question.',
+  qcmDesc:'Tout le programme BCE : institutions, gouvernance, mandat, instruments conventionnels et non conventionnels, canaux de transmission.',
   QCM:[
-    {theme:'Principes', q:"L'unité de base de l'impôt sur le revenu est :", opts:["la personne physique","le foyer fiscal","le ménage au sens INSEE"], correct:1, fb:"On additionne les revenus de tous les membres du foyer fiscal."},
-    {theme:'Principes', q:"Le RNGI (revenu net global imposable) s'obtient :", opts:["avant tout abattement","après abattements et déductions, c'est l'assiette du barème","en ajoutant les prélèvements sociaux"], correct:1, fb:"Le RNGI est le revenu net après abattements/charges : c'est sur lui qu'on applique le quotient familial puis le barème."},
-    {theme:'Parts', q:"Un couple marié avec 4 enfants à charge compte :", opts:["4 parts","5 parts","6 parts"], correct:1, fb:"2 (couple) + 0,5 + 0,5 + 1 + 1 = 5 parts."},
-    {theme:'Parts', q:"Pour une personne veuve élevant seule 1 enfant :", opts:["1,5 part","2 parts","2,5 parts"], correct:2, fb:"1 part + 1,5 (le 1er enfant d'un parent isolé ouvre une demi-part supplémentaire) = 2,5 parts."},
-    {theme:'T&S', q:"La déduction forfaitaire de 10 % sur les salaires est plafonnée à :", opts:["4 399 €","14 426 €","sans plafond"], correct:1, fb:"Plafond de 14 426 € par salarié (plancher 504 €). Le contribuable peut opter pour les frais réels."},
-    {theme:'T&S', q:"Le plafond d'abattement sur les pensions (4 399 €) s'apprécie :", opts:["par bénéficiaire","par foyer fiscal","par enfant"], correct:1, fb:"Par foyer fiscal — contrairement au plafond salaires de 14 426 € qui est par salarié."},
-    {theme:'Foncier/RCM', q:"En micro-foncier, l'abattement forfaitaire est de :", opts:["30 %","50 %","71 %"], correct:0, fb:"30 % en micro-foncier : on impose 70 % des loyers bruts (régime si loyers < 15 000 €)."},
-    {theme:'Foncier/RCM', q:"Par défaut, les dividendes sont imposés :", opts:["au barème progressif","au PFU de 30 %","exonérés"], correct:1, fb:"PFU 30 % par défaut (12,8 % IR + 17,2 % PS). Le barème reste possible sur option globale."},
-    {theme:'Calcul IR', q:"Le quotient familial se calcule :", opts:["RNGI × parts","RNGI ÷ parts","RNGI − parts"], correct:1, fb:"QF = RNGI ÷ nombre de parts. On applique le barème au QF, puis on remultiplie par les parts."},
-    {theme:'Calcul IR', q:"Le barème de l'IR est :", opts:["proportionnel (taux unique)","progressif par tranches","dégressif"], correct:1, fb:"Chaque tranche de revenu est taxée à son taux : 0, 11, 30, 41 puis 45 %."},
-    {theme:'Calcul IR', q:"Le plafonnement du quotient familial sert à :", opts:["augmenter l'avantage des familles aisées","limiter l'avantage fiscal procuré par les demi-parts","supprimer les parts enfants"], correct:1, fb:"L'avantage par demi-part est plafonné (1 759 € en 2024) : au-delà, le gain est rogné."},
-    {theme:'Calcul IR', q:"La décote bénéficie :", opts:["aux foyers à impôt élevé","aux foyers dont l'impôt est faible","à tous les foyers"], correct:1, fb:"La décote réduit (voire annule) l'impôt des foyers faiblement imposés, sous un certain seuil."},
-    {theme:'Corrections', q:"Un crédit d'impôt supérieur à l'impôt dû est :", opts:["perdu","remboursé au contribuable","reporté 5 ans"], correct:1, fb:"Le crédit d'impôt est remboursable — à la différence de la réduction, qui s'arrête à zéro."},
-    {theme:'Corrections', q:"Une réduction d'impôt qui dépasse l'impôt dû :", opts:["est remboursée","est perdue (au mieux ramène l'impôt à 0)","est reportée"], correct:1, fb:"La réduction ne peut pas rendre l'impôt négatif : l'excédent est perdu (sauf cas de report prévus par la loi)."},
-    {theme:'Social', q:"Le taux global des prélèvements sociaux sur le capital (2024) est :", opts:["9,2 %","17,2 %","30 %"], correct:1, fb:"17,2 % = CSG 9,2 % + CRDS 0,5 % + prélèvement de solidarité 7,5 %."},
-    {theme:'Social', q:"Les prélèvements sociaux sont :", opts:["inclus dans le barème de l'IR","distincts de l'IR (ils s'ajoutent)","optionnels"], correct:1, fb:"Ce sont des prélèvements à part, qui s'ajoutent à l'IR (le PFU regroupe les deux : 12,8 + 17,2)."},
-    {theme:'Assurance-vie', q:"Sur un contrat d'assurance-vie de plus de 8 ans, l'abattement annuel sur les gains est de :", opts:["4 600 € (seul) / 9 200 € (couple)","1 000 € / 2 000 €","aucun"], correct:0, fb:"Après 8 ans : abattement de 4 600 € (personne seule) ou 9 200 € (couple) sur les gains rachetés chaque année."},
-    {theme:'Assurance-vie', q:"Au décès, le capital d'assurance-vie est en principe :", opts:["intégré à la succession","transmis hors succession au bénéficiaire désigné","bloqué 10 ans"], correct:1, fb:"Transmission hors succession au(x) bénéficiaire(s), avec une fiscalité propre (990 I / 757 B selon l'âge des versements)."},
-    {theme:'Plus-values', q:"La plus-value sur la résidence principale est :", opts:["taxée au PFU","exonérée d'impôt","taxée à 17,2 % seulement"], correct:1, fb:"La cession de la résidence principale est totalement exonérée de plus-value."},
-    {theme:'Plus-values', q:"Pour une plus-value immobilière (hors RP), l'exonération totale d'IR est atteinte après :", opts:["15 ans","22 ans de détention","30 ans"], correct:1, fb:"Exonération d'IR à 22 ans grâce aux abattements pour durée de détention ; l'exonération de prélèvements sociaux, elle, n'arrive qu'à 30 ans."}
+    {theme:'Fondations', q:"Qui conduit la politique monétaire dans la zone euro ?", opts:["Le gouvernement français","Une banque centrale indépendante (la BCE)","Le FMI","La Commission européenne"], correct:1, fb:"La BCE est indépendante des pouvoirs politiques : c'est une garantie de crédibilité de la lutte contre l'inflation."},
+    {theme:'Fondations', q:"L'indépendance de la banque centrale vise surtout à :", opts:["augmenter ses bénéfices","éviter qu'on fasse tourner la planche à billets pour des raisons politiques","financer directement les États"], correct:1, fb:"Une BC dépendante serait tentée de monétiser la dette → inflation. L'indépendance protège la stabilité des prix."},
+    {theme:'Institutions', q:"Le SEBC regroupe :", opts:["les 20 banques centrales de la zone euro","la BCE + les 27 banques centrales nationales de l'UE","la BCE seule"], correct:1, fb:"SEBC = BCE + les 27 BCN de l'UE (même celles hors euro). À ne pas confondre avec l'Eurosystème."},
+    {theme:'Institutions', q:"L'Eurosystème, c'est :", opts:["la BCE + les BCN des pays ayant adopté l'euro (20)","les 27 BCN de l'UE","la Banque de France seule"], correct:0, fb:"Eurosystème = BCE + les 20 BCN de la zone euro. C'est lui qui met concrètement en œuvre la politique monétaire."},
+    {theme:'Institutions', q:"Où siège la BCE ?", opts:["Bruxelles","Francfort","Strasbourg","Luxembourg"], correct:1, fb:"La BCE est basée à Francfort, en Allemagne."},
+    {theme:'Gouvernance', q:"L'organe qui décide des taux directeurs est :", opts:["le Directoire seul","le Conseil des gouverneurs","le Parlement européen"], correct:1, fb:"Le Conseil des gouverneurs (Directoire de 6 membres + gouverneurs des BCN) fixe l'orientation de la politique monétaire."},
+    {theme:'Gouvernance', q:"Les décisions de politique monétaire sont prises environ :", opts:["chaque jour","toutes les 6 semaines","une fois par an"], correct:1, fb:"Le Conseil des gouverneurs se réunit pour les décisions monétaires toutes les six semaines."},
+    {theme:'Mandat', q:"L'objectif principal de la BCE est :", opts:["le plein emploi","la stabilité des prix","la croissance du PIB"], correct:1, fb:"La stabilité des prix est l'objectif prioritaire inscrit dans les traités. Le soutien aux politiques de l'UE est secondaire."},
+    {theme:'Mandat', q:"La cible d'inflation de la BCE (IPCH) est de :", opts:["0 %","2 % à moyen terme","4 %"], correct:1, fb:"Depuis 2021, la cible est 2 % symétrique à moyen terme : ni au-dessus, ni en dessous durablement."},
+    {theme:'Mandat', q:"« Cible symétrique » signifie que la BCE :", opts:["ne réagit qu'à l'inflation forte","traite de la même façon un écart au-dessus et en dessous de 2 %","vise une fourchette 0–2 %"], correct:1, fb:"Symétrique = une inflation trop basse est aussi indésirable qu'une inflation trop haute."},
+    {theme:'Mandat', q:"L'indice de référence pour mesurer l'inflation dans la zone euro est :", opts:["l'IPC français","l'IPCH","le déflateur du PIB"], correct:1, fb:"L'IPCH (indice des prix à la consommation harmonisé) permet de comparer l'inflation entre pays de la zone."},
+    {theme:'Mandat', q:"La stratégie de la BCE repose sur deux piliers :", opts:["analyse économique et analyse monétaire","analyse budgétaire et analyse fiscale","analyse de change et analyse boursière"], correct:0, fb:"Pilier économique (conjoncture, salaires…) et pilier monétaire (agrégats, crédit). En cas de doute, l'analyse économique tranche."},
+    {theme:'Instruments', q:"Le principal taux directeur, qui pilote les opérations de refinancement, est :", opts:["la facilité de dépôt","le taux REFI (MRO)","le taux de la facilité de prêt marginal"], correct:1, fb:"Le REFI (taux des opérations principales de refinancement / MRO) est le taux pivot."},
+    {theme:'Instruments', q:"Dans le corridor des taux, la facilité de prêt marginal est :", opts:["le plancher (taux le plus bas)","le plafond (taux le plus haut)","égale au REFI"], correct:1, fb:"Prêt marginal = plafond du corridor (la banque emprunte au jour le jour). La facilité de dépôt en est le plancher."},
+    {theme:'Instruments', q:"La facilité de dépôt rémunère :", opts:["les crédits aux entreprises","les liquidités déposées par les banques à la BCE au jour le jour","les réserves obligatoires uniquement"], correct:1, fb:"C'est le taux auquel les banques placent leurs excédents de liquidité à la BCE. Elle constitue le plancher du corridor."},
+    {theme:'Instruments', q:"Le MRO (opération principale de refinancement) est :", opts:["un achat ferme de titres","un prêt aux banques garanti par une prise en pension de titres","un don de liquidités"], correct:1, fb:"La BCE prête des liquidités contre des titres mis en pension (collatéral), généralement chaque semaine."},
+    {theme:'Instruments', q:"Les réserves obligatoires servent à :", opts:["financer l'État","obliger les banques à détenir un minimum de liquidités à la BCE","fixer le taux de change"], correct:1, fb:"Elles imposent aux banques de conserver un pourcentage de leurs dépôts à la BCE, ce qui stabilise la demande de liquidité."},
+    {theme:'Non-conventionnel', q:"Dans l'assouplissement quantitatif (QE), l'instrument devient :", opts:["le taux d'intérêt","la quantité de monnaie créée pour acheter des actifs","les commissions bancaires"], correct:1, fb:"Quand les taux sont déjà au plancher, la BCE agit sur les quantités : elle achète massivement des titres (APP/PSPP)."},
+    {theme:'Non-conventionnel', q:"La « forward guidance » consiste à :", opts:["acheter des actions","communiquer sur l'orientation future des taux pour orienter les anticipations","relever les réserves obligatoires"], correct:1, fb:"En annonçant ses intentions, la BCE influence les anticipations des marchés sans même bouger ses taux."},
+    {theme:'Non-conventionnel', q:"Que cible le « T » des TLTRO ?", opts:["Total","Targeted (ciblées sur le crédit à l'économie)","Temporary"], correct:1, fb:"TLTRO = Targeted Longer-Term Refinancing Operations : prêts longs aux banques conditionnés à l'octroi de crédits."},
+    {theme:'Non-conventionnel', q:"Un taux de facilité de dépôt négatif vise à :", opts:["récompenser l'épargne des banques","décourager les banques de thésauriser et les pousser à prêter","augmenter l'inflation immédiatement"], correct:1, fb:"Un taux négatif « taxe » les liquidités dormantes : il incite les banques à prêter plutôt qu'à laisser dormir l'argent."},
+    {theme:'Transmission', q:"Le canal du crédit décrit comment :", opts:["les taux directeurs modifient le coût et le volume des prêts bancaires","la BCE fixe le change","l'État dépense son budget"], correct:0, fb:"Une variation des taux directeurs se répercute sur les taux des crédits, donc sur l'investissement et la consommation."},
+    {theme:'Transmission', q:"Une baisse des taux directeurs tend, toutes choses égales, à :", opts:["faire baisser l'inflation","relancer crédit, investissement et consommation","apprécier fortement l'euro"], correct:1, fb:"Taux plus bas → crédit moins cher → plus de dépenses → soutien de l'activité et de l'inflation."},
+    {theme:'Transmission', q:"Le délai de transmission de la politique monétaire à l'économie réelle est plutôt :", opts:["immédiat","de plusieurs trimestres voire un à deux ans","instantané sur les prix"], correct:1, fb:"Les effets mettent du temps : c'est pourquoi la BCE raisonne « à moyen terme » et anticipe."}
   ]
 };
 // ════════════════════ MOTEUR GÉNÉRIQUE D'ENTRAÎNEMENT ════════════════════
@@ -737,5 +530,8 @@ function renderResult(){
 
 renderHome();
 </script>
+<script src="../lb.js"></script>
+<script src="../progress.js"></script>
+<script src="../ui.js"></script>
 </body>
 </html>

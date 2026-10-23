@@ -1,19 +1,13 @@
 <!DOCTYPE html>
-<html lang="fr" subject-id="droit-bancaire">
+<html lang="fr" data-niveau="licence" subject-id="l-droit-bancaire">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
 <title>Droit Bancaire — LP Banque</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{
-  --paper:#faf6ef; --paper2:#f3ece0; --ink:#22201b; --line:#e3d9c8;
-  --teal:#1b6b5e; --amber:#c87a12; --rust:#a8432a; --plum:#6b3a73; --navy:#23456b;
-  --teal-soft:#e3efec; --amber-soft:#f6ead4; --rust-soft:#f3e0da; --plum-soft:#ece3ef; --navy-soft:#dde6f0;
-  --shadow:0 2px 14px rgba(34,32,27,.07); --shadow-lg:0 8px 30px rgba(34,32,27,.13);
-}
+
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{
@@ -22,7 +16,7 @@ body{
 }
 ::-webkit-scrollbar{width:11px;height:11px}
 ::-webkit-scrollbar-track{background:var(--paper2)}
-::-webkit-scrollbar-thumb{background:#cdbfa6;border-radius:6px;border:2px solid var(--paper2)}
+::-webkit-scrollbar-thumb{background:var(--stroke2);border-radius:6px;border:2px solid var(--paper2)}
 ::-webkit-scrollbar-thumb:hover{background:var(--amber)}
 
 /* ===== TOP BAR ===== */
@@ -33,17 +27,17 @@ body{
 }
 .brand{display:flex;align-items:center;gap:11px;font-family:'Fraunces',serif;font-weight:600;font-size:1.12rem;color:var(--navy)}
 .brand .logo{
-  width:36px;height:36px;border-radius:9px;background:var(--navy);color:#fff;
+  width:36px;height:36px;border-radius:9px;background:var(--navy);color:var(--blanc);
   display:grid;place-items:center;font-size:1.15rem;flex-shrink:0;box-shadow:var(--shadow);
 }
 .brand small{display:block;font-family:'DM Sans';font-weight:500;font-size:.66rem;letter-spacing:.09em;color:var(--amber);text-transform:uppercase}
 .progress-wrap{flex:1;max-width:340px;display:flex;flex-direction:column;gap:3px}
-.progress-wrap .lab{font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:#8a8170;font-weight:600;display:flex;justify-content:space-between}
+.progress-wrap .lab{font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:var(--txt3);font-weight:600;display:flex;justify-content:space-between}
 .progress-bar{height:8px;background:var(--paper2);border-radius:5px;overflow:hidden;border:1px solid var(--line)}
-.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),#2a8a78);transition:width .5s cubic-bezier(.4,0,.2,1)}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal));transition:width .5s cubic-bezier(.4,0,.2,1)}
 .xp{
   margin-left:auto;display:flex;align-items:center;gap:7px;background:var(--amber-soft);
-  border:1px solid #e6cf9e;color:var(--amber);font-weight:700;padding:7px 14px;border-radius:30px;font-size:.9rem;
+  border:1px solid var(--amber-clair);color:var(--amber);font-weight:700;padding:7px 14px;border-radius:30px;font-size:.9rem;
 }
 .xp .star{font-size:1rem}
 .burger{display:none;background:none;border:1px solid var(--line);border-radius:8px;padding:7px 10px;cursor:pointer;font-size:1.1rem;color:var(--ink)}
@@ -54,26 +48,26 @@ body{
   position:fixed;top:62px;bottom:0;left:0;width:282px;background:var(--paper2);
   border-right:1px solid var(--line);overflow-y:auto;padding:20px 14px 50px;z-index:40;transition:transform .3s;
 }
-.sidebar h4{font-family:'Fraunces',serif;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:#8a8170;margin:18px 10px 9px;font-weight:600}
+.sidebar h4{font-family:'Fraunces',serif;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--txt3);margin:18px 10px 9px;font-weight:600}
 .sidebar h4:first-child{margin-top:0}
 .nav-item{
   display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;cursor:pointer;
   font-size:.92rem;color:var(--ink);border:1px solid transparent;transition:.16s;margin-bottom:3px;
 }
-.nav-item:hover{background:#ece3d3}
-.nav-item.active{background:#fff;border-color:var(--line);box-shadow:var(--shadow);font-weight:600;color:var(--navy)}
+.nav-item:hover{background:var(--surface2)}
+.nav-item.active{background:var(--blanc);border-color:var(--line);box-shadow:var(--shadow);font-weight:600;color:var(--navy)}
 .nav-item .num{
-  width:25px;height:25px;border-radius:50%;background:#fff;border:1.5px solid var(--line);flex-shrink:0;
-  display:grid;place-items:center;font-size:.78rem;font-weight:700;font-family:'DM Mono';color:#8a8170;transition:.16s;
+  width:25px;height:25px;border-radius:50%;background:var(--blanc);border:1.5px solid var(--line);flex-shrink:0;
+  display:grid;place-items:center;font-size:.78rem;font-weight:700;font-family:'DM Mono';color:var(--txt3);transition:.16s;
 }
-.nav-item.active .num{background:var(--teal);color:#fff;border-color:var(--teal)}
-.nav-item.done .num{background:var(--teal);color:#fff;border-color:var(--teal)}
+.nav-item.active .num{background:var(--teal);color:var(--blanc);border-color:var(--teal)}
+.nav-item.done .num{background:var(--teal);color:var(--blanc);border-color:var(--teal)}
 .nav-item .lab{flex:1;line-height:1.25}
-.nav-item.special{background:var(--plum-soft);border-color:#d8c5dc;color:var(--plum);font-weight:600}
-.nav-item.special.active{background:var(--plum);color:#fff}
+.nav-item.special{background:var(--plum-soft);border-color:var(--m-clair);color:var(--plum);font-weight:600}
+.nav-item.special.active{background:var(--plum);color:var(--blanc)}
 .nav-item.special .ico{font-size:1.05rem}
-.nav-item.special2{background:var(--navy-soft);border-color:#c3d2e2;color:var(--navy);font-weight:600}
-.nav-item.special2.active{background:var(--navy);color:#fff}
+.nav-item.special2{background:var(--navy-soft);border-color:var(--m-clair);color:var(--navy);font-weight:600}
+.nav-item.special2.active{background:var(--navy);color:var(--blanc)}
 
 .main{flex:1;margin-left:282px;padding:40px 6vw 120px;max-width:920px}
 
@@ -86,7 +80,7 @@ body{
   background:var(--navy-soft);color:var(--navy);padding:5px 12px;border-radius:20px;font-weight:500;margin-bottom:16px;
 }
 h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;font-weight:600;color:var(--ink);margin-bottom:10px;letter-spacing:-.01em}
-.subtitle{font-size:1.12rem;color:#6f6757;margin-bottom:30px;max-width:62ch}
+.subtitle{font-size:1.12rem;color:var(--txt3);margin-bottom:30px;max-width:62ch}
 .main p{margin-bottom:16px;font-size:1.04rem;max-width:68ch}
 .main h2{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:600;color:var(--navy);margin:38px 0 14px;letter-spacing:-.01em}
 .main strong{font-weight:600;color:var(--ink)}
@@ -95,131 +89,131 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
 .callout{border-radius:14px;padding:18px 20px 18px 22px;margin:24px 0;border-left:5px solid;position:relative;font-size:1rem}
 .callout .ct{font-weight:700;font-family:'Fraunces',serif;font-size:1.02rem;display:flex;align-items:center;gap:8px;margin-bottom:6px}
 .callout p{margin:0;max-width:none}
-.c-analogy{background:var(--amber-soft);border-color:var(--amber);color:#5e3a06}
+.c-analogy{background:var(--amber-soft);border-color:var(--amber);color:var(--amber-deep)}
 .c-analogy .ct{color:var(--amber)}
-.c-retenir{background:var(--teal-soft);border-color:var(--teal);color:#0f3d36}
+.c-retenir{background:var(--teal-soft);border-color:var(--teal);color:var(--teal-d)}
 .c-retenir .ct{color:var(--teal)}
-.c-piege{background:var(--rust-soft);border-color:var(--rust);color:#5e2317}
+.c-piege{background:var(--rust-soft);border-color:var(--rust);color:var(--rust-deep)}
 .c-piege .ct{color:var(--rust)}
 
 /* black rule box (replaces "formule") */
 .rulebox{
-  background:#1c1a16;color:#f3ece0;border-radius:14px;padding:22px 24px;margin:26px 0;
+  background:var(--nuit);color:var(--surface2);border-radius:14px;padding:22px 24px;margin:26px 0;
   font-family:'DM Mono';box-shadow:var(--shadow-lg);position:relative;overflow:hidden;
 }
-.rulebox::before{content:'RÈGLE';position:absolute;top:13px;right:18px;font-size:.62rem;letter-spacing:.2em;color:#7d7566}
-.rulebox .rb-main{font-size:1.18rem;font-weight:500;line-height:1.5;color:#fff}
-.rulebox .rb-sub{font-size:.86rem;color:#b8af9d;margin-top:10px;line-height:1.55}
+.rulebox::before{content:'RÈGLE';position:absolute;top:13px;right:18px;font-size:.62rem;letter-spacing:.2em;color:var(--txt3)}
+.rulebox .rb-main{font-size:1.18rem;font-weight:500;line-height:1.5;color:var(--blanc)}
+.rulebox .rb-sub{font-size:.86rem;color:var(--stroke2);margin-top:10px;line-height:1.55}
 .rulebox em{color:var(--amber);font-style:normal;font-weight:500}
 
 /* tables */
-.tbl{width:100%;border-collapse:collapse;margin:22px 0;font-size:.96rem;background:#fff;border-radius:12px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line)}
-.tbl th{background:var(--navy);color:#fff;text-align:left;padding:11px 15px;font-weight:600;font-size:.86rem;letter-spacing:.02em}
+.tbl{width:100%;border-collapse:collapse;margin:22px 0;font-size:.96rem;background:var(--blanc);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line)}
+.tbl th{background:var(--navy);color:var(--blanc);text-align:left;padding:11px 15px;font-weight:600;font-size:.86rem;letter-spacing:.02em}
 .tbl td{padding:11px 15px;border-top:1px solid var(--line);vertical-align:top}
 .tbl tr:nth-child(even) td{background:var(--paper)}
 .tbl td:first-child{font-weight:600;color:var(--navy);white-space:nowrap}
 .tbl.wrap td:first-child{white-space:normal}
 
 /* worked example */
-.example{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:26px 0;box-shadow:var(--shadow)}
+.example{background:var(--blanc);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:26px 0;box-shadow:var(--shadow)}
 .example .ex-head{font-family:'Fraunces',serif;font-weight:600;color:var(--plum);font-size:1.08rem;margin-bottom:14px;display:flex;align-items:center;gap:8px}
 .step{display:flex;gap:14px;margin-bottom:14px}
 .step:last-child{margin-bottom:0}
-.step .sn{width:27px;height:27px;border-radius:50%;background:var(--plum);color:#fff;flex-shrink:0;display:grid;place-items:center;font-family:'DM Mono';font-weight:500;font-size:.85rem}
+.step .sn{width:27px;height:27px;border-radius:50%;background:var(--plum);color:var(--blanc);flex-shrink:0;display:grid;place-items:center;font-family:'DM Mono';font-weight:500;font-size:.85rem}
 .step .sc{flex:1;padding-top:1px}
 .step .sc b{color:var(--navy)}
-.ex-result{margin-top:6px;background:var(--teal-soft);border:1px solid #bcdcd4;border-radius:10px;padding:12px 16px;font-weight:600;color:#0f3d36}
+.ex-result{margin-top:6px;background:var(--teal-soft);border:1px solid var(--teal-clair);border-radius:10px;padding:12px 16px;font-weight:600;color:var(--teal-d)}
 
 /* schema */
-.schema{background:#fff;border:1px solid var(--line);border-radius:14px;padding:24px;margin:26px 0;box-shadow:var(--shadow);text-align:center}
-.schema .scap{font-size:.82rem;color:#8a8170;margin-top:12px;font-style:italic}
+.schema{background:var(--blanc);border:1px solid var(--line);border-radius:14px;padding:24px;margin:26px 0;box-shadow:var(--shadow);text-align:center}
+.schema .scap{font-size:.82rem;color:var(--txt3);margin-top:12px;font-style:italic}
 .schema svg{max-width:100%;height:auto}
 
 /* mini quiz */
-.quiz{background:var(--plum-soft);border:1px solid #d8c5dc;border-radius:14px;padding:20px 22px;margin:24px 0}
+.quiz{background:var(--plum-soft);border:1px solid var(--m-clair);border-radius:14px;padding:20px 22px;margin:24px 0}
 .quiz .qhead{font-family:'DM Mono';font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--plum);font-weight:500;margin-bottom:9px}
 .quiz .q{font-weight:600;font-size:1.05rem;margin-bottom:14px;color:var(--ink)}
 .opts{display:flex;flex-direction:column;gap:9px}
 .opt{
-  text-align:left;background:#fff;border:1.5px solid #d8c5dc;border-radius:10px;padding:11px 15px;
+  text-align:left;background:var(--blanc);border:1.5px solid var(--m-clair);border-radius:10px;padding:11px 15px;
   cursor:pointer;font-family:'DM Sans';font-size:.98rem;color:var(--ink);transition:.15s;
 }
-.opt:hover:not(:disabled){border-color:var(--plum);background:#fbf8fc}
+.opt:hover:not(:disabled){border-color:var(--plum);background:var(--fond)}
 .opt:disabled{cursor:default}
-.opt.right{background:var(--teal-soft);border-color:var(--teal);color:#0f3d36;font-weight:600}
+.opt.right{background:var(--teal-soft);border-color:var(--teal);color:var(--teal-d);font-weight:600}
 .opt.right::after{content:' ✓';color:var(--teal);font-weight:700}
-.opt.wrong{background:var(--rust-soft);border-color:var(--rust);color:#5e2317}
+.opt.wrong{background:var(--rust-soft);border-color:var(--rust);color:var(--rust-deep)}
 .opt.wrong::after{content:' ✗';color:var(--rust);font-weight:700}
-.feedback{margin-top:13px;padding:12px 15px;border-radius:10px;background:#fff;border:1px dashed #cbb9cf;font-size:.95rem;color:#5a4d5d}
+.feedback{margin-top:13px;padding:12px 15px;border-radius:10px;background:var(--blanc);border:1px dashed var(--m-clair);font-size:.95rem;color:var(--plum)}
 .feedback b{color:var(--plum)}
 
 /* nav buttons */
 .lesson-nav{display:flex;justify-content:space-between;gap:14px;margin-top:46px;padding-top:26px;border-top:1px solid var(--line)}
 .btn{
   font-family:'DM Sans';font-weight:600;font-size:.98rem;padding:12px 22px;border-radius:11px;cursor:pointer;
-  border:1.5px solid var(--line);background:#fff;color:var(--ink);transition:.16s;display:inline-flex;align-items:center;gap:8px;
+  border:1.5px solid var(--line);background:var(--blanc);color:var(--ink);transition:.16s;display:inline-flex;align-items:center;gap:8px;
 }
-.btn:hover{border-color:#bbac90;transform:translateY(-1px)}
-.btn.primary{background:var(--teal);color:#fff;border-color:var(--teal);box-shadow:var(--shadow)}
-.btn.primary:hover{background:#155a4f}
-.btn.plum{background:var(--plum);color:#fff;border-color:var(--plum)}
-.btn.plum:hover{background:#592f60}
+.btn:hover{border-color:var(--stroke2);transform:translateY(-1px)}
+.btn.primary{background:var(--teal);color:var(--blanc);border-color:var(--teal);box-shadow:var(--shadow)}
+.btn.primary:hover{background:var(--teal)}
+.btn.plum{background:var(--plum);color:var(--blanc);border-color:var(--plum)}
+.btn.plum:hover{background:var(--plum-deep)}
 .btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
 .xp-pop{
   position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);
-  background:var(--amber);color:#fff;font-weight:700;padding:13px 26px;border-radius:30px;
+  background:var(--amber);color:var(--blanc);font-weight:700;padding:13px 26px;border-radius:30px;
   box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:.4s;z-index:200;font-size:1rem;
 }
 .xp-pop.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 /* ===== TEST ===== */
-.test-q{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:18px;box-shadow:var(--shadow);transition:.3s}
+.test-q{background:var(--blanc);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:18px;box-shadow:var(--shadow);transition:.3s}
 .test-q .tq-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .test-q .tq-num{font-family:'DM Mono';font-weight:500;color:var(--navy);font-size:.9rem}
-.test-q .tq-chap{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:#8a8170;font-weight:600;background:var(--paper2);padding:4px 10px;border-radius:20px}
+.test-q .tq-chap{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--txt3);font-weight:600;background:var(--paper2);padding:4px 10px;border-radius:20px}
 .test-q .tq-q{font-weight:600;font-size:1.08rem;margin-bottom:14px}
 .test-q .num-input{font-family:'DM Mono';font-size:1.05rem;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;width:170px;background:var(--paper)}
 .test-q .num-input:focus{outline:none;border-color:var(--teal)}
-.test-q .unit{font-family:'DM Mono';color:#8a8170;margin-left:9px}
+.test-q .unit{font-family:'DM Mono';color:var(--txt3);margin-left:9px}
 .topt{display:flex;flex-direction:column;gap:8px}
 .topt button{text-align:left;background:var(--paper);border:1.5px solid var(--line);border-radius:10px;padding:11px 15px;cursor:pointer;font-family:'DM Sans';font-size:.98rem;transition:.15s}
 .topt button:hover{border-color:var(--teal)}
-.topt button.sel{background:var(--teal-soft);border-color:var(--teal);font-weight:600;color:#0f3d36}
+.topt button.sel{background:var(--teal-soft);border-color:var(--teal);font-weight:600;color:var(--teal-d)}
 .remed{margin-top:14px;border-radius:11px;border-left:5px solid var(--rust);background:var(--rust-soft);padding:15px 18px;display:none}
 .remed.show{display:block;animation:fadeIn .35s}
 .remed .rt{font-weight:700;color:var(--rust);font-family:'Fraunces',serif;margin-bottom:5px;display:flex;align-items:center;gap:7px}
-.remed .ra{font-size:.95rem;color:#5e2317;margin-bottom:11px}
-.remed .ra b{color:#7a2d1c}
+.remed .ra{font-size:.95rem;color:var(--rust-deep);margin-bottom:11px}
+.remed .ra b{color:var(--rust-deep)}
 .remed-btns{display:flex;gap:10px;flex-wrap:wrap}
 .remed-btns .btn{padding:8px 16px;font-size:.88rem}
-.test-q.ok{border-color:var(--teal);background:#fbfdfc}
+.test-q.ok{border-color:var(--teal);background:var(--blanc)}
 .test-q.ko{border-color:var(--rust)}
 .float-retry{
   position:fixed;bottom:26px;right:26px;z-index:120;display:none;
-  background:var(--plum);color:#fff;border:none;font-weight:700;padding:14px 24px;border-radius:30px;
+  background:var(--plum);color:var(--blanc);border:none;font-weight:700;padding:14px 24px;border-radius:30px;
   box-shadow:var(--shadow-lg);cursor:pointer;font-family:'DM Sans';font-size:.98rem;align-items:center;gap:9px;
 }
 .float-retry.show{display:inline-flex;animation:fadeIn .4s}
-.float-retry:hover{background:#592f60}
+.float-retry:hover{background:var(--plum-deep)}
 
 /* result */
-.result{display:none;background:#fff;border:1px solid var(--line);border-radius:18px;padding:34px;box-shadow:var(--shadow-lg);text-align:center;animation:fadeIn .5s}
+.result{display:none;background:var(--blanc);border:1px solid var(--line);border-radius:18px;padding:34px;box-shadow:var(--shadow-lg);text-align:center;animation:fadeIn .5s}
 .result.show{display:block}
 .result .score-big{font-family:'Fraunces',serif;font-size:4rem;font-weight:700;line-height:1;color:var(--teal)}
-.result .score-lab{color:#8a8170;font-weight:600;margin-bottom:8px}
+.result .score-lab{color:var(--txt3);font-weight:600;margin-bottom:8px}
 .result .msg{font-size:1.12rem;margin:14px auto 28px;max-width:46ch;color:var(--ink)}
 .chapbars{text-align:left;max-width:560px;margin:0 auto}
 .chapbar{margin-bottom:14px}
 .chapbar .cbl{display:flex;justify-content:space-between;font-size:.9rem;font-weight:600;margin-bottom:5px}
-.chapbar .cbl span:last-child{font-family:'DM Mono';color:#8a8170}
+.chapbar .cbl span:last-child{font-family:'DM Mono';color:var(--txt3)}
 .cbt{height:13px;background:var(--paper2);border-radius:7px;overflow:hidden;border:1px solid var(--line)}
 .cbf{height:100%;border-radius:7px;transition:width .8s cubic-bezier(.4,0,.2,1)}
 
 /* annales */
-.annale{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px 26px;margin-bottom:22px;box-shadow:var(--shadow)}
+.annale{background:var(--blanc);border:1px solid var(--line);border-radius:16px;padding:24px 26px;margin-bottom:22px;box-shadow:var(--shadow)}
 .annale .an-tag{font-family:'DM Mono';font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);font-weight:500}
 .annale h3{font-family:'Fraunces',serif;font-size:1.32rem;color:var(--navy);margin:6px 0 14px;font-weight:600}
-.annale .enonce{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:16px 19px;font-size:1rem;color:#3a352c}
+.annale .enonce{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:16px 19px;font-size:1rem;color:var(--txt2)}
 .annale .enonce .qlist{margin:10px 0 0 4px}
 .annale .enonce .qlist li{margin-bottom:5px;list-style:none;padding-left:22px;position:relative}
 .annale .enonce .qlist li::before{content:'▸';position:absolute;left:0;color:var(--amber);font-weight:700}
@@ -227,14 +221,14 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
 .corrige.show{display:block}
 .corrige-head{font-family:'Fraunces',serif;font-weight:600;color:var(--teal);margin-bottom:12px;display:flex;align-items:center;gap:8px;font-size:1.06rem}
 
-.intro-card{background:var(--navy);color:#f3ece0;border-radius:16px;padding:24px 26px;margin-bottom:26px}
-.intro-card h2{color:#fff;margin:0 0 8px;font-family:'Fraunces',serif;font-size:1.4rem}
-.intro-card p{color:#cdd8e6;max-width:none;margin:0}
+.intro-card{background:var(--navy);color:var(--surface2);border-radius:16px;padding:24px 26px;margin-bottom:26px}
+.intro-card h2{color:var(--blanc);margin:0 0 8px;font-family:'Fraunces',serif;font-size:1.4rem}
+.intro-card p{color:var(--m-clair);max-width:none;margin:0}
 
-.hint{font-size:.85rem;color:#8a8170;font-style:italic;margin-top:8px}
+.hint{font-size:.85rem;color:var(--txt3);font-style:italic;margin-top:8px}
 
 /* mobile */
-.overlay{display:none;position:fixed;inset:62px 0 0 0;background:rgba(34,32,27,.4);z-index:35}
+.overlay{display:none;position:fixed;inset:62px 0 0 0;background:color-mix(in srgb, var(--nuit) 40%, transparent);z-index:35}
 @media(max-width:880px){
   .main{margin-left:0;padding:30px 22px 110px}
   .sidebar{transform:translateX(-100%);box-shadow:var(--shadow-lg)}
@@ -251,6 +245,14 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
   .topbar{gap:12px}
 }
 </style>
+<link rel="stylesheet" href="../ui.css">
+<link rel="stylesheet" href="../theme.css">
+<link rel="stylesheet" href="../licence.css">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#ECEEF6">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/favicon-32.png">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
 </head>
 <body>
 
@@ -259,7 +261,7 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
   <button class="burger" onclick="toggleSidebar()">☰</button>
   <div class="brand">
     <span class="logo">⚖️</span>
-    <span>Droit Bancaire<small>LP Banque · IAE Bretagne Sud</small></span>
+    <span>Droit Bancaire<small>Licence LP ABF</small></span>
   </div>
   <div class="progress-wrap">
     <div class="lab"><span>Progression</span><span id="progPct">0 %</span></div>
@@ -305,16 +307,16 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
       <div class="schema">
         <svg viewBox="0 0 620 170" xmlns="http://www.w3.org/2000/svg">
           <g font-family="DM Sans" font-size="14">
-            <rect x="20" y="55" width="170" height="60" rx="12" fill="#dde6f0" stroke="#23456b" stroke-width="2"/>
-            <text x="105" y="80" text-anchor="middle" font-weight="700" fill="#23456b">Dépositaire</text>
-            <text x="105" y="100" text-anchor="middle" font-size="11.5" fill="#5a6b80">comptes · épargne</text>
-            <rect x="225" y="55" width="170" height="60" rx="12" fill="#e3efec" stroke="#1b6b5e" stroke-width="2"/>
-            <text x="310" y="80" text-anchor="middle" font-weight="700" fill="#1b6b5e">Prêteur</text>
-            <text x="310" y="100" text-anchor="middle" font-size="11.5" fill="#3d6b62">conso · invest. · fonct.</text>
-            <rect x="430" y="55" width="170" height="60" rx="12" fill="#f6ead4" stroke="#c87a12" stroke-width="2"/>
-            <text x="515" y="80" text-anchor="middle" font-weight="700" fill="#b3700f">Mandataire</text>
-            <text x="515" y="100" text-anchor="middle" font-size="11.5" fill="#8a5a14">conseil portefeuille</text>
-            <text x="310" y="28" text-anchor="middle" font-family="Fraunces" font-size="16" font-weight="600" fill="#22201b">Les 3 statuts du banquier</text>
+            <rect x="20" y="55" width="170" height="60" rx="12" stroke-width="2" style="fill:var(--navy-soft);stroke:var(--navy)"/>
+            <text x="105" y="80" text-anchor="middle" font-weight="700" style="fill:var(--navy)">Dépositaire</text>
+            <text x="105" y="100" text-anchor="middle" font-size="11.5" style="fill:var(--navy)">comptes · épargne</text>
+            <rect x="225" y="55" width="170" height="60" rx="12" stroke-width="2" style="fill:var(--teal-soft);stroke:var(--teal)"/>
+            <text x="310" y="80" text-anchor="middle" font-weight="700" style="fill:var(--teal)">Prêteur</text>
+            <text x="310" y="100" text-anchor="middle" font-size="11.5" style="fill:var(--teal)">conso · invest. · fonct.</text>
+            <rect x="430" y="55" width="170" height="60" rx="12" stroke-width="2" style="fill:var(--amber-soft);stroke:var(--amber)"/>
+            <text x="515" y="80" text-anchor="middle" font-weight="700" style="fill:var(--amber)">Mandataire</text>
+            <text x="515" y="100" text-anchor="middle" font-size="11.5" style="fill:var(--amber)">conseil portefeuille</text>
+            <text x="310" y="28" text-anchor="middle" font-family="Fraunces" font-size="16" font-weight="600" style="fill:var(--nuit)">Les 3 statuts du banquier</text>
           </g>
         </svg>
         <div class="scap">Un même établissement, trois casquettes juridiques selon l'opération réalisée.</div>
@@ -397,19 +399,19 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
       <div class="schema">
         <svg viewBox="0 0 620 130" xmlns="http://www.w3.org/2000/svg">
           <g font-family="DM Sans" font-size="13">
-            <rect x="20" y="40" width="150" height="55" rx="11" fill="#f3e0da" stroke="#a8432a" stroke-width="2"/>
-            <text x="95" y="63" text-anchor="middle" font-weight="700" fill="#a8432a">Fait dommageable</text>
-            <text x="95" y="81" text-anchor="middle" font-size="11" fill="#7a3221">négligence, faute…</text>
-            <text x="190" y="72" text-anchor="middle" font-size="26" fill="#8a8170">+</text>
-            <rect x="215" y="40" width="150" height="55" rx="11" fill="#f6ead4" stroke="#c87a12" stroke-width="2"/>
-            <text x="290" y="63" text-anchor="middle" font-weight="700" fill="#b3700f">Préjudice certain</text>
-            <text x="290" y="81" text-anchor="middle" font-size="11" fill="#8a5a14">corporel/matériel/moral</text>
-            <text x="385" y="72" text-anchor="middle" font-size="26" fill="#8a8170">+</text>
-            <rect x="410" y="40" width="150" height="55" rx="11" fill="#dde6f0" stroke="#23456b" stroke-width="2"/>
-            <text x="485" y="63" text-anchor="middle" font-weight="700" fill="#23456b">Lien de causalité</text>
-            <text x="485" y="81" text-anchor="middle" font-size="11" fill="#5a6b80">cause → effet</text>
-            <text x="585" y="72" text-anchor="middle" font-size="26" fill="#1b6b5e">=</text>
-            <text x="300" y="22" text-anchor="middle" font-family="Fraunces" font-size="15" font-weight="600" fill="#22201b">Responsabilité civile engagée si les 3 sont réunis</text>
+            <rect x="20" y="40" width="150" height="55" rx="11" stroke-width="2" style="fill:var(--rust-soft);stroke:var(--rust)"/>
+            <text x="95" y="63" text-anchor="middle" font-weight="700" style="fill:var(--rust)">Fait dommageable</text>
+            <text x="95" y="81" text-anchor="middle" font-size="11" style="fill:var(--rust)">négligence, faute…</text>
+            <text x="190" y="72" text-anchor="middle" font-size="26" style="fill:var(--txt3)">+</text>
+            <rect x="215" y="40" width="150" height="55" rx="11" stroke-width="2" style="fill:var(--amber-soft);stroke:var(--amber)"/>
+            <text x="290" y="63" text-anchor="middle" font-weight="700" style="fill:var(--amber)">Préjudice certain</text>
+            <text x="290" y="81" text-anchor="middle" font-size="11" style="fill:var(--amber)">corporel/matériel/moral</text>
+            <text x="385" y="72" text-anchor="middle" font-size="26" style="fill:var(--txt3)">+</text>
+            <rect x="410" y="40" width="150" height="55" rx="11" stroke-width="2" style="fill:var(--navy-soft);stroke:var(--navy)"/>
+            <text x="485" y="63" text-anchor="middle" font-weight="700" style="fill:var(--navy)">Lien de causalité</text>
+            <text x="485" y="81" text-anchor="middle" font-size="11" style="fill:var(--navy)">cause → effet</text>
+            <text x="585" y="72" text-anchor="middle" font-size="26" style="fill:var(--teal)">=</text>
+            <text x="300" y="22" text-anchor="middle" font-family="Fraunces" font-size="15" font-weight="600" style="fill:var(--nuit)">Responsabilité civile engagée si les 3 sont réunis</text>
           </g>
         </svg>
         <div class="scap">Manque un seul élément → la responsabilité civile ne peut pas être retenue.</div>
@@ -500,21 +502,21 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
       <div class="schema">
         <svg viewBox="0 0 620 230" xmlns="http://www.w3.org/2000/svg">
           <g font-family="DM Sans" font-size="12.5">
-            <circle cx="310" cy="48" r="34" fill="#1b6b5e"/>
-            <text x="310" y="44" text-anchor="middle" fill="#fff" font-weight="700" font-size="12">SECRET</text>
-            <text x="310" y="58" text-anchor="middle" fill="#fff" font-size="10">sans limite</text>
-            <rect x="40" y="120" width="250" height="92" rx="12" fill="#f6ead4" stroke="#c87a12" stroke-width="2"/>
-            <text x="165" y="140" text-anchor="middle" font-weight="700" fill="#b3700f">Levées — sphère privée</text>
-            <text x="165" y="160" text-anchor="middle" font-size="11" fill="#7a5414">Procuration · caution · décès</text>
-            <text x="165" y="177" text-anchor="middle" font-size="11" fill="#7a5414">Mineur · majeur protégé</text>
-            <text x="165" y="194" text-anchor="middle" font-size="11" fill="#7a5414">Compte joint · personne morale</text>
-            <rect x="330" y="120" width="250" height="92" rx="12" fill="#dde6f0" stroke="#23456b" stroke-width="2"/>
-            <text x="455" y="140" text-anchor="middle" font-weight="700" fill="#23456b">Levées — autorités publiques</text>
-            <text x="455" y="160" text-anchor="middle" font-size="11" fill="#3a5675">ACPR · Banque de France · pénal</text>
-            <text x="455" y="177" text-anchor="middle" font-size="11" fill="#3a5675">AMF · CNIL · Comm. UE · ministères</text>
-            <text x="455" y="194" text-anchor="middle" font-size="11" fill="#3a5675">Fisc · Douanes · URSSAF</text>
-            <line x1="240" y1="78" x2="165" y2="120" stroke="#c87a12" stroke-width="2"/>
-            <line x1="380" y1="78" x2="455" y2="120" stroke="#23456b" stroke-width="2"/>
+            <circle cx="310" cy="48" r="34" style="fill:var(--teal)"/>
+            <text x="310" y="44" text-anchor="middle" font-weight="700" font-size="12" style="fill:var(--blanc)">SECRET</text>
+            <text x="310" y="58" text-anchor="middle" font-size="10" style="fill:var(--blanc)">sans limite</text>
+            <rect x="40" y="120" width="250" height="92" rx="12" stroke-width="2" style="fill:var(--amber-soft);stroke:var(--amber)"/>
+            <text x="165" y="140" text-anchor="middle" font-weight="700" style="fill:var(--amber)">Levées — sphère privée</text>
+            <text x="165" y="160" text-anchor="middle" font-size="11" style="fill:var(--amber)">Procuration · caution · décès</text>
+            <text x="165" y="177" text-anchor="middle" font-size="11" style="fill:var(--amber)">Mineur · majeur protégé</text>
+            <text x="165" y="194" text-anchor="middle" font-size="11" style="fill:var(--amber)">Compte joint · personne morale</text>
+            <rect x="330" y="120" width="250" height="92" rx="12" stroke-width="2" style="fill:var(--navy-soft);stroke:var(--navy)"/>
+            <text x="455" y="140" text-anchor="middle" font-weight="700" style="fill:var(--navy)">Levées — autorités publiques</text>
+            <text x="455" y="160" text-anchor="middle" font-size="11" style="fill:var(--navy)">ACPR · Banque de France · pénal</text>
+            <text x="455" y="177" text-anchor="middle" font-size="11" style="fill:var(--navy)">AMF · CNIL · Comm. UE · ministères</text>
+            <text x="455" y="194" text-anchor="middle" font-size="11" style="fill:var(--navy)">Fisc · Douanes · URSSAF</text>
+            <line x1="240" y1="78" x2="165" y2="120" stroke-width="2" style="stroke:var(--amber)"/>
+            <line x1="380" y1="78" x2="455" y2="120" stroke-width="2" style="stroke:var(--navy)"/>
           </g>
         </svg>
         <div class="scap">Le principe est absolu ; les exceptions sont limitativement énumérées.</div>
@@ -677,15 +679,15 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
       <div class="schema">
         <svg viewBox="0 0 620 110" xmlns="http://www.w3.org/2000/svg">
           <g font-family="DM Sans" font-size="13">
-            <rect x="20" y="35" width="155" height="50" rx="11" fill="#e3efec" stroke="#1b6b5e" stroke-width="2"/>
-            <text x="97" y="65" text-anchor="middle" font-weight="700" fill="#1b6b5e">Ouverture</text>
-            <rect x="232" y="35" width="155" height="50" rx="11" fill="#dde6f0" stroke="#23456b" stroke-width="2"/>
-            <text x="309" y="65" text-anchor="middle" font-weight="700" fill="#23456b">Fonctionnement</text>
-            <rect x="445" y="35" width="155" height="50" rx="11" fill="#f3e0da" stroke="#a8432a" stroke-width="2"/>
-            <text x="522" y="65" text-anchor="middle" font-weight="700" fill="#a8432a">Clôture</text>
-            <path d="M175 60 L232 60" stroke="#8a8170" stroke-width="2" marker-end="url(#ar5)"/>
-            <path d="M387 60 L445 60" stroke="#8a8170" stroke-width="2" marker-end="url(#ar5)"/>
-            <defs><marker id="ar5" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#8a8170"/></marker></defs>
+            <rect x="20" y="35" width="155" height="50" rx="11" stroke-width="2" style="fill:var(--teal-soft);stroke:var(--teal)"/>
+            <text x="97" y="65" text-anchor="middle" font-weight="700" style="fill:var(--teal)">Ouverture</text>
+            <rect x="232" y="35" width="155" height="50" rx="11" stroke-width="2" style="fill:var(--navy-soft);stroke:var(--navy)"/>
+            <text x="309" y="65" text-anchor="middle" font-weight="700" style="fill:var(--navy)">Fonctionnement</text>
+            <rect x="445" y="35" width="155" height="50" rx="11" stroke-width="2" style="fill:var(--rust-soft);stroke:var(--rust)"/>
+            <text x="522" y="65" text-anchor="middle" font-weight="700" style="fill:var(--rust)">Clôture</text>
+            <path d="M175 60 L232 60" stroke-width="2" marker-end="url(#ar5)" style="stroke:var(--txt3)"/>
+            <path d="M387 60 L445 60" stroke-width="2" marker-end="url(#ar5)" style="stroke:var(--txt3)"/>
+            <defs><marker id="ar5" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" style="fill:var(--txt3)"/></marker></defs>
           </g>
         </svg>
         <div class="scap">KYC à l'entrée · convention au fonctionnement · RIB pour le retour des fonds à la sortie.</div>
@@ -755,20 +757,20 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
       <div class="schema">
         <svg viewBox="0 0 620 120" xmlns="http://www.w3.org/2000/svg">
           <g font-family="DM Sans" font-size="13">
-            <rect x="30" y="40" width="150" height="55" rx="11" fill="#f6ead4" stroke="#c87a12" stroke-width="2"/>
-            <text x="105" y="64" text-anchor="middle" font-weight="700" fill="#b3700f">Tireur</text>
-            <text x="105" y="82" text-anchor="middle" font-size="11" fill="#8a5a14">émetteur</text>
-            <rect x="235" y="40" width="150" height="55" rx="11" fill="#dde6f0" stroke="#23456b" stroke-width="2"/>
-            <text x="310" y="64" text-anchor="middle" font-weight="700" fill="#23456b">Tiré</text>
-            <text x="310" y="82" text-anchor="middle" font-size="11" fill="#3a5675">la banque</text>
-            <rect x="440" y="40" width="150" height="55" rx="11" fill="#e3efec" stroke="#1b6b5e" stroke-width="2"/>
-            <text x="515" y="64" text-anchor="middle" font-weight="700" fill="#1b6b5e">Bénéficiaire</text>
-            <text x="515" y="82" text-anchor="middle" font-size="11" fill="#3d6b62">reçoit le paiement</text>
-            <path d="M180 67 L235 67" stroke="#8a8170" stroke-width="2" marker-end="url(#ar6)"/>
-            <path d="M385 67 L440 67" stroke="#8a8170" stroke-width="2" marker-end="url(#ar6)"/>
-            <text x="208" y="33" text-anchor="middle" font-size="10.5" fill="#8a8170">ordonne</text>
-            <text x="413" y="33" text-anchor="middle" font-size="10.5" fill="#8a8170">paie</text>
-            <defs><marker id="ar6" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#8a8170"/></marker></defs>
+            <rect x="30" y="40" width="150" height="55" rx="11" stroke-width="2" style="fill:var(--amber-soft);stroke:var(--amber)"/>
+            <text x="105" y="64" text-anchor="middle" font-weight="700" style="fill:var(--amber)">Tireur</text>
+            <text x="105" y="82" text-anchor="middle" font-size="11" style="fill:var(--amber)">émetteur</text>
+            <rect x="235" y="40" width="150" height="55" rx="11" stroke-width="2" style="fill:var(--navy-soft);stroke:var(--navy)"/>
+            <text x="310" y="64" text-anchor="middle" font-weight="700" style="fill:var(--navy)">Tiré</text>
+            <text x="310" y="82" text-anchor="middle" font-size="11" style="fill:var(--navy)">la banque</text>
+            <rect x="440" y="40" width="150" height="55" rx="11" stroke-width="2" style="fill:var(--teal-soft);stroke:var(--teal)"/>
+            <text x="515" y="64" text-anchor="middle" font-weight="700" style="fill:var(--teal)">Bénéficiaire</text>
+            <text x="515" y="82" text-anchor="middle" font-size="11" style="fill:var(--teal)">reçoit le paiement</text>
+            <path d="M180 67 L235 67" stroke-width="2" marker-end="url(#ar6)" style="stroke:var(--txt3)"/>
+            <path d="M385 67 L440 67" stroke-width="2" marker-end="url(#ar6)" style="stroke:var(--txt3)"/>
+            <text x="208" y="33" text-anchor="middle" font-size="10.5" style="fill:var(--txt3)">ordonne</text>
+            <text x="413" y="33" text-anchor="middle" font-size="10.5" style="fill:var(--txt3)">paie</text>
+            <defs><marker id="ar6" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" style="fill:var(--txt3)"/></marker></defs>
           </g>
         </svg>
         <div class="scap">Mentions obligatoires : « chèque », somme en lettres ET chiffres, nom et lieu du tiré, lieu et date, bénéficiaire, signature.</div>
@@ -863,17 +865,17 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
       <div class="schema">
         <svg viewBox="0 0 620 150" xmlns="http://www.w3.org/2000/svg">
           <g font-family="DM Sans" font-size="12.5">
-            <text x="310" y="22" text-anchor="middle" font-family="Fraunces" font-size="15" font-weight="600" fill="#22201b">Les garanties du crédit</text>
-            <rect x="30" y="42" width="265" height="90" rx="12" fill="#dde6f0" stroke="#23456b" stroke-width="2"/>
-            <text x="162" y="64" text-anchor="middle" font-weight="700" fill="#23456b">Garanties réelles</text>
-            <text x="162" y="86" text-anchor="middle" font-size="11.5" fill="#3a5675">Hypothèque · Privilège prêteur</text>
-            <text x="162" y="104" text-anchor="middle" font-size="11.5" fill="#3a5675">de deniers · Nantissement</text>
-            <text x="162" y="121" text-anchor="middle" font-size="11" fill="#5a6b80">(porte sur un bien)</text>
-            <rect x="325" y="42" width="265" height="90" rx="12" fill="#e3efec" stroke="#1b6b5e" stroke-width="2"/>
-            <text x="457" y="64" text-anchor="middle" font-weight="700" fill="#1b6b5e">Garanties personnelles</text>
-            <text x="457" y="86" text-anchor="middle" font-size="11.5" fill="#3d6b62">Cautionnement · OCM</text>
-            <text x="457" y="104" text-anchor="middle" font-size="11.5" fill="#3d6b62">(ex. Crédit Logement)</text>
-            <text x="457" y="121" text-anchor="middle" font-size="11" fill="#3d6b62">(un tiers s'engage)</text>
+            <text x="310" y="22" text-anchor="middle" font-family="Fraunces" font-size="15" font-weight="600" style="fill:var(--nuit)">Les garanties du crédit</text>
+            <rect x="30" y="42" width="265" height="90" rx="12" stroke-width="2" style="fill:var(--navy-soft);stroke:var(--navy)"/>
+            <text x="162" y="64" text-anchor="middle" font-weight="700" style="fill:var(--navy)">Garanties réelles</text>
+            <text x="162" y="86" text-anchor="middle" font-size="11.5" style="fill:var(--navy)">Hypothèque · Privilège prêteur</text>
+            <text x="162" y="104" text-anchor="middle" font-size="11.5" style="fill:var(--navy)">de deniers · Nantissement</text>
+            <text x="162" y="121" text-anchor="middle" font-size="11" style="fill:var(--navy)">(porte sur un bien)</text>
+            <rect x="325" y="42" width="265" height="90" rx="12" stroke-width="2" style="fill:var(--teal-soft);stroke:var(--teal)"/>
+            <text x="457" y="64" text-anchor="middle" font-weight="700" style="fill:var(--teal)">Garanties personnelles</text>
+            <text x="457" y="86" text-anchor="middle" font-size="11.5" style="fill:var(--teal)">Cautionnement · OCM</text>
+            <text x="457" y="104" text-anchor="middle" font-size="11.5" style="fill:var(--teal)">(ex. Crédit Logement)</text>
+            <text x="457" y="121" text-anchor="middle" font-size="11" style="fill:var(--teal)">(un tiers s'engage)</text>
           </g>
         </svg>
         <div class="scap">Réelle = on affecte un bien · Personnelle = un tiers garantit le remboursement.</div>
@@ -971,16 +973,16 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
       <div class="schema">
         <svg viewBox="0 0 620 130" xmlns="http://www.w3.org/2000/svg">
           <g font-family="DM Sans" font-size="13">
-            <rect x="30" y="45" width="170" height="58" rx="11" fill="#e3efec" stroke="#1b6b5e" stroke-width="2"/>
-            <text x="115" y="70" text-anchor="middle" font-weight="700" fill="#1b6b5e">USUS</text>
-            <text x="115" y="89" text-anchor="middle" font-size="11" fill="#3d6b62">user de la chose</text>
-            <rect x="225" y="45" width="170" height="58" rx="11" fill="#f6ead4" stroke="#c87a12" stroke-width="2"/>
-            <text x="310" y="70" text-anchor="middle" font-weight="700" fill="#b3700f">FRUCTUS</text>
-            <text x="310" y="89" text-anchor="middle" font-size="11" fill="#8a5a14">jouir des fruits</text>
-            <rect x="420" y="45" width="170" height="58" rx="11" fill="#dde6f0" stroke="#23456b" stroke-width="2"/>
-            <text x="505" y="70" text-anchor="middle" font-weight="700" fill="#23456b">ABUSUS</text>
-            <text x="505" y="89" text-anchor="middle" font-size="11" fill="#3a5675">disposer / vendre</text>
-            <text x="310" y="26" text-anchor="middle" font-family="Fraunces" font-size="15" font-weight="600" fill="#22201b">Les 3 attributs de la propriété</text>
+            <rect x="30" y="45" width="170" height="58" rx="11" stroke-width="2" style="fill:var(--teal-soft);stroke:var(--teal)"/>
+            <text x="115" y="70" text-anchor="middle" font-weight="700" style="fill:var(--teal)">USUS</text>
+            <text x="115" y="89" text-anchor="middle" font-size="11" style="fill:var(--teal)">user de la chose</text>
+            <rect x="225" y="45" width="170" height="58" rx="11" stroke-width="2" style="fill:var(--amber-soft);stroke:var(--amber)"/>
+            <text x="310" y="70" text-anchor="middle" font-weight="700" style="fill:var(--amber)">FRUCTUS</text>
+            <text x="310" y="89" text-anchor="middle" font-size="11" style="fill:var(--amber)">jouir des fruits</text>
+            <rect x="420" y="45" width="170" height="58" rx="11" stroke-width="2" style="fill:var(--navy-soft);stroke:var(--navy)"/>
+            <text x="505" y="70" text-anchor="middle" font-weight="700" style="fill:var(--navy)">ABUSUS</text>
+            <text x="505" y="89" text-anchor="middle" font-size="11" style="fill:var(--navy)">disposer / vendre</text>
+            <text x="310" y="26" text-anchor="middle" font-family="Fraunces" font-size="15" font-weight="600" style="fill:var(--nuit)">Les 3 attributs de la propriété</text>
           </g>
         </svg>
         <div class="scap">Usufruit = usus + fructus · Nue-propriété = abusus. Le démembrement sépare ces droits.</div>
@@ -1401,5 +1403,8 @@ updateProgress();
 renderTest();
 go('l1');
 </script>
+<script src="../lb.js"></script>
+<script src="../progress.js"></script>
+<script src="../ui.js"></script>
 </body>
 </html>

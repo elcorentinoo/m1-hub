@@ -70,7 +70,33 @@ const FICHIERS = [
   'img/sujet-produits-derives-2.webp',
   'img/sujet-marketing-numerique.webp',
   'img/sujet-es-banque.webp',
-  'img/sujet-marche-particuliers.webp'
+  'img/sujet-marche-particuliers.webp',
+  /* Licence (8.0.0) : ses pages, sa feuille de raccords, ses questions BeQuick
+     et les photos locales de ses matières. Une clé ne reçoit que les pages de
+     son niveau (la porte refuse les autres) : voir l'installation ci-dessous. */
+  'licence.css',
+  'banque-licence.js',
+  'licence/maths_fi.html',
+  'licence/politique-monetaire.html',
+  'licence/droit-bancaire.html',
+  'licence/risques_bancaires.html',
+  'licence/finance_internationale.html',
+  'licence/crises-financieres.html',
+  'licence/fiscalite.html',
+  'licence/marche_des_capitaux.html',
+  'licence/banque_patrimoine_assurance.html',
+  'licence/maths_fi_entrainement.html',
+  'licence/politique_monetaire_entrainement.html',
+  'licence/droit_bancaire_entrainement.html',
+  'licence/risques_bancaires_entrainement.html',
+  'licence/finance_internationale_entrainement.html',
+  'licence/crises_financieres_entrainement.html',
+  'licence/fiscalite_entrainement.html',
+  'licence/marche_des_capitaux_entrainement.html',
+  'img/mat-derives.webp',
+  'img/hero-wide.webp',
+  'img/band-derives.webp',
+  'img/mat-marketing.webp'
 ];
 
 /* Domaines externes conservés au premier passage (polices, PDF.js, Mammoth, photos Unsplash, supabase-js) */
@@ -82,7 +108,9 @@ const JAMAIS = ['supabase.co'];
 self.addEventListener('install', e=>{
   e.waitUntil(
     caches.open(CACHE_APP)
-      .then(c=>c.addAll(FICHIERS.map(f=>new Request(f, {cache:'reload'}))))
+      /* fichier par fichier (8.0.0) : une page refusée par la porte (celle d'un
+         autre niveau que la clé) n'empêche plus de garder toutes les autres */
+      .then(c=>Promise.all(FICHIERS.map(f=>c.add(new Request(f, {cache:'reload'})).catch(()=>{}))))
       .then(()=>self.skipWaiting())
       .catch(err=>console.warn('[sw] installation partielle', err))
   );

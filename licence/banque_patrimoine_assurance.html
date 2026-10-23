@@ -1,29 +1,20 @@
 <!DOCTYPE html>
-<html lang="fr" subject-id="banque-patrimoine-assurance">
+<html lang="fr" data-niveau="licence" subject-id="l-banque-patrimoine">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
 <title>Banque · Patrimoine · Assurance — LP Banque ABF</title>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <style>
-:root {
-  --paper: #faf6ef;
-  --paper2: #f3ece0;
-  --ink: #22201b;
-  --line: #e3d9c8;
-  --teal: #1b6b5e;
-  --teal-light: #e8f4f1;
-  --amber: #c87a12;
-  --amber-light: #fdf3e3;
-  --rust: #a8432a;
-  --rust-light: #fdeae6;
-  --plum: #6b3a73;
-  --plum-light: #f3eaf5;
-  --navy: #23456b;
-  --navy-light: #e8eef5;
+:root{
+  --teal-light: var(--teal-soft);
+  --amber-light: var(--amber-soft);
+  --rust-light: var(--rust-soft);
+  --plum-light: var(--plum-soft);
+  --navy-light: var(--navy-soft);
   --sidebar-w: 280px;
-  --nav-h: 60px;
-}
+  --nav-h: 60px;}
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -61,7 +52,7 @@ body {
   letter-spacing: 0.02em;
 }
 
-#navbar .logo span { color: #fff; font-weight: 300; }
+#navbar .logo span { color: var(--blanc); font-weight: 300; }
 
 #progress-wrap {
   flex: 1;
@@ -71,14 +62,14 @@ body {
 #progress-label {
   font-family: 'DM Mono', monospace;
   font-size: 0.72rem;
-  color: #aaa;
+  color: var(--stroke2);
   white-space: nowrap;
 }
 
 #progress-bar-outer {
   flex: 1;
   height: 6px;
-  background: #3a3830;
+  background: var(--txt2);
   border-radius: 3px;
   overflow: hidden;
 }
@@ -105,7 +96,7 @@ body {
 #menu-toggle {
   display: none;
   background: none; border: none; cursor: pointer;
-  color: #fff; font-size: 1.3rem; padding: 4px;
+  color: var(--blanc); font-size: 1.3rem; padding: 4px;
 }
 
 /* ── SIDEBAR ── */
@@ -126,7 +117,7 @@ body {
   font-family: 'DM Mono', monospace;
   font-size: 0.65rem;
   letter-spacing: 0.1em;
-  color: #999;
+  color: var(--txt3);
   text-transform: uppercase;
   border-top: 1px solid var(--line);
   margin-top: 8px;
@@ -158,12 +149,12 @@ body {
   transition: all 0.2s;
 }
 
-.nav-item.done .check { background: var(--teal); border-color: var(--teal); color: #fff; }
+.nav-item.done .check { background: var(--teal); border-color: var(--teal); color: var(--blanc); }
 
 .nav-item .num {
   font-family: 'DM Mono', monospace;
   font-size: 0.7rem;
-  color: #aaa;
+  color: var(--stroke2);
   min-width: 18px;
 }
 
@@ -180,10 +171,10 @@ body {
   transition: all 0.2s;
 }
 
-.nav-special.test { background: var(--plum); color: #fff; }
-.nav-special.test:hover { background: #7d4589; }
-.nav-special.annales { background: var(--navy); color: #fff; margin-top: 6px; }
-.nav-special.annales:hover { background: #2a5280; }
+.nav-special.test { background: var(--plum); color: var(--blanc); }
+.nav-special.test:hover { background: var(--plum); }
+.nav-special.annales { background: var(--navy); color: var(--blanc); margin-top: 6px; }
+.nav-special.annales:hover { background: var(--navy); }
 
 /* ── MAIN ── */
 #main {
@@ -218,7 +209,7 @@ body {
 
 .home-hero p {
   font-size: 1rem;
-  color: #666;
+  color: var(--txt3);
   max-width: 500px;
   margin: 0 auto 30px;
   line-height: 1.7;
@@ -232,7 +223,7 @@ body {
 }
 
 .home-card {
-  background: #fff;
+  background: var(--blanc);
   border: 1px solid var(--line);
   border-radius: 12px;
   padding: 20px;
@@ -253,11 +244,11 @@ body {
 .home-card.p4::before { background: var(--amber); }
 .home-card.p5::before { background: var(--navy); }
 
-.home-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+.home-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px color-mix(in srgb, var(--nuit) 8%, transparent); }
 
 .home-card .icon { font-size: 1.8rem; margin-bottom: 10px; }
 .home-card h3 { font-family: 'Fraunces', serif; font-size: 0.95rem; color: var(--navy); margin-bottom: 6px; }
-.home-card p { font-size: 0.78rem; color: #888; line-height: 1.5; }
+.home-card p { font-size: 0.78rem; color: var(--txt3); line-height: 1.5; }
 
 .home-card .progress-mini {
   margin-top: 12px;
@@ -306,7 +297,7 @@ body {
 
 .lesson-subtitle {
   font-size: 0.95rem;
-  color: #777;
+  color: var(--txt3);
   line-height: 1.6;
 }
 
@@ -348,7 +339,7 @@ body {
 /* FORMULE */
 .formule-block {
   background: var(--ink);
-  color: #f5f0e8;
+  color: var(--fond);
   border-radius: 10px;
   padding: 20px 24px;
   margin: 24px 0;
@@ -366,11 +357,11 @@ body {
 .formule-block .formule {
   font-size: 1.05rem;
   line-height: 1.8;
-  color: #fff;
+  color: var(--blanc);
 }
 
 .formule-block .formule em {
-  color: #7dd3c8;
+  color: var(--teal-clair);
   font-style: normal;
 }
 
@@ -382,7 +373,7 @@ body {
   border-collapse: collapse;
   margin: 20px 0;
   font-size: 0.85rem;
-  background: #fff;
+  background: var(--blanc);
   border-radius: 10px;
   overflow: hidden;
   border: 1px solid var(--line);
@@ -416,7 +407,7 @@ body {
   display: flex; gap: 16px;
   margin-bottom: 16px;
   padding: 16px;
-  background: #fff;
+  background: var(--blanc);
   border-radius: 10px;
   border: 1px solid var(--line);
 }
@@ -424,7 +415,7 @@ body {
 .etape-num {
   width: 32px; height: 32px; min-width: 32px;
   background: var(--navy);
-  color: #fff;
+  color: var(--blanc);
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   font-family: 'DM Mono', monospace;
@@ -443,7 +434,7 @@ body {
 
 .etape-content p, .etape-content .val {
   font-size: 0.84rem;
-  color: #555;
+  color: var(--txt2);
   line-height: 1.6;
 }
 
@@ -459,7 +450,7 @@ body {
 /* SCHEMA SVG */
 .schema-wrap {
   margin: 24px 0;
-  background: #fff;
+  background: var(--blanc);
   border: 1px solid var(--line);
   border-radius: 12px;
   padding: 20px;
@@ -477,7 +468,7 @@ body {
 /* QUIZ */
 .quiz-block {
   background: var(--plum-light);
-  border: 1px solid #d4b8dc;
+  border: 1px solid var(--m-clair);
   border-radius: 12px;
   padding: 20px 24px;
   margin: 28px 0;
@@ -504,8 +495,8 @@ body {
 
 .quiz-opt {
   padding: 10px 14px;
-  background: #fff;
-  border: 1.5px solid #d4b8dc;
+  background: var(--blanc);
+  border: 1.5px solid var(--m-clair);
   border-radius: 8px;
   cursor: pointer;
   font-size: 0.85rem;
@@ -513,7 +504,7 @@ body {
   line-height: 1.45;
 }
 
-.quiz-opt:hover:not(.disabled) { border-color: var(--plum); background: #f8f3fa; }
+.quiz-opt:hover:not(.disabled) { border-color: var(--plum); background: var(--fond); }
 .quiz-opt.correct { background: var(--teal-light); border-color: var(--teal); color: var(--teal); font-weight: 500; }
 .quiz-opt.wrong { background: var(--rust-light); border-color: var(--rust); color: var(--rust); }
 .quiz-opt.disabled { cursor: default; }
@@ -560,17 +551,17 @@ body {
 
 .btn-primary {
   background: var(--teal);
-  color: #fff;
+  color: var(--blanc);
 }
 
-.btn-primary:hover { background: #1a5e52; }
+.btn-primary:hover { background: var(--teal); }
 
 .btn-amber {
   background: var(--amber);
-  color: #fff;
+  color: var(--blanc);
 }
 
-.btn-amber:hover { background: #b36c10; }
+.btn-amber:hover { background: var(--amber); }
 
 .xp-gained {
   display: inline-flex; align-items: center; gap: 6px;
@@ -591,9 +582,9 @@ body {
   text-align: center;
   margin-bottom: 40px;
   padding: 40px 20px;
-  background: linear-gradient(135deg, var(--plum), #8b4b96);
+  background: linear-gradient(135deg, var(--plum), var(--plum));
   border-radius: 16px;
-  color: #fff;
+  color: var(--blanc);
 }
 
 .test-header h2 {
@@ -625,12 +616,12 @@ body {
 .test-progress-label {
   font-family: 'DM Mono', monospace;
   font-size: 0.75rem;
-  color: #888;
+  color: var(--txt3);
   white-space: nowrap;
 }
 
 .question-block {
-  background: #fff;
+  background: var(--blanc);
   border: 1px solid var(--line);
   border-radius: 14px;
   padding: 28px;
@@ -706,7 +697,7 @@ body {
   margin-bottom: 8px;
 }
 
-.remediation p { font-size: 0.86rem; line-height: 1.6; color: #555; margin-bottom: 12px; }
+.remediation p { font-size: 0.86rem; line-height: 1.6; color: var(--txt2); margin-bottom: 12px; }
 
 .remediation-btns { display: flex; gap: 10px; flex-wrap: wrap; }
 
@@ -743,7 +734,7 @@ body {
 
 .result-bar-label {
   font-size: 0.8rem;
-  color: #666;
+  color: var(--txt3);
   width: 150px;
   text-align: right;
   flex-shrink: 0;
@@ -779,7 +770,7 @@ body {
 }
 
 .annale-item {
-  background: #fff;
+  background: var(--blanc);
   border: 1px solid var(--line);
   border-radius: 14px;
   margin-bottom: 20px;
@@ -803,7 +794,7 @@ body {
 .annale-header .annale-meta {
   font-family: 'DM Mono', monospace;
   font-size: 0.72rem;
-  color: #888;
+  color: var(--txt3);
 }
 
 .annale-body { padding: 24px; }
@@ -828,7 +819,7 @@ body {
   padding: 18px;
   background: var(--teal-light);
   border-radius: 10px;
-  border: 1px solid #c2ddd9;
+  border: 1px solid var(--teal-clair);
   font-size: 0.87rem;
   line-height: 1.7;
 }
@@ -836,38 +827,38 @@ body {
 .corrige-content.show { display: block; }
 
 /* ── EXAMENS BLANCS ── */
-.nav-special.examens { background: var(--rust); color: #fff; margin-top: 6px; }
-.nav-special.examens:hover { background: #8f3825; }
+.nav-special.examens { background: var(--rust); color: var(--blanc); margin-top: 6px; }
+.nav-special.examens:hover { background: var(--rust); }
 
 #examens { max-width: 860px; margin: 0 auto; padding: 40px 40px 80px; }
 
 .exam-header { text-align: center; margin-bottom: 28px; }
 .exam-header h2 { font-family: 'Fraunces', serif; font-size: 1.8rem; color: var(--rust); margin-bottom: 8px; }
-.exam-header p { color: #777; font-size: 0.88rem; }
+.exam-header p { color: var(--txt3); font-size: 0.88rem; }
 
 .ia-note {
-  background: var(--amber-light); border: 1px solid #f0d9ab; border-radius: 10px;
-  padding: 12px 16px; font-size: 0.8rem; line-height: 1.55; color: #7a5410; margin-bottom: 24px;
+  background: var(--amber-light); border: 1px solid var(--amber-soft); border-radius: 10px;
+  padding: 12px 16px; font-size: 0.8rem; line-height: 1.55; color: var(--amber); margin-bottom: 24px;
 }
 .ia-note strong { color: var(--amber); }
 
 .exam-tabs { display: flex; gap: 8px; margin-bottom: 24px; }
 .exam-tab {
-  flex: 1; padding: 12px; border: 1.5px solid var(--line); background: #fff;
+  flex: 1; padding: 12px; border: 1.5px solid var(--line); background: var(--blanc);
   border-radius: 10px; cursor: pointer; font-family: 'DM Sans', sans-serif;
-  font-weight: 600; font-size: 0.9rem; color: #888; transition: all 0.15s; text-align: center;
+  font-weight: 600; font-size: 0.9rem; color: var(--txt3); transition: all 0.15s; text-align: center;
 }
-.exam-tab.active { background: var(--rust); color: #fff; border-color: var(--rust); }
+.exam-tab.active { background: var(--rust); color: var(--blanc); border-color: var(--rust); }
 .exam-tab:hover:not(.active) { border-color: var(--rust); color: var(--rust); }
 
 .exam-card {
-  background: #fff; border: 1px solid var(--line); border-radius: 14px;
+  background: var(--blanc); border: 1px solid var(--line); border-radius: 14px;
   padding: 18px 22px; margin-bottom: 14px; cursor: pointer; transition: all 0.15s;
   display: flex; justify-content: space-between; align-items: center; gap: 14px;
 }
-.exam-card:hover { border-color: var(--rust); transform: translateX(3px); box-shadow: 0 4px 14px rgba(168,67,42,0.1); }
+.exam-card:hover { border-color: var(--rust); transform: translateX(3px); box-shadow: 0 4px 14px color-mix(in srgb, var(--rust) 10%, transparent); }
 .exam-card .ec-left h3 { font-family: 'Fraunces', serif; font-size: 1.02rem; color: var(--ink); margin-bottom: 4px; }
-.exam-card .ec-left .ec-meta { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: #999; }
+.exam-card .ec-left .ec-meta { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--txt3); }
 .exam-card .ec-badge {
   background: var(--rust-light); color: var(--rust); font-family: 'DM Mono', monospace;
   font-size: 0.72rem; font-weight: 500; padding: 5px 12px; border-radius: 20px; white-space: nowrap;
@@ -877,7 +868,7 @@ body {
 .exam-run-head { margin-bottom: 22px; }
 .exam-run-head .btn-back { margin-bottom: 16px; }
 .exam-run-head h2 { font-family: 'Fraunces', serif; font-size: 1.5rem; color: var(--rust); margin-bottom: 6px; line-height: 1.25; }
-.exam-run-head .erh-meta { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: #999; }
+.exam-run-head .erh-meta { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--txt3); }
 
 .exam-situation {
   background: var(--paper); border-left: 3px solid var(--navy); border-radius: 8px;
@@ -885,11 +876,11 @@ body {
 }
 .exam-situation .es-title { font-weight: 600; color: var(--navy); display: block; margin-bottom: 6px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; }
 
-.exam-q { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; margin-bottom: 18px; }
+.exam-q { background: var(--blanc); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; margin-bottom: 18px; }
 .exam-q .eq-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 8px; }
 .exam-q .eq-num { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--rust); font-weight: 500; }
-.exam-q .eq-pts { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: #fff; background: var(--rust); padding: 2px 9px; border-radius: 12px; white-space: nowrap; }
-.exam-q .eq-situation { font-size: 0.83rem; line-height: 1.6; color: #666; font-style: italic; margin-bottom: 8px; }
+.exam-q .eq-pts { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--blanc); background: var(--rust); padding: 2px 9px; border-radius: 12px; white-space: nowrap; }
+.exam-q .eq-situation { font-size: 0.83rem; line-height: 1.6; color: var(--txt3); font-style: italic; margin-bottom: 8px; }
 .exam-q .eq-travail { font-size: 0.92rem; line-height: 1.55; color: var(--ink); font-weight: 500; margin-bottom: 14px; }
 
 .exam-q textarea {
@@ -897,30 +888,30 @@ body {
   border: 1.5px solid var(--line); border-radius: 10px; background: var(--paper);
   font-family: 'DM Sans', sans-serif; font-size: 0.88rem; line-height: 1.55; color: var(--ink);
 }
-.exam-q textarea:focus { outline: none; border-color: var(--rust); background: #fff; }
+.exam-q textarea:focus { outline: none; border-color: var(--rust); background: var(--blanc); }
 
 .eq-btns { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
-.btn-rust { background: var(--rust); color: #fff; }
-.btn-rust:hover { background: #8f3825; }
+.btn-rust { background: var(--rust); color: var(--blanc); }
+.btn-rust:hover { background: var(--rust); }
 .btn-rust:disabled { opacity: 0.55; cursor: progress; }
 
-.ia-feedback { display: none; margin-top: 16px; border-radius: 12px; overflow: hidden; border: 1px solid #c2ddd9; }
+.ia-feedback { display: none; margin-top: 16px; border-radius: 12px; overflow: hidden; border: 1px solid var(--teal-clair); }
 .ia-feedback.show { display: block; animation: fadeIn 0.3s ease; }
-.iaf-top { background: var(--teal); color: #fff; padding: 12px 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.iaf-top { background: var(--teal); color: var(--blanc); padding: 12px 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .iaf-top .iaf-title { font-weight: 600; font-size: 0.9rem; }
-.iaf-note { font-family: 'DM Mono', monospace; font-size: 1.05rem; font-weight: 500; background: rgba(255,255,255,0.2); padding: 4px 14px; border-radius: 20px; white-space: nowrap; }
+.iaf-note { font-family: 'DM Mono', monospace; font-size: 1.05rem; font-weight: 500; background: color-mix(in srgb, var(--blanc) 20%, transparent); padding: 4px 14px; border-radius: 20px; white-space: nowrap; }
 .iaf-body { background: var(--teal-light); padding: 16px 18px; font-size: 0.85rem; line-height: 1.65; }
 .iaf-body h5 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--teal); margin: 12px 0 6px; }
 .iaf-body h5:first-child { margin-top: 0; }
 .iaf-body ul { margin: 0 0 4px 18px; }
 .iaf-body li { margin-bottom: 4px; }
-.iaf-body .iaf-corrige { background: #fff; border-radius: 8px; padding: 12px 14px; margin-top: 6px; white-space: pre-wrap; }
+.iaf-body .iaf-corrige { background: var(--blanc); border-radius: 8px; padding: 12px 14px; margin-top: 6px; white-space: pre-wrap; }
 .iaf-loading { padding: 18px; text-align: center; color: var(--teal); font-size: 0.85rem; }
-.iaf-error { background: var(--amber-light); border-color: #f0d9ab; }
+.iaf-error { background: var(--amber-light); border-color: var(--amber-soft); }
 .iaf-error .iaf-top { background: var(--amber); }
 .iaf-error .iaf-body { background: var(--amber-light); }
 
-.corrige-modele { display: none; margin-top: 14px; padding: 16px 18px; background: var(--navy-light); border: 1px solid #c3d2e6; border-radius: 10px; font-size: 0.85rem; line-height: 1.65; white-space: pre-wrap; }
+.corrige-modele { display: none; margin-top: 14px; padding: 16px 18px; background: var(--navy-light); border: 1px solid var(--m-clair); border-radius: 10px; font-size: 0.85rem; line-height: 1.65; white-space: pre-wrap; }
 .corrige-modele.show { display: block; animation: fadeIn 0.3s ease; }
 .corrige-modele .cm-title { font-weight: 600; color: var(--navy); text-transform: uppercase; letter-spacing: 0.04em; font-size: 0.75rem; margin-bottom: 8px; }
 
@@ -937,14 +928,14 @@ body {
 }
 
 /* Prose */
-.prose p { font-size: 0.9rem; line-height: 1.78; color: #3a3730; margin-bottom: 14px; }
+.prose p { font-size: 0.9rem; line-height: 1.78; color: var(--txt2); margin-bottom: 14px; }
 .prose strong { color: var(--navy); }
 
 /* Loi tag */
 .loi-tag {
   display: inline-block;
   background: var(--rust);
-  color: #fff;
+  color: var(--blanc);
   font-family: 'DM Mono', monospace;
   font-size: 0.68rem;
   padding: 2px 8px;
@@ -967,11 +958,19 @@ body {
 .tag.rust { background: var(--rust-light); color: var(--rust); }
 .tag.navy { background: var(--navy-light); color: var(--navy); }
 </style>
+<link rel="stylesheet" href="../ui.css">
+<link rel="stylesheet" href="../theme.css">
+<link rel="stylesheet" href="../licence.css">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#ECEEF6">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/favicon-32.png">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
 </head>
 <body>
 
 <!-- NAVBAR -->
-<nav id="navbar">
+<nav id="navbar" class="topbar">
   <button id="menu-toggle" onclick="toggleSidebar()">☰</button>
   <div class="logo">⚖ Banque · <span>Patrimoine · Assurance</span></div>
   <div class="progress-wrap" id="progress-wrap">
@@ -1036,7 +1035,7 @@ body {
   <div class="sidebar-section">Évaluation</div>
   <div class="nav-special test" onclick="showTest()">🎯 Test final (10 Q)</div>
   <div class="nav-special annales" onclick="showAnnales()">📄 Annales corrigées</div>
-  <div class="nav-special examens" onclick="showExamens()">📝 Examens blancs · IA</div>
+  <div class="nav-special examens" onclick="showExamens()">📝 Examens blancs</div>
 </aside>
 
 <!-- MAIN -->
@@ -1119,10 +1118,10 @@ body {
 <div id="annales" class="view">
   <div class="annales-header">
     <h2>📄 Annales corrigées</h2>
-    <p style="color:#777;font-size:0.88rem;">Les thèmes classiques des partiels — travaille avant de regarder le corrigé</p>
+    <p style="color:var(--txt3);font-size:0.88rem;">Les thèmes classiques des partiels — travaille avant de regarder le corrigé</p>
   </div>
   <div id="annales-content"></div>
-  <div style="margin-top:32px;padding:16px 24px;background:var(--teal-light);border:1px solid #c2ddd9;border-radius:12px;text-align:center;color:var(--teal);font-size:0.85rem;font-weight:500;">
+  <div style="margin-top:32px;padding:16px 24px;background:var(--teal-light);border:1px solid var(--teal-clair);border-radius:12px;text-align:center;color:var(--teal);font-size:0.85rem;font-weight:500;">
     ✓ 5 exercices officiels ESBanque 2024-2025 intégrés · Bloc 2 (entrée en relation, crédits, épargne) + Bloc 3 (PNB, débiteurs, satisfaction client)
   </div>
 </div>
@@ -1132,10 +1131,7 @@ body {
   <div id="exam-list-screen">
     <div class="exam-header">
       <h2>📝 Examens blancs</h2>
-      <p>Sujets type ESBanque · réponse libre · correction directe par l'IA</p>
-    </div>
-    <div class="ia-note">
-      <strong>✦ Correction par IA :</strong> rédige ta réponse, clique sur « Corriger par l'IA » et tu obtiens une note sur le barème + les points forts, les manques et le corrigé. La correction IA fonctionne dans l'aperçu Claude. Sur ton hub hors-ligne, le bouton bascule automatiquement sur le <strong>corrigé modèle</strong> (toujours dispo via le second bouton).
+      <p>Sujets type ESBanque · réponse libre · corrigé modèle pour chaque question</p>
     </div>
     <div class="exam-tabs">
       <div class="exam-tab active" id="tab-bloc2" onclick="switchExamTab('bloc2')">Bloc 2 · Conseiller & proposer</div>
@@ -1229,7 +1225,7 @@ function updateUI() {
     const chk = document.getElementById(`chk-l${i}`);
     const nav = document.getElementById(`nav-l${i}`);
     if (state.done[i]) {
-      chk.textContent = '✓'; chk.style.background = '#1b6b5e'; chk.style.color = '#fff'; chk.style.border = '2px solid #1b6b5e';
+      chk.textContent = '✓'; chk.style.background = 'var(--teal)'; chk.style.color = 'var(--blanc)'; chk.style.border = '2px solid var(--teal)';
       nav.classList.add('done');
       const pm = document.getElementById(`pm${i}`);
       if (pm) pm.style.width = '100%';
@@ -1407,52 +1403,52 @@ const lessons = {
         <h4>Organigramme simplifié de la régulation bancaire française</h4>
         <svg viewBox="0 0 700 320" style="width:100%;max-width:700px;display:block;margin:0 auto;" font-family="DM Sans, sans-serif">
           <!-- BCE -->
-          <rect x="270" y="10" width="160" height="44" rx="8" fill="#23456b"/>
-          <text x="350" y="28" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">BCE</text>
-          <text x="350" y="44" text-anchor="middle" fill="#93b3d0" font-size="10">Banque Centrale Européenne</text>
+          <rect x="270" y="10" width="160" height="44" rx="8" style="fill:var(--navy)"/>
+          <text x="350" y="28" text-anchor="middle" font-size="12" font-weight="600" style="fill:var(--blanc)">BCE</text>
+          <text x="350" y="44" text-anchor="middle" font-size="10" style="fill:var(--m-clair)">Banque Centrale Européenne</text>
           <!-- Arrow BCE → BdF -->
-          <line x1="350" y1="54" x2="350" y2="78" stroke="#e3d9c8" stroke-width="1.5" marker-end="url(#arr)"/>
+          <line x1="350" y1="54" x2="350" y2="78" stroke-width="1.5" marker-end="url(#arr)" style="stroke:var(--stroke)"/>
           <!-- BdF -->
-          <rect x="240" y="78" width="220" height="44" rx="8" fill="#1b6b5e"/>
-          <text x="350" y="96" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">Banque de France</text>
-          <text x="350" y="112" text-anchor="middle" fill="#a8e0d8" font-size="10">FCC · FICP · Droit au compte · Taux usure</text>
+          <rect x="240" y="78" width="220" height="44" rx="8" style="fill:var(--teal)"/>
+          <text x="350" y="96" text-anchor="middle" font-size="12" font-weight="600" style="fill:var(--blanc)">Banque de France</text>
+          <text x="350" y="112" text-anchor="middle" font-size="10" style="fill:var(--teal-clair)">FCC · FICP · Droit au compte · Taux usure</text>
           <!-- Arrow BdF → ACPR -->
-          <line x1="300" y1="122" x2="200" y2="165" stroke="#e3d9c8" stroke-width="1.5" marker-end="url(#arr)"/>
+          <line x1="300" y1="122" x2="200" y2="165" stroke-width="1.5" marker-end="url(#arr)" style="stroke:var(--stroke)"/>
           <!-- ACPR -->
-          <rect x="90" y="165" width="220" height="50" rx="8" fill="#c87a12"/>
-          <text x="200" y="184" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">ACPR</text>
-          <text x="200" y="200" text-anchor="middle" fill="#fdf3e3" font-size="10">Contrôle Prudentiel</text>
-          <text x="200" y="212" text-anchor="middle" fill="#fdf3e3" font-size="9">Banques + assurances · Sanctions · Agréments</text>
+          <rect x="90" y="165" width="220" height="50" rx="8" style="fill:var(--amber)"/>
+          <text x="200" y="184" text-anchor="middle" font-size="12" font-weight="600" style="fill:var(--blanc)">ACPR</text>
+          <text x="200" y="200" text-anchor="middle" font-size="10" style="fill:var(--amber-soft)">Contrôle Prudentiel</text>
+          <text x="200" y="212" text-anchor="middle" font-size="9" style="fill:var(--amber-soft)">Banques + assurances · Sanctions · Agréments</text>
           <!-- Arrow BdF → TRACFIN -->
-          <line x1="350" y1="122" x2="350" y2="165" stroke="#e3d9c8" stroke-width="1.5" marker-end="url(#arr)"/>
+          <line x1="350" y1="122" x2="350" y2="165" stroke-width="1.5" marker-end="url(#arr)" style="stroke:var(--stroke)"/>
           <!-- TRACFIN -->
-          <rect x="260" y="165" width="180" height="50" rx="8" fill="#a8432a"/>
-          <text x="350" y="184" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">TRACFIN</text>
-          <text x="350" y="200" text-anchor="middle" fill="#fdeae6" font-size="10">Renseignement financier</text>
-          <text x="350" y="212" text-anchor="middle" fill="#fdeae6" font-size="9">Déclarations soupçon · Blanchiment · Terrorisme</text>
+          <rect x="260" y="165" width="180" height="50" rx="8" style="fill:var(--rust)"/>
+          <text x="350" y="184" text-anchor="middle" font-size="12" font-weight="600" style="fill:var(--blanc)">TRACFIN</text>
+          <text x="350" y="200" text-anchor="middle" font-size="10" style="fill:var(--rust-soft)">Renseignement financier</text>
+          <text x="350" y="212" text-anchor="middle" font-size="9" style="fill:var(--rust-soft)">Déclarations soupçon · Blanchiment · Terrorisme</text>
           <!-- AMF (indépendant) -->
-          <rect x="460" y="165" width="200" height="50" rx="8" fill="#6b3a73"/>
-          <text x="560" y="184" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">AMF</text>
-          <text x="560" y="200" text-anchor="middle" fill="#e8d5ec" font-size="10">Autorité des Marchés Financiers</text>
-          <text x="560" y="212" text-anchor="middle" fill="#e8d5ec" font-size="9">OPCVM · Actions · Délit d'initié · MIF</text>
+          <rect x="460" y="165" width="200" height="50" rx="8" style="fill:var(--plum)"/>
+          <text x="560" y="184" text-anchor="middle" font-size="12" font-weight="600" style="fill:var(--blanc)">AMF</text>
+          <text x="560" y="200" text-anchor="middle" font-size="10" style="fill:var(--plum-soft)">Autorité des Marchés Financiers</text>
+          <text x="560" y="212" text-anchor="middle" font-size="9" style="fill:var(--plum-soft)">OPCVM · Actions · Délit d'initié · MIF</text>
           <!-- Arrow indépendant AMF -->
-          <line x1="490" y1="122" x2="520" y2="165" stroke="#e3d9c8" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+          <line x1="490" y1="122" x2="520" y2="165" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr)" style="stroke:var(--stroke)"/>
           <!-- ORIAS -->
-          <rect x="100" y="255" width="160" height="44" rx="8" fill="#22201b" stroke="#c87a12" stroke-width="1"/>
-          <text x="180" y="273" text-anchor="middle" fill="#c87a12" font-size="11" font-weight="600">ORIAS</text>
-          <text x="180" y="289" text-anchor="middle" fill="#aaa" font-size="9">Registre intermédiaires</text>
+          <rect x="100" y="255" width="160" height="44" rx="8" stroke-width="1" style="fill:var(--nuit);stroke:var(--amber)"/>
+          <text x="180" y="273" text-anchor="middle" font-size="11" font-weight="600" style="fill:var(--amber)">ORIAS</text>
+          <text x="180" y="289" text-anchor="middle" font-size="9" style="fill:var(--stroke2)">Registre intermédiaires</text>
           <!-- AFA -->
-          <rect x="460" y="255" width="160" height="44" rx="8" fill="#22201b" stroke="#a8432a" stroke-width="1"/>
-          <text x="540" y="273" text-anchor="middle" fill="#a8432a" font-size="11" font-weight="600">AFA</text>
-          <text x="540" y="289" text-anchor="middle" fill="#aaa" font-size="9">Agence Fr. Anticorruption</text>
+          <rect x="460" y="255" width="160" height="44" rx="8" stroke-width="1" style="fill:var(--nuit);stroke:var(--rust)"/>
+          <text x="540" y="273" text-anchor="middle" font-size="11" font-weight="600" style="fill:var(--rust)">AFA</text>
+          <text x="540" y="289" text-anchor="middle" font-size="9" style="fill:var(--stroke2)">Agence Fr. Anticorruption</text>
           <!-- GAFI -->
-          <rect x="280" y="255" width="140" height="44" rx="8" fill="#22201b" stroke="#6b3a73" stroke-width="1"/>
-          <text x="350" y="273" text-anchor="middle" fill="#a78bc0" font-size="11" font-weight="600">GAFI</text>
-          <text x="350" y="289" text-anchor="middle" fill="#aaa" font-size="9">International · LCB-FT</text>
+          <rect x="280" y="255" width="140" height="44" rx="8" stroke-width="1" style="fill:var(--nuit);stroke:var(--plum)"/>
+          <text x="350" y="273" text-anchor="middle" font-size="11" font-weight="600" style="fill:var(--plum)">GAFI</text>
+          <text x="350" y="289" text-anchor="middle" font-size="9" style="fill:var(--stroke2)">International · LCB-FT</text>
           <!-- marker -->
           <defs>
             <marker id="arr" markerWidth="8" markerHeight="8" refX="4" refY="3" orient="auto">
-              <path d="M0,0 L0,6 L8,3 z" fill="#e3d9c8"/>
+              <path d="M0,0 L0,6 L8,3 z" style="fill:var(--stroke)"/>
             </marker>
           </defs>
         </svg>
@@ -1549,27 +1545,27 @@ const lessons = {
       <div class="schema-wrap">
         <h4>Procédure en cas de refus d'ouverture</h4>
         <svg viewBox="0 0 680 100" style="width:100%;display:block;" font-family="DM Sans, sans-serif">
-          <rect x="10" y="20" width="130" height="60" rx="8" fill="#22201b"/>
-          <text x="75" y="47" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">Refus de</text>
-          <text x="75" y="63" text-anchor="middle" fill="#c87a12" font-size="11">la banque</text>
-          <text x="75" y="76" text-anchor="middle" fill="#aaa" font-size="9">(sans justification)</text>
-          <path d="M142,50 L170,50" stroke="#e3d9c8" stroke-width="1.5" marker-end="url(#a2)"/>
-          <rect x="172" y="20" width="130" height="60" rx="8" fill="#1b6b5e"/>
-          <text x="237" y="47" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">Attestation</text>
-          <text x="237" y="63" text-anchor="middle" fill="#a8e0d8" font-size="10">remise au client</text>
-          <text x="237" y="76" text-anchor="middle" fill="#a8e0d8" font-size="9">par la banque</text>
-          <path d="M304,50 L332,50" stroke="#e3d9c8" stroke-width="1.5" marker-end="url(#a2)"/>
-          <rect x="334" y="20" width="140" height="60" rx="8" fill="#23456b"/>
-          <text x="404" y="47" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">Saisine</text>
-          <text x="404" y="63" text-anchor="middle" fill="#93b3d0" font-size="10">Banque de France</text>
-          <text x="404" y="76" text-anchor="middle" fill="#93b3d0" font-size="9">par le client</text>
-          <path d="M476,50 L504,50" stroke="#e3d9c8" stroke-width="1.5" marker-end="url(#a2)"/>
-          <rect x="506" y="20" width="164" height="60" rx="8" fill="#c87a12"/>
-          <text x="588" y="40" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">Désignation</text>
-          <text x="588" y="56" text-anchor="middle" fill="#fdf3e3" font-size="10">d'un établissement</text>
-          <text x="588" y="70" text-anchor="middle" fill="#fdf3e3" font-size="9">+ Services Bancaires</text>
-          <text x="588" y="82" text-anchor="middle" fill="#fdf3e3" font-size="9">de Base (gratuits)</text>
-          <defs><marker id="a2" markerWidth="8" markerHeight="8" refX="4" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#e3d9c8"/></marker></defs>
+          <rect x="10" y="20" width="130" height="60" rx="8" style="fill:var(--nuit)"/>
+          <text x="75" y="47" text-anchor="middle" font-size="11" font-weight="600" style="fill:var(--blanc)">Refus de</text>
+          <text x="75" y="63" text-anchor="middle" font-size="11" style="fill:var(--amber)">la banque</text>
+          <text x="75" y="76" text-anchor="middle" font-size="9" style="fill:var(--stroke2)">(sans justification)</text>
+          <path d="M142,50 L170,50" stroke-width="1.5" marker-end="url(#a2)" style="stroke:var(--stroke)"/>
+          <rect x="172" y="20" width="130" height="60" rx="8" style="fill:var(--teal)"/>
+          <text x="237" y="47" text-anchor="middle" font-size="11" font-weight="600" style="fill:var(--blanc)">Attestation</text>
+          <text x="237" y="63" text-anchor="middle" font-size="10" style="fill:var(--teal-clair)">remise au client</text>
+          <text x="237" y="76" text-anchor="middle" font-size="9" style="fill:var(--teal-clair)">par la banque</text>
+          <path d="M304,50 L332,50" stroke-width="1.5" marker-end="url(#a2)" style="stroke:var(--stroke)"/>
+          <rect x="334" y="20" width="140" height="60" rx="8" style="fill:var(--navy)"/>
+          <text x="404" y="47" text-anchor="middle" font-size="11" font-weight="600" style="fill:var(--blanc)">Saisine</text>
+          <text x="404" y="63" text-anchor="middle" font-size="10" style="fill:var(--m-clair)">Banque de France</text>
+          <text x="404" y="76" text-anchor="middle" font-size="9" style="fill:var(--m-clair)">par le client</text>
+          <path d="M476,50 L504,50" stroke-width="1.5" marker-end="url(#a2)" style="stroke:var(--stroke)"/>
+          <rect x="506" y="20" width="164" height="60" rx="8" style="fill:var(--amber)"/>
+          <text x="588" y="40" text-anchor="middle" font-size="11" font-weight="600" style="fill:var(--blanc)">Désignation</text>
+          <text x="588" y="56" text-anchor="middle" font-size="10" style="fill:var(--amber-soft)">d'un établissement</text>
+          <text x="588" y="70" text-anchor="middle" font-size="9" style="fill:var(--amber-soft)">+ Services Bancaires</text>
+          <text x="588" y="82" text-anchor="middle" font-size="9" style="fill:var(--amber-soft)">de Base (gratuits)</text>
+          <defs><marker id="a2" markerWidth="8" markerHeight="8" refX="4" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" style="fill:var(--stroke)"/></marker></defs>
         </svg>
       </div>
 
@@ -1682,21 +1678,21 @@ const lessons = {
       <div class="schema-wrap">
         <h4>Les 3 phases du blanchiment</h4>
         <svg viewBox="0 0 680 120" style="width:100%;display:block;" font-family="DM Sans, sans-serif">
-          <rect x="10" y="20" width="190" height="80" rx="10" fill="#a8432a"/>
-          <text x="105" y="50" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">1. PLACEMENT</text>
-          <text x="105" y="70" text-anchor="middle" fill="#fdeae6" font-size="11">Introduire les fonds</text>
-          <text x="105" y="86" text-anchor="middle" fill="#fdeae6" font-size="10">illicites dans le système</text>
-          <path d="M202,60 L230,60" stroke="#e3d9c8" stroke-width="2" marker-end="url(#a3)"/>
-          <rect x="232" y="20" width="210" height="80" rx="10" fill="#c87a12"/>
-          <text x="337" y="50" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">2. CONVERSION</text>
-          <text x="337" y="70" text-anchor="middle" fill="#fdf3e3" font-size="11">Multiplier les transactions</text>
-          <text x="337" y="86" text-anchor="middle" fill="#fdf3e3" font-size="10">pour brouiller la traçabilité</text>
-          <path d="M444,60 L472,60" stroke="#e3d9c8" stroke-width="2" marker-end="url(#a3)"/>
-          <rect x="474" y="20" width="196" height="80" rx="10" fill="#1b6b5e"/>
-          <text x="572" y="50" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">3. DISSIMULATION</text>
-          <text x="572" y="70" text-anchor="middle" fill="#a8e0d8" font-size="11">Réintégrer les fonds</text>
-          <text x="572" y="86" text-anchor="middle" fill="#a8e0d8" font-size="10">dans l'économie légale</text>
-          <defs><marker id="a3" markerWidth="8" markerHeight="8" refX="4" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#e3d9c8"/></marker></defs>
+          <rect x="10" y="20" width="190" height="80" rx="10" style="fill:var(--rust)"/>
+          <text x="105" y="50" text-anchor="middle" font-size="14" font-weight="700" style="fill:var(--blanc)">1. PLACEMENT</text>
+          <text x="105" y="70" text-anchor="middle" font-size="11" style="fill:var(--rust-soft)">Introduire les fonds</text>
+          <text x="105" y="86" text-anchor="middle" font-size="10" style="fill:var(--rust-soft)">illicites dans le système</text>
+          <path d="M202,60 L230,60" stroke-width="2" marker-end="url(#a3)" style="stroke:var(--stroke)"/>
+          <rect x="232" y="20" width="210" height="80" rx="10" style="fill:var(--amber)"/>
+          <text x="337" y="50" text-anchor="middle" font-size="14" font-weight="700" style="fill:var(--blanc)">2. CONVERSION</text>
+          <text x="337" y="70" text-anchor="middle" font-size="11" style="fill:var(--amber-soft)">Multiplier les transactions</text>
+          <text x="337" y="86" text-anchor="middle" font-size="10" style="fill:var(--amber-soft)">pour brouiller la traçabilité</text>
+          <path d="M444,60 L472,60" stroke-width="2" marker-end="url(#a3)" style="stroke:var(--stroke)"/>
+          <rect x="474" y="20" width="196" height="80" rx="10" style="fill:var(--teal)"/>
+          <text x="572" y="50" text-anchor="middle" font-size="14" font-weight="700" style="fill:var(--blanc)">3. DISSIMULATION</text>
+          <text x="572" y="70" text-anchor="middle" font-size="11" style="fill:var(--teal-clair)">Réintégrer les fonds</text>
+          <text x="572" y="86" text-anchor="middle" font-size="10" style="fill:var(--teal-clair)">dans l'économie légale</text>
+          <defs><marker id="a3" markerWidth="8" markerHeight="8" refX="4" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" style="fill:var(--stroke)"/></marker></defs>
         </svg>
       </div>
 
@@ -1948,45 +1944,45 @@ const lessons = {
       <div class="schema-wrap">
         <h4>Ordre de priorité des héritiers</h4>
         <svg viewBox="0 0 680 180" style="width:100%;display:block;" font-family="DM Sans, sans-serif">
-          <rect x="10" y="10" width="150" height="60" rx="8" fill="#23456b"/>
-          <text x="85" y="34" text-anchor="middle" fill="#93b3d0" font-size="10" font-weight="600">ORDRE 1</text>
-          <text x="85" y="52" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">Enfants</text>
-          <text x="85" y="64" text-anchor="middle" fill="#93b3d0" font-size="9">(et descendants)</text>
+          <rect x="10" y="10" width="150" height="60" rx="8" style="fill:var(--navy)"/>
+          <text x="85" y="34" text-anchor="middle" font-size="10" font-weight="600" style="fill:var(--m-clair)">ORDRE 1</text>
+          <text x="85" y="52" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--blanc)">Enfants</text>
+          <text x="85" y="64" text-anchor="middle" font-size="9" style="fill:var(--m-clair)">(et descendants)</text>
 
-          <rect x="178" y="10" width="150" height="60" rx="8" fill="#1b6b5e"/>
-          <text x="253" y="34" text-anchor="middle" fill="#a8e0d8" font-size="10" font-weight="600">ORDRE 2</text>
-          <text x="253" y="52" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">Parents +</text>
-          <text x="253" y="64" text-anchor="middle" fill="#a8e0d8" font-size="9">Frères/Sœurs</text>
+          <rect x="178" y="10" width="150" height="60" rx="8" style="fill:var(--teal)"/>
+          <text x="253" y="34" text-anchor="middle" font-size="10" font-weight="600" style="fill:var(--teal-clair)">ORDRE 2</text>
+          <text x="253" y="52" text-anchor="middle" font-size="11" font-weight="700" style="fill:var(--blanc)">Parents +</text>
+          <text x="253" y="64" text-anchor="middle" font-size="9" style="fill:var(--teal-clair)">Frères/Sœurs</text>
 
-          <rect x="346" y="10" width="150" height="60" rx="8" fill="#c87a12"/>
-          <text x="421" y="34" text-anchor="middle" fill="#fdf3e3" font-size="10" font-weight="600">ORDRE 3</text>
-          <text x="421" y="52" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">Autres</text>
-          <text x="421" y="64" text-anchor="middle" fill="#fdf3e3" font-size="9">ascendants</text>
+          <rect x="346" y="10" width="150" height="60" rx="8" style="fill:var(--amber)"/>
+          <text x="421" y="34" text-anchor="middle" font-size="10" font-weight="600" style="fill:var(--amber-soft)">ORDRE 3</text>
+          <text x="421" y="52" text-anchor="middle" font-size="11" font-weight="700" style="fill:var(--blanc)">Autres</text>
+          <text x="421" y="64" text-anchor="middle" font-size="9" style="fill:var(--amber-soft)">ascendants</text>
 
-          <rect x="514" y="10" width="156" height="60" rx="8" fill="#6b3a73"/>
-          <text x="592" y="34" text-anchor="middle" fill="#d4b8dc" font-size="10" font-weight="600">ORDRE 4</text>
-          <text x="592" y="52" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">Collatéraux</text>
-          <text x="592" y="64" text-anchor="middle" fill="#d4b8dc" font-size="9">éloignés</text>
+          <rect x="514" y="10" width="156" height="60" rx="8" style="fill:var(--plum)"/>
+          <text x="592" y="34" text-anchor="middle" font-size="10" font-weight="600" style="fill:var(--m-clair)">ORDRE 4</text>
+          <text x="592" y="52" text-anchor="middle" font-size="11" font-weight="700" style="fill:var(--blanc)">Collatéraux</text>
+          <text x="592" y="64" text-anchor="middle" font-size="9" style="fill:var(--m-clair)">éloignés</text>
 
           <!-- Arrow indicating priority -->
-          <path d="M165,40 L173,40" stroke="#e3d9c8" stroke-width="1.5" marker-end="url(#a4)"/>
-          <path d="M333,40 L341,40" stroke="#e3d9c8" stroke-width="1.5" marker-end="url(#a4)"/>
-          <path d="M501,40 L509,40" stroke="#e3d9c8" stroke-width="1.5" marker-end="url(#a4)"/>
+          <path d="M165,40 L173,40" stroke-width="1.5" marker-end="url(#a4)" style="stroke:var(--stroke)"/>
+          <path d="M333,40 L341,40" stroke-width="1.5" marker-end="url(#a4)" style="stroke:var(--stroke)"/>
+          <path d="M501,40 L509,40" stroke-width="1.5" marker-end="url(#a4)" style="stroke:var(--stroke)"/>
 
           <!-- Rule -->
-          <rect x="10" y="90" width="660" height="30" rx="6" fill="#fdeae6"/>
-          <text x="340" y="110" text-anchor="middle" fill="#a8432a" font-size="11" font-weight="600">Règle : un ordre présent élimine TOUS les ordres suivants</text>
+          <rect x="10" y="90" width="660" height="30" rx="6" style="fill:var(--rust-soft)"/>
+          <text x="340" y="110" text-anchor="middle" font-size="11" font-weight="600" style="fill:var(--rust)">Règle : un ordre présent élimine TOUS les ordres suivants</text>
 
           <!-- Mechanisms -->
-          <rect x="10" y="135" width="315" height="36" rx="6" fill="#e8eef5"/>
-          <text x="22" y="152" fill="#23456b" font-size="10" font-weight="600">Représentation</text>
-          <text x="22" y="165" fill="#555" font-size="9">Le petit-fils hérite à la place de son père prédécédé</text>
+          <rect x="10" y="135" width="315" height="36" rx="6" style="fill:var(--navy-soft)"/>
+          <text x="22" y="152" font-size="10" font-weight="600" style="fill:var(--navy)">Représentation</text>
+          <text x="22" y="165" font-size="9" style="fill:var(--txt2)">Le petit-fils hérite à la place de son père prédécédé</text>
 
-          <rect x="345" y="135" width="325" height="36" rx="6" fill="#e8f4f1"/>
-          <text x="357" y="152" fill="#1b6b5e" font-size="10" font-weight="600">Fente successorale</text>
-          <text x="357" y="165" fill="#555" font-size="9">50/50 entre branches paternelle et maternelle (sans descendance/fratrie)</text>
+          <rect x="345" y="135" width="325" height="36" rx="6" style="fill:var(--teal-soft)"/>
+          <text x="357" y="152" font-size="10" font-weight="600" style="fill:var(--teal)">Fente successorale</text>
+          <text x="357" y="165" font-size="9" style="fill:var(--txt2)">50/50 entre branches paternelle et maternelle (sans descendance/fratrie)</text>
 
-          <defs><marker id="a4" markerWidth="8" markerHeight="8" refX="4" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#e3d9c8"/></marker></defs>
+          <defs><marker id="a4" markerWidth="8" markerHeight="8" refX="4" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" style="fill:var(--stroke)"/></marker></defs>
         </svg>
       </div>
 
@@ -2226,7 +2222,7 @@ const lessons = {
         </tbody>
       </table>
 
-      <p style="font-size:0.88rem;color:#555;margin:10px 0;">📌 <strong>Indexation FFB :</strong> réajustement annuel automatique des capitaux garantis et cotisations via l'indice FFB → évite la sous-assurance due à l'inflation.</p>
+      <p style="font-size:0.88rem;color:var(--txt2);margin:10px 0;">📌 <strong>Indexation FFB :</strong> réajustement annuel automatique des capitaux garantis et cotisations via l'indice FFB → évite la sous-assurance due à l'inflation.</p>
 
       <h3 style="font-family:'Fraunces',serif;color:var(--navy);margin:28px 0 14px;font-size:1.1rem;">4. Assurance des Emprunteurs (ADE)</h3>
 
@@ -2506,7 +2502,7 @@ function showTestResult() {
     return `<div class="result-bar-item">
       <div class="result-bar-label">${lessonNames[l] || 'Leçon ' + l}</div>
       <div class="result-bar-outer"><div class="result-bar-inner" style="width:0%;background:${color}" data-target="${p}"></div></div>
-      <span style="font-family:'DM Mono',monospace;font-size:0.75rem;color:#666;min-width:32px">${p}%</span>
+      <span style="font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--txt3);min-width:32px">${p}%</span>
     </div>`;
   }).join('');
 
@@ -3112,7 +3108,7 @@ function showCorrige(i) {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// EXAMENS BLANCS — réponse libre + correction IA
+// EXAMENS BLANCS — réponse libre + corrigé modèle
 // ═══════════════════════════════════════════════════════════════
 const examData = {
   bloc2: [
@@ -3633,10 +3629,8 @@ function openExam(tab, idx) {
       <div class="eq-travail">${q.travail.replace(/\n/g,'<br>')}</div>
       <textarea id="ta-${tab}-${idx}-${qi}" placeholder="Rédige ta réponse ici…"></textarea>
       <div class="eq-btns">
-        <button class="btn btn-rust" id="btn-ia-${tab}-${idx}-${qi}" onclick="corrigerIA('${tab}',${idx},${qi})">✦ Corriger par l'IA</button>
         <button class="btn btn-outline" onclick="showCorrigeModele('${tab}',${idx},${qi})">👁 Corrigé modèle</button>
       </div>
-      <div class="ia-feedback" id="iaf-${tab}-${idx}-${qi}"></div>
       <div class="corrige-modele" id="cm-${tab}-${idx}-${qi}">
         <div class="cm-title">📘 Corrigé modèle — éléments attendus</div>${q.attendus.replace(/\n/g,'<br>')}
       </div>
@@ -3671,115 +3665,6 @@ function showCorrigeModele(tab, idx, qi) {
   document.getElementById(`cm-${tab}-${idx}-${qi}`).classList.add('show');
 }
 
-// ── CORRECTION PAR IA (Claude API) ─────────────────────────────────────────
-// Appelle la correction : 1) ta fonction Netlify (site publié), 2) le relais Claude (aperçu).
-async function callCorrectionAPI(sys, userMsg) {
-  // 1) Backend Netlify — fonctionne sur ton site publié (clé gérée côté serveur)
-  try {
-    const r = await fetch("/.netlify/functions/corriger", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ system: sys, userMsg: userMsg })
-    });
-    if (r.ok) return await r.json();
-  } catch (e) { /* pas de backend ici → on tente le relais Claude */ }
-
-  // 2) Relais Claude — fonctionne dans l'aperçu de l'artifact
-  const r2 = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 1000,
-      system: sys,
-      messages: [{ role: "user", content: userMsg }]
-    })
-  });
-  if (!r2.ok) throw new Error('HTTP ' + r2.status);
-  return await r2.json();
-}
-
-async function corrigerIA(tab, idx, qi) {
-  const q = examData[tab][idx].questions[qi];
-  const rep = document.getElementById(`ta-${tab}-${idx}-${qi}`).value.trim();
-  const fb = document.getElementById(`iaf-${tab}-${idx}-${qi}`);
-  const btn = document.getElementById(`btn-ia-${tab}-${idx}-${qi}`);
-
-  if (!rep) {
-    fb.className = 'ia-feedback iaf-error show';
-    fb.innerHTML = `<div class="iaf-top"><span class="iaf-title">⚠ Réponse vide</span></div><div class="iaf-body">Rédige d'abord ta réponse, puis relance la correction.</div>`;
-    return;
-  }
-
-  btn.disabled = true;
-  btn.textContent = '✦ Correction en cours…';
-  fb.className = 'ia-feedback show';
-  fb.innerHTML = `<div class="iaf-loading">✦ L'IA analyse ta réponse…</div>`;
-
-  const sys = `Tu es examinateur ESBanque pour le ${tab === 'bloc2' ? 'Bloc 2 (Conseiller et proposer des solutions bancaires)' : 'Bloc 3 (Contribuer aux résultats)'}.
-Tu corriges une réponse d'étudiant en banque-finance niveau Licence pro.
-Note la réponse de l'étudiant sur ${q.pts} points en t'appuyant sur les éléments attendus fournis.
-Sois juste, bienveillant mais exigeant. Valorise ce qui est correct, signale précisément ce qui manque ou est inexact.
-Réponds UNIQUEMENT avec un objet JSON valide, sans texte autour, sans balises Markdown, au format exact :
-{"note": <nombre>, "bareme": ${q.pts}, "points_forts": ["...", "..."], "points_a_ameliorer": ["...", "..."], "corrige": "corrigé synthétique en quelques phrases"}`;
-
-  const userMsg = `QUESTION (${q.pts} points) : ${q.travail}
-
-ÉLÉMENTS ATTENDUS (référence de correction) :
-${q.attendus}
-
-RÉPONSE DE L'ÉTUDIANT :
-${rep}`;
-
-  try {
-    const data = await callCorrectionAPI(sys, userMsg);
-    let text = data.content.filter(b => b.type === 'text').map(b => b.text).join('\n');
-    text = text.replace(/```json|```/g, '').trim();
-
-    let parsed;
-    try { parsed = JSON.parse(text); } catch (e) { parsed = null; }
-
-    if (parsed && typeof parsed.note !== 'undefined') {
-      const pf = (parsed.points_forts || []).map(x => `<li>${escapeHtml(x)}</li>`).join('') || '<li>—</li>';
-      const pa = (parsed.points_a_ameliorer || []).map(x => `<li>${escapeHtml(x)}</li>`).join('') || '<li>—</li>';
-      fb.className = 'ia-feedback show';
-      fb.innerHTML = `
-        <div class="iaf-top">
-          <span class="iaf-title">✦ Correction IA</span>
-          <span class="iaf-note">${parsed.note} / ${q.pts}</span>
-        </div>
-        <div class="iaf-body">
-          <h5>✓ Points forts</h5><ul>${pf}</ul>
-          <h5>↗ À améliorer</h5><ul>${pa}</ul>
-          <h5>📘 Corrigé synthétique</h5>
-          <div class="iaf-corrige">${escapeHtml(parsed.corrige || '')}</div>
-        </div>`;
-      const noteNum = parseFloat(parsed.note);
-      if (!isNaN(noteNum)) gainXP(Math.round(noteNum * 3));
-    } else {
-      // réponse non-JSON : on affiche le texte brut
-      fb.className = 'ia-feedback show';
-      fb.innerHTML = `
-        <div class="iaf-top"><span class="iaf-title">✦ Correction IA</span></div>
-        <div class="iaf-body"><div class="iaf-corrige">${escapeHtml(text)}</div></div>`;
-      gainXP(5);
-    }
-  } catch (err) {
-    // Repli hors-ligne : la correction IA n'est pas joignable -> on révèle le corrigé modèle
-    fb.className = 'ia-feedback iaf-error show';
-    fb.innerHTML = `
-      <div class="iaf-top"><span class="iaf-title">⚠ Correction IA indisponible</span></div>
-      <div class="iaf-body">
-        La correction par IA nécessite l'environnement Claude (elle ne fonctionne pas en local sur ton hub).
-        Voici le corrigé modèle pour t'auto-évaluer :
-        <div class="iaf-corrige">${q.attendus.replace(/\n/g,'<br>')}</div>
-      </div>`;
-  } finally {
-    btn.disabled = false;
-    btn.textContent = '✦ Corriger par l\'IA';
-  }
-}
-
 function escapeHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
@@ -3791,5 +3676,8 @@ updateUI();
 // Lien profond : ouvrir directement le module si l'URL finit par #examens
 if (window.location.hash === '#examens') { showExamens(); }
 </script>
+<script src="../lb.js"></script>
+<script src="../progress.js"></script>
+<script src="../ui.js"></script>
 </body>
 </html>

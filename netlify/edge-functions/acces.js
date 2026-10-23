@@ -28,7 +28,7 @@
 
 /* ── Réglages ─────────────────────────────────────────────── */
 /* Matière d'essai de chaque niveau : nom de la page sans « .html » ; null = aucune. */
-const ESSAI = { licence: null, m1: 'systeme_bancaire', m2: null };
+const ESSAI = { licence: 'licence/droit-bancaire', m1: 'systeme_bancaire', m2: null };
 /* Pages réservées à un niveau (nom sans « .html » ; finissant par « / » = tout un dossier).
    Toute page absente de ces listes est COMMUNE : ouverte à toutes les clés. */
 const PAGES = {
