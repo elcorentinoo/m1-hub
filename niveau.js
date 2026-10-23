@@ -8,10 +8,12 @@
       « acces_info » (format formulaire : statut=cle&niveau=m1&annee=…,
       ou statut=essai&fin=…&m1=… pendant l'essai de 24 h) ;
    2. celui choisi sur niveaux.html (localStorage « niveau-choisi ») ;
-   3. sinon M1 : une clé M1 actuelle n'est jamais redirigée.
+   3. sinon M1.
 
-   Ce fichier ne pose rien sur la page : chaque espace porte son
-   data-niveau en dur sur <html>.
+   Ce fichier ne redirige personne et ne pose rien sur la page : tout le
+   monde arrive sur le hub central (niveaux.html), et chaque espace porte
+   son data-niveau en dur sur <html>. Il sert au hub central (« Ton
+   espace », clé d'un autre niveau) et au BeQuick (niveau joué).
    ════════════════════════════════════════════════════════════ */
 (function(){
   const NIVEAUX = ['licence', 'm1', 'm2'];
@@ -34,12 +36,13 @@
   }
   const cle = () => info().statut === 'cle' ? valide(info().niveau) : null;
   const essai = () => info().statut === 'essai';
+  const admin = () => info().statut === 'cle' && info().admin === '1';
   const choisi = () => valide(lireLocal('niveau-choisi'));
 
   window.NIVEAU = {
     liste: NIVEAUX,
     espace: n => ESPACES[valide(n) || 'm1'],
-    info, cle, choisi, essai,
+    info, cle, choisi, essai, admin,
     courant: () => cle() || choisi() || 'm1',
     /* retenu sur l'appareil ; le M2, encore vide, ne l'est jamais */
     choisir(n){ if(valide(n) && n !== 'm2') ecrireLocal('niveau-choisi', n); }

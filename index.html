@@ -235,15 +235,21 @@ body{overflow-x:hidden}
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="AAA">
-<script src="niveau.js"></script>
 <script>
-/* hub multi-promos (8.0.0) : cette page reste l'espace M1, à la même
-   adresse. Une clé M1 n'est jamais redirigée ; pendant l'essai, on choisit
-   d'abord son niveau ; un niveau Licence (clé ou choix) mène à son espace. */
+/* hub central (8.0.0) : on arrive toujours sur niveaux.html, le hub de
+   tous les niveaux. Cette page reste l'espace M1, à la même adresse : on
+   y reste quand on vient d'une autre page du site (hub central, cours,
+   BeQuick…), et pour un lien précis (#ancre ou ?paramètre, notifications).
+   Une arrivée de l'extérieur (favori, icône d'écran d'accueil, lien
+   partagé, nouvel onglet, page d'accès) mène au hub central. */
 (function(){
-  const N = window.NIVEAU; if(!N || N.cle() === 'm1') return;
-  if(N.essai() && !N.choisi()){ location.replace('niveaux.html'); return; }
-  if(N.courant() === 'licence') location.replace(N.espace('licence'));
+  try{
+    if(location.hash || location.search) return;
+    let ref = null; try{ ref = document.referrer ? new URL(document.referrer) : null; }catch(e){}
+    const interne = ref && ref.origin === location.origin && !/^\/(acces|acces-admin)\.html$|^\/admin$/.test(ref.pathname);
+    let espace = false; try{ espace = sessionStorage.getItem('aaa-espace') === '1'; }catch(e){}
+    if(!interne && !espace) location.replace('niveaux.html');
+  }catch(e){}
 })();
 </script>
 </head>
