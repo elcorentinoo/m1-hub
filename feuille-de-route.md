@@ -98,7 +98,7 @@ Version MAJEURE (prochain nom de monnaie libre : Guinée).
 
 ## Décisions du 23 octobre (suite)
 
-- Nom : **A+**, slogan « Révise. Vise A+. » ; tout (A1–A6 + hub B1–B8) dans
+- Nom : **AAA** (« Triple A », la meilleure note des agences de notation ; remplace « A+ »), slogan « Révise. Vise le AAA. » ; tout (A1–A6 + hub B1–B8) dans
   une seule publication **8.0.0 « Guinée »**.
 - E-mail : Resend (A3 et demandes de clé). A4 : rattachement automatique par
   pseudo, remise à zéro sur tous les appareils.
