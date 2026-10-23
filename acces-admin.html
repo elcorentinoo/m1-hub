@@ -57,6 +57,14 @@ td{padding:10px;border-bottom:1px solid var(--stroke);vertical-align:middle}
 .etat.rev{background:var(--surface2);color:var(--bad)}
 /* Promos et clé administratrice (hub multi-promos) */
 .etat.adm{background:var(--nuit);color:var(--blanc);margin-left:4px}
+/* Demandes d'accès (8.1.0) */
+.compte{display:inline-block;min-width:20px;padding:1px 7px;margin-left:6px;border-radius:999px;background:var(--bad);color:var(--blanc);font-size:.78rem;line-height:1.4}
+.dem{background:var(--surface2);border-radius:18px;padding:14px 16px;margin:0 0 10px}
+.dem b{font-size:1.1rem;font-weight:500}
+.dem .q{color:var(--txt2);margin:6px 0 0}
+.dem .actions{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-top:12px}
+.dem .actions select{width:auto;min-width:150px}
+.dem .note{color:var(--warn);font-size:.9rem;margin:6px 0 0}
 .promo{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 14px}
 .promo label{margin:0}
 .promo select{width:auto;min-width:220px;max-width:100%}
@@ -131,12 +139,31 @@ select{font:inherit;padding:10px 12px;border-radius:14px;border:2px solid var(--
       <button type="button" role="tab" aria-selected="false" aria-controls="p-etu" data-o="etu">Étudiants</button>
       <button type="button" role="tab" aria-selected="false" aria-controls="p-bq" data-o="bq">BeQuick</button>
       <button type="button" role="tab" aria-selected="false" aria-controls="p-cles" data-o="cles">Clés</button>
+      <button type="button" role="tab" aria-selected="false" aria-controls="p-dem" data-o="dem">Demandes<span class="compte" id="nbDem" hidden></span></button>
     </nav>
     <div class="msg" id="msgTab" role="status"></div>
     <div class="panneau" id="p-vue" role="tabpanel"></div>
     <div class="panneau" id="p-mat" role="tabpanel" hidden></div>
     <div class="panneau" id="p-etu" role="tabpanel" hidden></div>
     <div class="panneau" id="p-bq" role="tabpanel" hidden></div>
+    <div class="panneau" id="p-dem" role="tabpanel" hidden>
+      <section class="carte">
+        <h2>Notifications</h2>
+        <p class="sous" style="margin:0 0 12px" id="pushTexte">Reçois une notification sur cet appareil à chaque nouvelle demande d'accès.</p>
+        <button type="button" id="bPush">Recevoir les demandes sur cet appareil</button>
+        <button type="button" class="sec" id="bPushOff" hidden>Ne plus les recevoir ici</button>
+        <div class="msg" id="msgPush" role="status"></div>
+      </section>
+      <section class="carte">
+        <h2>En attente</h2>
+        <div id="demAttente"><p class="vide">Chargement…</p></div>
+        <div class="msg" id="msgDemA" role="status"></div>
+      </section>
+      <section class="carte">
+        <h2>Traitées ces 14 derniers jours</h2>
+        <div id="demFaites"></div>
+      </section>
+    </div>
     <div class="panneau" id="p-cles" role="tabpanel" hidden>
     <section class="carte cache" id="transition">
       <h2>Clé administratrice</h2>
@@ -224,7 +251,108 @@ async function ouvrir(){
   $('connexion').classList.add('cache'); $('refus').classList.add('cache'); $('admin').classList.remove('cache');
   transition();
   chargerTableau();
+  chargerDemandes(); setInterval(()=>{ if(!document.hidden) chargerDemandes(); }, 30000);
+  etatPush();
+  if(new URLSearchParams(location.search).get('onglet') === 'demandes') document.querySelector('.onglets [data-o="dem"]').click();
 }
+/* ═══════════ DEMANDES D'ACCÈS (8.1.0) ═══════════
+   Un appareil sans clé demande l'accès ; Accepter crée une clé déjà activée
+   pour cet appareil (il s'ouvre à sa prochaine vérification, ~15 s). */
+let DEM = [];
+const NIV_DEM = {licence:'Licence', m1:'M1', m2:'M2'};
+async function chargerDemandes(){
+  try{
+    DEM = (await appel('demandes')).demandes || [];
+    dessinerDemandes(); $('msgDemA').textContent = '';
+  }catch(e){
+    $('msgDemA').className = 'msg ko';
+    $('msgDemA').textContent = e.message === 'sql' ? "Les demandes ne sont pas encore activées : lance supabase/acces-demandes.sql dans Supabase (SQL Editor)." : texteErreur(e);
+  }
+}
+function dessinerDemandes(){
+  const att = DEM.filter(d=>d.statut === 'attente'), faites = DEM.filter(d=>d.statut !== 'attente');
+  $('nbDem').textContent = att.length; $('nbDem').hidden = !att.length;
+  $('demAttente').innerHTML = att.length ? att.map(d=>
+    '<div class="dem"><b>'+esc(d.pseudo)+'</b> · '+esc(NIV_DEM[d.niveau] || d.niveau)+
+    '<div class="q">'+date(d.cree)+' · '+esc(d.appareil || 'appareil inconnu')+'</div>'+
+    (d.message ? '<div class="q">« '+esc(d.message)+' »</div>' : '')+
+    (d.cle_actuelle ? '<div class="note">Cet appareil a déjà une clé '+esc(NIV_DEM[d.cle_actuelle.niveau] || '')+(d.cle_actuelle.pseudo ? ' ('+esc(d.cle_actuelle.pseudo)+')' : '')+' : accepter le fera passer au niveau choisi.</div>' : '')+
+    '<div class="actions"><div><label for="niv-'+d.id+'">Niveau</label><select id="niv-'+d.id+'">'+
+      ['licence','m1','m2'].map(n=>'<option value="'+n+'"'+(n === d.niveau ? ' selected' : '')+'>'+NIV_DEM[n]+'</option>').join('')+'</select></div>'+
+    '<button type="button" data-dem="accepter" data-id="'+d.id+'">Accepter</button>'+
+    '<button type="button" class="danger" data-dem="refuser" data-id="'+d.id+'">Refuser</button></div></div>').join('')
+    : '<p class="vide">Aucune demande en attente.</p>';
+  const lib = {acceptee:'Acceptée', refusee:'Refusée', expiree:'Expirée'};
+  $('demFaites').innerHTML = faites.length ? '<div class="table"><table><tbody>'+faites.map(d=>
+    '<tr><td><b>'+esc(d.pseudo)+'</b></td><td>'+esc(NIV_DEM[d.niveau] || d.niveau)+'</td><td><span class="etat '+(d.statut === 'acceptee' ? 'prise' : 'rev')+'">'+
+    (lib[d.statut] || d.statut)+(d.statut === 'acceptee' && !d.recuperee ? ' · pas encore ouverte' : '')+'</span></td><td class="mob">'+date(d.traitee || d.cree)+'</td></tr>').join('')+'</tbody></table></div>'
+    : '<p class="vide">Rien ces 14 derniers jours.</p>';
+}
+$('demAttente').addEventListener('click', async e=>{
+  const b = e.target.closest('button[data-dem]'); if(!b) return;
+  const d = DEM.find(x=>x.id === b.dataset.id); if(!d) return;
+  const acc = b.dataset.dem === 'accepter', niv = $('niv-'+d.id).value;
+  if(!confirm(acc ? 'Accepter '+d.pseudo+' en '+NIV_DEM[niv]+' ? Son appareil s\'ouvrira tout seul.' : 'Refuser la demande de '+d.pseudo+' ?')) return;
+  b.disabled = true;
+  try{
+    await appel(acc ? 'demande_accepter' : 'demande_refuser', acc ? {id:d.id, niveau:niv} : {id:d.id});
+    await chargerDemandes(); if(acc) charger();
+    $('msgDemA').className = 'msg ok'; $('msgDemA').textContent = acc ? d.pseudo+' accepté(e) : son appareil s\'ouvre dans quelques secondes.' : 'Demande refusée.';
+  }catch(err){
+    $('msgDemA').className = 'msg ko'; $('msgDemA').textContent = err.message === 'deja' ? 'Demande déjà traitée ou expirée.' : texteErreur(err);
+    chargerDemandes();
+  }
+});
+/* Notifications des demandes : abonnement Web Push de CET appareil, lié à sa clé admin
+   (comme l'alerte BeQuick ; sur iPhone, depuis l'appli installée sur l'écran d'accueil). */
+const CLE_PUSH = 'BGudFKvHrz5uqtu2wW2HlNTfMgpuAvXR-E0EacuHaqb-9WSJV7oLdBxpwTc7EOtx2Ffn3JdBjPr0BcqVw8T8tzA';
+const b64 = u => { const p = '='.repeat((4 - u.length % 4) % 4); const s = atob((u + p).replace(/-/g,'+').replace(/_/g,'/')); return Uint8Array.from(s, c=>c.charCodeAt(0)); };
+const pushPossible = () => 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
+const estIOS = () => /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const installe = () => (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true;
+if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});
+/* le service worker peut mettre un moment à s'installer : on n'attend jamais indéfiniment */
+const pret = ms => Promise.race([navigator.serviceWorker.ready, new Promise((_, ko)=>setTimeout(()=>ko(new Error('sw')), ms))]);
+async function abonnement(){ const reg = await pret(5000); return reg.pushManager.getSubscription(); }
+function pushInfo(texte, actif, possible){
+  $('pushTexte').textContent = texte;
+  $('bPush').hidden = !possible || actif; $('bPushOff').hidden = !actif;
+}
+async function etatPush(){
+  if(MODE !== 'cle') return pushInfo("Les notifications demandent une clé administratrice sur cet appareil (onglet Clés).", false, false);
+  if(!pushPossible()) return pushInfo(estIOS() && !installe()
+    ? "Sur iPhone : ajoute AAA à l'écran d'accueil (Partager → Sur l'écran d'accueil), ouvre l'appli, puis /admin depuis la recherche."
+    : "Ce navigateur ne gère pas les notifications.", false, false);
+  if(Notification.permission === 'denied') return pushInfo("Les notifications sont bloquées pour AAA dans les réglages de cet appareil.", false, false);
+  let actif = false;
+  try{ const sub = await abonnement(); actif = !!sub && localStorage.getItem('aaa_admin_push') === sub.endpoint; }catch(e){}
+  pushInfo(actif ? 'Cet appareil reçoit une notification à chaque nouvelle demande.' : "Reçois une notification sur cet appareil à chaque nouvelle demande d'accès.", actif, true);
+}
+$('bPush').addEventListener('click', async ()=>{
+  const b = $('bPush'), m = $('msgPush'); b.disabled = true; m.textContent = '';
+  try{
+    if(await Notification.requestPermission() !== 'granted') throw new Error('refus');
+    const reg = await pret(20000);
+    let sub = await reg.pushManager.getSubscription();
+    if(!sub) sub = await reg.pushManager.subscribe({userVisibleOnly:true, applicationServerKey:b64(CLE_PUSH)});
+    const j = sub.toJSON();
+    await appel('push_abonner', {endpoint:j.endpoint, p256dh:j.keys.p256dh, auth:j.keys.auth});
+    try{ localStorage.setItem('aaa_admin_push', j.endpoint); }catch(e){}
+    let essai = true; try{ await appel('push_essai', {endpoint:j.endpoint, p256dh:j.keys.p256dh, auth:j.keys.auth}); }catch(e){ essai = false; }
+    m.className = 'msg ok'; m.textContent = essai ? 'C\'est activé : une notification de test vient de partir.' : 'C\'est activé (la notification de test n\'est pas partie : vérifie VAPID_PRIVATE dans Netlify).';
+  }catch(err){
+    m.className = 'msg ko';
+    m.textContent = err.message === 'refus' ? 'Notifications refusées : autorise-les pour AAA dans les réglages.' :
+                    err.message === 'sw' ? "AAA s'installe encore sur cet appareil : ouvre l'accueil une fois, puis réessaie." : err.message === 'abonnement' ? 'Service de notifications non reconnu.' : texteErreur(err);
+  }
+  b.disabled = false; etatPush();
+});
+$('bPushOff').addEventListener('click', async ()=>{
+  try{ const sub = await abonnement(); if(sub) await appel('push_retirer', {endpoint:sub.endpoint}); }catch(e){}
+  try{ localStorage.removeItem('aaa_admin_push'); }catch(e){}
+  $('msgPush').className = 'msg ok'; $('msgPush').textContent = 'Cet appareil ne recevra plus les demandes.';
+  etatPush();
+});
 function refus(){ $('connexion').classList.add('cache'); $('refus').classList.remove('cache'); try{ sessionStorage.removeItem('m1_admin'); }catch(e){} }
 /* Mode secours (mot de passe) : désigner la clé de cet appareil comme clé administratrice. */
 function transition(){
@@ -242,7 +370,7 @@ $('bDevenir').addEventListener('click', async ()=>{
   try{
     await appel('devenir_admin'); MDP = ''; try{ sessionStorage.removeItem('m1_admin'); }catch(e){}
     $('msgTrans').className = 'msg ok'; $('msgTrans').textContent = 'C\'est fait : cette clé est administratrice.';
-    setTimeout(()=>{ transition(); charger(); }, 1500);
+    setTimeout(()=>{ transition(); charger(); etatPush(); }, 1500);
   }catch(err){ $('msgTrans').className = 'msg ko'; $('msgTrans').textContent = texteErreur(err); }
   b.disabled = false;
 });

@@ -304,6 +304,13 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  8.1.0            DEMANDE D'ACCÈS SANS E-MAIL. « Demander l'accès » (pseudo,
+                   niveau Licence ou M1, message) remplace le formulaire par
+                   e-mail. Les appareils administrateurs reçoivent une
+                   notification ; /admin, onglet « Demandes » : Accepter crée
+                   une clé déjà activée pour l'appareil demandeur, qui s'ouvre
+                   tout seul ; Refuser (nouvelle demande le lendemain). Expire
+                   à 7 jours. Base : supabase/acces-demandes.sql.
   8.0.0 « Guinée » AAA, HUB MULTI-PROMOS. Le site s'appelle AAA (« Révise. Vise
                    le AAA. ») : logo, icônes, titres ; adresse inchangée.
                    Hub central à l'ouverture (Licence, M1, M2) ; espace

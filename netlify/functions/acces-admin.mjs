@@ -1,6 +1,7 @@
 /* acces-admin — gestion des clés d'accès, pour Corentin seul (6.5.0)
    POST {action:'moi'|'liste'|'generer'|'revoquer'|'retablir'|'admin'|'devenir_admin'
-         |'chat_supprimer'|'tableau'|'associer'|'dissocier'|'note'|'bq_reset', mdp?, ...}
+         |'chat_supprimer'|'tableau'|'associer'|'dissocier'|'note'|'bq_reset'
+         |'demandes'|'demande_accepter'|'demande_refuser'|'push_abonner'|'push_retirer'|'push_essai', mdp?, ...}
    Qui peut entrer (hub multi-promos) :
    - l'appareil dont la clé est marquée « admin » en base (vérifié à chaque appel) ;
    - en secours, le mot de passe ADMIN_MDP, mais SEULEMENT tant qu'aucune clé
@@ -8,6 +9,7 @@
    Le serveur parle ensuite à Supabase avec ACCES_JETON (dont seule
    l'empreinte est dans la base). Les clés générées ne sont renvoyées
    qu'une fois, en clair : la base n'en garde que l'empreinte. */
+import {envoyerUn, cles, abonnementValide} from '../push.mjs';
 import {rpc, empreinte, nouvelleCle, memeTexte, lireCorps, json, lireAcces, etatCle, cookieAcces,
         NIVEAUX, anneeOk, PAR_DEFAUT} from '../acces.mjs';
 
@@ -89,6 +91,37 @@ export default async (req) => {
       await rpc('admin_tableau', {p_jeton:JETON, p_action:d.action, p_donnees:{
         pseudo:String(d.pseudo||'').slice(0, 40), personne:String(d.personne||'').slice(0, 60), note:String(d.note||'').slice(0, 2000)}});
       return ok();
+    }
+    /* Demandes d'accès (8.1.0) : liste, acceptation (clé créée et déjà activée
+       pour l'appareil demandeur, qui la récupère à sa prochaine vérification), refus. */
+    if(d.action === 'demandes') return ok({demandes:await rpc('acces_demande', {p_jeton:JETON, p_action:'liste', p_donnees:{}})});
+    if(d.action === 'demande_accepter' || d.action === 'demande_refuser'){
+      if(!/^[0-9a-f-]{36}$/.test(String(d.id||''))) return json({ok:false}, 400);
+      let r;
+      if(d.action === 'demande_refuser') r = await rpc('acces_demande', {p_jeton:JETON, p_action:'refuser', p_donnees:{id:d.id}});
+      else{
+        const c = nouvelleCle();          // jamais affichée : l'appareil reçoit directement son cookie
+        r = await rpc('acces_demande', {p_jeton:JETON, p_action:'accepter', p_donnees:{id:d.id, hash:empreinte(c), suffixe:c.slice(-3),
+          niveau: NIVEAUX.includes(d.niveau) ? d.niveau : undefined, annee:PAR_DEFAUT.annee}});
+      }
+      return r && r.ok ? ok() : json({ok:false, erreur:'deja'}, 409);
+    }
+    /* Notifications des demandes sur les appareils admin (clé admin seulement) */
+    if(d.action === 'push_abonner' || d.action === 'push_retirer'){
+      if(q.mode !== 'cle') return json({ok:false, erreur:'cle_admin'}, 403);
+      const a = {endpoint:String(d.endpoint||''), p256dh:String(d.p256dh||''), auth:String(d.auth||'')};
+      if(d.action === 'push_abonner' && !abonnementValide(a)) return json({ok:false, erreur:'abonnement'}, 400);
+      await rpc('acces_demande', {p_jeton:JETON, p_action:d.action, p_donnees:Object.assign(a, {cle_id:q.cle.id})});
+      return ok();
+    }
+    if(d.action === 'push_essai'){
+      if(q.mode !== 'cle') return json({ok:false, erreur:'cle_admin'}, 403);
+      const a = {endpoint:String(d.endpoint||''), p256dh:String(d.p256dh||''), auth:String(d.auth||'')};
+      if(!abonnementValide(a)) return json({ok:false, erreur:'abonnement'}, 400);
+      const {publique, privee} = cles();
+      if(!privee) return json({ok:false, erreur:'vapid'}, 500);
+      const r = await envoyerUn(a, {title:'🔑 Demandes d\'accès', body:'Cet appareil recevra les nouvelles demandes.', url:'/admin?onglet=demandes', tag:'demande'}, publique, privee);
+      return r.status < 300 ? ok() : json({ok:false, erreur:'push '+r.status}, 502);
     }
     return json({ok:false, erreur:'action'}, 400);
   }catch(e){
