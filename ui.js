@@ -1,5 +1,5 @@
 /* ════════════════════════════════════════════════════════════
-   ui.js — socle commun du site A+ (révisions, toutes les promos)
+   ui.js — socle commun du site AAA (révisions, toutes les promos)
    · construit le bouton de navigation et le tiroir, sur toutes les pages
    · gère le thème : clair en journée, sombre à partir de 20 h,
      le choix manuel du jour prenant le dessus
@@ -83,7 +83,7 @@
                 '<span class="et">'+p.t+'<span class="es">'+p.s+'</span></span>'+
               '</a>';
     });
-    html += '<div class="ui-ver">A+ · v'+VERSION_APP+' « '+NOM_VERSION+' »</div>';
+    html += '<div class="ui-ver">AAA · v'+VERSION_APP+' « '+NOM_VERSION+' »</div>';
     dr.innerHTML = html;
 
     document.body.appendChild(ov);
@@ -111,8 +111,8 @@
   const IC_MENU = '<path d="M3 5h14M3 10h14M3 15h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/>';
   const IC_BURG = '<path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/>';
 
-  /* Logo A+ : un rond bleu nuit (teinte du niveau, --nuit), « A » fin et « + » en exposant. */
-  const LOGO = '<span class="mk ap" aria-hidden="true">A<i>+</i></span>';
+  /* Logo AAA : un rond bleu nuit (teinte du niveau, --nuit), « AAA » en Outfit, le dernier A plus gras. */
+  const LOGO = '<span class="mk ap" aria-hidden="true">AA<i>A</i></span>';
 
   /* ---------- 3. EN-TÊTE COMMUNE À TOUTES LES PAGES ----------
      On construit la même barre partout, puis on y déplace les widgets
@@ -133,7 +133,7 @@
 
     h.innerHTML =
       '<div class="ds-left verre">'+
-        '<a class="ds-logo" href="index.html" aria-label="Révise. Vise A+. — accueil">'+LOGO+'Révise.<b>Vise A+.</b></a>'+
+        '<a class="ds-logo" href="index.html" aria-label="Révise. Vise le AAA. — accueil">'+LOGO+'Révise.<b>Vise le AAA.</b></a>'+
       '</div>'+
       '<nav class="ds-nav verre" aria-label="Navigation principale">'+liens+'</nav>'+
       '<div class="ds-acts verre">'+
@@ -177,10 +177,10 @@
     f.className = 'ds-foot';
     const liens = ENTETE.filter(l=>!l.hubOnly).map(l=>'<a href="'+l.href+'">'+l.t+'</a>').join('');
     f.innerHTML =
-      '<a class="ds-logo" href="index.html" aria-label="Révise. Vise A+. — accueil">'+LOGO+'Révise.<b>Vise A+.</b></a>'+
+      '<a class="ds-logo" href="index.html" aria-label="Révise. Vise le AAA. — accueil">'+LOGO+'Révise.<b>Vise le AAA.</b></a>'+
       '<nav class="ds-fnav">'+liens+'</nav>'+
-      '<div class="ds-fv">A+ · v'+VERSION_APP+' « '+NOM_VERSION+' »</div>'+
-      '<div class="ds-credits ds-note">A+ : la note qu\'on vise au partiel… et celle que les agences de notation réservent aux signatures solides.</div>'+
+      '<div class="ds-fv">AAA · v'+VERSION_APP+' « '+NOM_VERSION+' »</div>'+
+      '<div class="ds-credits ds-note">AAA : la meilleure note des agences de notation… et celle qu\'on vise au partiel.</div>'+
       '<div class="ds-credits">Tes progrès (leçons, temps de révision, résultats) sont partagés avec l\'administrateur du site.</div>'+
       '<div class="ds-credits">Photos <a href="https://unsplash.com/?utm_source=m1_mbaf&utm_medium=referral" rel="noopener">Unsplash</a> : '+
         CREDITS.map(c=>'<a href="https://unsplash.com/@'+c[1]+'?utm_source=m1_mbaf&utm_medium=referral" rel="noopener">'+c[0]+'</a>').join(', ')+'.</div>';
@@ -409,7 +409,7 @@
     const t = document.getElementById('ds-titre'), k = document.getElementById('ds-kick');
     if(t) t.innerHTML = h1 ? h1.innerHTML : '';
     if(k) k.textContent = (NOMS[sid]||'') + (tag ? ' · '+tag.textContent.trim() : '');
-    document.title = (h1 ? h1.textContent.trim()+' — ' : '') + (NOMS[sid]||'A+');
+    document.title = (h1 ? h1.textContent.trim()+' — ' : '') + (NOMS[sid]||'AAA');
     const seq = sequence(), i = seq.findIndex(x=>x.v===vue.dataset.view);
     const p = document.getElementById('ds-prec'), s = document.getElementById('ds-suiv');
     const prev = i>0 ? seq[i-1] : null, next = (i>=0 && i<seq.length-1) ? seq[i+1] : null;
@@ -498,7 +498,7 @@
 
   /* ---------- 6. RECHERCHE GLOBALE (Ctrl+K) ---------- */
   const INDEX = [
-    {t:'Accueil', s:'A+, toutes les matières', u:'index.html', i:'🏠'},
+    {t:'Accueil', s:'AAA, toutes les matières', u:'index.html', i:'🏠'},
     {t:'Révision du jour', s:'Entraînement en révision espacée, flashcards', u:'revision.html', i:'🔁'},
     {t:'Ma progression', s:'Statistiques, points faibles', u:'stats.html', i:'📈'},
     {t:'Glossaire', s:'Sigles, définitions', u:'glossaire.html', i:'🔤'},

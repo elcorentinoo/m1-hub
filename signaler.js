@@ -104,8 +104,8 @@ body.sig-ouvert{ overflow:hidden; }`;
     const lien = b.querySelector(':scope > .sig-ligne'); if(lien) lien.style.display = 'none';
     const bloc = (b.innerText || '').replace(/[ \t]+/g, ' ').replace(/\s*\n\s*/g, '\n').trim();
     if(lien) lien.style.display = '';
-    /* titre « Leçon — Matière » sur les cours (ui.js), « Page · A+ » ailleurs */
-    const titre = (document.title || '').replace(/\s*[—·]\s*(A\+|M1 MBAF).*$/, '').split(' — ');
+    /* titre « Leçon — Matière » sur les cours (ui.js), « Page · AAA » ailleurs */
+    const titre = (document.title || '').replace(/\s*[—·]\s*(AAA|A\+|M1 MBAF).*$/, '').split(' — ');
     const matiere = (document.querySelector('section.view') ? titre[titre.length-1] : titre.join(' — ')).trim();
     return {
       page: location.pathname + (location.hash || ''),

@@ -21,7 +21,7 @@ export function courrielConfigure(){
    repondreA : adresse mise en « Répondre à » (demande de clé, par exemple). */
 export async function envoyerCourriel({sujet, texte, html, repondreA}){
   if(!courrielConfigure()) return false;
-  const corps = {from:'A+ <onboarding@resend.dev>', to:[process.env.SIGNALER_DEST], subject:String(sujet||'').slice(0, 200), text:String(texte||'')};
+  const corps = {from:'AAA <onboarding@resend.dev>', to:[process.env.SIGNALER_DEST], subject:String(sujet||'').slice(0, 200), text:String(texte||'')};
   if(html) corps.html = html;
   if(repondreA && /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(repondreA)) corps.reply_to = repondreA;
   try{

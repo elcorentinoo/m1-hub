@@ -408,11 +408,11 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   font-size:13px; font-weight:600; letter-spacing:-.04em;
 }
 .ds-logo .mk::after{ content:var(--emb); font-size:14px; }
-/* Logo A+ (8.0.0) : « A » fin, « + » en exposant, sur le bleu nuit du niveau.
+/* Logo AAA (8.0.0) : « AAA » en Outfit, le dernier A plus gras, sur le bleu nuit du niveau.
    Blanc sur --nuit : 15,4:1 (M1), 11,7:1 (Licence), 13,5:1 (M2). */
-.mk.ap{ display:inline-flex !important; align-items:center; justify-content:center; font-weight:300 !important; font-size:17px !important; letter-spacing:-.02em; line-height:1; }
+.mk.ap{ display:inline-flex !important; align-items:center; justify-content:center; font-weight:400 !important; font-size:12.5px !important; letter-spacing:.01em; line-height:1; }
 .mk.ap::after{ content:none !important; }
-.mk.ap i{ font-style:normal; font-weight:600; font-size:.62em; margin-left:.04em; transform:translateY(-.42em); display:inline-block; }
+.mk.ap i{ font-style:normal; font-weight:600; }
 .ds-note{ font-style:italic; }
 .ds-nav .ds-l{
   padding:9px 16px; border-radius:999px; text-decoration:none; color:var(--txt2);

@@ -1,7 +1,7 @@
 {
-  "name": "A+ — Révise. Vise A+.",
-  "short_name": "A+",
-  "description": "A+, le site de révisions des promos Banque Assurance Finance (Licence, M1, M2) : cours, quiz, tests adaptatifs, glossaire et ressourcerie.",
+  "name": "AAA — Révise. Vise le AAA.",
+  "short_name": "AAA",
+  "description": "AAA, le site de révisions des promos Banque Assurance Finance (Licence, M1, M2) : cours, quiz, tests adaptatifs, glossaire et ressourcerie.",
   "start_url": "index.html",
   "scope": "./",
   "display": "standalone",

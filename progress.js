@@ -1,5 +1,5 @@
 /* ════════════════════════════════════════════════════════════
-   progress.js — mémoire de progression du site A+
+   progress.js — mémoire de progression du site AAA
    · leçons validées, XP, meilleurs scores, dernière leçon vue
    · historique des réponses (socle des stats et de la révision
      espacée)

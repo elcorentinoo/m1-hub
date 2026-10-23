@@ -1,12 +1,13 @@
-# A+ — instructions du projet
+# AAA — instructions du projet
 
-**A+** (toujours écrit avec le « + »), slogan « Révise. Vise A+. » : site de
+**AAA** (prononcé « Triple A »), slogan « Révise. Vise le AAA. » : site de
 révisions devenu hub multi-promos — Licence (LP ABF), M1 Monnaie Banque
 Assurance Finance parcours Conseiller Patrimoine Agence (BNP Paribas Rennes),
-M2. Propriétaire : Corentin. Le double sens (la note A+ et la notation
-financière A+ des agences) reste discret : une seule mention, dans le pied
-de page. Logo : rond `--nuit` (teinte du niveau) avec « A » fin et « + » en
-exposant (`.mk.ap` dans `theme.css`, constante `LOGO` dans `ui.js`).
+M2. Propriétaire : Corentin. Le double sens (AAA, meilleure note des agences
+de notation, et la note qu'on vise à l'examen) reste discret : une seule
+mention, dans le pied de page. Logo : rond `--nuit` (teinte du niveau) avec
+« AAA » en Outfit, le dernier A plus gras (`.mk.ap` dans `theme.css`,
+constante `LOGO` dans `ui.js`).
 
 Seul le **nom du site** a changé (8.0.0) : « M1 » désigne toujours le niveau.
 Les noms de fichiers, d'URL, de clés localStorage et de cookies (`m1_acces`,
@@ -15,7 +16,7 @@ renommer, sinon tout le monde perd sa clé et sa progression.
 
 ## Nature du projet
 
-Site **statique** (nom affiché : A+) : HTML, CSS et JavaScript écrits à la main, aucune étape de
+Site **statique** (nom affiché : AAA) : HTML, CSS et JavaScript écrits à la main, aucune étape de
 construction, aucune dépendance npm. Déployé sur Netlify, qui publie la racine
 du dépôt telle quelle (voir `netlify.toml`), avec quelques fonctions Netlify
 (dossier `netlify/`) et une base Supabase pour les données partagées.
