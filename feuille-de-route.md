@@ -108,3 +108,8 @@ Version MAJEURE (prochain nom de monnaie libre : Guinée).
   Dépôt **reste public** (choix de Corentin).
 - **Corentin délègue désormais toutes les décisions à la session cheffe**
   (bilan oui/non avant publication maintenu).
+- **Adresse du site inchangée** (`partielsmastercpa.netlify.app`) : la
+  renommer ferait perdre à tous la clé (cookie lié à l'adresse), la
+  progression locale et les favoris. Changement éventuel à la rentrée 2027,
+  avec les nouvelles clés. `CONTACT` de `netlify/push.mjs` et de
+  `supabase/functions/chat-notif` à mettre à jour à ce moment-là.
