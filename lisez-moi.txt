@@ -304,6 +304,13 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  8.2.1            BEQUICK M1 SUR UN APPAREIL À PLUSIEURS CLÉS. Les liens et la
+                   notification du M1 ouvrent bequick.html sans ?niveau= : le
+                   niveau joué était celui de la clé principale de l'appareil,
+                   donc la Licence si une clé Licence était devenue principale
+                   (cas d'Enora). Désormais (NIVEAU.joue dans niveau.js), sans
+                   ?niveau= on joue le M1 dès que l'appareil a une clé M1 ; la
+                   Licence garde ses liens explicites (?niveau=licence).
   8.2.0            PLUSIEURS NIVEAUX PAR APPAREIL. Une clé Licence ajoutée sur
                    un appareil qui a déjà une clé M1 (ou l'inverse) AJOUTE le
                    niveau au lieu de le remplacer ; chaque clé reste

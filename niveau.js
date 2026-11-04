@@ -52,6 +52,10 @@
     info, cle, niveaux, choisi, essai, admin,
     couvre: n => niveaux().includes(n),
     courant: () => cle() || choisi() || 'm1',
+    /* 8.2.1 : BeQuick ouvert sans ?niveau= (liens et notification du M1) :
+       le M1 dès que l'appareil a une clé M1, même si sa clé principale
+       est d'un autre niveau ; sinon le niveau courant */
+    joue: () => (niveaux().includes('m1') || admin()) ? 'm1' : (cle() || choisi() || 'm1'),
     /* retenu sur l'appareil ; le M2, encore vide, ne l'est jamais */
     choisir(n){ if(valide(n) && n !== 'm2') ecrireLocal('niveau-choisi', n); }
   };

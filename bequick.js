@@ -50,7 +50,7 @@
     let n = null;
     try{ n = new URLSearchParams(location.search).get('niveau'); }catch(e){}
     if(!NIVEAUX.includes(n)) n = document.documentElement.getAttribute('data-niveau');
-    if(!NIVEAUX.includes(n) && window.NIVEAU) n = NIVEAU.courant();
+    if(!NIVEAUX.includes(n) && window.NIVEAU) n = NIVEAU.joue();
     return NIVEAUX.includes(n) ? n : 'm1';
   })();
   const AUTRES = Object.values(MATIERES_NIVEAU).flat();
