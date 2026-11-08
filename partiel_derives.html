@@ -66,7 +66,9 @@ const NIVEAUX = [{n:1, t:'Guidé', s:'méthode, formule, pourquoi'}, {n:2, t:'Fo
 function lire(){ try{ const o = JSON.parse(localStorage.getItem(CLE) || 'null'); if(o && typeof o === 'object') return o; }catch(e){} return {}; }
 function ecrire(o){ try{ localStorage.setItem(CLE, JSON.stringify(o)); }catch(e){} }
 let S = lire();
-S.mod = S.mod || 'pd1'; S.vue = S.vue || 'ex'; S.niv = S.niv || {}; S.ok = S.ok || {}; S.qcmOk = S.qcmOk || {}; S.qcmErr = S.qcmErr || {};
+S.mod = S.mod || 'pd1';
+/* 8.3.1 : lien direct depuis le hub (?m=pd1 ou ?m=pd2) */
+try{ const qm = new URLSearchParams(location.search).get('m'); if(qm === 'pd1' || qm === 'pd2'){ S.mod = qm; S.vue = 'ex'; } }catch(e){} S.vue = S.vue || 'ex'; S.niv = S.niv || {}; S.ok = S.ok || {}; S.qcmOk = S.qcmOk || {}; S.qcmErr = S.qcmErr || {};
 const niveau = m => S.niv[m] || 1;
 const okNiv = n => (S.ok['n'+n] = S.ok['n'+n] || {});
 

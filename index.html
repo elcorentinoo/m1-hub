@@ -236,6 +236,20 @@ body{overflow-x:hidden}
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="AAA">
 <script>
+/* 8.3.1 : partiel de Produits Dérivés en tête du hub, jusqu'au soir de l'épreuve */
+document.addEventListener('DOMContentLoaded', ()=>{
+  const z = document.getElementById('partielUne'); if(!z) return;
+  const e = (window.ECHEANCES || []).find(x=>x.sid === 'produits-derives');
+  if(!e) return;
+  const fin = new Date(e.end); fin.setUTCHours(22, 0, 0, 0);
+  if(Date.now() > fin.getTime()) return;
+  const j = Math.max(0, Math.ceil((e.end - Date.now())/864e5));
+  const c = document.getElementById('ptUneCpt');
+  if(c) c.textContent = (j === 0 ? "C'est aujourd'hui ! " : j === 1 ? 'Partiel demain. ' : 'Plus que '+j+' jours. ')+
+    'Produits Dérivés I et II, le même jour : refais les exercices de vos TD, guidé pas à pas, puis sans filet.';
+  z.hidden = false;
+});
+
 /* hub central (8.0.0) : on arrive toujours sur niveaux.html, le hub de
    tous les niveaux. Cette page reste l'espace M1, à la même adresse : on
    y reste quand on vient d'une autre page du site (hub central, cours,
@@ -289,6 +303,26 @@ body{overflow-x:hidden}
       <div class="encoche"><div class="reprise" id="panelReprendre"></div></div>
       <div class="logo-rond" aria-hidden="true">M1</div>
       <aside class="partiel-v verre" id="cPartiel"></aside>
+    </section>
+
+    <section class="sec pt-une" id="partielUne" hidden aria-labelledby="ptUneT">
+      <div class="st"><h2 id="ptUneT">Partiel du <b>18 novembre</b></h2><p id="ptUneCpt">Produits Dérivés I et II, le même jour. Les exercices de vos TD, guidés pas à pas, puis sans filet.</p></div>
+      <div class="pt-une-g">
+        <a class="pt-une-c" data-sid="produits-derives" href="partiel_derives.html?m=pd1">
+          <span class="pt-une-e" aria-hidden="true"></span>
+          <span class="pt-une-t"><small>Réviser le partiel</small><b>Produits Dérivés I</b></span>
+          <span class="pt-une-a">Cours croisés, arbitrages, cours à terme : refais Airbus, Toyota, Nestlé et LVMH comme le jour J.</span>
+          <span class="pt-une-s">10 exercices · 3 niveaux · 106 QCM</span>
+          <span class="pt-une-b">Je m'entraîne</span>
+        </a>
+        <a class="pt-une-c" data-sid="produits-derives-2" href="partiel_derives.html?m=pd2">
+          <span class="pt-une-e" aria-hidden="true"></span>
+          <span class="pt-une-t"><small>Réviser le partiel</small><b>Produits Dérivés II</b></span>
+          <span class="pt-une-a">Appels de marge, nombre de contrats, résultat global : le TD Futures, de la méthode guidée au sans-faute.</span>
+          <span class="pt-une-s">5 exercices · 3 niveaux · 73 QCM</span>
+          <span class="pt-une-b">Je m'entraîne</span>
+        </a>
+      </div>
     </section>
 
     <section class="sec" id="bequick">

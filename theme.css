@@ -1311,3 +1311,24 @@ a.nav-item.pt-lien-nav{ text-decoration:none; }
 .pt-carte-lien{ margin:18px 0 !important; }
 @media print{ .pt-niveaux, .pt-outils, .pt-actions, .pt-vues, .pt-modules{ display:none !important; } }
 #pt-panneau{ scroll-margin-top:96px; }
+
+/* ───────────── PARTIEL À LA UNE DU HUB (8.3.1) ─────────────
+   Deux cartes blanches, une par matière, couleur et emblème de la matière.
+   Contrastes : --nuit et --txt2 sur blanc ; blanc sur --m (7,7:1 minimum). */
+.pt-une[hidden]{ display:none; }
+.pt-une-g{ display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:16px; }
+.pt-une-c{ position:relative; display:flex; flex-direction:column; gap:10px; padding:22px 22px 20px; border-radius:var(--r-lg);
+  background:var(--blanc); color:var(--nuit); text-decoration:none !important; box-shadow:var(--shadow); border-top:6px solid var(--m);
+  transition:transform .2s var(--ressort), box-shadow .2s; min-width:0; }
+.pt-une-c:hover{ transform:translateY(-3px); box-shadow:var(--shadow-lg); }
+.pt-une-c:focus-visible{ outline:3px solid var(--nuit); outline-offset:3px; }
+.pt-une-e{ position:absolute; top:18px; right:18px; width:44px; height:44px; border-radius:50%; background:var(--m); color:#fff;
+  display:grid; place-items:center; font-size:20px; }
+.pt-une-e::before{ content:var(--emb); }
+.pt-une-t{ display:flex; flex-direction:column; padding-right:56px; }
+.pt-une-t small{ font-size:.78rem; font-weight:500; letter-spacing:.08em; text-transform:uppercase; color:var(--txt2); }
+.pt-une-t b{ font-size:1.45rem; font-weight:300; line-height:1.2; color:var(--nuit); }
+.pt-une-a{ color:var(--txt2); line-height:1.5; font-size:.97rem; }
+.pt-une-s{ font-size:.85rem; font-weight:500; color:var(--nuit); background:var(--surface2); border-radius:999px; padding:5px 12px; width:fit-content; }
+.pt-une-b{ margin-top:auto; align-self:flex-start; background:var(--m); color:#fff; border-radius:999px; padding:10px 18px; font-weight:500; }
+@media (max-width:720px){ .pt-une-g{ grid-template-columns:1fr; } }

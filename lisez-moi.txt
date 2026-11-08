@@ -304,6 +304,10 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  8.3.1            Partiel de Produits Dérivés à la une du hub M1 : deux cartes
+                   (I et II) avec accroche et compte à rebours, qui ouvrent
+                   directement le bon module (partiel_derives.html?m=pd1 / pd2).
+                   Le bandeau disparaît le soir du 18 novembre.
   8.3.0            RÉVISER LE PARTIEL — PRODUITS DÉRIVÉS I ET II (partiel commun
                    du 18 novembre 2026). Nouvelle page partiel_derives.html
                    (données : partiel_derives_donnees.js et
