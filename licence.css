@@ -1,0 +1,57 @@
+/* ════════════════════════════════════════════════════════════
+   licence.css — raccords des pages de Licence (8.0.0)
+   Les pages reprises du site de la LP gardent leur propre squelette
+   (menu de gauche, leçons, test). Chargé après theme.css : il les
+   cale sous l'en-tête commun (leur ancienne barre du haut disparaît)
+   et dimensionne le cadre photo posé par ui.js. Aucune couleur ici :
+   tout vient de theme.css.
+   ════════════════════════════════════════════════════════════ */
+
+/* l'ancienne barre du haut n'occupe plus de place */
+body.l-cours .layout, body.l-cours .shell, body.l-cours #shell{ padding-top:0 !important; margin-top:0 !important; min-height:0 !important; }
+body.l-cours main{ min-width:0; max-width:100%; }
+
+/* menu de gauche : sous l'en-tête commun */
+@media (min-width:881px){
+  body.l-cours .sidebar, body.l-cours #sidebar{ top:84px !important; height:calc(100vh - 84px) !important; max-height:calc(100vh - 84px) !important; }
+  body.l-cours #sidebar:not(.sidebar){ position:fixed; }
+}
+/* téléphone : le menu s'ouvre par-dessus tout, en pleine hauteur */
+@media (max-width:880px){
+  body.l-cours .sidebar, body.l-cours #sidebar{ top:0 !important; height:100vh !important; height:100dvh !important; max-height:none !important; z-index:95 !important; }
+  body.l-cours .overlay{ z-index:94 !important; }
+}
+
+/* le cadre photo, en tête du contenu */
+body.l-cours .l-cadre{ min-height:300px; margin:0 0 28px; }
+body.l-cours .l-cadre .corps{ padding:96px 40px 40px; }
+body.l-cours .l-cadre h1{ font-size:clamp(2rem,4.6vw,3.6rem) !important; }
+@media (max-width:760px){
+  body.l-cours .l-cadre{ min-height:0; margin:0 0 20px; }
+  body.l-cours .l-cadre .corps{ padding:78px 20px 22px; }
+}
+/* pages dont le contenu est une colonne centrée (Finance internationale, Marché des capitaux) */
+body.l-cours main.main{ flex-direction:column; align-items:center; }
+body.l-cours main.main > .l-cadre{ width:100%; max-width:720px; }
+
+/* ── contrastes : textes que l'ancienne charte posait sur un aplat sombre
+   ou dans sa barre du haut (déplacée dans l'en-tête blanc) ── */
+.ds-slot #progress-label{ color:var(--txt3) !important; }
+.ds-slot #progress-bar-outer{ background:var(--stroke) !important; }
+/* encadrés de formule (aplat bleu nuit) */
+.formule .var, .formula .f-lbl{ color:var(--amber-clair) !important; }
+.formula .leg{ color:var(--sur-nuit) !important; }
+/* pastilles de numéro de la leçon active */
+.lesson-link.active .num, .lesson-link.active .lnum, .lesson-link.done.active .lnum{ background:color-mix(in srgb, var(--nuit) 35%, transparent) !important; color:var(--blanc) !important; }
+.lesson-link.active.done .num{ background:var(--blanc) !important; color:var(--teal) !important; }
+/* frise des flux (Mathématiques financières) */
+.frise-pt .lbl{ color:var(--txt2) !important; }
+.frise-pt .val, .frise-pt .flow, .frise-arrow{ color:var(--nuit) !important; }
+/* Banque · Patrimoine · Assurance : étiquettes et têtes de tableau sur aplat sombre */
+:root[subject-id="l-banque-patrimoine"] :is(.lesson-tag, .lesson-table th, .formule-block h4, .formule-block .amber){ color:var(--amber-clair) !important; }
+/* téléphone : un tableau trop large défile dans son cadre, pas la page */
+@media (max-width:760px){
+  body.l-cours main table{ display:block; max-width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  body.l-cours main svg{ max-width:100%; height:auto; }
+}
+.opt.correct .letter, .opt.wrong .letter{ color:var(--blanc) !important; }

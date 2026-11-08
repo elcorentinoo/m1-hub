@@ -1,5 +1,5 @@
 /* ════════════════════════════════════════════════════════════
-   sw.js — fonctionnement hors ligne du hub M1 MBAF
+   sw.js — fonctionnement hors ligne du site AAA
 
    ⚠️ LA VERSION CI-DESSOUS DOIT CHANGER À CHAQUE MISE À JOUR.
       Sans cela, les navigateurs servent l'ancienne version
@@ -13,7 +13,7 @@
    ⚠️ Cette valeur doit rester IDENTIQUE à VERSION_APP,
       en haut de ui.js.
    ════════════════════════════════════════════════════════════ */
-const VERSION = '7.7.0';        // « Thaler »
+const VERSION = '8.3.0';        // « Guinée »
 const CACHE_APP  = 'm1-app-'+VERSION;      // les fichiers du site
 const CACHE_EXT  = 'm1-ext-'+VERSION;      // polices et bibliothèques externes
 
@@ -41,17 +41,26 @@ const FICHIERS = [
   'classement.html',
   'bequick.html',
   'ressourcerie.html',
+  'niveaux.html',
+  'licence.html',
+  'm2.html',
   'ui.css',
   'theme.css',
   'ui.js',
+  'sources.js',
   'lb.js',
   'progress.js',
+  'synchro.js',
   'banque.js',
   'calendrier.js',
   'bequick.js',
   'formules.js',
   'chat.js',
+  'signaler.js',
+  'niveau.js',
   'manifest.webmanifest',
+  'favicon.ico',
+  'icons/favicon-32.png',
   'icons/icon-192.png',
   'icons/icon-512.png',
   /* Copies locales des photos de matière : affichées si Unsplash ne répond pas */
@@ -64,7 +73,33 @@ const FICHIERS = [
   'img/sujet-produits-derives-2.webp',
   'img/sujet-marketing-numerique.webp',
   'img/sujet-es-banque.webp',
-  'img/sujet-marche-particuliers.webp'
+  'img/sujet-marche-particuliers.webp',
+  /* Licence (8.0.0) : ses pages, sa feuille de raccords, ses questions BeQuick
+     et les photos locales de ses matières. Une clé ne reçoit que les pages de
+     son niveau (la porte refuse les autres) : voir l'installation ci-dessous. */
+  'licence.css',
+  'banque-licence.js',
+  'licence/maths_fi.html',
+  'licence/politique-monetaire.html',
+  'licence/droit-bancaire.html',
+  'licence/risques_bancaires.html',
+  'licence/finance_internationale.html',
+  'licence/crises-financieres.html',
+  'licence/fiscalite.html',
+  'licence/marche_des_capitaux.html',
+  'licence/banque_patrimoine_assurance.html',
+  'licence/maths_fi_entrainement.html',
+  'licence/politique_monetaire_entrainement.html',
+  'licence/droit_bancaire_entrainement.html',
+  'licence/risques_bancaires_entrainement.html',
+  'licence/finance_internationale_entrainement.html',
+  'licence/crises_financieres_entrainement.html',
+  'licence/fiscalite_entrainement.html',
+  'licence/marche_des_capitaux_entrainement.html',
+  'img/mat-derives.webp',
+  'img/hero-wide.webp',
+  'img/band-derives.webp',
+  'img/mat-marketing.webp'
 ];
 
 /* Domaines externes conservés au premier passage (polices, PDF.js, Mammoth, photos Unsplash, supabase-js) */
@@ -76,7 +111,9 @@ const JAMAIS = ['supabase.co'];
 self.addEventListener('install', e=>{
   e.waitUntil(
     caches.open(CACHE_APP)
-      .then(c=>c.addAll(FICHIERS.map(f=>new Request(f, {cache:'reload'}))))
+      /* fichier par fichier (8.0.0) : une page refusée par la porte (celle d'un
+         autre niveau que la clé) n'empêche plus de garder toutes les autres */
+      .then(c=>Promise.all(FICHIERS.map(f=>c.add(new Request(f, {cache:'reload'})).catch(()=>{}))))
       .then(()=>self.skipWaiting())
       .catch(err=>console.warn('[sw] installation partielle', err))
   );
@@ -152,7 +189,7 @@ self.addEventListener('fetch', e=>{
    notification illisible, on affiche un message neutre (7.1.1).
    Un clic ouvre (ou ramène au premier plan) la page. */
 self.addEventListener('push', e=>{
-  let m = {title:'🔔 Hub M1 MBAF', body:'Du nouveau sur le hub.', url:'/', tag:'hub'};
+  let m = {title:'🔔 AAA', body:'Du nouveau sur AAA.', url:'/', tag:'hub'};
   try{ if(e.data) m = Object.assign(m, e.data.json()); }catch(err){}
   /* 7.2.0 : un message du chat met une pastille sur l'icône de l'app */
   const pastille = /^chat/.test(m.tag || '') && self.navigator.setAppBadge ? self.navigator.setAppBadge().catch(()=>{}) : null;

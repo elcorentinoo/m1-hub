@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
-<title>Ma progression — M1 MBAF</title>
+<title>Ma progression — AAA</title>
 <style>
 :root{
   --card:#fff; --card2:#fbf9f5;
@@ -101,9 +101,11 @@ h2+.h2s{color:var(--muted);font-size:14px;margin-bottom:16px}
 <link rel="stylesheet" href="theme.css">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#ECEEF6">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="M1 MBAF">
+<meta name="apple-mobile-web-app-title" content="AAA">
 </head>
 <body>
 
@@ -129,7 +131,7 @@ const NB_LECONS = {'marche-particuliers':11,'produits-derives':15,'produits-deri
 function render(){
   const host = document.getElementById('body');
   if(!P.disponible()){
-    host.innerHTML = `<div class="empty"><div class="big">🔒</div>
+    host.innerHTML = `<div class="empty"><div class="big"><svg class="ico-t" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="5.5" y="10.5" width="13" height="9.5" rx="2.2"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></svg></div>
       Ton navigateur bloque le stockage local.<br>La progression ne peut pas être enregistrée
       (navigation privée ou réglage de confidentialité).</div>`;
     return;
@@ -137,7 +139,7 @@ function render(){
   const st = P.stats(), serie = P.serie();
 
   if(st.global.reponses === 0 && st.global.lecons === 0){
-    host.innerHTML = `<div class="empty"><div class="big">🌱</div>
+    host.innerHTML = `<div class="empty"><div class="big"><svg class="ico-t" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 20V10M10 20V4M16 20v-7"/></svg></div>
       Rien à afficher pour l'instant.<br>
       Valide une leçon ou passe un test, et tes statistiques apparaîtront ici.<br><br>
       <a href="index.html">Choisir une matière →</a></div>`;
@@ -195,7 +197,7 @@ function render(){
     });
   }
 
-  h += `<div class="note">Ces chiffres sont enregistrés <b>uniquement sur cet appareil</b>. Ils ne partent sur aucun serveur et ne sont visibles que par toi — contrairement au classement, qui lui est partagé.</div>`;
+  h += `<div class="note">Ces chiffres sont enregistrés sur cet appareil et <b>partagés entre tes appareils</b> connectés avec le même pseudo (téléphone, ordinateur). Ils ne sont pas montrés aux autres étudiants — contrairement au classement.</div>`;
 
   h += `<div class="danger"><button class="btn" onclick="raz()">Effacer toute ma progression</button></div>`;
 
@@ -204,11 +206,14 @@ function render(){
 }
 
 function raz(){
-  if(!confirm("Effacer définitivement ta progression, tes XP et ton historique de réponses ?\n\nCette action est irréversible.")) return;
+  if(!confirm("Effacer définitivement ta progression, tes XP et ton historique de réponses, sur tous tes appareils ?\n\nCette action est irréversible.")) return;
   P.reinitialiser();
+  if(window.M1Synchro) M1Synchro.synchroniser({force:true});
   render();
 }
 render();
+/* progression reçue d'un autre appareil (synchro.js) */
+window.addEventListener('m1progression', render);
 </script>
 <script src="banque.js"></script>
 <script src="ui.js"></script>

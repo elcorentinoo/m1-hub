@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="fr" data-niveau="licence" subject-id="l-maths-fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>Maths Fi · Parcours d'apprentissage</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+:root{ --ok-l:var(--teal-soft); --err:var(--rust); --err-l:var(--rust-soft);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans',sans-serif; background:var(--paper); color:var(--ink);
+  line-height:1.65; font-size:16px;
+  background-image:radial-gradient(var(--line) 0.5px, transparent 0.5px);
+  background-size:22px 22px;
+}
+
+/* ── TOP BAR ── */
+#topbar{
+  position:sticky; top:0; z-index:50;
+  background:color-mix(in srgb, var(--fond) 92%, transparent); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:12px 24px; display:flex; align-items:center; gap:18px;
+}
+#topbar .logo{
+  font-family:'Fraunces',serif; font-weight:900; font-size:18px;
+  color:var(--teal-d); letter-spacing:-.5px; white-space:nowrap;
+}
+#topbar .logo span{color:var(--amber)}
+.top-progress{flex:1; max-width:420px}
+.top-progress-bar{height:6px; background:var(--line); border-radius:6px; overflow:hidden}
+.top-progress-fill{height:100%; background:linear-gradient(90deg,var(--teal),var(--gold)); border-radius:6px; transition:width .6s cubic-bezier(.4,0,.2,1); width:0%}
+.top-progress-txt{font-size:11px; color:var(--muted); margin-top:3px; font-family:'DM Mono',monospace}
+.top-xp{
+  font-family:'DM Mono',monospace; font-size:13px; font-weight:500;
+  background:var(--amber-l); color:var(--amber); padding:5px 12px; border-radius:20px;
+  border:1px solid var(--line2); white-space:nowrap;
+}
+
+/* ── LAYOUT ── */
+#shell{display:flex; max-width:1280px; margin:0 auto; gap:0}
+#sidebar{
+  width:280px; flex-shrink:0; padding:28px 18px; position:sticky; top:55px;
+  height:calc(100vh - 55px); overflow-y:auto; border-right:1px solid var(--line);
+}
+#content{flex:1; min-width:0; padding:36px 40px 120px; max-width:780px; margin:0 auto}
+
+/* ── SIDEBAR ── */
+.side-title{font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin:0 0 14px 8px}
+.side-item{
+  display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:10px;
+  cursor:pointer; transition:all .15s; margin-bottom:3px; color:var(--ink2); font-size:14px;
+  border:1px solid transparent;
+}
+.side-item:hover{background:var(--paper2)}
+.side-item.active{background:var(--teal-l); color:var(--teal-d); font-weight:600; border-color:var(--line2)}
+.side-item .dot{
+  width:26px; height:26px; border-radius:50%; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  font-size:12px; font-weight:700; font-family:'DM Mono',monospace;
+  background:var(--paper2); color:var(--muted); border:1.5px solid var(--line2);
+  transition:all .2s;
+}
+.side-item.active .dot{background:var(--teal); color:var(--blanc); border-color:var(--teal)}
+.side-item.done .dot{background:var(--ok); color:var(--blanc); border-color:var(--ok)}
+.side-item.done .dot::after{content:'✓'}
+.side-item.done .dot .num{display:none}
+.side-sep{height:1px; background:var(--line); margin:18px 8px}
+
+/* ── LESSON ── */
+.lesson{display:none; animation:fade .4s ease}
+.lesson.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.lesson-tag{
+  font-family:'DM Mono',monospace; font-size:12px; letter-spacing:1px; text-transform:uppercase;
+  color:var(--amber); font-weight:500; display:flex; align-items:center; gap:8px; margin-bottom:10px;
+}
+.lesson-tag::before{content:''; width:24px; height:2px; background:var(--amber)}
+.lesson h1{
+  font-family:'Fraunces',serif; font-weight:900; font-size:2.3rem; line-height:1.1;
+  color:var(--ink); letter-spacing:-1px; margin-bottom:8px;
+}
+.lesson-sub{font-size:17px; color:var(--ink2); margin-bottom:28px; font-weight:400}
+.lesson h2{
+  font-family:'Fraunces',serif; font-weight:700; font-size:1.4rem; color:var(--teal-d);
+  margin:34px 0 14px; letter-spacing:-.3px;
+}
+.lesson h3{font-family:'Fraunces',serif; font-weight:600; font-size:1.1rem; color:var(--ink); margin:22px 0 10px}
+.lesson p{margin-bottom:14px; color:var(--ink2)}
+.lesson strong{color:var(--ink); font-weight:600}
+.lesson em{color:var(--teal-d); font-style:italic}
+
+/* ── CALLOUTS ── */
+.callout{border-radius:14px; padding:18px 20px; margin:20px 0; border:1px solid; position:relative; font-size:15px}
+.callout .c-label{font-family:'DM Mono',monospace; font-size:11px; font-weight:500; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; display:flex; align-items:center; gap:7px}
+.callout.analogy{background:var(--amber-l); border-color:var(--amber-clair)}
+.callout.analogy .c-label{color:var(--amber)}
+.callout.key{background:var(--teal-l); border-color:var(--teal-clair)}
+.callout.key .c-label{color:var(--teal-d)}
+.callout.warn{background:var(--rust-l); border-color:var(--rust-clair)}
+.callout.warn .c-label{color:var(--rust)}
+.callout p:last-child{margin-bottom:0}
+
+/* ── NOUVELLE FORMULE ── */
+.formula {
+  background: var(--surface2);
+  border-radius: 8px;
+  margin: 24px 0;
+  box-shadow: 1px 2px 5px color-mix(in srgb, var(--nuit) 10%, transparent), 0px 4px 12px color-mix(in srgb, var(--nuit) 8%, transparent);
+  overflow: hidden;
+  font-family: 'DM Sans', sans-serif;
+}
+.formula-head {
+  background: var(--navy);
+  color: var(--blanc);
+  padding: 10px 18px;
+  font-weight: 500;
+  font-size: 15.5px;
+  letter-spacing: 0.3px;
+}
+.formula-body {
+  padding: 18px 22px;
+  color: var(--nuit);
+  text-align: center;
+}
+.formula-desc {
+  text-align: left;
+  margin-bottom: 16px;
+  font-size: 15px;
+}
+.formula-note {
+  font-size: 14px;
+  color: var(--txt2);
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--stroke);
+  text-align: left;
+}
+.formula-note ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  line-height: 1.8;
+}
+.formula-note li b {
+  display: inline-block;
+  min-width: 32px;
+  color: var(--navy);
+  font-family: 'DM Mono', monospace;
+}
+
+/* ── FRISE (timeline) ── */
+.frise{background:var(--blanc); border:1px solid var(--line); border-radius:14px; padding:26px 20px; margin:22px 0; box-shadow:var(--shadow)}
+.frise-cap{font-size:12px; color:var(--muted); text-align:center; margin-bottom:18px; font-family:'DM Mono',monospace}
+.frise-line{position:relative; height:3px; background:var(--line2); margin:36px 18px 30px; border-radius:3px}
+.frise-pt{position:absolute; top:50%; transform:translate(-50%,-50%); display:flex; flex-direction:column; align-items:center}
+.frise-pt .tick{width:12px;height:12px; border-radius:50%; background:var(--teal); border:2.5px solid var(--blanc); box-shadow:0 0 0 1.5px var(--teal)}
+.frise-pt .lbl{position:absolute; top:16px; font-family:'DM Mono',monospace; font-size:11px; color:var(--muted); white-space:nowrap}
+.frise-pt .val{position:absolute; bottom:16px; font-size:12px; font-weight:600; color:var(--ink); white-space:nowrap; font-family:'DM Mono',monospace}
+.frise-pt .flow{position:absolute; bottom:16px; font-size:11px; color:var(--amber); font-weight:600; white-space:nowrap; font-family:'DM Mono',monospace}
+.frise-arrow{position:absolute; top:-22px; font-size:18px}
+.frise-cap-bottom{font-size:12.5px; color:var(--ink2); text-align:center; margin-top:14px; font-style:italic}
+
+/* ── EXEMPLE CHIFFRÉ ── */
+.example{background:var(--blanc); border:1px solid var(--line); border-left:4px solid var(--amber); border-radius:12px; margin:22px 0; overflow:hidden; box-shadow:var(--shadow)}
+.example-head{background:var(--amber-l); padding:13px 18px; font-weight:600; font-size:14px; color:var(--amber); display:flex; align-items:center; gap:8px; border-bottom:1px solid var(--line)}
+.example-body{padding:18px}
+.example-data{background:var(--paper2); border-radius:8px; padding:11px 14px; font-family:'DM Mono',monospace; font-size:13px; color:var(--ink2); margin-bottom:14px; line-height:1.9}
+.example-data b{color:var(--gold)}
+.step{display:flex; gap:12px; margin-bottom:11px; align-items:flex-start}
+.step-n{flex-shrink:0; width:22px;height:22px; border-radius:50%; background:var(--teal); color:var(--blanc); font-family:'DM Mono',monospace; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; margin-top:1px}
+.step-txt{flex:1; font-size:14px}
+.step-txt code{background:var(--paper2); padding:2px 7px; border-radius:5px; font-family:'DM Mono',monospace; font-size:12.5px; color:var(--teal-d)}
+.result-line{margin-top:14px; padding:12px 16px; background:var(--teal-l); border-radius:10px; font-family:'DM Mono',monospace; font-size:14px; font-weight:600; color:var(--teal-d); border:1px solid var(--teal-clair)}
+
+/* ── COMPARISON TABLE ── */
+.cmp-table{width:100%; border-collapse:collapse; margin:20px 0; font-size:14px; background:var(--blanc); border-radius:12px; overflow:hidden; box-shadow:var(--shadow)}
+.cmp-table th{background:var(--ink); color:var(--paper); padding:12px 14px; text-align:left; font-weight:600; font-size:13px}
+.cmp-table td{padding:11px 14px; border-bottom:1px solid var(--line); color:var(--ink2); vertical-align:top}
+.cmp-table tr:last-child td{border-bottom:none}
+.cmp-table td:first-child{font-weight:600; color:var(--ink)}
+.cmp-table .hl-teal{color:var(--teal-d); font-weight:600}
+.cmp-table .hl-rust{color:var(--rust); font-weight:600}
+
+/* ── MINI QUIZ ── */
+.quiz{background:linear-gradient(135deg,var(--blanc),var(--paper2)); border:1.5px solid var(--line2); border-radius:16px; padding:22px; margin:28px 0; box-shadow:var(--shadow)}
+.quiz-tag{font-family:'DM Mono',monospace; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--plum); font-weight:500; margin-bottom:10px; display:flex; align-items:center; gap:7px}
+.quiz-q{font-weight:600; font-size:16px; color:var(--ink); margin-bottom:16px; font-family:'Fraunces',serif}
+.quiz-opts{display:flex; flex-direction:column; gap:9px}
+.quiz-opt{display:flex; align-items:center; gap:12px; padding:12px 15px; background:var(--blanc); border:1.5px solid var(--line); border-radius:10px; cursor:pointer; transition:all .15s; font-size:14.5px; user-select:none}
+.quiz-opt:hover:not(.locked){border-color:var(--plum); transform:translateX(3px)}
+.quiz-opt .letter{flex-shrink:0; width:24px;height:24px; border-radius:6px; border:1.5px solid var(--line2); display:flex; align-items:center; justify-content:center; font-family:'DM Mono',monospace; font-size:12px; font-weight:500; color:var(--muted)}
+.quiz-opt.correct{background:var(--ok-l); border-color:var(--ok); color:var(--ok)}
+.quiz-opt.correct .letter{background:var(--ok); color:var(--blanc); border-color:var(--ok)}
+.quiz-opt.wrong{background:var(--err-l); border-color:var(--err); color:var(--err)}
+.quiz-opt.wrong .letter{background:var(--err); color:var(--blanc); border-color:var(--err)}
+.quiz-opt.reveal{background:var(--ok-l); border-color:var(--ok); color:var(--ok)}
+.quiz-fb{margin-top:14px; padding:14px 16px; border-radius:10px; font-size:14px; line-height:1.6; display:none}
+.quiz-fb.show{display:block; animation:fade .3s}
+.quiz-fb.ok{background:var(--ok-l); color:var(--teal-d); border:1px solid var(--teal-clair)}
+.quiz-fb.no{background:var(--err-l); color:var(--rust); border:1px solid var(--rust-clair)}
+.quiz-fb b{font-family:'Fraunces',serif}
+.quiz-fb code{background:color-mix(in srgb, var(--nuit) 6%, transparent); padding:2px 6px; border-radius:4px; font-family:'DM Mono',monospace; font-size:12.5px}
+
+/* ── NAV BUTTONS ── */
+.lesson-nav{display:flex; justify-content:space-between; gap:14px; margin-top:46px; padding-top:26px; border-top:1px solid var(--line)}
+.nav-btn{padding:13px 26px; border-radius:12px; font-family:'DM Sans',sans-serif; font-weight:600; font-size:14px; cursor:pointer; border:1.5px solid var(--line2); background:var(--blanc); color:var(--ink2); transition:all .15s; display:flex; align-items:center; gap:8px}
+.nav-btn:hover{border-color:var(--teal); color:var(--teal-d)}
+.nav-btn.primary{background:var(--teal); color:var(--blanc); border-color:var(--teal)}
+.nav-btn.primary:hover{background:var(--teal-d); transform:translateY(-2px); box-shadow:var(--shadow)}
+.nav-btn:disabled{opacity:.4; cursor:not-allowed}
+
+/* ── TEST (FINAL) & FORMULAIRE ── */
+.test-intro{text-align:center; padding:20px 0}
+.test-intro .big-emoji{font-size:60px; margin-bottom:12px}
+.test-card{background:var(--blanc); border:1.5px solid var(--line2); border-radius:18px; padding:28px; box-shadow:var(--shadow-lg); margin:24px 0; position:relative;}
+
+/* Bouton Info (i) */
+.info-btn {
+  position: absolute; top: 18px; right: 18px;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--navy-l); color: var(--navy);
+  font-family: 'Fraunces', serif; font-weight: 700; font-size: 18px; font-style: italic;
+  border: 1.5px solid var(--navy); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s; z-index: 10;
+}
+.info-btn:hover {
+  background: var(--navy); color: var(--blanc); transform: scale(1.05);
+}
+
+/* Panneau Formulaire */
+.formulaire-panel {
+  display: none; background: var(--paper); border: 1.5px solid var(--line2);
+  border-radius: 12px; padding: 20px; margin-top: 24px;
+  box-shadow: var(--shadow);
+}
+.formulaire-panel.show { display: block; animation: fade 0.3s; }
+.formulaire-title {
+  font-family: 'Fraunces', serif; font-weight: 700; color: var(--navy);
+  font-size: 1.1rem; margin-bottom: 14px; border-bottom: 1px solid var(--line);
+  padding-bottom: 8px;
+}
+.eq-item {
+  padding: 12px 16px; border-radius: 8px; margin-bottom: 10px;
+  transition: all 0.3s ease; border: 1.5px solid transparent; background: var(--blanc);
+}
+.eq-item .eq-name {
+  font-size: 12px; color: var(--muted); font-family: 'DM Mono', monospace;
+  text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;
+}
+.eq-item.highlight {
+  background: var(--ok-l); border-color: var(--ok);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--teal) 15%, transparent); transform: translateX(4px);
+}
+
+/* Bouton Aide (💡) */
+.help-btn {
+  background: transparent; border: 1.5px dashed var(--line2); color: var(--ink2);
+  padding: 10px 16px; border-radius: 10px; font-family: 'DM Sans', sans-serif;
+  font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.2s;
+  margin-top: 14px; display: inline-flex; align-items: center; gap: 8px; width: 100%;
+  justify-content: center;
+}
+.help-btn:hover {
+  border-color: var(--ok); color: var(--ok); background: var(--ok-l);
+}
+
+.test-meta{display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin:18px 0}
+.test-meta .chip{background:var(--paper2); border:1px solid var(--line2); padding:7px 14px; border-radius:20px; font-size:13px; color:var(--ink2); display:flex; align-items:center; gap:6px}
+.test-progress{margin-bottom:24px}
+.test-progress-bar{height:8px; background:var(--line); border-radius:8px; overflow:hidden}
+.test-progress-fill{height:100%; background:linear-gradient(90deg,var(--plum),var(--teal)); transition:width .4s; border-radius:8px}
+.test-progress-txt{font-size:12px; color:var(--muted); margin-top:6px; font-family:'DM Mono',monospace; text-align:center}
+.q-counter{font-family:'DM Mono',monospace; font-size:12px; color:var(--plum); letter-spacing:1px; margin-bottom:8px}
+.q-chapter-tag{font-size:11px; color:var(--muted); margin-bottom:14px}
+.test-q-text{font-family:'Fraunces',serif; font-weight:600; font-size:1.25rem; color:var(--ink); margin-bottom:6px; line-height:1.3}
+.test-data{background:var(--paper2); border-radius:8px; padding:10px 14px; font-family:'DM Mono',monospace; font-size:13px; color:var(--ink2); margin:14px 0; line-height:1.8}
+.test-data b{color:var(--gold)}
+.test-input-row{display:flex; gap:10px; align-items:center; margin-top:10px}
+.test-input{flex:1; max-width:240px; background:var(--blanc); border:1.5px solid var(--line2); border-radius:10px; padding:12px 15px; font-family:'DM Mono',monospace; font-size:15px; color:var(--ink); outline:none}
+.test-input:focus{border-color:var(--plum)}
+.test-unit{font-family:'DM Mono',monospace; color:var(--muted); font-size:14px}
+.test-submit{margin-top:20px; width:100%; padding:14px; background:var(--plum); color:var(--blanc); border:none; border-radius:12px; font-family:'DM Sans',sans-serif; font-weight:700; font-size:15px; cursor:pointer; transition:all .15s}
+.test-submit:hover{background:var(--plum-deep); transform:translateY(-1px)}
+.test-submit:disabled{opacity:.4; cursor:not-allowed; transform:none}
+
+/* remediation banner */
+.remed{background:var(--amber-l); border:1.5px solid var(--amber-clair); border-radius:14px; padding:18px 20px; margin:18px 0; display:none; animation:fade .4s}
+.remed.show{display:block}
+.remed-title{font-family:'Fraunces',serif; font-weight:700; color:var(--amber); font-size:16px; margin-bottom:8px; display:flex; align-items:center; gap:8px}
+.remed p{font-size:14px; color:var(--ink2); margin-bottom:12px}
+.remed-btn{padding:9px 18px; background:var(--amber); color:var(--blanc); border:none; border-radius:9px; font-weight:600; font-size:13px; cursor:pointer; transition:all .15s}
+.remed-btn:hover{background:var(--amber)}
+.remed-cont{padding:9px 18px; background:transparent; color:var(--ink2); border:1.5px solid var(--line2); border-radius:9px; font-weight:600; font-size:13px; cursor:pointer; margin-left:8px}
+
+/* result screen */
+.result-screen{text-align:center; display:none}
+.result-screen.show{display:block; animation:fade .5s}
+.result-emoji{font-size:72px; margin-bottom:8px}
+.result-score{font-family:'Fraunces',serif; font-weight:900; font-size:3.5rem; color:var(--teal-d); line-height:1}
+.result-score span{font-size:1.4rem; color:var(--muted)}
+.result-title{font-family:'Fraunces',serif; font-weight:700; font-size:1.6rem; margin:12px 0 8px}
+.result-msg{color:var(--ink2); font-size:15px; max-width:480px; margin:0 auto 24px}
+.result-breakdown{background:var(--blanc); border:1px solid var(--line); border-radius:14px; padding:20px; margin:24px 0; text-align:left; box-shadow:var(--shadow)}
+.result-breakdown h3{font-family:'Fraunces',serif; font-size:15px; margin-bottom:14px; color:var(--ink)}
+.bd-row{display:flex; align-items:center; gap:12px; padding:9px 0; border-bottom:1px solid var(--line)}
+.bd-row:last-child{border-bottom:none}
+.bd-name{flex:1; font-size:14px}
+.bd-bar{width:120px; height:7px; background:var(--line); border-radius:5px; overflow:hidden}
+.bd-bar-fill{height:100%; border-radius:5px}
+.bd-score{font-family:'DM Mono',monospace; font-size:13px; font-weight:500; width:42px; text-align:right}
+
+.hidden{display:none!important}
+
+/* ── ANNALES ── */
+.annale-ex{background:var(--blanc); border:1px solid var(--line); border-radius:14px; margin:20px 0; overflow:hidden; box-shadow:var(--shadow)}
+.annale-ex-head{background:var(--navy); color:var(--paper); padding:13px 18px; font-weight:600; font-size:14px; display:flex; justify-content:space-between; align-items:center; gap:10px}
+.annale-ex-head span{background:color-mix(in srgb, var(--blanc) 18%, transparent); padding:3px 10px; border-radius:20px; font-size:11px; font-family:'DM Mono',monospace; white-space:nowrap}
+.annale-ex-body{padding:18px}
+.annale-enonce{background:var(--navy-l); border-radius:10px; padding:14px 16px; font-size:14px; color:var(--ink2); margin-bottom:14px; line-height:1.7}
+.annale-enonce b{color:var(--navy)}
+.reveal-corr{background:var(--teal); color:var(--blanc); border:none; border-radius:9px; padding:10px 18px; font-family:'DM Sans',sans-serif; font-weight:600; font-size:13px; cursor:pointer; transition:all .15s}
+.reveal-corr:hover{background:var(--teal-d)}
+.corr{display:none; margin-top:16px; padding-top:16px; border-top:1px dashed var(--line2); animation:fade .3s}
+.corr.show{display:block}
+.amort-table{width:100%; border-collapse:collapse; margin:10px 0; font-family:'DM Mono',monospace; font-size:12.5px; background:var(--blanc)}
+.amort-table th{background:var(--navy); color:var(--paper); padding:8px 10px; text-align:center; font-weight:500; font-size:11.5px}
+.amort-table td{padding:7px 10px; text-align:center; border:1px solid var(--line); color:var(--ink2)}
+.amort-table tr:nth-child(even) td{background:var(--paper2)}
+
+/* mobile */
+@media(max-width:880px){
+  #sidebar{display:none}
+  #content{padding:24px 18px 100px}
+  .lesson h1{font-size:1.8rem}
+}
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--line2); border-radius:4px}
+</style>
+<link rel="stylesheet" href="../ui.css">
+<link rel="stylesheet" href="../theme.css">
+<link rel="stylesheet" href="../licence.css">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#ECEEF6">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/favicon-32.png">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+</head>
+<body>
+
+<div id="topbar">
+  <div class="logo">Maths<span>Fi</span> · Parcours</div>
+  <div class="top-progress">
+    <div class="top-progress-bar"><div class="top-progress-fill" id="topfill"></div></div>
+    <div class="top-progress-txt" id="toptxt">Leçon 1 sur 8</div>
+  </div>
+  <div class="top-xp" id="xp">✦ 0 XP</div>
+</div>
+
+<div id="shell">
+  <aside id="sidebar">
+    <div class="side-title">Parcours</div>
+    <div id="side-nav"></div>
+  </aside>
+
+  <main id="content"></main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+<script>
+// ════════════════════════════════════════════════════════════════════════
+// CONTENU DU PARCOURS
+// ════════════════════════════════════════════════════════════════════════
+const LESSONS = [
+{
+  id:'intro', tag:'Démarrage', icon:'0',
+  title:"La grande idée des maths financières",
+  sub:"Avant les formules : pourquoi l'argent change de valeur dans le temps.",
+  html:`
+    <p>Tu as des bases mais ça reste flou ? Normal. Le problème, ce n'est presque jamais les formules — elles sont données au partiel. Le problème, c'est de <strong>savoir laquelle utiliser et pourquoi</strong>. Ce parcours va régler ça.</p>
+
+    <div class="callout analogy">
+      <div class="c-label">🍕 Analogie</div>
+      <p>Imagine que je te propose : « 100 € aujourd'hui, ou 100 € dans un an ». Tu prends lesquels ? <strong>Aujourd'hui</strong>, évidemment. Parce que ces 100 €, tu peux les placer et en avoir 104 dans un an. <em>L'argent a une valeur dans le temps</em> — c'est TOUTE la matière qui découle de là.</p>
+    </div>
+
+    <h2>Les deux mouvements fondamentaux</h2>
+    <p>Tout ce que tu feras consiste à déplacer de l'argent sur une frise temporelle, dans un sens ou dans l'autre :</p>
+
+    <div class="frise">
+      <div class="frise-cap">Une somme voyage dans le temps</div>
+      <div class="frise-line" style="margin-top:50px;margin-bottom:50px">
+        <div class="frise-pt" style="left:8%"><div class="tick"></div><div class="lbl">aujourd'hui (0)</div><div class="val" style="color:var(--teal-d)">100 €</div></div>
+        <div class="frise-pt" style="left:92%"><div class="tick"></div><div class="lbl">dans n ans</div><div class="val" style="color:var(--amber)">104 €</div></div>
+        <div class="frise-arrow" style="left:38%; color:var(--amber)">→ CAPITALISER →</div>
+        <div class="frise-arrow" style="left:38%; top:auto; bottom:-26px; color:var(--teal-d)">← ACTUALISER ←</div>
+      </div>
+      <div class="frise-cap-bottom"><strong>Capitaliser</strong> = avancer dans le futur (×). &nbsp; <strong>Actualiser</strong> = revenir au présent (÷).</div>
+    </div>
+
+    <table class="cmp-table">
+      <tr><th>Opération</th><th>Sens</th><th>Question typique</th></tr>
+      <tr><td class="hl-amber">Capitaliser</td><td>Présent → Futur</td><td>« Ce placement vaudra combien dans n ans ? »</td></tr>
+      <tr><td class="hl-teal">Actualiser</td><td>Futur → Présent</td><td>« Combien placer aujourd'hui pour avoir X plus tard ? »</td></tr>
+    </table>
+
+    <div class="callout key">
+      <div class="c-label">🔑 À retenir</div>
+      <p>Avant CHAQUE exercice, pose-toi une seule question : <strong>est-ce que je vais vers le futur (capitaliser, ×) ou vers le présent (actualiser, ÷) ?</strong> Si tu sais ça, tu sais déjà quelle famille de formule utiliser.</p>
+    </div>
+
+    <h2>Le réflexe qui sauve : la frise</h2>
+    <p>90 % des erreurs viennent d'un flux mal placé ou d'une période mal comptée. Le remède est gratuit : <strong>dessine une frise</strong>. Place le 0 à gauche, marque chaque versement (flèche), repère la date que l'énoncé te demande. Ça paraît bête, mais c'est ce qui distingue une copie à 8 d'une copie à 15.</p>
+
+    <div class="quiz" data-quiz="q-intro-1">
+      <div class="quiz-tag">⚡ Vérifie ta compréhension</div>
+      <div class="quiz-q">Une banque te dit : « ce capital vaudra 5 200 € dans 3 ans ». Tu veux savoir combien il vaut aujourd'hui. Quelle opération fais-tu ?</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt" data-correct="false"><span class="letter">A</span> Je capitalise (je vais vers le futur)</div>
+        <div class="quiz-opt" data-correct="true"><span class="letter">B</span> J'actualise (je reviens au présent)</div>
+        <div class="quiz-opt" data-correct="false"><span class="letter">C</span> Je calcule un intérêt simple</div>
+      </div>
+      <div class="quiz-fb"></div>
+    </div>
+  `
+},
+
+{
+  id:'is-ic', tag:'Chapitre 1', icon:'1',
+  title:"Intérêt simple ou composé ?",
+  sub:"La première décision à prendre — et comment ne jamais se tromper.",
+  html:`
+    <p>Quand on place de l'argent, il produit des <em>intérêts</em>. Mais il y a deux façons de les calculer, et choisir la bonne est la première chose à faire.</p>
+
+    <div class="callout analogy">
+      <div class="c-label">🌱 Analogie</div>
+      <p><strong>Intérêt simple</strong> = un arbre qui donne 10 fruits par an, toujours 10, peu importe sa taille. <strong>Intérêt composé</strong> = un arbre dont chaque fruit tombé devient un nouvel arbre. La 2ᵉ année, tu as plus d'arbres, donc plus de fruits. C'est l'<em>effet boule de neige</em>.</p>
+    </div>
+
+    <h2>Intérêt simple : on calcule toujours sur le capital de départ</h2>
+    <p>Les intérêts ne se cumulent jamais sur eux-mêmes. On calcule toujours sur le capital initial $C_0$.</p>
+
+    <div class="formula">
+      <div class="formula-head">Intérêt simple</div>
+      <div class="formula-body">
+        <div class="formula-desc">Le montant total des intérêts $I$ s'obtient avec la formule :</div>
+        $$ I = C_0 \\times t \\times n $$
+        <div class="formula-note">
+          <ul>
+            <li><b>$I$</b> : Montant total des intérêts générés</li>
+            <li><b>$C_0$</b> : Capital de départ (somme placée initialement)</li>
+            <li><b>$t$</b> : Taux d'intérêt (en décimal, ex: 0,05 pour 5 %)</li>
+            <li><b>$n$</b> : Durée du placement (dans la même unité temporelle que le taux)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-head">📝 Exemple — 1 500 € placés 1 an à 6 %</div>
+      <div class="example-body">
+        <div class="example-data"><b>C₀</b> = 1 500 € &nbsp;|&nbsp; <b>t</b> = 6 % = 0,06 &nbsp;|&nbsp; <b>n</b> = 1 an</div>
+        <div class="step"><div class="step-n">1</div><div class="step-txt">On convertit le taux : 6 % → <code>0,06</code></div></div>
+        <div class="step"><div class="step-n">2</div><div class="step-txt">On applique : <code>I = 1500 × 0,06 × 1</code></div></div>
+        <div class="result-line">I = 90 € → le capital vaut C₁ = 1 500 + 90 = 1 590 €</div>
+      </div>
+    </div>
+
+    <h2>Intérêt composé : les intérêts produisent des intérêts</h2>
+    <p>Chaque fin de période, les intérêts s'ajoutent au capital et produisent à leur tour des intérêts. C'est la formule la plus utilisée dès qu'on dépasse un an.</p>
+
+    <div class="formula">
+      <div class="formula-head">Intérêt composé · Valeur acquise</div>
+      <div class="formula-body">
+        <div class="formula-desc">La valeur acquise $C_n$ au bout de $n$ périodes est :</div>
+        $$ C_n = C_0 \\times (1 + t)^n $$
+        <div class="formula-note">
+          <ul>
+            <li><b>$C_n$</b> : Valeur acquise (le capital final, intérêts compris)</li>
+            <li><b>$C_0$</b> : Capital de départ (somme placée initialement)</li>
+            <li><b>$t$</b> : Taux d'intérêt par période</li>
+            <li><b>$n$</b> : Nombre total de périodes de placement</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-head">📝 Exemple — 10 000 € pendant 5 ans à 4 %</div>
+      <div class="example-body">
+        <div class="example-data"><b>C₀</b> = 10 000 € &nbsp;|&nbsp; <b>t</b> = 4 % = 0,04 &nbsp;|&nbsp; <b>n</b> = 5 ans</div>
+        <div class="step"><div class="step-n">1</div><div class="step-txt">Calcule <code>(1,04)⁵</code> = 1,21665</div></div>
+        <div class="step"><div class="step-n">2</div><div class="step-txt">Multiplie par C₀ : <code>10 000 × 1,21665</code></div></div>
+        <div class="result-line">C₅ = 12 166,53 € → soit 2 166,53 € d'intérêts</div>
+      </div>
+    </div>
+
+    <h2>Comment choisir ?</h2>
+    <table class="cmp-table">
+      <tr><th>Situation</th><th>Méthode</th></tr>
+      <tr><td>L'énoncé dit « intérêts simples »</td><td class="hl-teal">Simple</td></tr>
+      <tr><td>L'énoncé dit « intérêts composés »</td><td class="hl-teal">Composé</td></tr>
+      <tr><td>Rien précisé, durée &lt; 1 an</td><td class="hl-teal">Simple (convention)</td></tr>
+      <tr><td>Rien précisé, durée &gt; 1 an</td><td class="hl-teal">Composé</td></tr>
+      <tr><td>Durée = exactement 1 an</td><td>Les deux donnent le même résultat !</td></tr>
+    </table>
+
+    <div class="quiz" data-quiz="q-isic-1">
+      <div class="quiz-tag">⚡ Vérifie ta compréhension</div>
+      <div class="quiz-q">Un capital placé 5 ans à intérêts composés à 4 %. Comparé à l'intérêt simple sur la même durée, le résultat est…</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt" data-correct="true"><span class="letter">A</span> Plus élevé (les intérêts produisent des intérêts)</div>
+        <div class="quiz-opt" data-correct="false"><span class="letter">B</span> Plus faible</div>
+        <div class="quiz-opt" data-correct="false"><span class="letter">C</span> Identique, toujours</div>
+      </div>
+      <div class="quiz-fb"></div>
+    </div>
+  `
+},
+
+{
+  id:'actu', tag:'Chapitre 1', icon:'2',
+  title:"Actualiser : retrouver la valeur d'aujourd'hui",
+  sub:"L'opération inverse de la capitalisation — la plus utile en banque.",
+  html:`
+    <p>Capitaliser, c'est multiplier pour aller vers le futur. <strong>Actualiser</strong>, c'est l'inverse : diviser pour revenir au présent. C'est l'outil qui permet de comparer des sommes à des dates différentes.</p>
+
+    <div class="callout analogy">
+      <div class="c-label">⏪ Analogie</div>
+      <p>C'est comme rembobiner un film. Tu sais que le capital vaudra 20 000 € dans 5 ans. Tu veux savoir combien il faut <em>poser sur la table aujourd'hui</em>. Tu rembobines en divisant par $(1+t)^5$.</p>
+    </div>
+
+    <div class="formula">
+      <div class="formula-head">Actualisation · Intérêts composés</div>
+      <div class="formula-body">
+        <div class="formula-desc">Pour retrouver le capital de départ $C_0$ :</div>
+        $$ C_0 = C_n \\times (1 + t)^{-n} $$
+        <div class="formula-note">
+          <ul>
+            <li><b>$C_0$</b> : Valeur actuelle (ce que vaut la somme aujourd'hui)</li>
+            <li><b>$C_n$</b> : Valeur future (la somme qui sera obtenue dans $n$ périodes)</li>
+            <li><b>$t$</b> : Taux d'intérêt de l'actualisation</li>
+            <li><b>$n$</b> : Nombre de périodes à "rembobiner" (exposant négatif = on divise)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-head">📝 Exemple — combien placer pour avoir 20 000 € dans 5 ans à 4 % ?</div>
+      <div class="example-body">
+        <div class="example-data"><b>Cₙ</b> = 20 000 € &nbsp;|&nbsp; <b>t</b> = 4 % &nbsp;|&nbsp; <b>n</b> = 5 ans &nbsp;|&nbsp; on cherche <b>C₀</b></div>
+        <div class="step"><div class="step-n">1</div><div class="step-txt">Calcule <code>(1,04)⁵ = 1,21665</code></div></div>
+        <div class="step"><div class="step-n">2</div><div class="step-txt">Divise : <code>20 000 / 1,21665</code> (ou × 1,04⁻⁵)</div></div>
+        <div class="result-line">C₀ = 16 438,54 € à placer aujourd'hui</div>
+      </div>
+    </div>
+
+    <div class="frise">
+      <div class="frise-cap">Le même montant, vu à deux dates</div>
+      <div class="frise-line">
+        <div class="frise-pt" style="left:8%"><div class="tick"></div><div class="lbl">aujourd'hui</div><div class="val" style="color:var(--teal-d)">16 438 €</div></div>
+        <div class="frise-pt" style="left:92%"><div class="tick"></div><div class="lbl">dans 5 ans</div><div class="val" style="color:var(--amber)">20 000 €</div></div>
+        <div class="frise-arrow" style="left:36%; top:-24px; color:var(--teal-d)">÷ 1,04⁵ ← actualiser</div>
+      </div>
+      <div class="frise-cap-bottom">16 438 € aujourd'hui et 20 000 € dans 5 ans, c'est <em>exactement la même valeur</em> à 4 %.</div>
+    </div>
+
+    <div class="quiz" data-quiz="q-actu-1">
+      <div class="quiz-tag">⚡ Vérifie ta compréhension</div>
+      <div class="quiz-q">Pour actualiser une somme future à intérêts composés, qu'est-ce qu'on fait mathématiquement ?</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt" data-correct="false"><span class="letter">A</span> On multiplie par (1+t)ⁿ</div>
+        <div class="quiz-opt" data-correct="true"><span class="letter">B</span> On multiplie par (1+t)⁻ⁿ (donc on divise)</div>
+        <div class="quiz-opt" data-correct="false"><span class="letter">C</span> On soustrait les intérêts</div>
+      </div>
+      <div class="quiz-fb"></div>
+    </div>
+  `
+},
+
+{
+  id:'taux', tag:'Chapitre 1', icon:'3',
+  title:"Taux équivalent vs proportionnel",
+  sub:"LE piège n°1 du partiel. À comprendre une fois pour toutes.",
+  html:`
+    <p>Quand un taux est annuel mais que les versements sont mensuels (ou trimestriels), il faut <strong>convertir le taux</strong>. Et c'est là que tout le monde se plante. Il existe deux conversions — et choisir la mauvaise fausse tout.</p>
+
+    <div class="callout warn">
+      <div class="c-label">⚠️ Le piège</div>
+      <p>« Taux mensuel d'un taux annuel de 12 % » → beaucoup répondent 12 %/12 = 1 %. <strong>C'est faux en intérêts composés.</strong> La vraie réponse est 0,9489 %. On t'explique pourquoi.</p>
+    </div>
+
+    <h2>Taux proportionnel — réservé aux intérêts simples</h2>
+    <p>On divise bêtement. C'est valable <em>uniquement</em> en intérêts simples.</p>
+    
+    <div class="formula">
+      <div class="formula-head">Taux proportionnel (Intérêts simples)</div>
+      <div class="formula-body">
+        $$ t_p = \\frac{t_{\\text{annuel}}}{p} $$
+        <div class="formula-note">
+          <ul>
+            <li><b>$t_p$</b> : Taux proportionnel de la sous-période (ex: taux mensuel)</li>
+            <li><b>$t_{\text{annuel}}$</b> : Taux annuel de référence</li>
+            <li><b>$p$</b> : Nombre de sous-périodes dans une année (12 mois, 4 trimestres, 2 semestres)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <h2>Taux équivalent — pour les intérêts composés</h2>
+    <p>On prend la racine p-ième. C'est le taux qui, capitalisé p fois, redonne exactement le taux annuel.</p>
+
+    <div class="formula">
+      <div class="formula-head">Taux équivalent (Intérêts composés)</div>
+      <div class="formula-body">
+        $$ t_e = (1 + t_{\\text{annuel}})^{\\frac{1}{p}} - 1 $$
+        <div class="formula-note">
+          <ul>
+            <li><b>$t_e$</b> : Taux équivalent de la sous-période</li>
+            <li><b>$t_{\text{annuel}}$</b> : Taux annuel de référence</li>
+            <li><b>$p$</b> : Nombre de sous-périodes par an</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout analogy">
+      <div class="c-label">🧩 Pourquoi la division ne marche pas en composé</div>
+      <p>Si tu places à 1 %/mois pendant 12 mois en composé : $1,01^{12}$ = <strong>1,1268</strong>, soit 12,68 %/an — pas 12 % ! La division surestime. Le vrai taux mensuel équivalent à 12 % annuel est 0,9489 %, car $1,009489^{12} = 1,12$ pile.</p>
+    </div>
+
+    <div class="example">
+      <div class="example-head">📝 Exemple — taux trimestriel équivalent à 4 %/an</div>
+      <div class="example-body">
+        <div class="example-data"><b>t_annuel</b> = 4 % &nbsp;|&nbsp; <b>p</b> = 4 trimestres &nbsp;|&nbsp; méthode : composé</div>
+        <div class="step"><div class="step-n">1</div><div class="step-txt">Formule : <code>t_trim = 1,04^(1/4) − 1</code></div></div>
+        <div class="step"><div class="step-n">2</div><div class="step-txt">Calculatrice : 1,04 → y<sup>x</sup> → 0,25 → = <code>1,009853</code></div></div>
+        <div class="step"><div class="step-n">3</div><div class="step-txt">Soustrais 1 : <code>1,009853 − 1</code></div></div>
+        <div class="result-line">t_trim = 0,9853 %  (≠ 1 % du proportionnel !)</div>
+      </div>
+    </div>
+
+    <table class="cmp-table">
+      <tr><th></th><th>Proportionnel (IS)</th><th>Équivalent (IC)</th></tr>
+      <tr><td>Mensuel de 12 %/an</td><td class="hl-rust">1,0000 %</td><td class="hl-teal">0,9489 %</td></tr>
+      <tr><td>Trimestriel de 4 %/an</td><td class="hl-rust">1,0000 %</td><td class="hl-teal">0,9853 %</td></tr>
+      <tr><td>Règle</td><td>division</td><td>racine p-ième</td></tr>
+    </table>
+
+    <div class="quiz" data-quiz="q-taux-1">
+      <div class="quiz-tag">⚡ Vérifie ta compréhension</div>
+      <div class="quiz-q">Le taux trimestriel équivalent (intérêts composés) à un taux annuel de 8 % est :</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt" data-correct="false"><span class="letter">A</span> 2,000 % (c'est le proportionnel, pas l'équivalent)</div>
+        <div class="quiz-opt" data-correct="true"><span class="letter">B</span> 1,943 % (= 1,08^(1/4) − 1)</div>
+        <div class="quiz-opt" data-correct="false"><span class="letter">C</span> 2,080 %</div>
+      </div>
+      <div class="quiz-fb"></div>
+    </div>
+  `
+},
+
+{
+  id:'annuites', tag:'Chapitre 2', icon:'4',
+  title:"Les annuités : des flux qui se répètent",
+  sub:"Valeur actuelle ou valeur acquise — savoir reconnaître laquelle.",
+  html:`
+    <p>Une <strong>annuité</strong>, c'est un flux d'argent qui revient régulièrement : un loyer, une mensualité de crédit, une épargne mensuelle. Le mot « annuité » ne veut pas forcément dire « annuel » — ça peut être mensuel, trimestriel, etc.</p>
+
+    <div class="callout analogy">
+      <div class="c-label">💧 Analogie</div>
+      <p>Imagine un robinet qui verse 200 € chaque mois dans un seau. Deux questions possibles : <strong>(1)</strong> combien vaut tout ce que je vais verser, ramené à aujourd'hui ? (valeur actuelle $V_0$) <strong>(2)</strong> combien y aura-t-il dans le seau à la fin ? (valeur acquise $V_n$).</p>
+    </div>
+
+    <h2>Valeur actuelle : « combien ça vaut aujourd'hui »</h2>
+    <p>On ramène tous les flux futurs au présent. Usage typique : <em>combien emprunter</em> si je rembourse $a$ par mois.</p>
+    
+    <div class="formula">
+      <div class="formula-head">Valeur actuelle</div>
+      <div class="formula-body">
+        <div class="formula-desc">La valeur actuelle $V_0$ d'une séquence de $n$ annuités est donc :</div>
+        $$ V_0 = a \\times \\frac{1 - (1+t)^{-n}}{t} $$
+        <div class="formula-note">
+          <ul>
+            <li><b>$V_0$</b> : Valeur actuelle (somme totale équivalente aujourd'hui)</li>
+            <li><b>$a$</b> : Montant de l'annuité (le versement régulier)</li>
+            <li><b>$t$</b> : Taux d'intérêt par période de versement</li>
+            <li><b>$n$</b> : Nombre total de versements</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-head">📝 Exemple — recevoir 1 200 €/mois pendant 24 mois à 1 %/mois</div>
+      <div class="example-body">
+        <div class="example-data"><b>a</b> = 1 200 € &nbsp;|&nbsp; <b>t</b> = 1 %/mois &nbsp;|&nbsp; <b>n</b> = 24 mois</div>
+        <div class="step"><div class="step-n">1</div><div class="step-txt">Vérifie : taux mensuel + versements mensuels ✓ (même périodicité)</div></div>
+        <div class="step"><div class="step-n">2</div><div class="step-txt"><code>(1,01)⁻²⁴ = 0,787566</code></div></div>
+        <div class="step"><div class="step-n">3</div><div class="step-txt"><code>[1 − 0,787566] / 0,01 = 21,2434</code></div></div>
+        <div class="step"><div class="step-n">4</div><div class="step-txt"><code>1 200 × 21,2434</code></div></div>
+        <div class="result-line">V₀ = 25 492,06 € à placer aujourd'hui</div>
+      </div>
+    </div>
+
+    <h2>Valeur acquise : « combien à la fin »</h2>
+    <p>On projette tous les flux vers le futur. Usage typique : <em>quel capital</em> en épargnant $a$ par période.</p>
+    
+    <div class="formula">
+      <div class="formula-head">Valeur acquise</div>
+      <div class="formula-body">
+        <div class="formula-desc">La valeur acquise $V_n$ d'une séquence de $n$ annuités est donc :</div>
+        $$ V_n = a \\times \\frac{(1+t)^n - 1}{t} $$
+        <div class="formula-note">
+          <ul>
+            <li><b>$V_n$</b> : Valeur acquise (capital total constitué au terme)</li>
+            <li><b>$a$</b> : Montant du versement périodique régulier</li>
+            <li><b>$t$</b> : Taux d'intérêt par période de versement</li>
+            <li><b>$n$</b> : Nombre total de versements</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout warn">
+      <div class="c-label">⚠️ Piège fréquent</div>
+      <p>$V_n$ donne la valeur <strong>à la date du dernier versement</strong>. Si l'énoncé demande le capital <em>un an plus tard</em>, il faut multiplier par $(1+t)$.</p>
+    </div>
+
+    <div class="quiz" data-quiz="q-ann-1">
+      <div class="quiz-tag">⚡ Reconnaître la bonne formule</div>
+      <div class="quiz-q">« Combien dois-je placer aujourd'hui pour recevoir 1 200 €/mois pendant 2 ans ? » C'est un calcul de…</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt" data-correct="true"><span class="letter">A</span> Valeur actuelle V₀ (on ramène au présent)</div>
+        <div class="quiz-opt" data-correct="false"><span class="letter">B</span> Valeur acquise Vₙ (on projette au futur)</div>
+        <div class="quiz-opt" data-correct="false"><span class="letter">C</span> Intérêt simple</div>
+      </div>
+      <div class="quiz-fb"></div>
+    </div>
+  `
+},
+
+{
+  id:'rentes', tag:'Chapitre 2', icon:'5',
+  title:"Rentes perpétuelles et annuités croissantes",
+  sub:"Quand les flux durent à l'infini ou augmentent chaque année.",
+  html:`
+    <p>Deux variantes des annuités tombent souvent au partiel : les flux qui <strong>augmentent</strong> (progression géométrique) et ceux qui durent <strong>à l'infini</strong> (rente perpétuelle).</p>
+
+    <h2>Annuités en progression géométrique</h2>
+    <p>Les versements grossissent d'un facteur $q$ à chaque période (ex : loyer indexé +2 %/an). Le taux de croissance est $g = q - 1$.</p>
+
+    <div class="callout warn">
+      <div class="c-label">⚠️ Raison ≠ taux</div>
+      <p>L'énoncé donne souvent la <strong>raison q</strong> (ex : 1,04). Mais dans les formules, on utilise le <strong>taux g = q − 1</strong> (ici 0,04). Ne confonds jamais les deux.</p>
+    </div>
+
+    <div class="formula">
+      <div class="formula-head">Valeur actuelle · Annuités géométriques</div>
+      <div class="formula-body">
+        $$ V_0 = a_1 \\times \\frac{1 - (1+g)^n(1+t)^{-n}}{t - g} $$
+        <div class="formula-note">
+          <ul>
+            <li><b>$V_0$</b> : Valeur actuelle de la série de versements croissants</li>
+            <li><b>$a_1$</b> : Montant exact du tout premier versement</li>
+            <li><b>$g$</b> : Taux de croissance des versements ($q - 1$)</li>
+            <li><b>$t$</b> : Taux d'intérêt de l'actualisation</li>
+            <li><b>$n$</b> : Nombre de versements (<i>condition : $t \neq g$</i>)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <h2>Rente perpétuelle : l'infini simplifie tout</h2>
+    <p>Quand $n$ tend vers l'infini, le terme $(1+t)^{-n}$ devient nul. Les formules d'annuités s'effondrent en versions ultra-simples.</p>
+
+    <div class="formula">
+      <div class="formula-head">Rente perpétuelle</div>
+      <div class="formula-body">
+        <div class="formula-desc">Rente perpétuelle constante :</div>
+        $$ V_0 = \\frac{a}{t} $$
+        <div class="formula-desc" style="margin-top:20px">Rente perpétuelle géométrique (croissante) :</div>
+        $$ V_0 = \\frac{a_1}{t - g} $$
+        <div class="formula-note">
+          <ul>
+            <li><b>$V_0$</b> : Valeur actuelle (ou valeur de cession) de la rente infinie</li>
+            <li><b>$a$</b> ou <b>$a_1$</b> : Montant du premier flux perpétuel</li>
+            <li><b>$t$</b> : Taux d'actualisation</li>
+            <li><b>$g$</b> : Taux de croissance (<i>condition : $t > g$ obligatoire</i>)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-head">📝 Exemple — Ville de Bellevue (rente perpétuelle géométrique)</div>
+      <div class="example-body">
+        <div class="example-data"><b>a₁</b> = 900 € &nbsp;|&nbsp; <b>q</b> = 1,002 → <b>g</b> = 0,2 % &nbsp;|&nbsp; <b>t</b> = 0,5 %/mois</div>
+        <div class="step"><div class="step-n">1</div><div class="step-txt">Convertis la raison en taux : <code>g = 1,002 − 1 = 0,002</code></div></div>
+        <div class="step"><div class="step-n">2</div><div class="step-txt">Vérifie t &gt; g : <code>0,005 &gt; 0,002</code> ✓</div></div>
+        <div class="step"><div class="step-n">3</div><div class="step-txt"><code>V₀ = 900 / (0,005 − 0,002) = 900 / 0,003</code></div></div>
+        <div class="result-line">V₀ = 300 000 € (valeur de cession)</div>
+      </div>
+    </div>
+
+    <div class="quiz" data-quiz="q-rente-1">
+      <div class="quiz-tag">⚡ Vérifie ta compréhension</div>
+      <div class="quiz-q">Pour une rente perpétuelle géométrique, quelle condition rend la valeur actuelle finie (calculable) ?</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt" data-correct="false"><span class="letter">A</span> t = g</div>
+        <div class="quiz-opt" data-correct="false"><span class="letter">B</span> t &lt; g</div>
+        <div class="quiz-opt" data-correct="true"><span class="letter">C</span> t &gt; g</div>
+      </div>
+      <div class="quiz-fb"></div>
+    </div>
+  `
+},
+
+{
+  id:'emprunts', tag:'Chapitre 3', icon:'6',
+  title:"Les emprunts indivis",
+  sub:"Tableau d'amortissement, 3 modalités de remboursement, TAEG.",
+  html:`
+    <p>Un <strong>emprunt indivis</strong>, c'est un crédit auprès d'un seul prêteur (ta banque). Chaque remboursement (annuité) se découpe en deux : une part d'<em>intérêts</em> et une part de <em>capital remboursé</em> (l'amortissement).</p>
+
+    <div class="callout key">
+      <div class="c-label">🔑 La relation fondamentale</div>
+      <p><strong>Annuité = Amortissement + Intérêts</strong> &nbsp;→&nbsp; $a_k = A_k + I_k$<br>Les intérêts se calculent toujours sur le capital qui reste à rembourser : $I_k = V_{k-1} \\times t$.</p>
+    </div>
+
+    <h2>Les 3 modalités de remboursement</h2>
+
+    <table class="cmp-table">
+      <tr><th>Modalité</th><th>Ce qui est constant</th><th>Coût total en intérêts</th></tr>
+      <tr><td>Annuités constantes</td><td>L'annuité $a_k$</td><td>Intermédiaire</td></tr>
+      <tr><td>Amortissements constants</td><td>L'amortissement $A = V_0/n$</td><td class="hl-teal">Le moins cher ✓</td></tr>
+      <tr><td>In fine</td><td>Les intérêts ($= V_0 \\times t$)</td><td class="hl-rust">Le plus cher ✗</td></tr>
+    </table>
+
+    <div class="formula">
+      <div class="formula-head">Annuité constante (la formule à connaître)</div>
+      <div class="formula-body">
+        $$ a = V_0 \\times \\frac{t}{1 - (1+t)^{-n}} $$
+        <div class="formula-note">
+          <ul>
+            <li><b>$a$</b> : L'annuité (mensualité constante de remboursement)</li>
+            <li><b>$V_0$</b> : Le capital emprunté initialement</li>
+            <li><b>$t$</b> : Taux d'intérêt de l'emprunt par période</li>
+            <li><b>$n$</b> : Nombre total d'échéances de remboursement</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-head">📝 Exemple — emprunt 6 000 €, amortissements constants, 4 ans, 4 %</div>
+      <div class="example-body">
+        <div class="example-data"><b>V₀</b> = 6 000 € &nbsp;|&nbsp; <b>t</b> = 4 % &nbsp;|&nbsp; <b>n</b> = 4 ans</div>
+        <div class="step"><div class="step-n">1</div><div class="step-txt">Amortissement constant : <code>A = 6000/4 = 1 500 €</code></div></div>
+        <div class="step"><div class="step-n">2</div><div class="step-txt">Année 1 : <code>I₁ = 6000 × 0,04 = 240 €</code>, donc <code>a₁ = 1500 + 240 = 1 740 €</code></div></div>
+        <div class="step"><div class="step-n">3</div><div class="step-txt">Capital restant : <code>V₁ = 6000 − 1500 = 4 500 €</code></div></div>
+        <div class="step"><div class="step-n">4</div><div class="step-txt">Année 2 : <code>I₂ = 4500 × 0,04 = 180 €</code> → l'annuité diminue</div></div>
+        <div class="result-line">Les annuités décroissent : 1740 → 1680 → 1620 → 1560 €</div>
+      </div>
+    </div>
+
+    <h2>Le TAEG</h2>
+    <p>Le <strong>TAEG</strong> (Taux Annuel Effectif Global) est l'indicateur légal du <em>vrai</em> coût d'un crédit. Il inclut tout : taux nominal + assurance + frais de dossier. Il est toujours ≥ au taux nominal.</p>
+
+    <div class="quiz" data-quiz="q-emp-1">
+      <div class="quiz-tag">⚡ Le coût des modalités</div>
+      <div class="quiz-q">Quelle modalité coûte le PLUS cher en total d'intérêts payés ?</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt" data-correct="false"><span class="letter">A</span> Amortissements constants</div>
+        <div class="quiz-opt" data-correct="true"><span class="letter">B</span> In fine (le capital n'est jamais amorti avant la fin)</div>
+        <div class="quiz-opt" data-correct="false"><span class="letter">C</span> Annuités constantes</div>
+      </div>
+      <div class="quiz-fb"></div>
+    </div>
+  `
+},
+];
+
+// ════════════════════════════════════════════════════════════════════════
+// TEST FINAL ADAPTATIF — Ajout des identifiants (eqId) pour relier au formulaire
+// ════════════════════════════════════════════════════════════════════════
+const TEST = [
+  { lesson:'is-ic', chap:'Chapitre 1 · Intérêt simple/composé', type:'qcm', eqId:'eq-is',
+    q:"Un capital de 1 500 € placé 9 mois au taux semestriel de 3,6 % en intérêts simples. Que vaut la durée n dans la formule ?",
+    opts:["n = 9 (en mois)","n = 1,5 (en semestres, car le taux est semestriel)","n = 0,75 (en années)","n = 9/12"],
+    correct:1,
+    fb:"Le taux est SEMESTRIEL → n doit être en semestres. 9 mois = 9/6 = 1,5 semestres." },
+
+  { lesson:'taux', chap:'Chapitre 1 · Taux équivalent', type:'qcm', eqId:'eq-tequiv',
+    q:"Le taux mensuel équivalent (intérêts composés) à un taux annuel de 12 % est :",
+    opts:["1,0000 % (= 12/12)","0,9489 % (= 1,12^(1/12) − 1)","1,2000 %","0,1200 %"],
+    correct:1,
+    fb:"En composé, on prend la racine 12-ième : 1,12^(1/12) − 1 = 0,9489 %. La division par 12 ne vaut qu'en IS." },
+
+  { lesson:'actu', chap:'Chapitre 1 · Actualisation', type:'calc', eqId:'eq-actu',
+    q:"Quelle somme placer aujourd'hui à 4 %/an (intérêts composés) pour obtenir 20 000 € dans 5 ans ?",
+    data:"Cₙ = 20 000 € · t = 4 % · n = 5 ans · on cherche C₀",
+    expected:16438.54, tol:5, unit:"€",
+    fb:"16 438,54 € (Actualisation : C₀ = 20 000 × 1,04⁻⁵ = 20 000 / 1,21665)." },
+
+  { lesson:'annuites', chap:'Chapitre 2 · Annuités', type:'qcm', eqId:'eq-v0-ann',
+    q:"« Combien placer aujourd'hui pour recevoir 1 200 €/mois pendant 24 mois ? » correspond à quelle formule ?",
+    opts:["Valeur acquise Vₙ","Valeur actuelle V₀","Intérêt composé simple Cₙ","Rente perpétuelle"],
+    correct:1,
+    fb:"On ramène des flux futurs au présent → c'est une valeur actuelle V₀." },
+
+  { lesson:'annuites', chap:'Chapitre 2 · Annuités', type:'calc', eqId:'eq-vn-ann',
+    q:"Tu épargnes 200 €/mois pendant 3 ans à 0,5 %/mois. Quel capital à la fin ? (valeur acquise)",
+    data:"a = 200 € · t = 0,5 % = 0,005 · n = 36 mois",
+    expected:7867.22, tol:8, unit:"€",
+    fb:"7 867,22 € (Vₙ = 200 × [(1,005)³⁶ − 1]/0,005 = 200 × 39,336)." },
+
+  { lesson:'emprunts', chap:'Chapitre 3 · Emprunts', type:'qcm', eqId:'eq-is',
+    q:"Emprunt in fine de 180 000 € à 10 %/an sur 3 ans. Total des intérêts payés ?",
+    opts:["18 000 €","36 000 €","54 000 € (= 3 × 18 000)","198 000 €"],
+    correct:2,
+    fb:"En in fine, le capital reste à 180 000 €. Intérêts annuels = 18 000 €. Sur 3 ans : 3 × 18 000 = 54 000 €." },
+
+  { lesson:'is-ic', chap:'Chapitre 1 · Intérêt composé', type:'calc', eqId:'eq-ic',
+    q:"Un placement de 2 400 € donne 2 595,84 € en 2 ans (intérêts composés). Quel est le taux annuel en % ? (ex : 4)",
+    data:"(1+t)² = 2595,84 / 2400 = 1,0816 · cherche t en %",
+    expected:4, tol:0.1, unit:"%",
+    fb:"4 % ( (1+t)² = 1,0816 → 1+t = √1,0816 = 1,04 → t = 4 %)." },
+];
+
+// ════════════════════════════════════════════════════════════════════════
+// ANNALES CORRIGÉES
+// ════════════════════════════════════════════════════════════════════════
+const ANNALES = [
+{
+  id:'annale-2022', title:"Session 1 · 2022", points:"20 points · 4 exercices",
+  html:`
+    <div class="callout key"><div class="c-label">📋 Comment l'utiliser</div>
+    <p>Lis l'énoncé, prends ta calculatrice, essaie de résoudre <strong>avant</strong> de cliquer sur « Voir le corrigé ». C'est en bloquant puis en débloquant qu'on apprend vraiment.</p></div>
+
+    <div class="annale-ex">
+      <div class="annale-ex-head">Exercice 1 · Emprunt avec report d'échéance <span>4 pts</span></div>
+      <div class="annale-ex-body">
+        <p class="annale-enonce">Une banque propose le 01/01/N un emprunt de <b>1 200 €</b> remboursable en <b>12 mensualités</b> au taux annuel de <b>5,7881 %</b>. Chaque mensualité est payable en fin de mois.<br>
+        1) Montant de la mensualité constante ? &nbsp; 2) Coût de l'opération ? &nbsp; 3) Avec report : 1ère échéance fin mars. Nouvelle mensualité ?</p>
+        <button class="reveal-corr" onclick="toggleCorr(this)">Voir le corrigé ▾</button>
+        <div class="corr">
+          <div class="step"><div class="step-n">1</div><div class="step-txt"><b>Taux mensuel équivalent :</b> <code>tm = 1,057881^(1/12) − 1 = 0,4700 %</code>. Mensualité : <code>a = 1200 × 0,0047 / [1 − 1,0047⁻¹²]</code> → <b>a = 103,08 €</b></div></div>
+          <div class="step"><div class="step-n">2</div><div class="step-txt"><b>Coût</b> = total remboursé − capital = <code>103,08 × 12 − 1200 = 1236,96 − 1200</code> → <b>36,96 €</b></div></div>
+          <div class="step"><div class="step-n">3</div><div class="step-txt"><b>Report :</b> 1ère échéance fin mars = décalage de 2 mois. On capitalise le capital sur 2 mois : <code>V = 1200 × 1,0047² = 1 211,31 €</code>. Puis nouvelle mensualité : <code>a = 1211,31 × 0,0047/[1−1,0047⁻¹²]</code> → <b>a = 104,05 €</b></div></div>
+          <div class="result-line">a₁ = 103,08 € · coût = 36,96 € · a₃ = 104,05 €</div>
+        </div>
+      </div>
+    </div>
+  `
+},
+{
+  id:'annale-s1-2425', title:"Session 1 · 2024-2025", points:"20 points · 3 exercices",
+  html:`
+    <div class="annale-ex">
+      <div class="annale-ex-head">Exercice 1 · Alpha — placements, capital, rentes <span>8 pts</span></div>
+      <div class="annale-ex-body">
+        <p class="annale-enonce">Alpha place <b>5 000 €</b> à intérêts simples au taux <b>3,6 %</b>.<br>
+        1) Valeur acquise au bout de 4 mois ? &nbsp; 2) Nb de jours pour atteindre 5 139,5 € ? (conv. 360/360)<br>
+        Puis 5 000 € à intérêts composés à <b>3,25 %/an</b> : 3) Valeur acquise à 4 ans ? &nbsp; 4) Au taux semestriel 1,62 %, plus ou moins intéressant ?</p>
+        <button class="reveal-corr" onclick="toggleCorr(this)">Voir le corrigé ▾</button>
+        <div class="corr">
+          <div class="step"><div class="step-n">1</div><div class="step-txt">IS, n = 4/12 an : <code>I = 5000 × 0,036 × 4/12 = 60 €</code> → <b>Cn = 5 060 €</b></div></div>
+          <div class="step"><div class="step-n">2</div><div class="step-txt">Cn = C0(1+t·n) → <code>n = (5139,5/5000 − 1)/0,036 = 0,775 an = 279 jours</code></div></div>
+          <div class="step"><div class="step-n">3</div><div class="step-txt">IC 4 ans : <code>5000 × 1,0325⁴</code> → <b>5 682,38 €</b></div></div>
+          <div class="step"><div class="step-n">4</div><div class="step-txt">Taux annuel équivalent au semestriel 1,62 % : <code>1,0162² − 1 = 3,2662 %</code> &gt; 3,25 % → <b>légèrement PLUS intéressant</b></div></div>
+        </div>
+      </div>
+    </div>
+  `
+}
+];
+
+// ════════════════════════════════════════════════════════════════════════
+// MOTEUR
+// ════════════════════════════════════════════════════════════════════════
+const state = {
+  current: 0,
+  lessonsDone: new Set(),
+  quizDone: {},
+  xp: 0,
+  testIdx: 0,
+  testScore: 0,
+  testAnswered: [],
+};
+
+const TOTAL_STEPS = LESSONS.length + 2;
+
+function renderSidebar(){
+  const nav = document.getElementById('side-nav');
+  let html = '';
+  LESSONS.forEach((l, i)=>{
+    const done = state.lessonsDone.has(i) ? 'done' : '';
+    const active = (state.current === i) ? 'active' : '';
+    html += `<div class="side-item ${done} ${active}" onclick="goTo(${i})">
+      <div class="dot"><span class="num">${l.icon}</span></div>
+      <div>${l.title}</div></div>`;
+  });
+  html += `<div class="side-sep"></div>`;
+  const tActive = (state.current === LESSONS.length) ? 'active' : '';
+  html += `<div class="side-item ${tActive}" onclick="goTo(${LESSONS.length})">
+    <div class="dot"><span class="num">★</span></div>
+    <div>Test final adaptatif</div></div>`;
+  const aActive = (state.current === LESSONS.length+1) ? 'active' : '';
+  html += `<div class="side-item ${aActive}" onclick="goTo(${LESSONS.length+1})">
+    <div class="dot"><span class="num">📂</span></div>
+    <div>Annales corrigées</div></div>`;
+  nav.innerHTML = html;
+}
+
+function updateTop(){
+  const pct = Math.round((state.current) / TOTAL_STEPS * 100);
+  document.getElementById('topfill').style.width = pct + '%';
+  if(state.current < LESSONS.length){
+    document.getElementById('toptxt').textContent = `Leçon ${state.current+1} sur ${LESSONS.length}`;
+  } else if(state.current === LESSONS.length){
+    document.getElementById('toptxt').textContent = `Test final`;
+  } else {
+    document.getElementById('toptxt').textContent = `Annales corrigées`;
+  }
+  document.getElementById('xp').textContent = `✦ ${state.xp} XP`;
+}
+
+function renderLesson(i){
+  const l = LESSONS[i];
+  const content = document.getElementById('content');
+  const prevBtn = i > 0
+    ? `<button class="nav-btn" onclick="goTo(${i-1})">← Précédent</button>`
+    : `<span></span>`;
+  const nextLabel = (i === LESSONS.length-1) ? 'Passer au test final ★' : 'Leçon suivante →';
+  const nextTarget = i+1;
+  content.innerHTML = `
+    <div class="lesson active">
+      <div class="lesson-tag">${l.tag}</div>
+      <h1>${l.title}</h1>
+      <div class="lesson-sub">${l.sub}</div>
+      ${l.html}
+      <div class="lesson-nav">
+        ${prevBtn}
+        <button class="nav-btn primary" onclick="completeLesson(${i}, ${nextTarget})">${nextLabel}</button>
+      </div>
+    </div>`;
+    
+  bindQuizzes();
+  renderMath();
+  window.scrollTo({top:0});
+}
+
+function renderMath() {
+  if (window.renderMathInElement) {
+    renderMathInElement(document.getElementById('content'), {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "$", right: "$", display: false}
+      ],
+      throwOnError: false
+    });
+  }
+}
+
+function bindQuizzes(){
+  document.querySelectorAll('.quiz').forEach(qz=>{
+    const qid = qz.dataset.quiz;
+    qz.querySelectorAll('.quiz-opt').forEach(opt=>{
+      opt.addEventListener('click', ()=>{
+        if(qz.dataset.locked) return;
+        qz.dataset.locked = '1';
+        const isCorrect = opt.dataset.correct === 'true';
+        qz.querySelectorAll('.quiz-opt').forEach(o=>{
+          o.classList.add('locked');
+          if(o.dataset.correct === 'true' && !isCorrect) o.classList.add('reveal');
+        });
+        opt.classList.add(isCorrect ? 'correct' : 'wrong');
+        const fb = qz.querySelector('.quiz-fb');
+        fb.classList.add('show', isCorrect ? 'ok' : 'no');
+        if(isCorrect){
+          fb.innerHTML = `<b>✅ Exact !</b> Bien vu.`;
+          if(!state.quizDone[qid]){ state.xp += 10; state.quizDone[qid]=true; updateTop(); }
+        } else {
+          fb.innerHTML = `<b>❌ Pas tout à fait.</b> Relis l'explication juste au-dessus.`;
+        }
+      });
+    });
+  });
+}
+
+function completeLesson(i, next){
+  if(!state.lessonsDone.has(i)){
+    state.lessonsDone.add(i);
+    state.xp += 25;
+  }
+  goTo(next);
+}
+
+function goTo(i){
+  state.current = i;
+  if(i < LESSONS.length){
+    renderLesson(i);
+  } else if(i === LESSONS.length){
+    renderTestIntro();
+  } else {
+    renderAnnales();
+  }
+  renderSidebar();
+  updateTop();
+}
+
+function renderAnnales(){
+  const content = document.getElementById('content');
+  let exos = ANNALES.map(a=>`
+    <div style="margin-bottom:34px">
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:14px">
+        <h2 style="margin:0">${a.title}</h2>
+        <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted)">${a.points}</span>
+      </div>
+      ${a.html}
+    </div>`).join('<div class="side-sep" style="margin:30px 0"></div>');
+
+  content.innerHTML = `
+    <div class="lesson active">
+      <div class="lesson-tag">Entraînement</div>
+      <h1>Annales corrigées</h1>
+      <div class="lesson-sub">Les vrais sujets d'examen des sessions passées, résolus pas à pas. Essaie d'abord, puis vérifie.</div>
+      ${exos}
+      <div class="lesson-nav">
+        <button class="nav-btn" onclick="goTo(${LESSONS.length})">← Retour au test</button>
+        <button class="nav-btn primary" onclick="goTo(0)">Revoir les leçons</button>
+      </div>
+    </div>`;
+  renderMath();
+  window.scrollTo({top:0});
+}
+
+function toggleCorr(btn){
+  const corr = btn.nextElementSibling;
+  const open = corr.classList.toggle('show');
+  btn.textContent = open ? 'Masquer le corrigé ▴' : 'Voir le corrigé ▾';
+}
+
+function renderTestIntro(){
+  const content = document.getElementById('content');
+  content.innerHTML = `
+    <div class="lesson active">
+      <div class="test-intro">
+        <div class="big-emoji">🎯</div>
+        <h1 style="font-family:'Fraunces',serif;font-weight:900;font-size:2.2rem">Test final adaptatif</h1>
+        <p style="color:var(--ink2);max-width:480px;margin:10px auto 0">Des questions qui couvrent tout le parcours. À chaque erreur, je te propose de revoir la leçon concernée avant de continuer.</p>
+        <div class="test-meta">
+          <div class="chip">🧮 QCM + calculs</div>
+          <div class="chip">📝 Formulaire accessible ("i")</div>
+          <div class="chip">🔄 Remédiation si erreur</div>
+        </div>
+        <button class="nav-btn primary" style="margin:18px auto 0" onclick="startTest()">Commencer le test →</button>
+      </div>
+    </div>`;
+  window.scrollTo({top:0});
+}
+
+function startTest(){
+  state.testIdx = 0;
+  state.testScore = 0;
+  state.testAnswered = [];
+  renderTestQ();
+}
+
+function toggleFormulaire() {
+  document.getElementById('formulaire-panel').classList.toggle('show');
+}
+
+function useHelp(eqId) {
+  const formPanel = document.getElementById('formulaire-panel');
+  formPanel.classList.add('show'); // Force l'ouverture du panel
+  
+  // Retire les anciens highlights
+  document.querySelectorAll('.eq-item').forEach(el => el.classList.remove('highlight'));
+  
+  // Surligne la bonne équation
+  if(eqId) {
+    const target = document.getElementById(eqId);
+    if(target) {
+      target.classList.add('highlight');
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+}
+
+function renderTestQ(){
+  const i = state.testIdx;
+  if(i >= TEST.length){ renderTestResult(); return; }
+  const tq = TEST[i];
+  const pct = Math.round(i / TEST.length * 100);
+  const content = document.getElementById('content');
+
+  let answerHtml = '';
+  if(tq.type === 'qcm'){
+    answerHtml = `<div class="quiz-opts" style="margin-top:16px">` +
+      tq.opts.map((o,idx)=>`<div class="quiz-opt" data-idx="${idx}" onclick="selectTestOpt(this,${idx})"><span class="letter">${String.fromCharCode(65+idx)}</span> ${o}</div>`).join('') +
+      `</div>`;
+  } else {
+    answerHtml = `
+      ${tq.data ? `<div class="test-data">${tq.data}</div>`:''}
+      <div class="test-input-row">
+        <input class="test-input" id="test-input" type="text" placeholder="ta réponse" oninput="enableTestSubmit()">
+        <span class="test-unit">${tq.unit||''}</span>
+      </div>`;
+  }
+
+  // Le Formulaire caché (toutes les équations)
+  const cheatSheetHTML = `
+    <div class="formulaire-panel" id="formulaire-panel">
+      <div class="formulaire-title">📘 Formulaire d'examen</div>
+      <div class="eq-item" id="eq-is">
+        <div class="eq-name">Intérêt simple</div>
+        $$ I = C_0 \\times t \\times n $$
+      </div>
+      <div class="eq-item" id="eq-ic">
+        <div class="eq-name">Intérêt composé (Valeur acquise)</div>
+        $$ C_n = C_0 \\times (1 + t)^n $$
+      </div>
+      <div class="eq-item" id="eq-actu">
+        <div class="eq-name">Actualisation (Intérêts composés)</div>
+        $$ C_0 = C_n \\times (1 + t)^{-n} $$
+      </div>
+      <div class="eq-item" id="eq-tequiv">
+        <div class="eq-name">Taux équivalent</div>
+        $$ t_e = (1 + t_{\\text{annuel}})^{\\frac{1}{p}} - 1 $$
+      </div>
+      <div class="eq-item" id="eq-v0-ann">
+        <div class="eq-name">Valeur actuelle d'annuités</div>
+        $$ V_0 = a \\times \\frac{1 - (1+t)^{-n}}{t} $$
+      </div>
+      <div class="eq-item" id="eq-vn-ann">
+        <div class="eq-name">Valeur acquise d'annuités</div>
+        $$ V_n = a \\times \\frac{(1+t)^n - 1}{t} $$
+      </div>
+      <div class="eq-item" id="eq-rente-perp">
+        <div class="eq-name">Rente perpétuelle (géométrique)</div>
+        $$ V_0 = \\frac{a_1}{t - g} $$
+      </div>
+      <div class="eq-item" id="eq-emprunt">
+        <div class="eq-name">Emprunt (Annuité constante)</div>
+        $$ a = V_0 \\times \\frac{t}{1 - (1+t)^{-n}} $$
+      </div>
+    </div>
+  `;
+
+  content.innerHTML = `
+    <div class="lesson active">
+      <div class="test-card">
+        <button class="info-btn" onclick="toggleFormulaire()" title="Voir le formulaire d'examen">i</button>
+        
+        <div class="test-progress">
+          <div class="test-progress-bar"><div class="test-progress-fill" style="width:${pct}%"></div></div>
+          <div class="test-progress-txt">Question ${i+1} / ${TEST.length} · Score : ${state.testScore}</div>
+        </div>
+        <div class="q-counter">Question ${i+1}</div>
+        <div class="q-chapter-tag">📚 ${tq.chap}</div>
+        <div class="test-q-text">${tq.q}</div>
+        
+        ${answerHtml}
+        ${tq.type==='calc' ? `<button class="test-submit" id="test-submit" onclick="submitTestCalc()" disabled>Valider</button>`:''}
+        
+        <button class="help-btn" onclick="useHelp('${tq.eqId}')">💡 Indice : quelle formule utiliser ?</button>
+        
+        ${cheatSheetHTML}
+
+        <div class="remed" id="remed">
+          <div class="remed-title" id="remed-title">💡 Révisons ensemble</div>
+          <p id="remed-text"></p>
+          <button class="remed-btn" id="remed-review">Revoir la leçon</button>
+          <button class="remed-cont" onclick="nextTestQ()">Continuer le test →</button>
+        </div>
+        <div id="test-ok-msg" class="remed" style="background:var(--ok-l);border-color:var(--teal-clair)">
+          <div class="remed-title" style="color:var(--teal-d)">✅ Correct !</div>
+          <p id="test-ok-text"></p>
+          <button class="remed-btn" style="background:var(--teal)" onclick="nextTestQ()">Question suivante →</button>
+        </div>
+      </div>
+    </div>`;
+  renderMath();
+  window.scrollTo({top:0});
+}
+
+function selectTestOpt(el, idx){
+  const card = el.closest('.test-card');
+  if(card.dataset.locked) return;
+  card.dataset.locked = '1';
+  const tq = TEST[state.testIdx];
+  const ok = (idx === tq.correct);
+  state.testAnswered.push({lesson:tq.lesson, ok});
+  if(ok) state.testScore++;
+
+  card.querySelectorAll('.quiz-opt').forEach((o,j)=>{
+    o.classList.add('locked');
+    if(j === tq.correct) o.classList.add(ok && j===idx ? 'correct':'reveal');
+    if(j === idx && !ok) o.classList.add('wrong');
+  });
+  showTestFeedback(ok, tq);
+}
+
+function enableTestSubmit(){
+  const inp = document.getElementById('test-input');
+  const btn = document.getElementById('test-submit');
+  if(inp && btn) btn.disabled = (inp.value.trim()==='');
+}
+
+function submitTestCalc(){
+  const card = document.querySelector('.test-card');
+  if(card.dataset.locked) return;
+  const tq = TEST[state.testIdx];
+  const inp = document.getElementById('test-input');
+  const val = parseFloat(inp.value.replace(',','.').replace(/\s/g,''));
+  if(isNaN(val)){ inp.style.borderColor='var(--err)'; return; }
+  card.dataset.locked='1';
+  const ok = Math.abs(val - tq.expected) <= tq.tol;
+  state.testAnswered.push({lesson:tq.lesson, ok});
+  if(ok) state.testScore++;
+  inp.style.borderColor = ok ? 'var(--ok)':'var(--err)';
+  inp.style.background = ok ? 'var(--ok-l)':'var(--err-l)';
+  document.getElementById('test-submit').disabled = true;
+  showTestFeedback(ok, tq);
+}
+
+function showTestFeedback(ok, tq){
+  // Masque le bouton indice et ferme le formulaire une fois la réponse donnée
+  document.querySelector('.help-btn').style.display = 'none';
+  document.getElementById('formulaire-panel').classList.remove('show');
+
+  if(ok){
+    const m = document.getElementById('test-ok-msg');
+    document.getElementById('test-ok-text').textContent = tq.fb;
+    m.classList.add('show');
+    if(state.testIdx === TEST.length-1){
+      m.querySelector('.remed-btn').textContent = 'Voir mon résultat 🎯';
+    }
+  } else {
+    const r = document.getElementById('remed');
+    const lessonIdx = LESSONS.findIndex(l=>l.id===tq.lesson);
+    const lessonTitle = LESSONS[lessonIdx]?.title || '';
+    document.getElementById('remed-text').innerHTML =
+      `La bonne réponse : <strong>${tq.fb}</strong><br><br>Ce point est expliqué dans la leçon « <em>${lessonTitle}</em> ». Tu veux la revoir maintenant ?`;
+    document.getElementById('remed-review').onclick = ()=>{
+      sessionStorage.setItem('resumeTest', state.testIdx);
+      goTo(lessonIdx);
+    };
+    r.classList.add('show');
+  }
+}
+
+function nextTestQ(){
+  state.testIdx++;
+  renderTestQ();
+}
+
+function renderTestResult(){
+  const total = TEST.length;
+  const score = state.testScore;
+  const pct = Math.round(score/total*100);
+
+  const byChap = {};
+  state.testAnswered.forEach(a=>{
+    const lIdx = LESSONS.findIndex(l=>l.id===a.lesson);
+    const tag = LESSONS[lIdx]?.tag || 'Autre';
+    if(!byChap[tag]) byChap[tag] = {ok:0,tot:0};
+    byChap[tag].tot++; if(a.ok) byChap[tag].ok++;
+  });
+
+  let emoji, title, msg;
+  if(pct>=90){emoji='🏆';title='Maîtrise totale !';msg="Tu as compris la logique en profondeur.";}
+  else if(pct>=70){emoji='🎯';title='Très solide !';msg="Bonne compréhension d'ensemble.";}
+  else if(pct>=50){emoji='📈';title='Sur la bonne voie';msg="Les bases sont là. Reprends les leçons des questions ratées.";}
+  else {emoji='📚';title='Continue à pratiquer';msg="Pas de panique : reprends tranquillement les leçons.";}
+
+  let bdHtml = '';
+  Object.entries(byChap).forEach(([chap,d])=>{
+    const p = Math.round(d.ok/d.tot*100);
+    const color = p>=70?'var(--ok)':p>=40?'var(--amber)':'var(--err)';
+    bdHtml += `<div class="bd-row">
+      <div class="bd-name">${chap}</div>
+      <div class="bd-bar"><div class="bd-bar-fill" style="width:${p}%;background:${color}"></div></div>
+      <div class="bd-score" style="color:${color}">${d.ok}/${d.tot}</div>
+    </div>`;
+  });
+
+  state.xp += score * 15;
+  updateTop();
+
+  const content = document.getElementById('content');
+  content.innerHTML = `
+    <div class="lesson active">
+      <div class="result-screen show">
+        <div class="result-emoji">${emoji}</div>
+        <div class="result-score">${score}<span> / ${total}</span></div>
+        <div class="result-title">${title}</div>
+        <div class="result-msg">${msg} <strong>(${pct}% de réussite)</strong></div>
+        <div class="result-breakdown">
+          <h3>📊 Ton bilan par chapitre</h3>
+          ${bdHtml}
+        </div>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:8px">
+          <button class="nav-btn primary" onclick="startTest()">Refaire le test 🔄</button>
+          <button class="nav-btn" onclick="goTo(${LESSONS.length+1})">S'entraîner sur les annales 📂</button>
+          <button class="nav-btn" onclick="goTo(0)">Revoir les leçons</button>
+        </div>
+      </div>
+    </div>`;
+  window.scrollTo({top:0});
+}
+
+// Reprise du test après remédiation
+const origRenderLesson = renderLesson;
+renderLesson = function(i){
+  origRenderLesson(i);
+  const resume = sessionStorage.getItem('resumeTest');
+  if(resume !== null){
+    const banner = document.createElement('button');
+    banner.className = 'nav-btn primary';
+    banner.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:60;box-shadow:var(--shadow-lg)';
+    banner.innerHTML = 'Reprendre le test ★';
+    banner.onclick = ()=>{
+      sessionStorage.removeItem('resumeTest');
+      banner.remove();
+      goTo(LESSONS.length);
+      state.testIdx = parseInt(resume)+1;
+      renderTestQ();
+    };
+    document.body.appendChild(banner);
+  }
+};
+
+// INIT
+goTo(0);
+</script>
+<script src="../lb.js"></script>
+<script src="../progress.js"></script>
+<script src="../ui.js"></script>
+</body>
+</html>

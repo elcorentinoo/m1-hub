@@ -408,6 +408,12 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   font-size:13px; font-weight:600; letter-spacing:-.04em;
 }
 .ds-logo .mk::after{ content:var(--emb); font-size:14px; }
+/* Logo AAA (8.0.0) : « AAA » en Outfit, le dernier A plus gras, sur le bleu nuit du niveau.
+   Blanc sur --nuit : 15,4:1 (M1), 11,7:1 (Licence), 13,5:1 (M2). */
+.mk.ap{ display:inline-flex !important; align-items:center; justify-content:center; font-weight:400 !important; font-size:12.5px !important; letter-spacing:.01em; line-height:1; }
+.mk.ap::after{ content:none !important; }
+.mk.ap i{ font-style:normal; font-weight:600; }
+.ds-note{ font-style:italic; }
 .ds-nav .ds-l{
   padding:9px 16px; border-radius:999px; text-decoration:none; color:var(--txt2);
   font-size:14px; font-weight:500; white-space:nowrap; transition:background .18s var(--ressort), color .18s var(--ressort);
@@ -625,6 +631,9 @@ body.ds-cours .print-fab{ display:none !important; }
 .ds-fv{ font-size:12px; color:var(--txt3); }
 .ds-credits{ flex-basis:100%; font-size:12px; color:var(--txt3); }
 .ds-credits a{ color:var(--txt2); }
+.ds-sources{ margin:40px 8px 0; padding-top:14px; border-top:1px solid var(--stroke); font-size:12px; line-height:1.7; color:var(--txt3); }
+.ds-sources .t{ font-weight:600; color:var(--txt2); margin-right:4px; }
+.ds-sources a{ color:var(--txt2); }
 @media(max-width:760px){ .ds-foot{ flex-direction:column; align-items:flex-start; margin:40px 10px 100px; } }
 
 /* ═══════════ PAGES D'OUTILS ET GÉNÉRATEURS ═══════════ */
@@ -1059,7 +1068,101 @@ html.bq-verrouille, html.bq-verrouille body{ overflow:hidden; }
 }
 @media print{ .fx-aide{ display:none !important; } }
 
-/* ───────────── RÉVISER LE PARTIEL — PRODUITS DÉRIVÉS (7.7.0) ─────────────
+/* ---------- icônes au trait (7.6.1) : remplacent les émojis de l'interface ---------- */
+.ico-t{ width:1.15em; height:1.15em; fill:none; stroke:currentColor; stroke-width:1.7;
+  stroke-linecap:round; stroke-linejoin:round; vertical-align:-.2em; flex:none; }
+.ds-q > svg{ color:var(--nuit); flex:none; }
+.nav-item .ico .ico-t{ width:17px; height:17px; vertical-align:middle; }
+.mode b .ico-t{ margin-right:3px; }
+.mode .i .ico-t{ width:22px; height:22px; stroke-width:1.6; }
+.empty .big, .drop .ico{ display:grid !important; place-items:center; width:64px; height:64px; margin:0 auto 12px !important;
+  border-radius:50%; background:var(--surface2); color:var(--nuit); font-size:0 !important; }
+.empty .big .ico-t, .drop .ico .ico-t{ width:28px; height:28px; stroke-width:1.5; }
+
+/* ───────────── LES TROIS NIVEAUX (8.0.0, hub multi-promos) ─────────────
+   Une couleur par niveau, posée par data-niveau sur <html> : Licence vert
+   sapin, M1 bleu nuit (la teinte d'origine, inchangée), M2 bordeaux. Le
+   niveau redéfinit --nuit et ses dérivés : titres, boutons ronds, aplats,
+   encadrés de règle et BeQuick d'un espace prennent sa teinte sans
+   retoucher les pages. --niv-rgb sert aux voiles posés sur les photos.
+   Contrastes mesurés : --nuit sur blanc 15,4 / 11,7 / 13,5 ; sur le fond
+   13,3 / 10,1 / 11,7 ; --sur-nuit sur --nuit 9,4 / 8,5 / 8,8 ; --m sur
+   blanc 7,9 / 6,4 / 8,0 ; --eclair sur --nuit 10,9 / 8,3 / 9,6 (M1 / L / M2). */
+:root{ --niv-rgb:30 33 71; }
+:root[data-niveau="m1"]{
+  --niv:#1E2147; --niv-soft:#E9EBF8; --niv-nom:"M1"; --niv-rgb:30 33 71;
+}
+:root[data-niveau="licence"]{
+  --niv:#173F31; --niv-soft:#E2F1EA; --niv-nom:"L"; --niv-rgb:23 63 49;
+  --nuit:#173F31; --sur-nuit:#BFE3D3; --nuit-ombre:rgba(23,63,49,.5);
+}
+:root[data-niveau="m2"]{
+  --niv:#561729; --niv-soft:#F7E5EA; --niv-nom:"M2"; --niv-rgb:86 23 41;
+  --nuit:#561729; --sur-nuit:#F0C6D1; --nuit-ombre:rgba(86,23,41,.5);
+}
+/* couleur « matière » par défaut de l'espace (hors pages de cours, qui
+   gardent la leur via subject-id) */
+:root[data-niveau="licence"]:not([subject-id]){ --m:#266A4F; --m-soft:#E2F1EA; --m-clair:#9FD8BE; --emb:"L"; }
+:root[data-niveau="m2"]:not([subject-id]){ --m:#8C2F48; --m-soft:#F7E5EA; --m-clair:#EBB3C2; --emb:"M2"; }
+/* les voiles des photos prennent la teinte du niveau (M1 : inchangés) */
+:root[data-niveau="licence"] .voile-bas, :root[data-niveau="m2"] .voile-bas{
+  background:linear-gradient(180deg, rgb(var(--niv-rgb) / .58) 0%, rgb(var(--niv-rgb) / .5) 40%, rgb(var(--niv-rgb) / .66) 100%); }
+:root[data-niveau="licence"] .voile-g, :root[data-niveau="m2"] .voile-g{
+  background:linear-gradient(90deg, rgb(var(--niv-rgb) / .84) 0%, rgb(var(--niv-rgb) / .62) 55%, rgb(var(--niv-rgb) / .30) 100%); }
+/* une carte de niveau (page de choix) porte la teinte de son niveau */
+[data-niv="licence"]{ --niv:#173F31; --niv-soft:#E2F1EA; --niv-m:#266A4F; --niv-rgb:23 63 49; }
+[data-niv="m1"]{ --niv:#1E2147; --niv-soft:#E9EBF8; --niv-m:#3F46A8; --niv-rgb:30 33 71; }
+[data-niv="m2"]{ --niv:#561729; --niv-soft:#F7E5EA; --niv-m:#8C2F48; --niv-rgb:86 23 41; }
+
+/* ───────────── LES MATIÈRES DE LICENCE (8.0.0) ─────────────
+   Reprise du site de la LP ABF : neuf matières, chacune sa teinte dans
+   les verts du niveau (et deux teintes voisines, brun et violet gris,
+   pour les distinguer), son emblème et sa photo. Faute d'accès aux
+   serveurs d'images au moment de l'ajout, les photos sont les copies
+   locales déjà présentes dans img/, teintées par la matière.
+   Contrastes : --m sur blanc 6,4 à 7,8 ; sur --m-soft 5,5 à 6,5. */
+:root[data-niveau="licence"]{
+  /* teintes intermédiaires des anciennes pages de Licence (schémas, textes sur aplat sombre) */
+  --teal-clair:#A7D9C4; --amber-clair:#EBC98F; --rust-clair:#EDB4A8;
+}
+:root[subject-id="l-maths-fi"], [data-sid="l-maths-fi"]{
+  --m:#1E6B4F; --m-soft:#E2F2EA; --m-clair:#9FD8BE; --emb:"%"; --ph-lum:.6;
+  --photo:url("img/mat-derives.webp");
+}
+:root[subject-id="l-politique-monetaire"], [data-sid="l-politique-monetaire"]{
+  --m:#235F66; --m-soft:#E1EFF0; --m-clair:#9ED3D8; --emb:"€"; --ph-lum:.68;
+  --photo:url("https://images.unsplash.com/photo-1787826249483-edfeee468445?auto=format&fit=crop&w=1800&q=70"),url("img/sujet-systeme-bancaire.webp");
+}
+:root[subject-id="l-droit-bancaire"], [data-sid="l-droit-bancaire"]{
+  --m:#4A5E17; --m-soft:#EDF1DF; --m-clair:#CBDA9A; --emb:"⚖"; --ph-lum:.55;
+  --photo:url("https://images.unsplash.com/photo-1773544015678-58d09366ad6e?auto=format&fit=crop&w=1800&q=70"),url("img/sujet-droits-particuliers.webp");
+}
+:root[subject-id="l-risques-bancaires"], [data-sid="l-risques-bancaires"]{
+  --m:#6A5714; --m-soft:#F3EEDC; --m-clair:#E3CF8A; --emb:"◆"; --ph-lum:.6;
+  --photo:url("img/hero-wide.webp");
+}
+:root[subject-id="l-finance-internationale"], [data-sid="l-finance-internationale"]{
+  --m:#1C5F78; --m-soft:#E1EEF3; --m-clair:#9FCDE0; --emb:"⇆"; --ph-lum:.6;
+  --photo:url("img/band-derives.webp");
+}
+:root[subject-id="l-crises-financieres"], [data-sid="l-crises-financieres"]{
+  --m:#7D4321; --m-soft:#F5E9E1; --m-clair:#EBBFA3; --emb:"↘"; --ph-lum:.6;
+  --photo:url("img/mat-marketing.webp");
+}
+:root[subject-id="l-fiscalite"], [data-sid="l-fiscalite"]{
+  --m:#3A6230; --m-soft:#E7F0E3; --m-clair:#B5D6A9; --emb:"§"; --ph-lum:.72;
+  --photo:url("https://images.unsplash.com/photo-1554224154-26032ffc0d07?auto=format&fit=crop&w=1800&q=70"),url("img/sujet-fiscalite-particulier.webp");
+}
+:root[subject-id="l-marche-capitaux"], [data-sid="l-marche-capitaux"]{
+  --m:#1F6560; --m-soft:#E0F0EE; --m-clair:#9DD3CD; --emb:"↗"; --ph-lum:.65;
+  --photo:url("https://images.unsplash.com/photo-1651341050677-24dba59ce0fd?auto=format&fit=crop&w=1800&q=70"),url("img/sujet-produits-derives.webp");
+}
+:root[subject-id="l-banque-patrimoine"], [data-sid="l-banque-patrimoine"]{
+  --m:#5C4E7A; --m-soft:#ECE8F3; --m-clair:#C9BEE6; --emb:"◇"; --ph-lum:.5;
+  --photo:url("https://images.unsplash.com/photo-1710981855156-1dd4b48e668d?auto=format&fit=crop&w=1800&q=70"),url("img/sujet-es-banque.webp");
+}
+
+/* ───────────── RÉVISER LE PARTIEL — PRODUITS DÉRIVÉS (8.3.0) ─────────────
    partiel_derives.html : deux modules (la couleur suit la matière choisie,
    data-sid sur #pt-zone), trois niveaux d'aide, QCM. Contrastes : textes
    sur blanc ou --surface2 avec --txt, --txt2, --txt3, --m, --ok, --bad,

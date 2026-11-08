@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="fr" data-niveau="licence" subject-id="l-risques-bancaires">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>Gestion des Risques Bancaires</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:'DM Sans',sans-serif; line-height:1.62; font-size:16px;
+}
+::selection{background:var(--amber);color:var(--blanc)}
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-track{background:var(--paper2)}
+::-webkit-scrollbar-thumb{background:var(--line);border-radius:6px;border:2px solid var(--paper2)}
+::-webkit-scrollbar-thumb:hover{background:var(--amber)}
+
+/* ===== NAVBAR ===== */
+.navbar{
+  position:fixed;top:0;left:0;right:0;height:62px;z-index:100;
+  background:color-mix(in srgb, var(--fond) 94%, transparent);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:18px;padding:0 22px;
+}
+.nav-logo{display:flex;align-items:center;gap:11px;font-family:'Fraunces',serif;font-weight:600;font-size:18px;color:var(--navy);white-space:nowrap}
+.nav-logo .badge{width:34px;height:34px;border-radius:9px;background:var(--teal);display:grid;place-items:center;color:var(--blanc);font-size:18px;box-shadow:0 2px 6px color-mix(in srgb, var(--teal) 30%, transparent)}
+.nav-short{display:none}
+.nav-prog-wrap{flex:1;max-width:420px;display:flex;align-items:center;gap:10px}
+.nav-prog-bar{flex:1;height:9px;background:var(--paper2);border-radius:6px;overflow:hidden;border:1px solid var(--line)}
+.nav-prog-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal));border-radius:6px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.nav-prog-txt{font-family:'DM Mono',monospace;font-size:12px;color:var(--teal);font-weight:500;white-space:nowrap}
+.nav-xp{display:flex;align-items:center;gap:7px;background:var(--amber-soft);border:1px solid var(--amber-soft);padding:7px 13px;border-radius:9px;font-family:'DM Mono',monospace;font-weight:500;color:var(--amber);white-space:nowrap}
+.nav-xp .star{font-size:15px}
+.burger{display:none;background:none;border:1px solid var(--line);border-radius:8px;width:40px;height:40px;font-size:20px;cursor:pointer;color:var(--ink)}
+
+/* ===== LAYOUT ===== */
+.layout{display:flex;margin-top:62px;min-height:calc(100vh - 62px)}
+.sidebar{
+  width:280px;flex-shrink:0;border-right:1px solid var(--line);
+  background:var(--paper2);padding:22px 0;position:sticky;top:62px;
+  height:calc(100vh - 62px);overflow-y:auto;
+}
+.sb-section{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--txt3);padding:0 22px;margin:18px 0 8px}
+.sb-item{
+  display:flex;align-items:center;gap:11px;padding:10px 22px;cursor:pointer;
+  font-size:14.5px;color:var(--ink);border-left:3px solid transparent;transition:all .18s;
+}
+.sb-item:hover{background:color-mix(in srgb, var(--teal) 7%, transparent)}
+.sb-item.active{background:color-mix(in srgb, var(--teal) 12%, transparent);border-left-color:var(--teal);color:var(--teal);font-weight:600}
+.sb-num{width:25px;height:25px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-family:'DM Mono',monospace;font-size:12px;flex-shrink:0;background:var(--paper)}
+.sb-item.active .sb-num{border-color:var(--teal);background:var(--teal);color:var(--blanc)}
+.sb-item.done .sb-num{border-color:var(--teal);background:var(--teal);color:var(--blanc)}
+.sb-special{margin:6px 22px;padding:11px 14px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:9px;transition:all .18s}
+.sb-test{background:var(--plum-soft);color:var(--plum);border:1px solid var(--m-clair)}
+.sb-test:hover{background:var(--plum-soft)}
+.sb-annales{background:var(--navy-soft);color:var(--navy);border:1px solid var(--m-clair)}
+.sb-annales:hover{background:var(--navy-soft)}
+
+/* ===== MAIN ===== */
+.main{flex:1;padding:40px 6vw 110px;max-width:1000px;overflow-x:hidden}
+.view{display:none;animation:fadeIn .5s ease}
+.view.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+.tag{display:inline-block;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;background:var(--teal);color:var(--blanc);padding:5px 12px;border-radius:7px;margin-bottom:16px}
+h1.lesson-title{font-family:'Fraunces',serif;font-size:clamp(28px,4.4vw,42px);line-height:1.12;font-weight:600;color:var(--ink);margin-bottom:10px;letter-spacing:-.01em}
+.subtitle{font-size:17px;color:var(--txt3);margin-bottom:28px;font-weight:500}
+.main p{margin-bottom:15px;color:var(--nuit)}
+.main h2{font-family:'Fraunces',serif;font-size:24px;font-weight:600;color:var(--navy);margin:34px 0 14px;letter-spacing:-.01em}
+.main h3{font-family:'Fraunces',serif;font-size:19px;font-weight:600;color:var(--ink);margin:24px 0 10px}
+strong{color:var(--ink);font-weight:600}
+.hl-teal{color:var(--teal);font-weight:600}
+.hl-amber{color:var(--amber);font-weight:600}
+.hl-rust{color:var(--rust);font-weight:600}
+
+/* ===== CALLOUTS ===== */
+.callout{border-radius:13px;padding:18px 20px 18px 22px;margin:22px 0;border-left:5px solid;position:relative}
+.callout .co-head{display:flex;align-items:center;gap:9px;font-weight:700;margin-bottom:7px;font-size:15.5px}
+.callout p:last-child{margin-bottom:0}
+.co-analogy{background:var(--amber-soft);border-left-color:var(--amber)}
+.co-analogy .co-head{color:var(--amber)}
+.co-retain{background:var(--teal-soft);border-left-color:var(--teal)}
+.co-retain .co-head{color:var(--teal)}
+.co-trap{background:var(--rust-soft);border-left-color:var(--rust)}
+.co-trap .co-head{color:var(--rust)}
+
+/* ===== FORMULA BOX ===== */
+.formula{background:var(--nuit);color:var(--fond);border-radius:13px;padding:22px 24px;margin:22px 0;font-family:'DM Mono',monospace;position:relative;overflow:hidden}
+.formula::before{content:'ƒ';position:absolute;top:-14px;right:14px;font-size:80px;font-family:'Fraunces',serif;color:color-mix(in srgb, var(--blanc) 5%, transparent)}
+.formula .f-label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:10px;font-family:'DM Sans',sans-serif;font-weight:600}
+.formula .f-main{font-size:clamp(17px,2.6vw,22px);line-height:1.5;color:var(--blanc)}
+.formula .f-main .op{color:var(--teal-clair)}
+.formula .f-main .var{color:var(--amber-clair)}
+.formula .f-note{font-size:13px;color:var(--txt3);margin-top:12px;font-family:'DM Sans',sans-serif}
+
+/* ===== STEPS ===== */
+.steps{margin:20px 0;counter-reset:step}
+.step{display:flex;gap:15px;margin-bottom:14px;align-items:flex-start}
+.step-n{counter-increment:step;flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--navy);color:var(--blanc);display:grid;place-items:center;font-family:'DM Mono',monospace;font-weight:500;font-size:14px}
+.step-n::before{content:counter(step)}
+.step-body{flex:1;padding-top:3px}
+.step-body .step-calc{font-family:'DM Mono',monospace;background:var(--paper2);border:1px solid var(--line);border-radius:8px;padding:9px 13px;margin-top:7px;display:inline-block;font-size:14px}
+.result-line{background:var(--teal-soft);border:1.5px solid var(--teal);border-radius:10px;padding:13px 17px;font-family:'DM Mono',monospace;font-weight:500;color:var(--teal);margin-top:8px;font-size:15px}
+
+/* ===== TABLES ===== */
+.tbl-wrap{overflow-x:auto;margin:20px 0;border-radius:12px;border:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;font-size:14px;background:var(--paper)}
+th{background:var(--navy);color:var(--blanc);text-align:left;padding:11px 14px;font-weight:600;font-size:13px}
+td{padding:10px 14px;border-top:1px solid var(--line);color:var(--nuit)}
+tr:nth-child(even) td{background:color-mix(in srgb, var(--surface2) 50%, transparent)}
+td.mono,th.mono{font-family:'DM Mono',monospace}
+.tbl-tot td{background:var(--amber-soft)!important;font-weight:600}
+
+/* ===== SVG SCHEMA ===== */
+.schema{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px;margin:24px 0;text-align:center}
+.schema svg{max-width:100%;height:auto}
+.schema-cap{font-size:12.5px;color:var(--txt3);margin-top:12px;font-family:'DM Mono',monospace}
+
+/* ===== QUIZ ===== */
+.quiz{background:var(--plum-soft);border:1px solid var(--m-clair);border-radius:14px;padding:20px 22px;margin:22px 0}
+.quiz-q{font-weight:600;color:var(--plum);margin-bottom:14px;display:flex;gap:9px}
+.quiz-q .qicon{flex-shrink:0}
+.quiz-opts{display:flex;flex-direction:column;gap:9px}
+.quiz-opt{background:var(--paper);border:1.5px solid var(--line);border-radius:9px;padding:11px 15px;cursor:pointer;transition:all .16s;font-size:14.5px;text-align:left}
+.quiz-opt:hover:not(.locked){border-color:var(--plum);background:var(--blanc)}
+.quiz-opt.correct{background:var(--teal-soft);border-color:var(--teal);color:var(--teal);font-weight:600}
+.quiz-opt.wrong{background:var(--rust-soft);border-color:var(--rust);color:var(--rust)}
+.quiz-opt.locked{cursor:default;opacity:.85}
+.quiz-fb{margin-top:13px;padding:12px 15px;border-radius:9px;font-size:14px;display:none}
+.quiz-fb.show{display:block;animation:fadeIn .3s}
+.quiz-fb.good{background:var(--teal-soft);color:var(--teal);border:1px solid var(--teal)}
+.quiz-fb.bad{background:var(--rust-soft);color:var(--rust);border:1px solid var(--rust)}
+
+/* ===== NAV BUTTONS ===== */
+.lesson-nav{display:flex;justify-content:space-between;align-items:center;margin-top:46px;padding-top:24px;border-top:1px solid var(--line);gap:14px;flex-wrap:wrap}
+.btn{border:none;border-radius:10px;padding:12px 22px;font-family:'DM Sans',sans-serif;font-size:14.5px;font-weight:600;cursor:pointer;transition:all .18s;display:inline-flex;align-items:center;gap:8px}
+.btn-prev{background:var(--paper2);color:var(--ink);border:1px solid var(--line)}
+.btn-prev:hover{background:var(--line)}
+.btn-next{background:var(--teal);color:var(--blanc);box-shadow:0 3px 10px color-mix(in srgb, var(--teal) 28%, transparent)}
+.btn-next:hover{background:var(--teal);transform:translateY(-1px)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important}
+.xp-pill{font-family:'DM Mono',monospace;font-size:13px;color:var(--amber);background:var(--amber-soft);padding:6px 12px;border-radius:8px;border:1px solid var(--amber-soft)}
+
+/* ===== ANNALES ===== */
+.annale{border:1px solid var(--line);border-radius:13px;margin-bottom:18px;overflow:hidden;background:var(--paper)}
+.annale-head{padding:16px 20px;background:var(--navy-soft);display:flex;justify-content:space-between;align-items:center;gap:12px}
+.annale-head .at{font-family:'Fraunces',serif;font-weight:600;color:var(--navy);font-size:17px}
+.annale-body{padding:18px 20px}
+.enonce{background:var(--paper2);border-left:4px solid var(--navy);border-radius:8px;padding:14px 17px;margin-bottom:14px;font-size:14.5px}
+.corrige{display:none;animation:fadeIn .35s;border-top:1px dashed var(--line);padding-top:16px;margin-top:4px}
+.corrige.show{display:block}
+
+/* ===== FINAL TEST ===== */
+.test-intro{text-align:center;padding:20px 0 10px}
+.test-q-card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:18px}
+.test-q-num{font-family:'DM Mono',monospace;font-size:12px;color:var(--plum);background:var(--plum-soft);padding:4px 10px;border-radius:6px;display:inline-block;margin-bottom:10px}
+.test-q-txt{font-weight:600;font-size:16px;margin-bottom:14px}
+.test-input{font-family:'DM Mono',monospace;font-size:16px;padding:11px 14px;border:1.5px solid var(--line);border-radius:9px;width:200px;max-width:100%;background:var(--paper)}
+.test-input:focus{outline:none;border-color:var(--plum)}
+.test-unit{font-family:'DM Mono',monospace;color:var(--txt3);margin-left:8px}
+.remediation{background:var(--rust-soft);border:1.5px solid var(--rust);border-radius:12px;padding:16px 18px;margin-top:14px;display:none}
+.remediation.show{display:block;animation:fadeIn .35s}
+.remediation .rem-head{font-weight:700;color:var(--rust);margin-bottom:7px;display:flex;align-items:center;gap:8px}
+.rem-actions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.btn-sm{padding:8px 15px;font-size:13px;border-radius:8px;border:none;cursor:pointer;font-weight:600;font-family:'DM Sans',sans-serif}
+.btn-revoir{background:var(--rust);color:var(--blanc)}
+.btn-continuer{background:var(--paper);color:var(--ink);border:1px solid var(--line)}
+.correct-banner{background:var(--teal-soft);border:1.5px solid var(--teal);border-radius:12px;padding:14px 18px;margin-top:14px;color:var(--teal);font-weight:600;display:none}
+.correct-banner.show{display:block;animation:fadeIn .35s}
+.float-retake{position:fixed;bottom:24px;right:24px;z-index:90;background:var(--plum);color:var(--blanc);border:none;border-radius:30px;padding:13px 22px;font-weight:600;font-size:14px;cursor:pointer;box-shadow:0 6px 20px color-mix(in srgb, var(--plum) 35%, transparent);display:none;align-items:center;gap:8px}
+.float-retake.show{display:inline-flex;animation:fadeIn .4s}
+
+/* ===== RESULT ===== */
+.result-screen{display:none;text-align:center}
+.result-screen.show{display:block;animation:fadeIn .5s}
+.result-score{font-family:'Fraunces',serif;font-size:64px;font-weight:600;color:var(--teal);line-height:1}
+.result-msg{font-size:18px;color:var(--txt3);margin:14px 0 30px;font-weight:500}
+.chapter-bars{text-align:left;max-width:560px;margin:0 auto}
+.cbar-row{margin-bottom:14px}
+.cbar-label{display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:5px}
+.cbar-track{height:13px;background:var(--paper2);border-radius:7px;overflow:hidden;border:1px solid var(--line)}
+.cbar-fill{height:100%;border-radius:7px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+
+/* ===== HOME ===== */
+.home-hero{text-align:center;padding:30px 0 40px}
+.home-hero .htag{font-family:'DM Mono',monospace;font-size:13px;letter-spacing:.1em;color:var(--amber);text-transform:uppercase}
+.home-hero h1{font-family:'Fraunces',serif;font-size:clamp(34px,6vw,56px);font-weight:600;color:var(--ink);margin:10px 0;letter-spacing:-.02em;line-height:1.05}
+.home-hero p{font-size:17px;color:var(--txt3);max-width:600px;margin:0 auto}
+.home-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px;margin-top:30px}
+.home-card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px;cursor:pointer;transition:all .2s;border-top:4px solid var(--teal)}
+.home-card:hover{transform:translateY(-3px);box-shadow:0 8px 22px color-mix(in srgb, var(--nuit) 8%, transparent)}
+.home-card .hc-num{font-family:'DM Mono',monospace;color:var(--teal);font-size:13px}
+.home-card .hc-title{font-family:'Fraunces',serif;font-size:18px;font-weight:600;margin:7px 0 6px;color:var(--ink)}
+.home-card .hc-desc{font-size:13.5px;color:var(--txt3)}
+.home-card.done{border-top-color:var(--amber)}
+.home-card.done .hc-check{color:var(--teal);font-weight:700}
+
+@media(max-width:860px){
+  .sidebar{position:fixed;left:0;top:62px;z-index:80;transform:translateX(-100%);transition:transform .3s;box-shadow:4px 0 20px color-mix(in srgb, var(--nuit) 12%, transparent)}
+  .sidebar.open{transform:translateX(0)}
+  .burger{display:grid;place-items:center}
+  .nav-logo .nav-full{display:none}
+  .nav-short{display:inline}
+  .nav-prog-wrap{max-width:none}
+  .main{padding:28px 20px 100px}
+}
+</style>
+<link rel="stylesheet" href="../ui.css">
+<link rel="stylesheet" href="../theme.css">
+<link rel="stylesheet" href="../licence.css">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#ECEEF6">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/favicon-32.png">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar topbar">
+  <button class="burger" onclick="toggleSidebar()">☰</button>
+  <div class="nav-logo">
+    <span class="badge">🛡️</span>
+    <span class="nav-full">Gestion des Risques Bancaires</span>
+    <span class="nav-short">Risques</span>
+  </div>
+  <div class="nav-prog-wrap">
+    <div class="nav-prog-bar"><div class="nav-prog-fill" id="progFill"></div></div>
+    <span class="nav-prog-txt" id="progTxt">0 %</span>
+  </div>
+  <div class="nav-xp"><span class="star">★</span><span id="xpVal">0</span> XP</div>
+</nav>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-section">Parcours</div>
+    <div id="sbLessons"></div>
+    <div class="sb-section">Évaluation</div>
+    <div class="sb-special sb-test" onclick="goTest()">🎯 Test final adaptatif</div>
+    <div class="sb-special sb-annales" onclick="show('annales')">📜 Annales corrigées</div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main" id="main">
+
+    <!-- HOME -->
+    <section class="view active" id="view-home">
+      <div class="home-hero">
+        <div class="htag">Licence LP ABF</div>
+        <h1>La banque, une usine<br>à gérer le risque</h1>
+        <p>Identifier, mesurer, couvrir. Dix leçons pour maîtriser les risques bancaires, des ratios de Bâle III à la VaR — avec les trois calculs qui tombent au partiel.</p>
+      </div>
+      <div class="home-grid" id="homeGrid"></div>
+    </section>
+
+    <!-- LESSONS injected here -->
+    <div id="lessonsContainer"></div>
+
+    <!-- TEST -->
+    <section class="view" id="view-test">
+      <span class="tag" style="background:var(--plum)">Évaluation finale</span>
+      <h1 class="lesson-title">Test final adaptatif</h1>
+      <p class="subtitle">10 questions · QCM &amp; calculs · remédiation immédiate en cas d'erreur</p>
+      <div id="testContainer"></div>
+      <div class="result-screen" id="resultScreen"></div>
+    </section>
+
+    <!-- ANNALES -->
+    <section class="view" id="view-annales">
+      <span class="tag" style="background:var(--navy)">Révision active</span>
+      <h1 class="lesson-title">Annales &amp; exercices types</h1>
+      <p class="subtitle">Essaie d'abord, puis déroule le corrigé. Les trois calculs au programme y sont.</p>
+      <div id="annalesContainer"></div>
+    </section>
+
+  </main>
+</div>
+
+<button class="float-retake" id="floatRetake" onclick="goTest()">🔁 Reprendre le test</button>
+
+<script>
+/* ============ ÉTAT (mémoire uniquement) ============ */
+const state = { xp:0, done:new Set(), lessonXP:new Set() };
+const TOTAL_UNITS = 10; // 10 leçons
+
+/* ============ CONTENU DES LEÇONS ============ */
+const lessons = [
+{
+  id:'l1', n:1, navtitle:'Les 9 risques bancaires', chap:'Chapitre 1',
+  title:'Pourquoi une banque ne vit que de risques',
+  subtitle:'Panorama des neuf risques et de leur poids réel',
+  html:`
+  <div class="callout co-analogy"><div class="co-head">💡 Analogie</div>
+  <p>Une banque ressemble à une compagnie d'assurance qui s'ignore. Elle encaisse une marge en échange d'un pari : que l'emprunteur rembourse, que les taux ne s'envolent pas, que les marchés ne s'effondrent pas. Chabert parle d'une véritable <strong>« usine à gestion des risques »</strong>. Supprimer le risque reviendrait à fermer l'usine.</p></div>
+
+  <p>Le banquier distingue d'abord le <span class="hl-teal">risque</span> de l'<span class="hl-amber">incertitude</span>. Cette opposition vient de Knight. Un risque est <strong>probabilisable</strong> : on peut lui associer une fréquence et un coût. L'incertitude, elle, échappe au calcul. Toute la gestion bancaire consiste à transformer l'incertitude en risque mesurable.</p>
+
+  <p>On recense neuf risques principaux. Trois dominent les bilans : le crédit, l'opérationnel et le marché. Le risque de crédit représente à lui seul l'essentiel de l'exposition.</p>
+
+  <div class="schema">
+    <svg viewBox="0 0 320 320" width="280">
+      <circle cx="160" cy="160" r="150" style="fill:var(--surface2);stroke:var(--stroke)"/>
+      <path d="M160 160 L160 10 A150 150 0 0 1 145.5 308.3 Z" style="fill:var(--teal)"/>
+      <path d="M160 160 L145.5 308.3 A150 150 0 0 1 50 271 Z" style="fill:var(--amber)"/>
+      <path d="M160 160 L50 271 A150 150 0 0 1 10 160 Z" style="fill:var(--rust)"/>
+      <circle cx="160" cy="160" r="70" style="fill:var(--fond)"/>
+      <text x="160" y="100" text-anchor="middle" font-family="DM Mono" font-size="15" font-weight="600" style="fill:var(--blanc)">Crédit</text>
+      <text x="160" y="120" text-anchor="middle" font-family="DM Mono" font-size="18" font-weight="600" style="fill:var(--blanc)">85 %</text>
+      <text x="160" y="155" text-anchor="middle" font-family="Fraunces" font-size="13" style="fill:var(--nuit)">Répartition</text>
+      <text x="160" y="172" text-anchor="middle" font-family="Fraunces" font-size="13" style="fill:var(--nuit)">estimée</text>
+      <text x="78" y="245" text-anchor="middle" font-family="DM Mono" font-size="12" style="fill:var(--blanc)">Op. 10%</text>
+      <text x="55" y="200" text-anchor="middle" font-family="DM Mono" font-size="11" style="fill:var(--blanc)">Mar.5%</text>
+    </svg>
+    <div class="schema-cap">Estimation des banques : 85 % crédit · 10 % opérationnel · 5 % marché</div>
+  </div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>Risque</th><th>Définition courte</th><th>Exemple</th></tr>
+    <tr><td><strong>1. Crédit</strong></td><td>L'emprunteur ne rembourse pas</td><td>Non-remboursement d'un prêt immo</td></tr>
+    <tr><td><strong>2. Liquidité</strong></td><td>Incapacité à faire face aux engagements immédiats</td><td>Blocage de l'interbancaire (subprimes)</td></tr>
+    <tr><td><strong>3. Marché</strong></td><td>Évolution défavorable de la valeur d'un actif</td><td>Krach boursier, perte obligataire</td></tr>
+    <tr><td><strong>4. Taux</strong></td><td>Variation des taux dégradant la marge d'intermédiation</td><td>Effet ciseau</td></tr>
+    <tr><td><strong>5. Opérationnel</strong></td><td>Défaillance de procédures, personnes, systèmes</td><td>Fraude, cyberattaque, erreur de saisie</td></tr>
+    <tr><td><strong>6. Non-conformité</strong></td><td>Sanction pour non-respect des règles (LCB-FT, RGPD)</td><td>Amende anti-blanchiment (Revolut)</td></tr>
+    <tr><td><strong>7. Image / Réputation</strong></td><td>Perte de confiance du marché et des clients</td><td>Affaire Kerviel (SG)</td></tr>
+    <tr><td><strong>8. Pays (souverain)</strong></td><td>Non-remboursement d'un débiteur étranger</td><td>Crise de la dette grecque</td></tr>
+    <tr><td><strong>9. Systémique</strong></td><td>Le défaut d'une banque entraîne les autres</td><td>Faillite Lehman Brothers (2008)</td></tr>
+  </table></div>
+
+  <div class="callout co-retain"><div class="co-head">🔑 À retenir</div>
+  <p>Le risque de <strong>crédit</strong> pèse environ 85 % de l'exposition globale. La distinction de <strong>Knight</strong> (risque probabilisable ≠ incertitude) fonde toute la démarche. Le risque <strong>systémique</strong> n'est pas un risque de plus : c'est la contagion d'un risque à l'ensemble du système.</p></div>
+
+  <div class="callout co-trap"><div class="co-head">⚠️ Piège fréquent</div>
+  <p>Ne pas confondre <strong>risque de marché</strong> (la valeur d'un actif baisse) et <strong>risque de taux</strong> (la marge d'intermédiation se dégrade). On peut perdre sur les taux sans qu'aucun actif ne se déprécie sur un marché.</p></div>
+  `,
+  quiz:[
+    {q:"Quel risque représente environ 85 % de l'exposition globale d'une banque ?",opts:["Le risque de marché","Le risque de crédit","Le risque opérationnel"],a:1,fb:"Le risque de crédit domine largement : 85 % selon les estimations des banques."},
+    {q:"Selon Knight, qu'est-ce qui caractérise un risque par rapport à une incertitude ?",opts:["Il est probabilisable","Il est toujours évitable","Il ne concerne que le crédit"],a:0,fb:"Un risque est probabilisable (fréquence + coût). L'incertitude, elle, échappe au calcul."},
+    {q:"La faillite d'une banque qui en entraîne d'autres relève du risque…",opts:["de réputation","de liquidité","systémique"],a:2,fb:"C'est le risque systémique : la contagion à l'ensemble du système (ex. Lehman 2008)."}
+  ]
+},
+{
+  id:'l2', n:2, navtitle:'La surveillance du secteur', chap:'Chapitre 2',
+  title:"Qui surveille les banques, et jusqu'où",
+  subtitle:'Du superviseur national au Comité de Bâle, et la garantie des dépôts',
+  html:`
+  <div class="callout co-analogy"><div class="co-head">💡 Analogie</div>
+  <p>Imaginez une autoroute à plusieurs niveaux de contrôle : la gendarmerie locale (le superviseur national), la police européenne (la BCE), et un comité international qui écrit le code de la route lui-même (Bâle). Chacun veille à un étage différent, mais tous poursuivent le même objectif : éviter le carambolage généralisé.</p></div>
+
+  <p>La surveillance s'organise par cercles concentriques. Au niveau national, l'<span class="hl-teal">ACPR</span> supervise les banques et l'<span class="hl-teal">AMF</span> les marchés financiers. Au niveau européen, la <strong>BCE</strong>, via le Mécanisme de Surveillance Unique (MSU), supervise directement les 128 plus grandes banques (plus de 30 Md€ d'actifs). Au sommet, le <strong>Comité de Bâle</strong> élabore les normes de fonds propres reprises par tous.</p>
+
+  <div class="schema">
+    <svg viewBox="0 0 460 240" width="440">
+      <rect x="20" y="20" width="420" height="46" rx="9" style="fill:var(--navy)"/>
+      <text x="230" y="42" text-anchor="middle" font-family="Fraunces" font-size="14" font-weight="600" style="fill:var(--blanc)">International — Comité de Bâle · FMI · OICV</text>
+      <text x="230" y="58" text-anchor="middle" font-family="DM Mono" font-size="10" style="fill:var(--m-clair)">Normes de fonds propres, stabilité globale</text>
+      <rect x="60" y="86" width="340" height="46" rx="9" style="fill:var(--teal)"/>
+      <text x="230" y="108" text-anchor="middle" font-family="Fraunces" font-size="14" font-weight="600" style="fill:var(--blanc)">Européen — BCE/MSU · ABE · CERS</text>
+      <text x="230" y="124" text-anchor="middle" font-family="DM Mono" font-size="10" style="fill:var(--teal-clair)">Supervision des 128 grandes banques</text>
+      <rect x="100" y="152" width="260" height="46" rx="9" style="fill:var(--amber)"/>
+      <text x="230" y="174" text-anchor="middle" font-family="Fraunces" font-size="14" font-weight="600" style="fill:var(--blanc)">National — ACPR · AMF</text>
+      <text x="230" y="190" text-anchor="middle" font-family="DM Mono" font-size="10" style="fill:var(--amber-soft)">ACPR : banques · AMF : marchés</text>
+      <line x1="230" y1="66" x2="230" y2="86" stroke-width="1.5" style="stroke:var(--txt3)"/>
+      <line x1="230" y1="132" x2="230" y2="152" stroke-width="1.5" style="stroke:var(--txt3)"/>
+    </svg>
+    <div class="schema-cap">Trois étages de surveillance, du local au mondial</div>
+  </div>
+
+  <h3>Le FGDR — la garantie des dépôts</h3>
+  <p>Le Fonds de Garantie des Dépôts et de Résolution protège l'épargnant si sa banque fait défaut. Les plafonds sont à connaître précisément.</p>
+  <div class="tbl-wrap"><table>
+    <tr><th>Garantie</th><th class="mono">Plafond</th><th>Périmètre</th></tr>
+    <tr><td>Dépôts espèces</td><td class="mono">100 000 €</td><td>par déposant et par établissement</td></tr>
+    <tr><td>Dépôts titres</td><td class="mono">70 000 €</td><td>par déposant</td></tr>
+    <tr><td>Délai d'indemnisation</td><td class="mono">7 jours</td><td>ouvrables</td></tr>
+  </table></div>
+
+  <div class="callout co-retain"><div class="co-head">🔑 À retenir</div>
+  <p><strong>ACPR</strong> = banques · <strong>AMF</strong> = marchés. La <strong>BCE</strong> supervise directement les 128 banques de plus de 30 Md€. Le <strong>FGDR</strong> garantit <span class="hl-teal">100 000 €</span> sur les espèces et <span class="hl-teal">70 000 €</span> sur les titres, par déposant.</p></div>
+
+  <div class="callout co-trap"><div class="co-head">⚠️ Piège fréquent</div>
+  <p>Le plafond de 100 000 € est <strong>par établissement</strong>, pas par compte. Deux comptes dans la même banque partagent le même plafond ; répartir son épargne entre deux banques distinctes double la protection.</p></div>
+  `,
+  quiz:[
+    {q:"Qui supervise directement les 128 plus grandes banques de la zone euro ?",opts:["L'ACPR","La BCE via le MSU","Le Comité de Bâle"],a:1,fb:"La BCE, via le Mécanisme de Surveillance Unique (MSU), pour les banques de plus de 30 Md€ d'actifs."},
+    {q:"Le FGDR garantit les dépôts espèces à hauteur de…",opts:["70 000 € par déposant","100 000 € par déposant et par établissement","Sans plafond"],a:1,fb:"100 000 € par déposant et par établissement (70 000 € pour les titres)."},
+    {q:"L'ACPR a pour rôle principal…",opts:["la supervision prudentielle des banques françaises","la supervision des marchés financiers","l'écriture des accords de Bâle"],a:0,fb:"L'ACPR supervise les banques ; l'AMF supervise les marchés."}
+  ]
+},
+{
+  id:'l3', n:3, navtitle:'Ratio de solvabilité (Bâle III) ★', chap:'Chapitre 3 · CALCUL',
+  title:'Le ratio qui décide si une banque tient debout',
+  subtitle:'Pondération des risques, Tiers de fonds propres et le calcul du partiel',
+  html:`
+  <div class="callout co-analogy"><div class="co-head">💡 Analogie</div>
+  <p>Pensez à un déménageur. Plus le carton est fragile, plus il met d'emballage autour. Le ratio de solvabilité, c'est pareil : plus un actif est risqué, plus la banque doit l'« emballer » de fonds propres. Une obligation d'État ne casse pas — zéro emballage. Un crédit aux entreprises est fragile — emballage maximal.</p></div>
+
+  <p>Le ratio de solvabilité rapporte les fonds propres aux <span class="hl-teal">risques pondérés</span> (RWA). Chaque actif est pondéré selon son risque : 0 % pour une obligation d'État, 100 % pour un crédit aux entreprises. Le ratio doit rester supérieur à 8 %.</p>
+
+  <div class="formula">
+    <div class="f-label">Ratio de solvabilité — Bâle III</div>
+    <div class="f-main">Ratio = <span class="var">Fonds Propres</span> <span class="op">÷</span> <span class="var">Risques Pondérés</span> <span class="op">≥</span> 8 %</div>
+    <div class="f-note">Risque pondéré d'un actif = Montant × Pondération de risque</div>
+  </div>
+
+  <h3>Les pondérations de risque usuelles</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Actif</th><th class="mono">Pondération</th></tr>
+    <tr><td>Obligations d'État</td><td class="mono">0 %</td></tr>
+    <tr><td>Prêt immobilier hypothécaire</td><td class="mono">≈ 35 %</td></tr>
+    <tr><td>Crédits aux particuliers (conso)</td><td class="mono">50 %</td></tr>
+    <tr><td>Crédits aux entreprises (sans garantie)</td><td class="mono">100 %</td></tr>
+    <tr><td>Titres de marchés financiers</td><td class="mono">100 %</td></tr>
+  </table></div>
+
+  <h3>Les Tiers de fonds propres</h3>
+  <div class="schema">
+    <svg viewBox="0 0 360 200" width="340">
+      <rect x="60" y="20" width="240" height="44" rx="6" style="fill:var(--teal)"/>
+      <text x="180" y="40" text-anchor="middle" font-family="Fraunces" font-size="14" font-weight="600" style="fill:var(--blanc)">CET1 — capital + réserves</text>
+      <text x="180" y="57" text-anchor="middle" font-family="DM Mono" font-size="11" style="fill:var(--teal-clair)">≥ 4,5 % des RWA</text>
+      <rect x="60" y="72" width="240" height="40" rx="6" style="fill:var(--teal)"/>
+      <text x="180" y="90" text-anchor="middle" font-family="Fraunces" font-size="13" style="fill:var(--blanc)">+ AT1 (hybrides) → Tier 1</text>
+      <text x="180" y="106" text-anchor="middle" font-family="DM Mono" font-size="11" style="fill:var(--teal-soft)">Tier 1 ≥ 6 % des RWA</text>
+      <rect x="60" y="120" width="240" height="40" rx="6" style="fill:var(--amber)"/>
+      <text x="180" y="138" text-anchor="middle" font-family="Fraunces" font-size="13" style="fill:var(--blanc)">+ Tier 2 (dettes subordonnées)</text>
+      <text x="180" y="154" text-anchor="middle" font-family="DM Mono" font-size="11" style="fill:var(--amber-soft)">Total T1+T2 ≥ 8 % des RWA</text>
+    </svg>
+    <div class="schema-cap">CET1 (4,5 %) → Tier 1 (6 %) → Total (8 %)</div>
+  </div>
+
+  <h2>★ Exercice type — calcul du ratio de solvabilité</h2>
+  <div class="enonce"><strong>Bilan :</strong> 1 000 crédits entreprises · 500 crédits conso particuliers · 2 000 obligations d'État · 200 titres de marché. <strong>Fonds propres = 200.</strong> La banque est-elle solvable ?</div>
+
+  <div class="steps">
+    <div class="step"><div class="step-n"></div><div class="step-body">Pondérer chaque actif selon son risque.
+      <div class="step-calc">1000 × 100% = 1000 · 500 × 50% = 250 · 2000 × 0% = 0 · 200 × 100% = 200</div></div></div>
+    <div class="step"><div class="step-n"></div><div class="step-body">Sommer les risques pondérés (RWA).
+      <div class="step-calc">RWA = 1000 + 250 + 0 + 200 = 1 450</div></div></div>
+    <div class="step"><div class="step-n"></div><div class="step-body">Calculer le ratio.
+      <div class="step-calc">Ratio = 200 ÷ 1 450 = 13,8 %</div></div></div>
+  </div>
+  <div class="result-line">13,8 % ≥ 8 % ✓ → la banque est solvable.</div>
+
+  <div class="callout co-retain"><div class="co-head">🔑 À retenir</div>
+  <p>Méthode en 3 temps : <strong>pondérer → sommer → diviser</strong>. Obligations d'État = 0 %, crédits entreprises = 100 %, conso = 50 %, immo hypothécaire ≈ 35 %. Plus la pondération est élevée, plus la banque doit immobiliser de fonds propres.</p></div>
+
+  <div class="callout co-trap"><div class="co-head">⚠️ Piège fréquent</div>
+  <p>Le dénominateur n'est <strong>jamais</strong> le total du bilan brut. On divise par les <strong>risques pondérés</strong>. Oublier de pondérer (ici diviser 200 par 3 700) donne un ratio faux de 5,4 % et conclut à tort à l'insolvabilité.</p></div>
+  `,
+  quiz:[
+    {q:"Quelle est la pondération de risque d'une obligation d'État ?",opts:["0 %","50 %","100 %"],a:0,fb:"0 % : une obligation d'État est considérée comme sans risque, elle n'exige aucun fonds propre."},
+    {q:"Le ratio de solvabilité Bâle III doit être au minimum de…",opts:["4,5 %","8 %","13 %"],a:1,fb:"8 % (Total Tier 1 + Tier 2). Le CET1 seul est à 4,5 %, le Tier 1 à 6 %."},
+    {q:"Au dénominateur du ratio, on place…",opts:["le total du bilan brut","les risques pondérés (RWA)","les seuls crédits accordés"],a:1,fb:"Les risques pondérés : chaque actif × sa pondération. Surtout pas le bilan brut."}
+  ]
+},
+{
+  id:'l4', n:4, navtitle:'Coussins, LCR & levier', chap:'Chapitre 4',
+  title:'Les trois garde-fous au-dessus des 8 %',
+  subtitle:'Coussins de fonds propres, ratio de liquidité et limite de levier',
+  html:`
+  <div class="callout co-analogy"><div class="co-head">💡 Analogie</div>
+  <p>Les 8 % sont la ceinture de sécurité. Les coussins sont l'airbag : une réserve qu'on ajoute par-dessus, qui se gonfle quand le danger macro augmente. Le coussin contracyclique, lui, est un airbag qu'on règle selon l'état de la route — plus on craint la bulle, plus on le gonfle.</p></div>
+
+  <p>Bâle III empile trois ratios : <span class="hl-teal">solvabilité</span>, <span class="hl-teal">liquidité</span> et <span class="hl-teal">levier</span>. Au-dessus du plancher de 8 %, des coussins de CET1 s'ajoutent pour absorber les chocs.</p>
+
+  <h3>Les coussins de fonds propres</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Coussin</th><th class="mono">Montant (CET1)</th><th>Déclencheur</th></tr>
+    <tr><td>Conservation</td><td class="mono">2,5 %</td><td>Permanent, toujours exigé</td></tr>
+    <tr><td>Contracyclique</td><td class="mono">0 à 2,5 %</td><td>Instabilité macrofinancière (bulle)</td></tr>
+    <tr><td>Risque systémique (G-SIB)</td><td class="mono">0 à 3,5 %</td><td>Grandes banques systémiques (BNP, BPCE…)</td></tr>
+    <tr><td>SyRB (France)</td><td class="mono">3 %</td><td>Risques non couverts ailleurs</td></tr>
+    <tr class="tbl-tot"><td>Maximum théorique CET1</td><td class="mono">jusqu'à 13 %</td><td>4,5 + 2,5 + 2,5 + 3,5</td></tr>
+  </table></div>
+
+  <h3>Le ratio de liquidité — LCR</h3>
+  <p>Le LCR (Liquidity Coverage Ratio) impose de détenir assez d'actifs liquides (cash, titres d'État) pour couvrir un mois de sorties de trésorerie en scénario de stress.</p>
+  <div class="formula">
+    <div class="f-label">LCR — couverture de liquidité</div>
+    <div class="f-main"><span class="var">Réserves de liquidité</span> <span class="op">≥</span> <span class="var">Sorties nettes à 1 mois</span></div>
+    <div class="f-note">Horizon : 30 jours. Réserves = cash + titres d'État très liquides.</div>
+  </div>
+
+  <h3>Le ratio de levier</h3>
+  <p>Indépendant du risque, il limite l'effet de levier en rapportant les fonds propres Tier 1 au total des expositions, pondérées ou non. Il borne ainsi le gonflement du bilan que le seul ratio de solvabilité ne capte pas.</p>
+
+  <div class="callout co-retain"><div class="co-head">🔑 À retenir</div>
+  <p>Trois ratios Bâle III : <strong>solvabilité · liquidité (LCR) · levier</strong>. Le coussin de <strong>conservation (2,5 %)</strong> est permanent ; le <strong>contracyclique</strong> varie de 0 à 2,5 % selon la conjoncture. Le LCR couvre <span class="hl-teal">1 mois</span> de sorties.</p></div>
+
+  <div class="callout co-trap"><div class="co-head">⚠️ Piège fréquent</div>
+  <p>Le ratio de <strong>levier</strong> ne pondère pas par le risque, contrairement à la solvabilité. C'est volontaire : il sert justement de filet quand les pondérations sont sous-estimées.</p></div>
+  `,
+  quiz:[
+    {q:"Sur quel horizon le LCR doit-il couvrir les sorties de liquidité ?",opts:["1 semaine","1 mois","1 an"],a:1,fb:"1 mois (30 jours) en scénario de stress."},
+    {q:"Le coussin de conservation est de…",opts:["2,5 % et permanent","0 à 2,5 % selon la conjoncture","3,5 % pour les G-SIB"],a:0,fb:"2,5 % de CET1, toujours exigé. Le contracyclique est celui qui varie de 0 à 2,5 %."},
+    {q:"La particularité du ratio de levier est qu'il…",opts:["pondère fortement les crédits","ne pondère pas par le risque","ne concerne que la liquidité"],a:1,fb:"Il rapporte les fonds propres aux expositions sans les pondérer par le risque."}
+  ]
+},
+{
+  id:'l5', n:5, navtitle:'Risque de crédit (EL) ★', chap:'Chapitre 5 · CALCUL',
+  title:"Mesurer la perte qu'on attend vraiment",
+  subtitle:'La formule EAD × PD × LGD et les six leviers de gestion interne',
+  html:`
+  <div class="callout co-analogy"><div class="co-head">💡 Analogie</div>
+  <p>Un assureur auto ne se demande pas « vais-je avoir un accident ? » mais « sur 1 000 clients, combien, à quel coût ? ». La perte attendue d'un crédit, c'est la même logique : combien je prête, quelle est la probabilité qu'il fasse défaut, et combien je perds vraiment une fois les garanties revendues.</p></div>
+
+  <p>La perte attendue (Expected Loss) combine trois paramètres. L'exposition au moment du défaut, la probabilité de défaut et la perte effective après recouvrement.</p>
+
+  <div class="formula">
+    <div class="f-label">Perte attendue — Expected Loss</div>
+    <div class="f-main">EL = <span class="var">EAD</span> <span class="op">×</span> <span class="var">PD</span> <span class="op">×</span> <span class="var">LGD</span></div>
+    <div class="f-note">EAD = encours exposé · PD = probabilité de défaut (12 mois) · LGD = perte en cas de défaut</div>
+  </div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>Composante</th><th>Signification</th><th>Description</th></tr>
+    <tr><td class="mono">EAD</td><td>Exposure At Default</td><td>Encours exposé au moment du défaut</td></tr>
+    <tr><td class="mono">PD</td><td>Probability of Default</td><td>Probabilité de défaut sur 12 mois</td></tr>
+    <tr><td class="mono">LGD</td><td>Loss Given Default</td><td>Perte finale après garanties (immo &lt; entreprise)</td></tr>
+  </table></div>
+
+  <p>Le défaut se définit par un <strong>impayé de plus de 90 jours</strong> ou l'incapacité à honorer les échéances. La perte moyenne (≈ 1,77 % des encours, CA 2016) est couverte par la marge ; les pertes inattendues, elles, par les fonds propres. C'est la logique du <span class="hl-teal">RAROC</span>.</p>
+
+  <h2>★ Exercice type — perte attendue</h2>
+  <div class="enonce"><strong>Crédit :</strong> encours exposé EAD = 200 000 € · probabilité de défaut PD = 2 % · perte en cas de défaut LGD = 45 %. Quelle est la perte attendue ?</div>
+  <div class="steps">
+    <div class="step"><div class="step-n"></div><div class="step-body">Convertir les pourcentages.
+      <div class="step-calc">PD = 0,02 · LGD = 0,45</div></div></div>
+    <div class="step"><div class="step-n"></div><div class="step-body">Appliquer la formule.
+      <div class="step-calc">EL = 200 000 × 0,02 × 0,45</div></div></div>
+  </div>
+  <div class="result-line">EL = 1 800 € de perte attendue → à couvrir par la marge.</div>
+
+  <h3>Les six leviers de gestion interne</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th class="mono">#</th><th>Levier</th><th>Outils</th></tr>
+    <tr><td class="mono">1</td><td>Coter le risque</td><td>Notation externe (AAA→D), cotation BDF, scoring interne</td></tr>
+    <tr><td class="mono">2</td><td>Sélectionner le dossier</td><td>Endettement, reste à vivre, apport, historique compte</td></tr>
+    <tr><td class="mono">3</td><td>Prendre des garanties</td><td>Sûretés réelles (hypothèque, gage), personnelles (caution)</td></tr>
+    <tr><td class="mono">4</td><td>Limiter / diversifier</td><td>Plafonds d'engagement, pool, diversification sectorielle</td></tr>
+    <tr><td class="mono">5</td><td>Tarifer le risque</td><td>Taux = coût ressource + coût risque + charge FP + frais + marge</td></tr>
+    <tr><td class="mono">6</td><td>Suivre les risques</td><td>Signaux d'alerte : retards, débit permanent, ATD, saisies</td></tr>
+  </table></div>
+
+  <div class="callout co-retain"><div class="co-head">🔑 À retenir</div>
+  <p><strong>EL = EAD × PD × LGD.</strong> La perte <em>attendue</em> est couverte par la marge ; la perte <em>inattendue</em> par les fonds propres. Le défaut = impayé &gt; 90 jours. La LGD d'un prêt immo est plus faible que celle d'un prêt entreprise grâce à l'hypothèque.</p></div>
+
+  <div class="callout co-trap"><div class="co-head">⚠️ Piège fréquent</div>
+  <p>Bien penser à convertir PD et LGD en décimaux. Multiplier 200 000 × 2 × 45 donne 18 000 000 € — un résultat absurde. La bonne lecture : 200 000 × 0,02 × 0,45 = 1 800 €.</p></div>
+  `,
+  quiz:[
+    {q:"La formule de la perte attendue est…",opts:["EAD + PD + LGD","EAD × PD × LGD","EAD ÷ (PD × LGD)"],a:1,fb:"EL = EAD × PD × LGD."},
+    {q:"À partir de combien de jours d'impayé parle-t-on de défaut ?",opts:["30 jours","60 jours","90 jours"],a:2,fb:"Plus de 90 jours d'impayé (ou incapacité à honorer les échéances)."},
+    {q:"La perte attendue moyenne d'un portefeuille est couverte par…",opts:["la marge","les fonds propres","la titrisation"],a:0,fb:"La marge couvre la perte attendue ; les fonds propres couvrent les pertes inattendues (RAROC)."}
+  ]
+},
+{
+  id:'l6', n:6, navtitle:'Gérer le crédit en externe', chap:'Chapitre 6',
+  title:'Quand la banque revend son risque',
+  subtitle:'Titrisation, CDS et swaps de crédit — et leurs effets pervers',
+  html:`
+  <div class="callout co-analogy"><div class="co-head">💡 Analogie</div>
+  <p>Un propriétaire qui craint pour sa maison a deux options : la revendre (titrisation — il s'en débarrasse et récupère du cash), ou souscrire une assurance incendie (CDS — il garde la maison mais paie une prime pour être remboursé si elle brûle). Deux façons de gérer le même risque, deux conséquences très différentes.</p></div>
+
+  <p>La gestion externe sort le risque du bilan. Trois techniques dominent : la titrisation, les CDS et les swaps de crédit.</p>
+
+  <h3>La titrisation</h3>
+  <p>La banque transforme un paquet de prêts en titres financiers vendus sur les marchés. Elle récupère des liquidités et se défait du risque de crédit.</p>
+  <div class="schema">
+    <svg viewBox="0 0 440 130" width="430">
+      <rect x="10" y="40" width="110" height="50" rx="8" style="fill:var(--teal)"/>
+      <text x="65" y="62" text-anchor="middle" font-family="Fraunces" font-size="13" style="fill:var(--blanc)">Banque</text>
+      <text x="65" y="79" text-anchor="middle" font-family="DM Mono" font-size="9" style="fill:var(--teal-clair)">prêts</text>
+      <path d="M120 55 L180 55" stroke-width="2" marker-end="url(#ar)" style="stroke:var(--txt3)"/>
+      <rect x="180" y="40" width="110" height="50" rx="8" style="fill:var(--amber)"/>
+      <text x="235" y="58" text-anchor="middle" font-family="Fraunces" font-size="12" style="fill:var(--blanc)">Véhicule (SPV)</text>
+      <text x="235" y="76" text-anchor="middle" font-family="DM Mono" font-size="9" style="fill:var(--amber-soft)">→ titres</text>
+      <path d="M290 55 L350 55" stroke-width="2" marker-end="url(#ar)" style="stroke:var(--txt3)"/>
+      <rect x="350" y="40" width="80" height="50" rx="8" style="fill:var(--navy)"/>
+      <text x="390" y="62" text-anchor="middle" font-family="Fraunces" font-size="12" style="fill:var(--blanc)">Marchés</text>
+      <text x="390" y="79" text-anchor="middle" font-family="DM Mono" font-size="9" style="fill:var(--m-clair)">investisseurs</text>
+      <path d="M350 100 Q235 130 120 100" stroke-width="2" fill="none" stroke-dasharray="4" marker-end="url(#ar)" style="stroke:var(--teal)"/>
+      <text x="235" y="125" text-anchor="middle" font-family="DM Mono" font-size="10" style="fill:var(--teal)">liquidités</text>
+      <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" style="fill:var(--txt3)"/></marker></defs>
+    </svg>
+    <div class="schema-cap">Prêts → titres → marchés ; les liquidités reviennent à la banque</div>
+  </div>
+
+  <h3>Le CDS — Credit Default Swap</h3>
+  <p>C'est un contrat d'assurance contre le défaut. La banque achète une protection moyennant une prime (ex. 0,30 % du montant garanti). Si l'emprunteur fait défaut, le vendeur de protection rembourse la banque.</p>
+  <div class="enonce"><strong>Exemple chiffré :</strong> CDS sur 1 000 000 € de créances, prime de 0,30 %. Coût annuel de la protection = 1 000 000 × 0,30 % = <strong>3 000 € / an</strong>.</div>
+
+  <h3>Le swap de crédit</h3>
+  <p>Deux banques échangent les flux de revenus de leurs crédits pour diversifier leurs portefeuilles et réduire la concentration sectorielle.</p>
+
+  <div class="callout co-retain"><div class="co-head">🔑 À retenir</div>
+  <p><strong>Titrisation</strong> = je revends le risque et récupère du cash. <strong>CDS</strong> = je garde le crédit mais je m'assure contre le défaut. <strong>Swap de crédit</strong> = j'échange des flux pour diversifier.</p></div>
+
+  <div class="callout co-trap"><div class="co-head">⚠️ Piège fréquent</div>
+  <p>La titrisation a nourri la crise de 2008 : en revendant le risque, la banque n'a plus d'intérêt à bien sélectionner ses emprunteurs — c'est l'<strong>aléa moral</strong>. S'y ajoute le <strong>shadow banking</strong>, hors du regard des superviseurs.</p></div>
+  `,
+  quiz:[
+    {q:"Le CDS est…",opts:["un titre vendu sur les marchés","un contrat d'assurance contre le défaut","un prêt interbancaire"],a:1,fb:"Un Credit Default Swap : la banque paie une prime, le vendeur rembourse en cas de défaut."},
+    {q:"Pour un CDS de 0,30 % sur 1 000 000 €, la prime annuelle est de…",opts:["300 €","3 000 €","30 000 €"],a:1,fb:"1 000 000 × 0,30 % = 3 000 €."},
+    {q:"Le principal effet pervers de la titrisation est…",opts:["l'aléa moral et le shadow banking","la hausse des taux directeurs","la baisse du ratio de levier"],a:0,fb:"En se défaisant du risque, la banque sélectionne moins bien (aléa moral) ; le shadow banking échappe au contrôle."}
+  ]
+},
+{
+  id:'l7', n:7, navtitle:'Risque de taux & ALM', chap:'Chapitre 7',
+  title:"L'effet ciseau qui ronge la marge",
+  subtitle:'Asymétrie du bilan, ALM et dérivés de taux (SWAP, CAP, FLOOR)',
+  html:`
+  <div class="callout co-analogy"><div class="co-head">💡 Analogie</div>
+  <p>Une banque, c'est un marchand qui vend du blé à prix fixe pour les 20 ans à venir (le prêt immo), mais qui le rachète chaque mois au prix du marché (la ressource courte). Si le prix d'achat grimpe alors que son prix de vente reste bloqué, sa marge fond. C'est l'effet ciseau.</p></div>
+
+  <p>Le bilan bancaire est asymétrique. La banque collecte des ressources à <span class="hl-teal">court terme et à taux variable</span> (dépôts, livrets) et reprête à <span class="hl-amber">moyen-long terme et à taux fixe</span> (prêts immo). Si les taux montent, le coût des ressources grimpe sans que les prêts ne suivent : la marge d'intermédiation se dégrade.</p>
+
+  <div class="schema">
+    <svg viewBox="0 0 380 180" width="360">
+      <line x1="40" y1="150" x2="350" y2="150" stroke-width="1.5" style="stroke:var(--txt3)"/>
+      <line x1="40" y1="20" x2="40" y2="150" stroke-width="1.5" style="stroke:var(--txt3)"/>
+      <line x1="40" y1="80" x2="350" y2="80" stroke-width="3" style="stroke:var(--teal)"/>
+      <text x="300" y="72" font-family="DM Mono" font-size="11" style="fill:var(--teal)">prêt taux fixe</text>
+      <line x1="40" y1="130" x2="350" y2="40" stroke-width="3" style="stroke:var(--rust)"/>
+      <text x="280" y="38" font-family="DM Mono" font-size="11" style="fill:var(--rust)">coût ressource ↑</text>
+      <circle cx="220" cy="80" r="5" style="fill:var(--amber)"/>
+      <text x="220" y="105" text-anchor="middle" font-family="DM Mono" font-size="11" style="fill:var(--amber)">marge écrasée</text>
+      <text x="195" y="170" text-anchor="middle" font-family="DM Mono" font-size="10" style="fill:var(--txt3)">temps →</text>
+    </svg>
+    <div class="schema-cap">Effet ciseau : la ressource croise puis dépasse le rendement du prêt fixe</div>
+  </div>
+
+  <h3>Gestion interne — l'ALM</h3>
+  <p>L'Asset Liabilities Management cherche l'<strong>adossement</strong> actif/passif : équilibrer actifs et passifs de même nature et même durée. L'adossement parfait étant impossible, la banque recherche des ressources à taux fixe (obligations, PEL) et propose des prêts à taux variable.</p>
+
+  <h3>Gestion externe — les dérivés de taux</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Instrument</th><th>Fonction</th></tr>
+    <tr><td><strong>SWAP de taux</strong></td><td>Échanger des flux à taux fixe contre des flux à taux variable</td></tr>
+    <tr><td><strong>CAP</strong></td><td>Protection contre la <span class="hl-rust">hausse</span> des taux au-delà d'un plafond (strike) ; l'acheteur paie une prime</td></tr>
+    <tr><td><strong>FLOOR</strong></td><td>Protection contre la <span class="hl-teal">baisse</span> des taux sous un plancher ; le vendeur verse le différentiel</td></tr>
+  </table></div>
+
+  <div class="callout co-retain"><div class="co-head">🔑 À retenir</div>
+  <p>Le risque de taux naît de l'<strong>asymétrie du bilan</strong> (ressources courtes variables / emplois longs fixes). L'<strong>ALM</strong> gère l'adossement en interne. <strong>CAP = plafond contre la hausse</strong> ; <strong>FLOOR = plancher contre la baisse</strong>.</p></div>
+
+  <div class="callout co-trap"><div class="co-head">⚠️ Piège fréquent</div>
+  <p>Ne pas inverser CAP et FLOOR. Astuce : <em>cap</em> = casquette, ça plafonne par le haut (hausse) ; <em>floor</em> = plancher, ça protège par le bas (baisse).</p></div>
+  `,
+  quiz:[
+    {q:"Le CAP protège l'acheteur contre…",opts:["la hausse des taux","la baisse des taux","le défaut de crédit"],a:0,fb:"Le CAP est un plafond : il protège contre la hausse des taux au-delà du strike."},
+    {q:"Le risque de taux provient principalement de…",opts:["l'asymétrie du bilan","la titrisation","la pondération des RWA"],a:0,fb:"Ressources courtes à taux variable face à des emplois longs à taux fixe : c'est l'asymétrie du bilan."},
+    {q:"L'ALM désigne…",opts:["un dérivé de change","la gestion actif/passif (adossement)","une amende de non-conformité"],a:1,fb:"Asset Liabilities Management : l'adossement des actifs et passifs en nature et durée."}
+  ]
+},
+{
+  id:'l8', n:8, navtitle:'Risque de liquidité', chap:'Chapitre 8',
+  title:'Solvable mais à sec : le piège de la liquidité',
+  subtitle:'LCR, impasses de trésorerie (gaps) et refinancement',
+  html:`
+  <div class="callout co-analogy"><div class="co-head">💡 Analogie</div>
+  <p>Vous possédez une maison à 500 000 € mais seulement 20 € en poche, et le boulanger n'accepte pas les briques. Vous êtes riche (solvable) mais incapable de payer votre pain (illiquide). Une banque peut faire faillite ainsi : ses actifs valent plus que ses dettes, mais elle ne peut pas faire face aux retraits immédiats.</p></div>
+
+  <p>Le risque de liquidité, c'est l'incapacité à honorer les engagements immédiats : retraits massifs, soldes interbancaires. La crise des subprimes en est l'exemple type — le marché interbancaire s'est bloqué, plus personne ne se prêtait.</p>
+
+  <h3>Le LCR comme rempart</h3>
+  <div class="formula">
+    <div class="f-label">Liquidity Coverage Ratio</div>
+    <div class="f-main"><span class="var">Réserves liquides</span> <span class="op">≥</span> <span class="var">Sorties nettes à 1 mois</span></div>
+    <div class="f-note">Cash + titres d'État liquides couvrant 30 jours de stress</div>
+  </div>
+
+  <h3>Les impasses de trésorerie (gaps)</h3>
+  <p>La banque suit des tableaux de bord par horizon. Pour chaque échéance, elle calcule un solde.</p>
+  <div class="formula">
+    <div class="f-label">Impasse de liquidité</div>
+    <div class="f-main">Gap = <span class="var">Actif réalisable</span> <span class="op">−</span> <span class="var">Passif exigible</span></div>
+    <div class="f-note">Un gap négatif signale un besoin de refinancement sur l'horizon</div>
+  </div>
+
+  <p><strong>Gestion interne :</strong> adossement actif/passif, refinancement interbancaire, recours à la BCE (prêteur en dernier ressort). <strong>Gestion externe :</strong> titrisation, qui cède des créances et récupère des liquidités.</p>
+
+  <div class="callout co-retain"><div class="co-head">🔑 À retenir</div>
+  <p>Solvabilité ≠ liquidité : une banque solvable peut faire faillite par illiquidité. Le <strong>LCR</strong> couvre 1 mois de sorties. L'<strong>impasse</strong> = actif réalisable − passif exigible ; un gap négatif appelle un refinancement.</p></div>
+
+  <div class="callout co-trap"><div class="co-head">⚠️ Piège fréquent</div>
+  <p>Confondre solvabilité et liquidité. Lehman Brothers et la crise de 2008 montrent qu'un bilan « solvable » sur le papier ne sauve pas une banque qui n'arrive plus à se refinancer du jour au lendemain.</p></div>
+  `,
+  quiz:[
+    {q:"Une impasse de liquidité (gap) se calcule comme…",opts:["passif exigible − actif réalisable","actif réalisable − passif exigible","fonds propres ÷ RWA"],a:1,fb:"Gap = actif réalisable − passif exigible. Un gap négatif = besoin de refinancement."},
+    {q:"Une banque solvable peut-elle faire faillite par manque de liquidité ?",opts:["Oui","Non, jamais","Seulement si le LCR est respecté"],a:0,fb:"Oui : solvabilité ≠ liquidité. C'est l'illiquidité qui a précipité plusieurs faillites en 2008."},
+    {q:"En dernier recours, qui refinance les banques (PDR) ?",opts:["L'AMF","La BCE","Le FGDR"],a:1,fb:"La BCE joue le rôle de prêteur en dernier ressort (PDR)."}
+  ]
+},
+{
+  id:'l9', n:9, navtitle:'Risque de marché — VaR ★', chap:'Chapitre 9 · CALCUL',
+  title:'La VaR : combien je peux perdre, et avec quelle confiance',
+  subtitle:'Value at Risk, niveau de confiance et limites en cas de crise',
+  html:`
+  <div class="callout co-analogy"><div class="co-head">💡 Analogie</div>
+  <p>La météo annonce : « 95 % de chances qu'il pleuve moins de 20 mm aujourd'hui ». Elle ne promet pas qu'il ne tombera jamais plus — juste que, dans 95 % des cas, on reste sous le seuil. La VaR fait pareil avec les pertes : dans 95 % des jours, la perte ne dépassera pas X. Les 5 % restants ? C'est là que se cachent les crises.</p></div>
+
+  <p>La Value at Risk mesure la perte maximale d'un portefeuille pour un niveau de confiance et un horizon donnés. Elle dépend de la volatilité et du quantile de la loi normale.</p>
+
+  <div class="formula">
+    <div class="f-label">Value at Risk</div>
+    <div class="f-main">VaR = <span class="var">Montant PTF</span> <span class="op">×</span> <span class="var">z</span> <span class="op">×</span> <span class="var">σ</span></div>
+    <div class="f-note">z = quantile de la loi normale · σ = volatilité journalière</div>
+  </div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>Niveau de confiance</th><th class="mono">z</th></tr>
+    <tr><td>90 %</td><td class="mono">1,65</td></tr>
+    <tr><td>95 %</td><td class="mono">1,96</td></tr>
+    <tr><td>99 %</td><td class="mono">2,58</td></tr>
+  </table></div>
+
+  <div class="schema">
+    <svg viewBox="0 0 380 160" width="360">
+      <path d="M20 130 Q110 130 150 60 Q190 10 230 60 Q270 130 360 130" stroke-width="2" style="fill:var(--teal-soft);stroke:var(--teal)"/>
+      <path d="M20 130 Q70 130 95 100 L95 130 Z" opacity="0.6" style="fill:var(--rust)"/>
+      <line x1="95" y1="20" x2="95" y2="130" stroke-width="1.5" stroke-dasharray="4" style="stroke:var(--rust)"/>
+      <text x="60" y="148" font-family="DM Mono" font-size="11" style="fill:var(--rust)">perte &gt; VaR</text>
+      <text x="60" y="118" font-family="DM Mono" font-size="10" style="fill:var(--rust)">5%</text>
+      <text x="230" y="148" font-family="DM Mono" font-size="11" style="fill:var(--teal)">95 % des jours</text>
+      <text x="190" y="40" text-anchor="middle" font-family="Fraunces" font-size="12" style="fill:var(--nuit)">distribution des pertes</text>
+    </svg>
+    <div class="schema-cap">La VaR borne 95 % de la distribution ; la queue (5 %) échappe au modèle</div>
+  </div>
+
+  <h2>★ Exercice type — calcul de la VaR</h2>
+  <div class="enonce"><strong>Portefeuille :</strong> 1 000 000 € · volatilité journalière σ = 7 % · niveau de confiance 95 % (z = 1,65). Quelle est la VaR, et la valeur minimale du portefeuille ?</div>
+  <div class="steps">
+    <div class="step"><div class="step-n"></div><div class="step-body">Appliquer la formule.
+      <div class="step-calc">VaR = 1 000 000 × 1,65 × 0,07</div></div></div>
+    <div class="step"><div class="step-n"></div><div class="step-body">Calculer le résultat.
+      <div class="step-calc">VaR = 115 500 €</div></div></div>
+    <div class="step"><div class="step-n"></div><div class="step-body">Déduire la valeur plancher.
+      <div class="step-calc">1 000 000 − 115 500 = 884 500 €</div></div></div>
+  </div>
+  <div class="result-line">VaR = 115 500 € → 95 % des jours, la perte n'excède pas ce montant.</div>
+
+  <p><strong>Gestion interne :</strong> diversification du portefeuille (Markowitz) — le risque global est inférieur à la somme des risques individuels. <strong>Gestion externe :</strong> options (Call/Put), Futures, swaps de devise pour se couvrir (hedging).</p>
+
+  <div class="callout co-retain"><div class="co-head">🔑 À retenir</div>
+  <p><strong>VaR = Montant × z × σ.</strong> Le z dépend du niveau de confiance (1,65 à 90 %, 1,96 à 95 %, 2,58 à 99 %). La valeur plancher = montant − VaR. La diversification (Markowitz) réduit le risque global.</p></div>
+
+  <div class="callout co-trap"><div class="co-head">⚠️ Piège fréquent</div>
+  <p>La VaR <strong>ne fonctionne pas</strong> lors des événements extrêmes (crise de 2008). Elle décrit les jours « normaux » mais ignore la queue de distribution. Attention aussi au z : l'énoncé peut donner 1,65 pour 95 % — utiliser la valeur fournie, pas celle de mémoire.</p></div>
+  `,
+  quiz:[
+    {q:"La formule de la VaR est…",opts:["Montant × z × σ","Montant ÷ (z × σ)","z + σ + Montant"],a:0,fb:"VaR = Montant du portefeuille × z × σ."},
+    {q:"Pour un PTF de 1 000 000 €, z = 1,65 et σ = 7 %, la VaR vaut…",opts:["70 000 €","115 500 €","165 000 €"],a:1,fb:"1 000 000 × 1,65 × 0,07 = 115 500 €."},
+    {q:"Principale limite de la VaR :",opts:["elle surestime toujours les pertes","elle est inopérante lors d'événements extrêmes","elle ne s'applique qu'au crédit"],a:1,fb:"Elle ignore la queue de distribution : inopérante face aux crises (2008)."}
+  ]
+},
+{
+  id:'l10', n:10, navtitle:'Opérationnel & stress tests', chap:'Chapitre 10',
+  title:"L'humain, la machine et les scénarios catastrophe",
+  subtitle:'Risque opérationnel, allocation de fonds propres et stress tests',
+  html:`
+  <div class="callout co-analogy"><div class="co-head">💡 Analogie</div>
+  <p>Une usine peut avoir d'excellentes machines et tomber en panne à cause d'un employé qui appuie sur le mauvais bouton, d'un incendie ou d'un logiciel qui plante. Le risque opérationnel, c'est tout ce qui casse sans que ce soit un emprunteur qui fait défaut ou un marché qui chute : la défaillance interne.</p></div>
+
+  <p>Le Comité de Bâle définit le risque opérationnel comme la perte résultant d'une défaillance des <span class="hl-teal">procédures, personnels, systèmes internes</span> ou d'événements extérieurs. Fraude, cyberattaque, erreur de saisie en sont les visages.</p>
+
+  <h3>La gestion et l'allocation de fonds propres</h3>
+  <p>On combine contrôle interne, procédures et formation. Bâle impose d'allouer des fonds propres au risque opérationnel selon deux méthodes.</p>
+  <div class="tbl-wrap"><table>
+    <tr><th>Méthode</th><th class="mono">Allocation</th></tr>
+    <tr><td>Indicateur de base (Basic Indicator)</td><td class="mono">15 % du PNB</td></tr>
+    <tr><td>Méthode standard</td><td class="mono">12 à 18 % selon le métier</td></tr>
+  </table></div>
+  <p>Les activités non génératrices de PNB sont souvent <strong>externalisées</strong> pour réduire l'exposition.</p>
+
+  <h3>Les stress tests</h3>
+  <p>Les banques modélisent l'impact de scénarios négatifs (récession, hausse des taux, choc géopolitique) sur leur solvabilité et leur liquidité. Ces tests sont menés régulièrement sous la supervision de l'<strong>ABE (EBA)</strong>.</p>
+
+  <div class="callout co-retain"><div class="co-head">🔑 À retenir</div>
+  <p>Le risque opérationnel = défaillance interne (procédures, personnes, systèmes) ou choc externe. Allocation de fonds propres : <strong>15 % du PNB</strong> (indicateur de base) ou 12–18 % (standard). Les <strong>stress tests</strong> sont supervisés par l'ABE.</p></div>
+
+  <div class="callout co-trap"><div class="co-head">⚠️ Piège fréquent</div>
+  <p>Les stress tests ne capturent pas l'<strong>irrationnel</strong> : une crise de confiance pure échappe aux scénarios chiffrés. Comme la VaR, ils éclairent le probable mais pas l'extrême. Le risque zéro n'existe pas — il est l'essence même du métier bancaire.</p></div>
+  `,
+  quiz:[
+    {q:"L'allocation de fonds propres au risque opérationnel par l'indicateur de base est de…",opts:["8 % des RWA","15 % du PNB","2,5 % de CET1"],a:1,fb:"15 % du PNB (méthode Basic Indicator) ; 12 à 18 % en méthode standard."},
+    {q:"Qui supervise les stress tests bancaires en Europe ?",opts:["L'ABE (EBA)","L'AMF","Le FGDR"],a:0,fb:"L'Autorité Bancaire Européenne (ABE / EBA)."},
+    {q:"Quelle est la limite commune à la VaR et aux stress tests ?",opts:["ils ne concernent que le crédit","ils ne captent pas l'irrationnel / les extrêmes","ils sont interdits par Bâle III"],a:1,fb:"Tous deux ignorent l'irrationnel et les événements extrêmes (crise de confiance)."}
+  ]
+}
+];
+
+/* ============ TEST FINAL ============ */
+const testQuestions = [
+  {chap:1, type:'mcq', q:"Quel risque représente environ 85 % de l'exposition globale d'une banque ?", opts:["Marché","Crédit","Opérationnel"], a:1, rem:"Le risque de crédit domine : 85 % de l'exposition (Leçon 1).", lesson:0},
+  {chap:9, type:'num', q:"VaR d'un portefeuille de 1 000 000 € avec z = 1,65 et σ = 7 %. Réponse en € (chiffre seul).", a:115500, tol:0.02, unit:"€", rem:"VaR = 1 000 000 × 1,65 × 0,07 = 115 500 € (Leçon 9).", lesson:8},
+  {chap:3, type:'mcq', q:"Le ratio de solvabilité Bâle III doit être au minimum de :", opts:["4,5 %","8 %","13 %"], a:1, rem:"Total T1+T2 ≥ 8 % des RWA (Leçon 3).", lesson:2},
+  {chap:4, type:'mcq', q:"Sur quel horizon le LCR couvre-t-il les sorties de liquidité ?", opts:["1 semaine","1 mois","1 an"], a:1, rem:"Le LCR couvre 30 jours de stress (Leçon 4).", lesson:3},
+  {chap:5, type:'num', q:"Perte attendue : EAD = 200 000 €, PD = 2 %, LGD = 45 %. Réponse en € (chiffre seul).", a:1800, tol:0.02, unit:"€", rem:"EL = 200 000 × 0,02 × 0,45 = 1 800 € (Leçon 5).", lesson:4},
+  {chap:6, type:'mcq', q:"Le CDS (Credit Default Swap) est :", opts:["un titre revendu sur les marchés","un contrat d'assurance contre le défaut","un prêt de la BCE"], a:1, rem:"Le CDS assure contre le défaut moyennant une prime (Leçon 6).", lesson:5},
+  {chap:7, type:'mcq', q:"Le CAP protège l'acheteur contre :", opts:["la hausse des taux","la baisse des taux","le risque de change"], a:0, rem:"CAP = plafond contre la hausse des taux (Leçon 7).", lesson:6},
+  {chap:3, type:'num', q:"Bilan : 1 000 crédits entreprises (100 %), 500 conso (50 %), 2 000 oblig. d'État (0 %), 200 titres (100 %). RWA total ? (chiffre seul)", a:1450, tol:0.01, rem:"RWA = 1000 + 250 + 0 + 200 = 1 450 (Leçon 3).", lesson:2},
+  {chap:2, type:'mcq', q:"Le FGDR garantit les dépôts espèces à hauteur de :", opts:["70 000 €","100 000 € par déposant et par établissement","sans plafond"], a:1, rem:"100 000 € espèces (70 000 € titres), par déposant et établissement (Leçon 2).", lesson:1},
+  {chap:10, type:'mcq', q:"L'allocation de fonds propres au risque opérationnel (indicateur de base) est de :", opts:["8 % des RWA","15 % du PNB","2,5 % de CET1"], a:1, rem:"15 % du PNB en méthode Basic Indicator (Leçon 10).", lesson:9}
+];
+
+/* ============ ANNALES ============ */
+const annales = [
+  {t:"Exercice 1 — Ratio de solvabilité ★", en:"Bilan d'une banque : 1 000 crédits entreprises · 500 crédits conso particuliers · 2 000 obligations d'État · 200 titres de marché. Fonds propres = 200. Calculer le ratio de solvabilité et conclure.",
+   cor:`<p><strong>Étape 1 — Pondérer.</strong></p>
+   <div class="tbl-wrap"><table><tr><th>Actif</th><th class="mono">Montant</th><th class="mono">Pond.</th><th class="mono">RWA</th></tr>
+   <tr><td>Crédits entreprises</td><td class="mono">1 000</td><td class="mono">100 %</td><td class="mono">1 000</td></tr>
+   <tr><td>Crédits conso</td><td class="mono">500</td><td class="mono">50 %</td><td class="mono">250</td></tr>
+   <tr><td>Obligations d'État</td><td class="mono">2 000</td><td class="mono">0 %</td><td class="mono">0</td></tr>
+   <tr><td>Titres de marché</td><td class="mono">200</td><td class="mono">100 %</td><td class="mono">200</td></tr>
+   <tr class="tbl-tot"><td>Total RWA</td><td class="mono">—</td><td class="mono">—</td><td class="mono">1 450</td></tr></table></div>
+   <p><strong>Étape 2 — Calculer.</strong></p>
+   <div class="result-line">Ratio = 200 ÷ 1 450 = 13,8 % ≥ 8 % ✓ La banque est solvable.</div>`},
+  {t:"Exercice 2 — Value at Risk ★", en:"Un portefeuille vaut 1 000 000 €. Sa volatilité journalière est de 7 %. Pour un niveau de confiance de 95 % (z = 1,65), calculer la VaR puis la valeur minimale du portefeuille.",
+   cor:`<div class="steps">
+   <div class="step"><div class="step-n"></div><div class="step-body">VaR = Montant × z × σ<div class="step-calc">= 1 000 000 × 1,65 × 0,07</div></div></div>
+   <div class="step"><div class="step-n"></div><div class="step-body">Résultat<div class="step-calc">VaR = 115 500 €</div></div></div>
+   <div class="step"><div class="step-n"></div><div class="step-body">Valeur plancher<div class="step-calc">1 000 000 − 115 500 = 884 500 €</div></div></div></div>
+   <div class="result-line">95 % des jours, la perte ne dépasse pas 115 500 €. Valeur minimale = 884 500 €.</div>
+   <p style="margin-top:12px"><strong>Remarque :</strong> la VaR devient inopérante lors d'événements extrêmes (crise 2008).</p>`},
+  {t:"Exercice 3 — Perte attendue sur crédit ★", en:"Un crédit présente : EAD = 200 000 €, PD = 2 %, LGD = 45 %. Calculer la perte attendue (EL) et indiquer par quoi elle est couverte.",
+   cor:`<div class="steps">
+   <div class="step"><div class="step-n"></div><div class="step-body">Convertir<div class="step-calc">PD = 0,02 · LGD = 0,45</div></div></div>
+   <div class="step"><div class="step-n"></div><div class="step-body">EL = EAD × PD × LGD<div class="step-calc">= 200 000 × 0,02 × 0,45 = 1 800 €</div></div></div></div>
+   <div class="result-line">EL = 1 800 €, couverte par la marge. Les pertes inattendues, elles, par les fonds propres (RAROC).</div>`},
+  {t:"Exercice 4 — CDS (couverture du crédit)", en:"Une banque souscrit un CDS pour se protéger sur 1 000 000 € de créances, au taux de prime de 0,30 %. Quel est le coût annuel de la protection ? Que se passe-t-il en cas de défaut ?",
+   cor:`<div class="steps">
+   <div class="step"><div class="step-n"></div><div class="step-body">Prime = montant garanti × taux<div class="step-calc">= 1 000 000 × 0,30 % = 3 000 €/an</div></div></div></div>
+   <div class="result-line">Coût = 3 000 €/an. En cas de défaut, le vendeur de protection rembourse la banque.</div>
+   <p style="margin-top:12px"><strong>À noter :</strong> contrairement à la titrisation, la banque garde le crédit à son bilan — elle s'assure seulement contre le défaut.</p>`},
+  {t:"Question de cours — Distinguer les risques", en:"Distinguez le risque de marché du risque de taux, puis expliquez pourquoi une banque solvable peut faire faillite.",
+   cor:`<p><strong>Marché vs taux :</strong> le risque de <strong>marché</strong> est la baisse de valeur d'un actif (titre, devise). Le risque de <strong>taux</strong> dégrade la marge d'intermédiation via l'effet ciseau (ressource variable courte vs prêt fixe long), sans qu'aucun actif ne se déprécie nécessairement.</p>
+   <p><strong>Solvable mais faillie :</strong> solvabilité ≠ liquidité. Une banque dont les actifs valent plus que les dettes peut s'effondrer si elle ne peut pas faire face à des retraits immédiats ou si l'interbancaire se bloque (cas de 2008). C'est le <strong>risque de liquidité</strong>.</p>`}
+];
+
+/* ============ RENDU ============ */
+function renderLessons(){
+  const cont=document.getElementById('lessonsContainer');
+  cont.innerHTML=lessons.map((l,i)=>`
+    <section class="view" id="view-${l.id}">
+      <span class="tag">${l.chap}</span>
+      <h1 class="lesson-title">${l.title}</h1>
+      <p class="subtitle">${l.subtitle}</p>
+      ${l.html}
+      <div id="quiz-${l.id}"></div>
+      <div class="lesson-nav">
+        <button class="btn btn-prev" ${i===0?'disabled':''} onclick="${i===0?'':`showLesson(${i-1})`}">← Précédent</button>
+        <span class="xp-pill" id="xppill-${l.id}">+50 XP à la validation</span>
+        <button class="btn btn-next" onclick="validateLesson(${i})">${i===lessons.length-1?'Terminer ✓':'Valider & suivant →'}</button>
+      </div>
+    </section>`).join('');
+  lessons.forEach(l=>renderQuiz(l));
+}
+
+function renderQuiz(l){
+  const c=document.getElementById('quiz-'+l.id);
+  c.innerHTML='<h2>Mini-quiz</h2>'+l.quiz.map((qz,qi)=>`
+    <div class="quiz">
+      <div class="quiz-q"><span class="qicon">❔</span><span>${qz.q}</span></div>
+      <div class="quiz-opts">
+        ${qz.opts.map((o,oi)=>`<button class="quiz-opt" onclick="answerQuiz('${l.id}',${qi},${oi},${qz.a})">${o}</button>`).join('')}
+      </div>
+      <div class="quiz-fb" id="fb-${l.id}-${qi}"></div>
+    </div>`).join('');
+}
+
+function answerQuiz(lid,qi,oi,correct){
+  const quizDiv=document.getElementById('fb-'+lid+'-'+qi).closest('.quiz');
+  const opts=quizDiv.querySelectorAll('.quiz-opt');
+  if(opts[0].classList.contains('locked'))return;
+  opts.forEach(o=>o.classList.add('locked'));
+  const lesson=lessons.find(x=>x.id===lid); const fbTxt=lesson.quiz[qi].fb;
+  const fb=document.getElementById('fb-'+lid+'-'+qi);
+  if(oi===correct){
+    opts[oi].classList.add('correct');
+    fb.className='quiz-fb good show'; fb.innerHTML='✓ Exact. '+fbTxt;
+    addXP(10);
+  }else{
+    opts[oi].classList.add('wrong'); opts[correct].classList.add('correct');
+    fb.className='quiz-fb bad show'; fb.innerHTML='✗ Pas tout à fait. '+fbTxt;
+  }
+}
+
+function renderSidebar(){
+  document.getElementById('sbLessons').innerHTML=lessons.map((l,i)=>`
+    <div class="sb-item" id="sb-${l.id}" onclick="showLesson(${i})">
+      <span class="sb-num">${l.n}</span><span>${l.navtitle}</span>
+    </div>`).join('');
+}
+
+function renderHome(){
+  document.getElementById('homeGrid').innerHTML=lessons.map((l,i)=>`
+    <div class="home-card" id="hc-${l.id}" onclick="showLesson(${i})">
+      <div class="hc-num">${l.chap}</div>
+      <div class="hc-title">${l.navtitle.replace(' ★','')} <span class="hc-check" id="hcheck-${l.id}"></span></div>
+      <div class="hc-desc">${l.subtitle}</div>
+    </div>`).join('');
+}
+
+/* ============ NAVIGATION ============ */
+function show(view){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+view).classList.add('active');
+  document.querySelectorAll('.sb-item').forEach(s=>s.classList.remove('active'));
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(window.innerWidth<=860)document.getElementById('sidebar').classList.remove('open');
+}
+function showLesson(i){
+  const l=lessons[i]; show(l.id);
+  document.getElementById('sb-'+l.id).classList.add('active');
+}
+function goTest(){ resetTest(); show('test'); }
+
+function validateLesson(i){
+  const l=lessons[i];
+  if(!state.lessonXP.has(l.id)){ addXP(50); state.lessonXP.add(l.id); }
+  state.done.add(l.id);
+  document.getElementById('sb-'+l.id).classList.add('done');
+  document.getElementById('xppill-'+l.id).textContent='✓ Leçon validée';
+  document.getElementById('hc-'+l.id).classList.add('done');
+  document.getElementById('hcheck-'+l.id).textContent='✓';
+  updateProgress();
+  if(i<lessons.length-1){ showLesson(i+1); }
+  else{ goTest(); }
+}
+
+function addXP(n){ state.xp+=n; document.getElementById('xpVal').textContent=state.xp; }
+function updateProgress(){
+  const pct=Math.round(state.done.size/TOTAL_UNITS*100);
+  document.getElementById('progFill').style.width=pct+'%';
+  document.getElementById('progTxt').textContent=pct+' %';
+}
+
+function toggleSidebar(){ document.getElementById('sidebar').classList.toggle('open'); }
+
+/* ============ TEST LOGIC ============ */
+let testAnswered=new Array(testQuestions.length).fill(false);
+
+function renderTest(){
+  const c=document.getElementById('testContainer');
+  c.innerHTML=testQuestions.map((q,i)=>{
+    let body;
+    if(q.type==='mcq'){
+      body=`<div class="quiz-opts">${q.opts.map((o,oi)=>`<button class="quiz-opt" onclick="answerTest(${i},${oi})">${o}</button>`).join('')}</div>`;
+    }else{
+      body=`<div><input class="test-input" id="tin-${i}" type="text" placeholder="votre réponse" inputmode="decimal"><span class="test-unit">${q.unit||''}</span>
+      <button class="btn-sm btn-revoir" style="margin-left:10px;background:var(--plum)" onclick="answerTestNum(${i})">Vérifier</button></div>`;
+    }
+    return `<div class="test-q-card" id="tq-${i}">
+      <span class="test-q-num">Question ${i+1} / ${testQuestions.length} · Chap. ${q.chap}</span>
+      <div class="test-q-txt">${q.q}</div>
+      ${body}
+      <div class="remediation" id="rem-${i}">
+        <div class="rem-head">⚠️ Réponse incorrecte</div>
+        <div id="remtxt-${i}"></div>
+        <div class="rem-actions">
+          <button class="btn-sm btn-revoir" onclick="showLesson(${q.lesson})">📖 Revoir la leçon</button>
+          <button class="btn-sm btn-continuer" onclick="document.getElementById('rem-${i}').classList.remove('show')">Continuer</button>
+        </div>
+      </div>
+      <div class="correct-banner" id="ok-${i}">✓ Bonne réponse !</div>
+    </div>`;
+  }).join('')+`<div style="text-align:center;margin-top:24px"><button class="btn btn-next" onclick="finishTest()">Voir mon résultat</button></div>`;
+}
+
+function answerTest(i,oi){
+  if(testAnswered[i])return;
+  const q=testQuestions[i];
+  const card=document.getElementById('tq-'+i);
+  const opts=card.querySelectorAll('.quiz-opt');
+  opts.forEach(o=>o.classList.add('locked'));
+  if(oi===q.a){
+    opts[oi].classList.add('correct');
+    document.getElementById('ok-'+i).classList.add('show');
+    q.correct=true; addXP(20);
+  }else{
+    opts[oi].classList.add('wrong'); opts[q.a].classList.add('correct');
+    document.getElementById('remtxt-'+i).textContent=q.rem;
+    document.getElementById('rem-'+i).classList.add('show');
+    q.correct=false;
+    document.getElementById('floatRetake').classList.add('show');
+  }
+  testAnswered[i]=true;
+}
+
+function answerTestNum(i){
+  if(testAnswered[i])return;
+  const q=testQuestions[i];
+  const raw=document.getElementById('tin-'+i).value.replace(/\s/g,'').replace(/,/g,'.').replace(/[€%]/g,'');
+  const val=parseFloat(raw);
+  const input=document.getElementById('tin-'+i);
+  input.disabled=true;
+  if(!isNaN(val) && Math.abs(val-q.a)<=q.a*q.tol){
+    input.style.borderColor='var(--teal)'; input.style.background='var(--teal-soft)';
+    document.getElementById('ok-'+i).classList.add('show');
+    q.correct=true; addXP(20);
+  }else{
+    input.style.borderColor='var(--rust)'; input.style.background='var(--rust-soft)';
+    document.getElementById('remtxt-'+i).textContent=q.rem;
+    document.getElementById('rem-'+i).classList.add('show');
+    q.correct=false;
+    document.getElementById('floatRetake').classList.add('show');
+  }
+  testAnswered[i]=true;
+}
+
+function resetTest(){
+  testAnswered=new Array(testQuestions.length).fill(false);
+  testQuestions.forEach(q=>q.correct=undefined);
+  document.getElementById('resultScreen').classList.remove('show');
+  document.getElementById('resultScreen').innerHTML='';
+  document.getElementById('testContainer').style.display='block';
+  document.getElementById('floatRetake').classList.remove('show');
+  document.querySelector('#view-test .tag').style.display='';
+  document.querySelector('#view-test .lesson-title').style.display='';
+  document.querySelector('#view-test .subtitle').style.display='';
+  renderTest();
+}
+
+function finishTest(){
+  const total=testQuestions.length;
+  const score=testQuestions.filter(q=>q.correct===true).length;
+  // bilan par chapitre
+  const chapMap={};
+  testQuestions.forEach(q=>{
+    if(!chapMap[q.chap])chapMap[q.chap]={ok:0,tot:0};
+    chapMap[q.chap].tot++; if(q.correct===true)chapMap[q.chap].ok++;
+  });
+  const pct=Math.round(score/total*100);
+  let msg,color;
+  if(pct>=80){msg="Excellent — tu es prêt pour le partiel. 🎯";color='var(--teal)';}
+  else if(pct>=60){msg="Bon niveau. Reprends les chapitres en rouge ci-dessous.";color='var(--amber)';}
+  else{msg="À retravailler : reprends les leçons signalées avant de réessayer.";color='var(--rust)';}
+
+  const chapNames={1:'Ch.1 Panorama',2:'Ch.2 Surveillance',3:'Ch.3 Solvabilité',4:'Ch.4 Coussins/LCR',5:'Ch.5 Crédit (EL)',6:'Ch.6 Crédit externe',7:'Ch.7 Taux',9:'Ch.9 VaR',10:'Ch.10 Opérationnel'};
+  const bars=Object.keys(chapMap).map(ch=>{
+    const d=chapMap[ch]; const p=Math.round(d.ok/d.tot*100);
+    const col=p>=100?'var(--teal)':p>=50?'var(--amber)':'var(--rust)';
+    return `<div class="cbar-row">
+      <div class="cbar-label"><span>${chapNames[ch]||('Ch.'+ch)}</span><span style="font-family:DM Mono">${d.ok}/${d.tot}</span></div>
+      <div class="cbar-track"><div class="cbar-fill" style="width:0%;background:${col}" data-w="${p}"></div></div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('testContainer').style.display='none';
+  document.querySelector('#view-test .tag').style.display='none';
+  document.querySelector('#view-test .lesson-title').style.display='none';
+  document.querySelector('#view-test .subtitle').style.display='none';
+  const rs=document.getElementById('resultScreen');
+  rs.innerHTML=`
+    <div class="result-score" style="color:${color}">${score}/${total}</div>
+    <div class="result-msg">${msg}</div>
+    <h2 style="text-align:center">Bilan par chapitre</h2>
+    <div class="chapter-bars">${bars}</div>
+    <div style="margin-top:30px"><button class="btn btn-next" onclick="goTest()">🔁 Reprendre le test</button></div>`;
+  rs.classList.add('show');
+  if(pct>=80) state.done.add('test');
+  window.scrollTo({top:0,behavior:'smooth'});
+  setTimeout(()=>{document.querySelectorAll('.cbar-fill').forEach(b=>b.style.width=b.dataset.w+'%');},100);
+}
+
+/* ============ INIT ============ */
+renderSidebar(); renderHome(); renderLessons(); renderTest(); 
+document.getElementById('annalesContainer').innerHTML=annales.map((a,i)=>`
+  <div class="annale">
+    <div class="annale-head"><span class="at">${a.t}</span></div>
+    <div class="annale-body">
+      <div class="enonce">${a.en}</div>
+      <button class="btn-sm btn-revoir" style="background:var(--navy)" onclick="toggleCor(${i})" id="corbtn-${i}">Voir le corrigé</button>
+      <div class="corrige" id="cor-${i}">${a.cor}</div>
+    </div>
+  </div>`).join('');
+function toggleCor(i){
+  const c=document.getElementById('cor-'+i); const b=document.getElementById('corbtn-'+i);
+  c.classList.toggle('show');
+  b.textContent=c.classList.contains('show')?'Masquer le corrigé':'Voir le corrigé';
+}
+updateProgress();
+</script>
+<script src="../lb.js"></script>
+<script src="../progress.js"></script>
+<script src="../ui.js"></script>
+</body>
+</html>

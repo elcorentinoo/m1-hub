@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="fr" data-niveau="licence" subject-id="l-finance-internationale">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>Finance Internationale · Mode entraînement</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+:root{ --ok-l:var(--teal-soft); --err:var(--rust); --err-l:var(--rust-soft);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans',sans-serif; background:var(--paper); color:var(--ink);
+  line-height:1.65; font-size:16px;
+  background-image:radial-gradient(var(--line) 0.5px, transparent 0.5px);
+  background-size:22px 22px;
+}
+
+/* ── TOP BAR ── */
+#topbar{
+  position:sticky; top:0; z-index:50;
+  background:color-mix(in srgb, var(--fond) 92%, transparent); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:12px 24px; display:flex; align-items:center; gap:18px;
+}
+#topbar .logo{
+  font-family:'Fraunces',serif; font-weight:900; font-size:18px;
+  color:var(--teal-d); letter-spacing:-.5px; white-space:nowrap;
+}
+#topbar .logo span{color:var(--amber)}
+#topbar .hub{font-family:'DM Mono',monospace; font-size:12px; color:var(--muted); text-decoration:none; white-space:nowrap; padding:5px 10px; border-radius:8px; border:1px solid var(--line); transition:all .15s}
+#topbar .hub:hover{color:var(--teal-d); border-color:var(--line2); background:var(--blanc)}
+.top-progress{flex:1; max-width:420px}
+.top-progress-bar{height:6px; background:var(--line); border-radius:6px; overflow:hidden}
+.top-progress-fill{height:100%; background:linear-gradient(90deg,var(--teal),var(--gold)); border-radius:6px; transition:width .5s cubic-bezier(.4,0,.2,1); width:0%}
+.top-progress-txt{font-size:11px; color:var(--muted); margin-top:3px; font-family:'DM Mono',monospace}
+.top-xp{
+  font-family:'DM Mono',monospace; font-size:13px; font-weight:500;
+  background:var(--amber-l); color:var(--amber); padding:5px 12px; border-radius:20px;
+  border:1px solid var(--line2); white-space:nowrap;
+}
+
+/* ── LAYOUT ── */
+#content{max-width:760px; margin:0 auto; padding:40px 28px 120px; min-width:0}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.view{animation:fade .4s ease}
+
+/* ── HOME ── */
+.home-tag{font-family:'DM Mono',monospace; font-size:12px; letter-spacing:1px; text-transform:uppercase; color:var(--amber); font-weight:500; display:flex; align-items:center; gap:8px; margin-bottom:10px}
+.home-tag::before{content:''; width:24px; height:2px; background:var(--amber)}
+.home h1{font-family:'Fraunces',serif; font-weight:900; font-size:2.3rem; line-height:1.08; letter-spacing:-1px; margin-bottom:10px}
+.home h1 .acc{color:var(--amber)}
+.home-sub{font-size:16.5px; color:var(--ink2); margin-bottom:30px; max-width:560px}
+
+.mode-card{background:var(--blanc); border:1.5px solid var(--line); border-radius:18px; padding:24px; margin-bottom:18px; box-shadow:var(--shadow); position:relative; overflow:hidden; transition:border-color .2s, box-shadow .2s}
+.mode-card:hover{box-shadow:var(--shadow-lg); border-color:var(--line2)}
+.mode-card::before{content:''; position:absolute; top:0; left:0; bottom:0; width:5px}
+.mode-card.m-teal::before{background:var(--teal)}
+.mode-card.m-plum::before{background:var(--plum)}
+.mode-card.m-navy::before{background:var(--navy)}
+.mode-head{display:flex; align-items:center; gap:14px; margin-bottom:8px}
+.mode-icon{width:50px; height:50px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:26px; flex-shrink:0}
+.m-teal .mode-icon{background:var(--teal-l)} .m-plum .mode-icon{background:var(--plum-l)} .m-navy .mode-icon{background:var(--navy-l)}
+.mode-head h2{font-family:'Fraunces',serif; font-weight:700; font-size:1.3rem; color:var(--ink); letter-spacing:-.3px}
+.mode-card p{font-size:14.5px; color:var(--ink2); margin-bottom:16px}
+.mode-card p:last-of-type{margin-bottom:0}
+.chip-row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+.start-chip{padding:10px 18px; border-radius:11px; font-family:'DM Sans',sans-serif; font-weight:600; font-size:14px; cursor:pointer; border:1.5px solid var(--line2); background:var(--paper); color:var(--ink2); transition:all .15s}
+.start-chip:hover{transform:translateY(-2px); box-shadow:var(--shadow)}
+.m-teal .start-chip:hover{border-color:var(--teal); color:var(--teal-d); background:var(--teal-l)}
+.m-plum .start-chip:hover{border-color:var(--plum); color:var(--plum); background:var(--plum-l)}
+.m-navy .start-chip.solo{background:var(--navy); color:var(--blanc); border-color:var(--navy); width:100%; justify-content:center; display:flex; align-items:center; gap:8px}
+.m-navy .start-chip.solo:hover{background:var(--navy)}
+.mode-card.m-gold::before{background:var(--gold)}
+.m-gold .mode-icon{background:var(--amber-soft)}
+.m-gold .start-chip:hover{border-color:var(--gold); color:var(--amber); background:var(--amber-soft)}
+.m-gold .start-chip.solo{background:var(--gold); color:var(--blanc); border-color:var(--gold); width:100%; justify-content:center; display:flex; align-items:center; gap:8px}
+.m-gold .start-chip.solo:hover{background:var(--amber)}
+.chip-lbl{font-size:12.5px; color:var(--muted); font-family:'DM Mono',monospace; margin-right:4px}
+.end-link{display:block; margin:8px auto 0; background:none; border:none; color:var(--muted); font-family:'DM Mono',monospace; font-size:12px; cursor:pointer; text-decoration:underline; text-underline-offset:3px}
+.end-link:hover{color:var(--rust)}
+.level-select{background:var(--blanc); border:1.5px solid var(--line); border-radius:16px; padding:18px 20px; margin-bottom:24px; box-shadow:var(--shadow)}
+.level-lbl{font-family:'DM Mono',monospace; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--amber); font-weight:500}
+.level-seg{display:flex; gap:8px; margin:12px 0 10px; flex-wrap:wrap}
+.seg{flex:1; min-width:110px; padding:11px 10px; border-radius:11px; border:1.5px solid var(--line2); background:var(--paper); color:var(--ink2); font-family:'DM Sans',sans-serif; font-weight:600; font-size:14px; cursor:pointer; transition:all .15s}
+.seg:hover{border-color:var(--teal); color:var(--teal-d)}
+.seg.on{background:var(--teal); color:var(--blanc); border-color:var(--teal); box-shadow:var(--shadow)}
+.level-desc{font-size:13.5px; color:var(--ink2); margin:0}
+
+/* ── CALLOUTS ── */
+.callout{border-radius:14px; padding:16px 18px; margin:18px 0; border:1px solid; font-size:14.5px}
+.callout .c-label{font-family:'DM Mono',monospace; font-size:11px; font-weight:500; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px; display:flex; align-items:center; gap:7px}
+.callout.key{background:var(--teal-l); border-color:var(--teal-clair)}
+.callout.key .c-label{color:var(--teal-d)}
+.callout p:last-child{margin-bottom:0}
+
+/* ── NAV BUTTONS ── */
+.nav-btn{padding:13px 26px; border-radius:12px; font-family:'DM Sans',sans-serif; font-weight:600; font-size:14px; cursor:pointer; border:1.5px solid var(--line2); background:var(--blanc); color:var(--ink2); transition:all .15s; display:inline-flex; align-items:center; gap:8px}
+.nav-btn:hover{border-color:var(--teal); color:var(--teal-d)}
+.nav-btn.primary{background:var(--teal); color:var(--blanc); border-color:var(--teal)}
+.nav-btn.primary:hover{background:var(--teal-d); transform:translateY(-2px); box-shadow:var(--shadow)}
+
+/* ── QUESTION CARD ── */
+.q-card{background:var(--blanc); border:1.5px solid var(--line2); border-radius:18px; padding:28px; box-shadow:var(--shadow-lg); margin:8px 0 24px; position:relative}
+.info-btn{position:absolute; top:18px; right:18px; width:34px; height:34px; border-radius:50%; background:var(--navy-l); color:var(--navy); font-family:'Fraunces',serif; font-weight:700; font-size:18px; font-style:italic; border:1.5px solid var(--navy); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; z-index:10}
+.info-btn:hover{background:var(--navy); color:var(--blanc); transform:scale(1.05)}
+.q-counter{font-family:'DM Mono',monospace; font-size:12px; color:var(--plum); letter-spacing:1px; margin-bottom:8px}
+.q-theme{font-size:11px; color:var(--muted); margin-bottom:14px; font-family:'DM Mono',monospace}
+.q-text{font-family:'Fraunces',serif; font-weight:600; font-size:1.22rem; color:var(--ink); margin-bottom:6px; line-height:1.35}
+.q-data{background:var(--paper2); border-radius:8px; padding:10px 14px; font-family:'DM Mono',monospace; font-size:13px; color:var(--ink2); margin:14px 0; line-height:1.7}
+.q-data b{color:var(--gold)}
+
+/* progress in session */
+.s-progress{margin-bottom:22px}
+.s-progress-bar{height:8px; background:var(--line); border-radius:8px; overflow:hidden}
+.s-progress-fill{height:100%; background:linear-gradient(90deg,var(--plum),var(--teal)); transition:width .4s; border-radius:8px}
+.s-progress-txt{font-size:12px; color:var(--muted); margin-top:6px; font-family:'DM Mono',monospace; text-align:center}
+
+/* QCM options */
+.opts{display:flex; flex-direction:column; gap:9px; margin-top:16px}
+.opt{display:flex; align-items:center; gap:12px; padding:12px 15px; background:var(--blanc); border:1.5px solid var(--line); border-radius:10px; cursor:pointer; transition:all .15s; font-size:14.5px; user-select:none}
+.opt:hover:not(.locked){border-color:var(--plum); transform:translateX(3px)}
+.opt .letter{flex-shrink:0; width:24px; height:24px; border-radius:6px; border:1.5px solid var(--line2); display:flex; align-items:center; justify-content:center; font-family:'DM Mono',monospace; font-size:12px; font-weight:500; color:var(--muted)}
+.opt.locked{cursor:default}
+.opt.correct{background:var(--ok-l); border-color:var(--ok); color:var(--ok)}
+.opt.correct .letter{background:var(--ok); color:var(--blanc); border-color:var(--ok)}
+.opt.wrong{background:var(--err-l); border-color:var(--err); color:var(--err)}
+.opt.wrong .letter{background:var(--err); color:var(--blanc); border-color:var(--err)}
+.opt.reveal{background:var(--ok-l); border-color:var(--ok); color:var(--ok)}
+
+/* calc input */
+.input-row{display:flex; gap:10px; align-items:center; margin-top:16px}
+.calc-input{flex:1; max-width:260px; background:var(--blanc); border:1.5px solid var(--line2); border-radius:10px; padding:12px 15px; font-family:'DM Mono',monospace; font-size:15px; color:var(--ink); outline:none}
+.calc-input:focus{border-color:var(--plum)}
+.calc-unit{font-family:'DM Mono',monospace; color:var(--muted); font-size:15px}
+.submit-btn{margin-top:20px; width:100%; padding:14px; background:var(--plum); color:var(--blanc); border:none; border-radius:12px; font-family:'DM Sans',sans-serif; font-weight:700; font-size:15px; cursor:pointer; transition:all .15s}
+.submit-btn:hover{background:var(--plum-deep); transform:translateY(-1px)}
+.submit-btn:disabled{opacity:.4; cursor:not-allowed; transform:none}
+
+.help-btn{background:transparent; border:1.5px dashed var(--line2); color:var(--ink2); padding:10px 16px; border-radius:10px; font-family:'DM Sans',sans-serif; font-weight:600; font-size:14px; cursor:pointer; transition:all .2s; margin-top:14px; display:inline-flex; align-items:center; gap:8px; width:100%; justify-content:center}
+.help-btn:hover{border-color:var(--ok); color:var(--ok); background:var(--ok-l)}
+
+/* formulaire */
+.formulaire-panel{display:none; background:var(--paper); border:1.5px solid var(--line2); border-radius:12px; padding:20px; margin-top:22px; box-shadow:var(--shadow)}
+.formulaire-panel.show{display:block; animation:fade .3s}
+.formulaire-title{font-family:'Fraunces',serif; font-weight:700; color:var(--navy); font-size:1.1rem; margin-bottom:14px; border-bottom:1px solid var(--line); padding-bottom:8px}
+.eq-item{padding:12px 16px; border-radius:8px; margin-bottom:10px; transition:all .3s ease; border:1.5px solid transparent; background:var(--blanc)}
+.eq-item .eq-name{font-size:12px; color:var(--muted); font-family:'DM Mono',monospace; text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px}
+.eq-item.highlight{background:var(--ok-l); border-color:var(--ok); box-shadow:0 2px 8px color-mix(in srgb, var(--teal) 15%, transparent); transform:translateX(4px)}
+
+/* correction */
+.corrige{display:none; margin-top:22px; border-radius:14px; padding:18px 20px; border:1.5px solid; animation:fade .35s}
+.corrige.show{display:block}
+.corrige.ok{background:var(--ok-l); border-color:var(--teal-clair)}
+.corrige.no{background:var(--rust-l); border-color:var(--rust-clair)}
+.corrige-head{font-family:'Fraunces',serif; font-weight:700; font-size:16px; margin-bottom:6px; display:flex; align-items:center; gap:8px}
+.corrige.ok .corrige-head{color:var(--teal-d)}
+.corrige.no .corrige-head{color:var(--rust)}
+.corrige .yours{font-size:13px; color:var(--rust); font-family:'DM Mono',monospace; margin-bottom:10px}
+.corrige p{font-size:14px; color:var(--ink2); margin:4px 0 10px}
+.step{display:flex; gap:12px; margin-bottom:10px; align-items:flex-start}
+.step-n{flex-shrink:0; width:22px; height:22px; border-radius:50%; background:var(--teal); color:var(--blanc); font-family:'DM Mono',monospace; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; margin-top:1px}
+.step-txt{flex:1; font-size:14px; color:var(--ink2)}
+.step-txt code{background:color-mix(in srgb, var(--nuit) 5%, transparent); padding:2px 7px; border-radius:5px; font-family:'DM Mono',monospace; font-size:12.5px; color:var(--teal-d)}
+.result-line{margin-top:12px; padding:12px 16px; background:var(--blanc); border-radius:10px; font-family:'DM Mono',monospace; font-size:14.5px; font-weight:600; color:var(--teal-d); border:1px solid var(--teal-clair)}
+.corrige .next{margin-top:16px}
+
+/* result screen */
+.result-screen{text-align:center}
+.result-emoji{font-size:72px; margin-bottom:8px}
+.result-score{font-family:'Fraunces',serif; font-weight:900; font-size:3.5rem; color:var(--teal-d); line-height:1}
+.result-score span{font-size:1.4rem; color:var(--muted)}
+.result-title{font-family:'Fraunces',serif; font-weight:700; font-size:1.6rem; margin:12px 0 8px}
+.result-msg{color:var(--ink2); font-size:15px; max-width:480px; margin:0 auto 24px}
+.result-breakdown{background:var(--blanc); border:1px solid var(--line); border-radius:14px; padding:20px; margin:24px 0; text-align:left; box-shadow:var(--shadow)}
+.result-breakdown h3{font-family:'Fraunces',serif; font-size:15px; margin-bottom:14px; color:var(--ink)}
+.bd-row{display:flex; align-items:center; gap:12px; padding:9px 0; border-bottom:1px solid var(--line)}
+.bd-row:last-child{border-bottom:none}
+.bd-name{flex:1; font-size:14px}
+.bd-bar{width:120px; height:7px; background:var(--line); border-radius:5px; overflow:hidden}
+.bd-bar-fill{height:100%; border-radius:5px}
+.bd-score{font-family:'DM Mono',monospace; font-size:13px; font-weight:500; width:42px; text-align:right}
+
+.meta-chips{display:flex; gap:10px; justify-content:flex-start; flex-wrap:wrap; margin:18px 0 4px}
+.meta-chips .chip{background:var(--paper2); border:1px solid var(--line2); padding:7px 14px; border-radius:20px; font-size:13px; color:var(--ink2); display:flex; align-items:center; gap:6px}
+
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--line2); border-radius:4px}
+
+@media(max-width:760px){
+  #content{padding:28px 18px 100px}
+  .home h1{font-size:1.85rem}
+  .top-progress{display:none}
+}
+</style><link rel="stylesheet" href="../ui.css">
+<link rel="stylesheet" href="../theme.css">
+<link rel="stylesheet" href="../licence.css">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#ECEEF6">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/favicon-32.png">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+</head>
+<body>
+
+<div id="topbar">
+  <div class="logo">Finance <span>Inter</span> · Entraînement</div>
+  <a class="hub" href="../licence.html">← Hub</a>
+  <div class="top-progress">
+    <div class="top-progress-bar"><div class="top-progress-fill" id="topfill"></div></div>
+    <div class="top-progress-txt" id="toptxt">Choisis un mode</div>
+  </div>
+  <div class="top-xp" id="xp">✦ 0 XP</div>
+</div>
+
+<main id="content"></main>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+<script>
+const SUBJECT_KEY='Finance Internationale';
+const SUBJECT = {
+  hasCalc:true,
+  lessonFile:'finance_internationale.html',
+  homeTag:'Mode entraînement · Finance Internationale',
+  h1:'Prêt pour l\'exam de <span class="acc">finance internationale</span> ?',
+  homeSub:'Cotations, inversion, taux croisés et change à terme — des calculs générés à l\'infini avec des chiffres différents à chaque fois, plus un QCM de cours.',
+  calcDesc:'Inversion de cotation, taux croisés (multiplication / division), cours à terme et report-déport, application du bid/ask. Numéros différents à chaque tirage.',
+  qcmDesc:'Marché des changes, cotations bid/ask, inversion, cross, change à terme, instruments (forward, future, swap, options), arbitrage et couverture.',
+  FORMULAIRE:`
+  <div class="formulaire-panel" id="formulaire-panel">
+    <div class="formulaire-title">📘 Formulaire · change</div>
+    <div class="eq-item" id="eq-bidask"><div class="eq-name">Côté du spread</div><b>bid</b> = la banque achète (le client vend) · <b>ask</b> = la banque vend (le client achète). Le client est toujours du mauvais côté.</div>
+    <div class="eq-item" id="eq-inv"><div class="eq-name">Inversion de cotation</div>nouveau <b>bid</b> = 1 ÷ ancien <b>ask</b> · nouveau <b>ask</b> = 1 ÷ ancien <b>bid</b></div>
+    <div class="eq-item" id="eq-cross-mult"><div class="eq-name">Cross — devise pivot en sens opposé</div><b>Multiplication</b> : bid = bid × bid · ask = ask × ask</div>
+    <div class="eq-item" id="eq-cross-div"><div class="eq-name">Cross — pivot au certain dans les deux</div><b>Division</b> : bid = bid ÷ ask · ask = ask ÷ bid</div>
+    <div class="eq-item" id="eq-forward"><div class="eq-name">Change à terme</div>$$ F = S \\times \\frac{1 + r_{contre}\\cdot t}{1 + r_{dir}\\cdot t} $$ report si r_dir &lt; r_contre (F&gt;S) · déport si r_dir &gt; r_contre (F&lt;S)</div>
+  </div>`,
+  GENS:[
+    // Inversion
+    function(){
+      const ps=[["EUR","USD",1.05,1.12],["GBP","USD",1.20,1.30],["USD","CHF",0.86,0.92],["EUR","GBP",0.84,0.87],["AUD","USD",0.62,0.69]];
+      const p=pick(ps); const bid=round(p[2]+Math.random()*(p[3]-p[2]),4); const ask=round(bid+0.0004+Math.random()*0.0008,4);
+      const nb=1/ask, na=1/bid;
+      return {kind:'calc', theme:'Inversion de cotation', eqId:'eq-inv', unit:'',
+        q:`On cote <b>${p[0]}/${p[1]} = ${fr(bid,4)} – ${fr(ask,4)}</b>.<br>Donnez le <strong>nouveau bid</strong> de ${p[1]}/${p[0]}. <span style="font-size:13px;color:var(--muted)">(4 décimales)</span>`,
+        data:`${p[0]}/${p[1]} : bid = ${fr(bid,4)} · ask = ${fr(ask,4)}`,
+        expected:round(nb,4), tol:0.0015,
+        steps:[`Inversion : <code>nouveau bid = 1 ÷ ancien ask</code>`,
+          `<code>1 ÷ ${fr(ask,4)} = ${fr(nb,4)}</code>`,
+          `(et nouveau ask = 1 ÷ ${fr(bid,4)} = ${fr(na,4)})`],
+        result:`${p[1]}/${p[0]} = ${fr(nb,4)} – ${fr(na,4)}`};
+    },
+    // Cross — multiplication
+    function(){
+      const b1=round(1.05+Math.random()*0.07,4), a1=round(b1+0.0005,4);
+      const b2=round(0.86+Math.random()*0.06,4), a2=round(b2+0.0005,4);
+      const bid=b1*b2, ask=a1*a2;
+      return {kind:'calc', theme:'Taux croisés', eqId:'eq-cross-mult', unit:'',
+        q:`<b>EUR/USD = ${fr(b1,4)} – ${fr(a1,4)}</b> et <b>USD/CHF = ${fr(b2,4)} – ${fr(a2,4)}</b>.<br>Donnez le <strong>bid de EUR/CHF</strong>. <span style="font-size:13px;color:var(--muted)">(4 décimales)</span>`,
+        data:`Le dollar passe de contrepartie à directrice → sens opposé → multiplication`,
+        expected:round(bid,4), tol:0.0025,
+        steps:[`Devise pivot (USD) en sens opposé → <code>multiplication</code>`,
+          `bid = bid × bid <code>${fr(b1,4)} × ${fr(b2,4)} = ${fr(bid,4)}</code>`,
+          `(ask = ask × ask = ${fr(a1,4)} × ${fr(a2,4)} = ${fr(ask,4)})`],
+        result:`EUR/CHF = ${fr(bid,4)} – ${fr(ask,4)}`};
+    },
+    // Cross — division
+    function(){
+      const b1=round(1.05+Math.random()*0.07,4), a1=round(b1+0.0005,4);
+      const b2=round(0.84+Math.random()*0.04,4), a2=round(b2+0.0005,4);
+      const bid=b1/a2, ask=a1/b2;
+      return {kind:'calc', theme:'Taux croisés', eqId:'eq-cross-div', unit:'',
+        q:`<b>EUR/USD = ${fr(b1,4)} – ${fr(a1,4)}</b> et <b>EUR/GBP = ${fr(b2,4)} – ${fr(a2,4)}</b>.<br>Donnez le <strong>bid de GBP/USD</strong>. <span style="font-size:13px;color:var(--muted)">(4 décimales)</span>`,
+        data:`L'euro est pivot, au certain dans les deux paires → division`,
+        expected:round(bid,4), tol:0.0025,
+        steps:[`Pivot au certain dans les deux → <code>division</code>`,
+          `bid = bid ÷ ask <code>${fr(b1,4)} ÷ ${fr(a2,4)} = ${fr(bid,4)}</code>`,
+          `(ask = ask ÷ bid = ${fr(a1,4)} ÷ ${fr(b2,4)} = ${fr(ask,4)})`],
+        result:`GBP/USD = ${fr(bid,4)} – ${fr(ask,4)}`};
+    },
+    // Forward
+    function(){
+      const S=round(1.05+Math.random()*0.10,4);
+      const rd=pick([1,1.5,2,3,4]); const rc=pick([1,1.5,2,3,4,5].filter(x=>x!==rd));
+      const t=pick([30,60,90,180]); const F=S*(1+rc/100*t/360)/(1+rd/100*t/360);
+      const sens = rd>rc?'déport (F < S)':'report (F > S)';
+      return {kind:'calc', theme:'Change à terme', eqId:'eq-forward', unit:'',
+        q:`Spot <b>EUR/USD = ${fr(S,4)}</b>. Taux EUR (directrice) = <b>${gp(rd)}</b>, taux USD (contrepartie) = <b>${gp(rc)}</b>, échéance <b>${t} jours</b>.<br>Calculez le <strong>cours à terme</strong> F. <span style="font-size:13px;color:var(--muted)">(4 décimales)</span>`,
+        data:`S = ${fr(S,4)} · r_dir = ${gp(rd)} · r_contre = ${gp(rc)} · t = ${t} j`,
+        expected:round(F,4), tol:0.0025,
+        steps:[`<code>F = S × (1 + r_contre·t/360) / (1 + r_dir·t/360)</code>`,
+          `<code>= ${fr(S,4)} × ${fr(1+rc/100*t/360,5)} / ${fr(1+rd/100*t/360,5)}</code>`,
+          `r_dir ${rd>rc?'>':'<'} r_contre → ${sens}`],
+        result:`F = ${fr(F,4)} · ${sens}`};
+    },
+    // Report/déport annualisé %
+    function(){
+      const S=round(1.05+Math.random()*0.10,4);
+      const rd=pick([1,2,3,4]); const rc=pick([1,2,3,4,5].filter(x=>x!==rd));
+      const t=pick([90,180]); const Fd=round(S*(1+rc/100*t/360)/(1+rd/100*t/360),4);
+      const pct=(Fd-S)/S*(360/t)*100;
+      return {kind:'calc', theme:'Change à terme', eqId:'eq-forward', unit:'%',
+        q:`Spot EUR/USD = <b>${fr(S,4)}</b>, cours à terme <b>${fr(Fd,4)}</b>, échéance <b>${t} jours</b>.<br>Calculez le <strong>report/déport annualisé</strong> (%, avec le signe). <span style="font-size:13px;color:var(--muted)">(2 décimales)</span>`,
+        data:`S = ${fr(S,4)} · F = ${fr(Fd,4)} · t = ${t} j`,
+        expected:round(pct,4), tol:0.1,
+        steps:[`<code>% = (F − S) / S × 360/t × 100</code>`,
+          `<code>= (${fr(Fd,4)} − ${fr(S,4)}) / ${fr(S,4)} × 360/${t} × 100</code>`,
+          `≈ ${fr(pct,2)} % → ${pct<0?'déport':'report'} (≈ r_contre − r_dir)`],
+        result:`${fr(pct,2)} % annualisé · ${pct<0?'déport':'report'}`};
+    },
+    // Application bid/ask
+    function(){
+      const b=round(1.05+Math.random()*0.07,4), a=round(b+0.0006,4);
+      const X=pick([10000,20000,25000,50000,80000,100000,150000,200000]);
+      const recu=X*b;
+      return {kind:'calc', theme:'Cotation (bid/ask)', eqId:'eq-bidask', unit:'',
+        q:`Un client <strong>vend ${eur0(X)}</strong> contre USD. La banque cote <b>EUR/USD = ${fr(b,4)} – ${fr(a,4)}</b>.<br>Combien de <strong>USD</strong> reçoit-il ?`,
+        data:`Le client vend des euros → la banque les achète → cours bid`,
+        expected:round(recu,2), tol:Math.max(1,recu*0.0008),
+        steps:[`Client vend la devise directrice → la banque <code>achète</code> → on applique le <code>bid</code>.`,
+          `<code>${eur0(X)} × ${fr(b,4)}</code>`],
+        result:`= ${fr(recu,2)} USD`};
+    }
+  ],
+  QCM:[
+    {theme:'Marché', q:"Le marché des changes (Forex) est :", opts:["un marché organisé centralisé","un marché de gré à gré (OTC), décentralisé, ouvert 24h/24","fermé le week-end uniquement en Asie"], correct:1, fb:"Le Forex est OTC : pas de bourse centrale, négociation continue autour du globe."},
+    {theme:'Marché', q:"La livraison d'une opération au comptant s'effectue à :", opts:["J (immédiat)","J+1","J+2 jours ouvrés"], correct:2, fb:"« Comptant » ≠ « immédiat » : le règlement-livraison a lieu à J+2 ouvrés."},
+    {theme:'Cotation', q:"Une cotation « au certain » exprime :", opts:["combien de devise étrangère pour 1 unité de monnaie locale","combien de monnaie locale pour 1 unité étrangère","toujours en dollars"], correct:0, fb:"Au certain : 1 unité locale = X étranger (cas de l'euro, EUR/USD). À l'incertain, c'est l'inverse."},
+    {theme:'Cotation', q:"Un client vend des euros à sa banque. Elle lui applique :", opts:["l'ask","le bid","la moyenne"], correct:1, fb:"Le client vend → la banque achète → bid. Le client est du mauvais côté du spread."},
+    {theme:'Cotation', q:"Le spread (écart bid–ask) représente :", opts:["la marge de la banque","l'impôt sur les changes","la commission de l'État"], correct:0, fb:"L'écart entre le prix d'achat et de vente de la banque constitue sa rémunération."},
+    {theme:'Inversion', q:"Pour inverser une cotation A/B en B/A, le nouveau bid vaut :", opts:["1 ÷ ancien bid","1 ÷ ancien ask","ancien bid"], correct:1, fb:"Nouveau bid = 1 / ancien ask ; nouveau ask = 1 / ancien bid (les rôles s'inversent)."},
+    {theme:'Taux croisés', q:"Quand la devise pivot apparaît en sens opposé dans les deux paires, on calcule le cross par :", opts:["addition","multiplication","division"], correct:1, fb:"Sens opposé (contrepartie d'un côté, directrice de l'autre) → multiplication : bid×bid, ask×ask."},
+    {theme:'Taux croisés', q:"Quand la devise pivot est au certain dans les deux paires, on calcule le cross par :", opts:["multiplication","division","soustraction"], correct:1, fb:"Pivot au certain des deux côtés → division : bid÷ask, ask÷bid. Le spread du cross est toujours plus large."},
+    {theme:'Change à terme', q:"Le cours à terme (forward) est : F = S × (1 + r_contre·t) / (1 + r_dir·t). Il y a report quand :", opts:["r_dir > r_contre","r_dir < r_contre","r_dir = r_contre"], correct:1, fb:"Report (F > S) si le taux de la devise directrice est inférieur à celui de la contrepartie."},
+    {theme:'Change à terme', q:"On parle de déport lorsque :", opts:["F > S","F < S","F = S"], correct:1, fb:"Déport : le cours à terme est inférieur au spot (r_dir > r_contre)."},
+    {theme:'Change à terme', q:"Le report ou déport annualisé est approximativement égal à :", opts:["r_dir + r_contre","r_contre − r_dir","r_dir × r_contre"], correct:1, fb:"L'écart de taux entre les deux devises donne l'ordre de grandeur du report/déport (parité des taux d'intérêt couverte)."},
+    {theme:'Instruments', q:"Quel instrument fait intervenir une chambre de compensation ?", opts:["le forward (OTC)","le future (marché organisé)","le swap OTC"], correct:1, fb:"Le future, standardisé et négocié sur un marché organisé, passe par une chambre de compensation (pas de risque de contrepartie)."},
+    {theme:'Instruments', q:"Le forward de change est :", opts:["standardisé et coté en bourse","un contrat de gré à gré sur mesure","sans engagement"], correct:1, fb:"Le forward est OTC, sur mesure (montant, échéance), mais expose au risque de contrepartie."},
+    {theme:'Instruments', q:"Un swap de change combine :", opts:["deux options","une opération au comptant et une opération à terme en sens inverse","deux futures"], correct:1, fb:"Le swap = un comptant + un terme de sens opposé sur la même paire (souvent pour gérer la trésorerie en devises)."},
+    {theme:'Options', q:"Un call de change donne le droit :", opts:["de vendre la devise directrice","d'acheter la devise directrice","d'acheter sans payer de prime"], correct:1, fb:"Call = droit (non obligation) d'acheter la directrice. L'acheteur paie une prime ; le risque est limité à cette prime."},
+    {theme:'Options', q:"L'acheteur d'une option :", opts:["a une obligation d'exercer","a un droit, et paie une prime","reçoit une prime"], correct:1, fb:"L'acheteur paie la prime et choisit d'exercer ou non. Le vendeur encaisse la prime et subit l'obligation si exercice."},
+    {theme:'Opérations', q:"L'arbitrage procure :", opts:["un gain incertain","un gain certain en exploitant un écart de prix temporaire","une perte assurée"], correct:1, fb:"L'arbitrage est sans risque : il exploite une incohérence de prix avant qu'elle ne disparaisse."},
+    {theme:'Opérations', q:"La spéculation sur le change consiste à :", opts:["se couvrir contre un risque existant","prendre une position pour profiter d'une variation anticipée","éliminer tout risque"], correct:1, fb:"Le spéculateur prend volontairement un risque de change en pariant sur le sens du marché."},
+    {theme:'Opérations', q:"Une entreprise qui sait qu'elle recevra des dollars dans 3 mois et veut figer le cours fait :", opts:["de la spéculation","une couverture (hedging) à terme","de l'arbitrage"], correct:1, fb:"Elle se couvre : vente à terme des dollars pour sécuriser le cours et neutraliser le risque de change."},
+    {theme:'Opérations', q:"Le risque de change correspond :", opts:["au risque de défaut d'une contrepartie","au risque de perte lié à la variation des cours des devises","au risque de taux d'intérêt"], correct:1, fb:"C'est la perte potentielle quand une créance ou dette est libellée dans une devise dont le cours bouge."}
+  ]
+};
+// ════════════════════ MOTEUR GÉNÉRIQUE D'ENTRAÎNEMENT ════════════════════
+// Piloté par l'objet SUBJECT défini juste avant ce script.
+function pick(a){return a[Math.floor(Math.random()*a.length)];}
+function randint(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+function round(x,d){d=d===undefined?2:d;return Math.round(x*Math.pow(10,d))/Math.pow(10,d);}
+function fr(x,d){return Number(x).toLocaleString('fr-FR',{minimumFractionDigits:d,maximumFractionDigits:d});}
+function eur(x){return fr(x,2)+'\u00A0€';}
+function eur0(x){return Number(x).toLocaleString('fr-FR')+'\u00A0€';}
+function gp(x){return Number(x).toLocaleString('fr-FR',{maximumFractionDigits:2})+'\u00A0%';}
+function tolEUR(x){return Math.max(1,Math.abs(x)*0.0015);}
+function shuffle(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+const HAS_CALC = !!SUBJECT.hasCalc;
+const GENS = SUBJECT.GENS || [];
+const QCM  = SUBJECT.QCM  || [];
+const FORM = SUBJECT.FORMULAIRE || '';
+const ACCENT = SUBJECT.accentClass || 'm-teal';
+
+const state = {mode:null,label:'',count:0,queue:[],idx:0,score:0,answered:[],xp:0,infinite:false,streak:0,best:0,lastGen:-1};
+
+function renderMath(el){
+  if(window.renderMathInElement){
+    renderMathInElement(el||document.getElementById('content'),{
+      delimiters:[{left:"$$",right:"$$",display:true},{left:"$",right:"$",display:false}],throwOnError:false});
+  }
+}
+
+function updateTop(){
+  document.getElementById('xp').textContent = '✦ '+state.xp+' XP';
+  if(state.mode && state.queue.length){
+    if(state.infinite){
+      const done=state.answered.length, acc=done?Math.round(state.score/done*100):0;
+      document.getElementById('topfill').style.width = acc+'%';
+      document.getElementById('toptxt').textContent = state.label+' · '+state.score+'/'+done+' justes · 🔥'+state.streak;
+    } else {
+      const pct = Math.round(state.idx/state.queue.length*100);
+      document.getElementById('topfill').style.width = pct+'%';
+      document.getElementById('toptxt').textContent = state.label+' · '+Math.min(state.idx+1,state.queue.length)+'/'+state.queue.length;
+    }
+  }
+}
+
+function nextCalc(){
+  let g; do{ g=randint(0,GENS.length-1); }while(GENS.length>1 && g===state.lastGen);
+  state.lastGen=g; return GENS[g]();
+}
+
+// ── ACCUEIL ──
+function renderHome(){
+  document.getElementById('topfill').style.width='0%';
+  document.getElementById('toptxt').textContent='Choisis un mode';
+  const c=document.getElementById('content');
+  let cards='';
+  if(HAS_CALC){
+    cards += `
+      <div class="mode-card m-teal">
+        <div class="mode-head"><div class="mode-icon">🧮</div><h2>Calculs variés</h2></div>
+        <p>${SUBJECT.calcDesc}</p>
+        <div class="chip-row"><span class="chip-lbl">Série de</span>
+          <button class="start-chip" onclick="startSession('calc',5)">5 calculs</button>
+          <button class="start-chip" onclick="startSession('calc',10)">10 calculs</button>
+          <button class="start-chip" onclick="startSession('calc',15)">15 calculs</button></div>
+      </div>
+      <div class="mode-card m-gold">
+        <div class="mode-head"><div class="mode-icon">♾️</div><h2>Entraînement libre · à l'infini</h2></div>
+        <p>Des calculs qui s'enchaînent sans fin, un par un, tant que tu veux. Score et série (🔥) en direct, bilan quand tu arrêtes.</p>
+        <div class="chip-row"><button class="start-chip solo" onclick="startSession('infini',0)">Démarrer l'entraînement libre →</button></div>
+      </div>`;
+  }
+  cards += `
+    <div class="mode-card m-plum">
+      <div class="mode-head"><div class="mode-icon">📚</div><h2>QCM de cours</h2></div>
+      <p>${SUBJECT.qcmDesc} ${QCM.length} questions au total.</p>
+      <div class="chip-row"><span class="chip-lbl">Série de</span>
+        <button class="start-chip" onclick="startSession('qcm',10)">10 questions</button>
+        <button class="start-chip" onclick="startSession('qcm',15)">15 questions</button>
+        <button class="start-chip" onclick="startSession('qcm',${QCM.length})">Toutes (${QCM.length})</button></div>
+    </div>
+    <div class="mode-card m-navy">
+      <div class="mode-head"><div class="mode-icon">🎯</div><h2>Examen blanc</h2></div>
+      <p>${HAS_CALC?'Un mix de calculs et de questions de cours en conditions, 12 questions, bilan par thème.':'12 questions de cours d\'affilée, en conditions, avec bilan par thème.'}</p>
+      <div class="chip-row"><button class="start-chip solo" onclick="startSession('exam',12)">Lancer l'examen blanc →</button></div>
+    </div>`;
+
+  c.innerHTML = `
+    <div class="view home">
+      <div class="home-tag">${SUBJECT.homeTag}</div>
+      <h1>${SUBJECT.h1}</h1>
+      <p class="home-sub">${SUBJECT.homeSub}</p>
+      ${cards}
+      <div class="callout key">
+        <div class="c-label">🔑 Comment t'en servir</div>
+        <p>${HAS_CALC?'Pose ta réponse avant de valider. Le bouton « i » ouvre le formulaire, l\'indice 💡 surligne la bonne formule. Chaque calcul est corrigé pas à pas.':'Choisis ta réponse : la correction et l\'explication s\'affichent juste après, juste ou faux. Bilan par thème à la fin.'}</p>
+      </div>
+    </div>`;
+}
+
+// ── SESSION ──
+function buildQueue(mode,count){
+  if(mode==='qcm') return shuffle(QCM).slice(0,count).map(q=>Object.assign({},q,{kind:'qcm'}));
+  if(mode==='calc'){ const out=[]; for(let i=0;i<count;i++) out.push(nextCalc()); return out; }
+  // exam
+  if(!HAS_CALC) return shuffle(QCM).slice(0,count).map(q=>Object.assign({},q,{kind:'qcm'}));
+  const nCalc=Math.ceil(count*0.6), nQcm=count-nCalc;
+  const calcs=[]; for(let i=0;i<nCalc;i++) calcs.push(nextCalc());
+  const qcms=shuffle(QCM).slice(0,nQcm).map(q=>Object.assign({},q,{kind:'qcm'}));
+  return shuffle(calcs.concat(qcms));
+}
+
+function startSession(mode,count){
+  state.mode=mode; state.count=count; state.infinite=(mode==='infini');
+  state.label = mode==='calc'?'Calculs':(mode==='qcm'?'QCM':(mode==='infini'?'Libre':'Examen blanc'));
+  state.streak=0; state.best=0; state.lastGen=-1; state.sessionXP=0;
+  state.queue = state.infinite ? [nextCalc()] : buildQueue(mode,count);
+  state.idx=0; state.score=0; state.answered=[];
+  renderQ();
+}
+
+function renderQ(){
+  if(!state.infinite && state.idx>=state.queue.length){ renderResult(); return; }
+  if(state.infinite && !state.queue[state.idx]){ state.queue[state.idx]=nextCalc(); }
+  const q=state.queue[state.idx];
+  const c=document.getElementById('content');
+  const done=state.answered.length, acc=done?Math.round(state.score/done*100):0;
+  const fillW = state.infinite ? acc : Math.round(state.idx/state.queue.length*100);
+  const progTxt = state.infinite
+    ? 'Question n° '+(state.idx+1)+' · '+state.score+'/'+done+' justes · 🔥 série '+state.streak
+    : 'Question '+(state.idx+1)+' / '+state.queue.length+' · Score : '+state.score;
+  const endLink = state.infinite ? '<button class="end-link" onclick="renderResult()">Terminer &amp; voir le bilan</button>' : '';
+  const showForm = (q.kind==='calc' && FORM);
+
+  let answer='';
+  if(q.kind==='qcm'){
+    answer = '<div class="opts">'+q.opts.map((o,i)=>
+      '<div class="opt" onclick="selectQcm(this,'+i+')"><span class="letter">'+String.fromCharCode(65+i)+'</span> '+o+'</div>').join('')+'</div>';
+  } else {
+    answer = (q.data?'<div class="q-data">'+q.data+'</div>':'')+
+      '<div class="input-row"><input class="calc-input" id="calc-input" type="text" inputmode="decimal" placeholder="ta réponse" oninput="enableSubmit()" onkeydown="if(event.key===\'Enter\')submitCalc()"><span class="calc-unit">'+(q.unit||'')+'</span></div>'+
+      '<button class="submit-btn" id="submit-btn" onclick="submitCalc()" disabled>Valider</button>';
+  }
+
+  c.innerHTML = `
+    <div class="view">
+      <div class="s-progress">
+        <div class="s-progress-bar"><div class="s-progress-fill" style="width:${fillW}%"></div></div>
+        <div class="s-progress-txt">${progTxt}</div>
+        ${endLink}
+      </div>
+      <div class="q-card">
+        ${showForm?'<button class="info-btn" onclick="toggleFormulaire()" title="Formulaire">i</button>':''}
+        <div class="q-counter">${q.kind==='calc'?'🧮 Calcul':'📚 QCM'} · ${state.infinite?'n°':'Question'} ${state.idx+1}</div>
+        <div class="q-theme">📘 ${q.theme}</div>
+        <div class="q-text">${q.q}</div>
+        ${answer}
+        ${showForm&&q.eqId?'<button class="help-btn" id="help-btn" onclick="useHelp(\''+q.eqId+'\')">💡 Indice : quelle formule utiliser ?</button>':''}
+        ${showForm?FORM:''}
+        <div class="corrige" id="corrige"></div>
+      </div>
+    </div>`;
+  renderMath();
+  window.scrollTo({top:0});
+}
+
+function enableSubmit(){
+  const inp=document.getElementById('calc-input'), btn=document.getElementById('submit-btn');
+  if(inp&&btn) btn.disabled = inp.value.trim()==='';
+}
+
+function selectQcm(el,idx){
+  const card=el.closest('.q-card');
+  if(card.dataset.locked) return;
+  card.dataset.locked='1';
+  const q=state.queue[state.idx];
+  const ok=(idx===q.correct);
+  state.answered.push({theme:q.theme, ok});
+  if(ok){ state.score++; state.xp+=8; state.sessionXP+=8; state.streak++; state.best=Math.max(state.best,state.streak);} else { state.streak=0; }
+  card.querySelectorAll('.opt').forEach((o,j)=>{
+    o.classList.add('locked');
+    if(j===q.correct) o.classList.add(ok&&j===idx?'correct':'reveal');
+    if(j===idx&&!ok) o.classList.add('wrong');
+  });
+  showCorrection(ok,q,null);
+}
+
+function submitCalc(){
+  const card=document.querySelector('.q-card');
+  if(card.dataset.locked) return;
+  const q=state.queue[state.idx];
+  const inp=document.getElementById('calc-input');
+  const raw=inp.value.replace(/\s/g,'').replace(/€|%/g,'').replace(',','.');
+  const val=parseFloat(raw);
+  if(isNaN(val)){ inp.style.borderColor='var(--err)'; return; }
+  card.dataset.locked='1';
+  const ok=Math.abs(val-q.expected)<=q.tol;
+  state.answered.push({theme:q.theme, ok});
+  if(ok){ state.score++; state.xp+=12; state.sessionXP+=12; state.streak++; state.best=Math.max(state.best,state.streak);} else { state.streak=0; }
+  inp.style.borderColor = ok?'var(--ok)':'var(--err)';
+  inp.style.background = ok?'var(--ok-l)':'var(--err-l)';
+  document.getElementById('submit-btn').disabled=true;
+  showCorrection(ok,q,val);
+}
+
+function showCorrection(ok,q,yourVal){
+  const hb=document.getElementById('help-btn'); if(hb) hb.style.display='none';
+  const fp=document.getElementById('formulaire-panel'); if(fp) fp.classList.remove('show');
+  const box=document.getElementById('corrige');
+  const last=(!state.infinite && state.idx===state.queue.length-1);
+  const nextLbl=last?'Voir mon résultat 🎯':'Question suivante →';
+  let inner='';
+  if(q.kind==='calc'){
+    inner += '<div class="corrige-head">'+(ok?'✅ Correct !':'❌ Pas tout à fait')+'</div>';
+    if(!ok) inner += '<div class="yours">Ta réponse : '+fr(yourVal, q.unit==='%'?4:2)+' '+(q.unit||'')+'</div>';
+    inner += q.steps.map((s,i)=>'<div class="step"><div class="step-n">'+(i+1)+'</div><div class="step-txt">'+s+'</div></div>').join('');
+    inner += '<div class="result-line">'+q.result+'</div>';
+  } else {
+    inner += '<div class="corrige-head">'+(ok?'✅ Exact !':'❌ Pas tout à fait')+'</div>';
+    inner += '<p>'+q.fb+'</p>';
+  }
+  inner += '<button class="nav-btn primary next" onclick="nextQ()">'+nextLbl+'</button>';
+  if(state.infinite) inner += ' <button class="nav-btn" style="margin-left:8px" onclick="renderResult()">Terminer 🎯</button>';
+  box.className='corrige show '+(ok?'ok':'no');
+  box.innerHTML=inner;
+  renderMath(box);
+}
+
+function nextQ(){ state.idx++; updateTop(); renderQ(); }
+
+function toggleFormulaire(){ const p=document.getElementById('formulaire-panel'); if(p){p.classList.toggle('show'); renderMath();} }
+function useHelp(eqId){
+  const panel=document.getElementById('formulaire-panel'); if(!panel) return;
+  panel.classList.add('show'); renderMath(panel);
+  document.querySelectorAll('.eq-item').forEach(el=>el.classList.remove('highlight'));
+  const t=document.getElementById(eqId);
+  if(t){ t.classList.add('highlight'); t.scrollIntoView({behavior:'smooth',block:'center'}); }
+}
+
+function renderResult(){
+  const total=state.answered.length;
+  if(total===0){ renderHome(); return; }
+  const score=state.score, pct=Math.round(score/total*100);
+  const byTheme={};
+  state.answered.forEach(a=>{ if(!byTheme[a.theme]) byTheme[a.theme]={ok:0,tot:0}; byTheme[a.theme].tot++; if(a.ok) byTheme[a.theme].ok++; });
+  let emoji,title,msg;
+  if(pct>=90){emoji='🏆';title='Maîtrise totale !';msg='Tu es prêt pour l\'examen.';}
+  else if(pct>=70){emoji='🎯';title='Très solide !';msg='Bonne maîtrise d\'ensemble, peaufine les thèmes en orange.';}
+  else if(pct>=50){emoji='📈';title='Sur la bonne voie';msg='Les bases sont là. Reprends les thèmes faibles puis relance une série.';}
+  else {emoji='📚';title='Encore un peu de travail';msg='Pas de panique : revois la leçon du parcours, puis réentraîne-toi ici.';}
+  if(state.infinite) msg += ' Meilleure série : 🔥 '+state.best+' d\'affilée.';
+  let bd='';
+  Object.entries(byTheme).forEach(([th,d])=>{
+    const p=Math.round(d.ok/d.tot*100);
+    const col=p>=70?'var(--ok)':p>=40?'var(--amber)':'var(--err)';
+    bd += '<div class="bd-row"><div class="bd-name">'+th+'</div><div class="bd-bar"><div class="bd-bar-fill" style="width:'+p+'%;background:'+col+'"></div></div><div class="bd-score" style="color:'+col+'">'+d.ok+'/'+d.tot+'</div></div>';
+  });
+  document.getElementById('topfill').style.width='100%';
+  document.getElementById('toptxt').textContent='Résultat';
+  document.getElementById('content').innerHTML = `
+    <div class="view result-screen">
+      <div class="result-emoji">${emoji}</div>
+      <div class="result-score">${score}<span> / ${total}</span></div>
+      <div class="result-title">${title}</div>
+      <div class="result-msg">${msg} <strong>(${pct}% de réussite)</strong></div>
+      <div class="result-breakdown"><h3>📊 Ton bilan par thème</h3>${bd}</div>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <button class="nav-btn primary" onclick="startSession('${state.mode}',${state.count})">${state.infinite?'Reprendre l\'entraînement ♾️':'Relancer une série 🔄'}</button>
+        <button class="nav-btn" onclick="renderHome()">Changer de mode</button>
+        <button class="nav-btn" onclick="location.href='${SUBJECT.lessonFile}'">Revoir le cours</button>
+      </div>
+    </div>`;
+  window.scrollTo({top:0});
+}
+
+renderHome();
+</script>
+<script src="../lb.js"></script>
+<script src="../progress.js"></script>
+<script src="../ui.js"></script>
+</body>
+</html>

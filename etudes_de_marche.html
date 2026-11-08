@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
-<title>Études de marché — M1 MBAF</title>
+<title>Études de marché — AAA</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <style>
@@ -238,8 +238,10 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
 <link rel="stylesheet" href="theme.css">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#ECEEF6">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-<meta name="apple-mobile-web-app-title" content="M1 MBAF">
+<meta name="apple-mobile-web-app-title" content="AAA">
 </head>
 <body>
 
@@ -270,17 +272,17 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
     <div id="navList3"></div>
     <h4>S'entraîner</h4>
     <div class="nav-item special3" data-view="redac" onclick="go('redac')">
-      <span class="ico">✍️</span><span class="lab">Questions rédigées</span>
+      <span class="ico"><svg class="ico-t" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 19l1.2-4.2L15.8 5.2a1.9 1.9 0 0 1 2.7 0l.3.3a1.9 1.9 0 0 1 0 2.7L9.2 17.8z"/><path d="M14 7l3 3"/></svg></span><span class="lab">Questions rédigées</span>
     </div>
     <div class="nav-item special2" data-view="annales" onclick="go('annales')">
-      <span class="ico">📐</span><span class="lab">Cas pratiques corrigés</span>
+      <span class="ico"><svg class="ico-t" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3.5h7l4 4v13H7z"/><path d="M14 3.5v4h4"/><path d="M9.8 13.6l1.9 1.9 3.3-3.8"/></svg></span><span class="lab">Cas pratiques corrigés</span>
     </div>
     <div class="nav-item special" data-view="test" onclick="go('test')">
-      <span class="ico">🎯</span><span class="lab">Test final adaptatif</span>
+      <span class="ico"><svg class="ico-t" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/></svg></span><span class="lab">Test final adaptatif</span>
     </div>
     <h4>À savoir</h4>
     <div class="nav-item" data-view="ecarts" onclick="go('ecarts')">
-      <span class="ico">⚠️</span><span class="lab">Mémo et points à vérifier</span>
+      <span class="ico"><svg class="ico-t" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M10.3 4.9a2 2 0 0 1 3.4 0l7 12.2a2 2 0 0 1-1.7 3H5a2 2 0 0 1-1.7-3z"/><path d="M12 10v3.5M12 16.6h.01"/></svg></span><span class="lab">Mémo et points à vérifier</span>
     </div>
   </aside>
 
@@ -1084,10 +1086,10 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
       </div>
       <p>La complexité des questions <strong>augmente</strong> au fil du questionnaire.</p>
 
-      <h2>L'introduction du cours (IAE Vannes)</h2>
+      <h2>L'introduction du cours</h2>
       <div class="callout c-analogy">
         <div class="ct">📝 Modèle</div>
-        <p>« Bonjour, dans le cadre d'une étude universitaire réalisée à l'IAE Vannes – Université Bretagne Sud, nous réalisons une enquête auprès de consommateurs sur leurs habitudes alimentaires. Nous vous serions reconnaissants de bien vouloir répondre au questionnaire suivant, d'une durée d'environ 8 minutes. Les réponses sont anonymes et traitées globalement. Il n'y a pas de bonne ni de mauvaise réponse : merci de répondre à chaque question en toute sincérité en sélectionnant parmi les options proposées celle qui décrit le plus fidèlement votre situation. Nous vous remercions de votre contribution. »</p>
+        <p>« Bonjour, dans le cadre d'une étude universitaire, nous réalisons une enquête auprès de consommateurs sur leurs habitudes alimentaires. Nous vous serions reconnaissants de bien vouloir répondre au questionnaire suivant, d'une durée d'environ 8 minutes. Les réponses sont anonymes et traitées globalement. Il n'y a pas de bonne ni de mauvaise réponse : merci de répondre à chaque question en toute sincérité en sélectionnant parmi les options proposées celle qui décrit le plus fidèlement votre situation. Nous vous remercions de votre contribution. »</p>
       </div>
       <p>On y retrouve : le cadre (qui mène l'étude), le sujet, la durée, l'anonymat, le mode de remplissage, la mention « ni bonne ni mauvaise réponse » et les remerciements. Pour conclure, le cours propose soit d'envoyer les résultats, soit de laisser ses coordonnées pour être recontacté.</p>
 
@@ -1751,7 +1753,7 @@ const REDAC = [
      {t:"Questions personnelles à la fin", k:['personnel','identification','fin']},
      {t:"Progression et conclusion / remerciements", k:['progression','remerci','conclusion']}
    ],
-   modele:"Un questionnaire suit un <b>entonnoir</b>. <b>Introduction</b> : le but, la <b>durée</b>, l'<b>anonymat</b> ou non, le mode de remplissage, et la mention qu'il n'y a <b>ni bonne ni mauvaise réponse</b> (modèle de l'IAE Vannes : cadre universitaire, habitudes alimentaires, 8 minutes, réponses anonymes, remerciements). Au <b>début</b>, des questions <b>générales</b> et <b>faciles</b>, avec d'éventuelles questions <b>filtres</b>. Le corps regroupe les questions par <b>thème</b>, du général au précis (introductives, qualifiantes, de mise en route, spécifiques). Les questions <b>personnelles</b> d'<b>identification</b> vont à la <b>fin</b> pour ne pas heurter. Idéalement, un indicateur de <b>progression</b> évite l'abandon. <b>Conclusion</b> : <b>remerciements</b>, éventuellement des coordonnées de contact."},
+   modele:"Un questionnaire suit un <b>entonnoir</b>. <b>Introduction</b> : le but, la <b>durée</b>, l'<b>anonymat</b> ou non, le mode de remplissage, et la mention qu'il n'y a <b>ni bonne ni mauvaise réponse</b> (modèle du cours : cadre universitaire, habitudes alimentaires, 8 minutes, réponses anonymes, remerciements). Au <b>début</b>, des questions <b>générales</b> et <b>faciles</b>, avec d'éventuelles questions <b>filtres</b>. Le corps regroupe les questions par <b>thème</b>, du général au précis (introductives, qualifiantes, de mise en route, spécifiques). Les questions <b>personnelles</b> d'<b>identification</b> vont à la <b>fin</b> pour ne pas heurter. Idéalement, un indicateur de <b>progression</b> évite l'abandon. <b>Conclusion</b> : <b>remerciements</b>, éventuellement des coordonnées de contact."},
   {lesson:'l12', q:"Pourquoi et comment prétester un questionnaire ? Comparez les modes d'administration.",
    crit:[
      {t:"Questions ambiguës, dérangeantes, longueur", k:['ambigu','derange','longueur']},

@@ -461,7 +461,7 @@
   }
   const ETATS = {
     chargement:'Connexion à la messagerie…',
-    pseudo:'Choisis d\'abord un pseudo sur <a href="index.html">l\'accueil</a> pour rejoindre la messagerie.',
+    pseudo:'Choisis d\'abord un pseudo sur <a href="/">l\'accueil</a> pour rejoindre la messagerie.',
     cle:'Le chat est réservé aux appareils avec une clé d\'accès.',
     horsligne:'Le chat demande une connexion.',
     config:'La messagerie n\'est pas encore activée sur le serveur. Reviens un peu plus tard.',
