@@ -30,6 +30,7 @@
   const sup = (b, s) => '<msup>'+b+row(s)+'</msup>';
   const subsup = (b, s, p) => '<msubsup>'+b+row(s)+row(p)+'</msubsup>';
   const par = (...a) => row(mo('('), ...a, mo(')'));
+  const racine = (a, n) => '<mroot>'+row(a)+row(n)+'</mroot>';
   const M = (...a) => '<math display="block">'+row(...a)+'</math>';
   const X = mo('×'), EG = mo('='), MOINS = mo('−'), PLUS = mo('+');
   const n12 = frac(mi('n'), mn('12'));
@@ -52,7 +53,10 @@
          ex:'EUR/USD = 1,0850 − 1,0855 donne USD/EUR = 1 ÷ 1,0855 − 1 ÷ 1,0850 = 0,9212 − 0,9217.'},
         {id:'fwd-spread', t:'Le spread', eq:M(mt('spread (%)'), EG, frac(row(mi('V'), MOINS, mi('A')), mi('A')), X, mn('100')),
          ou:'V = cours vendeur, A = cours acheteur : la marge de la banque, rapportée au cours acheteur (convention du cours).',
-         ex:'(1,0855 − 1,0850) ÷ 1,0850 × 100 = 0,046 %.'}
+         ex:'(1,0855 − 1,0850) ÷ 1,0850 × 100 = 0,046 %.'},
+        {id:'fwd-conversion', t:'Convertir un montant', eq:[['je vends A : la banque achète A', M(sub(mi('M'), mi('B')), EG, sub(mi('M'), mi('A')), X, cAB('A'))], ['je vends B pour obtenir A : la banque vend A', M(sub(mi('M'), mi('A')), EG, frac(sub(mi('M'), mi('B')), cAB('V')))]],
+         ou:'M<sub>A</sub>, M<sub>B</sub> = montants dans chaque devise. La banque achète toujours au plus bas et vend au plus haut : on multiplie par l’acheteur, on divise par le vendeur.',
+         ex:'Encaisser 3 500 000 USD avec EUR/USD = 1,1462 − 1,1466 : 3 500 000 ÷ 1,1466 = 3 052 503,05 EUR.'}
       ]},
       {h:'Cours croisés', f:[
         {id:'fwd-croise-chaine', t:'Par une monnaie pivot C (en chaîne)', eq:[M(sup(par(mt('A/B')), mt('A')), EG, sup(par(mt('A/C')), mt('A')), X, sup(par(mt('C/B')), mt('A'))), M(sup(par(mt('A/B')), mt('V')), EG, sup(par(mt('A/C')), mt('V')), X, sup(par(mt('C/B')), mt('V')))],
@@ -61,6 +65,20 @@
         {id:'fwd-croise-division', t:'Les deux devises cotées contre le pivot (division)', eq:[M(sup(par(mt('A/B')), mt('A')), EG, frac(sup(par(mt('A/C')), mt('A')), sup(par(mt('B/C')), mt('V')))), M(sup(par(mt('A/B')), mt('V')), EG, frac(sup(par(mt('A/C')), mt('V')), sup(par(mt('B/C')), mt('A'))))],
          ou:'Acheteur et vendeur se croisent au dénominateur.',
          ex:'EUR/USD = 1,0850 et GBP/USD = 1,2700 : EUR/GBP = 1,0850 ÷ 1,2700 = 0,8543.'}
+      ]},
+      {h:'Arbitrages', f:[
+        {id:'fwd-arbitrage-tri', t:'Y a-t-il un arbitrage ?', eq:[['arbitrage si', M(subsup(mi('S'), mt('direct'), mt('A')), mo('&gt;'), subsup(mi('S'), mt('croisé'), mt('V')))], ['ou si', M(subsup(mi('S'), mt('croisé'), mt('A')), mo('&gt;'), subsup(mi('S'), mt('direct'), mt('V')))]],
+         ou:'On compare toujours l’acheteur d’un circuit au vendeur de l’autre : il faut que les fourchettes ne se chevauchent pas. Vendre là où l’acheteur est le plus haut, racheter là où le vendeur est le plus bas.',
+         ex:'EUR/JPY direct 171,90 − 172,02 ; croisé 171,58 − 171,7087 : 171,90 &gt; 171,7087, arbitrage.'},
+        {id:'fwd-richesse-cycle', t:'Richesse finale d’un aller-retour', eq:[M(sub(mi('W'), mi('f')), EG, sub(mi('W'), mn('0')), X, sub(mi('c'), mn('1')), X, sub(mi('c'), mn('2')), X, sub(mi('c'), mn('3'))), M(mt('gain'), EG, sub(mi('W'), mi('f')), MOINS, sub(mi('W'), mn('0')))],
+         ou:'W<sub>0</sub> = montant de départ ; chaque c<sub>i</sub> vaut « × cours acheteur » quand on vend la devise de gauche, « ÷ cours vendeur » quand on l’achète.',
+         ex:'1 000 000 × 171,90 ÷ 149,26 ÷ 1,1504 = 1 001 114,07 EUR : gain de 1 114,07 EUR.'},
+        {id:'fwd-cours-critique', t:'Cours critique', eq:M(sub(mi('S'), mt('critique')), EG, mt('cours de l’autre circuit')),
+         ou:'Le seuil où les deux circuits (ou l’arbitrage) rapportent autant : pour un cours acheteur, c’est le cours acheteur obtenu par l’autre voie ; pour un arbitrage, c’est le cours vendeur croisé.',
+         ex:'Bid EUR/CHF implicite par l’USD : 1,1462 × 0,8240 = 0,9445 ; sous 0,9445 à la banque B, mieux vaut passer par l’USD.'},
+        {id:'fwd-commission-max', t:'Commission maximale (x % sur chaque conversion)', eq:[M(sub(mi('W'), mn('0')), X, mi('R'), X, sup(par(mn('1'), MOINS, mi('x')), mn('3')), EG, sub(mi('W'), mn('0'))), M(sub(mi('x'), mt('max')), EG, mn('1'), MOINS, racine(frac(mn('1'), mi('R')), mn('3')))],
+         ou:'R = W<sub>f</sub> ÷ W<sub>0</sub> sans commission ; 3 = nombre de conversions. Au-delà de x<sub>max</sub>, l’arbitrage perd de l’argent.',
+         ex:'R = 1,001114 : x<sub>max</sub> = 1 − (1 ÷ 1,001114)<sup>1/3</sup> = 0,0371 %.'}
       ]},
       {h:'Le cours à terme', f:[
         {id:'fwd-report', t:'Report ou déport', eq:[['si f &gt; S : report', M(fAB, EG, AB(), PLUS, mt('points de report'))], ['si f &lt; S : déport', M(fAB, EG, AB(), MOINS, mt('points de déport'))]],
@@ -74,18 +92,41 @@
         {id:'fwd-eurodevises', t:'Lire une cotation de taux (eurodevises)', eq:M(mt('cotation'), EG, sub(mi('r'), mt('emprunteur')), sp, mo('−'), sp, sub(mi('r'), mt('prêteur'))),
          ou:'Le premier taux est celui auquel la banque emprunte, le second celui auquel elle prête (taux annuels). Partie entière + fraction, souvent en seizièmes ou trente-deuxièmes : 5/16 = 0,3125. L’écart est le spread de taux de la banque.',
          ex:'Eurodollar à 1 mois : 1 3/4 − 1 7/8 : la banque emprunte à 1,75 % et prête à 1,875 %, spread de 1/8 %.'},
+        {id:'fwd-spread-taux', t:'Spread de taux', eq:M(mt('spread'), EG, sub(mi('r'), mt('prêteur')), MOINS, sub(mi('r'), mt('emprunteur'))),
+         ou:'En points de pourcentage. Pour couvrir un client, la banque emprunte sur le marché au taux prêteur (le plus haut) et y place au taux emprunteur (le plus bas) : c’est ce que reprennent les deux formules du cours à terme ci-dessous.',
+         ex:'EUR 2,40 % − 2,80 % : spread de 0,40 point.'},
+        {id:'fwd-parite', t:'Cours à terme théorique (parité des taux, sans fourchette)', eq:M(sub(mi('f'), mt('A/B')), EG, AB(), X, frac(taux(sub(mi('r'), mi('B'))), taux(sub(mi('r'), mi('A'))))),
+         ou:'r<sub>A</sub>, r<sub>B</sub> = taux annuels des deux devises, n = durée en mois (n = 12 pour un an). La devise la mieux rémunérée est en déport.',
+         ex:'1 SEK : 0,0930 × (1 + 2 % × 6/12) ÷ (1 + 4 % × 6/12) = 0,09209 USD.'},
+        {id:'fwd-placement-couvert', t:'Placement à l’étranger couvert à terme', eq:M(sub(mi('W'), mi('f')), EG, sub(mi('W'), mn('0')), mo('→'), mt('change au comptant'), X, taux(sub(mi('r'), mt('étranger'))), mo('→'), mt('revente à terme')),
+         ou:'Trois temps : on convertit au comptant (× acheteur ou ÷ vendeur), on place au taux de la devise étrangère, on revend à terme au cours fixé dès le départ. On compare à W<sub>0</sub> × (1 + r<sub>local</sub> × n/12).',
+         ex:'1 000 000 GBP ÷ 0,68 × 1,04 × 0,6874 = 1 051 317,65 GBP, contre 1 060 000 GBP placés à Londres.'},
         {id:'fwd-terme-acheteur', t:'Cours à terme acheteur (vente à terme de A)', eq:M(subsup(mi('f'), mt('A/B'), mt('A')), EG, subsup(mi('S'), mt('A/B'), mt('A')), X, frac(taux(subsup(mi('r'), mi('B'), mt('emprunteur'))), taux(subsup(mi('r'), mi('A'), mt('prêteur'))))),
          ou:'n = durée en mois, taux annuels. Fabrication : emprunt en A, vente de A au comptant contre B, prêt en B. Sert à l’exportateur (créancier en devises).',
          ex:'EUR/USD acheteur 1,0850, USD emprunteur 4 %, EUR prêteur 3 %, 3 mois : 1,0850 × (1 + 4 % × 3/12) ÷ (1 + 3 % × 3/12) = 1,0877, soit un report de 27 points.'},
         {id:'fwd-terme-vendeur', t:'Cours à terme vendeur (achat à terme de A)', eq:M(subsup(mi('f'), mt('A/B'), mt('V')), EG, subsup(mi('S'), mt('A/B'), mt('V')), X, frac(taux(subsup(mi('r'), mi('B'), mt('prêteur'))), taux(subsup(mi('r'), mi('A'), mt('emprunteur'))))),
          ou:'Miroir du cours acheteur : emprunt en B, achat de A au comptant, prêt en A. Sert à l’importateur (débiteur en devises).'},
         {id:'fwd-ps-acheteurs', t:'Points de swap acheteurs', eq:M(sup(mt('PS'), mt('A')), EG, subsup(mi('S'), mt('A/B'), mt('A')), X, frac(row(subsup(mi('r'), mi('B'), mt('emp')), MOINS, subsup(mi('r'), mi('A'), mt('prêt'))), row(mn('1'), PLUS, subsup(mi('r'), mi('A'), mt('prêt')), X, n12)), X, n12),
-         ou:'Taux sur A supérieur au taux sur B : déport de A. Taux sur A inférieur : report.'}
+         ou:'Taux sur A supérieur au taux sur B : déport de A. Taux sur A inférieur : report.'},
+        {id:'fwd-points-swap-calc', t:'Points de swap à partir des cours', eq:[M(sup(mt('PS'), mt('A')), EG, subsup(mi('f'), mt('A/B'), mt('A')), MOINS, subsup(mi('S'), mt('A/B'), mt('A'))), M(sup(mt('PS'), mt('V')), EG, subsup(mi('f'), mt('A/B'), mt('V')), MOINS, subsup(mi('S'), mt('A/B'), mt('V')))],
+         ou:'En points : on multiplie l’écart par 10 000 (4<sup>e</sup> décimale). Négatifs : déport de A ; positifs : report.',
+         ex:'0,9317 − 0,9400 = −0,0083, soit −83 points : l’euro est en déport.'},
+        {id:'fwd-arbitrage-terme', t:'Arbitrage entre deux cours à terme', eq:[['si le concurrent achète plus cher que je ne vends', M(subsup(mi('f'), mt('concurrent'), mt('A')), mo('&gt;'), subsup(mi('f'), mt('construit'), mt('V')))], M(mt('gain'), EG, mi('N'), X, par(subsup(mi('f'), mt('concurrent'), mt('A')), MOINS, subsup(mi('f'), mt('construit'), mt('V'))))],
+         ou:'N = notionnel en devise A. On achète à terme au cours vendeur le plus bas (sa propre fabrication) et on revend à terme au cours acheteur le plus haut (le concurrent). Sinon, aucun arbitrage.',
+         ex:'3 000 000 × (0,9365 − 0,9360) = 1 500 CHF.'}
       ]},
       {h:'Le risque de change', f:[
         {id:'fwd-position', t:'Position de change', eq:M(mt('PC'), EG, mt('créances'), MOINS, mt('dettes')),
          ou:'Créances et dettes dans une même devise, pour une même échéance. PC &gt; 0 : position longue, on craint la baisse de la devise (l’exportateur vend à terme). PC &lt; 0 : position courte, on craint sa hausse (l’importateur achète à terme).',
-         ex:'Créances 500 000 USD, dettes 320 000 USD : PC = +180 000 USD.'}
+         ex:'Créances 500 000 USD, dettes 320 000 USD : PC = +180 000 USD.'},
+        {id:'fwd-montant-garanti', t:'Montant garanti par la couverture à terme', eq:[['PC &gt; 0 : on vend la devise à terme', M(mt('EUR garantis'), EG, frac(mt('PC'), subsup(mi('f'), mt('EUR/devise'), mt('V'))))], ['PC &lt; 0 : on achète la devise à terme', M(mt('EUR payés'), EG, frac(row(mo('|'), mt('PC'), mo('|')), subsup(mi('f'), mt('EUR/devise'), mt('A'))))]],
+         ou:'Cotation EUR/devise (1 EUR = … devise). Vendre la devise, c’est acheter l’euro : la banque vend l’euro, cours vendeur. Si l’euro est la devise cotée à droite (EUR/CHF pour un Suisse), on multiplie : montant × f<sup>A</sup> quand on vend des EUR.',
+         ex:'4 800 000 USD vendus à terme, EUR/USD 3 mois 1,1490 − 1,1498 : 4 800 000 ÷ 1,1498 = 4 174 639,07 EUR.'},
+        {id:'fwd-gain-couverture', t:'Gain ou perte de la couverture', eq:M(mt('résultat'), EG, sub(mi('V'), mt('couverte')), MOINS, sub(mi('V'), mt('non couverte'))),
+         ou:'V<sub>couverte</sub> = valeur en euros obtenue aux cours à terme ; V<sub>non couverte</sub> = valeur aux cours au comptant de l’échéance. Positif : la couverture a rapporté.'},
+        {id:'fwd-cours-critique-couv', t:'Cours critique d’une couverture', eq:M(subsup(mi('S'), mi('T'), mo('*')), EG, mi('f')),
+         ou:'S<sub>T</sub>* = cours au comptant de l’échéance, du même côté de la fourchette que le cours à terme utilisé, pour lequel couvrir ou non donne le même montant. Pour une position longue en devise : au-dessus de S<sub>T</sub>* (cotation EUR/devise), la couverture gagne.',
+         ex:'Vente à terme de USD à 1,1498 : critique S<sub>T</sub><sup>V</sup> = 1,1498.'}
       ]}
     ]
   };
@@ -135,6 +176,9 @@
         {id:'fut-resultat-futures', t:'Résultat Futures', eq:[['acheteur', M(sub(mi('R'), mi('F')), EG, N, X, T, X, par(Ft, MOINS, F0))], ['vendeur', M(sub(mi('R'), mi('F')), EG, N, X, T, X, par(F0, MOINS, Ft))]],
          ou:'F<sub>0</sub> = cours à l’ouverture, F<sub>t</sub> = cours à la liquidation. Résultat en USD.',
          ex:'Vendeur de 4 contrats : 4 × 125 000 × (1,1040 − 1,0850) = +9 500 USD.'},
+        {id:'fut-cours-cible', t:'Cours Future qui donne un résultat global visé', eq:[['vendeur', M(Ft, EG, F0, MOINS, frac(row(sub(mi('R'), mt('visé')), MOINS, sub(mi('R'), mi('P'))), row(N, X, T)))], ['acheteur', M(Ft, EG, F0, PLUS, frac(row(sub(mi('R'), mt('visé')), MOINS, sub(mi('R'), mi('P'))), row(N, X, T)))]],
+         ou:'R<sub>visé</sub> = résultat global voulu (0 pour un résultat nul) ; R<sub>P</sub> = résultat physique. On isole F<sub>t</sub> dans R<sub>P</sub> + R<sub>F</sub> = R<sub>visé</sub>.',
+         ex:'17 contrats vendus, R<sub>P</sub> = −62 500 : F<sub>t</sub> = 1,2650 − 62 500 ÷ 1 062 500 = 1,2062.'},
         {id:'fut-resultat-physique', t:'Résultat physique', eq:[['entreprise américaine, créance en EUR (en USD)', M(sub(mi('R'), mi('P')), EG, Q, X, par(St, MOINS, S0))], ['entreprise européenne, créance en USD (en EUR)', M(sub(mi('R'), mi('P')), EG, frac(sub(Q, mt('USD')), St), MOINS, frac(sub(Q, mt('USD')), S0))]],
          ou:'Q = montant à encaisser (pour une dette, le signe s’inverse) ; S<sub>0</sub>, S<sub>t</sub> = cours au comptant au départ et le jour du paiement.',
          ex:'500 000 EUR × (1,0800 − 1,1000) = −10 000 USD.'},
@@ -179,7 +223,11 @@
       {q:'Un cours à terme, et l’énoncé donne des points de swap ?', r:[['', 'fwd-points-swap']]},
       {q:'Un cours à terme, et l’énoncé donne des taux d’intérêt ?', r:[['exportateur, la banque achète la devise à terme', 'fwd-terme-acheteur'], ['importateur, la banque vend la devise à terme', 'fwd-terme-vendeur'], ['seulement les points de swap', 'fwd-ps-acheteurs']]},
       {q:'Lire une cotation de taux (« 2 5/16 − 2 7/16 ») ?', r:[['', 'fwd-eurodevises']]},
-      {q:'Savoir ce que l’entreprise risque (position longue ou courte) ?', r:[['', 'fwd-position']]}
+      {q:'Savoir ce que l’entreprise risque (position longue ou courte) ?', r:[['', 'fwd-position']]},
+      {q:'Convertir un montant à un guichet ?', r:[['', 'fwd-conversion']]},
+      {q:'Un arbitrage triangulaire, un cours critique, une commission maximale ?', r:[['le repérer', 'fwd-arbitrage-tri'], ['la richesse finale', 'fwd-richesse-cycle'], ['le seuil', 'fwd-cours-critique'], ['la commission', 'fwd-commission-max']]},
+      {q:'Un cours à terme sans fourchette, ou un placement couvert ?', r:[['le cours théorique', 'fwd-parite'], ['la richesse finale', 'fwd-placement-couvert']]},
+      {q:'Le montant garanti par une couverture à terme, et ce qu’elle a rapporté ?', r:[['le montant', 'fwd-montant-garanti'], ['le gain ou la perte', 'fwd-gain-couverture'], ['le cours critique', 'fwd-cours-critique-couv']]}
     ]},
     {h:'Futures sur devises', sid:'produits-derives-2', q:[
       {q:'Ce que vaut un tick, ou un nombre de ticks ?', r:[['', 'fut-tick']]},
@@ -341,6 +389,18 @@
     if(b){ e.preventDefault(); ouvrir(b.dataset.fx, b); }
   });
 
+  /* ---------- 7.7.0 : une formule posée dans une page (partiel_derives.html) ----------
+     carte(id, avecOu) : le titre et l'équation MathML ; avecOu ajoute la ligne « où : … ». */
+  function eqs(f){
+    return (Array.isArray(f.eq) ? f.eq : f.eq ? [f.eq] : []).map(e=>Array.isArray(e)
+      ? '<div class="fx-eq"><span class="fx-lab">'+e[0]+'</span>'+e[1]+'</div>' : '<div class="fx-eq">'+e+'</div>').join('')+(f.regle || '');
+  }
+  function carte(id, avecOu){
+    const x = INDEX[id]; if(!x) return '';
+    return '<article class="fx-f fx-mini" data-sid="'+x.sid+'"><h4>'+x.f.t+'</h4>'+eqs(x.f)+
+      (avecOu && x.f.ou ? '<p class="fx-ou"><b>où :</b> '+insec(x.f.ou)+'</p>' : '')+'</article>';
+  }
+
   /* ---------- pose automatique sur les pages des deux cours ---------- */
   function questionTest(h){
     const box = h.closest('.test-q'), i = box ? parseInt(String(box.id).replace('tq', ''), 10) : NaN;
@@ -376,5 +436,5 @@
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', demarrer);
   else demarrer();
 
-  window.M1Formules = {ouvrir, fermer, bouton, boutonAide, ouvrirAide, aideValide, a: sid => !!FICHES[sid], FICHES, INDEX, GUIDE};
+  window.M1Formules = {ouvrir, fermer, bouton, boutonAide, ouvrirAide, aideValide, carte, a: sid => !!FICHES[sid], FICHES, INDEX, GUIDE};
 })();
