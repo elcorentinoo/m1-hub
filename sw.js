@@ -13,7 +13,7 @@
    ⚠️ Cette valeur doit rester IDENTIQUE à VERSION_APP,
       en haut de ui.js.
    ════════════════════════════════════════════════════════════ */
-const VERSION = '7.6.0';        // « Thaler »
+const VERSION = '7.7.0';        // « Thaler »
 const CACHE_APP  = 'm1-app-'+VERSION;      // les fichiers du site
 const CACHE_EXT  = 'm1-ext-'+VERSION;      // polices et bibliothèques externes
 
@@ -26,6 +26,9 @@ const FICHIERS = [
   'produits_derives_2.html',
   'entrainement_changes.html',
   'entrainement_fiscal.html',
+  'partiel_derives.html',
+  'partiel_derives_donnees.js',
+  'partiel_derives_qcm.js',
   'fiscalite_particulier.html',
   'droits_particuliers.html',
   'etudes_de_marche.html',

@@ -283,6 +283,49 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  7.7.0            RÉVISER LE PARTIEL — PRODUITS DÉRIVÉS I ET II (partiel commun
+                   du 18 novembre 2026). Nouvelle page partiel_derives.html
+                   (données : partiel_derives_donnees.js et
+                   partiel_derives_qcm.js), jamais dans BeQuick.
+                   · Exercices des TD en trois niveaux : 1 Guidé (la méthode,
+                     la formule en MathML, pourquoi celle-ci, question par
+                     question), 2 Formules (la formule seule), 3 Sans aide (ni
+                     formule ni « i »). Saisie des réponses (virgule, espaces,
+                     signe − acceptés), tolérance selon l'arrondi demandé ;
+                     correction équation par équation : la formule, la même
+                     avec les valeurs de l'énoncé, le résultat. Questions
+                     rédigées : réponse modèle ; sens d'une opération : petit
+                     choix. Suivi local : coche par exercice et par niveau,
+                     compteurs, « Recommencer ce niveau ».
+                   · Produits Dérivés I : les 6 exercices du TD 2 et le sujet
+                     type partiel du 22 octobre 2026 (Airbus, Toyota, Nestlé,
+                     LVMH), 48 questions. Produits Dérivés II : les 5 exercices
+                     du TD Futures, 26 questions. Chaque question a un
+                     identifiant stable (pd1-airbus-q6…) pour pouvoir la
+                     retirer d'une ligne. 128 réponses chiffrées recalculées par
+                     script.
+                   · QCM à choix unique : 106 pour Produits Dérivés I, 73 pour
+                     Produits Dérivés II (programme : TD Futures et § 3.3.4).
+                     Séries de 20, tout le module, « revoir mes erreurs »,
+                     propositions mélangées, explication après chaque réponse.
+                   · formules.js : 15 nouvelles formules (conversion, arbitrage
+                     triangulaire, richesse finale, cours critique, commission
+                     maximale, spread de taux, parité des taux, placement
+                     couvert, points de swap, arbitrage à terme, montant
+                     garanti, résultat et cours critique d'une couverture,
+                     cours Future visé, valeur notionnelle) ; M1Formules.carte.
+                   · Produits Dérivés II recentré sur le programme (TD Futures
+                     et § 3.3.4) : 6 questions du test final, 3 mini-quiz et
+                     1 question rédigée hors programme retirés ; banque.js
+                     régénérée pour cette matière (33 questions de test, 17
+                     mini-quiz). Leçons 1, 2 et 10 : un seul mini-quiz, la
+                     validation en tient compte.
+                   · Produits Dérivés I : corrigés du TD 2 précisés
+                     (CHF/DKK vendeur 5,0917 ; Sigma : cours à terme non
+                     arrondis 8,425253 et 1,507529 dans les divisions).
+                   · Liens : hub (Entraînement), menu et recherche, barres
+                     latérales et applications des deux cours, mémo de
+                     Produits Dérivés II.
   7.6.0            BOUTON « AIDE : QUELLE FORMULE ? » (PRODUITS DÉRIVÉS I ET II).
                    Sur les questions de calcul du test final des deux cours et
                    sur leurs cartes de révision, une pilule « Aide » à côté du

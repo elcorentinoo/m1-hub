@@ -280,6 +280,9 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
     <div class="nav-item special" data-view="test" onclick="go('test')">
       <span class="ico">🎯</span><span class="lab">Test final adaptatif</span>
     </div>
+    <a class="nav-item special2 pt-lien-nav" href="partiel_derives.html">
+      <span class="ico">📝</span><span class="lab">Réviser le partiel · 3 niveaux + QCM</span>
+    </a>
   </aside>
 
   <main class="main" id="main">
@@ -1560,6 +1563,7 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
       <div class="lesson-nav">
         <button class="btn" onclick="go('l8')">← Revoir le cours</button>
         <button class="btn" onclick="go('annales')">Applications du cours →</button>
+        <a class="btn primary" href="partiel_derives.html">Réviser le partiel →</a>
       </div>
     </section>
 
@@ -1568,6 +1572,12 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
       <span class="tag">Applications</span>
       <h1 class="lesson-title">Les applications du cours, corrigées</h1>
       <p class="subtitle">Les applications des chapitres 1 et 2, puis les six exercices du TD 2 sur le marché à terme, résolus pas à pas.</p>
+
+      <div class="intro-card pt-carte-lien">
+        <h2>📝 Réviser le partiel du 18 novembre</h2>
+        <p>Les six exercices du TD 2 et le sujet type partiel (Airbus, Toyota, Nestlé, LVMH), question par question, en trois niveaux : guidé (méthode, formule, pourquoi), formules seules, sans aide. Correction équation par équation, et un QCM de plus de 100 questions sur tout le cours.</p>
+        <p><a class="btn primary" href="partiel_derives.html">Ouvrir « Réviser le partiel » →</a></p>
+      </div>
 
       <div class="intro-card">
         <h2>📐 Mode révision active</h2>
@@ -1705,7 +1715,7 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
 
       <div class="intro-card plum" style="margin-top:34px">
         <h2>📄 TD 2 · Le marché des changes à terme</h2>
-        <p>Les six exercices du TD, corrigés pas à pas. Ils sont nettement plus proches du partiel écrit que les applications du cours : traite-les en conditions réelles, calculatrice et feuille de brouillon, avant d'ouvrir le corrigé.</p>
+        <p>Les six exercices du TD, corrigés pas à pas. Ils sont nettement plus proches du partiel écrit que les applications du cours : traite-les en conditions réelles, calculatrice et feuille de brouillon, avant d'ouvrir le corrigé. Pour les refaire en saisissant tes réponses, avec trois niveaux d'aide : <a href="partiel_derives.html">Réviser le partiel</a>.</p>
       </div>
 
       <!-- TD2 Exercice 1 -->
@@ -1797,10 +1807,10 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
           <div class="corrige-head">✅ Corrigé détaillé</div>
           <div class="step"><div class="sn">1</div><div class="sc"><b>Reconstituer les taux emprunteurs.</b> Le taux emprunteur est le taux prêteur diminué du spread. DKK : <code>4,875 − 0,125 = 4,75 %</code> → <b>4,75 − 4,875</b>. CHF : <code>3 − 0,0625 = 2,9375 %</code> → <b>2,9375 − 3</b>.</div></div>
           <div class="step"><div class="sn">2</div><div class="sc"><b>Cours acheteur (A = CHF, B = DKK).</b> <code>fᴬ = 5,0425 × (1 + 0,0475 × 0,5) / (1 + 0,03 × 0,5) = 5,0860</code>.</div></div>
-          <div class="step"><div class="sn">3</div><div class="sc"><b>Cours vendeur.</b> <code>fⱽ = 5,0435 × (1 + 0,04875 × 0,5) / (1 + 0,029375 × 0,5) = 5,0916</code>.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc"><b>Cours vendeur.</b> <code>fⱽ = 5,0435 × (1 + 0,04875 × 0,5) / (1 + 0,029375 × 0,5) = 5,091652 ≈ 5,0917</code>.</div></div>
           <div class="step"><div class="sn">4</div><div class="sc"><b>Lecture.</b> Le taux danois dépasse le taux suisse : le CHF est en <b>report</b> contre la DKK, d'environ 435 et 482 points. Contrôle : spread au comptant 10 points, spread à terme 56 points — cohérent.</div></div>
           <div class="step"><div class="sn">5</div><div class="sc"><b>La banque qui cote 5,0810 − 5,0853.</b> Son cours vendeur (5,0853) est <b>inférieur</b> à notre cours acheteur (5,0860) : on achète des CHF à terme chez elle à 5,0853 DKK et on les revend à terme à 5,0860 DKK.</div></div>
-          <div class="ex-result">Cours théoriques 5,0860 − 5,0916 · arbitrage de 0,0007 DKK par CHF, soit 7 points, sans risque ni mise de fonds.</div>
+          <div class="ex-result">Cours théoriques 5,0860 − 5,0917 · arbitrage de 0,0007 DKK par CHF, soit 7 points, sans risque ni mise de fonds.</div>
         </div>
       </div>
 
@@ -1844,8 +1854,8 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
           <div class="step"><div class="sn">1</div><div class="sc"><b>Les flux.</b> Achat : <code>1 000 × 20 = 20 000 CHF</code>, soit 10 000 CHF au comptant et 10 000 CHF à 6 mois (position courte en CHF). Ventes : 200 montres en France à 30 EUR = <code>6 000 EUR</code> ; 800 montres en Suède à 250 SEK = <code>200 000 SEK</code>, soit 100 000 SEK au comptant et 100 000 SEK à 3 mois (position longue en SEK).</div></div>
           <div class="step"><div class="sn">2</div><div class="sc"><b>Créance SEK à 3 mois.</b> Sigma vend des SEK et achète des EUR : la banque vend de l'EUR, donc cours <b>vendeur</b> EUR/SEK. <code>fⱽ = 8,4070 × (1 + 0,03875 × 0,25) / (1 + 0,03 × 0,25) = 8,4253</code>.</div></div>
           <div class="step"><div class="sn">3</div><div class="sc"><b>Dette CHF à 6 mois.</b> Sigma achète des CHF et vend des EUR : la banque achète de l'EUR, donc cours <b>acheteur</b> EUR/CHF. <code>fᴬ = 1,5020 × (1 + 0,045 × 0,5) / (1 + 0,0375 × 0,5) = 1,5075</code>.</div></div>
-          <div class="step"><div class="sn">4</div><div class="sc"><b>Chiffre d'affaires en EUR.</b> France <code>6 000,00</code> + Suède comptant <code>100 000 / 8,4070 = 11 894,85</code> + Suède à 3 mois <code>100 000 / 8,4253 = 11 869,08</code> = <b>29 763,93 EUR</b>.</div></div>
-          <div class="step"><div class="sn">5</div><div class="sc"><b>Coût des achats en EUR.</b> Comptant <code>10 000 / 1,5020 = 6 657,79</code> + à 6 mois <code>10 000 / 1,5075 = 6 633,37</code> = <b>13 291,16 EUR</b>.</div></div>
+          <div class="step"><div class="sn">4</div><div class="sc"><b>Chiffre d'affaires en EUR.</b> France <code>6 000,00</code> + Suède comptant <code>100 000 / 8,4070 = 11 894,85</code> + Suède à 3 mois <code>100 000 / 8,425253 = 11 869,08</code> = <b>29 763,93 EUR</b>.</div></div>
+          <div class="step"><div class="sn">5</div><div class="sc"><b>Coût des achats en EUR.</b> Comptant <code>10 000 / 1,5020 = 6 657,79</code> + à 6 mois <code>10 000 / 1,507529 = 6 633,37</code> = <b>13 291,16 EUR</b>.</div></div>
           <div class="step"><div class="sn">6</div><div class="sc"><b>Bénéfice.</b> <code>29 763,93 − 13 291,16 = 16 472,77 EUR</code>, connu dès le 02/01/N puisque toutes les positions sont couvertes.</div></div>
           <div class="ex-result">Cours à terme 8,4253 EUR/SEK à 3 mois et 1,5075 EUR/CHF à 6 mois · CA 29 763,93 EUR · bénéfice 16 472,77 EUR</div>
           <div class="step" style="margin-top:12px"><div class="sn">!</div><div class="sc"><b>Une ligne à vérifier sur ton énoncé.</b> La ligne des taux SEK est peu lisible sur le scan. Le corrigé retient <code>3 3/4 − 3 7/8</code> à 3 mois. Si ton polycopié indique autre chose, seule l'étape 2 change ; la méthode reste identique.</div></div>

@@ -19,6 +19,10 @@
    s'ouvre sur la bonne formule, en vert, avec « Pourquoi cette
    formule ? ». Onglet « Quelle formule ? » : guide en questions.
    Jamais dans BeQuick (bequick.html ne charge pas ce fichier).
+   7.7.0 — formules des exercices de « Réviser le partiel » (conversion,
+   arbitrages, cours critiques, spread de taux, parité, couverture à terme,
+   cours Future visé, valeur notionnelle) ; M1Formules.carte(id, avecOu)
+   pose une formule dans une page (partiel_derives.html).
    ════════════════════════════════════════════════════════════ */
 (function(){
   /* ---------- petits constructeurs MathML ---------- */
@@ -198,6 +202,9 @@
          ex:'F = 1,2500 &gt; f = 1,242322 : 125 000 × 0,007678 = 959,77 USD par contrat.'}
       ]},
       {h:'Spéculation', f:[
+        {id:'fut-notionnel', t:'Valeur notionnelle d’une position', eq:M(mt('notionnel'), EG, N, X, T, X, F0),
+         ou:'N = nombre de contrats, T = taille, F<sub>0</sub> = cours d’ouverture : la valeur de la position, en USD.',
+         ex:'4 × 125 000 × 1,1000 = 550 000 USD.'},
         {id:'fut-levier', t:'Effet de levier', eq:M(mt('Levier'), EG, frac(row(N, X, T, X, F0), D)),
          ou:'N × T × F<sub>0</sub> = valeur notionnelle de la position, en USD ; D = deposit total.',
          ex:'4 × 125 000 × 1,1000 ÷ 16 000 = 34,4.'}

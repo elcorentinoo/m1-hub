@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Réviser le partiel — Produits Dérivés · M1 MBAF</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- 7.7.0 : aucune couleur ici, tout vient de theme.css (section « RÉVISER LE PARTIEL ») -->
+<link rel="stylesheet" href="ui.css">
+<link rel="stylesheet" href="theme.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#ECEEF6">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="M1 MBAF">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand"><span class="t">Réviser le partiel · Produits Dérivés</span></div>
+  <span id="nav-slot"></span>
+</div>
+
+<main class="pt-wrap" id="pt-zone" data-sid="produits-derives">
+
+  <header class="hero pt-hero">
+    <div class="eyebrow">Partiel commun · Produits Dérivés I et II</div>
+    <h1>Réviser le partiel<br>Produits Dérivés</h1>
+    <p>Les exercices des TD, question par question, avec trois niveaux d’aide : <b>Guidé</b> (la méthode, la formule et pourquoi elle), <b>Formules</b> (la formule seule), <b>Sans aide</b> (comme le jour J). Et un QCM par matière, pour balayer tout le programme.</p>
+    <p class="pt-compte" id="pt-compte"></p>
+  </header>
+
+  <div class="pt-modules" role="tablist" aria-label="Choisir la matière" id="pt-modules"></div>
+
+  <div class="pt-vues" role="tablist" aria-label="Exercices ou QCM" id="pt-vues">
+    <button type="button" role="tab" class="chip" data-vue="ex" id="pt-vue-ex" aria-controls="pt-panneau">Exercices des TD · 3 niveaux</button>
+    <button type="button" role="tab" class="chip" data-vue="qcm" id="pt-vue-qcm" aria-controls="pt-panneau">QCM</button>
+  </div>
+
+  <section id="pt-panneau" role="tabpanel" aria-labelledby="pt-vue-ex"></section>
+
+</main>
+
+<script src="lb.js"></script>
+<script src="calendrier.js"></script>
+<script src="formules.js"></script>
+<script src="partiel_derives_donnees.js"></script>
+<script src="partiel_derives_qcm.js"></script>
+<script>
+/* ════════════════════════════════════════════════════════════
+   Réviser le partiel — Produits Dérivés (7.7.0)
+   · données : partiel_derives_donnees.js (exercices des TD) et
+     partiel_derives_qcm.js (QCM à choix unique)
+   · formules : formules.js (M1Formules.carte, boutonAide, bouton)
+   · suivi local : clé « m1-partiel-derives » du localStorage
+   Jamais dans BeQuick : bequick.html ne charge aucun de ces fichiers.
+   ════════════════════════════════════════════════════════════ */
+(function(){
+'use strict';
+const MODS = window.PARTIEL_DONNEES || [];
+const QCM = window.PARTIEL_QCM || {};
+const CLE = 'm1-partiel-derives';
+const NIVEAUX = [{n:1, t:'Guidé', s:'méthode, formule, pourquoi'}, {n:2, t:'Formules', s:'la formule seule'}, {n:3, t:'Sans aide', s:'comme le jour J'}];
+
+/* ---------- suivi local ---------- */
+function lire(){ try{ const o = JSON.parse(localStorage.getItem(CLE) || 'null'); if(o && typeof o === 'object') return o; }catch(e){} return {}; }
+function ecrire(o){ try{ localStorage.setItem(CLE, JSON.stringify(o)); }catch(e){} }
+let S = lire();
+S.mod = S.mod || 'pd1'; S.vue = S.vue || 'ex'; S.niv = S.niv || {}; S.ok = S.ok || {}; S.qcmOk = S.qcmOk || {}; S.qcmErr = S.qcmErr || {};
+const niveau = m => S.niv[m] || 1;
+const okNiv = n => (S.ok['n'+n] = S.ok['n'+n] || {});
+
+/* ---------- petits outils ---------- */
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const $ = (s, r) => (r || document).querySelector(s);
+function fmt(v, tol){
+  const dv = (String(v).split('.')[1] || '').length;
+  const d = tol < 0.01 ? Math.max(dv, tol < 0.0001 ? 4 : 2) : (Number.isInteger(v) ? 0 : 2);
+  return v.toLocaleString('fr-FR', {minimumFractionDigits:d, maximumFractionDigits:Math.max(d, dv)}).replace(/ /g, ' ');
+}
+function lireNombre(s){
+  s = String(s || '').replace(/[\s  ]/g, '').replace(/[−–]/g, '-').replace(/,/g, '.').replace(/%$/, '').replace(/^\+/, '');
+  if(!/^-?\d*\.?\d+$/.test(s)) return NaN;
+  return parseFloat(s);
+}
+function juste(x, c){ return [c.v].concat(c.alt || []).some(v=>Math.abs(x - v) <= c.tol + 1e-9); }
+
+/* ---------- notation courte → MathML ----------
+   #f{a}{b} fraction · x_{i} indice · x^{A} exposant · #t{mot} texte droit · #r3{x} racine cubique */
+function tex(src){
+  let s = String(src).replace(/&lt;/g, '<').replace(/&gt;/g, '>'), i = 0;
+  const NB = /^\d+(?:[  ]\d{3})*(?:,\d+)?/, MOT = /^[A-Za-zÀ-ÖØ-öø-ÿͰ-Ͽ]+(?:\/[A-Za-z]+)?/;
+  function groupe(){ let o = ''; while(i < s.length && s[i] !== '}') o += atome(); return o; }
+  function bloc(){ while(s[i] === ' ') i++; if(s[i] === '{'){ i++; const g = groupe(); i++; return '<mrow>'+g+'</mrow>'; } return '<mrow>'+primaire()+'</mrow>'; }
+  function brut(){ while(s[i] === ' ') i++; if(s[i] !== '{') return ''; let n = 1, j = ++i; while(j < s.length && n){ if(s[j] === '{') n++; else if(s[j] === '}') n--; j++; } const t = s.slice(i, j-1); i = j; return t; }
+  function primaire(){
+    const c = s[i], r = s.slice(i);
+    if(c === ' '){ i++; return ''; }
+    if(c === '{'){ i++; const g = groupe(); i++; return '<mrow>'+g+'</mrow>'; }
+    if(c === '#'){
+      const m = /^#(f|t|r3)/.exec(r);
+      if(m){ i += m[0].length;
+        if(m[1] === 'f'){ const a = bloc(), b = bloc(); return '<mfrac>'+a+b+'</mfrac>'; }
+        if(m[1] === 't') return '<mtext>'+esc(brut()).replace(/ /g, ' ')+'</mtext>';
+        if(m[1] === 'r3') return '<mroot>'+bloc()+'<mn>3</mn></mroot>';
+      }
+    }
+    let m = NB.exec(r); if(m){ i += m[0].length; return '<mn>'+m[0].replace(/ /g, ' ')+'</mn>'; }
+    m = MOT.exec(r); if(m){ i += m[0].length; return m[0].length === 1 ? '<mi>'+m[0]+'</mi>' : '<mtext>'+m[0]+'</mtext>'; }
+    i++; return '<mo>'+esc(c === '-' ? '−' : c)+'</mo>';
+  }
+  function atome(){
+    const b = primaire(); if(b === '') return '';
+    let sb = null, sp = null;
+    while(s[i] === '_' || s[i] === '^'){ const k = s[i++]; const g = bloc(); if(k === '_') sb = g; else sp = g; }
+    if(sb && sp) return '<msubsup>'+b+sb+sp+'</msubsup>';
+    if(sb) return '<msub>'+b+sb+'</msub>';
+    if(sp) return '<msup>'+b+sp+'</msup>';
+    return b;
+  }
+  let o = ''; while(i < s.length){ if(s[i] === '}'){ i++; continue; } o += atome(); }
+  return '<math display="block"><mrow>'+o+'</mrow></math>';
+}
+window.ptTex = tex;   /* pour les tests */
+
+/* ═════════════ EN-TÊTE : compte à rebours, modules ═════════════ */
+function compte(){
+  const el = $('#pt-compte'); if(!el) return;
+  let fin = Date.UTC(2026, 10, 18, 8, 0, 0);
+  try{ const e = (window.ECHEANCES || []).find(x=>x.sid === 'produits-derives'); if(e) fin = e.end; }catch(err){}
+  const j = Math.ceil((fin - Date.now()) / 86400000);
+  el.textContent = j > 1 ? 'Partiel le 18 novembre 2026 : J−'+j+'.' : j === 1 ? 'Partiel demain, le 18 novembre 2026.' : j === 0 ? 'Partiel aujourd’hui.' : '';
+}
+function dessinerModules(){
+  const z = $('#pt-modules');
+  z.innerHTML = MODS.map(m=>'<button type="button" role="tab" class="pt-mod" data-sid="'+m.sid+'" data-mod="'+m.id+'" id="pt-mod-'+m.id+'" aria-selected="'+(m.id === S.mod)+'" aria-controls="pt-panneau">'+
+    '<span class="pt-emb" aria-hidden="true"></span><span><span class="pt-mod-t">'+esc(m.titre)+'</span><span class="pt-mod-s">'+esc(m.sous)+'</span></span></button>').join('');
+  z.querySelectorAll('.pt-mod').forEach(b=>b.onclick = ()=>{ S.mod = b.dataset.mod; ecrire(S); tout(); });
+  const vues = $('#pt-vues');
+  vues.querySelectorAll('[data-vue]').forEach(b=>{
+    const on = b.dataset.vue === S.vue;
+    b.classList.toggle('on', on); b.setAttribute('aria-selected', on);
+    b.onclick = ()=>{ S.vue = b.dataset.vue; ecrire(S); tout(); };
+  });
+}
+const modCourant = () => MODS.find(m=>m.id === S.mod) || MODS[0];
+
+/* ═════════════ EXERCICES À TROIS NIVEAUX ═════════════ */
+const chiffrees = ex => ex.q.filter(q=>q.champs && q.champs.length);
+const exFait = (ex, n) => { const c = chiffrees(ex); return c.length > 0 && c.every(q=>okNiv(n)[q.id]); };
+function compteurs(m){
+  const exs = [].concat(...m.parties.map(p=>p.ex)), tot = exs.filter(e=>chiffrees(e).length).length;
+  return NIVEAUX.map(N=>({n:N.n, t:N.t, fait:exs.filter(e=>exFait(e, N.n)).length, tot}));
+}
+function dessinerExercices(){
+  const m = modCourant(), n = niveau(m.id), P = $('#pt-panneau');
+  const cpt = compteurs(m);
+  P.setAttribute('aria-labelledby', 'pt-vue-ex');
+  P.innerHTML =
+    '<div class="pt-barre">'+
+      '<div class="pt-niveaux" role="radiogroup" aria-label="Niveau d’aide">'+NIVEAUX.map(N=>
+        '<button type="button" role="radio" class="pt-niv'+(N.n === n ? ' on' : '')+'" aria-checked="'+(N.n === n)+'" data-niv="'+N.n+'">'+
+        '<span class="pt-niv-n">'+N.n+'</span><span><span class="pt-niv-t">'+N.t+'</span><span class="pt-niv-s">'+N.s+'</span></span></button>').join('')+'</div>'+
+      '<div class="pt-suivi">'+
+        '<div class="pt-cpts">'+cpt.map(c=>'<span class="pt-cpt'+(c.n === n ? ' on' : '')+'"><b>'+c.fait+'</b>/'+c.tot+' <small>'+c.t+'</small></span>').join('')+'</div>'+
+        '<span class="pt-outils">'+(n < 3 && window.M1Formules ? M1Formules.bouton(m.sid) : '')+
+        '<button type="button" class="btn pt-raz" id="pt-raz">Recommencer ce niveau</button></span>'+
+      '</div>'+
+    '</div>'+
+    '<p class="pt-aide-niv">'+(n === 1 ? 'Niveau 1 · Guidé : avant chaque saisie, <b>la méthode</b>, <b>la formule</b> et <b>pourquoi celle-ci</b>.' : n === 2 ? 'Niveau 2 · Formules : seulement la ou les formules utiles à chaque question.' : 'Niveau 3 · Sans aide : l’énoncé et la saisie, rien d’autre. La correction vient après ta réponse.')+
+      ' Un exercice est coché quand toutes ses questions chiffrées sont justes à ce niveau.</p>'+
+    m.parties.map(p=>'<section class="pt-partie"><h2 class="pt-h2">'+esc(p.h)+'</h2>'+(p.note ? '<p class="pt-note">'+p.note+'</p>' : '')+
+      p.ex.map(ex=>carteExercice(ex, n, m)).join('')+'</section>').join('')+
+    '<p class="pt-lien-cours"><a class="btn" href="'+m.cours+'">Revoir le cours '+esc(m.titre)+' →</a></p>';
+  P.querySelectorAll('.pt-niv').forEach(b=>b.onclick = ()=>{ S.niv[m.id] = +b.dataset.niv; ecrire(S); dessinerExercices(); });
+  P.querySelector('#pt-raz').onclick = ()=>{
+    if(!confirm('Effacer les coches du niveau '+n+' pour '+m.titre+' ?')) return;
+    const o = okNiv(n); m.parties.forEach(p=>p.ex.forEach(ex=>ex.q.forEach(q=>{ delete o[q.id]; })));
+    ecrire(S); dessinerExercices();
+  };
+  P.querySelectorAll('.pt-q').forEach(brancherQuestion);
+  P.querySelectorAll('details.pt-ex').forEach(d=>d.addEventListener('toggle', ()=>{
+    S.ouverts = S.ouverts || {}; if(d.open) S.ouverts[d.dataset.ex] = 1; else delete S.ouverts[d.dataset.ex]; ecrire(S);
+  }));
+}
+function carteExercice(ex, n, m){
+  const fait = exFait(ex, n), ouvert = S.ouverts && S.ouverts[ex.id];
+  return '<details class="pt-ex'+(fait ? ' fait' : '')+'" data-ex="'+ex.id+'"'+(ouvert ? ' open' : '')+'>'+
+    '<summary><span class="pt-coche" aria-hidden="true">'+(fait ? '✓' : '')+'</span><span class="pt-ex-tx"><span class="tag">'+esc(ex.tag)+'</span>'+
+    '<span class="pt-ex-t">'+esc(ex.titre)+'</span><span class="pt-ex-s">'+ex.q.length+' question'+(ex.q.length > 1 ? 's' : '')+(fait ? ' · réussi au niveau '+n : '')+'</span></span></summary>'+
+    '<div class="pt-ex-corps"><div class="pt-enonce">'+ex.enonce+'</div>'+
+    ex.q.map((q, k)=>carteQuestion(q, k, n, m)).join('')+'</div></details>';
+}
+function carteQuestion(q, k, n, m){
+  const fait = okNiv(n)[q.id];
+  let aide = '';
+  if(n === 1){
+    aide = '<div class="pt-aide pt-aide1">'+
+      (q.m ? '<div class="pt-bloc"><p class="pt-bt">La méthode</p><ol>'+q.m.map(x=>'<li>'+x+'</li>').join('')+'</ol></div>' : '')+
+      (q.f && q.f.length ? '<div class="pt-bloc"><p class="pt-bt">La formule</p>'+q.f.map(id=>M1Formules.carte(id, true)).join('')+
+        '<p class="pt-fiche">'+M1Formules.boutonAide({f:q.f, t:(q.p || '').replace(/<[^>]+>/g, '')})+'</p></div>' : '')+
+      (q.p ? '<div class="pt-bloc pt-pq"><p class="pt-bt">Pourquoi celle-ci</p><p>'+q.p+'</p></div>' : '')+
+    '</div>';
+  } else if(n === 2 && q.f && q.f.length){
+    aide = '<div class="pt-aide pt-aide2"><p class="pt-bt">La formule</p>'+q.f.map(id=>M1Formules.carte(id, false)).join('')+'</div>';
+  }
+  const champs = (q.champs || []).map((c, i)=>{
+    const id = 'c-'+q.id+'-'+i;
+    return '<div class="pt-champ"><label for="'+id+'">'+c.l+'</label><span class="pt-saisie"><input id="'+id+'" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" data-i="'+i+'">'+
+      (c.u ? '<span class="pt-u">'+esc(c.u)+'</span>' : '')+'</span><span class="pt-verdict" aria-live="polite"></span></div>';
+  }).join('');
+  const choix = (q.choix || []).map((c, i)=>'<fieldset class="pt-choix" data-i="'+i+'"><legend>'+c.l+'</legend>'+c.o.map((o, j)=>
+    '<label class="pt-opt"><input type="radio" name="r-'+q.id+'-'+i+'" value="'+j+'"><span>'+o+'</span></label>').join('')+'<span class="pt-verdict" aria-live="polite"></span></fieldset>').join('');
+  const aSaisie = !!(champs || choix);
+  return '<div class="pt-q'+(fait ? ' fait' : '')+'" data-q="'+q.id+'" id="'+q.id+'">'+
+    '<p class="pt-qt"><span class="pt-qn">'+(k+1)+'</span><span>'+q.q+'</span></p>'+aide+
+    (aSaisie ? '<div class="pt-rep">'+choix+champs+'</div>' : '')+
+    '<div class="pt-actions">'+(aSaisie ? '<button type="button" class="btn primary pt-verif">Vérifier</button>' : '')+
+    '<button type="button" class="btn pt-voir">Voir la correction</button>'+(fait ? '<span class="pt-ok-badge">✓ Réussie à ce niveau</span>' : '')+'</div>'+
+    '<div class="pt-retour" aria-live="polite"></div><div class="pt-corr" hidden></div></div>';
+}
+function trouverQ(id){
+  for(const m of MODS) for(const p of m.parties) for(const ex of p.ex) for(const q of ex.q) if(q.id === id) return {q, ex, m};
+  return null;
+}
+function correction(q, faux){
+  let h = '';
+  if(q.pas && q.pas.length){
+    h += '<p class="pt-ct">'+(faux ? 'Comment on arrive au bon résultat' : 'La correction, pas à pas')+'</p><ol class="pt-pas">'+q.pas.map(p=>
+      '<li>'+(p.t ? '<p>'+p.t+'</p>' : '')+
+      (p.g ? '<div class="pt-eq"><span class="pt-eql">Formule</span><div class="fx-eq">'+tex(p.g)+'</div></div>' : '')+
+      (p.n ? '<div class="pt-eq"><span class="pt-eql">Avec les valeurs</span><div class="fx-eq">'+tex(p.n)+'</div></div>' : '')+
+      (p.r ? '<div class="pt-eq pt-res"><span class="pt-eql">Résultat</span><div class="fx-eq">'+tex(p.r)+'</div></div>' : '')+'</li>').join('')+'</ol>';
+  }
+  if(q.champs) h += '<p class="pt-attendu"><b>Réponse attendue :</b> '+q.champs.map(c=>c.l+' = '+fmt(c.v, c.tol)+(c.u ? ' '+esc(c.u) : '')).join(' · ')+'</p>';
+  if(q.choix) h += '<p class="pt-attendu"><b>Bon choix :</b> '+q.choix.map(c=>c.o[c.b]).join(' · ')+'</p>';
+  if(q.c) h += '<div class="pt-modele">'+(q.champs ? '' : '<p class="pt-ct">Réponse modèle</p>')+'<p>'+q.c+'</p></div>';
+  return h;
+}
+function brancherQuestion(box){
+  const R = trouverQ(box.dataset.q); if(!R) return;
+  const q = R.q, corr = box.querySelector('.pt-corr'), ret = box.querySelector('.pt-retour');
+  const montrer = faux => { corr.innerHTML = correction(q, faux); corr.hidden = false; };
+  const v = box.querySelector('.pt-verif');
+  if(v) v.onclick = ()=>{
+    let tout = true, vide = false;
+    box.querySelectorAll('.pt-champ input').forEach(inp=>{
+      const c = q.champs[+inp.dataset.i], x = lireNombre(inp.value), out = inp.closest('.pt-champ').querySelector('.pt-verdict');
+      if(inp.value.trim() === ''){ vide = true; tout = false; out.textContent = 'À remplir'; out.className = 'pt-verdict ko'; inp.setAttribute('aria-invalid', 'true'); return; }
+      const bon = !isNaN(x) && juste(x, c);
+      if(!bon) tout = false;
+      out.textContent = isNaN(x) ? 'Nombre illisible' : bon ? '✓ Juste' : '✗ Faux';
+      out.className = 'pt-verdict '+(bon ? 'ok' : 'ko'); inp.setAttribute('aria-invalid', bon ? 'false' : 'true');
+    });
+    box.querySelectorAll('.pt-choix').forEach(fs=>{
+      const c = q.choix[+fs.dataset.i], sel = fs.querySelector('input:checked'), out = fs.querySelector('.pt-verdict');
+      const bon = !!sel && +sel.value === c.b;
+      if(!sel){ vide = true; out.textContent = 'Choisis une réponse'; } else out.textContent = bon ? '✓ Juste' : '✗ Faux';
+      out.className = 'pt-verdict '+(bon ? 'ok' : 'ko'); if(!bon) tout = false;
+    });
+    box.classList.toggle('juste', tout); box.classList.toggle('faux', !tout);
+    if(tout){
+      ret.innerHTML = '<p class="pt-bravo">✓ Tout est juste.</p>';
+      if(q.champs && q.champs.length){
+        const n = niveau(R.m.id); okNiv(n)[q.id] = 1; ecrire(S); majCoches(R.ex, R.m);
+        if(!box.querySelector('.pt-ok-badge')) box.querySelector('.pt-actions').insertAdjacentHTML('beforeend', '<span class="pt-ok-badge">✓ Réussie à ce niveau</span>');
+        box.classList.add('fait');
+      }
+    } else ret.innerHTML = '<p class="pt-rate">'+(vide ? 'Il manque une réponse.' : 'Pas tout à fait.')+' La correction est juste en dessous.</p>';
+    montrer(!tout);
+  };
+  box.querySelector('.pt-voir').onclick = ()=>montrer(false);
+}
+function majCoches(ex, m){
+  const n = niveau(m.id), d = document.querySelector('details.pt-ex[data-ex="'+ex.id+'"]');
+  if(d && exFait(ex, n)){ d.classList.add('fait'); d.querySelector('.pt-coche').textContent = '✓';
+    const s = d.querySelector('.pt-ex-s'); if(s && !/réussi/.test(s.textContent)) s.textContent += ' · réussi au niveau '+n; }
+  const cpt = compteurs(m);
+  document.querySelectorAll('.pt-cpt').forEach((el, i)=>{ el.querySelector('b').textContent = cpt[i].fait; });
+}
+
+/* ═════════════ QCM ═════════════ */
+let serie = null;   /* {ids, i, score, erreurs, mode} */
+function melange(a){ a = a.slice(); for(let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function qcmDe(m){ return QCM[m.id] || []; }
+function dessinerQcm(){
+  const m = modCourant(), L = qcmDe(m), P = $('#pt-panneau');
+  P.setAttribute('aria-labelledby', 'pt-vue-qcm');
+  if(serie && serie.mod === m.id) return dessinerQuestionQcm();
+  const ok = L.filter(q=>S.qcmOk[q.id]).length, err = L.filter(q=>S.qcmErr[q.id]).length;
+  const themes = {}; L.forEach(q=>{ themes[q.th] = (themes[q.th] || 0) + 1; });
+  P.innerHTML = '<div class="pt-qcm-accueil">'+
+    '<h2 class="pt-h2">QCM · '+esc(m.titre)+'</h2>'+
+    '<p class="pt-note">'+L.length+' questions à choix unique : une seule bonne réponse sur quatre. L’ordre des propositions change à chaque fois. Après chaque réponse, l’explication : pourquoi la bonne, et où est le piège.</p>'+
+    '<div class="pt-qcm-stats"><span class="pt-cpt"><b>'+ok+'</b>/'+L.length+' <small>déjà réussies</small></span><span class="pt-cpt"><b>'+err+'</b> <small>à revoir</small></span></div>'+
+    '<div class="pt-qcm-btns">'+
+      '<button type="button" class="btn primary" data-lance="20">Série de 20 au hasard</button>'+
+      '<button type="button" class="btn" data-lance="non">Série de 20 parmi celles pas encore réussies</button>'+
+      '<button type="button" class="btn" data-lance="tout">Tout le module ('+L.length+')</button>'+
+      '<button type="button" class="btn" data-lance="err"'+(err ? '' : ' disabled')+'>Revoir mes erreurs ('+err+')</button>'+
+    '</div>'+
+    '<p class="pt-note">Thèmes : '+Object.keys(themes).map(t=>esc(t)+' ('+themes[t]+')').join(' · ')+'</p>'+
+    '<p><button type="button" class="btn pt-raz" id="pt-qcm-raz">Effacer le suivi du QCM</button></p></div>';
+  P.querySelectorAll('[data-lance]').forEach(b=>b.onclick = ()=>lancer(b.dataset.lance));
+  P.querySelector('#pt-qcm-raz').onclick = ()=>{
+    if(!confirm('Effacer le suivi du QCM '+m.titre+' ?')) return;
+    L.forEach(q=>{ delete S.qcmOk[q.id]; delete S.qcmErr[q.id]; }); ecrire(S); dessinerQcm();
+  };
+}
+function lancer(mode){
+  const m = modCourant(), L = qcmDe(m);
+  let ids;
+  if(mode === 'tout') ids = melange(L.map(q=>q.id));
+  else if(mode === 'err') ids = melange(L.filter(q=>S.qcmErr[q.id]).map(q=>q.id));
+  else if(mode === 'non'){ const r = L.filter(q=>!S.qcmOk[q.id]); ids = melange((r.length ? r : L).map(q=>q.id)).slice(0, 20); }
+  else ids = melange(L.map(q=>q.id)).slice(0, 20);
+  if(!ids.length) return;
+  serie = {mod:m.id, ids, i:0, score:0, erreurs:[], mode, ordre:null, repondu:false};
+  dessinerQuestionQcm();
+  $('#pt-panneau').scrollIntoView({block:'start'});
+}
+function dessinerQuestionQcm(){
+  const m = modCourant(), L = qcmDe(m), P = $('#pt-panneau');
+  if(serie.i >= serie.ids.length) return finSerie();
+  const q = L.find(x=>x.id === serie.ids[serie.i]);
+  if(!serie.ordre) serie.ordre = melange(q.o.map((_, j)=>j));
+  P.innerHTML = '<div class="pt-qcm">'+
+    '<div class="pt-qcm-haut"><span class="tag">'+esc(q.th)+'</span><span class="pt-qcm-pos">Question '+(serie.i+1)+' / '+serie.ids.length+' · score '+serie.score+'</span></div>'+
+    '<div class="pt-qcm-jauge" aria-hidden="true"><i style="width:'+Math.round(serie.i / serie.ids.length * 100)+'%"></i></div>'+
+    '<p class="pt-qcm-q" id="pt-qcm-q">'+q.q+'</p>'+
+    '<div class="pt-qcm-opts" role="group" aria-labelledby="pt-qcm-q">'+serie.ordre.map((j, k)=>
+      '<button type="button" class="opt pt-qopt" data-j="'+j+'"><span class="pt-lettre">'+'ABCD'[k]+'</span><span>'+q.o[j]+'</span></button>').join('')+'</div>'+
+    '<div class="pt-qcm-expl" aria-live="polite"></div>'+
+    '<div class="pt-qcm-nav"><button type="button" class="btn" id="pt-qcm-stop">Arrêter la série</button>'+
+    '<button type="button" class="btn primary" id="pt-qcm-suiv" hidden>'+(serie.i + 1 < serie.ids.length ? 'Question suivante →' : 'Voir mon score →')+'</button></div></div>';
+  P.querySelectorAll('.pt-qopt').forEach(b=>b.onclick = ()=>repondre(q, +b.dataset.j));
+  $('#pt-qcm-stop').onclick = ()=>{ serie = null; dessinerQcm(); };
+  $('#pt-qcm-suiv').onclick = ()=>{ serie.i++; serie.ordre = null; dessinerQuestionQcm(); const f = $('.pt-qopt'); if(f) f.focus({preventScroll:true}); };
+}
+function repondre(q, j){
+  const P = $('#pt-panneau'); if(P.querySelector('.pt-qopt:disabled')) return;
+  const bon = j === 0;
+  P.querySelectorAll('.pt-qopt').forEach(b=>{
+    b.disabled = true; const k = +b.dataset.j;
+    if(k === 0) b.classList.add('good'); else if(k === j) b.classList.add('bad');
+  });
+  if(bon){ serie.score++; S.qcmOk[q.id] = 1; delete S.qcmErr[q.id]; }
+  else { serie.erreurs.push(q.id); S.qcmErr[q.id] = 1; }
+  ecrire(S);
+  P.querySelector('.pt-qcm-expl').innerHTML = '<div class="pt-expl '+(bon ? 'ok' : 'ko')+'"><p class="pt-ct">'+(bon ? '✓ Bonne réponse' : '✗ La bonne réponse : '+q.o[0])+'</p>'+
+    (q.eq ? '<div class="fx-eq">'+tex(q.eq)+'</div>' : '')+'<p>'+q.e+'</p></div>';
+  const s = $('#pt-qcm-suiv'); s.hidden = false; s.focus({preventScroll:true});
+}
+function finSerie(){
+  const m = modCourant(), L = qcmDe(m), P = $('#pt-panneau'), n = serie.ids.length, err = serie.erreurs.slice();
+  P.innerHTML = '<div class="pt-qcm pt-fin"><p class="pt-score"><b>'+serie.score+'</b>/'+n+'</p>'+
+    '<p class="pt-note">'+(serie.score === n ? 'Sans faute.' : err.length+' erreur'+(err.length > 1 ? 's' : '')+' : elles sont gardées dans « Revoir mes erreurs » jusqu’à ce que tu les réussisses.')+'</p>'+
+    (err.length ? '<ul class="pt-err">'+err.map(id=>{ const q = L.find(x=>x.id === id); return '<li><span>'+q.q+'</span><b>'+q.o[0]+'</b></li>'; }).join('')+'</ul>' : '')+
+    '<div class="pt-qcm-btns">'+(err.length ? '<button type="button" class="btn primary" id="pt-rejouer-err">Refaire mes erreurs</button>' : '')+
+    '<button type="button" class="btn" id="pt-retour-qcm">Retour au QCM</button></div></div>';
+  const r = $('#pt-rejouer-err'); if(r) r.onclick = ()=>{ serie = {mod:m.id, ids:melange(err), i:0, score:0, erreurs:[], mode:'err', ordre:null}; dessinerQuestionQcm(); };
+  $('#pt-retour-qcm').onclick = ()=>{ serie = null; dessinerQcm(); };
+}
+
+/* ═════════════ ENSEMBLE ═════════════ */
+function tout(){
+  const m = modCourant();
+  $('#pt-zone').setAttribute('data-sid', m.sid);
+  if(serie && serie.mod !== m.id) serie = null;
+  dessinerModules();
+  if(S.vue === 'qcm') dessinerQcm(); else dessinerExercices();
+}
+/* clavier : flèches gauche/droite entre les onglets */
+['#pt-modules', '#pt-vues'].forEach(sel=>$(sel).addEventListener('keydown', e=>{
+  if(e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+  const t = [...$(sel).querySelectorAll('[role="tab"]')], i = t.indexOf(document.activeElement); if(i < 0) return;
+  e.preventDefault(); const b = t[(i + (e.key === 'ArrowRight' ? 1 : -1) + t.length) % t.length]; b.click(); $(sel).querySelector('#'+b.id).focus();
+}));
+compte();
+tout();
+})();
+</script>
+<script src="ui.js"></script>
+</body>
+</html>

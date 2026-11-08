@@ -106,6 +106,10 @@ après toute modification de couleur ou de photo.
 - `formules.js` (7.5.0) — fiches de formules Forward et Futures, en MathML,
   ouvertes par le bouton « i » (révision et pages Produits Dérivés I et II,
   jamais dans BeQuick) + bouton Aide (7.6.0) qui met la bonne formule en vert.
+- `partiel_derives.html` (7.7.0) — révision du partiel Produits Dérivés I et II
+  en 3 niveaux (Guidé, Formules, Sans aide), exercices des TD ; données dans
+  `partiel_derives_donnees.js` (un identifiant stable par question) et QCM
+  dans `partiel_derives_qcm.js`. Jamais dans BeQuick ni dans `banque.js`.
 - `sw.js` — hors ligne. Toute nouvelle page doit être ajoutée à `FICHIERS`
   (sauf les pages d'accès, jamais mises en cache).
 

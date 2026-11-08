@@ -282,6 +282,9 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
     <div class="nav-item special" data-view="test" onclick="go('test')">
       <span class="ico">🎯</span><span class="lab">Test final adaptatif</span>
     </div>
+    <a class="nav-item special2 pt-lien-nav" href="partiel_derives.html">
+      <span class="ico">📝</span><span class="lab">Réviser le partiel · 3 niveaux + QCM</span>
+    </a>
     <h4>À savoir</h4>
     <div class="nav-item" data-view="ecarts" onclick="go('ecarts')">
       <span class="ico">⚠️</span><span class="lab">Mémo et points à vérifier</span>
@@ -336,19 +339,7 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
       </div>
 
       <div class="quiz" data-q>
-        <div class="qhead">Mini-quiz 1/2</div>
-        <div class="q">Une coopérative bretonne veut couvrir exactement 1 730 000 USD payables le 17 mars. Quel instrument lui donne un montant et une date sur mesure ?</div>
-        <div class="opts">
-          <button class="opt" data-correct="true" onclick="pick(this)">Un forward négocié avec sa banque</button>
-          <button class="opt" data-correct="false" onclick="pick(this)">Des Futures EUR/USD sur le CME</button>
-          <button class="opt" data-correct="false" onclick="pick(this)">Des Futures GBP/USD</button>
-          <button class="opt" data-correct="false" onclick="pick(this)">Un dépôt de garantie auprès de la chambre</button>
-        </div>
-        <div class="feedback" hidden><b>Exact.</b> Le forward se négocie de gré à gré : montant et date au choix. Le Future est standardisé : taille fixe (125 000 EUR) et échéances trimestrielles.</div>
-      </div>
-
-      <div class="quiz" data-q>
-        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="qhead">Mini-quiz</div>
         <div class="q">Quand les gains et les pertes d'une position en Futures sont-ils réglés ?</div>
         <div class="opts">
           <button class="opt" data-correct="false" onclick="pick(this)">Une seule fois, à l'échéance</button>
@@ -361,7 +352,7 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
 
       <div class="lesson-nav">
         <button class="btn" onclick="go('annales')">Applications corrigées</button>
-        <button class="btn primary" onclick="validate('l1',2)">Valider et continuer →</button>
+        <button class="btn primary" onclick="validate('l1',1)">Valider et continuer →</button>
       </div>
     </section>
 
@@ -407,19 +398,7 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
       </div>
 
       <div class="quiz" data-q>
-        <div class="qhead">Mini-quiz 1/2</div>
-        <div class="q">Le contrat CHF/USD du CME porte sur 125 000 CHF, avec un tick de 0,0001 USD. Que vaut un tick ?</div>
-        <div class="opts">
-          <button class="opt" data-correct="false" onclick="pick(this)">1,25 USD</button>
-          <button class="opt" data-correct="true" onclick="pick(this)">12,5 USD</button>
-          <button class="opt" data-correct="false" onclick="pick(this)">125 USD</button>
-          <button class="opt" data-correct="false" onclick="pick(this)">0,0001 CHF</button>
-        </div>
-        <div class="feedback" hidden><b>Exact.</b> Tick en valeur = tick × T = 0,0001 × 125 000 = 12,5 USD par contrat.</div>
-      </div>
-
-      <div class="quiz" data-q>
-        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="qhead">Mini-quiz</div>
         <div class="q">Achat de 5 contrats GBP/USD (62 500 GBP) à 1,2590, revente à 1,2634. Quel est le résultat ?</div>
         <div class="opts">
           <button class="opt" data-correct="true" onclick="pick(this)">+1 375 USD</button>
@@ -432,7 +411,7 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
 
       <div class="lesson-nav">
         <button class="btn" onclick="go('l1')">← Leçon précédente</button>
-        <button class="btn primary" onclick="validate('l2',2)">Valider et continuer →</button>
+        <button class="btn primary" onclick="validate('l2',1)">Valider et continuer →</button>
       </div>
     </section>
 
@@ -958,19 +937,7 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
       </div>
 
       <div class="quiz" data-q>
-        <div class="qhead">Mini-quiz 1/2</div>
-        <div class="q">Un spéculateur achète 5 contrats GBP/USD (62 500 GBP) à 1,2600, avec un deposit de 2 100 USD par contrat. Quel est son effet de levier ?</div>
-        <div class="opts">
-          <button class="opt" data-correct="false" onclick="pick(this)">5</button>
-          <button class="opt" data-correct="false" onclick="pick(this)">29,8</button>
-          <button class="opt" data-correct="true" onclick="pick(this)">37,5</button>
-          <button class="opt" data-correct="false" onclick="pick(this)">187,5</button>
-        </div>
-        <div class="feedback" hidden><b>Exact.</b> Notionnel = 5 × 62 500 × 1,2600 = 393 750 USD ; deposit = 10 500 USD ; levier = 37,5. Oublier le cours (en GBP au lieu d'USD) donne 29,8.</div>
-      </div>
-
-      <div class="quiz" data-q>
-        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="qhead">Mini-quiz</div>
         <div class="q">Un spéculateur anticipe une hausse du franc suisse face au dollar. Le contrat CHF/USD est coté en USD pour 1 CHF. Que fait-il ?</div>
         <div class="opts">
           <button class="opt" data-correct="true" onclick="pick(this)">Il achète des Futures CHF/USD</button>
@@ -982,7 +949,7 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
 
       <div class="lesson-nav">
         <button class="btn" onclick="go('l9')">← Leçon précédente</button>
-        <button class="btn primary" onclick="validate('l10',2)">Valider et continuer →</button>
+        <button class="btn primary" onclick="validate('l10',1)">Valider et continuer →</button>
       </div>
     </section>
 
@@ -1005,6 +972,12 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
       <span class="tag">Applications</span>
       <h1 class="lesson-title">Les cinq exercices du TD, corrigés</h1>
       <p class="subtitle">TD « Systèmes de marge, couverture et arbitrage par les contrats à terme ». Cherche au brouillon avant d'ouvrir chaque corrigé.</p>
+
+      <div class="intro-card pt-carte-lien">
+        <h2>📝 Réviser le partiel du 18 novembre</h2>
+        <p>Les cinq exercices du TD, question par question, en trois niveaux : guidé (méthode, formule, pourquoi), formules seules, sans aide. Correction équation par équation, et un QCM sur tout le programme (TD et § 3.3.4).</p>
+        <p><a class="btn primary" href="partiel_derives.html">Ouvrir « Réviser le partiel » →</a></p>
+      </div>
 
       <div class="intro-card">
         <h2>📐 D'où viennent ces corrigés ?</h2>
@@ -1176,6 +1149,12 @@ h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;
       <h1 class="lesson-title">Mémo des formules et points à vérifier</h1>
       <p class="subtitle">Toutes les formules sur une page, puis ce qui a été vérifié et ce qui reste à faire préciser. Si ton enseignant dit autre chose, c'est lui qui fait foi.</p>
 
+      <div class="intro-card pt-carte-lien">
+        <h2>📝 Réviser le partiel du 18 novembre</h2>
+        <p>Pour t’entraîner sur ces formules : les exercices du TD en trois niveaux d’aide, et le QCM du programme.</p>
+        <p><a class="btn primary" href="partiel_derives.html">Ouvrir « Réviser le partiel » →</a></p>
+      </div>
+
       <h2>Les formules à connaître</h2>
       <div class="tbl-scroll">
       <table class="tbl wrap">
@@ -1276,16 +1255,6 @@ const state = { xp: SAVE.xp||0, done: Object.assign({}, SAVE.done), view:'l1' };
 
 /* ===================== QUESTIONS RÉDIGÉES ===================== */
 const REDAC = [
-  {lesson:'l1', q:"Comparez un contrat forward et un contrat Future sur devises.",
-   crit:[
-     {t:"Forward : gré à gré, sur mesure", k:['gre a gre','sur mesure']},
-     {t:"Future : marché organisé, standardisé", k:['organise','standardis']},
-     {t:"Chambre de compensation", k:['chambre de compensation','compensation']},
-     {t:"Deposit et appels de marge", k:['deposit','depot de garantie','appel']},
-     {t:"Règlement quotidien", k:['quotidien','chaque jour','jour par jour']},
-     {t:"Dénouement avant l'échéance", k:['avant l\'echeance','liquid','revend','denou']}
-   ],
-   modele:"Les deux contrats figent aujourd'hui un cours de change pour une date future. Le <b>forward</b> se négocie de <b>gré à gré</b> avec une banque : il est <b>sur mesure</b> (montant et date choisis), sans dépôt en général, et se règle une seule fois, à l'échéance, par la livraison des devises ; il comporte un risque de contrepartie. Le <b>Future</b> se négocie sur un marché <b>organisé</b> (le CME, département IMM) : il est <b>standardisé</b> (taille, échéance, tick). La <b>chambre de compensation</b> s'interpose entre acheteurs et vendeurs et supprime le risque de contrepartie ; en échange, elle exige un <b>deposit</b> et procède à des <b>appels</b> de marge : les gains et les pertes sont réglés <b>chaque jour</b>. Le Future est le plus souvent <b>liquidé</b> avant l'échéance, par une position inverse."},
   {lesson:'l3', q:"Expliquez le fonctionnement du système de marges sur un marché de Futures.",
    crit:[
      {t:"Deposit = dépôt de garantie initial", k:['deposit','depot de garantie']},
@@ -1319,8 +1288,7 @@ const REDAC = [
      {t:"Cours forward théorique par la parité des taux", k:['parite','theorique','forward']},
      {t:"Formule avec les taux des deux devises", k:['taux','1 +','(1+']},
      {t:"F > f : surévalué, vendre le Future", k:['surevalu']},
-     {t:"F < f : sous-évalué, acheter le Future", k:['sous-evalu','sous evalu']},
-     {t:"Opération synthétique : emprunt, change au comptant, placement", k:['emprunt','placement','placer','synthetique']}
+     {t:"F < f : sous-évalué, acheter le Future", k:['sous-evalu','sous evalu']}
    ],
    modele:"On compare le cours du Future F au cours <b>forward</b> <b>théorique</b> f pour la même échéance n = E − t, donné par la <b>parité</b> des <b>taux</b> d'intérêt : f<sub>EUR/USD</sub> = S × (1 + i<sub>USD</sub> × n/12) ÷ (1 + i<sub>EUR</sub> × n/12). Si F &gt; f, le Future est <b>surévalué</b> : on le vend et l'on achète à terme de façon <b>synthétique</b> (<b>emprunt</b> de dollars, achat d'euros au comptant, <b>placement</b> des euros jusqu'à l'échéance) ; le gain sans risque vaut (F − f) × T par contrat. Si F &lt; f, il est <b>sous-évalué</b> : on l'achète et l'on vend à terme synthétiquement. Ces arbitrages ramènent F vers f."},
   {lesson:'l10', q:"Pourquoi une position spéculative en Futures peut-elle créer des difficultés de trésorerie ?",
@@ -1337,21 +1305,9 @@ const REDAC = [
 /* ===================== TEST FINAL ===================== */
 const TEST = [
   {ch:"Le marché des Futures", lesson:'l1', type:'qcm',
-   q:"Une PME lyonnaise doit payer exactement 437 800 USD à un fournisseur texan le 17 mars. Quel argument plaide pour un forward avec sa banque plutôt que pour des Futures ?",
-   opts:["Le forward supprime le risque de contrepartie","Le forward se fait sur mesure : montant et date exacts","Le forward se revend facilement sur le marché","Le forward règle les gains et les pertes chaque soir"], correct:1,
-   ex:"Forward = gré à gré, sur mesure (437 800 USD au 17 mars). Le Future est standardisé (taille, échéance) : il ne couvrirait qu'un multiple de la taille, à une échéance trimestrielle. Pas de contrepartie risquée, revente facile et règlement quotidien sont des atouts du Future."},
-  {ch:"Le marché des Futures", lesson:'l1', type:'qcm',
-   q:"Un trader a acheté 5 Futures EUR/USD sur le CME. Le lendemain, l'opérateur qui les lui a vendus fait faillite. Que se passe-t-il pour le trader ?",
-   opts:["Il perd ses gains latents","Rien : sa contrepartie est la chambre de compensation","Sa position est annulée et son deposit remboursé","Sa banque reprend la position à sa place"], correct:1,
-   ex:"La chambre de compensation est l'acheteur de tous les vendeurs et le vendeur de tous les acheteurs. Protégée par les deposits et les appels de marge quotidiens, elle supprime le risque de contrepartie."},
-  {ch:"Le marché des Futures", lesson:'l1', type:'qcm',
    q:"Une entreprise couverte par des Futures échéance juin encaisse ses devises le 12 mai. Que fait-elle le 12 mai ?",
    opts:["Elle attend juin pour se faire livrer les devises","Elle prend la position inverse : elle liquide ses contrats","Elle demande le remboursement de son deposit","Rien, la couverture s'arrête seule"], correct:1,
    ex:"Un Future est presque toujours dénoué avant l'échéance (E &gt; t) : le jour où l'on encaisse ou paie, on revend les contrats achetés (ou on rachète ceux vendus)."},
-  {ch:"Le marché des Futures", lesson:'l2', type:'num', aide:{f:['fut-tick'], t:"On te donne le tick (plus petite variation du cours, en USD pour 1 JPY) et la taille du contrat : le tick en valeur est leur produit. Attention aux zéros : 0,0000005 = 5 dix-millionièmes."},
-   q:"Le contrat yen du CME porte sur 12 500 000 JPY, coté en USD pour 1 JPY, avec un tick de 0,0000005 USD. Que vaut un tick, en USD ?",
-   answer:6.25, tol:0.001, unit:"USD",
-   ex:"Tick en valeur = tick × T = 0,0000005 × 12 500 000 = 6,25 USD par contrat."},
   {ch:"Le marché des Futures", lesson:'l2', type:'num', aide:{f:['fut-resultat'], t:"Le trader a acheté puis revendu : son résultat est (cours de vente − cours d'achat) × T × N. Commence par l'écart 1,2683 − 1,2715 : le cours a baissé, attends-toi à un résultat négatif."},
    q:"Un trader achète 6 contrats GBP/USD (62 500 GBP) à 1,2715 et les revend à 1,2683. Quel est son résultat ? (en USD, à l'unité, signe compris)",
    answer:-1200, tol:0.5, unit:"USD",
@@ -1468,22 +1424,10 @@ const TEST = [
    q:"Le cours à terme théorique EUR/USD à 4 mois vaut 1,0853 et le Future de même échéance cote 1,0880. Que fait un arbitragiste ?",
    opts:["Il achète le Future, sous-évalué","Il vend le Future, surévalué, et achète à terme synthétiquement","Rien : F et f sont égaux à l'arrondi près","Il vend des euros au comptant et les conserve"], correct:1,
    ex:"F &gt; f : le Future est surévalué. On le vend, et l'on achète à terme de façon synthétique : emprunt d'USD, achat d'EUR au comptant, placement des EUR jusqu'à l'échéance."},
-  {ch:"Base et évaluation", lesson:'l9', type:'num', aide:{f:['fut-comparer','fut-parite'], t:"On compare le Future coté F au cours théorique f. Calcule d'abord f (parité des taux) en gardant 6 décimales, puis le gain sans risque par contrat = T × |F − f|."},
-   q:"Le Future EUR/USD à 4 mois cote 1,0880, alors que le cours théorique vaut f = 1,08 × 1,015 ÷ 1,01. Quel gain sans risque un arbitrage procure-t-il par contrat de 125 000 EUR ? (en USD, à l'unité)",
-   answer:332, tol:1, unit:"USD",
-   ex:"Gain = T × (F − f) = 125 000 × (1,0880 − 1,085347) = 331,68 USD, soit environ 332 USD par contrat."},
   {ch:"Base et évaluation", lesson:'l9', type:'qcm',
    q:"GBP/USD au comptant = 1,2700. Taux à 6 mois : 4 % sur l'USD, 5 % sur la GBP. Sans calculer, comment se situe le cours à terme théorique de la livre ?",
    opts:["Au-dessus du comptant : la livre est en report","En dessous du comptant : la livre est en déport","Égal au comptant","On ne peut pas le savoir sans les cours Futures"], correct:1,
    ex:"f = S × (1 + iUSD × n/12) ÷ (1 + iGBP × n/12) : le dénominateur l'emporte (5 % &gt; 4 %), donc f &lt; S. La devise la mieux rémunérée est en déport (f = 1,2638)."},
-  {ch:"Spéculation", lesson:'l10', type:'num', aide:{f:['fut-levier'], t:"Effet de levier = valeur notionnelle (N × T × F0, en USD) ÷ deposit total. Calcule les deux : 10 × 62 500 × 1,2800 d'un côté, 10 × 2 400 de l'autre."},
-   q:"Un spéculateur achète 10 contrats GBP/USD (62 500 GBP) à 1,2800 ; deposit de 2 400 USD par contrat. Quel est son effet de levier ? (1 décimale)",
-   answer:33.3, tol:0.05, unit:"",
-   ex:"Levier = valeur notionnelle ÷ deposit = (10 × 62 500 × 1,2800) ÷ (10 × 2 400) = 800 000 ÷ 24 000 = 33,3."},
-  {ch:"Spéculation", lesson:'l10', type:'num', aide:{f:['fut-resultat','fut-levier'], t:"Calcule d'abord le gain de l'acheteur en USD : (cours de vente − cours d'achat) × T × N. Rapporte-le ensuite au deposit total (2 × 3 000 USD) et multiplie par 100 : c'est l'effet de levier."},
-   q:"Un spéculateur achète 2 contrats EUR/USD (125 000 EUR) à 1,0900 avec un deposit de 3 000 USD par contrat. Le cours monte à 1,0960. Quel gain réalise-t-il, en % du deposit ?",
-   answer:25, tol:0.05, unit:"%",
-   ex:"Gain = (1,0960 − 1,0900) × 250 000 = 1 500 USD, pour 6 000 USD de deposit : 1 500 ÷ 6 000 = 25 %, alors que le cours n'a monté que de 0,55 %. C'est l'effet de levier."},
   {ch:"Spéculation", lesson:'l10', type:'qcm',
    q:"Un spéculateur acheteur a un deposit de 10 000 USD et une maintenance de 7 500 USD. Une forte baisse lui fait perdre 4 000 USD en une séance, et il ne peut pas payer l'appel de marge. Le lendemain, le cours remonte. Que s'est-il passé ?",
    opts:["Rien : il garde son solde de 6 000 USD et profite de la remontée","Sa position est liquidée : la perte de 4 000 USD devient définitive","La chambre de compensation lui prête les 4 000 USD","L'appel est reporté à l'échéance"], correct:1,

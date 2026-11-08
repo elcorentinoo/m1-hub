@@ -10,7 +10,7 @@
 
   /* ---------- 0. VERSION ---------- */
   /* Doit rester identique à VERSION en haut de sw.js. */
-  const VERSION_APP = '7.6.0';
+  const VERSION_APP = '7.7.0';
   const NOM_VERSION = 'Thaler';
   window.APP_VERSION = VERSION_APP;
 
@@ -36,6 +36,7 @@
     {g:'Cours',    href:'systeme_bancaire.html',        ico:'🏦', t:'Le système bancaire français', s:'12 leçons · Livret A, crédits, régulation'},
     {g:'Entraînement', href:'bequick.html',              ico:'⚡', t:'BeQuick',                 s:'Le défi du soir · 18 h 30 – 22 h'},
     {g:'Entraînement', href:'entrainement_changes.html', ico:'🎯', t:'Marché des changes',      s:'13 notions · calculs ∞'},
+    {g:'Entraînement', href:'partiel_derives.html',      ico:'📝', t:'Réviser le partiel',      s:'Produits Dérivés I et II · 3 niveaux · QCM'},
     {g:'Entraînement', href:'entrainement_fiscal.html',  ico:'🧮', t:'Impôt sur le revenu',     s:'9 notions · parts et RNGI ∞'},
     {g:'Outils',   href:'ressourcerie.html', ico:'📚', t:'Ressourcerie',  s:'Documents partagés de la promo'},
     {g:'Outils',   href:'glossaire.html',    ico:'🔤', t:'Glossaire',     s:'Tous les sigles du Master'},
