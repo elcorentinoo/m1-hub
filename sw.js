@@ -13,7 +13,7 @@
    ⚠️ Cette valeur doit rester IDENTIQUE à VERSION_APP,
       en haut de ui.js.
    ════════════════════════════════════════════════════════════ */
-const VERSION = '8.3.1';        // « Guinée »
+const VERSION = '8.4.0';        // « Guinée »
 const CACHE_APP  = 'm1-app-'+VERSION;      // les fichiers du site
 const CACHE_EXT  = 'm1-ext-'+VERSION;      // polices et bibliothèques externes
 
@@ -33,6 +33,8 @@ const FICHIERS = [
   'droits_particuliers.html',
   'etudes_de_marche.html',
   'systeme_bancaire.html',
+  'organismes_tutelle.html',
+  'entreprise_banque.html',
   'marketing_numerique.html',
   'es_banque.html',
   'glossaire.html',
@@ -53,6 +55,7 @@ const FICHIERS = [
   'synchro.js',
   'banque.js',
   'calendrier.js',
+  'archives.js',
   'bequick.js',
   'formules.js',
   'chat.js',
@@ -68,6 +71,8 @@ const FICHIERS = [
   'img/sujet-droits-particuliers.webp',
   'img/sujet-etudes-marche.webp',
   'img/sujet-systeme-bancaire.webp',
+  'img/sujet-organismes-tutelle.webp',
+  'img/sujet-entreprise-banque.webp',
   'img/sujet-fiscalite-particulier.webp',
   'img/sujet-produits-derives.webp',
   'img/sujet-produits-derives-2.webp',

@@ -40,6 +40,7 @@ const PAGES = {
   licence: ['licence/'],
   m1: ['marche_des_particuliers', 'produits_derives', 'produits_derives_2', 'marketing_numerique', 'es_banque',
        'fiscalite_particulier', 'droits_particuliers', 'etudes_de_marche', 'systeme_bancaire',
+       'organismes_tutelle', 'entreprise_banque',
        'entrainement_changes', 'entrainement_fiscal'],
   m2: ['m2/'],
 };

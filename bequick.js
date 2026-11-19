@@ -6,7 +6,7 @@
    rapporte de 500 points (immédiate) à 250 points (40 s ou plus).
 
    Dépend de : calendrier.js (dates de partiels), banque.js (les
-   questions), lb.js (projet Supabase et pseudo). Si lb.js manque,
+   questions), archives.js (matières archivées, 8.4.0), lb.js (projet Supabase et pseudo). Si lb.js manque,
    il est chargé à la demande.
 
    Côté Supabase (voir supabase/bequick.sql) :
@@ -130,9 +130,15 @@
      premier joueur le fige sur le serveur (bequick_jours). */
   function graine(txt){ let h = 1779033703 ^ txt.length; for(let i=0;i<txt.length;i++){ h = Math.imul(h ^ txt.charCodeAt(i), 3432918353); h = h<<13 | h>>>19; } return h>>>0; }
   function hasard(seed){ let s = seed>>>0; return ()=>{ s |= 0; s = s + 0x6D2B79F5 | 0; let t = Math.imul(s ^ s>>>15, 1 | s); t = t + Math.imul(t ^ t>>>7, 61 | t) ^ t; return ((t ^ t>>>14)>>>0)/4294967296; }; }
+  /* 8.4.0 : une matière archivée (archives.js, réglée dans /admin) n'est
+     jamais tirée. Toute la promo tire la même série parce que la série du
+     soir est figée sur le serveur par le premier joueur (bequick_jours) ;
+     ce premier joueur relit la liste des archives sur le serveur juste
+     avant de la figer (voir serie). */
+  const archivee = sid => NIV === 'm1' && !!(window.ARCHIVES && ARCHIVES.estArchive(sid));
   function poidsMatieres(jour){
     const t = instant(jour, OUVERTURE), ech = window.ECHEANCES || [];
-    const sids = [...new Set(banque().map(q=>q.m))].filter(duNiveau).sort();
+    const sids = [...new Set(banque().map(q=>q.m))].filter(duNiveau).filter(sid=>!archivee(sid)).sort();
     const out = [];
     sids.forEach(sid=>{
       const e = ech.filter(x=>x.sid===sid);
@@ -217,6 +223,7 @@
     try{
       let l = await api('bequick_jours?jour=eq.'+jour+fN()+'&select=ids,matieres');
       if((!l || !l.length) && figer){
+        if(NIV === 'm1' && window.ARCHIVES) await ARCHIVES.charger(true);   // liste des archives à jour avant de figer
         const t = tirage(jour);
         await api('bequick_jours', {method:'POST', headers:{'Prefer':'resolution=ignore-duplicates,return=minimal'},
           body:{jour, niveau:NIV, ids:t.ids.join(','), matieres:t.matieres.join(',')}}).catch(()=>{});
@@ -366,7 +373,7 @@
     });
     try{
       if(NIV === 'm1' && window.P && P.aReviser && window.BANQUE){
-        const a = P.aReviser(window.BANQUE.map(q=>q.id));
+        const a = P.aReviser(window.BANQUE.filter(q=>!archivee(q.m)).map(q=>q.id));
         if(a.dus.length) out.push({id:'revision-'+j, ico:'🔁', titre:a.dus.length+" question"+(a.dus.length>1?'s':'')+" à réviser aujourd'hui", texte:"Ta révision espacée du jour.", url:'revision.html'});
       }
     }catch(e){}

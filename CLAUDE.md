@@ -81,7 +81,7 @@ après toute modification de couleur ou de photo.
 - Pages de cours (`marche_des_particuliers`, `produits_derives`,
   `marketing_numerique`, `es_banque`, `fiscalite_particulier`,
   `droits_particuliers`, `etudes_de_marche`, `systeme_bancaire`,
-  `produits_derives_2`) — même
+  `produits_derives_2`, `organismes_tutelle`, `entreprise_banque`) — même
   squelette : `topbar`, `sidebar` à chapitres, sections `.view` par leçon,
   mini-quiz, applications corrigées, test final adaptatif (`const TEST`).
   L'attribut `subject-id` sur `<html>` identifie la matière pour `progress.js`.
@@ -90,7 +90,9 @@ après toute modification de couleur ou de photo.
   (`PAGES`, `NOMS`, `LABM`, `fichierDe`, `PRESENTATIONS`), `progress.js`,
   `lb.js` (`COURS_M1`), `revision.html`, `stats.html`, `bequick.html` (`NOMS`),
   `index.html` (`MATIERES`), `calendrier.js` si la date est connue, `sw.js`
-  (`FICHIERS`), et ses questions dans `banque.js`.
+  (`FICHIERS`), `archives.js` (`PAGES`, `NOMS`) et `acces-admin.html`
+  (`ARC_M`, `NOMS_M`), `PAGES` de `netlify/edge-functions/acces.js`, et ses
+  questions dans `banque.js`.
 - **Vidéos de présentation** (6.3.0) : une par matière, générée dans
   NotebookLM à partir d'un document source (Drive « M1 – Sources vidéo »),
   hébergée en **non répertorié** sur la chaîne YouTube « M1 HUB ». `ui.js`
@@ -124,6 +126,10 @@ après toute modification de couleur ou de photo.
   en 3 niveaux (Guidé, Formules, Sans aide), exercices des TD ; données dans
   `partiel_derives_donnees.js` (un identifiant stable par question) et QCM
   dans `partiel_derives_qcm.js`. Jamais dans BeQuick ni dans `banque.js`.
+- Archives (8.4.0) — `archives.js` : matières masquées (Produits Dérivés I et
+  II, révision du partiel), réactivables en retirant leur sid ; liste à jour
+  réglée par Corentin dans /admin (onglet Archives, table `site_archives`,
+  `supabase/archives.sql`), `archives.js` n'en est que le repli.
 - `sw.js` — hors ligne. Toute nouvelle page doit être ajoutée à `FICHIERS`
   (sauf les pages d'accès, jamais mises en cache).
 

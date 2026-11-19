@@ -45,11 +45,15 @@ CONTENU DE CE DOSSIER
   • etudes_de_marche.html .............. Études de marché (12 leçons : bases, quali,
                                          quanti ; 16 questions rédigées, 8 cas
                                          pratiques, calculatrice de marge d'erreur)
+  • entreprise_banque.html ............. L'entreprise banque (4 leçons, 8.4.0)
+  • organismes_tutelle.html ............ Les organismes de tutelle (12 leçons, 8.4.0)
+  • archives.js ........................ matières archivées (8.4.0), réglées dans /admin
+  • supabase/archives.sql .............. table des archives (à lancer une fois)
   • ressourcerie.html .................. Dépôt et partage de documents (analyse locale)
   • glossaire.html ..................... 132 sigles et notions, liés aux leçons
   • ui.css / ui.js ..................... Socle commun : navigation, thème, recherche
   • progress.js ........................ Progression, XP, historique, révision espacée
-  • banque.js .......................... 536 questions et 132 fiches (fichier GÉNÉRÉ)
+  • banque.js .......................... 638 questions (fichier GÉNÉRÉ)
   • revision.html ...................... Entraînement du jour + flashcards
   • stats.html ......................... Tableau de bord de progression
   • sw.js .............................. Fonctionnement hors ligne
@@ -304,6 +308,36 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  8.4.0            DEUX NOUVEAUX COURS ET ARCHIVES (nom « Guinée » inchangé).
+                   · L'entreprise banque (entreprise_banque.html, 4 leçons :
+                     entreprise et banque, PNB, la banque est une entreprise,
+                     spécificités et agrément ; 4 rédigées, 3 cas, test de 21
+                     questions). Partiel du mardi 19 janvier 2027, 9 h.
+                   · Les organismes de tutelle (organismes_tutelle.html, 12
+                     leçons : bilan et histoire, régulation, crises, risque
+                     systémique, micro/macroprudentiel, loi de 2013, Bâle I à
+                     III, LCR/NSFR, stress tests/AQR/SREP, Union bancaire,
+                     ACPR/HCSF ; 12 rédigées, 6 cas chiffrés, test de 42
+                     questions). Partiel le 10 juin 2027 (provisoire).
+                   · Chiffres vérifiés (BCE, FSB, HCSF, EUR-Lex, BRI) ;
+                     écarts avec les documents corrigés et listés dans le
+                     mémo de chaque cours. 110 questions ajoutées à banque.js
+                     (638 au total), par le générateur, les 528 autres
+                     reproduites à l'identique.
+                   · Archives : archives.js (liste par défaut : Produits
+                     Dérivés I et II avec le générateur de change, révision
+                     du partiel). Réglage à la main de Corentin dans /admin,
+                     onglet « Archives » (table site_archives,
+                     supabase/archives.sql ; actions archives / archiver de
+                     acces-admin). Une matière archivée disparaît du hub, du
+                     menu, de la recherche, du tirage BeQuick, de la révision
+                     et des statistiques ; pages, questions et progression
+                     restent. Bandeau « Partiel du 18 novembre » retiré ;
+                     échéances PD retirées de calendrier.js (partiel passé).
+                   · Hub : « prochain partiel » = le prochain à venir ; le fil
+                     du semestre s'arrête au dernier partiel daté.
+                   · Photos : copies locales reprises (accès Unsplash bloqué),
+                     teintées violet (tutelle) et ardoise (entreprise banque).
   8.3.1            Partiel de Produits Dérivés à la une du hub M1 : deux cartes
                    (I et II) avec accroche et compte à rebours, qui ouvrent
                    directement le bon module (partiel_derives.html?m=pd1 / pd2).

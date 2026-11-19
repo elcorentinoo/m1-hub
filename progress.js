@@ -20,7 +20,9 @@ window.P = (function(){
     'fiscalite-particulier':{lab:'Fiscalité du Particulier', f:'fiscalite_particulier.html', ico:'§'},
     'droits-particuliers':{lab:'Droits des Particuliers', f:'droits_particuliers.html',     ico:'⚖'},
     'etudes-marche'      :{lab:'Études de marché',       f:'etudes_de_marche.html',        ico:'👤'},
-    'systeme-bancaire'   :{lab:'Le système bancaire français', f:'systeme_bancaire.html', ico:'🏦'}
+    'systeme-bancaire'   :{lab:'Le système bancaire français', f:'systeme_bancaire.html', ico:'🏦'},
+    'organismes-tutelle' :{lab:'Les organismes de tutelle', f:'organismes_tutelle.html',  ico:'🛡️'},
+    'entreprise-banque'  :{lab:"L'entreprise banque",      f:'entreprise_banque.html',   ico:'🏢'}
   };
 
   /* ---------- lecture / écriture ---------- */

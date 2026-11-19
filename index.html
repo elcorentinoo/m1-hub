@@ -236,20 +236,6 @@ body{overflow-x:hidden}
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="AAA">
 <script>
-/* 8.3.1 : partiel de Produits Dérivés en tête du hub, jusqu'au soir de l'épreuve */
-document.addEventListener('DOMContentLoaded', ()=>{
-  const z = document.getElementById('partielUne'); if(!z) return;
-  const e = (window.ECHEANCES || []).find(x=>x.sid === 'produits-derives');
-  if(!e) return;
-  const fin = new Date(e.end); fin.setUTCHours(22, 0, 0, 0);
-  if(Date.now() > fin.getTime()) return;
-  const j = Math.max(0, Math.ceil((e.end - Date.now())/864e5));
-  const c = document.getElementById('ptUneCpt');
-  if(c) c.textContent = (j === 0 ? "C'est aujourd'hui ! " : j === 1 ? 'Partiel demain. ' : 'Plus que '+j+' jours. ')+
-    'Produits Dérivés I et II, le même jour : refais les exercices de vos TD, guidé pas à pas, puis sans filet.';
-  z.hidden = false;
-});
-
 /* hub central (8.0.0) : on arrive toujours sur niveaux.html, le hub de
    tous les niveaux. Cette page reste l'espace M1, à la même adresse : on
    y reste quand on vient d'une autre page du site (hub central, cours,
@@ -305,26 +291,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
       <aside class="partiel-v verre" id="cPartiel"></aside>
     </section>
 
-    <section class="sec pt-une" id="partielUne" hidden aria-labelledby="ptUneT">
-      <div class="st"><h2 id="ptUneT">Partiel du <b>18 novembre</b></h2><p id="ptUneCpt">Produits Dérivés I et II, le même jour. Les exercices de vos TD, guidés pas à pas, puis sans filet.</p></div>
-      <div class="pt-une-g">
-        <a class="pt-une-c" data-sid="produits-derives" href="partiel_derives.html?m=pd1">
-          <span class="pt-une-e" aria-hidden="true"></span>
-          <span class="pt-une-t"><small>Réviser le partiel</small><b>Produits Dérivés I</b></span>
-          <span class="pt-une-a">Cours croisés, arbitrages, cours à terme : refais Airbus, Toyota, Nestlé et LVMH comme le jour J.</span>
-          <span class="pt-une-s">10 exercices · 3 niveaux · 106 QCM</span>
-          <span class="pt-une-b">Je m'entraîne</span>
-        </a>
-        <a class="pt-une-c" data-sid="produits-derives-2" href="partiel_derives.html?m=pd2">
-          <span class="pt-une-e" aria-hidden="true"></span>
-          <span class="pt-une-t"><small>Réviser le partiel</small><b>Produits Dérivés II</b></span>
-          <span class="pt-une-a">Appels de marge, nombre de contrats, résultat global : le TD Futures, de la méthode guidée au sans-faute.</span>
-          <span class="pt-une-s">5 exercices · 3 niveaux · 73 QCM</span>
-          <span class="pt-une-b">Je m'entraîne</span>
-        </a>
-      </div>
-    </section>
-
     <section class="sec" id="bequick">
       <a class="bqc" href="bequick.html" aria-describedby="bqTxt">
         <div class="g">
@@ -344,7 +310,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
     <section class="sec" id="entrainement">
       <div class="sombre">
-        <div class="vis" data-sid="produits-derives"><div class="ph"></div></div>
+        <div class="vis" data-sid="fiscalite-particulier"><div class="ph"></div></div>
         <div class="txt">
           <div class="sur">Entraînement</div>
           <h2>Des calculs<br><b>à l'infini</b></h2>
@@ -370,7 +336,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
         <a class="ic" href="revision.html"><span class="ri"><svg class="ico" viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5.3L20 9"/><path d="M20 4v5h-5"/><path d="M20 12a8 8 0 0 1-14 5.3L4 15"/><path d="M4 20v-5h5"/></svg></span>
           <h3>Révision espacée</h3><p>Les questions ratées reviennent le lendemain, celles que tu maîtrises s'espacent : 1, 3, 7, 16, 35 puis 75 jours.</p><span class="n" id="incRev">questions en banque</span></a>
         <a class="ic" href="#entrainement"><span class="ri"><svg class="ico" viewBox="0 0 24 24"><path d="M3 17l5-6 4 3 8-9"/><path d="M15 5h5v5"/></svg></span>
-          <h3>Calculs à l'infini</h3><p>Deux générateurs, change et impôt sur le revenu, avec indice, méthode et correction ciblée.</p><span class="n">22 notions · séries · cas complets</span></a>
+          <h3>Calculs à l'infini</h3><p>Des exercices d'impôt sur le revenu générés à l'infini, avec indice, méthode et correction ciblée.</p><span class="n">9 notions · séries · cas complets</span></a>
         <a class="ic" href="glossaire.html"><span class="ri"><svg class="ico" viewBox="0 0 24 24"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H11v15H5.5c-.8 0-1.5.7-1.5 1.5z"/><path d="M20 5.5c0-.8-.7-1.5-1.5-1.5H13v15h5.5c.8 0 1.5.7 1.5 1.5z"/></svg></span>
           <h3>Glossaire</h3><p>Chaque sigle et notion du Master, une définition courte et le lien vers la leçon qui l'explique.</p><span class="n" id="incGlo">termes du Master</span></a>
         <a class="ic" href="ressourcerie.html"><span class="ri"><svg class="ico" viewBox="0 0 24 24"><path d="M12 4v11m0 0l-4-4m4 4l4-4M5 17v3h14v-3"/></svg></span>
@@ -385,6 +351,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
 <script src="progress.js"></script>
 <script src="banque.js"></script>
 <script src="calendrier.js"></script>
+<script src="archives.js"></script>
 <script src="bequick.js"></script>
 <script>
 /* ════════ PORTAIL PSEUDO ════════ */
@@ -484,10 +451,26 @@ const MATIERES = [
     meta:"12 leçons · 13 rédigées · 6 cas · test",
     stats:[["12","leçons"],["13","rédigées"],["6","cas"]]
   },
+  {
+    file:"entreprise_banque.html", sid:"entreprise-banque", nb:4,
+    badge:"partiel 19 janvier · 9 h",
+    title:"L'entreprise banque", court:"Entreprise banque",
+    desc:"La banque est une entreprise : PNB, marge d'intermédiation et commissions, concurrence et néobanques, statut juridique, puis ses spécificités et l'agrément ACPR-BCE.",
+    meta:"4 leçons · 4 rédigées · 3 cas · test",
+    stats:[["4","leçons"],["4","rédigées"],["3","cas"]]
+  },
+  {
+    file:"organismes_tutelle.html", sid:"organismes-tutelle", nb:12,
+    badge:"régulation & supervision",
+    title:"Les organismes de tutelle", court:"Organismes de tutelle",
+    desc:"Pourquoi et comment on régule les banques : crises et risque systémique, micro et macroprudentiel, loi bancaire de 2013, Bâle I à III, LCR et NSFR, stress tests et SREP, puis BCE, ACPR et HCSF.",
+    meta:"12 leçons · 12 rédigées · 6 cas · test",
+    stats:[["12","leçons"],["12","rédigées"],["6","cas"]]
+  },
 ];
 
 /* Les entraînements générés à l'infini — une entrée par générateur. */
-const ENTRAINEMENTS = [
+const ENTRAINEMENTS_TOUS = [
   {
     file:"partiel_derives.html", badge:"partiel du 18 novembre",
     title:"Réviser le partiel · Produits Dérivés I et II", matiere:"Produits Dérivés I",
@@ -507,6 +490,21 @@ const ENTRAINEMENTS = [
     stats:[["9","notions"],["∞","exercices"],["3","modes"]]
   }
 ];
+
+/* 8.4.0 : matières archivées (archives.js, réglées dans /admin) — leurs
+   cartes et leurs entraînements disparaissent du hub ; rien n'est supprimé.
+   Les listes sont recalculées si la liste du serveur arrive après coup. */
+const MATIERES_TOUTES = MATIERES.slice();
+const visible = f => !(window.ARCHIVES && ARCHIVES.pageArchivee(f));
+let ENTRAINEMENTS = [];
+function appliquerArchives(){
+  MATIERES.splice(0, MATIERES.length, ...MATIERES_TOUTES.filter(m=>visible(m.file)));
+  ENTRAINEMENTS = ENTRAINEMENTS_TOUS.filter(e=>visible(e.file));
+  const sec = document.getElementById('entrainement'); if(sec) sec.hidden = !ENTRAINEMENTS.length;
+}
+appliquerArchives();
+/* le prochain partiel encore à venir (calendrier.js) */
+const prochain = () => ECHEANCES.find(e=>e.end > Date.now()) || ECHEANCES[ECHEANCES.length-1];
 
 
 const completion = m => (m.sid && window.P && P.completion) ? P.completion(m.sid, m.nb) : null;
@@ -565,9 +563,10 @@ const SID_DE = f => (MATIERES.find(m=>m.file===f)||{}).sid || '';
 /* ── calendrier : le fil du semestre puis une ligne par partiel ── */
 function renderPiste(){
   const host=document.getElementById('piste'); if(!host) return;
-  const der = ECHEANCES[ECHEANCES.length-1];
+  /* le fil s'arrête au dernier partiel daté (une date provisoire du semestre suivant ne l'étire pas) */
+  const der = ECHEANCES.filter(e=>!e.provisoire).pop() || ECHEANCES[ECHEANCES.length-1];
   const fait = Math.min(100, Math.max(0, Math.round((Date.now()-DEBUT_SEMESTRE)/(der.end-DEBUT_SEMESTRE)*100)));
-  const lignes = ECHEANCES.map(e=>{
+  const lignes = ECHEANCES.filter(e=>!(e.matiere && !visible(e.matiere))).map(e=>{
     const c = (window.P && P.completion && e.nb) ? P.completion(e.sid, e.nb) : null;
     return `<div class="ech" data-sid="${e.sid}">
       <div class="date">${e.court}<small>${e.provisoire?'provisoire':'dans '+jours(e.end)+' j'}</small></div>
@@ -590,7 +589,7 @@ function derniereMatiere(){
 }
 function aRevoir(){
   if(!(window.P && P.aReviser && window.BANQUE)) return 0;
-  try{ const r=P.aReviser(window.BANQUE.map(q=>q.id)); return r && r.dus ? r.dus.length : 0; }catch(e){ return 0; }
+  try{ const r=P.aReviser(window.BANQUE.filter(q=>!(window.ARCHIVES && ARCHIVES.estArchive(q.m))).map(q=>q.id)); return r && r.dus ? r.dus.length : 0; }catch(e){ return 0; }
 }
 function renderMetriques(g){
   const host=document.getElementById('metriques'); if(!host) return;
@@ -598,14 +597,14 @@ function renderMetriques(g){
   MATIERES.forEach(m=>{ const c=completion(m); total+=m.nb; if(c) faites+=c.lecons.n; });
   const serie = (window.P && P.serie) ? P.serie() : 0;
   host.innerHTML = `
-    <a class="chiffre nuit" href="${ECHEANCES[0].matiere}"><div class="n">${jours(ECHEANCES[0].end)}<small>jours</small></div><div class="l">avant ${insec(ECHEANCES[0].titre)}</div></a>
+    <a class="chiffre nuit" href="${prochain().matiere || '#piste'}"><div class="n">${jours(prochain().end)}<small>jours</small></div><div class="l">avant ${insec(prochain().titre)}</div></a>
     <div class="chiffre"><div class="n">${faites}<small>/${total}</small></div><div class="l">leçons validées sur ${MATIERES.length} matières</div></div>
     <a class="chiffre" href="revision.html"><div class="n">${aRevoir()}</div><div class="l">questions à revoir aujourd'hui</div></a>
     <a class="chiffre" href="stats.html"><div class="n">${serie}<small>${serie>1?'jours':'jour'}</small></div><div class="l">de série d'affilée · ${g} % global</div></a>`;
   const cs = document.getElementById('cStats');
-  if(cs) cs.innerHTML = `<div><small>Semestre</small><b>1 · 2026–27</b></div><div><small>Prochain partiel</small><b>J-${jours(ECHEANCES[0].end)}</b></div><div><small>Progression</small><b>${g} %</b></div>`;
+  if(cs) cs.innerHTML = `<div><small>Semestre</small><b>1 · 2026–27</b></div><div><small>Prochain partiel</small><b>J-${jours(prochain().end)}</b></div><div><small>Progression</small><b>${g} %</b></div>`;
 }
-const MOTS_NB = {4:"Quatre",5:"Cinq",6:"Six",7:"Sept",8:"Huit",9:"Neuf",10:"Dix"};
+const MOTS_NB = {4:"Quatre",5:"Cinq",6:"Six",7:"Sept",8:"Huit",9:"Neuf",10:"Dix",11:"Onze",12:"Douze"};
 function renderEntete(){
   const p = (window.LB && LB.pseudo) ? LB.pseudo() : null;
   const mot = new Date().getHours() < 18 ? 'Bonjour' : 'Bonsoir';
@@ -614,10 +613,10 @@ function renderEntete(){
   const futurs = ECHEANCES.filter(e=>e.end>Date.now()).length;
   document.getElementById('sous').textContent =
     MOTS_NB[MATIERES.length]+' matières, '+futurs+' partiel'+(futurs>1?'s':'')+' à venir. Reprends là où tu t’es arrêté : une leçon par jour suffit pour arriver serein.';
-  const e = ECHEANCES[0], c = (window.P && P.completion) ? P.completion(e.sid, e.nb) : null;
+  const e = prochain(), c = (window.P && P.completion && e.nb) ? P.completion(e.sid, e.nb) : null;
   const cp = document.getElementById('cPartiel');
   if(cp) cp.innerHTML = `<div class="tete"><div><h3>${e.titre}</h3><div class="quand">${e.label} · dans ${jours(e.end)} jours</div></div>
-      <a class="rond blanc" href="${e.matiere}" aria-label="Ouvrir ${echapH(e.titre)}">${FLECHE}</a></div>
+      <a class="rond blanc" href="${e.matiere || '#piste'}" aria-label="Ouvrir ${echapH(e.titre)}">${FLECHE}</a></div>
     <p>${e.format}. ${e.desc}</p>
     <div class="meta"><span><b>${c?c.lecons.n+'/'+e.nb:'0/'+e.nb}</b> leçons</span><span><b>${c?c.pct:0} %</b> prêt</span></div>`;
 }
@@ -686,6 +685,7 @@ bootGate();
 renderTout();
 /* progression reçue d'un autre appareil (synchro.js) */
 window.addEventListener('m1progression', ()=>renderTout());
+window.addEventListener('m1archives', ()=>{ appliquerArchives(); renderTout(); });
 renderBeQuick();
 setInterval(renderBeQuick, 1000);
 </script>

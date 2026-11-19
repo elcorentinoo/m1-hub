@@ -1,0 +1,1497 @@
+<!DOCTYPE html>
+<html lang="fr" subject-id="entreprise-banque">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>L'entreprise banque — AAA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+:root{
+  --card:#fff; --card2:#fbf9f5;
+  --paper:#faf6ef; --paper2:#f3ece0; --ink:#22201b; --line:#e3d9c8;
+  --teal:#1b6b5e; --amber:#c87a12; --rust:#a8432a; --plum:#6b3a73; --navy:#241C15;
+  --teal-soft:#e3efec; --amber-soft:#f6ead4; --rust-soft:#f3e0da; --plum-soft:#ece3ef; --navy-soft:#dde6f0;
+  --shadow:0 2px 14px rgba(34,32,27,.07); --shadow-lg:0 8px 30px rgba(34,32,27,.13);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-track{background:var(--paper2)}
+::-webkit-scrollbar-thumb{background:#cdbfa6;border-radius:6px;border:2px solid var(--paper2)}
+::-webkit-scrollbar-thumb:hover{background:var(--amber)}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:62px;z-index:50;background:var(--paper);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:18px;padding:0 22px}
+.brand{display:flex;align-items:center;gap:11px;font-family:'Fraunces',serif;font-weight:600;font-size:1.12rem;color:var(--navy)}
+.brand .logo{width:36px;height:36px;border-radius:9px;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:1.15rem;flex-shrink:0;box-shadow:var(--shadow)}
+.brand small{display:block;font-family:'DM Sans';font-weight:500;font-size:.66rem;letter-spacing:.09em;color:var(--amber);text-transform:uppercase}
+.hublink{font-family:'DM Mono';font-size:.72rem;color:#8a8170;text-decoration:none;padding:5px 10px;border-radius:8px;border:1px solid var(--line);white-space:nowrap;transition:.15s}
+.hublink:hover{color:var(--navy);border-color:#c9bca3;background:var(--card)}
+.progress-wrap{flex:1;max-width:300px;display:flex;flex-direction:column;gap:3px}
+.progress-wrap .lab{font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:#8a8170;font-weight:600;display:flex;justify-content:space-between}
+.progress-bar{height:8px;background:var(--paper2);border-radius:5px;overflow:hidden;border:1px solid var(--line)}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),#2a8a78);transition:width .5s cubic-bezier(.4,0,.2,1)}
+.xp{margin-left:auto;display:flex;align-items:center;gap:7px;background:var(--amber-soft);border:1px solid #e6cf9e;color:var(--amber);font-weight:700;padding:7px 14px;border-radius:30px;font-size:.9rem}
+.burger{display:none;background:none;border:1px solid var(--line);border-radius:8px;padding:7px 10px;cursor:pointer;font-size:1.1rem;color:var(--ink)}
+
+.shell{display:flex;padding-top:62px}
+.sidebar{position:fixed;top:62px;bottom:0;left:0;width:282px;background:var(--paper2);border-right:1px solid var(--line);overflow-y:auto;padding:20px 14px 50px;z-index:40;transition:transform .3s}
+.sidebar h4{font-family:'Fraunces',serif;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:#8a8170;margin:18px 10px 9px;font-weight:600}
+.sidebar h4:first-child{margin-top:0}
+.nav-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;cursor:pointer;font-size:.92rem;color:var(--ink);border:1px solid transparent;transition:.16s;margin-bottom:3px}
+.nav-item:hover{background:#ece3d3}
+.nav-item.active{background:var(--card);border-color:var(--line);box-shadow:var(--shadow);font-weight:600;color:var(--navy)}
+.nav-item .num{width:25px;height:25px;border-radius:50%;background:var(--card);border:1.5px solid var(--line);flex-shrink:0;display:grid;place-items:center;font-size:.78rem;font-weight:700;font-family:'DM Mono';color:#8a8170;transition:.16s}
+.nav-item.active .num,.nav-item.done .num{background:var(--teal);color:#fff;border-color:var(--teal)}
+.nav-item .lab{flex:1;line-height:1.25}
+.nav-item.special{background:var(--plum-soft);border-color:#d8c5dc;color:var(--plum);font-weight:600}
+.nav-item.special.active{background:var(--plum);color:#fff}
+.nav-item.special2{background:var(--navy-soft);border-color:#c3d2e2;color:var(--navy);font-weight:600}
+.nav-item.special2.active{background:var(--navy);color:#fff}
+.nav-item.special3{background:var(--amber-soft);border-color:#e6cf9e;color:var(--amber);font-weight:600}
+.nav-item.special3.active{background:var(--amber);color:#fff}
+.nav-item .ico{font-size:1.05rem}
+
+.main{flex:1;margin-left:282px;padding:40px 6vw 120px;max-width:920px}
+.view{display:none;animation:fadeIn .45s ease}
+.view.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.tag{display:inline-block;font-family:'DM Mono';font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;background:var(--navy-soft);color:var(--navy);padding:5px 12px;border-radius:20px;font-weight:500;margin-bottom:16px}
+h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;font-weight:600;color:var(--ink);margin-bottom:10px;letter-spacing:-.01em}
+.subtitle{font-size:1.12rem;color:#6f6757;margin-bottom:30px;max-width:62ch}
+.main p{margin-bottom:16px;font-size:1.04rem;max-width:68ch}
+.main h2{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:600;color:var(--navy);margin:38px 0 14px;letter-spacing:-.01em}
+.main strong{font-weight:600;color:var(--ink)}
+
+.callout{border-radius:14px;padding:18px 20px 18px 22px;margin:24px 0;border-left:5px solid;position:relative;font-size:1rem}
+.callout .ct{font-weight:700;font-family:'Fraunces',serif;font-size:1.02rem;display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.callout p{margin:0;max-width:none}
+.c-analogy{background:var(--amber-soft);border-color:var(--amber);color:#5e3a06}
+.c-analogy .ct{color:var(--amber)}
+.c-retenir{background:var(--teal-soft);border-color:var(--teal);color:#0f3d36}
+.c-retenir .ct{color:var(--teal)}
+.c-piege{background:var(--rust-soft);border-color:var(--rust);color:#5e2317}
+.c-piege .ct{color:var(--rust)}
+
+.rulebox{background:#1c1a16;color:#f3ece0;border-radius:14px;padding:22px 24px;margin:26px 0;font-family:'DM Mono';box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
+.rulebox::before{content:'REPÈRE';position:absolute;top:13px;right:18px;font-size:.62rem;letter-spacing:.2em;color:#7d7566}
+.rulebox.formule::before{content:'FORMULE'}
+.rulebox .rb-main{font-size:1.18rem;font-weight:500;line-height:1.5;color:#fff}
+.rulebox .rb-sub{font-size:.86rem;color:#b8af9d;margin-top:10px;line-height:1.55}
+.rulebox em{color:var(--amber);font-style:normal;font-weight:500}
+
+.tbl{width:100%;border-collapse:collapse;margin:22px 0;font-size:.96rem;background:var(--card);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line)}
+.tbl th{background:var(--navy);color:#fff;text-align:left;padding:11px 15px;font-weight:600;font-size:.86rem}
+.tbl td{padding:11px 15px;border-top:1px solid var(--line);vertical-align:top}
+.tbl tr:nth-child(even) td{background:var(--paper)}
+.tbl td:first-child{font-weight:600;color:var(--navy);white-space:nowrap}
+.tbl.wrap td:first-child{white-space:normal}
+.tbl.num td{font-family:'DM Mono';font-size:.94rem}
+.tbl.num td:first-child{font-family:'DM Sans'}
+
+.example{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:26px 0;box-shadow:var(--shadow)}
+.example .ex-head{font-family:'Fraunces',serif;font-weight:600;color:var(--plum);font-size:1.08rem;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.step{display:flex;gap:14px;margin-bottom:14px}
+.step:last-child{margin-bottom:0}
+.step .sn{width:27px;height:27px;border-radius:50%;background:var(--plum);color:#fff;flex-shrink:0;display:grid;place-items:center;font-family:'DM Mono';font-weight:500;font-size:.85rem}
+.step .sc{flex:1;padding-top:1px}
+.step .sc b{color:var(--navy)}
+.step .sc code{background:var(--paper2);padding:2px 7px;border-radius:5px;font-family:'DM Mono';font-size:.9rem;color:var(--teal)}
+.ex-result{margin-top:6px;background:var(--teal-soft);border:1px solid #bcdcd4;border-radius:10px;padding:12px 16px;font-weight:600;color:#0f3d36}
+
+.schema{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin:26px 0;box-shadow:var(--shadow);text-align:center}
+.schema .scap{font-size:.82rem;color:#8a8170;margin-top:12px;font-style:italic}
+.schema svg{max-width:100%;height:auto}
+
+.quiz{background:var(--plum-soft);border:1px solid #d8c5dc;border-radius:14px;padding:20px 22px;margin:24px 0}
+.quiz .qhead{font-family:'DM Mono';font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--plum);font-weight:500;margin-bottom:9px}
+.quiz .q{font-weight:600;font-size:1.05rem;margin-bottom:14px;color:var(--ink)}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{text-align:left;background:var(--card);border:1.5px solid #d8c5dc;border-radius:10px;padding:11px 15px;cursor:pointer;font-family:'DM Sans';font-size:.98rem;color:var(--ink);transition:.15s}
+.opt:hover:not(:disabled){border-color:var(--plum);background:#fbf8fc}
+.opt:disabled{cursor:default}
+.opt.right{background:var(--teal-soft);border-color:var(--teal);color:#0f3d36;font-weight:600}
+.opt.right::after{content:' ✓';color:var(--teal);font-weight:700}
+.opt.wrong{background:var(--rust-soft);border-color:var(--rust);color:#5e2317}
+.opt.wrong::after{content:' ✗';color:var(--rust);font-weight:700}
+.feedback{margin-top:13px;padding:12px 15px;border-radius:10px;background:var(--card);border:1px dashed #cbb9cf;font-size:.95rem;color:#5a4d5d}
+.feedback b{color:var(--plum)}
+
+.lesson-nav{display:flex;justify-content:space-between;gap:14px;margin-top:46px;padding-top:26px;border-top:1px solid var(--line)}
+.btn{font-family:'DM Sans';font-weight:600;font-size:.98rem;padding:12px 22px;border-radius:11px;cursor:pointer;border:1.5px solid var(--line);background:var(--card);color:var(--ink);transition:.16s;display:inline-flex;align-items:center;gap:8px}
+.btn:hover{border-color:#bbac90;transform:translateY(-1px)}
+.btn.primary{background:var(--teal);color:#fff;border-color:var(--teal);box-shadow:var(--shadow)}
+.btn.primary:hover{background:#155a4f}
+.btn.plum{background:var(--plum);color:#fff;border-color:var(--plum)}
+.btn.plum:hover{background:#592f60}
+.btn.amber{background:var(--amber);color:#fff;border-color:var(--amber)}
+.btn.amber:hover{background:#a86610}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.print-fab{position:fixed;bottom:26px;left:26px;z-index:110;background:var(--card);color:var(--ink2);border:1.5px solid var(--line2);font-weight:600;padding:10px 16px;border-radius:24px;cursor:pointer;font-family:'DM Sans';font-size:.85rem;box-shadow:var(--shadow);transition:.15s}
+.print-fab:hover{border-color:var(--navy);color:var(--navy);transform:translateY(-1px)}
+@media(max-width:880px){.print-fab{bottom:20px;left:16px;padding:9px 13px;font-size:.8rem}}
+.xp-pop{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--amber);color:#fff;font-weight:700;padding:13px 26px;border-radius:30px;box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:.4s;z-index:200;font-size:1rem}
+.xp-pop.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.test-q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:18px;box-shadow:var(--shadow);transition:.3s}
+.test-q .tq-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px}
+.test-q .tq-num{font-family:'DM Mono';font-weight:500;color:var(--navy);font-size:.9rem}
+.test-q .tq-chap{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:#8a8170;font-weight:600;background:var(--paper2);padding:4px 10px;border-radius:20px;text-align:right}
+.test-q .tq-q{font-weight:600;font-size:1.08rem;margin-bottom:14px}
+.num-input{font-family:'DM Mono';font-size:1.05rem;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;width:190px;background:var(--paper)}
+.num-input:focus{outline:none;border-color:var(--teal)}
+.unit{font-family:'DM Mono';color:#8a8170;margin-left:9px}
+.topt{display:flex;flex-direction:column;gap:8px}
+.topt button{text-align:left;background:var(--paper);border:1.5px solid var(--line);border-radius:10px;padding:11px 15px;cursor:pointer;font-family:'DM Sans';font-size:.98rem;transition:.15s}
+.topt button:hover{border-color:var(--teal)}
+.topt button.sel{background:var(--teal-soft);border-color:var(--teal);font-weight:600;color:#0f3d36}
+.remed{margin-top:14px;border-radius:11px;border-left:5px solid var(--rust);background:var(--rust-soft);padding:15px 18px;display:none}
+.remed.show{display:block;animation:fadeIn .35s}
+.remed .rt{font-weight:700;color:var(--rust);font-family:'Fraunces',serif;margin-bottom:5px;display:flex;align-items:center;gap:7px}
+.remed .ra{font-size:.95rem;color:#5e2317;margin-bottom:11px}
+.remed-btns{display:flex;gap:10px;flex-wrap:wrap}
+.remed-btns .btn{padding:8px 16px;font-size:.88rem}
+.test-q.ok{border-color:var(--teal);background:#fbfdfc}
+.test-q.ko{border-color:var(--rust)}
+.float-retry{position:fixed;bottom:26px;right:26px;z-index:120;display:none;background:var(--plum);color:#fff;border:none;font-weight:700;padding:14px 24px;border-radius:30px;box-shadow:var(--shadow-lg);cursor:pointer;font-family:'DM Sans';font-size:.98rem;align-items:center;gap:9px}
+.float-retry.show{display:inline-flex;animation:fadeIn .4s}
+
+.result{display:none;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:34px;box-shadow:var(--shadow-lg);text-align:center;animation:fadeIn .5s}
+.result.show{display:block}
+.result .score-big{font-family:'Fraunces',serif;font-size:4rem;font-weight:700;line-height:1;color:var(--teal)}
+.result .score-lab{color:#8a8170;font-weight:600;margin-bottom:8px}
+.result .msg{font-size:1.12rem;margin:14px auto 28px;max-width:46ch;color:var(--ink)}
+.chapbars{text-align:left;max-width:560px;margin:0 auto}
+.chapbar{margin-bottom:14px}
+.chapbar .cbl{display:flex;justify-content:space-between;font-size:.9rem;font-weight:600;margin-bottom:5px}
+.chapbar .cbl span:last-child{font-family:'DM Mono';color:#8a8170}
+.cbt{height:13px;background:var(--paper2);border-radius:7px;overflow:hidden;border:1px solid var(--line)}
+.cbf{height:100%;border-radius:7px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+
+.annale{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px 26px;margin-bottom:22px;box-shadow:var(--shadow)}
+.annale .an-tag{font-family:'DM Mono';font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);font-weight:500}
+.annale h3{font-family:'Fraunces',serif;font-size:1.32rem;color:var(--navy);margin:6px 0 14px;font-weight:600}
+.annale .enonce{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:16px 19px;font-size:1rem;color:#3a352c}
+.annale .enonce .qlist{margin:10px 0 0 4px}
+.annale .enonce .qlist li{margin-bottom:5px;list-style:none;padding-left:22px;position:relative}
+.annale .enonce .qlist li::before{content:'▸';position:absolute;left:0;color:var(--amber);font-weight:700}
+.corrige{margin-top:14px;display:none;animation:fadeIn .4s}
+.corrige.show{display:block}
+.corrige-head{font-family:'Fraunces',serif;font-weight:600;color:var(--teal);margin-bottom:12px;display:flex;align-items:center;gap:8px;font-size:1.06rem}
+
+.intro-card{background:var(--navy);color:#f3ece0;border-radius:16px;padding:24px 26px;margin-bottom:26px}
+.intro-card h2{color:#fff;margin:0 0 8px;font-family:'Fraunces',serif;font-size:1.4rem}
+.intro-card p{color:#cdd8e6;max-width:none;margin:0}
+.intro-card.amber{background:#7a4c08}
+.intro-card.amber p{color:#f2e0c0}
+.intro-card.plum{background:#4a2750}
+.intro-card.plum p{color:#e6d5ea}
+
+.hint{font-size:.85rem;color:#8a8170;font-style:italic;margin-top:8px}
+.overlay{display:none;position:fixed;inset:62px 0 0 0;background:rgba(34,32,27,.4);z-index:35}
+@media(max-width:880px){
+  .main{margin-left:0;padding:30px 22px 110px}
+  .sidebar{transform:translateX(-100%);box-shadow:var(--shadow-lg)}
+  .sidebar.open{transform:translateX(0)}
+  .overlay.show{display:block}
+  .burger{display:block}
+  .progress-wrap{max-width:none}
+  .brand small{display:none}
+  h1.lesson-title{font-size:1.8rem}
+  .xp{padding:6px 11px;font-size:.82rem}
+  .gen-data .dl{min-width:0;display:block}
+}
+@media(max-width:560px){
+  .progress-wrap,.hublink{display:none}
+  .topbar{gap:12px}
+}
+/* ===== QUESTIONS RÉDIGÉES — couleurs uniquement par variables de theme.css ===== */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.redac textarea{display:block;width:100%;min-height:130px;margin-top:4px;padding:12px 14px;border:1.5px solid var(--line2);border-radius:10px;background:var(--card);color:var(--ink);font:inherit;font-size:1rem;line-height:1.55;resize:vertical}
+.redac textarea:focus{outline:none;border-color:var(--acc)}
+.redac-btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.redac-score{font-weight:700;padding:10px 14px;border-radius:10px;margin-bottom:10px;border:1px solid var(--line)}
+.redac-score.ok{background:var(--teal-soft);color:var(--teal-d)}
+.redac-score.mid{background:var(--amber-soft);color:var(--amber)}
+.redac-score.ko{background:var(--rust-soft);color:var(--rust)}
+.crit{list-style:none;margin:0 0 16px;padding:0}
+.crit li{padding:6px 0;border-bottom:1px solid var(--line);font-size:.96rem}
+.crit li.ok{color:var(--teal-d)}
+.crit li.ko{color:var(--rust)}
+.crit li i{color:var(--ink2)}
+.modele{background:var(--paper2);border:1px solid var(--line);border-radius:10px;padding:14px 16px;max-width:none !important}
+/* lisibilité et contraste : étiquettes grises reprises sur les variables de theme.css */
+.test-q .tq-chap,.unit,.hint,.result .score-lab,.chapbar .cbl span:last-child{color:var(--txt3)}
+.main{min-width:0}
+.tbl-scroll{overflow-x:auto;margin:22px 0}
+.tbl-scroll .tbl{margin:0}
+.tbl td,.tbl th{hyphens:auto;overflow-wrap:break-word}
+@media(max-width:560px){.tbl-scroll .tbl{min-width:540px}}
+@media(max-width:560px){.tbl th,.tbl td{padding:9px 10px;font-size:.88rem}}
+/* ===== CALCULATRICE (leçon 9) ===== */
+.calc-row{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:12px}
+.calc-row label{display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:.92rem;color:var(--ink);flex:1 1 200px;min-width:0}
+.calc .num-input{width:100%}
+</style>
+<link rel="stylesheet" href="ui.css">
+<link rel="stylesheet" href="theme.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#ECEEF6">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="AAA">
+</head>
+<body>
+
+<div class="topbar">
+  <button class="burger" onclick="toggleSidebar()">☰</button>
+  <div class="brand">
+    <span class="logo">🏢</span>
+    <span>L'entreprise banque<small>M1 MBAF · la banque, une entreprise pas comme les autres</small></span>
+  </div>
+  <span id="nav-slot"></span>
+  <div class="progress-wrap">
+    <div class="lab"><span>Progression</span><span id="progPct">0 %</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+  </div>
+  <div class="xp"><span class="star">★</span><span id="xpVal">0</span> XP</div>
+  <span id="lb-id-slot"></span>
+</div>
+
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <h4>Introduction</h4>
+    <div id="navList1"></div>
+    <h4>I · La banque est une entreprise</h4>
+    <div id="navList2"></div>
+    <h4>II · Les spécificités de la banque</h4>
+    <div id="navList3"></div>
+    <h4>S'entraîner</h4>
+    <div class="nav-item special3" data-view="redac" onclick="go('redac')">
+      <span class="ico"><svg class="ico-t" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 19l1.2-4.2L15.8 5.2a1.9 1.9 0 0 1 2.7 0l.3.3a1.9 1.9 0 0 1 0 2.7L9.2 17.8z"/><path d="M14 7l3 3"/></svg></span><span class="lab">Questions rédigées</span>
+    </div>
+    <div class="nav-item special2" data-view="annales" onclick="go('annales')">
+      <span class="ico"><svg class="ico-t" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3.5h7l4 4v13H7z"/><path d="M14 3.5v4h4"/><path d="M9.8 13.6l1.9 1.9 3.3-3.8"/></svg></span><span class="lab">Trois applications corrigées</span>
+    </div>
+    <div class="nav-item special" data-view="test" onclick="go('test')">
+      <span class="ico"><svg class="ico-t" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/></svg></span><span class="lab">Test final adaptatif</span>
+    </div>
+    <h4>À savoir</h4>
+    <div class="nav-item" data-view="ecarts" onclick="go('ecarts')">
+      <span class="ico"><svg class="ico-t" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M10.3 4.9a2 2 0 0 1 3.4 0l7 12.2a2 2 0 0 1-1.7 3H5a2 2 0 0 1-1.7-3z"/><path d="M12 10v3.5M12 16.6h.01"/></svg></span><span class="lab">Mémo et points à vérifier</span>
+    </div>
+  </aside>
+
+  <main class="main" id="main">
+
+    <!-- ============ LEÇON 1 ============ -->
+    <section class="view" data-view="l1">
+      <span class="tag">Leçon 1 · Introduction</span>
+      <h1 class="lesson-title">La banque, une entreprise&nbsp;?</h1>
+      <p class="subtitle">Ce qu'est une entreprise, ce qu'est une banque, et ce qu'on attend de l'une comme de l'autre.</p>
+
+<div class="rulebox">
+  <div class="rb-main">Une <em>entreprise</em> est une entité juridique, identifiée par un numéro <em>SIREN</em>, et une unité économique juridiquement autonome dont la fonction principale est de produire des biens ou des services pour le marché.</div>
+  <div class="rb-sub">Une banque est une entreprise : plus précisément, une institution financière qui collecte l'épargne, accorde des prêts et met à la disposition de ses clients des moyens de paiement.</div>
+</div>
+<h2>Ce qu'on attend d'une entreprise</h2>
+<div class="example">
+  <div class="ex-head">Trois attentes</div>
+  <div class="step"><div class="sn">1</div><div class="sc">Une <b>activité économique</b> : production, distribution, services, avec des échanges marchands ou non.</div></div>
+  <div class="step"><div class="sn">2</div><div class="sc">Une <b>valeur ajoutée</b> et un <b>savoir-faire</b> : la richesse produite par l'activité.</div></div>
+  <div class="step"><div class="sn">3</div><div class="sc">Des <b>profits</b> : la différence entre les revenus (produits) et les dépenses (charges).</div></div>
+</div>
+<h2>Ce qu'on attend d'une banque</h2>
+<p>La même chose qu'une entreprise… et davantage : la banque doit en plus <b>respecter la réglementation qui lui est propre</b> (agrément, ratios prudentiels, lutte contre le blanchiment). Le cours en tire une formule : la banque est le <b>premier organe de contrôle de l'État</b> — elle est en première ligne pour vérifier l'identité de ses clients et l'origine des fonds, et signaler les opérations suspectes (Tracfin).</p>
+<div class="tbl-scroll">
+<table class="tbl wrap">
+  <tr><th></th><th>Entreprise classique</th><th>Banque</th></tr>
+  <tr><td>Statut</td><td>Entité juridique (SIREN)</td><td>Entité juridique (SIREN) + agrément</td></tr>
+  <tr><td>Activité</td><td>Produire des biens ou des services</td><td>Collecter l'épargne, prêter, fournir des moyens de paiement</td></tr>
+  <tr><td>Objectif</td><td>Valeur ajoutée, profit</td><td>Valeur ajoutée, profit</td></tr>
+  <tr><td>Contraintes</td><td>Droit commun (sociétés, fiscal, social…)</td><td>Droit commun + réglementation bancaire</td></tr>
+</table>
+</div>
+<div class="callout c-retenir">
+  <div class="ct">📌 À retenir</div>
+  <p>Une banque est une entreprise : activité économique, valeur ajoutée, savoir-faire, profit. Ce qui la distingue : son métier (épargne, crédit, paiements) et la réglementation propre qu'elle doit respecter.</p>
+</div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/3</div>
+        <div class="q">Par quel numéro une entreprise est-elle identifiée en France ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Le numéro fiscal</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Le SIREN</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">L'IBAN</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le code BIC</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Le SIREN (9 chiffres) identifie l'entreprise ; le SIRET, chacun de ses établissements.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/3</div>
+        <div class="q">Selon le cours, le profit est :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Le chiffre d'affaires</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">La différence entre les produits et les charges</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le montant des dépôts</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">La valeur ajoutée</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Profit = revenus (produits) − dépenses (charges).</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 3/3</div>
+        <div class="q">Qu'attend-on d'une banque en plus d'une entreprise classique ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Qu'elle ne fasse pas de profit</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Qu'elle respecte la réglementation qui lui est propre</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Qu'elle appartienne à l'État</button>
+        </div>
+        <div class="feedback" hidden><b>Oui.</b> Mêmes attentes qu'une entreprise, plus le respect de la réglementation bancaire.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('redac')">Questions rédigées</button>
+        <button class="btn primary" onclick="validate('l1',3)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 2 ============ -->
+    <section class="view" data-view="l2">
+      <span class="tag">Leçon 2 · Introduction</span>
+      <h1 class="lesson-title">Le PNB : marge d'intermédiation et commissions</h1>
+      <p class="subtitle">Le chiffre d'affaires d'une banque s'appelle le produit net bancaire. D'où vient-il, et comment a-t-il changé ?</p>
+
+<div class="rulebox">
+  <div class="rb-main"><em>PNB</em> (produit net bancaire) = marge d'intermédiation + commissions nettes (+ gains nets sur opérations de marché).</div>
+  <div class="rb-sub">C'est l'équivalent bancaire du chiffre d'affaires : avec lui, la banque paie ses charges et rémunère ses actionnaires.</div>
+</div>
+<h2>Les deux grandes sources</h2>
+<div class="tbl-scroll">
+<table class="tbl wrap">
+  <tr><th>Source</th><th>Définition</th><th>Exemple</th></tr>
+  <tr><td>Marge d'intermédiation</td><td>Intérêts reçus sur les crédits − intérêts versés sur les ressources (dépôts, emprunts)</td><td>Prêt immobilier à 3,3 % financé par des ressources à 2 %</td></tr>
+  <tr><td>Commissions</td><td>Rémunération des services : tenue de compte, cartes, assurance, placements, conseil</td><td>Cotisation de carte bancaire, frais de tenue de compte</td></tr>
+</table>
+</div>
+<p>Historiquement, la <b>marge d'intermédiation</b> était la ressource la plus fructueuse des banques. Avec son <b>effritement</b> ces dernières années (taux bas, concurrence), les banques ont rééquilibré leur PNB par les <b>commissions</b>. Elles ont aussi évolué avec la <b>digitalisation</b> des services, l'autonomie donnée aux clients, et la création de nouvelles branches et de nouvelles activités.</p>
+<h2>Exemple du cours : la répartition du PNB</h2>
+<div class="tbl-scroll">
+<table class="tbl wrap">
+  <tr><th>Banque</th><th>Marge d'intermédiation</th><th>Commissions</th></tr>
+  <tr><td>Caisse d'Épargne</td><td>60 %</td><td>40 %</td></tr>
+  <tr><td>BNP Paribas</td><td>41,4 %</td><td>58,6 %</td></tr>
+  <tr><td>Société Générale</td><td>66 %</td><td>34 %</td></tr>
+</table>
+</div>
+<div class="callout c-piege">
+  <div class="ct">⚠️ Chiffres à manier avec prudence</div>
+  <p>Ces répartitions sont celles du cours, sans année ni périmètre précisés : elles varient selon l'exercice et selon qu'on regarde la banque de détail ou tout le groupe. Retiens surtout l'idée : <b>la part des commissions progresse</b>, et chez certains groupes elle dépasse celle de la marge d'intermédiation.</p>
+</div>
+<div class="example">
+  <div class="ex-head">Calcul vérifié</div>
+  <div class="step"><div class="sn">1</div><div class="sc">Une banque perçoit 900 M€ d'intérêts et en verse 500 M€ : marge d'intermédiation = <b>400 M€</b>.</div></div>
+  <div class="step"><div class="sn">2</div><div class="sc">Elle encaisse 300 M€ de commissions : PNB = 400 + 300 = <b>700 M€</b>.</div></div>
+  <div class="step"><div class="sn">3</div><div class="sc">Part de la marge = 400 ÷ 700 = <b>57,14 %</b> ; part des commissions = 300 ÷ 700 = <b>42,86 %</b>.</div></div>
+</div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/3</div>
+        <div class="q">La marge d'intermédiation, c'est :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Les commissions sur les cartes</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Les intérêts reçus moins les intérêts versés</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le bénéfice net</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Les frais de personnel</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> L'écart entre ce que rapportent les crédits et ce que coûtent les ressources.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/3</div>
+        <div class="q">Une banque a 300 M€ de marge d'intermédiation et 200 M€ de commissions. Quelle part du PNB représentent les commissions ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">20 %</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">40 %</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">60 %</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">66,7 %</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> PNB = 500 M€ ; 200 ÷ 500 = 40 %.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 3/3</div>
+        <div class="q">Pourquoi les banques ont-elles développé les commissions ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">Parce que la marge d'intermédiation s'est effritée</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Parce que la loi interdit les intérêts</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Parce que les dépôts ont disparu</button>
+        </div>
+        <div class="feedback" hidden><b>Oui.</b> Taux bas et concurrence ont réduit la marge : les commissions rééquilibrent le PNB.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l1')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l2',3)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 3 ============ -->
+    <section class="view" data-view="l3">
+      <span class="tag">Leçon 3 · Une entreprise</span>
+      <h1 class="lesson-title">La banque est une entreprise</h1>
+      <p class="subtitle">Comme toute entreprise, la banque affronte des concurrents, doit suivre ses clients dans leurs usages, et a une forme juridique qui l'oblige à être rentable.</p>
+
+<h2>La concurrence</h2>
+<p>Le marché bancaire est aujourd'hui <b>hyperconcurrentiel</b>. La banque doit <b>capter</b> et <b>fidéliser</b> ses clients face à deux types de concurrents :</p>
+<div class="tbl-scroll">
+<table class="tbl wrap">
+  <tr><th>Concurrents</th><th>Qui ?</th></tr>
+  <tr><td>Directs</td><td>Les autres banques traditionnelles, à réseau d'agences</td></tr>
+  <tr><td>Indirects</td><td>Les banques en ligne et les néobanques</td></tr>
+</table>
+</div>
+<p>Exemple local du cours : dans le Morbihan, le <b>Crédit Agricole</b> et le <b>Crédit Mutuel de Bretagne</b> dominent le marché et s'en partagent une grande partie.</p>
+<h2>L'informatique</h2>
+<p>Comme toute entreprise, la banque doit évoluer avec les besoins de ses clients et leurs modes de consommation. Historiquement, les banques étaient d'abord <b>physiques</b>, avec très peu d'externalisation ; puis est venue l'<b>automatisation</b> des tâches, pour rendre le client <b>autonome</b> (distributeurs, banque à distance, applications).</p>
+<h2>L'entité juridique</h2>
+<p>La banque est une entité juridique : soit une <b>société anonyme cotée</b> en Bourse (BNP Paribas, Société Générale, comme TotalEnergies dans l'industrie), soit un groupe <b>coopératif ou mutualiste</b> (Crédit Agricole, Crédit Mutuel, BPCE). Comme toute entreprise, elle cherche à dégager des profits : elle développe un chiffre d'affaires, le <b>PNB</b>, pour couvrir ses charges et rémunérer ses actionnaires ou sociétaires.</p>
+<div class="example">
+  <div class="ex-head">Ce que la banque gère, comme toute entreprise</div>
+  <div class="step"><div class="sn">1</div><div class="sc">Des <b>salariés</b>, des <b>fournisseurs</b>, des <b>clients</b>.</div></div>
+  <div class="step"><div class="sn">2</div><div class="sc">Un <b>parc immobilier</b> (agences, sièges).</div></div>
+  <div class="step"><div class="sn">3</div><div class="sc">Une politique <b>marketing</b>.</div></div>
+  <div class="step"><div class="sn">4</div><div class="sc">Un <b>risque de défaut de paiement</b> (de ses clients).</div></div>
+</div>
+<div class="callout c-piege">
+  <div class="ct">⚠️ Une mauvaise gestion coûte plus cher</div>
+  <p>Pour une banque, une mauvaise gestion peut causer des dégâts au-delà de l'entreprise : dans une région, dans un pays, voire à l'international (c'est le risque systémique).</p>
+</div>
+<div class="callout c-retenir">
+  <div class="ct">📌 Conclusion de la partie I</div>
+  <p>À travers la concurrence, l'informatique et sa forme juridique, la banque est une entreprise qui a des <b>objectifs</b> et des <b>moyens</b>, comme toute entité juridique.</p>
+</div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/3</div>
+        <div class="q">Pour une banque à réseau, une néobanque est un concurrent :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Direct</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Indirect</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Ce n'est pas un concurrent</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Concurrents directs : les banques traditionnelles ; indirects : banques en ligne et néobanques.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/3</div>
+        <div class="q">Lequel de ces groupes est coopératif ou mutualiste ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Société Générale</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">BNP Paribas</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Crédit Mutuel</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">TotalEnergies</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Crédit Mutuel (comme Crédit Agricole et BPCE). BNP Paribas et Société Générale sont des SA cotées.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 3/3</div>
+        <div class="q">Quel est l'objectif de l'automatisation des tâches selon le cours ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Supprimer les clients</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Rendre le client autonome</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Fermer toutes les agences</button>
+        </div>
+        <div class="feedback" hidden><b>Oui.</b> Distributeurs, banque à distance, applications : le client fait lui-même ses opérations courantes.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l2')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l3',3)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 4 ============ -->
+    <section class="view" data-view="l4">
+      <span class="tag">Leçon 4 · Spécificités</span>
+      <h1 class="lesson-title">Les spécificités de la banque</h1>
+      <p class="subtitle">Ce qui distingue la banque d'une entreprise ordinaire : son rôle dans l'économie et l'agrément qu'il lui faut pour exercer.</p>
+
+<h2>Aparté : BCE et Banque de France</h2>
+<p>La <b>BCE</b> et la <b>Banque de France</b> sont des <b>institutions publiques</b> : ce ne sont pas des entités juridiques commerciales. Elles pilotent la <b>politique monétaire</b> et <b>surveillent</b> les banques privées.</p>
+<h2>Un acteur économique majeur</h2>
+<p>Par son activité historique, la collecte et l'octroi de crédit, la banque contribue au développement de la société. D'une part, elle gère l'argent du public (les dépôts) ; d'autre part, elle assure la <b>stabilité de tout un écosystème financier</b>.</p>
+<h2>L'agrément : pas de banque sans autorisation</h2>
+<div class="tbl-scroll">
+<table class="tbl wrap">
+  <tr><th>Activité</th><th>Qui autorise ?</th></tr>
+  <tr><td>Activités bancaires (crédit et réception de dépôts) : agrément d'établissement de crédit</td><td>Demande déposée à l'<b>ACPR</b>, qui l'instruit ; la décision revient à la <b>BCE</b> (MSU, depuis novembre 2014), sur proposition de l'ACPR</td></tr>
+  <tr><td>Services d'investissement</td><td>L'<b>AMF</b> approuve le programme d'activité pour ces services ; l'agrément est délivré par l'ACPR (les sociétés de gestion de portefeuille sont agréées par l'AMF)</td></tr>
+</table>
+</div>
+<div class="example">
+  <div class="ex-head">Les principaux critères d'agrément</div>
+  <div class="step"><div class="sn">1</div><div class="sc">Un <b>capital minimum libéré</b> : au moins 5 millions d'euros pour une banque (directive CRD, art. 12).</div></div>
+  <div class="step"><div class="sn">2</div><div class="sc">L'<b>identité</b> et la qualité des <b>apporteurs de capitaux</b> (actionnaires).</div></div>
+  <div class="step"><div class="sn">3</div><div class="sc">Un <b>organe de direction</b> dont les membres ont l'<b>honorabilité</b>, les <b>connaissances</b> et l'<b>expérience</b> nécessaires (au moins deux dirigeants effectifs).</div></div>
+  <div class="step"><div class="sn">4</div><div class="sc">Un programme d'activité, une organisation et des moyens adaptés.</div></div>
+</div>
+<div class="callout c-piege">
+  <div class="ct">⚠️ Correction par rapport au cours</div>
+  <p>Le cours dit que l'ACPR « notifiera la demande à la BCE » et que l'AMF « transmettra ses observations à l'ACPR ». Plus précisément : depuis le MSU, c'est la <b>BCE qui délivre</b> l'agrément d'établissement de crédit, sur proposition de l'ACPR ; pour les services d'investissement, l'AMF <b>approuve le programme d'activité</b> et l'ACPR délivre l'agrément.</p>
+</div>
+<div class="callout c-retenir">
+  <div class="ct">📌 À retenir</div>
+  <p>Banque = entreprise + agrément + réglementation. L'agrément d'établissement de crédit se demande à l'ACPR et est délivré par la BCE ; critères : capital minimum (5 M€), actionnaires, dirigeants honorables et compétents.</p>
+</div>
+<div class="callout c-analogy">
+  <div class="ct">💡 La suite du cours</div>
+  <p>Le document du cours annonce encore deux parties, <b>La transformation du système bancaire</b> et <b>Étude de bilan</b>, sans contenu pour l'instant : elles seront ajoutées dès qu'elles seront fournies.</p>
+</div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/3</div>
+        <div class="q">La BCE et la Banque de France sont :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Des sociétés anonymes cotées</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Des institutions publiques</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Des banques mutualistes</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Des néobanques</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Ce ne sont pas des entités commerciales ; elles pilotent la politique monétaire et surveillent les banques.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/3</div>
+        <div class="q">Qui décide de l'agrément d'un nouvel établissement de crédit en France ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">L'AMF seule</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">La BCE, sur proposition de l'ACPR</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le ministère de l'Économie</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">La Fédération bancaire française</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> La demande se dépose à l'ACPR, qui l'instruit ; la BCE décide.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 3/3</div>
+        <div class="q">Lequel n'est PAS un critère d'agrément ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Un capital minimum libéré</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">L'identité des actionnaires</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Des dirigeants honorables et expérimentés</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Un nombre minimal d'agences</button>
+        </div>
+        <div class="feedback" hidden><b>Oui.</b> Aucun nombre d'agences n'est exigé : une banque en ligne peut être agréée.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l3')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l4',3)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ QUESTIONS RÉDIGÉES ============ -->
+    <section class="view" data-view="redac">
+      <span class="tag">S'entraîner</span>
+      <h1 class="lesson-title">Questions rédigées, corrigées automatiquement</h1>
+      <p class="subtitle">Rédige comme à l'examen, puis demande la correction : le site repère les notions-clés, te dit ce qui manque et affiche une réponse modèle.</p>
+
+      <div class="intro-card">
+        <h2>✍️ Comment ça marche</h2>
+        <p>Les questions ont été <strong>rédigées par le site</strong> à partir du cours, et chaque réponse modèle reprend ce que dit le cours (chiffres vérifiés). La correction cherche des <strong>mots-clés</strong> : elle vérifie que les notions sont là, pas la qualité de ta rédaction. Relis toujours la réponse modèle.</p>
+      </div>
+
+      <div id="redacList"></div>
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l4')">← Dernière leçon</button>
+        <button class="btn plum" onclick="go('annales')">Trois applications corrigées →</button>
+      </div>
+    </section>
+
+    <!-- ============ APPLICATIONS ============ -->
+    <section class="view" data-view="annales">
+      <span class="tag">Applications</span>
+      <h1 class="lesson-title">Trois applications corrigées</h1>
+      <p class="subtitle">Cherche au brouillon avant d'ouvrir le corrigé.</p>
+
+      <div class="intro-card">
+        <h2>📐 D'où viennent ces cas ?</h2>
+        <p>Les situations sont <strong>inventées par le site</strong> et s'appuient uniquement sur le cours. Les calculs ont été <strong>vérifiés par ordinateur</strong>.</p>
+      </div>
+
+      <div class="annale">
+        <div class="an-tag">Cas 1 · PNB · calcul</div>
+        <h3>La composition du PNB d'une banque régionale</h3>
+        <div class="enonce">
+          Sur l'année, une banque régionale a perçu 900 M€ d'intérêts sur ses crédits et versé 500 M€ d'intérêts sur ses ressources. Elle a encaissé 300 M€ de commissions.
+          <ul class="qlist"><li>Calculez sa marge d'intermédiation et son PNB.</li><li>Quelle part du PNB représentent les commissions (2 décimales) ?</li><li>Ses charges totales sont de 520 M€. Quel est son profit, au sens du cours ?</li></ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé — calcul vérifié</div>
+          <div class="step"><div class="sn">1</div><div class="sc">Marge d'intermédiation = 900 − 500 = <b>400 M€</b> ; PNB = 400 + 300 = <b>700 M€</b>.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc">Commissions = 300 ÷ 700 = <b>42,86 %</b> (marge : 57,14 %) : profil proche de la Caisse d'Épargne du cours (60 / 40).</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc">Profit = produits − charges = 700 − 520 = <b>180 M€</b>.</div></div>
+        </div>
+      </div>
+
+      <div class="annale">
+        <div class="an-tag">Cas 2 · Concurrence</div>
+        <h3>Un client tenté par une néobanque</h3>
+        <div class="enonce">
+          Un jeune client de l'agence annonce qu'il va ouvrir un compte dans une néobanque, « gratuite et toute sur l'appli ».
+          <ul class="qlist"><li>Quel type de concurrent est la néobanque pour l'agence ?</li><li>Quels leviers l'agence peut-elle activer, selon le cours ?</li></ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé proposé par le site</div>
+          <div class="step"><div class="sn">1</div><div class="sc">La néobanque est un <b>concurrent indirect</b> (les autres banques à réseau sont les concurrents directs).</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc">Fidéliser : rendre le client <b>autonome</b> grâce aux outils digitaux de la banque, tout en valorisant ce que la néobanque n'offre pas toujours (conseiller, crédit immobilier, accompagnement). Sur un marché hyperconcurrentiel, garder un client coûte moins cher que d'en conquérir un.</div></div>
+        </div>
+      </div>
+
+      <div class="annale">
+        <div class="an-tag">Cas 3 · Agrément</div>
+        <h3>Créer une banque en ligne</h3>
+        <div class="enonce">
+          Des entrepreneurs veulent lancer une banque 100 % en ligne qui recevra des dépôts, accordera des crédits et proposera des placements en Bourse.
+          <ul class="qlist"><li>À qui s'adressent-ils, et qui décide ?</li><li>Quelles conditions doivent-ils réunir ?</li></ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé proposé par le site</div>
+          <div class="step"><div class="sn">1</div><div class="sc">Dépôts et crédits : agrément d'<b>établissement de crédit</b>, demandé à l'<b>ACPR</b>, qui l'instruit ; la <b>BCE</b> décide. Placements en Bourse (services d'investissement) : l'<b>AMF</b> approuve le programme d'activité.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc">Un capital minimum libéré d'au moins <b>5 M€</b>, des actionnaires identifiés et de qualité, au moins deux dirigeants honorables, compétents et expérimentés, une organisation et des moyens adaptés. Aucune agence n'est exigée.</div></div>
+        </div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('redac')">← Questions rédigées</button>
+        <button class="btn plum" onclick="go('test')">Passer le test final →</button>
+      </div>
+    </section>
+
+    <!-- ============ MÉMO ET POINTS À VÉRIFIER ============ -->
+    <section class="view" data-view="ecarts">
+      <span class="tag">À savoir</span>
+      <h1 class="lesson-title">Mémo des chiffres et points à vérifier</h1>
+      <p class="subtitle">Les chiffres à connaître, les corrections apportées au document du cours après vérification, et ce qui reste à faire préciser. Si ton enseignant dit autre chose, c'est lui qui fait foi.</p>
+
+<h2>Les chiffres à connaître</h2>
+<div class="tbl-scroll">
+<table class="tbl wrap">
+  <tr><th>Élément</th><th>Valeur à retenir</th></tr>
+  <tr><td>Identifiant</td><td>SIREN : 9 chiffres, un par entreprise (SIRET : un par établissement)</td></tr>
+  <tr><td>PNB</td><td>Marge d'intermédiation (intérêts reçus − versés) + commissions (+ gains de marché)</td></tr>
+  <tr><td>Exemple du cours</td><td>Caisse d'Épargne 60 / 40 ; BNP Paribas 41,4 / 58,6 ; Société Générale 66 / 34 (marge / commissions)</td></tr>
+  <tr><td>Agrément</td><td>Établissement de crédit : demande à l'ACPR, décision de la BCE ; services d'investissement : programme approuvé par l'AMF</td></tr>
+  <tr><td>Capital minimum</td><td>5 millions d'euros pour une banque (directive 2013/36/UE, art. 12)</td></tr>
+  <tr><td>Garantie des dépôts</td><td>100 000 € par déposant et par banque (FGDR)</td></tr>
+  <tr><td>Partiel</td><td>Mardi 19 janvier 2027, 9 h</td></tr>
+</table>
+</div>
+<h2>Corrections apportées au document</h2>
+      <div class="callout c-retenir">
+        <div class="ct">✅ Vérifié sur les sources officielles (novembre 2026)</div>
+        <p>ACPR, Banque de France, EUR-Lex, INSEE :</p>
+        <ul style="margin:8px 0 0 20px">
+          <li><b>Agrément</b> : depuis le MSU (novembre 2014), c'est la <b>BCE qui délivre</b> l'agrément d'établissement de crédit, sur proposition de l'ACPR (le cours dit que l'ACPR « notifie » la demande à la BCE).</li>
+          <li><b>Services d'investissement</b> : l'AMF <b>approuve le programme d'activité</b> et l'agrément est délivré par l'ACPR (le cours dit « un agrément auprès de l'AMF qui transmettra ses observations à l'ACPR »).</li>
+          <li><b>Capital minimum</b> : précisé à 5 millions d'euros (le cours dit seulement « un capital minimum libéré »).</li>
+        </ul>
+      </div>
+
+<h2>Points encore à faire préciser</h2>
+<div class="tbl-scroll">
+<table class="tbl wrap">
+  <tr><th>Sujet</th><th>Ce que dit le cours</th><th>Pourquoi le vérifier</th></tr>
+  <tr><td>Répartition du PNB</td><td>Caisse d'Épargne 60/40, BNP 41,4/58,6, SG 66/34</td><td>Ni année ni périmètre (groupe ou banque de détail) : ces parts varient beaucoup d'un exercice à l'autre. Donnés comme exemples du cours, non vérifiés.</td></tr>
+  <tr><td>Parties III et IV</td><td>« La transformation du système bancaire », « Étude de bilan », « Conclusion »</td><td>Titres présents dans le document, sans contenu : à ajouter quand le cours sera fourni.</td></tr>
+  <tr><td>« Premier organe de contrôle de l'État »</td><td>Formule du cours</td><td>Le site l'explique par les obligations de vigilance (lutte contre le blanchiment) : à confirmer avec l'enseignant.</td></tr>
+</table>
+</div>
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l1')">← Revoir le cours</button>
+        <button class="btn plum" onclick="go('test')">Passer le test final →</button>
+      </div>
+    </section>
+
+    <!-- ============ TEST FINAL ============ -->
+    <section class="view" data-view="test">
+      <span class="tag">Évaluation</span>
+      <h1 class="lesson-title">Test final adaptatif</h1>
+      <p class="subtitle">Vingt et une questions rédigées par le site à partir du cours, dont trois calculs vérifiés.</p>
+
+      <div class="intro-card">
+        <h2>🎯 Comment le lire</h2>
+        <p>Chaque erreur rouvre la leçon correspondante. Le bilan par chapitre, en bas, te dit où réviser en priorité. Pour les calculs, arrondis comme demandé dans la question.</p>
+      </div>
+
+      <div id="testQuestions"></div>
+
+      <div class="lesson-nav" id="testSubmitRow">
+        <button class="btn" onclick="go('l1')">← Revoir le cours</button>
+        <button class="btn plum" onclick="gradeTest()">Valider mes réponses ✓</button>
+      </div>
+
+      <div class="result" id="testResult">
+        <div class="score-lab">Ton score</div>
+        <div class="score-big" id="scoreBig">0</div>
+        <div class="msg" id="scoreMsg"></div>
+        <div class="chapbars" id="chapBars"></div>
+        <div style="margin-top:28px"><button class="btn plum" onclick="resetTest()">↻ Reprendre le test</button></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<button class="float-retry" id="floatRetry" onclick="resetTest()">↻ Reprendre le test</button>
+<button class="print-fab" onclick="imprimerFiche()" title="Imprimer cette leçon en fiche">🖨️ Fiche</button>
+<div class="xp-pop" id="xpPop"></div>
+
+<script src="lb.js"></script>
+<script src="progress.js"></script>
+<script>
+const SUBJECT_KEY = "L'entreprise banque";
+
+/* ===================== ÉTAT ===================== */
+const LESSONS = [
+  {id:"l1", t:"Entreprise et banque", ch:1},
+  {id:"l2", t:"Le PNB : marge et commissions", ch:1},
+  {id:"l3", t:"Concurrence, informatique, statut", ch:2},
+  {id:"l4", t:"Spécificités et agrément", ch:3}
+];
+const SAVE = (window.P ? P.etat() : {done:{},xp:0,last:null});
+const state = { xp: SAVE.xp||0, done: Object.assign({}, SAVE.done), view:'l1' };
+
+/* ===================== NAVIGATION ===================== */
+/* ===================== NAVIGATION ===================== */
+function buildNav(){
+  [...new Set(LESSONS.map(l=>l.ch))].forEach(ch=>{
+    const nav = document.getElementById('navList'+ch);
+    if(!nav) return;
+    nav.innerHTML = '';
+    LESSONS.forEach((l,i)=>{
+      if(l.ch!==ch) return;
+      const d = document.createElement('div');
+      d.className = 'nav-item' + (state.done[l.id]?' done':'');
+      d.dataset.view = l.id;
+      d.onclick = ()=>go(l.id);
+      d.innerHTML = '<span class="num">'+(state.done[l.id]?'✓':(i+1))+'</span><span class="lab">'+l.t+'</span>';
+      nav.appendChild(d);
+    });
+  });
+  highlightNav();
+}
+function highlightNav(){
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.dataset.view===state.view));
+}
+function go(view){
+  state.view = view;
+  if(window.P && /^l\d+$/.test(view)) P.derniereLecon(view);
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active', v.dataset.view===view));
+  highlightNav();
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(window.innerWidth<=880) closeSidebar();
+}
+function imprimerFiche(){ window.print(); }
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+/* ===================== XP ===================== */
+function addXp(n){
+  state.xp += n;
+  if(window.P) P.ajouterXp(n);
+  document.getElementById('xpVal').textContent = state.xp;
+  popXp('+'+n+' XP');
+}
+function popXp(txt){
+  const p = document.getElementById('xpPop');
+  p.textContent = '★ '+txt;
+  p.classList.add('show');
+  clearTimeout(p._t);
+  p._t = setTimeout(()=>p.classList.remove('show'),1400);
+}
+function updateProgress(){
+  const pct = Math.round(Object.keys(state.done).length/LESSONS.length*100);
+  document.getElementById('progFill').style.width = pct+'%';
+  document.getElementById('progPct').textContent = pct+' %';
+}
+
+/* ===================== MINI-QUIZ ===================== */
+function pick(btn){
+  const quiz = btn.closest('.quiz');
+  if(quiz.classList.contains('answered')) return;
+  quiz.classList.add('answered');
+  const correct = btn.dataset.correct === 'true';
+  quiz.querySelectorAll('.opt').forEach(o=>{
+    o.disabled = true;
+    if(o.dataset.correct === 'true') o.classList.add('right');
+  });
+  if(!correct) btn.classList.add('wrong');
+  const fb = quiz.querySelector('.feedback');
+  if(fb) fb.hidden = false;
+  if(window.P){
+    const sec = quiz.closest('.view');
+    const lec = sec ? sec.dataset.view : '?';
+    const rang = sec ? [...sec.querySelectorAll('.quiz')].indexOf(quiz) : 0;
+    P.noterReponse('quiz:'+lec+':'+rang, correct, 'Leçon '+lec.replace('l',''));
+  }
+  if(correct) addXp(10);
+}
+function validate(id, quizCount){
+  const sec = document.querySelector('.view[data-view="'+id+'"]');
+  const answered = sec.querySelectorAll('.quiz.answered').length;
+  if(answered < quizCount){
+    popXp("Réponds aux "+quizCount+" quiz d'abord");
+    sec.querySelectorAll('.quiz:not(.answered)').forEach(q=>{ q.style.boxShadow='0 0 0 2px var(--plum)'; setTimeout(()=>q.style.boxShadow='',1200); });
+    return;
+  }
+  if(!state.done[id]){ state.done[id]=true; if(window.P) P.marquerLecon(id); addXp(50); buildNav(); updateProgress(); }
+  const idx = LESSONS.findIndex(l=>l.id===id);
+  const next = LESSONS[idx+1];
+  if(next) go(next.id); else go('redac');
+}
+
+/* ===================== QUESTIONS RÉDIGÉES =====================
+   Chaque critère est une notion attendue ; `k` liste les façons de
+   l'écrire (comparées sans accents ni majuscules). Un critère est
+   rempli dès qu'une de ses formes apparaît dans la réponse. */
+const REDAC = [
+ {
+  "lesson": "l1",
+  "q": "En quoi la banque est-elle une entreprise ? Qu'attend-on d'elle ?",
+  "crit": [
+   {
+    "t": "Entité juridique, SIREN",
+    "k": [
+     "siren",
+     "entite juridique"
+    ]
+   },
+   {
+    "t": "Produire des services pour le marché",
+    "k": [
+     "produire",
+     "service"
+    ]
+   },
+   {
+    "t": "Collecte l'épargne, prête, moyens de paiement",
+    "k": [
+     "epargne",
+     "pret",
+     "paiement"
+    ]
+   },
+   {
+    "t": "Valeur ajoutée, savoir-faire",
+    "k": [
+     "valeur ajoutee",
+     "savoir-faire",
+     "savoir faire"
+    ]
+   },
+   {
+    "t": "Profit = produits − charges",
+    "k": [
+     "profit",
+     "benefice"
+    ]
+   },
+   {
+    "t": "Respect de sa réglementation propre",
+    "k": [
+     "reglementation"
+    ]
+   }
+  ],
+  "modele": "Une entreprise est une <b>entité juridique</b> identifiée par un <b>SIREN</b>, unité économique autonome qui <b>produit</b> des biens ou des <b>services</b> pour le marché. La banque en est une : institution financière, elle collecte l'<b>épargne</b>, accorde des <b>prêts</b> et fournit des moyens de <b>paiement</b>. On attend d'elle ce qu'on attend de toute entreprise : une activité économique, une <b>valeur ajoutée</b> et un <b>savoir-faire</b>, et des <b>profits</b> (produits moins charges). On attend en plus qu'elle respecte la <b>réglementation</b> qui lui est propre : le cours en fait le premier organe de contrôle de l'État (vigilance sur les clients et les fonds, lutte contre le blanchiment)."
+ },
+ {
+  "lesson": "l2",
+  "q": "Qu'est-ce que le PNB d'une banque, et comment sa composition a-t-elle évolué ?",
+  "crit": [
+   {
+    "t": "PNB = chiffre d'affaires de la banque",
+    "k": [
+     "chiffre d'affaires",
+     "pnb"
+    ]
+   },
+   {
+    "t": "Marge d'intermédiation : intérêts reçus − versés",
+    "k": [
+     "intermediation"
+    ]
+   },
+   {
+    "t": "Commissions",
+    "k": [
+     "commission"
+    ]
+   },
+   {
+    "t": "Effritement de la marge",
+    "k": [
+     "effrit",
+     "baisse",
+     "taux bas"
+    ]
+   },
+   {
+    "t": "Digitalisation, nouvelles activités",
+    "k": [
+     "digital",
+     "numerique",
+     "nouvelles"
+    ]
+   }
+  ],
+  "modele": "Le <b>PNB</b> (produit net bancaire) est le <b>chiffre d'affaires</b> de la banque : il sert à couvrir ses charges et à rémunérer ses actionnaires. Il se compose de la marge d'<b>intermédiation</b> (intérêts reçus sur les crédits moins intérêts versés sur les ressources) et des <b>commissions</b> (services, cartes, assurance, placements), auxquelles s'ajoutent les gains sur opérations de marché. La marge d'intermédiation a longtemps été la ressource la plus fructueuse ; son <b>effritement</b> (taux bas, concurrence) a conduit les banques à rééquilibrer leur PNB par les commissions. Exemple du cours : environ 41 % de marge et 59 % de commissions chez BNP Paribas. Les banques ont aussi misé sur la <b>digitalisation</b>, l'autonomie des clients et de <b>nouvelles</b> activités."
+ },
+ {
+  "lesson": "l3",
+  "q": "Montrez que la banque est une entreprise comme les autres : concurrence, informatique, statut juridique.",
+  "crit": [
+   {
+    "t": "Marché hyperconcurrentiel",
+    "k": [
+     "concurren"
+    ]
+   },
+   {
+    "t": "Concurrents directs / indirects (néobanques)",
+    "k": [
+     "neobanque",
+     "en ligne",
+     "indirect"
+    ]
+   },
+   {
+    "t": "Capter et fidéliser",
+    "k": [
+     "fidelis",
+     "capter"
+    ]
+   },
+   {
+    "t": "Automatisation, autonomie du client",
+    "k": [
+     "automatis",
+     "autonom"
+    ]
+   },
+   {
+    "t": "SA cotée ou coopérative / mutualiste",
+    "k": [
+     "mutualis",
+     "cooperati",
+     "cotee"
+    ]
+   },
+   {
+    "t": "PNB pour couvrir les charges et rémunérer",
+    "k": [
+     "pnb",
+     "actionnaire"
+    ]
+   }
+  ],
+  "modele": "Le marché bancaire est hyper<b>concurrentiel</b> : la banque doit <b>capter</b> et <b>fidéliser</b> ses clients face aux banques traditionnelles (concurrents directs) et aux banques <b>en ligne</b> et <b>néobanques</b> (concurrents <b>indirects</b>) ; dans le Morbihan, le Crédit Agricole et le Crédit Mutuel de Bretagne dominent. Elle doit suivre l'évolution des usages : d'abord physique, elle a <b>automatisé</b> ses tâches pour rendre le client <b>autonome</b>. C'est une entité juridique, société anonyme <b>cotée</b> (BNP Paribas, Société Générale) ou groupe <b>coopératif</b> ou <b>mutualiste</b> : comme toute entreprise, elle dégage un <b>PNB</b> pour couvrir ses charges et rémunérer ses <b>actionnaires</b>, et gère salariés, fournisseurs, clients, immobilier, marketing et risque de défaut. Elle a donc des objectifs et des moyens comme toute entité juridique."
+ },
+ {
+  "lesson": "l4",
+  "q": "Quelles sont les spécificités de la banque ? Présentez les conditions de l'agrément.",
+  "crit": [
+   {
+    "t": "BCE et BdF : institutions publiques",
+    "k": [
+     "institution",
+     "public"
+    ]
+   },
+   {
+    "t": "Rôle majeur, stabilité de l'écosystème",
+    "k": [
+     "stabilite",
+     "ecosysteme"
+    ]
+   },
+   {
+    "t": "Agrément d'établissement de crédit : ACPR",
+    "k": [
+     "acpr",
+     "agrement"
+    ]
+   },
+   {
+    "t": "Décision BCE",
+    "k": [
+     "bce"
+    ]
+   },
+   {
+    "t": "AMF pour les services d'investissement",
+    "k": [
+     "amf"
+    ]
+   },
+   {
+    "t": "Capital minimum, actionnaires, dirigeants",
+    "k": [
+     "capital",
+     "dirigeant",
+     "honorabilite"
+    ]
+   }
+  ],
+  "modele": "La BCE et la Banque de France sont des <b>institutions</b> <b>publiques</b>, non commerciales, qui pilotent la politique monétaire et surveillent les banques. Les banques, elles, sont des acteurs économiques majeurs : elles gèrent l'argent du public et assurent la <b>stabilité</b> de tout un <b>écosystème</b> financier. Pour exercer (crédit et dépôts), une banque doit obtenir un <b>agrément</b> d'établissement de crédit : la demande est déposée à l'<b>ACPR</b>, qui l'instruit, et la décision revient à la <b>BCE</b>. Pour les services d'investissement, l'<b>AMF</b> approuve le programme d'activité. Critères principaux : un <b>capital</b> minimum libéré (5 millions d'euros pour une banque), l'identité et la qualité des actionnaires, des <b>dirigeants</b> dotés de l'<b>honorabilité</b>, des connaissances et de l'expérience nécessaires."
+ }
+];
+
+function sansAccent(s){ return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[’']/g,"'"); }
+function renderRedac(){
+  const host = document.getElementById('redacList');
+  host.innerHTML = REDAC.map((r,i)=>
+    '<div class="annale redac" id="rd'+i+'">'+
+      '<div class="an-tag">Question '+(i+1)+'/'+REDAC.length+' · '+LESSONS.find(l=>l.id===r.lesson).t+'</div>'+
+      '<h3>'+r.q+'</h3>'+
+      '<label class="sr" for="rd'+i+'in">Ta réponse</label>'+
+      '<textarea id="rd'+i+'in" rows="6" placeholder="Rédige ta réponse ici, en phrases complètes…"></textarea>'+
+      '<div class="redac-btns"><button class="btn primary" onclick="corrigerRedac('+i+')">Corriger ma réponse</button>'+
+      '<button class="btn" onclick="go(\''+r.lesson+'\')">📖 Revoir la leçon</button></div>'+
+      '<div class="corrige" id="rd'+i+'cor"></div>'+
+    '</div>').join('');
+}
+function corrigerRedac(i){
+  const r = REDAC[i];
+  const txt = ' '+sansAccent(document.getElementById('rd'+i+'in').value)+' ';
+  const cor = document.getElementById('rd'+i+'cor');
+  if(txt.trim().length < 15){ popXp('Rédige au moins une phrase'); return; }
+  let ok = 0;
+  const lignes = r.crit.map(c=>{
+    const trouve = c.k.some(k=>txt.indexOf(sansAccent(k))>=0);
+    if(trouve) ok++;
+    return '<li class="'+(trouve?'ok':'ko')+'"><span aria-hidden="true">'+(trouve?'✓':'✗')+'</span> '+c.t+(trouve?'':' — <i>absent de ta réponse</i>')+'</li>';
+  }).join('');
+  const pct = Math.round(ok/r.crit.length*100);
+  const verdict = pct>=80 ? 'Réponse complète' : pct>=50 ? 'Réponse partielle' : 'Réponse insuffisante';
+  cor.innerHTML =
+    '<div class="redac-score '+(pct>=80?'ok':pct>=50?'mid':'ko')+'">'+verdict+' : '+ok+'/'+r.crit.length+' notions-clés</div>'+
+    '<ul class="crit">'+lignes+'</ul>'+
+    '<div class="corrige-head">✅ Réponse modèle</div>'+
+    '<p class="modele">'+r.modele+'</p>';
+  cor.classList.add('show');
+  if(window.P) P.noterReponse('redac:'+i, pct>=80, 'Questions rédigées');
+  if(!corrigerRedac.fait) corrigerRedac.fait = {};
+  if(!corrigerRedac.fait[i]){ corrigerRedac.fait[i]=1; addXp(5+ok*3); }
+}
+
+/* ===================== TEST FINAL ===================== */
+const TEST = [
+ {
+  "ch": "Introduction",
+  "lesson": "l1",
+  "type": "qcm",
+  "q": "Une entreprise est identifiée en France par :",
+  "opts": [
+   "Son IBAN",
+   "Son numéro SIREN",
+   "Son code APE seul",
+   "Son nom commercial"
+  ],
+  "correct": 1,
+  "ex": "Le SIREN (9 chiffres) ; le SIRET identifie chaque établissement."
+ },
+ {
+  "ch": "Introduction",
+  "lesson": "l1",
+  "type": "qcm",
+  "q": "Laquelle de ces fonctions n'est PAS citée dans la définition de la banque ?",
+  "opts": [
+   "Collecter l'épargne",
+   "Accorder des prêts",
+   "Fournir des moyens de paiement",
+   "Fixer les taux directeurs"
+  ],
+  "correct": 3,
+  "ex": "Les taux directeurs relèvent de la BCE."
+ },
+ {
+  "ch": "Introduction",
+  "lesson": "l1",
+  "type": "qcm",
+  "q": "Le profit correspond à :",
+  "opts": [
+   "Produits − charges",
+   "Produits + charges",
+   "Dépôts − crédits",
+   "Capital + réserves"
+  ],
+  "correct": 0,
+  "ex": "Revenus (produits) moins dépenses (charges)."
+ },
+ {
+  "ch": "Introduction",
+  "lesson": "l1",
+  "type": "qcm",
+  "q": "Pourquoi le cours dit-il que la banque est « le premier organe de contrôle de l'État » ?",
+  "opts": [
+   "Parce qu'elle fixe les impôts",
+   "Parce qu'elle est en première ligne pour contrôler ses clients et l'origine des fonds",
+   "Parce qu'elle appartient à l'État",
+   "Parce qu'elle émet la monnaie fiduciaire"
+  ],
+  "correct": 1,
+  "ex": "Connaissance du client, vigilance, déclarations de soupçon (Tracfin)."
+ },
+ {
+  "ch": "Introduction",
+  "lesson": "l2",
+  "type": "qcm",
+  "q": "Le PNB est l'équivalent bancaire :",
+  "opts": [
+   "Du bénéfice net",
+   "Du chiffre d'affaires",
+   "Du capital social",
+   "Des dépôts"
+  ],
+  "correct": 1,
+  "ex": "Il sert à couvrir les charges et à rémunérer les actionnaires."
+ },
+ {
+  "ch": "Introduction",
+  "lesson": "l2",
+  "type": "qcm",
+  "q": "La marge d'intermédiation est :",
+  "opts": [
+   "La somme des commissions",
+   "Intérêts reçus − intérêts versés",
+   "Le coût du risque",
+   "Le résultat net"
+  ],
+  "correct": 1,
+  "ex": "L'écart entre le rendement des crédits et le coût des ressources."
+ },
+ {
+  "ch": "Introduction",
+  "lesson": "l2",
+  "type": "num",
+  "q": "Intérêts reçus 1 200 M€, intérêts versés 750 M€, commissions 450 M€. PNB ? (en M€)",
+  "answer": 900,
+  "tol": 0.5,
+  "unit": "M€",
+  "ex": "Marge : 1 200 − 750 = 450 ; PNB = 450 + 450 = 900 M€."
+ },
+ {
+  "ch": "Introduction",
+  "lesson": "l2",
+  "type": "num",
+  "q": "Avec ce PNB de 900 M€ dont 450 M€ de commissions, quelle part représentent les commissions ? (en %)",
+  "answer": 50,
+  "tol": 0.1,
+  "unit": "%",
+  "ex": "450 ÷ 900 = 50 %."
+ },
+ {
+  "ch": "Introduction",
+  "lesson": "l2",
+  "type": "qcm",
+  "q": "Selon le cours, chez BNP Paribas, les commissions représentent :",
+  "opts": [
+   "34 %",
+   "40 %",
+   "58,6 %",
+   "66 %"
+  ],
+  "correct": 2,
+  "ex": "41,4 % de marge, 58,6 % de commissions (exemple du cours)."
+ },
+ {
+  "ch": "Introduction",
+  "lesson": "l2",
+  "type": "qcm",
+  "q": "Pourquoi la part des commissions augmente-t-elle ?",
+  "opts": [
+   "Effritement de la marge d'intermédiation",
+   "Interdiction du crédit",
+   "Hausse des dépôts",
+   "Suppression des cartes"
+  ],
+  "correct": 0,
+  "ex": "Taux bas et concurrence ont réduit la marge."
+ },
+ {
+  "ch": "Une entreprise",
+  "lesson": "l3",
+  "type": "qcm",
+  "q": "Le marché bancaire est qualifié par le cours de :",
+  "opts": [
+   "Monopolistique",
+   "Hyperconcurrentiel",
+   "Fermé",
+   "Public"
+  ],
+  "correct": 1,
+  "ex": "La banque doit capter et fidéliser."
+ },
+ {
+  "ch": "Une entreprise",
+  "lesson": "l3",
+  "type": "qcm",
+  "q": "Les banques en ligne et néobanques sont, pour une banque de réseau, des concurrents :",
+  "opts": [
+   "Directs",
+   "Indirects",
+   "Inexistants"
+  ],
+  "correct": 1,
+  "ex": "Les concurrents directs sont les autres banques traditionnelles."
+ },
+ {
+  "ch": "Une entreprise",
+  "lesson": "l3",
+  "type": "qcm",
+  "q": "Dans le Morbihan, le cours cite comme acteurs dominants :",
+  "opts": [
+   "BNP Paribas et HSBC",
+   "Le Crédit Agricole et le Crédit Mutuel de Bretagne",
+   "La Banque Postale et Boursobank",
+   "Société Générale et LCL"
+  ],
+  "correct": 1,
+  "ex": "Ils se partagent une grande partie des parts de marché."
+ },
+ {
+  "ch": "Une entreprise",
+  "lesson": "l3",
+  "type": "qcm",
+  "q": "BNP Paribas et Société Générale sont :",
+  "opts": [
+   "Des mutuelles",
+   "Des sociétés anonymes cotées",
+   "Des établissements publics",
+   "Des associations"
+  ],
+  "correct": 1,
+  "ex": "Comme TotalEnergies dans l'industrie."
+ },
+ {
+  "ch": "Une entreprise",
+  "lesson": "l3",
+  "type": "qcm",
+  "q": "Lequel de ces éléments n'est PAS cité parmi ce que gère la banque comme toute entreprise ?",
+  "opts": [
+   "Des salariés",
+   "Un parc immobilier",
+   "Le risque de défaut de paiement",
+   "La politique monétaire"
+  ],
+  "correct": 3,
+  "ex": "La politique monétaire revient à la BCE."
+ },
+ {
+  "ch": "Une entreprise",
+  "lesson": "l3",
+  "type": "qcm",
+  "q": "Pourquoi une mauvaise gestion bancaire est-elle plus grave ?",
+  "opts": [
+   "Parce que les banques n'ont pas de clients",
+   "Parce que les dégâts peuvent toucher une région, un pays, l'international",
+   "Parce que les banques ne paient pas d'impôts"
+  ],
+  "correct": 1,
+  "ex": "C'est l'idée du risque systémique."
+ },
+ {
+  "ch": "Spécificités",
+  "lesson": "l4",
+  "type": "qcm",
+  "q": "La BCE et la Banque de France sont :",
+  "opts": [
+   "Des entités commerciales",
+   "Des institutions publiques",
+   "Des sociétés cotées"
+  ],
+  "correct": 1,
+  "ex": "Elles pilotent la politique monétaire et surveillent les banques."
+ },
+ {
+  "ch": "Spécificités",
+  "lesson": "l4",
+  "type": "qcm",
+  "q": "Une banque qui veut recevoir des dépôts et prêter dépose sa demande d'agrément auprès de :",
+  "opts": [
+   "L'AMF",
+   "L'ACPR",
+   "L'INSEE",
+   "Bercy"
+  ],
+  "correct": 1,
+  "ex": "L'ACPR instruit ; la BCE décide."
+ },
+ {
+  "ch": "Spécificités",
+  "lesson": "l4",
+  "type": "qcm",
+  "q": "Depuis 2014, l'agrément d'un établissement de crédit en zone euro est délivré par :",
+  "opts": [
+   "L'ACPR seule",
+   "La BCE",
+   "Le Parlement",
+   "La BRI"
+  ],
+  "correct": 1,
+  "ex": "Mécanisme de surveillance unique, sur proposition de l'autorité nationale."
+ },
+ {
+  "ch": "Spécificités",
+  "lesson": "l4",
+  "type": "num",
+  "q": "Quel capital minimum (en millions d'euros) la directive CRD exige-t-elle pour agréer une banque ?",
+  "answer": 5,
+  "tol": 0.01,
+  "unit": "M€",
+  "ex": "Au moins 5 millions d'euros (CRD, art. 12)."
+ },
+ {
+  "ch": "Spécificités",
+  "lesson": "l4",
+  "type": "qcm",
+  "q": "Pour les services d'investissement, l'AMF :",
+  "opts": [
+   "Délivre seule toutes les licences bancaires",
+   "Approuve le programme d'activité",
+   "Ne joue aucun rôle",
+   "Fixe le capital minimum"
+  ],
+  "correct": 1,
+  "ex": "L'agrément est ensuite délivré par l'ACPR."
+ }
+];
+
+function renderTest(){
+  const c = document.getElementById('testQuestions');
+  c.innerHTML = '';
+  TEST.forEach((q,i)=>{
+    const div = document.createElement('div');
+    div.className = 'test-q'; div.id = 'tq'+i;
+    let body = '';
+    if(q.type==='qcm'){
+      body = '<div class="topt">' + q.opts.map((o,j)=>
+        '<button onclick="selOpt('+i+','+j+')" id="tq'+i+'o'+j+'">'+o+'</button>').join('') + '</div>';
+    } else {
+      body = '<input type="text" inputmode="decimal" autocomplete="off" class="num-input" id="tq'+i+'in" placeholder="…" aria-label="Ta réponse"><span class="unit">'+(q.unit||'')+'</span>';
+    }
+    div.innerHTML =
+      '<div class="tq-head"><span class="tq-num">Question '+(i+1)+'/'+TEST.length+'</span><span class="tq-chap">'+q.ch+'</span></div>'+
+      '<div class="tq-q">'+q.q+'</div>'+ body +
+      '<div class="remed" id="tq'+i+'rem"><div class="rt">⚠️ À revoir</div><div class="ra" id="tq'+i+'ra"></div>'+
+      '<div class="remed-btns"><button class="btn" onclick="go(\''+q.lesson+'\')">📖 Revoir la leçon</button>'+
+      '<button class="btn primary" onclick="dismissRemed('+i+')">Continuer →</button></div></div>';
+    c.appendChild(div);
+  });
+  document.getElementById('testResult').classList.remove('show');
+  document.getElementById('testSubmitRow').style.display = 'flex';
+  document.getElementById('floatRetry').classList.remove('show');
+  TEST._answers = {};
+}
+function selOpt(qi, oi){
+  if(document.getElementById('tq'+qi).classList.contains('graded')) return;
+  TEST._answers = TEST._answers || {};
+  TEST._answers[qi] = oi;
+  TEST[qi].opts.forEach((_,j)=>document.getElementById('tq'+qi+'o'+j).classList.toggle('sel', j===oi));
+}
+function lireNombre(v){ return parseFloat(String(v).replace(/[\s\u00a0\u202f]/g,'').replace(',', '.')); }   // « 1 000 », « 1,96 »
+function gradeTest(){
+  TEST._answers = TEST._answers || {};
+  let score = 0; const chap = {};
+  TEST.forEach((q,i)=>{
+    const box = document.getElementById('tq'+i);
+    box.classList.add('graded');
+    let ok = false;
+    if(q.type==='qcm'){
+      ok = TEST._answers[i] === q.correct;
+      q.opts.forEach((_,j)=>{ const b=document.getElementById('tq'+i+'o'+j); b.disabled=true;
+        if(j===q.correct) b.classList.add('sel'); });
+    } else {
+      const val = lireNombre(document.getElementById('tq'+i+'in').value);
+      ok = !isNaN(val) && Math.abs(val - q.answer) <= (q.tol||0) + 1e-9;
+      document.getElementById('tq'+i+'in').disabled = true;
+    }
+    if(window.P) P.noterReponse('test:'+i, ok, q.ch);
+    chap[q.ch] = chap[q.ch] || {ok:0,tot:0};
+    chap[q.ch].tot++;
+    if(ok){ score++; chap[q.ch].ok++; box.classList.add('ok'); }
+    else { box.classList.add('ko');
+      document.getElementById('tq'+i+'ra').innerHTML = q.ex;
+      document.getElementById('tq'+i+'rem').classList.add('show'); }
+  });
+  showResult(score, chap);
+}
+function dismissRemed(i){ document.getElementById('tq'+i+'rem').classList.remove('show'); }
+function showResult(score, chap){
+  document.getElementById('testSubmitRow').style.display = 'none';
+  document.getElementById('scoreBig').textContent = score+'/'+TEST.length;
+  let msg, col; const pct = score/TEST.length*100;
+  if(pct>=90){ msg="Excellent — tu es prêt pour les questions rédigées."; col=getCss('--teal'); }
+  else if(pct>=70){ msg="Très bon niveau. Revois les chapitres en orange ci-dessous."; col=getCss('--teal'); }
+  else if(pct>=50){ msg="Bon début. Concentre tes révisions sur les chapitres faibles."; col=getCss('--amber'); }
+  else { msg="Il reste du travail. Reprends les leçons signalées, puis réessaie."; col=getCss('--rust'); }
+  document.getElementById('scoreBig').style.color = col;
+  document.getElementById('scoreMsg').textContent = msg;
+  const bars = document.getElementById('chapBars');
+  bars.innerHTML = '';
+  Object.keys(chap).forEach(name=>{
+    const c = chap[name];
+    const p = Math.round(c.ok/c.tot*100);
+    const bc = p>=67?getCss('--teal'):p>=34?getCss('--amber'):getCss('--rust');
+    bars.innerHTML += '<div class="chapbar"><div class="cbl"><span>'+name+'</span><span>'+c.ok+'/'+c.tot+'</span></div>'+
+      '<div class="cbt"><div class="cbf" style="width:0;background:'+bc+'" data-w="'+p+'"></div></div></div>';
+  });
+  document.getElementById('testResult').classList.add('show');
+  document.getElementById('floatRetry').classList.add('show');
+  setTimeout(()=>document.querySelectorAll('.cbf').forEach(b=>b.style.width=b.dataset.w+'%'),120);
+  addXp(score*20);
+  if(window.P) P.meilleurScore('Test final', score, TEST.length);
+  document.getElementById('testResult').scrollIntoView({behavior:'smooth'});
+  if(window.LB){ try{ LB.record({subject:SUBJECT_KEY, mode:'Test final', correct:score, total:TEST.length, xp:state.xp}); }catch(e){} }
+}
+function resetTest(){ renderTest(); go('test'); }
+function getCss(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+
+/* ===================== APPLICATIONS ===================== */
+function toggleCorrige(btn){
+  const cor = btn.nextElementSibling;
+  const open = cor.classList.toggle('show');
+  btn.textContent = open ? 'Masquer le corrigé' : 'Voir le corrigé';
+}
+
+/* ===================== INIT ===================== */
+buildNav();
+updateProgress();
+renderRedac();
+renderTest();
+go((window.P && SAVE.last && document.querySelector('.view[data-view="'+SAVE.last+'"]')) ? SAVE.last : 'l1');
+try{ document.getElementById('lb-id-slot').appendChild(LB.idButton()); }catch(e){}
+</script>
+<script src="banque.js"></script>
+<script src="ui.js"></script>
+</body>
+</html>

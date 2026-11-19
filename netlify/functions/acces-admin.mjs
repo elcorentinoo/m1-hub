@@ -1,7 +1,10 @@
 /* acces-admin — gestion des clés d'accès, pour Corentin seul (6.5.0)
    POST {action:'moi'|'liste'|'revoquer'|'retablir'|'admin'|'devenir_admin'
          |'chat_supprimer'|'tableau'|'associer'|'dissocier'|'note'|'bq_reset'
-         |'demandes'|'demande_accepter'|'demande_refuser'|'push_abonner'|'push_retirer'|'push_essai', mdp?, ...}
+         |'demandes'|'demande_accepter'|'demande_refuser'|'push_abonner'|'push_retirer'|'push_essai'
+         |'archives'|'archiver', mdp?, ...}
+   8.4.0 : 'archives' lit la table site_archives, 'archiver' {sid, archive}
+   archive ou réactive une matière (supabase/archives.sql).
    Qui peut entrer (hub multi-promos) :
    - l'appareil dont la clé est marquée « admin » en base (vérifié à chaque appel) ;
    - en secours, le mot de passe ADMIN_MDP, mais SEULEMENT tant qu'aucune clé
@@ -92,6 +95,13 @@ export default async (req) => {
     }
     /* Demandes d'accès (8.1.0) : liste, acceptation (clé créée et déjà activée
        pour l'appareil demandeur, qui la récupère à sa prochaine vérification), refus. */
+    /* 8.4.0 : matières archivées (supabase/archives.sql) */
+    if(d.action === 'archives') return ok({archives:await rpc('site_archives_admin', {p_jeton:JETON, p_action:'liste', p_donnees:{}})});
+    if(d.action === 'archiver'){
+      const sid = String(d.sid||'');
+      if(!/^[a-z0-9-]{2,40}$/.test(sid)) return json({ok:false, erreur:'sid'}, 400);
+      return ok({archives:await rpc('site_archives_admin', {p_jeton:JETON, p_action:'archiver', p_donnees:{sid, archive:d.archive === true}})});
+    }
     if(d.action === 'demandes') return ok({demandes:await rpc('acces_demande', {p_jeton:JETON, p_action:'liste', p_donnees:{}})});
     if(d.action === 'demande_accepter' || d.action === 'demande_refuser'){
       if(!/^[0-9a-f-]{36}$/.test(String(d.id||''))) return json({ok:false}, 400);

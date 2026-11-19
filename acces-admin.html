@@ -140,6 +140,7 @@ select{font:inherit;padding:10px 12px;border-radius:14px;border:2px solid var(--
       <button type="button" role="tab" aria-selected="false" aria-controls="p-bq" data-o="bq">BeQuick</button>
       <button type="button" role="tab" aria-selected="false" aria-controls="p-cles" data-o="cles">Clés</button>
       <button type="button" role="tab" aria-selected="false" aria-controls="p-dem" data-o="dem">Demandes<span class="compte" id="nbDem" hidden></span></button>
+      <button type="button" role="tab" aria-selected="false" aria-controls="p-arc" data-o="arc">Archives</button>
     </nav>
     <div class="msg" id="msgTab" role="status"></div>
     <div class="panneau" id="p-vue" role="tabpanel"></div>
@@ -162,6 +163,17 @@ select{font:inherit;padding:10px 12px;border-radius:14px;border:2px solid var(--
       <section class="carte">
         <h2>Traitées ces 14 derniers jours</h2>
         <div id="demFaites"></div>
+      </section>
+    </div>
+    <div class="panneau" id="p-arc" role="tabpanel" hidden>
+      <section class="carte" id="archives">
+        <h2>Archives</h2>
+        <p class="sous" style="margin:0 0 12px">Une matière archivée disparaît pour la promo : hub, menu, recherche, tirage BeQuick, révision du jour et statistiques. Rien n'est effacé : pages, questions et progression restent, et tu peux la réactiver d'un clic. Le changement atteint les appareils en une heure au plus (BeQuick le lit au moment de figer la série du soir).</p>
+        <div class="table"><table>
+          <thead><tr><th>Matière</th><th>État</th><th class="mob">Dernier changement</th><th>Pages</th></tr></thead>
+          <tbody id="arcListe"><tr><td colspan="4" class="vide">Chargement…</td></tr></tbody>
+        </table></div>
+        <div class="msg" id="msgArc" role="status"></div>
       </section>
     </div>
     <div class="panneau" id="p-cles" role="tabpanel" hidden>
@@ -245,6 +257,7 @@ async function ouvrir(){
   chargerTableau();
   chargerDemandes(); setInterval(()=>{ if(!document.hidden) chargerDemandes(); }, 30000);
   etatPush();
+  chargerArchives();
   if(new URLSearchParams(location.search).get('onglet') === 'demandes') document.querySelector('.onglets [data-o="dem"]').click();
 }
 /* ═══════════ DEMANDES D'ACCÈS (8.1.0) ═══════════
@@ -417,6 +430,52 @@ $('bMaj').addEventListener('click', ()=>charger());
 $('cherche').addEventListener('input', dessiner);
 
 
+/* ═══════════ ARCHIVES (8.4.0) ═══════════
+   Table site_archives (supabase/archives.sql), lue et écrite par la fonction
+   acces-admin. Une matière peut couvrir plusieurs pages (même liste que
+   archives.js) ; les liens ouvrent les pages archivées, qui restent en ligne. */
+const ARC_M = [
+  ['marche-particuliers','Marché des Particuliers',['marche_des_particuliers.html']],
+  ['produits-derives','Produits Dérivés I',['produits_derives.html','entrainement_changes.html']],
+  ['produits-derives-2','Produits Dérivés II',['produits_derives_2.html']],
+  ['partiel-derives','Réviser le partiel (Produits Dérivés I et II)',['partiel_derives.html']],
+  ['marketing-numerique','Marketing Numérique',['marketing_numerique.html']],
+  ['es-banque','ES Banque',['es_banque.html']],
+  ['fiscalite-particulier','Fiscalité du Particulier',['fiscalite_particulier.html','entrainement_fiscal.html']],
+  ['droits-particuliers','Droits des Particuliers',['droits_particuliers.html']],
+  ['etudes-marche','Études de marché',['etudes_de_marche.html']],
+  ['systeme-bancaire','Le système bancaire français',['systeme_bancaire.html']],
+  ['organismes-tutelle','Les organismes de tutelle',['organismes_tutelle.html']],
+  ['entreprise-banque',"L'entreprise banque",['entreprise_banque.html']]
+];
+const ARC_DEFAUT = ['produits-derives','produits-derives-2','partiel-derives'];
+let ARC = null;          // null : table pas encore créée (archives.sql)
+async function chargerArchives(){
+  try{ ARC = (await appel('archives')).archives || []; $('msgArc').textContent = ''; }
+  catch(e){ ARC = null; $('msgArc').className = 'msg ko';
+    $('msgArc').textContent = (e.message === 'sql' || e.message === 'serveur') ? "Les archives ne sont pas encore activées (ou le serveur ne répond pas) : lance supabase/archives.sql dans Supabase (SQL Editor). En attendant, le site applique la liste par défaut (Produits Dérivés I et II, révision du partiel)." : texteErreur(e); }
+  dessinerArchives();
+}
+function dessinerArchives(){
+  const lig = {}; (ARC || []).forEach(x=>{ lig[x.sid] = x; });
+  $('arcListe').innerHTML = ARC_M.map(([sid, nom, pages])=>{
+    const l = lig[sid], archive = ARC ? !!(l && l.archive) : ARC_DEFAUT.includes(sid);
+    return '<tr><td>'+esc(nom)+'</td>'+
+      '<td><button type="button" class="petit'+(archive ? ' sec' : '')+'" data-arc="'+sid+'" data-val="'+(archive ? '0' : '1')+'"'+(ARC ? '' : ' disabled')+' aria-label="'+(archive ? 'Réactiver ' : 'Archiver ')+esc(nom)+'">'+(archive ? 'Archivée · réactiver' : 'Visible · archiver')+'</button></td>'+
+      '<td class="mob">'+(l && l.maj ? date(l.maj) : '—')+'</td>'+
+      '<td>'+pages.map(p=>'<a href="/'+p+'">'+esc(p.replace('.html',''))+'</a>').join('<br>')+'</td></tr>';
+  }).join('');
+}
+$('arcListe').addEventListener('click', async e=>{
+  const b = e.target.closest('[data-arc]'); if(!b) return;
+  const sid = b.dataset.arc, archive = b.dataset.val === '1', nom = (ARC_M.find(x=>x[0]===sid)||[])[1] || sid;
+  if(!confirm((archive ? 'Archiver' : 'Réactiver')+' « '+nom+' » pour toute la promo ?')) return;
+  b.disabled = true;
+  try{ ARC = (await appel('archiver', {sid, archive})).archives || []; dessinerArchives();
+    $('msgArc').className = 'msg ok'; $('msgArc').textContent = '« '+nom+' » '+(archive ? 'archivée.' : 'réactivée.')+' Visible sur les appareils sous une heure.'; }
+  catch(err){ b.disabled = false; $('msgArc').className = 'msg ko'; $('msgArc').textContent = texteErreur(err); }
+});
+
 /* ═══════════ TABLEAU DE BORD (7.3.0) ═══════════
    Toutes les données arrivent d'un coup (action « tableau » de la fonction
    acces-admin) et sont calculées ici. Une personne = un ou plusieurs
@@ -424,8 +483,9 @@ $('cherche').addEventListener('input', dessiner);
 const NOMS_M = {'marche-particuliers':'Marché des Particuliers','produits-derives':'Produits Dérivés I','produits-derives-2':'Produits Dérivés II','marketing-numerique':'Marketing Numérique',
   'es-banque':'ES Banque','fiscalite-particulier':'Fiscalité du Particulier','droits-particuliers':'Droits des Particuliers',
   'etudes-marche':'Études de marché','systeme-bancaire':'Système bancaire français',
+  'organismes-tutelle':'Les organismes de tutelle','entreprise-banque':"L'entreprise banque",
   hub:'Accueil', bequick:'BeQuick', revision:'Révision', glossaire:'Glossaire', stats:'Statistiques', classement:'Classement', ressourcerie:'Ressourcerie'};
-const COURS = Object.keys(NOMS_M).slice(0, 9);   // les 9 matières, en tête de NOMS_M
+const COURS = Object.keys(NOMS_M).slice(0, 11);  // les 11 matières, en tête de NOMS_M
 const nomM = m => NOMS_M[m] || m;
 const JP = new Intl.DateTimeFormat('fr-CA', {timeZone:'Europe/Paris', year:'numeric', month:'2-digit', day:'2-digit'});
 const jourDe = d => JP.format(new Date(d));

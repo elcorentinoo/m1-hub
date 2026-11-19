@@ -62,7 +62,7 @@
   color-scheme: light;
 }
 
-/* ───────────── LES NEUF MATIÈRES ─────────────
+/* ───────────── LES MATIÈRES DU M1 ─────────────
    Une seule source : la couleur, l'emblème et la photo de chaque
    matière. Elles s'appliquent à la page du cours (subject-id) et à
    sa carte sur le hub (data-sid). Photos Unsplash, avec une copie
@@ -117,6 +117,24 @@
   --m:#4C5816; --m-soft:#EEF1DF; --m-clair:#CFDB8C; --emb:"⇄";
   --ph-lum:.65;  /* reflets clairs de la photo : assombrie pour garder 4,5:1, mesuré au pixel */
   --photo:url("https://images.unsplash.com/photo-1651341050677-24dba59ce0fd?auto=format&fit=crop&w=1800&q=70"),url("img/sujet-produits-derives-2.webp");
+}
+
+/* 8.4.0 — Les organismes de tutelle : violet, emblème bouclier (dessiné).
+   L'entreprise banque : ardoise, emblème mallette (dessinée). Faute
+   d'accès au serveur d'images Unsplash, photos locales reprises
+   (façade du système bancaire, escalier de l'accueil), teintées par la
+   matière ; à remplacer, contrastes à remesurer. */
+:root[subject-id="organismes-tutelle"], [data-sid="organismes-tutelle"]{
+  --m:#6A3D9A; --m-soft:#F1EAF8; --m-clair:#CDB4EC;
+  --ph-lum:.68;  /* même photo que le système bancaire : assombrie de même */
+  --emb:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='%23fff'%3E%3Cpath d='M8 .6 14.4 3v4.6c0 3.9-2.7 6.7-6.4 7.8C4.3 14.3 1.6 11.5 1.6 7.6V3z'/%3E%3C/svg%3E");
+  --photo:url("img/sujet-organismes-tutelle.webp");
+}
+:root[subject-id="entreprise-banque"], [data-sid="entreprise-banque"]{
+  --m:#3D5268; --m-soft:#E8EDF3; --m-clair:#B3C3D6;
+  --ph-lum:.7;   /* reflets clairs de l'escalier : assombrie pour garder 4,5:1 */
+  --emb:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='%23fff'%3E%3Cpath d='M5.6 2.2h4.8c.6 0 1 .4 1 1V4.4H15c.4 0 .7.3.7.7v3.4H.3V5.1c0-.4.3-.7.7-.7h3.6V3.2c0-.6.4-1 1-1zm.4 1.3v.9h4V3.5zM.3 9.6h6.4v1h2.6v-1h6.4v4.5c0 .4-.3.7-.7.7H1c-.4 0-.7-.3-.7-.7z'/%3E%3C/svg%3E");
+  --photo:url("img/sujet-entreprise-banque.webp");
 }
 
 html{ background:var(--fond); }

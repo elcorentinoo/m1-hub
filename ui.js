@@ -10,7 +10,7 @@
 
   /* ---------- 0. VERSION ---------- */
   /* Doit rester identique à VERSION en haut de sw.js. */
-  const VERSION_APP = '8.3.1';
+  const VERSION_APP = '8.4.0';
   const NOM_VERSION = 'Guinée';
   window.APP_VERSION = VERSION_APP;
 
@@ -45,6 +45,8 @@
     {g:'Cours',    href:'droits_particuliers.html',     ico:'⚖',  t:'Droits des Particuliers',  s:'10 leçons · droit des personnes'},
     {g:'Cours',    href:'etudes_de_marche.html',        ico:'👤', t:'Études de marché',          s:'12 leçons · quali, quanti, échantillon'},
     {g:'Cours',    href:'systeme_bancaire.html',        ico:'🏦', t:'Le système bancaire français', s:'12 leçons · Livret A, crédits, régulation'},
+    {g:'Cours',    href:'entreprise_banque.html',       ico:'🏢', t:"L'entreprise banque",      s:'4 leçons · PNB, concurrence, agrément'},
+    {g:'Cours',    href:'organismes_tutelle.html',      ico:'🛡️', t:'Les organismes de tutelle', s:'12 leçons · Bâle, BCE, ACPR, HCSF'},
     {g:'Entraînement', href:'bequick.html',              ico:'⚡', t:'BeQuick',                 s:'Le défi du soir · 18 h 30 – 22 h'},
     {g:'Entraînement', href:'entrainement_changes.html', ico:'🎯', t:'Marché des changes',      s:'13 notions · calculs ∞'},
     {g:'Entraînement', href:'partiel_derives.html',      ico:'📝', t:'Réviser le partiel',      s:'Produits Dérivés I et II · 3 niveaux · QCM'},
@@ -91,6 +93,10 @@
   ];
 
   const MENU = LICENCE ? PAGES_LICENCE : PAGES;
+  /* 8.4.0 : matières archivées (archives.js, réglées dans /admin) — masquées
+     du menu et de la recherche, toujours ouvrables par lien direct */
+  const archivee = h => !LICENCE && !!(window.ARCHIVES && ARCHIVES.pageArchivee(h));
+  const sidArchive = m => !LICENCE && !!(window.ARCHIVES && ARCHIVES.estArchive(m));
   const LIENS = LICENCE ? ENTETE_LICENCE : ENTETE;
   /* lien vu de la page : chemin de la racine devant, sauf pour une ancre */
   const lien = h => h[0] === '#' ? h : R + h;
@@ -117,6 +123,7 @@
     let html = '<div class="dh"><b>Navigation</b><button onclick="uiFermerMenu()" aria-label="Fermer">✕</button></div>';
     let groupe = null;
     MENU.forEach(p=>{
+      if(archivee(p.href)) return;
       if(p.g !== groupe && p.g !== 'hub'){ html += '<h5>'+p.g+'</h5>'; groupe = p.g; }
       const actif = estIci(p.href, ici) ? ' here' : '';
       const extra = p.hub ? ' ui-hub' : '';
@@ -276,7 +283,7 @@
   }
 
   /* ---------- PAGES DE COURS : cadre photo, progression, suite ---------- */
-  const NOMS = {'marche-particuliers':'Marché des Particuliers','produits-derives':'Produits Dérivés I','produits-derives-2':'Produits Dérivés II','marketing-numerique':'Marketing Numérique','es-banque':'ES Banque','fiscalite-particulier':'Fiscalité du Particulier','droits-particuliers':'Droits des particuliers','etudes-marche':'Études de marché','systeme-bancaire':'Le système bancaire français',
+  const NOMS = {'marche-particuliers':'Marché des Particuliers','produits-derives':'Produits Dérivés I','produits-derives-2':'Produits Dérivés II','marketing-numerique':'Marketing Numérique','es-banque':'ES Banque','fiscalite-particulier':'Fiscalité du Particulier','droits-particuliers':'Droits des particuliers','etudes-marche':'Études de marché','systeme-bancaire':'Le système bancaire français','organismes-tutelle':'Les organismes de tutelle','entreprise-banque':"L'entreprise banque",
     'l-maths-fi':'Mathématiques financières','l-politique-monetaire':'Politique monétaire','l-droit-bancaire':'Droit bancaire','l-risques-bancaires':'Gestion des risques bancaires','l-finance-internationale':'Finance internationale','l-crises-financieres':'Crises financières et bancaires','l-fiscalite':'Fiscalité des particuliers','l-marche-capitaux':'Marché des capitaux','l-banque-patrimoine':'Banque · Patrimoine · Assurance'};
   function estLecon(v){ return /^l\d+$/.test(v||''); }
   function sequence(){
@@ -602,6 +609,7 @@
     if(window.BANQUE){
       const vus = {};
       window.BANQUE.forEach(q=>{
+        if(sidArchive(q.m)) return;
         const cle = q.m+q.l;
         if(vus[cle]) return; vus[cle] = 1;
         out.push({t:q.ch, s:'Leçon — '+(LABM[q.m]||''), u:fichierDe(q.m)+'#'+q.l, i:'📖', g:'Leçons'});
@@ -609,9 +617,9 @@
     }
     return out;
   }
-  const LABM = {'marche-particuliers':'Marché des Particuliers','produits-derives':'Produits Dérivés I','produits-derives-2':'Produits Dérivés II','marketing-numerique':'Marketing Numérique','es-banque':'ES Banque','fiscalite-particulier':'Fiscalité du Particulier','droits-particuliers':'Droits des Particuliers','etudes-marche':'Études de marché','systeme-bancaire':'Le système bancaire français'};
+  const LABM = {'marche-particuliers':'Marché des Particuliers','produits-derives':'Produits Dérivés I','produits-derives-2':'Produits Dérivés II','marketing-numerique':'Marketing Numérique','es-banque':'ES Banque','fiscalite-particulier':'Fiscalité du Particulier','droits-particuliers':'Droits des Particuliers','etudes-marche':'Études de marché','systeme-bancaire':'Le système bancaire français','organismes-tutelle':'Les organismes de tutelle','entreprise-banque':"L'entreprise banque"};
   function fichierDe(m){
-    return {'marche-particuliers':'marche_des_particuliers.html','produits-derives':'produits_derives.html','produits-derives-2':'produits_derives_2.html','marketing-numerique':'marketing_numerique.html','es-banque':'es_banque.html','fiscalite-particulier':'fiscalite_particulier.html','droits-particuliers':'droits_particuliers.html','etudes-marche':'etudes_de_marche.html','systeme-bancaire':'systeme_bancaire.html'}[m] || 'index.html';
+    return {'marche-particuliers':'marche_des_particuliers.html','produits-derives':'produits_derives.html','produits-derives-2':'produits_derives_2.html','marketing-numerique':'marketing_numerique.html','es-banque':'es_banque.html','fiscalite-particulier':'fiscalite_particulier.html','droits-particuliers':'droits_particuliers.html','etudes-marche':'etudes_de_marche.html','systeme-bancaire':'systeme_bancaire.html','organismes-tutelle':'organismes_tutelle.html','entreprise-banque':'entreprise_banque.html'}[m] || 'index.html';
   }
 
   /* Résultats d'une recherche : 8 suggestions sans texte, 30 au plus sinon. */
@@ -726,6 +734,7 @@
   }
   async function pretBQ(){
     if(!window.ECHEANCES) await chargerScript(R+'calendrier.js');
+    if(!LICENCE && !window.ARCHIVES) await chargerScript(R+'archives.js');
     /* Licence : ses questions (banque séparée) avant le moteur BeQuick */
     if(LICENCE && !window.BANQUE_LICENCE) await chargerScript(R+'banque-licence.js');
     if(!window.BQ) await chargerScript(R+'bequick.js');
@@ -736,7 +745,7 @@
   function nouveautes(){
     let vu = null; try{ vu = localStorage.getItem('version_vue'); }catch(e){}
     if(vu === VERSION_APP) return [];
-    return [{id:'version-'+VERSION_APP, ico:'✨', titre:'Nouveau : réactions dans le chat et suivi des progrès', texte:'Version '+VERSION_APP+' : touche un message pour réagir ou répondre. Tes progrès (leçons, temps, résultats) sont désormais partagés avec l\'administrateur du site.', url:'index.html?chat=1', chat:true}];
+    return [{id:'version-'+VERSION_APP, ico:'✨', titre:'Nouveau : deux cours, L\'entreprise banque et Les organismes de tutelle', texte:'Version '+VERSION_APP+' : PNB, agrément, Bâle, BCE, ACPR et HCSF, avec quiz, cas corrigés et test final. Produits Dérivés I et II sont archivés : le partiel est passé.', url:'index.html#matieres'}];
   }
   let _alertes = [];
   async function majCloche(){
@@ -1114,6 +1123,9 @@
   window.uiOuvrirChat = ouvrirChat;
 
   function init(){
+    /* 8.4.0 : liste des matières archivées, avant que menu et recherche s'ouvrent */
+    if(!LICENCE && !window.ARCHIVES) chargerScript(R+'archives.js');
+    window.addEventListener('m1archives', ()=>{ _index = null; const d = document.getElementById('ui-drawer'), o = document.getElementById('ui-ov'); if(d && !d.classList.contains('open')){ d.remove(); if(o) o.remove(); } });
     construireEntete();
     construireCours();
     construireVideos();

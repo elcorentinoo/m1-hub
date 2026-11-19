@@ -124,9 +124,10 @@ h2+.h2s{color:var(--muted);font-size:14px;margin-bottom:16px}
 </main>
 
 <script src="progress.js"></script>
+<script src="archives.js"></script>
 <script>
 function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
-const NB_LECONS = {'marche-particuliers':11,'produits-derives':15,'produits-derives-2':10,'marketing-numerique':11,'es-banque':14,'fiscalite-particulier':11,'droits-particuliers':10,'etudes-marche':12,'systeme-bancaire':12};
+const NB_LECONS = {'marche-particuliers':11,'produits-derives':15,'produits-derives-2':10,'marketing-numerique':11,'es-banque':14,'fiscalite-particulier':11,'droits-particuliers':10,'etudes-marche':12,'systeme-bancaire':12,'organismes-tutelle':12,'entreprise-banque':4};
 
 function render(){
   const host = document.getElementById('body');
@@ -158,7 +159,8 @@ function render(){
 
   /* --- par matière --- */
   h += `<h2>Matière par matière</h2><div class="h2s">Progression, meilleur score au test final et taux de réussite.</div>`;
-  Object.keys(P.MATIERES).forEach(id=>{
+  /* 8.4.0 : matières archivées (archives.js) masquées ; leur progression est conservée */
+  Object.keys(P.MATIERES).filter(id=>!(window.ARCHIVES && ARCHIVES.estArchive(id))).forEach(id=>{
     const m = st.parMatiere[id];
     const tot = NB_LECONS[id] || 1;
     const pct = Math.min(100, Math.round(m.lecons/tot*100));
@@ -214,6 +216,7 @@ function raz(){
 render();
 /* progression reçue d'un autre appareil (synchro.js) */
 window.addEventListener('m1progression', render);
+window.addEventListener('m1archives', render);
 </script>
 <script src="banque.js"></script>
 <script src="ui.js"></script>

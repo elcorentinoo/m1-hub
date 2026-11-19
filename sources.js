@@ -53,6 +53,25 @@ window.M1_SOURCES = {
     ['EUR-Lex — Directive (UE) 2024/1619 (CRD VI)', 'https://eur-lex.europa.eu/eli/dir/2024/1619/oj'],
     ['economie.gouv.fr — Le prêt à taux zéro', 'https://www.economie.gouv.fr/particuliers/emprunter-et-sassurer/pret-taux-zero-ptz-tout-ce-quil-faut-savoir']
   ],
+  'organismes-tutelle': [
+    ['EUR-Lex — Règlement (UE) n° 575/2013 (CRR)', 'https://eur-lex.europa.eu/eli/reg/2013/575/oj'],
+    ['EUR-Lex — Directive 2013/36/UE (CRD)', 'https://eur-lex.europa.eu/eli/dir/2013/36/oj'],
+    ['EUR-Lex — Règlement (UE) n° 1024/2013 (mécanisme de surveillance unique)', 'https://eur-lex.europa.eu/eli/reg/2013/1024/oj'],
+    ['EUR-Lex — Directive 2014/59/UE (BRRD, résolution)', 'https://eur-lex.europa.eu/eli/dir/2014/59/oj'],
+    ['Légifrance — Loi n° 2013-672 du 26 juillet 2013 (séparation et régulation des activités bancaires)', 'https://www.legifrance.gouv.fr/loda/id/JORFTEXT000027754539'],
+    ['HCSF — Le coussin de fonds propres contra-cyclique', 'https://www.economie.gouv.fr/hcsf/mesures/le-coussin-de-fonds-propres-contra-cyclique'],
+    ['Légifrance — Décision D-HCSF-2021-7 (crédit immobilier)', 'https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000044178669'],
+    ['BRI — Comité de Bâle sur le contrôle bancaire', 'https://www.bis.org/bcbs/'],
+    ['FSB — Liste 2025 des banques d\'importance systémique mondiale', 'https://www.fsb.org/2025/11/2025-list-of-global-systemically-important-banks-g-sibs/'],
+    ['BCE — Supervision bancaire, le SREP', 'https://www.bankingsupervision.europa.eu/activities/srep/html/index.fr.html']
+  ],
+  'entreprise-banque': [
+    ['ACPR — Autorité de contrôle prudentiel et de résolution (agréments)', 'https://acpr.banque-france.fr/fr'],
+    ['EUR-Lex — Directive 2013/36/UE (CRD), art. 12 : capital initial', 'https://eur-lex.europa.eu/eli/dir/2013/36/oj'],
+    ['EUR-Lex — Règlement (UE) n° 1024/2013 (agrément par la BCE)', 'https://eur-lex.europa.eu/eli/reg/2013/1024/oj'],
+    ['FGDR — La garantie des dépôts', 'https://www.garantiedesdepots.fr/fr'],
+    ['INSEE — Système d\'identification du répertoire des entreprises (SIREN)', 'https://www.insee.fr/fr/metadonnees/source/serie/s1020']
+  ],
   'marketing-numerique': [
     ['EUR-Lex — Règlement (UE) 2016/679 (RGPD)', 'https://eur-lex.europa.eu/eli/reg/2016/679/oj'],
     ['CNIL — Les sanctions prononcées par la CNIL', 'https://www.cnil.fr/fr/les-sanctions-prononcees-par-la-cnil']

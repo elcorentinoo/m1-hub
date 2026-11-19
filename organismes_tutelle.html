@@ -1,0 +1,2929 @@
+<!DOCTYPE html>
+<html lang="fr" subject-id="organismes-tutelle">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>Les organismes de tutelle — AAA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+:root{
+  --card:#fff; --card2:#fbf9f5;
+  --paper:#faf6ef; --paper2:#f3ece0; --ink:#22201b; --line:#e3d9c8;
+  --teal:#1b6b5e; --amber:#c87a12; --rust:#a8432a; --plum:#6b3a73; --navy:#241C15;
+  --teal-soft:#e3efec; --amber-soft:#f6ead4; --rust-soft:#f3e0da; --plum-soft:#ece3ef; --navy-soft:#dde6f0;
+  --shadow:0 2px 14px rgba(34,32,27,.07); --shadow-lg:0 8px 30px rgba(34,32,27,.13);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-track{background:var(--paper2)}
+::-webkit-scrollbar-thumb{background:#cdbfa6;border-radius:6px;border:2px solid var(--paper2)}
+::-webkit-scrollbar-thumb:hover{background:var(--amber)}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:62px;z-index:50;background:var(--paper);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:18px;padding:0 22px}
+.brand{display:flex;align-items:center;gap:11px;font-family:'Fraunces',serif;font-weight:600;font-size:1.12rem;color:var(--navy)}
+.brand .logo{width:36px;height:36px;border-radius:9px;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:1.15rem;flex-shrink:0;box-shadow:var(--shadow)}
+.brand small{display:block;font-family:'DM Sans';font-weight:500;font-size:.66rem;letter-spacing:.09em;color:var(--amber);text-transform:uppercase}
+.hublink{font-family:'DM Mono';font-size:.72rem;color:#8a8170;text-decoration:none;padding:5px 10px;border-radius:8px;border:1px solid var(--line);white-space:nowrap;transition:.15s}
+.hublink:hover{color:var(--navy);border-color:#c9bca3;background:var(--card)}
+.progress-wrap{flex:1;max-width:300px;display:flex;flex-direction:column;gap:3px}
+.progress-wrap .lab{font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:#8a8170;font-weight:600;display:flex;justify-content:space-between}
+.progress-bar{height:8px;background:var(--paper2);border-radius:5px;overflow:hidden;border:1px solid var(--line)}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),#2a8a78);transition:width .5s cubic-bezier(.4,0,.2,1)}
+.xp{margin-left:auto;display:flex;align-items:center;gap:7px;background:var(--amber-soft);border:1px solid #e6cf9e;color:var(--amber);font-weight:700;padding:7px 14px;border-radius:30px;font-size:.9rem}
+.burger{display:none;background:none;border:1px solid var(--line);border-radius:8px;padding:7px 10px;cursor:pointer;font-size:1.1rem;color:var(--ink)}
+
+.shell{display:flex;padding-top:62px}
+.sidebar{position:fixed;top:62px;bottom:0;left:0;width:282px;background:var(--paper2);border-right:1px solid var(--line);overflow-y:auto;padding:20px 14px 50px;z-index:40;transition:transform .3s}
+.sidebar h4{font-family:'Fraunces',serif;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:#8a8170;margin:18px 10px 9px;font-weight:600}
+.sidebar h4:first-child{margin-top:0}
+.nav-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;cursor:pointer;font-size:.92rem;color:var(--ink);border:1px solid transparent;transition:.16s;margin-bottom:3px}
+.nav-item:hover{background:#ece3d3}
+.nav-item.active{background:var(--card);border-color:var(--line);box-shadow:var(--shadow);font-weight:600;color:var(--navy)}
+.nav-item .num{width:25px;height:25px;border-radius:50%;background:var(--card);border:1.5px solid var(--line);flex-shrink:0;display:grid;place-items:center;font-size:.78rem;font-weight:700;font-family:'DM Mono';color:#8a8170;transition:.16s}
+.nav-item.active .num,.nav-item.done .num{background:var(--teal);color:#fff;border-color:var(--teal)}
+.nav-item .lab{flex:1;line-height:1.25}
+.nav-item.special{background:var(--plum-soft);border-color:#d8c5dc;color:var(--plum);font-weight:600}
+.nav-item.special.active{background:var(--plum);color:#fff}
+.nav-item.special2{background:var(--navy-soft);border-color:#c3d2e2;color:var(--navy);font-weight:600}
+.nav-item.special2.active{background:var(--navy);color:#fff}
+.nav-item.special3{background:var(--amber-soft);border-color:#e6cf9e;color:var(--amber);font-weight:600}
+.nav-item.special3.active{background:var(--amber);color:#fff}
+.nav-item .ico{font-size:1.05rem}
+
+.main{flex:1;margin-left:282px;padding:40px 6vw 120px;max-width:920px}
+.view{display:none;animation:fadeIn .45s ease}
+.view.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.tag{display:inline-block;font-family:'DM Mono';font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;background:var(--navy-soft);color:var(--navy);padding:5px 12px;border-radius:20px;font-weight:500;margin-bottom:16px}
+h1.lesson-title{font-family:'Fraunces',serif;font-size:2.35rem;line-height:1.12;font-weight:600;color:var(--ink);margin-bottom:10px;letter-spacing:-.01em}
+.subtitle{font-size:1.12rem;color:#6f6757;margin-bottom:30px;max-width:62ch}
+.main p{margin-bottom:16px;font-size:1.04rem;max-width:68ch}
+.main h2{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:600;color:var(--navy);margin:38px 0 14px;letter-spacing:-.01em}
+.main strong{font-weight:600;color:var(--ink)}
+
+.callout{border-radius:14px;padding:18px 20px 18px 22px;margin:24px 0;border-left:5px solid;position:relative;font-size:1rem}
+.callout .ct{font-weight:700;font-family:'Fraunces',serif;font-size:1.02rem;display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.callout p{margin:0;max-width:none}
+.c-analogy{background:var(--amber-soft);border-color:var(--amber);color:#5e3a06}
+.c-analogy .ct{color:var(--amber)}
+.c-retenir{background:var(--teal-soft);border-color:var(--teal);color:#0f3d36}
+.c-retenir .ct{color:var(--teal)}
+.c-piege{background:var(--rust-soft);border-color:var(--rust);color:#5e2317}
+.c-piege .ct{color:var(--rust)}
+
+.rulebox{background:#1c1a16;color:#f3ece0;border-radius:14px;padding:22px 24px;margin:26px 0;font-family:'DM Mono';box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
+.rulebox::before{content:'REPÈRE';position:absolute;top:13px;right:18px;font-size:.62rem;letter-spacing:.2em;color:#7d7566}
+.rulebox.formule::before{content:'FORMULE'}
+.rulebox .rb-main{font-size:1.18rem;font-weight:500;line-height:1.5;color:#fff}
+.rulebox .rb-sub{font-size:.86rem;color:#b8af9d;margin-top:10px;line-height:1.55}
+.rulebox em{color:var(--amber);font-style:normal;font-weight:500}
+
+.tbl{width:100%;border-collapse:collapse;margin:22px 0;font-size:.96rem;background:var(--card);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line)}
+.tbl th{background:var(--navy);color:#fff;text-align:left;padding:11px 15px;font-weight:600;font-size:.86rem}
+.tbl td{padding:11px 15px;border-top:1px solid var(--line);vertical-align:top}
+.tbl tr:nth-child(even) td{background:var(--paper)}
+.tbl td:first-child{font-weight:600;color:var(--navy);white-space:nowrap}
+.tbl.wrap td:first-child{white-space:normal}
+.tbl.num td{font-family:'DM Mono';font-size:.94rem}
+.tbl.num td:first-child{font-family:'DM Sans'}
+
+.example{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:26px 0;box-shadow:var(--shadow)}
+.example .ex-head{font-family:'Fraunces',serif;font-weight:600;color:var(--plum);font-size:1.08rem;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.step{display:flex;gap:14px;margin-bottom:14px}
+.step:last-child{margin-bottom:0}
+.step .sn{width:27px;height:27px;border-radius:50%;background:var(--plum);color:#fff;flex-shrink:0;display:grid;place-items:center;font-family:'DM Mono';font-weight:500;font-size:.85rem}
+.step .sc{flex:1;padding-top:1px}
+.step .sc b{color:var(--navy)}
+.step .sc code{background:var(--paper2);padding:2px 7px;border-radius:5px;font-family:'DM Mono';font-size:.9rem;color:var(--teal)}
+.ex-result{margin-top:6px;background:var(--teal-soft);border:1px solid #bcdcd4;border-radius:10px;padding:12px 16px;font-weight:600;color:#0f3d36}
+
+.schema{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin:26px 0;box-shadow:var(--shadow);text-align:center}
+.schema .scap{font-size:.82rem;color:#8a8170;margin-top:12px;font-style:italic}
+.schema svg{max-width:100%;height:auto}
+
+.quiz{background:var(--plum-soft);border:1px solid #d8c5dc;border-radius:14px;padding:20px 22px;margin:24px 0}
+.quiz .qhead{font-family:'DM Mono';font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--plum);font-weight:500;margin-bottom:9px}
+.quiz .q{font-weight:600;font-size:1.05rem;margin-bottom:14px;color:var(--ink)}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{text-align:left;background:var(--card);border:1.5px solid #d8c5dc;border-radius:10px;padding:11px 15px;cursor:pointer;font-family:'DM Sans';font-size:.98rem;color:var(--ink);transition:.15s}
+.opt:hover:not(:disabled){border-color:var(--plum);background:#fbf8fc}
+.opt:disabled{cursor:default}
+.opt.right{background:var(--teal-soft);border-color:var(--teal);color:#0f3d36;font-weight:600}
+.opt.right::after{content:' ✓';color:var(--teal);font-weight:700}
+.opt.wrong{background:var(--rust-soft);border-color:var(--rust);color:#5e2317}
+.opt.wrong::after{content:' ✗';color:var(--rust);font-weight:700}
+.feedback{margin-top:13px;padding:12px 15px;border-radius:10px;background:var(--card);border:1px dashed #cbb9cf;font-size:.95rem;color:#5a4d5d}
+.feedback b{color:var(--plum)}
+
+.lesson-nav{display:flex;justify-content:space-between;gap:14px;margin-top:46px;padding-top:26px;border-top:1px solid var(--line)}
+.btn{font-family:'DM Sans';font-weight:600;font-size:.98rem;padding:12px 22px;border-radius:11px;cursor:pointer;border:1.5px solid var(--line);background:var(--card);color:var(--ink);transition:.16s;display:inline-flex;align-items:center;gap:8px}
+.btn:hover{border-color:#bbac90;transform:translateY(-1px)}
+.btn.primary{background:var(--teal);color:#fff;border-color:var(--teal);box-shadow:var(--shadow)}
+.btn.primary:hover{background:#155a4f}
+.btn.plum{background:var(--plum);color:#fff;border-color:var(--plum)}
+.btn.plum:hover{background:#592f60}
+.btn.amber{background:var(--amber);color:#fff;border-color:var(--amber)}
+.btn.amber:hover{background:#a86610}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.print-fab{position:fixed;bottom:26px;left:26px;z-index:110;background:var(--card);color:var(--ink2);border:1.5px solid var(--line2);font-weight:600;padding:10px 16px;border-radius:24px;cursor:pointer;font-family:'DM Sans';font-size:.85rem;box-shadow:var(--shadow);transition:.15s}
+.print-fab:hover{border-color:var(--navy);color:var(--navy);transform:translateY(-1px)}
+@media(max-width:880px){.print-fab{bottom:20px;left:16px;padding:9px 13px;font-size:.8rem}}
+.xp-pop{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--amber);color:#fff;font-weight:700;padding:13px 26px;border-radius:30px;box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:.4s;z-index:200;font-size:1rem}
+.xp-pop.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.test-q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:18px;box-shadow:var(--shadow);transition:.3s}
+.test-q .tq-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px}
+.test-q .tq-num{font-family:'DM Mono';font-weight:500;color:var(--navy);font-size:.9rem}
+.test-q .tq-chap{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:#8a8170;font-weight:600;background:var(--paper2);padding:4px 10px;border-radius:20px;text-align:right}
+.test-q .tq-q{font-weight:600;font-size:1.08rem;margin-bottom:14px}
+.num-input{font-family:'DM Mono';font-size:1.05rem;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;width:190px;background:var(--paper)}
+.num-input:focus{outline:none;border-color:var(--teal)}
+.unit{font-family:'DM Mono';color:#8a8170;margin-left:9px}
+.topt{display:flex;flex-direction:column;gap:8px}
+.topt button{text-align:left;background:var(--paper);border:1.5px solid var(--line);border-radius:10px;padding:11px 15px;cursor:pointer;font-family:'DM Sans';font-size:.98rem;transition:.15s}
+.topt button:hover{border-color:var(--teal)}
+.topt button.sel{background:var(--teal-soft);border-color:var(--teal);font-weight:600;color:#0f3d36}
+.remed{margin-top:14px;border-radius:11px;border-left:5px solid var(--rust);background:var(--rust-soft);padding:15px 18px;display:none}
+.remed.show{display:block;animation:fadeIn .35s}
+.remed .rt{font-weight:700;color:var(--rust);font-family:'Fraunces',serif;margin-bottom:5px;display:flex;align-items:center;gap:7px}
+.remed .ra{font-size:.95rem;color:#5e2317;margin-bottom:11px}
+.remed-btns{display:flex;gap:10px;flex-wrap:wrap}
+.remed-btns .btn{padding:8px 16px;font-size:.88rem}
+.test-q.ok{border-color:var(--teal);background:#fbfdfc}
+.test-q.ko{border-color:var(--rust)}
+.float-retry{position:fixed;bottom:26px;right:26px;z-index:120;display:none;background:var(--plum);color:#fff;border:none;font-weight:700;padding:14px 24px;border-radius:30px;box-shadow:var(--shadow-lg);cursor:pointer;font-family:'DM Sans';font-size:.98rem;align-items:center;gap:9px}
+.float-retry.show{display:inline-flex;animation:fadeIn .4s}
+
+.result{display:none;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:34px;box-shadow:var(--shadow-lg);text-align:center;animation:fadeIn .5s}
+.result.show{display:block}
+.result .score-big{font-family:'Fraunces',serif;font-size:4rem;font-weight:700;line-height:1;color:var(--teal)}
+.result .score-lab{color:#8a8170;font-weight:600;margin-bottom:8px}
+.result .msg{font-size:1.12rem;margin:14px auto 28px;max-width:46ch;color:var(--ink)}
+.chapbars{text-align:left;max-width:560px;margin:0 auto}
+.chapbar{margin-bottom:14px}
+.chapbar .cbl{display:flex;justify-content:space-between;font-size:.9rem;font-weight:600;margin-bottom:5px}
+.chapbar .cbl span:last-child{font-family:'DM Mono';color:#8a8170}
+.cbt{height:13px;background:var(--paper2);border-radius:7px;overflow:hidden;border:1px solid var(--line)}
+.cbf{height:100%;border-radius:7px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+
+.annale{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px 26px;margin-bottom:22px;box-shadow:var(--shadow)}
+.annale .an-tag{font-family:'DM Mono';font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);font-weight:500}
+.annale h3{font-family:'Fraunces',serif;font-size:1.32rem;color:var(--navy);margin:6px 0 14px;font-weight:600}
+.annale .enonce{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:16px 19px;font-size:1rem;color:#3a352c}
+.annale .enonce .qlist{margin:10px 0 0 4px}
+.annale .enonce .qlist li{margin-bottom:5px;list-style:none;padding-left:22px;position:relative}
+.annale .enonce .qlist li::before{content:'▸';position:absolute;left:0;color:var(--amber);font-weight:700}
+.corrige{margin-top:14px;display:none;animation:fadeIn .4s}
+.corrige.show{display:block}
+.corrige-head{font-family:'Fraunces',serif;font-weight:600;color:var(--teal);margin-bottom:12px;display:flex;align-items:center;gap:8px;font-size:1.06rem}
+
+.intro-card{background:var(--navy);color:#f3ece0;border-radius:16px;padding:24px 26px;margin-bottom:26px}
+.intro-card h2{color:#fff;margin:0 0 8px;font-family:'Fraunces',serif;font-size:1.4rem}
+.intro-card p{color:#cdd8e6;max-width:none;margin:0}
+.intro-card.amber{background:#7a4c08}
+.intro-card.amber p{color:#f2e0c0}
+.intro-card.plum{background:#4a2750}
+.intro-card.plum p{color:#e6d5ea}
+
+.hint{font-size:.85rem;color:#8a8170;font-style:italic;margin-top:8px}
+.overlay{display:none;position:fixed;inset:62px 0 0 0;background:rgba(34,32,27,.4);z-index:35}
+@media(max-width:880px){
+  .main{margin-left:0;padding:30px 22px 110px}
+  .sidebar{transform:translateX(-100%);box-shadow:var(--shadow-lg)}
+  .sidebar.open{transform:translateX(0)}
+  .overlay.show{display:block}
+  .burger{display:block}
+  .progress-wrap{max-width:none}
+  .brand small{display:none}
+  h1.lesson-title{font-size:1.8rem}
+  .xp{padding:6px 11px;font-size:.82rem}
+  .gen-data .dl{min-width:0;display:block}
+}
+@media(max-width:560px){
+  .progress-wrap,.hublink{display:none}
+  .topbar{gap:12px}
+}
+/* ===== QUESTIONS RÉDIGÉES — couleurs uniquement par variables de theme.css ===== */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.redac textarea{display:block;width:100%;min-height:130px;margin-top:4px;padding:12px 14px;border:1.5px solid var(--line2);border-radius:10px;background:var(--card);color:var(--ink);font:inherit;font-size:1rem;line-height:1.55;resize:vertical}
+.redac textarea:focus{outline:none;border-color:var(--acc)}
+.redac-btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.redac-score{font-weight:700;padding:10px 14px;border-radius:10px;margin-bottom:10px;border:1px solid var(--line)}
+.redac-score.ok{background:var(--teal-soft);color:var(--teal-d)}
+.redac-score.mid{background:var(--amber-soft);color:var(--amber)}
+.redac-score.ko{background:var(--rust-soft);color:var(--rust)}
+.crit{list-style:none;margin:0 0 16px;padding:0}
+.crit li{padding:6px 0;border-bottom:1px solid var(--line);font-size:.96rem}
+.crit li.ok{color:var(--teal-d)}
+.crit li.ko{color:var(--rust)}
+.crit li i{color:var(--ink2)}
+.modele{background:var(--paper2);border:1px solid var(--line);border-radius:10px;padding:14px 16px;max-width:none !important}
+/* lisibilité et contraste : étiquettes grises reprises sur les variables de theme.css */
+.test-q .tq-chap,.unit,.hint,.result .score-lab,.chapbar .cbl span:last-child{color:var(--txt3)}
+.main{min-width:0}
+.tbl-scroll{overflow-x:auto;margin:22px 0}
+.tbl-scroll .tbl{margin:0}
+.tbl td,.tbl th{hyphens:auto;overflow-wrap:break-word}
+@media(max-width:560px){.tbl-scroll .tbl{min-width:540px}}
+@media(max-width:560px){.tbl th,.tbl td{padding:9px 10px;font-size:.88rem}}
+/* ===== CALCULATRICE (leçon 9) ===== */
+.calc-row{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:12px}
+.calc-row label{display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:.92rem;color:var(--ink);flex:1 1 200px;min-width:0}
+.calc .num-input{width:100%}
+</style>
+<link rel="stylesheet" href="ui.css">
+<link rel="stylesheet" href="theme.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#ECEEF6">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="AAA">
+</head>
+<body>
+
+<div class="topbar">
+  <button class="burger" onclick="toggleSidebar()">☰</button>
+  <div class="brand">
+    <span class="logo">⚖</span>
+    <span>Organismes de tutelle<small>M1 MBAF · régulation et supervision bancaires</small></span>
+  </div>
+  <span id="nav-slot"></span>
+  <div class="progress-wrap">
+    <div class="lab"><span>Progression</span><span id="progPct">0 %</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+  </div>
+  <div class="xp"><span class="star">★</span><span id="xpVal">0</span> XP</div>
+  <span id="lb-id-slot"></span>
+</div>
+
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <h4>Introduction · Rappels</h4>
+    <div id="navList1"></div>
+    <h4>Chapitre 1 · Instabilité et régulation</h4>
+    <div id="navList2"></div>
+    <h4>Chapitre 2 · La régulation en pratique</h4>
+    <div id="navList3"></div>
+    <h4>Chapitre 3 · Les institutions</h4>
+    <div id="navList4"></div>
+    <h4>S'entraîner</h4>
+    <div class="nav-item special3" data-view="redac" onclick="go('redac')">
+      <span class="ico"><svg class="ico-t" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 19l1.2-4.2L15.8 5.2a1.9 1.9 0 0 1 2.7 0l.3.3a1.9 1.9 0 0 1 0 2.7L9.2 17.8z"/><path d="M14 7l3 3"/></svg></span><span class="lab">Questions rédigées</span>
+    </div>
+    <div class="nav-item special2" data-view="annales" onclick="go('annales')">
+      <span class="ico"><svg class="ico-t" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3.5h7l4 4v13H7z"/><path d="M14 3.5v4h4"/><path d="M9.8 13.6l1.9 1.9 3.3-3.8"/></svg></span><span class="lab">Six applications corrigées</span>
+    </div>
+    <div class="nav-item special" data-view="test" onclick="go('test')">
+      <span class="ico"><svg class="ico-t" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/></svg></span><span class="lab">Test final adaptatif</span>
+    </div>
+    <h4>À savoir</h4>
+    <div class="nav-item" data-view="ecarts" onclick="go('ecarts')">
+      <span class="ico"><svg class="ico-t" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M10.3 4.9a2 2 0 0 1 3.4 0l7 12.2a2 2 0 0 1-1.7 3H5a2 2 0 0 1-1.7-3z"/><path d="M12 10v3.5M12 16.6h.01"/></svg></span><span class="lab">Mémo et points à vérifier</span>
+    </div>
+  </aside>
+
+  <main class="main" id="main">
+
+    <!-- ============ LEÇON 1 ============ -->
+    <section class="view" data-view="l1">
+      <span class="tag">Leçon 1 · Rappels</span>
+      <h1 class="lesson-title">Le bilan bancaire et l'histoire de la réglementation</h1>
+      <p class="subtitle">Avant de parler des organismes de tutelle, il faut savoir ce qu'ils surveillent : le bilan des banques. Puis un siècle de réglementation, en cycles.</p>
+
+<div class="rulebox">
+  <div class="rb-main">Une banque ne prête pas les dépôts qu'elle a reçus : <em>les crédits font les dépôts</em>. Quand elle accorde 1 M€ de crédit, 1 M€ apparaît sur le compte de l'emprunteur.</div>
+  <div class="rb-sub">C'est pour cela qu'on la surveille : sa capacité à créer de la monnaie est quasi illimitée, mais elle doit ensuite se refinancer (marché, BCE) et rester solvable.</div>
+</div>
+<h2>Le bilan d'une banque</h2>
+<div class="tbl-scroll">
+<table class="tbl wrap">
+  <tr><th>Actif = les emplois (ce que la banque fait de l'argent)</th><th>Passif = les ressources (d'où vient l'argent)</th></tr>
+  <tr><td>Crédits aux entreprises et aux ménages</td><td>Dépôts de la clientèle</td></tr>
+  <tr><td>Titres achetés et détenus par la banque</td><td>Dettes de marché (emprunts sur le marché interbancaire)</td></tr>
+  <tr><td>Réserves (obligatoires) et encaisse de trésorerie</td><td>Titres émis par la banque</td></tr>
+  <tr><td>Immobilisations</td><td>Capitaux propres (fonds propres)</td></tr>
+  <tr><td>Créances sur les non-résidents</td><td>Dépôts interbancaires, provisions, engagements envers les non-résidents</td></tr>
+</table>
+</div>
+<p>Le rôle de la tutelle est de <b>surveiller ces bilans</b>. Si elle juge des crédits de mauvaise qualité, elle peut exiger des <b>provisions</b> supplémentaires (contre le risque de crédit) ; pour les banques les plus connectées, elle exige des <b>fonds propres</b> supplémentaires. Les fonds propres servent à éponger les pertes à l'actif : une banque qui n'en a plus est en faillite.</p>
+<div class="callout c-retenir">
+  <div class="ct">📌 La garantie des dépôts</div>
+  <p>En cas de faillite d'une banque, les dépôts sont garantis jusqu'à <b>100 000 € par déposant et par banque</b> (Fonds de garantie des dépôts et de résolution, FGDR).</p>
+</div>
+<h2>Un modèle bancaire qui change</h2>
+<p>À l'<b>actif</b>, de moins en moins de crédits et de plus en plus de titres : la tutelle doit surveiller la <b>liquidité</b>. Au <b>passif</b>, de moins en moins de dépôts et de plus en plus de titres émis : la tutelle surveille leur <b>qualité</b> (notation). D'où la question du cours : assiste-t-on à un changement de modèle bancaire ?</p>
+<p>Les notes complémentaires opposent deux modèles : <b>« octroyer et conserver »</b> (la banque garde le crédit jusqu'à son terme, et paie pour sélectionner l'emprunteur — <i>screening</i> — puis le suivre — <i>monitoring</i>) et <b>« octroyer et distribuer »</b> (la banque revend ses crédits sous forme de titres : c'est la <b>titrisation</b>, le crédit sort du bilan).</p>
+<h2>Un siècle de réglementation, en cycles</h2>
+<div class="tbl-scroll">
+<table class="tbl wrap">
+  <tr><th>Date</th><th>Événement</th><th>Sens</th></tr>
+  <tr><td>1933</td><td>États-Unis : <b>Banking Act</b> dit <b>Glass-Steagall</b>, qui sépare banques de dépôts et banques d'investissement (après l'Emergency Banking Act de mars 1933, qui rouvre les banques après la crise de 1929)</td><td>Réglementation</td></tr>
+  <tr><td>1980</td><td>États-Unis : Depository Institutions Deregulation and Monetary Control Act</td><td>Déréglementation</td></tr>
+  <tr><td>1984</td><td>France : loi bancaire (24 janvier 1984) — décloisonnement, triomphe de la banque universelle</td><td>Déréglementation</td></tr>
+  <tr><td>1987</td><td>France : fin de l'encadrement du crédit</td><td>Déréglementation</td></tr>
+  <tr><td>1988-1989</td><td>Accord de Bâle (1988) et ratio de solvabilité « Cooke », repris par l'Europe en 1989</td><td>Re-réglementation</td></tr>
+  <tr><td>1999</td><td>États-Unis : abrogation de la séparation Glass-Steagall (Gramm-Leach-Bliley Act)</td><td>Déréglementation</td></tr>
+  <tr><td>2010-2013</td><td>Après la crise : Bâle III, loi bancaire française de 2013</td><td>Re-réglementation</td></tr>
+</table>
+</div>
+<div class="callout c-piege">
+  <div class="ct">⚠️ Piège fréquent</div>
+  <p>Le cours attribue la séparation de 1933 à l'« Emergency Banking Act ». En réalité, la séparation des banques de dépôts et d'investissement vient du <b>Banking Act de juin 1933</b>, dit <b>Glass-Steagall</b> ; l'Emergency Banking Act (mars 1933) avait rouvert les banques. Retiens « 1933, Glass-Steagall, séparation ».</p>
+</div>
+<div class="callout c-retenir">
+  <div class="ct">📌 À retenir</div>
+  <p>Réglementation (années 1930-1960) → déréglementation (années 1980) → re-réglementation (fin des années 1980, puis après 2008). Actif = emplois, passif = ressources. La tutelle surveille les bilans : provisions pour le risque de crédit, fonds propres pour absorber les pertes.</p>
+</div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/3</div>
+        <div class="q">Selon le cours, quelle phrase décrit la création monétaire bancaire ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Les dépôts font les crédits</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Les crédits font les dépôts</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">La banque centrale fait tous les dépôts</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Les fonds propres font les crédits</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> En accordant un crédit, la banque crée un dépôt du même montant sur le compte de l'emprunteur.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/3</div>
+        <div class="q">Quelle loi américaine de 1933 sépare banques de dépôts et banques d'investissement ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Le Dodd-Frank Act</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Le Banking Act dit Glass-Steagall</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le Depository Institutions Deregulation Act</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le Gramm-Leach-Bliley Act</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Le Banking Act de 1933 (Glass-Steagall) ; il est abrogé en 1999 par le Gramm-Leach-Bliley Act. Le DIDMCA de 1980 est une loi de déréglementation.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 3/3</div>
+        <div class="q">Jusqu'à combien les dépôts d'un client sont-ils garantis en cas de faillite de sa banque ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">22 950 €</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">70 000 €</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">100 000 € par déposant et par banque</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Sans limite</button>
+        </div>
+        <div class="feedback" hidden><b>Oui.</b> 100 000 € par déposant et par établissement (FGDR).</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('redac')">Questions rédigées</button>
+        <button class="btn primary" onclick="validate('l1',3)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 2 ============ -->
+    <section class="view" data-view="l2">
+      <span class="tag">Leçon 2 · Théorie</span>
+      <h1 class="lesson-title">Régulation, supervision, réglementation</h1>
+      <p class="subtitle">Trois mots qu'on confond souvent. Le cours les distingue, puis donne l'objectif de la régulation et ses trois piliers.</p>
+
+<div class="rulebox">
+  <div class="rb-main"><em>Régulation bancaire = réglementation + supervision.</em></div>
+  <div class="rb-sub">La réglementation, c'est le code de la route ; la supervision, c'est le gendarme. Comme la loi et son bras armé sont souvent confondus, on confond souvent régulation et supervision.</div>
+</div>
+<h2>Trois définitions</h2>
+<div class="tbl-scroll">
+<table class="tbl wrap">
+  <tr><th>Notion</th><th>Définition</th><th>Auteur</th></tr>
+  <tr><td>Régulation</td><td>Cadre de lois et de règles au sein duquel évoluent les banques. Pour Mishkin : ensemble de règles, d'incitations et de pratiques des autorités publiques qui vise à instaurer et maintenir la stabilité financière.</td><td>Spong ; Mishkin</td></tr>
+  <tr><td>Supervision</td><td>Surveillance, par les agences en charge des banques, des conditions qui prévalent dans les banques sous leur juridiction, et mécanismes d'application de la régulation.</td><td>Spong</td></tr>
+  <tr><td>Réglementation</td><td>Ensemble des mesures légales et réglementaires imposées aux institutions bancaires par les autorités nationales et internationales. Plus étroite que la régulation : elle n'inclut ni l'assurance des dépôts ni le prêteur en dernier ressort.</td><td>De Boissieu et Couppey-Soubeyran (2013)</td></tr>
+</table>
+</div>
+<h2>Objectifs de la régulation</h2>
+<p>L'objectif premier est la <b>stabilité financière</b> ; pour <b>Allen et Gale</b>, plus précisément, il s'agit de <b>prévenir le risque systémique</b>. Objectifs secondaires : la <b>protection du consommateur</b>, la politique de <b>concurrence</b> dans le secteur bancaire, la <b>lutte contre le blanchiment</b>.</p>
+<div class="tbl-scroll">
+<table class="tbl wrap">
+  <tr><th>Pilier</th><th>Ce qu'il vise</th><th>Outil type</th></tr>
+  <tr><td>Politique microprudentielle</td><td>Chaque banque, prise isolément</td><td>Ratio de capital (fonds propres)</td></tr>
+  <tr><td>Politique macroprudentielle</td><td>Le système dans son ensemble</td><td>Ratio LTI (prêt / revenu), coussins contracycliques</td></tr>
+  <tr><td>Prêteur en dernier ressort</td><td>Soigner quand la prévention n'a pas suffi</td><td>Injection de liquidités par la banque centrale</td></tr>
+</table>
+</div>
+<h2>Pourquoi réguler les banques ?</h2>
+<div class="example">
+  <div class="ex-head">Les raisons du cours</div>
+  <div class="step"><div class="sn">1</div><div class="sc"><b>Protéger les déposants</b> : ils apportent des ressources à la banque mais ne peuvent pas vérifier leur bon usage.</div></div>
+  <div class="step"><div class="sn">2</div><div class="sc"><b>Éviter le risque systémique</b> : qu'une faillite se propage aux autres banques (marché interbancaire), au système de paiement, au crédit, puis à l'économie réelle (récession, chômage, déflation).</div></div>
+  <div class="step"><div class="sn">3</div><div class="sc"><b>Fragilité structurelle</b> : les banques font de la <b>transformation de maturité</b> (ressources courtes, emplois longs), donc elles sont exposées au risque de liquidité.</div></div>
+  <div class="step"><div class="sn">4</div><div class="sc"><b>Concentration et connectivité</b> : des banques très liées entre elles ont des comportements semblables.</div></div>
+</div>
+<div class="callout c-analogy">
+  <div class="ct">💡 Pour s'en souvenir</div>
+  <p>La réglementation, c'est le code de la route ; la supervision, c'est le gendarme qui contrôle ; la régulation, c'est tout le dispositif de sécurité routière.</p>
+</div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/3</div>
+        <div class="q">Quelle égalité résume le cours ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Supervision = régulation + réglementation</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Régulation = réglementation + supervision</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Réglementation = régulation + supervision</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Régulation = supervision seule</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> La régulation réunit la loi (réglementation) et son application par le gendarme (supervision).</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/3</div>
+        <div class="q">Pour Allen et Gale, la régulation bancaire cherche avant tout à :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Maximiser la rentabilité des banques</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Prévenir le risque systémique</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Fixer les taux de crédit</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Supprimer la concurrence</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> L'objectif premier est la stabilité financière, c'est-à-dire prévenir le risque systémique.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 3/3</div>
+        <div class="q">Injecter des liquidités dans une banque en crise relève du pilier :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Microprudentiel</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Macroprudentiel</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Prêteur en dernier ressort</button>
+        </div>
+        <div class="feedback" hidden><b>Oui.</b> Le prêteur en dernier ressort soigne quand la prévention (micro et macroprudentielle) n'a pas suffi.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l1')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l2',3)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 3 ============ -->
+    <section class="view" data-view="l3">
+      <span class="tag">Leçon 3 · Théorie</span>
+      <h1 class="lesson-title">Crises bancaires et instabilité financière</h1>
+      <p class="subtitle">Qu'est-ce qu'une crise bancaire ? Deux définitions de Bordo, sept caractéristiques, et la différence entre volatilité et instabilité.</p>
+
+<h2>Deux définitions de Bordo</h2>
+<div class="tbl-scroll">
+<table class="tbl wrap">
+  <tr><th>Bordo (1985)</th><th>Bordo (2001)</th></tr>
+  <tr><td>Situation dans laquelle les <b>ruées</b> (runs) et les faillites, constatées ou potentielles, conduisent les banques à <b>suspendre la convertibilité</b> de leur passif ou forcent le gouvernement à intervenir à grande échelle.</td><td>Période de <b>stress financier</b> engendrant une <b>érosion de tout ou partie du capital agrégé</b> du système bancaire.</td></tr>
+</table>
+</div>
+<h2>Les sept caractéristiques d'une crise bancaire</h2>
+<div class="example">
+  <div class="ex-head">Dans l'ordre du cours</div>
+  <div class="step"><div class="sn">1</div><div class="sc">Possiblement des <b>ruées bancaires</b> sur certaines banques (au passif).</div></div>
+  <div class="step"><div class="sn">2</div><div class="sc">Possiblement la <b>fermeture temporaire</b> de certaines banques.</div></div>
+  <div class="step"><div class="sn">3</div><div class="sc">Des <b>défauts de crédit</b> des clients.</div></div>
+  <div class="step"><div class="sn">4</div><div class="sc">La <b>détérioration des bilans</b>, voire des faillites bancaires.</div></div>
+  <div class="step"><div class="sn">5</div><div class="sc">La <b>contagion</b> à tout le secteur : des banques systémiques sont touchées.</div></div>
+  <div class="step"><div class="sn">6</div><div class="sc">La crise devient <b>systémique</b>.</div></div>
+  <div class="step"><div class="sn">7</div><div class="sc">Le <b>gouvernement intervient massivement</b> pour sauver le système de paiement et le système bancaire.</div></div>
+</div>
+<h2>Crise de liquidité ou crise de solvabilité ?</h2>
+<div class="tbl-scroll">
+<table class="tbl wrap">
+  <tr><th></th><th>Crise de liquidité (ruée)</th><th>Crise de solvabilité</th></tr>
+  <tr><td>Où ?</td><td>Au passif : retraits massifs des dépôts</td><td>À l'actif : pertes (défauts de crédit, chute des titres)</td></tr>
+  <tr><td>Conséquence</td><td>La banque manque de liquidités : elle emprunte (État, banque centrale) ou vend des titres</td><td>Les fonds propres fondent ; négatifs, la banque est insolvable</td></tr>
+  <tr><td>Gravité</td><td>Une banque solvable peut faillir faute de liquidité</td><td>La plus grave</td></tr>
+</table>
+</div>
+<div class="callout c-piege">
+  <div class="ct">⚠️ L'enchaînement à connaître</div>
+  <p>Une ruée oblige la banque à vendre ses titres en urgence ; tout le monde vend, les prix chutent, la perte s'impute sur les fonds propres : la crise de liquidité devient crise de solvabilité. D'où l'intérêt d'une banque centrale qui prête ou rachète les titres.</p>
+</div>
+<h2>Volatilité ou instabilité ?</h2>
+<div class="tbl-scroll">
+<table class="tbl wrap">
+  <tr><th></th><th>Volatilité</th><th>Instabilité</th></tr>
+  <tr><td>Nature</td><td>Fluctuations erratiques, temporaires, non régulières</td><td>Fluctuations cycliques, durables</td></tr>
+  <tr><td>Ampleur</td><td>Limitée ; débouche rarement sur une crise</td><td>Forte ; débouche régulièrement sur une crise</td></tr>
+  <tr><td>Mesure</td><td>Prix des actifs, indice VIX (« indice de la peur », Cboe)</td><td>Cycles longs, par exemple le ratio crédit / PIB</td></tr>
+</table>
+</div>
+<div class="callout c-retenir">
+  <div class="ct">📌 Stabilité financière (BCE)</div>
+  <p>Situation dans laquelle le système financier — intermédiaires, marchés et infrastructures de marché — est capable d'<b>absorber les chocs</b> sans perturbation grave de l'allocation de l'épargne vers les investissements rentables. En un mot : la capacité d'absorber des chocs.</p>
+</div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/3</div>
+        <div class="q">La définition de Bordo (2001) parle :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">D'une suspension de la convertibilité du passif</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">D'une érosion de tout ou partie du capital agrégé du système bancaire</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">D'une hausse des taux directeurs</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">D'une baisse de l'inflation</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> La définition de 1985 parle de ruées et de suspension de convertibilité ; celle de 2001 de stress financier et d'érosion du capital agrégé.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/3</div>
+        <div class="q">Des retraits massifs de dépôts provoquent d'abord :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Une crise de solvabilité</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Une crise de liquidité</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Une baisse du ratio de levier</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Une hausse des provisions</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> La ruée frappe le passif : c'est une crise de liquidité, qui peut ensuite devenir une crise de solvabilité si la banque brade ses actifs.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 3/3</div>
+        <div class="q">Des fluctuations erratiques, temporaires et d'ampleur limitée relèvent de :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">L'instabilité financière</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">La volatilité</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le risque systémique</button>
+        </div>
+        <div class="feedback" hidden><b>Oui.</b> L'instabilité, elle, est cyclique, durable et de forte amplitude.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l2')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l3',3)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 4 ============ -->
+    <section class="view" data-view="l4">
+      <span class="tag">Leçon 4 · Théorie</span>
+      <h1 class="lesson-title">Risque systémique, « too big to fail » et banques systémiques</h1>
+      <p class="subtitle">Le risque que la défaillance d'un acteur entraîne les autres, jusqu'à l'économie réelle. Et le dilemme des banques trop grosses pour faire faillite.</p>
+
+<div class="rulebox">
+  <div class="rb-main">Risque systémique (BCE) : le risque que l'incapacité d'un intervenant à faire face à ses obligations <em>empêche à leur tour les autres</em> de remplir les leurs.</div>
+  <div class="rb-sub">Avec des effets de contagion, d'importants problèmes de liquidité ou de crédit, et une menace pour la stabilité du système financier ou la confiance qu'il inspire.</div>
+</div>
+<h2>La chaîne de transmission</h2>
+<div class="example">
+  <div class="ex-head">Du choc à la récession</div>
+  <div class="step"><div class="sn">1</div><div class="sc">Un choc sur un <b>segment de marché</b>…</div></div>
+  <div class="step"><div class="sn">2</div><div class="sc">…contamine d'autres segments, puis le <b>système bancaire</b> (marché interbancaire)…</div></div>
+  <div class="step"><div class="sn">3</div><div class="sc">…puis le <b>marché du crédit</b> : rationnement du crédit (<i>credit crunch</i>)…</div></div>
+  <div class="step"><div class="sn">4</div><div class="sc">…puis l'<b>économie réelle</b> : récession, chômage, croissance en berne.</div></div>
+</div>
+<p>Exemple du cours : la faillite de <b>Lehman Brothers</b> à l'automne 2008.</p>
+<h2>« Too big to fail »</h2>
+<p>Une banque est <b>too big to fail</b> quand sa faillite aurait des conséquences systémiques désastreuses : les pouvoirs publics la renflouent dès que le risque est avéré. Exemples cités : Continental Illinois (États-Unis, 1984), le Crédit Lyonnais en France (années 1990). Effet pervers : sachant qu'elle sera sauvée, la banque prend plus de risques (<b>aléa moral</b>).</p>
+<div class="tbl-scroll">
+<table class="tbl wrap">
+  <tr><th>Réponse</th><th>Idée</th></tr>
+  <tr><td>Limiter la taille</td><td>Bilans plus petits, moins de pertes possibles (idée du <i>narrow banking</i>)</td></tr>
+  <tr><td>« Ambiguïté constructive »</td><td>Ne jamais dire à l'avance si une banque sera sauvée : elle reste vigilante</td></tr>
+  <tr><td>« Too big to be saved »</td><td>Depuis Lehman Brothers : certaines banques deviennent trop chères à sauver</td></tr>
+  <tr><td>Surcharge de fonds propres</td><td>Plus la banque est systémique, plus on lui impose de fonds propres</td></tr>
+</table>
+</div>
+<h2>Les banques systémiques (G-SIB)</h2>
+<p>Le Conseil de stabilité financière (<b>FSB</b>) publie chaque année la liste des banques d'importance systémique mondiale. Elles sont classées en <b>cinq cases</b> : de <b>1 %</b> à <b>3,5 %</b> de fonds propres supplémentaires (1 ; 1,5 ; 2 ; 2,5 ; 3,5 %). La case la plus haute est volontairement <b>vide</b>. Critères : taille du bilan, interconnexion, complexité, activité transfrontalière, substituabilité.</p>
+<div class="callout c-retenir">
+  <div class="ct">📌 Les banques françaises</div>
+  <p>Quatre groupes français figurent sur la liste du FSB de novembre 2025 : <b>BNP Paribas</b> et <b>Crédit Agricole</b> (case à 1,5 %), <b>Société Générale</b> et <b>BPCE</b> (case à 1 %).</p>
+</div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/3</div>
+        <div class="q">Quelle faillite a matérialisé le risque systémique à l'automne 2008 ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Northern Rock</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Lehman Brothers</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Continental Illinois</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Crédit Lyonnais</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Lehman Brothers, le 15 septembre 2008.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/3</div>
+        <div class="q">Combien de cases (niveaux) compte le classement des banques systémiques ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Trois</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Quatre</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Cinq</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Dix</button>
+        </div>
+        <div class="feedback" hidden><b>Oui.</b> Cinq cases, de 1 % à 3,5 % de fonds propres supplémentaires ; la plus haute est vide.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 3/3</div>
+        <div class="q">L'« ambiguïté constructive » consiste à :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Annoncer qu'on sauvera toutes les grandes banques</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Ne pas dire à l'avance si une banque sera sauvée</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Interdire les grandes banques</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> L'incertitude incite les banques à rester prudentes.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l3')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l4',3)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 5 ============ -->
+    <section class="view" data-view="l5">
+      <span class="tag">Leçon 5 · Théorie</span>
+      <h1 class="lesson-title">Du microprudentiel au macroprudentiel</h1>
+      <p class="subtitle">La politique prudentielle incite les banques à la prudence. Le microprudentiel regarde chaque banque ; le macroprudentiel, apparu après 2008, regarde le système.</p>
+
+<h2>La politique prudentielle</h2>
+<p>Position intermédiaire entre le <b>contrôle bancaire des années 1960</b> (le régulateur dicte prix et quantités de crédit) et le <b>laissez-faire des années 1980</b>. Elle n'entrave pas le marché du crédit mais oriente les banques vers la <b>prudence</b> : c'est du <b>préventif</b>. Fondements : économie des incitations, économie de l'information (réduire les asymétries), microéconomie de la liquidité.</p>
+<p>Ses instruments : les <b>ratios de fonds propres</b> (Bâle), les instruments de type <b>LTV</b> (montant du prêt rapporté à la valeur du bien), les <b>stress tests</b>, l'<b>AQR</b> (revue de la qualité des actifs).</p>
+<h2>Micro contre macro</h2>
+<div class="tbl-scroll">
+<table class="tbl wrap">
+  <tr><th></th><th>Microprudentiel</th><th>Macroprudentiel</th></tr>
+  <tr><td>Regard</td><td>La banque individuelle</td><td>Le système bancaire dans son ensemble</td></tr>
+  <tr><td>Apparition</td><td>Avant 2008</td><td>Après 2008 (dans la régulation : 2013, avec Bâle III / CRD IV)</td></tr>
+  <tr><td>Risque maximal</td><td>La faillite d'une banque</td><td>Le risque systémique, la crise financière</td></tr>
+  <tr><td>Objectifs</td><td>Superviser les banques, limiter les difficultés individuelles, protéger leurs clients (rapport de Larosière, 2009)</td><td>Éviter la procyclicité, la contagion, et le coût pour l'économie réelle</td></tr>
+  <tr><td>Vision de la crise</td><td>Exogène, choc sur une banque isolée, ruée à la Diamond et Dybvig (1983), risque systémique quasi nul</td><td>Endogène (Aglietta, Minsky), comportements moutonniers (Keynes, Akerlof, Shiller), myopie au désastre (Minsky), cycle financier (BRI)</td></tr>
+</table>
+</div>
+<div class="callout c-analogy">
+  <div class="ct">💡 Le sophisme de composition</div>
+  <p>Sur un pont qui penche, chacun se range de l'autre côté : c'est rationnel pour une personne, mais si tout le monde le fait en même temps, le pont oscille et cède. Ce qui est sage pour une banque peut être dangereux pour toutes : seul un regard macro le voit.</p>
+</div>
+<h2>Les trois instruments macroprudentiels de Bâle III</h2>
+<div class="tbl-scroll">
+<table class="tbl wrap">
+  <tr><th>Instrument</th><th>Fourchette</th><th>Idée</th></tr>
+  <tr><td>Coussin contracyclique</td><td>0 à 2,5 %</td><td>0 % en bas de cycle (credit crunch), jusqu'à 2,5 % en haut de cycle (boom du crédit) : l'écureuil fait des réserves quand les noisettes abondent</td></tr>
+  <tr><td>Surcharge des banques systémiques (G-SIB)</td><td>1 à 3,5 %</td><td>Selon le degré d'importance systémique</td></tr>
+  <tr><td>Coussin pour le risque systémique</td><td>Jusqu'à 3 % sans accord européen, au-delà sous conditions (CRD V)</td><td>Risques non cycliques et risques transfrontaliers</td></tr>
+</table>
+</div>
+<div class="callout c-piege">
+  <div class="ct">⚠️ Procyclique ou contracyclique ?</div>
+  <p><b>Procyclique</b> : qui va dans le sens du cycle et l'amplifie (toutes les banques prêtent en même temps, puis arrêtent en même temps). <b>Contracyclique</b> : qui va contre le cycle. Le coussin contracyclique monte dans le boom et redescend dans la crise.</p>
+</div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/3</div>
+        <div class="q">Le risque maximal visé par le microprudentiel est :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Le risque systémique</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">La faillite d'une banque</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">L'inflation</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le chômage</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Le macroprudentiel, lui, vise le risque systémique.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/3</div>
+        <div class="q">En phase de boom du crédit, le coussin contracyclique :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Descend vers 0 %</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Monte (jusqu'à 2,5 % dans Bâle III)</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Ne change pas</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Est supprimé</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> On constitue des réserves dans les bonnes périodes pour les relâcher dans la crise.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 3/3</div>
+        <div class="q">Les ruées à la Diamond et Dybvig fondent quelle approche ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">Le microprudentiel</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le macroprudentiel</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">La politique monétaire</button>
+        </div>
+        <div class="feedback" hidden><b>Oui.</b> Une crise de liquidité vue comme un choc exogène sur une banque isolée : c'est la vision microprudentielle.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l4')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l5',3)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 6 ============ -->
+    <section class="view" data-view="l6">
+      <span class="tag">Leçon 6 · Pratique</span>
+      <h1 class="lesson-title">La loi bancaire française de 2013</h1>
+      <p class="subtitle">Loi du 26 juillet 2013 de séparation et de régulation des activités bancaires : douze titres, et une séparation qui n'en est pas tout à fait une.</p>
+
+<div class="rulebox">
+  <div class="rb-main">Loi n° 2013-672 du 26 juillet 2013 <em>de séparation et de régulation des activités bancaires</em>.</div>
+  <div class="rb-sub">Elle maintient la banque universelle et cantonne la spéculation pour compte propre dans une filiale.</div>
+</div>
+<h2>Les douze titres</h2>
+<div class="example">
+  <div class="ex-head">Dans l'ordre du cours</div>
+  <div class="step"><div class="sn">1</div><div class="sc">Séparation des activités utiles au financement de l'économie et des activités spéculatives.</div></div>
+  <div class="step"><div class="sn">2</div><div class="sc">Transparence et lutte contre les dérives financières.</div></div>
+  <div class="step"><div class="sn">3</div><div class="sc">Encadrement des rémunérations dans le secteur bancaire.</div></div>
+  <div class="step"><div class="sn">4</div><div class="sc">Mise en place du régime de résolution bancaire.</div></div>
+  <div class="step"><div class="sn">5</div><div class="sc">Surveillance macroprudentielle (création du HCSF).</div></div>
+  <div class="step"><div class="sn">6</div><div class="sc">Pouvoirs des commissions d'enquête parlementaires sur le secteur financier.</div></div>
+  <div class="step"><div class="sn">7</div><div class="sc">Encadrement des emprunts des collectivités territoriales.</div></div>
+  <div class="step"><div class="sn">8</div><div class="sc">Renforcement des pouvoirs de l'AMF et de l'ACPR.</div></div>
+  <div class="step"><div class="sn">9</div><div class="sc">Dispositions sur les caisses d'assurances et de réassurances mutuelles agricoles.</div></div>
+  <div class="step"><div class="sn">10</div><div class="sc">Protection des consommateurs et égalité entre les femmes et les hommes.</div></div>
+  <div class="step"><div class="sn">11</div><div class="sc">Ordonnances relatives au secteur bancaire et financier.</div></div>
+  <div class="step"><div class="sn">12</div><div class="sc">Transferts d'actifs financiers.</div></div>
+</div>
+<h2>Titre 1 : filialiser plutôt que séparer</h2>
+<p>Le modèle de <b>banque universelle est maintenu</b> : tout reste dans le même groupe. Les activités <b>pour compte propre</b> sont cantonnées dans une <b>filiale ad hoc</b>, régulée à part et financée de manière autonome. Cette filiale ne peut pas pratiquer le <b>trading à haute fréquence</b> ni la spéculation sur les <b>dérivés de matières premières agricoles</b>. Restent autorisés : services aux clients, tenue de marché, gestion de trésorerie, investissement et couverture de ses propres risques.</p>
+<div class="callout c-piege">
+  <div class="ct">⚠️ Une portée limitée</div>
+  <p>C'est une logique de <b>filialisation</b> (proche du rapport Liikanen), pas une séparation à la Glass-Steagall ni le cantonnement plus poussé du rapport Vickers britannique. Selon les notes du cours, moins de 1 % des revenus bancaires sont concernés.</p>
+</div>
+<h2>Titre 2 : transparence</h2>
+<ul style="margin:8px 0 14px 22px"><li>Lutte contre les paradis fiscaux et le blanchiment des capitaux</li><li>Régulation du marché des matières premières</li><li>Encadrement du négoce à haute fréquence</li><li>Répression des abus de marché</li></ul>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/2</div>
+        <div class="q">La loi bancaire de 2013 :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Supprime la banque universelle</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Maintient la banque universelle et filialise le compte propre</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Rétablit le Glass-Steagall en France</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Interdit toute activité de marché</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Filialisation, pas séparation.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/2</div>
+        <div class="q">Laquelle de ces activités est interdite à la filiale ad hoc ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">La tenue de marché</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Le trading à haute fréquence</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">La gestion de trésorerie</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">La couverture de ses propres risques</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Le trading à haute fréquence et les dérivés sur matières premières agricoles sont interdits.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l5')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l6',2)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 7 ============ -->
+    <section class="view" data-view="l7">
+      <span class="tag">Leçon 7 · Pratique</span>
+      <h1 class="lesson-title">Le Comité de Bâle, la BRI et Bâle I</h1>
+      <p class="subtitle">Qui écrit les ratios prudentiels, et le premier d'entre eux : le ratio Cooke.</p>
+
+<h2>Le Comité de Bâle (BCBS)</h2>
+<p>Créé en <b>1974</b> par les gouverneurs des banques centrales du G10, le Comité de Bâle sur le contrôle bancaire (<i>Basel Committee on Banking Supervision</i>) réunit <b>45 institutions de 28 juridictions</b>. Pour la France : la <b>Banque de France</b> et l'<b>ACPR</b>. Il décide par <b>consensus</b>, et ses décisions sont des <b>recommandations</b> : elles n'ont de force qu'une fois transposées (en Europe : directive CRD et règlement CRR).</p>
+<h2>La BRI</h2>
+<p>Le Comité est logé à la <b>Banque des règlements internationaux</b> (BRI, Bâle), « banque des banques centrales », dont le capital appartient à <b>63 banques centrales</b>. Objectif : promouvoir la stabilité monétaire et financière mondiale par la coopération internationale. Hiérarchie : BRI → banques centrales → banques commerciales.</p>
+<h2>Bâle I : le ratio Cooke</h2>
+<div class="rulebox">
+  <div class="rb-main">Ratio Cooke = fonds propres ÷ engagements pondérés par les risques <em>≥ 8 %</em></div>
+  <div class="rb-sub">Dont au moins 4 % de fonds propres de base (Tier 1). Accord de 1988, du nom de Peter Cooke (Banque d'Angleterre), président du Comité.</div>
+</div>
+<div class="tbl-scroll">
+<table class="tbl wrap">
+  <tr><th>Pondération</th><th>Créances concernées</th></tr>
+  <tr><td>0 %</td><td>États de l'OCDE</td></tr>
+  <tr><td>20 %</td><td>Établissements de crédit (de l'OCDE) et collectivités locales</td></tr>
+  <tr><td>50 %</td><td>Prêts hypothécaires (immobilier résidentiel)</td></tr>
+  <tr><td>100 %</td><td>Toutes les autres créances (entreprises, particuliers…)</td></tr>
+</table>
+</div>
+<div class="example">
+  <div class="ex-head">Exemple — calcul vérifié</div>
+  <div class="step"><div class="sn">1</div><div class="sc">Bilan : 100 M€ d'obligations d'État (0 %), 50 M€ de prêts à des banques (20 %), 200 M€ de prêts immobiliers (50 %), 150 M€ de crédits aux entreprises (100 %).</div></div>
+  <div class="step"><div class="sn">2</div><div class="sc">Engagements pondérés = 0 + 10 + 100 + 150 = <b>260 M€</b>.</div></div>
+  <div class="step"><div class="sn">3</div><div class="sc">Fonds propres minimaux = 8 % × 260 = <b>20,8 M€</b>, dont au moins 4 % × 260 = 10,4 M€ en Tier 1.</div></div>
+</div>
+<h2>Les étages de fonds propres</h2>
+<div class="tbl-scroll">
+<table class="tbl wrap">
+  <tr><th>Étage</th><th>Contenu</th></tr>
+  <tr><td>Core Tier 1 (noyau dur)</td><td>Capital social + réserves (bénéfices mis en réserve)</td></tr>
+  <tr><td>Tier 1 (fonds propres de base)</td><td>Core Tier 1 + report à nouveau, intérêts minoritaires, fonds pour risques bancaires généraux, instruments hybrides de première catégorie — <b>moins</b> le goodwill (écart d'acquisition), qui est déduit</td></tr>
+  <tr><td>Tier 2 (fonds propres complémentaires)</td><td>Réserves de réévaluation, provisions générales, titres subordonnés et hybrides ; il s'ajoute au Tier 1, dans la limite du Tier 1</td></tr>
+</table>
+</div>
+<div class="callout c-piege">
+  <div class="ct">⚠️ Deux corrections par rapport au cours</div>
+  <p>1) Le goodwill ne s'ajoute pas au Tier 1 : il en est <b>déduit</b> (il ne peut pas absorber de pertes). 2) Le Tier 2 n'est pas « Tier 1 + … » : c'est un étage <b>complémentaire</b> ; fonds propres totaux = Tier 1 + Tier 2.</p>
+</div>
+<div class="callout c-retenir">
+  <div class="ct">📌 À retenir</div>
+  <p>Plus un actif est risqué, plus sa pondération est forte, plus il « coûte » en fonds propres : une banque qui veut économiser des fonds propres préfère les actifs peu risqués.</p>
+</div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/3</div>
+        <div class="q">Le Comité de Bâle a été créé en :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">1930</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">1974</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">1988</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">2010</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> En 1974. La BRI date de 1930 ; l'accord Bâle I de 1988.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/3</div>
+        <div class="q">Quelle est la pondération d'un prêt hypothécaire dans Bâle I ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">0 %</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">20 %</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">50 %</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">100 %</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> 50 %. États de l'OCDE : 0 % ; banques et collectivités : 20 % ; le reste : 100 %.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 3/3</div>
+        <div class="q">Les décisions du Comité de Bâle sont :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Directement obligatoires dans tous les pays</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Des recommandations à transposer</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Des lois américaines</button>
+        </div>
+        <div class="feedback" hidden><b>Oui.</b> Des recommandations adoptées par consensus, transposées en Europe par la CRD et le CRR.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l6')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l7',3)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 8 ============ -->
+    <section class="view" data-view="l8">
+      <span class="tag">Leçon 8 · Pratique</span>
+      <h1 class="lesson-title">Bâle II, Bâle III : solvabilité et levier</h1>
+      <p class="subtitle">Bâle II affine le calcul du risque ; Bâle III, né de la crise des subprimes, relève la qualité et le niveau des fonds propres et ajoute un ratio de levier.</p>
+
+<h2>Bâle II (2004) : le ratio McDonough</h2>
+<p>Accord de <b>2004</b> (appliqué en Europe en 2007-2008), du nom de William McDonough. Le niveau reste à <b>8 %</b>, mais le calcul du risque est plus précis. Trois piliers :</p>
+<div class="tbl-scroll">
+<table class="tbl wrap">
+  <tr><th>Pilier</th><th>Contenu</th></tr>
+  <tr><td>1 — Exigences minimales</td><td>Risque de crédit (nouvelles approches : standard ou modèles internes), risque de marché (inchangé), risque <b>opérationnel</b> (nouveau)</td></tr>
+  <tr><td>2 — Surveillance prudentielle</td><td>Évaluation des risques propres à chaque banque et capital supplémentaire si besoin ; dialogue régulier avec le superviseur</td></tr>
+  <tr><td>3 — Discipline de marché</td><td>Publication des fonds propres et des méthodes d'évaluation des risques</td></tr>
+</table>
+</div>
+<h2>Bâle III : la réponse à la crise</h2>
+<p>La crise de 2007 a montré les limites de Bâle II, notamment face aux risques de <b>liquidité</b> et <b>systémique</b>. Accord publié le <b>16 décembre 2010</b>. En Europe, il est transposé par le paquet <b>CRD IV</b> (directive 2013/36/UE et règlement CRR n° 575/2013), entré en vigueur le <b>17 juillet 2013</b> et appliqué depuis le <b>1<sup>er</sup> janvier 2014</b>. Le règlement CRR s'applique directement ; seule la directive est transposée.</p>
+<div class="tbl-scroll">
+<table class="tbl wrap">
+  <tr><th>Exigence (en % des actifs pondérés)</th><th>Bâle II</th><th>Bâle III</th></tr>
+  <tr><td>Noyau dur (Core Tier 1 / CET1)</td><td>2 %</td><td><b>4,5 %</b></td></tr>
+  <tr><td>Autres Tier 1</td><td>2 %</td><td>1,5 %</td></tr>
+  <tr><td>Tier 2</td><td>4 %</td><td>2 %</td></tr>
+  <tr><td>Total minimal</td><td>8 %</td><td>8 %</td></tr>
+  <tr><td>Coussin de conservation (CET1)</td><td>—</td><td>+ 2,5 %</td></tr>
+  <tr><td>Total avec le coussin</td><td>8 %</td><td><b>10,5 %</b></td></tr>
+</table>
+</div>
+<p>Les coussins macroprudentiels (contracyclique, systémiques) s'ajoutent, en CET1. Finalisation en <b>décembre 2017</b> (parfois appelée « Bâle IV ») : méthode standard mondiale pour les actifs pondérés et plancher aux modèles internes, appliquée dans l'Union par <b>CRR3</b> depuis le 1<sup>er</sup> janvier 2025.</p>
+<h2>Le ratio de levier</h2>
+<div class="rulebox">
+  <div class="rb-main">Ratio de levier = fonds propres Tier 1 ÷ exposition totale (bilan et hors bilan, <em>sans pondération</em>) ≥ <em>3 %</em></div>
+  <div class="rb-sub">Exigence contraignante dans l'Union depuis le 28 juin 2021 (CRR2).</div>
+</div>
+<p>Pourquoi ? Avec des pondérations faibles, une banque peut afficher un beau ratio de solvabilité tout en étant très endettée. Le levier ne pondère pas : il sert de <b>filet</b>. Dans les stress tests du cours, le ratio de solvabilité tourne autour de 10 % et le levier autour de 3 % à 5 %.</p>
+<div class="callout c-retenir">
+  <div class="ct">📌 À retenir</div>
+  <p>8 % → 10,5 % : 4,5 % de CET1 + 1,5 % d'autres Tier 1 + 2 % de Tier 2 + 2,5 % de coussin de conservation. Levier ≥ 3 %. Bâle III ajoute aussi deux ratios de liquidité (leçon suivante).</p>
+</div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/3</div>
+        <div class="q">Quel risque Bâle II ajoute-t-il au calcul des fonds propres ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Le risque de marché</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Le risque opérationnel</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le risque de liquidité</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le risque systémique</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Le risque opérationnel. La liquidité et le systémique arrivent avec Bâle III.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/3</div>
+        <div class="q">Avec le coussin de conservation, l'exigence totale de Bâle III atteint :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">8 %</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">9 %</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">10,5 %</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">13 %</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> 8 % + 2,5 % de coussin de conservation = 10,5 %.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 3/3</div>
+        <div class="q">Le ratio de levier rapporte le Tier 1 :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Aux actifs pondérés par les risques</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">À l'exposition totale, sans pondération</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Aux dépôts</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Au PNB</button>
+        </div>
+        <div class="feedback" hidden><b>Oui.</b> Sans pondération, minimum 3 %.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l7')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l8',3)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 9 ============ -->
+    <section class="view" data-view="l9">
+      <span class="tag">Leçon 9 · Pratique</span>
+      <h1 class="lesson-title">Liquidité et macroprudentiel : les piliers 4 et 5</h1>
+      <p class="subtitle">Bâle III ajoute aux trois piliers de Bâle II la liquidité (LCR, NSFR) et la dimension macroprudentielle.</p>
+
+<h2>Pilier 4 : deux ratios de liquidité</h2>
+<div class="rulebox">
+  <div class="rb-main">LCR = actifs liquides de haute qualité ÷ sorties nettes de trésorerie sur 30 jours de stress <em>≥ 100 %</em></div>
+  <div class="rb-sub">Court terme. Surnommé « Bear Stearns » dans le cours. Exigé à 100 % dans l'Union depuis le 1<sup>er</sup> janvier 2018.</div>
+</div>
+<p>La banque doit pouvoir couvrir un mois de sorties (retraits des clients, remboursement de dettes) avec des actifs <b>vendables vite et sans perte</b> : réserves à la banque centrale, titres d'État, certaines obligations d'entreprises et titres adossés à des crédits immobiliers (RMBS), avec décotes.</p>
+<div class="tbl-scroll">
+<table class="tbl wrap">
+  <tr><th>Montée en charge (calendrier de Bâle)</th><th>2015</th><th>2016</th><th>2017</th><th>2018</th><th>2019</th></tr>
+  <tr><td>LCR minimal</td><td>60 %</td><td>70 %</td><td>80 %</td><td>90 %</td><td>100 %</td></tr>
+</table>
+</div>
+<p>L'Union européenne est allée plus vite : 60 % au 1<sup>er</sup> octobre 2015, puis 70 %, 80 % et <b>100 % dès le 1<sup>er</sup> janvier 2018</b>.</p>
+<div class="rulebox">
+  <div class="rb-main">NSFR = financement stable disponible ÷ financement stable exigé <em>≥ 100 %</em></div>
+  <div class="rb-sub">Horizon d'un an. Surnommé « Northern Rock ». Contraignant dans l'Union depuis le 28 juin 2021 (CRR2).</div>
+</div>
+<p>Objectif : que les actifs à long terme soient financés par des ressources <b>stables</b>, au lieu de dettes très courtes qu'il faut renouveler sans cesse (ce qui a coulé Northern Rock en 2007). <b>Disponible</b> : fonds propres (Tier 1 et 2), dépôts stables, dettes à plus d'un an. <b>Exigé</b> : dépend des actifs et du hors bilan, pondérés selon leur liquidité — un crédit à long terme exige beaucoup de financement stable, la trésorerie presque rien.</p>
+<div class="callout c-piege">
+  <div class="ct">⚠️ Correction par rapport au cours</div>
+  <p>Le cours place au dénominateur du NSFR « le cash et les titres à moins d'un an ». C'est l'inverse : ce sont les actifs <b>peu liquides et longs</b> qui exigent le plus de financement stable ; la trésorerie et les titres très liquides en exigent peu ou pas.</p>
+</div>
+<h2>Pilier 5 : la dimension macroprudentielle</h2>
+<div class="tbl-scroll">
+<table class="tbl wrap">
+  <tr><th>Coussin</th><th>Niveau</th><th>En France</th></tr>
+  <tr><td>Contracyclique</td><td>0 à 2,5 % selon le cycle du crédit</td><td>Fixé chaque trimestre par le HCSF : <b>1 %</b> depuis le 2 janvier 2024, maintenu en 2026</td></tr>
+  <tr><td>Banques systémiques mondiales (G-SIB)</td><td>1 à 3,5 %</td><td>1 % ou 1,5 % selon le groupe (liste FSB)</td></tr>
+  <tr><td>Risque systémique</td><td>Jusqu'à 3 %, davantage sous conditions</td><td>Coussin sectoriel de 3 % (2023) sur les expositions des banques systémiques aux grandes entreprises françaises très endettées</td></tr>
+</table>
+</div>
+<div class="callout c-retenir">
+  <div class="ct">📌 À retenir</div>
+  <p>LCR : 30 jours, ≥ 100 %, actifs liquides. NSFR : 1 an, ≥ 100 %, financement stable. Bâle III = 5 piliers : les 3 de Bâle II + liquidité + macroprudentiel.</p>
+</div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/3</div>
+        <div class="q">Le LCR couvre un horizon de :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Un jour</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">30 jours</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Un an</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Cinq ans</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> 30 jours de stress. Le NSFR porte sur un an.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/3</div>
+        <div class="q">Une banque a 600 M€ d'actifs liquides et 500 M€ de sorties nettes à 30 jours. Son LCR :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">83 %</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">100 %</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">120 %</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">500 %</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> 600 ÷ 500 = 120 %, au-dessus du minimum de 100 %.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 3/3</div>
+        <div class="q">Quel organisme fixe le coussin contracyclique en France ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">L'AMF</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Le HCSF</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">La BRI</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le FSB</button>
+        </div>
+        <div class="feedback" hidden><b>Oui.</b> Le Haut Conseil de stabilité financière, chaque trimestre (1 % depuis janvier 2024).</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l8')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l9',3)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 10 ============ -->
+    <section class="view" data-view="l10">
+      <span class="tag">Leçon 10 · Pratique</span>
+      <h1 class="lesson-title">Stress tests, revue des actifs et SREP</h1>
+      <p class="subtitle">Comment l'Europe vérifie, banque par banque, que les fonds propres tiendraient en cas de crise.</p>
+
+<h2>Les stress tests</h2>
+<p>Des <b>tests de résistance</b> : on simule un scénario de crise et on regarde ce qu'il reste de fonds propres. Méthode définie par l'<b>Autorité bancaire européenne</b> (ABE) ; à l'origine, ils visaient à mesurer les besoins en fonds propres des banques face à leurs expositions aux <b>dettes souveraines</b>. Deux scénarios : <b>central</b> (de référence) et <b>adverse</b> (dégradé, avec choc sur les titres souverains).</p>
+<h2>L'évaluation complète de 2014</h2>
+<p>Avant de devenir superviseur (novembre 2014), la BCE a mené une <b>évaluation complète</b> en deux volets : l'<b>AQR</b> (<i>Asset Quality Review</i>, revue de la qualité des actifs) et un stress test.</p>
+<div class="tbl-scroll">
+<table class="tbl wrap">
+  <tr><th></th><th>Scénario de référence</th><th>Scénario adverse</th></tr>
+  <tr><td>Seuil de CET1</td><td>8 %</td><td>5,5 %</td></tr>
+  <tr><td>Délai pour combler l'insuffisance</td><td>6 mois</td><td>9 mois</td></tr>
+</table>
+</div>
+<p>L'AQR se déroule en trois phases : sélection des portefeuilles risqués (novembre 2013 – janvier 2014), exécution (février – juin 2014), synthèse et comparaison. Elle vérifie la valorisation des actifs, le classement des expositions non performantes, les garanties et les <b>provisions</b>.</p>
+<div class="callout c-piege">
+  <div class="ct">⚠️ Provisions ou fonds propres ?</div>
+  <p>Si la banque échoue à l'AQR (actifs mal évalués), on lui demande des <b>provisions</b>. Si elle échoue au stress test (pas assez de capital en cas de crise), on lui demande des <b>fonds propres</b>.</p>
+</div>
+<h2>Les exercices suivants</h2>
+<ul style="margin:8px 0 14px 22px"><li><b>2017</b> : analyse de sensibilité au <b>risque de taux</b> (norme du Comité de Bâle de 2016) : effet d'une variation des taux sur la marge nette d'intérêts et sur la valeur économique des fonds propres. Quand les taux montent, les anciennes obligations perdent de la valeur (effet balançoire).</li><li><b>2021</b> (reporté à cause de la crise sanitaire) : 50 banques couvrant environ 70 % des actifs bancaires de l'Union ; résultats intégrés au SREP.</li><li>Les petites banques sont testées par les autorités nationales (ACPR en France).</li></ul>
+<h2>Le SREP</h2>
+<p><b>SREP</b> : <i>Supervisory Review and Evaluation Process</i>, processus de contrôle et d'évaluation prudentiels. Chaque année, la BCE rend une <b>décision SREP</b> pour chaque banque qu'elle supervise, avec une <b>méthodologie unique</b> et un <b>calendrier unique</b>. Plus large que le stress test, qu'il intègre.</p>
+<div class="tbl-scroll">
+<table class="tbl wrap">
+  <tr><th>Les 4 axes de contrôle</th><th>Question posée</th></tr>
+  <tr><td>Modèle d'activité</td><td>Le modèle est-il viable et rentable ?</td></tr>
+  <tr><td>Gouvernance et gestion des risques</td><td>La direction et les contrôles internes sont-ils solides ?</td></tr>
+  <tr><td>Risques pesant sur le capital</td><td>Les fonds propres suffisent-ils à absorber les pertes ?</td></tr>
+  <tr><td>Risques de liquidité et de financement</td><td>La banque peut-elle faire face à ses échéances ?</td></tr>
+</table>
+</div>
+<p>Chaque axe est noté de <b>1</b> (risque faible) à <b>4</b> (risque élevé). La décision fixe une exigence de fonds propres au titre du pilier 2 (<b>P2R</b>, obligatoire) et une recommandation (<b>P2G</b>).</p>
+<div class="callout c-retenir">
+  <div class="ct">📌 À retenir</div>
+  <p>Stress test = scénario de crise → fonds propres. AQR = qualité des actifs → provisions. SREP = évaluation annuelle globale (4 axes, notes de 1 à 4) qui intègre les stress tests.</p>
+</div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/3</div>
+        <div class="q">Dans l'exercice de 2014, le seuil de CET1 du scénario adverse était de :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">4,5 %</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">5,5 %</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">8 %</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">10,5 %</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> 5,5 % en adverse (9 mois pour combler), 8 % en scénario de référence (6 mois).</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/3</div>
+        <div class="q">Une banque dont les actifs sont surévalués lors de l'AQR doit surtout :</div>
+        <div class="opts">
+          <button class="opt" data-correct="true" onclick="pick(this)">Constituer des provisions</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Changer de superviseur</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Augmenter son LCR</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> L'AQR corrige la valeur des actifs par des provisions ; le stress test, lui, débouche sur des fonds propres.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 3/3</div>
+        <div class="q">Lequel de ces axes ne fait PAS partie du SREP ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Modèle d'activité</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Gouvernance</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Part de marché en France</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Liquidité et financement</button>
+        </div>
+        <div class="feedback" hidden><b>Oui.</b> Les quatre axes : modèle d'activité, gouvernance et gestion des risques, risques sur le capital, liquidité et financement.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l9')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l10',3)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 11 ============ -->
+    <section class="view" data-view="l11">
+      <span class="tag">Leçon 11 · Institutions</span>
+      <h1 class="lesson-title">L'Union bancaire et les autorités européennes</h1>
+      <p class="subtitle">Depuis 2014, la BCE est au cœur de la supervision en zone euro. Autour d'elle : l'ABE, le CERS et le mécanisme de résolution.</p>
+
+<div class="tbl-scroll">
+<table class="tbl wrap">
+  <tr><th></th><th>Microprudentiel</th><th>Macroprudentiel</th></tr>
+  <tr><td>Niveau européen</td><td>BCE (MSU)</td><td>CERS (ESRB)</td></tr>
+  <tr><td>Niveau national (France)</td><td>ACPR</td><td>HCSF</td></tr>
+</table>
+</div>
+<h2>Le Mécanisme de surveillance unique (MSU)</h2>
+<p>Depuis le <b>4 novembre 2014</b> (règlement n° 1024/2013), la BCE supervise directement les banques <b>importantes</b> de la zone euro : environ <b>112 groupes</b> en 2026. Critères principaux : plus de <b>30 milliards d'euros</b> d'actifs, ou plus de <b>20 % du PIB</b> de leur pays (avec au moins 5 milliards d'euros), ou parmi les trois plus grandes banques du pays, ou aide européenne reçue. Les autres sont supervisées par l'autorité nationale (l'<b>ACPR</b> en France), sous l'œil de la BCE.</p>
+<p>Le <b>conseil de surveillance prudentielle</b> de la BCE prépare les décisions, que le conseil des gouverneurs adopte. Il réunit une présidente (<b>Claudia Buch</b> depuis le 1<sup>er</sup> janvier 2024), un vice-président membre du directoire de la BCE, quatre représentants de la BCE et un représentant par autorité nationale.</p>
+<h2>Les autres autorités européennes</h2>
+<div class="tbl-scroll">
+<table class="tbl wrap">
+  <tr><th>Autorité</th><th>Rôle</th></tr>
+  <tr><td>ABE (EBA), Paris</td><td>Normes techniques et règlement uniforme (« single rulebook »), méthode des stress tests, convergence de la supervision dans toute l'Union</td></tr>
+  <tr><td>CERS (ESRB), créé en 2010</td><td>Surveillance macroprudentielle de tout le système financier européen (banques, assurances, gestion d'actifs, banque parallèle, infrastructures) ; avertissements et recommandations ; présidé par la présidente de la BCE</td></tr>
+  <tr><td>AEMF (ESMA) et AEAPP (EIOPA)</td><td>Les deux autres autorités européennes, pour les marchés et pour l'assurance</td></tr>
+</table>
+</div>
+<h2>Résolution : du « bail-out » au « bail-in »</h2>
+<p>Avant la crise, l'État renflouait la banque avec l'argent des contribuables (<b>bail-out</b>). Avec la directive <b>BRRD</b> (2014/59/UE, renflouement interne applicable depuis 2016), ce sont d'abord les <b>actionnaires et créanciers</b> qui absorbent les pertes (<b>bail-in</b>). En zone euro, le <b>Conseil de résolution unique</b> (CRU, opérationnel en 2016) gère les défaillances et le <b>Fonds de résolution unique</b> (FRU), financé par les banques, avec une cible d'au moins <b>1 % des dépôts couverts</b>.</p>
+<div class="callout c-piege">
+  <div class="ct">⚠️ Ne pas confondre</div>
+  <p>Le FRU (résolution d'une banque en difficulté, financé par les banques) n'est pas la garantie des dépôts (100 000 € par déposant et par banque, FGDR en France).</p>
+</div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/3</div>
+        <div class="q">Depuis quand la BCE supervise-t-elle directement les grandes banques de la zone euro ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">1999</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Novembre 2014</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">2008</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">2021</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Le MSU est entré en vigueur le 4 novembre 2014.</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/3</div>
+        <div class="q">Quel seuil d'actifs rend une banque « importante » pour la BCE ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">5 milliards d'euros</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">30 milliards d'euros</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">100 milliards d'euros</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">1 000 milliards d'euros</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> Plus de 30 milliards d'euros d'actifs (ou plus de 20 % du PIB national, entre autres critères).</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 3/3</div>
+        <div class="q">Le « bail-in » signifie que les pertes sont absorbées d'abord par :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">Les contribuables</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Les actionnaires et créanciers de la banque</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">La BCE</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Les déposants garantis</button>
+        </div>
+        <div class="feedback" hidden><b>Oui.</b> Le contribuable est protégé ; les dépôts garantis (jusqu'à 100 000 €) sont exclus du renflouement interne.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l10')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l11',3)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ LEÇON 12 ============ -->
+    <section class="view" data-view="l12">
+      <span class="tag">Leçon 12 · Institutions</span>
+      <h1 class="lesson-title">En France : ACPR, HCSF, AMF, Banque de France</h1>
+      <p class="subtitle">Le gendarme bancaire, l'autorité macroprudentielle, le régulateur des marchés : qui décide quoi en France.</p>
+
+<div class="tbl-scroll">
+<table class="tbl wrap">
+  <tr><th>Autorité</th><th>Création</th><th>Rôle</th></tr>
+  <tr><td>ACPR — Autorité de contrôle prudentiel et de résolution</td><td>2010 (ACP), « R » de résolution en 2013</td><td>Adossée à la Banque de France et présidée par son gouverneur. Agrément et contrôle des banques et des assureurs, résolution, protection de la clientèle. Supervise les banques « moins importantes » et participe au MSU</td></tr>
+  <tr><td>HCSF — Haut Conseil de stabilité financière</td><td>Loi du 26 juillet 2013</td><td>Autorité <b>macroprudentielle</b>, présidée par le ministre de l'Économie. Fixe le coussin contracyclique, encadre le crédit immobilier</td></tr>
+  <tr><td>AMF — Autorité des marchés financiers</td><td>2003</td><td>Régule les marchés financiers, protège les investisseurs, agrée les sociétés de gestion</td></tr>
+  <tr><td>Banque de France</td><td>1800</td><td>Membre de l'Eurosystème et du Comité de Bâle ; surveillance de la stabilité financière ; abrite l'ACPR</td></tr>
+</table>
+</div>
+<h2>Le HCSF en pratique</h2>
+<ul style="margin:8px 0 14px 22px"><li><b>Coussin contracyclique</b> : décidé chaque trimestre en regardant notamment l'écart du crédit à sa tendance (<i>credit gap</i>) : 1 % depuis le 2 janvier 2024, maintenu en 2026.</li><li><b>Crédit immobilier</b> (décision D-HCSF-2021-7, contraignante depuis le 1<sup>er</sup> janvier 2022) : taux d'effort de <b>35 %</b> au plus, assurance comprise ; durée de <b>25 ans</b> au plus (27 ans avec un différé) ; 20 % de la production peut y déroger.</li><li><b>Coussin pour le risque systémique sectoriel</b> (2023) : 3 % sur les expositions des banques systémiques aux grandes entreprises françaises très endettées.</li></ul>
+<h2>Synthèse : qui décide quoi ?</h2>
+<div class="tbl-scroll">
+<table class="tbl wrap">
+  <tr><th>Décision</th><th>Qui ?</th><th>Base</th></tr>
+  <tr><td>Taux directeurs</td><td>BCE (conseil des gouverneurs)</td><td>Traité sur le fonctionnement de l'UE</td></tr>
+  <tr><td>Supervision des grandes banques</td><td>BCE (MSU)</td><td>Règlement MSU (2013)</td></tr>
+  <tr><td>Supervision des autres banques françaises</td><td>ACPR</td><td>Code monétaire et financier</td></tr>
+  <tr><td>Coussin contracyclique, normes de crédit immobilier</td><td>HCSF</td><td>CRD et loi de 2013</td></tr>
+  <tr><td>Normes techniques de régulation</td><td>ABE</td><td>CRD et CRR</td></tr>
+  <tr><td>Risque systémique européen</td><td>CERS</td><td>Règlement de 2010</td></tr>
+  <tr><td>Résolution</td><td>CRU et ACPR</td><td>Directive BRRD, règlement MRU</td></tr>
+  <tr><td>Standards (Bâle)</td><td>Comité de Bâle (BRI)</td><td>Recommandations, transposées en droit européen</td></tr>
+</table>
+</div>
+<div class="callout c-retenir">
+  <div class="ct">📌 À retenir pour le partiel</div>
+  <p>La régulation est hiérarchisée : Comité de Bâle (recommandations) → Union européenne (CRD, CRR) → autorités nationales. En France : l'ACPR est le gendarme bancaire, le HCSF fait le macroprudentiel, l'AMF surveille les marchés. La BCE supervise les grandes banques depuis 2014.</p>
+</div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 1/3</div>
+        <div class="q">Quelle autorité française est macroprudentielle ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">L'ACPR</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">Le HCSF</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">L'AMF</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Le FGDR</button>
+        </div>
+        <div class="feedback" hidden><b>Exact.</b> Le HCSF ; l'ACPR est microprudentielle (et en charge de la résolution).</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 2/3</div>
+        <div class="q">La norme du HCSF limite le taux d'effort d'un crédit immobilier à :</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">33 %</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">35 % assurance comprise</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">40 %</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">50 %</button>
+        </div>
+        <div class="feedback" hidden><b>Bien vu.</b> 35 % assurance comprise, sur 25 ans au plus (27 ans avec différé).</div>
+      </div>
+
+      <div class="quiz" data-q>
+        <div class="qhead">Mini-quiz 3/3</div>
+        <div class="q">À quelle institution l'ACPR est-elle adossée ?</div>
+        <div class="opts">
+          <button class="opt" data-correct="false" onclick="pick(this)">À l'AMF</button>
+          <button class="opt" data-correct="true" onclick="pick(this)">À la Banque de France</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">Au ministère de l'Économie</button>
+          <button class="opt" data-correct="false" onclick="pick(this)">À la BCE</button>
+        </div>
+        <div class="feedback" hidden><b>Oui.</b> Elle est adossée à la Banque de France et présidée par son gouverneur.</div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l11')">← Leçon précédente</button>
+        <button class="btn primary" onclick="validate('l12',3)">Valider et continuer →</button>
+      </div>
+    </section>
+
+    <!-- ============ QUESTIONS RÉDIGÉES ============ -->
+    <section class="view" data-view="redac">
+      <span class="tag">S'entraîner</span>
+      <h1 class="lesson-title">Questions rédigées, corrigées automatiquement</h1>
+      <p class="subtitle">Rédige comme à l'examen, puis demande la correction : le site repère les notions-clés, te dit ce qui manque et affiche une réponse modèle.</p>
+
+      <div class="intro-card">
+        <h2>✍️ Comment ça marche</h2>
+        <p>Les questions ont été <strong>rédigées par le site</strong> à partir du cours, et chaque réponse modèle reprend ce que dit le cours (chiffres vérifiés). La correction cherche des <strong>mots-clés</strong> : elle vérifie que les notions sont là, pas la qualité de ta rédaction. Relis toujours la réponse modèle.</p>
+      </div>
+
+      <div id="redacList"></div>
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l12')">← Dernière leçon</button>
+        <button class="btn plum" onclick="go('annales')">Six applications corrigées →</button>
+      </div>
+    </section>
+
+    <!-- ============ APPLICATIONS ============ -->
+    <section class="view" data-view="annales">
+      <span class="tag">Applications</span>
+      <h1 class="lesson-title">Six applications corrigées</h1>
+      <p class="subtitle">Cherche au brouillon avant d'ouvrir le corrigé.</p>
+
+      <div class="intro-card">
+        <h2>📐 D'où viennent ces cas ?</h2>
+        <p>Les situations sont <strong>inventées par le site</strong> pour faire manipuler les ratios du cours. Tous les calculs ont été <strong>vérifiés par ordinateur</strong> ; les seuils sont ceux des textes européens en vigueur.</p>
+      </div>
+
+      <div class="annale">
+        <div class="an-tag">Cas 1 · Bâle I · calcul</div>
+        <h3>Le ratio Cooke de la Banque du Ponant</h3>
+        <div class="enonce">
+          Bilan simplifié (en M€) : 200 d'obligations d'États de l'OCDE, 100 de prêts à d'autres banques de l'OCDE, 300 de prêts hypothécaires résidentiels, 400 de crédits aux entreprises. Fonds propres : 50 M€.
+          <ul class="qlist"><li>Calculez les engagements pondérés.</li><li>Calculez le ratio Cooke (2 décimales). La banque est-elle conforme ?</li><li>Quel montant minimal de fonds propres lui faut-il ?</li></ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé — calcul vérifié</div>
+          <div class="step"><div class="sn">1</div><div class="sc">Pondérations : 200 × 0 % + 100 × 20 % + 300 × 50 % + 400 × 100 % = 0 + 20 + 150 + 400 = <b>570 M€</b>.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc">Ratio = 50 ÷ 570 = <b>8,77 %</b> ≥ 8 % : conforme.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc">Minimum = 8 % × 570 = <b>45,6 M€</b> (dont 4 % × 570 = 22,8 M€ de Tier 1). Marge : 4,4 M€.</div></div>
+        </div>
+      </div>
+
+      <div class="annale">
+        <div class="an-tag">Cas 2 · Bâle III · calcul</div>
+        <h3>Assez de noyau dur ?</h3>
+        <div class="enonce">
+          Une banque française a 1 000 M€ d'actifs pondérés. Fonds propres : 60 M€ de CET1, 15 M€ d'autres Tier 1, 25 M€ de Tier 2. On retient le coussin de conservation (2,5 %) et le coussin contracyclique français (1 %), tous deux en CET1.
+          <ul class="qlist"><li>Quel est son ratio CET1 ?</li><li>Quelle exigence de CET1 doit-elle respecter, coussins compris ?</li><li>Combien de CET1 lui manque-t-il ?</li></ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé — calcul vérifié</div>
+          <div class="step"><div class="sn">1</div><div class="sc">CET1 = 60 ÷ 1 000 = <b>6 %</b> : au-dessus du minimum de 4,5 %…</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc">…mais l'exigence avec coussins est 4,5 % + 2,5 % + 1 % = <b>8 %</b> de CET1, soit 80 M€.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc">Manque : 80 − 60 = <b>20 M€</b> de CET1. Tant qu'elle n'a pas reconstitué ses coussins, ses distributions (dividendes, bonus) sont limitées. Ratio total : (60 + 15 + 25) ÷ 1 000 = 10 %.</div></div>
+        </div>
+      </div>
+
+      <div class="annale">
+        <div class="an-tag">Cas 3 · Levier · calcul</div>
+        <h3>Un beau ratio de solvabilité, mais…</h3>
+        <div class="enonce">
+          Une banque affiche un ratio de solvabilité confortable grâce à des actifs très peu pondérés. Son Tier 1 est de 75 M€ ; son exposition totale (bilan et hors bilan, sans pondération) de 2 800 M€.
+          <ul class="qlist"><li>Calculez son ratio de levier (2 décimales).</li><li>Respecte-t-elle l'exigence ? Sinon, combien de Tier 1 lui manque-t-il ?</li></ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé — calcul vérifié</div>
+          <div class="step"><div class="sn">1</div><div class="sc">Levier = 75 ÷ 2 800 = <b>2,68 %</b>.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc">Minimum 3 % : il faudrait 3 % × 2 800 = 84 M€. Manque : <b>9 M€</b> de Tier 1 (ou réduire l'exposition). C'est exactement le rôle du levier : un filet qui ne dépend pas des pondérations.</div></div>
+        </div>
+      </div>
+
+      <div class="annale">
+        <div class="an-tag">Cas 4 · LCR · calcul</div>
+        <h3>Une ruée sur les dépôts</h3>
+        <div class="enonce">
+          Une banque détient 900 M€ d'actifs liquides de haute qualité. Sur 30 jours de stress, on prévoit 1 200 M€ de sorties et 400 M€ d'entrées.
+          <ul class="qlist"><li>Calculez son LCR.</li><li>Une rumeur ajoute 300 M€ de retraits. Nouveau LCR (2 décimales) ?</li><li>Combien d'actifs liquides lui faudrait-il alors ?</li></ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé — calcul vérifié</div>
+          <div class="step"><div class="sn">1</div><div class="sc">Sorties nettes = 1 200 − 400 = 800 M€ ; LCR = 900 ÷ 800 = <b>112,5 %</b>.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc">Sorties nettes = 1 500 − 400 = 1 100 M€ ; LCR = 900 ÷ 1 100 = <b>81,82 %</b> &lt; 100 %.</div></div>
+          <div class="step"><div class="sn">3</div><div class="sc">Il faudrait 1 100 M€ d'actifs liquides, soit <b>200 M€</b> de plus. (Les entrées sont plafonnées à 75 % des sorties : 400 reste sous ce plafond.)</div></div>
+        </div>
+      </div>
+
+      <div class="annale">
+        <div class="an-tag">Cas 5 · NSFR · calcul</div>
+        <h3>Des crédits longs financés à court terme</h3>
+        <div class="enonce">
+          Une banque dispose de 4 600 M€ de financement stable (fonds propres, dépôts stables, dettes à plus d'un an). Ses actifs et son hors bilan exigent 5 000 M€ de financement stable.
+          <ul class="qlist"><li>Calculez son NSFR.</li><li>Comment le remonter ?</li></ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé — calcul vérifié</div>
+          <div class="step"><div class="sn">1</div><div class="sc">NSFR = 4 600 ÷ 5 000 = <b>92 %</b> &lt; 100 % : il manque 400 M€ de financement stable.</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc">Allonger ses ressources (émettre de la dette à plus d'un an, collecter des dépôts stables, renforcer les fonds propres) ou réduire les actifs longs et peu liquides. C'est la leçon de Northern Rock.</div></div>
+        </div>
+      </div>
+
+      <div class="annale">
+        <div class="an-tag">Cas 6 · Stress test 2014 · calcul</div>
+        <h3>Combler l'insuffisance</h3>
+        <div class="enonce">
+          Lors de l'exercice de 2014, une banque a 10 000 M€ d'actifs pondérés. Son ratio CET1 ressort à 7,6 % dans le scénario de référence et à 5,2 % dans le scénario adverse.
+          <ul class="qlist"><li>Quels sont les seuils et les délais ?</li><li>Calculez les insuffisances de chaque scénario.</li></ul>
+        </div>
+        <button class="btn primary" style="margin-top:15px" onclick="toggleCorrige(this)">Voir le corrigé</button>
+        <div class="corrige">
+          <div class="corrige-head">✅ Corrigé — calcul vérifié</div>
+          <div class="step"><div class="sn">1</div><div class="sc">Seuils : 8 % (référence, à combler en 6 mois) et 5,5 % (adverse, à combler en 9 mois).</div></div>
+          <div class="step"><div class="sn">2</div><div class="sc">Référence : (8 % − 7,6 %) × 10 000 = <b>40 M€</b> en 6 mois. Adverse : (5,5 % − 5,2 %) × 10 000 = <b>30 M€</b> en 9 mois. La banque présente un plan de recapitalisation.</div></div>
+        </div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('redac')">← Questions rédigées</button>
+        <button class="btn plum" onclick="go('test')">Passer le test final →</button>
+      </div>
+    </section>
+
+    <!-- ============ MÉMO ET POINTS À VÉRIFIER ============ -->
+    <section class="view" data-view="ecarts">
+      <span class="tag">À savoir</span>
+      <h1 class="lesson-title">Mémo des chiffres et points à vérifier</h1>
+      <p class="subtitle">Les chiffres à connaître, les corrections apportées au document du cours après vérification sur les sources officielles, et ce qui reste à faire préciser. Si ton enseignant dit autre chose, c'est lui qui fait foi.</p>
+
+<h2>Les chiffres à connaître</h2>
+<div class="tbl-scroll">
+<table class="tbl wrap">
+  <tr><th>Élément</th><th>Valeur à retenir</th></tr>
+  <tr><td>Garantie des dépôts</td><td>100 000 € par déposant et par banque (FGDR)</td></tr>
+  <tr><td>Ratio Cooke (Bâle I, 1988)</td><td>≥ 8 % dont 4 % de Tier 1 ; pondérations 0 / 20 / 50 / 100 %</td></tr>
+  <tr><td>Bâle III</td><td>CET1 4,5 % + autres Tier 1 1,5 % + Tier 2 2 % = 8 % ; + 2,5 % de conservation = 10,5 %</td></tr>
+  <tr><td>Levier</td><td>Tier 1 ÷ exposition totale ≥ 3 % (Union : depuis le 28 juin 2021)</td></tr>
+  <tr><td>LCR / NSFR</td><td>≥ 100 % ; 30 jours / un an (Union : 2018 / juin 2021)</td></tr>
+  <tr><td>Coussins</td><td>Contracyclique 0 à 2,5 % (France : 1 % depuis le 2 janvier 2024) ; G-SIB 1 à 3,5 % ; risque systémique jusqu'à 3 % (plus sous conditions)</td></tr>
+  <tr><td>Stress test 2014</td><td>CET1 8 % (référence, 6 mois) ; 5,5 % (adverse, 9 mois)</td></tr>
+  <tr><td>Comité de Bâle / BRI</td><td>1974 ; 45 institutions de 28 juridictions / 63 banques centrales</td></tr>
+  <tr><td>MSU</td><td>4 novembre 2014 ; > 30 Md€ d'actifs ou > 20 % du PIB ; environ 112 groupes en 2026</td></tr>
+  <tr><td>HCSF, crédit immobilier</td><td>35 % assurance comprise ; 25 ans (27 avec différé) ; 20 % de dérogations</td></tr>
+  <tr><td>Dates</td><td>Glass-Steagall 1933 ; DIDMCA 1980 ; loi bancaire 1984 ; fin de l'encadrement du crédit 1987 ; abrogation 1999 ; Bâle II 2004 ; Bâle III 2010 ; CRD IV 17 juillet 2013 ; loi bancaire 26 juillet 2013 ; finalisation 2017 ; CRR3 2025</td></tr>
+</table>
+</div>
+<h2>Corrections apportées au document</h2>
+      <div class="callout c-retenir">
+        <div class="ct">✅ Vérifié sur les sources officielles (novembre 2026)</div>
+        <p>Banque de France, ACPR, HCSF (economie.gouv.fr), Légifrance, EUR-Lex, BCE, BRI, FSB. Corrigé dans tout le cours :</p>
+        <ul style="margin:8px 0 0 20px">
+          <li><b>1933</b> : la séparation des banques vient du <b>Banking Act</b> dit Glass-Steagall (juin 1933), pas de l'Emergency Banking Act (mars 1933).</li>
+          <li><b>Ratio Cooke</b> : accord de Bâle de <b>1988</b> (le cours dit 1989, date de la directive européenne sur la solvabilité).</li>
+          <li><b>Tier 1</b> : le goodwill est <b>déduit</b> des fonds propres, il ne s'y ajoute pas ; le <b>Tier 2</b> s'ajoute au Tier 1 (il ne le contient pas).</li>
+          <li><b>BRI</b> : <b>63</b> banques centrales membres (le cours dit 60).</li>
+          <li><b>CRD IV</b> : entrée en vigueur le 17 juillet 2013, mais application au <b>1<sup>er</sup> janvier 2014</b> ; le règlement CRR s'applique directement, seule la directive est transposée.</li>
+          <li><b>NSFR</b> : le dénominateur (financement stable exigé) pèse surtout sur les actifs longs et peu liquides, pas sur « le cash et les titres à moins d'un an ».</li>
+          <li><b>LCR</b> : 100 % exigé dans l'Union dès le 1<sup>er</sup> janvier 2018 (le calendrier de Bâle allait jusqu'en 2019).</li>
+          <li><b>Coussin pour le risque systémique</b> : le cours indique « 1 % depuis le 1<sup>er</sup> octobre 2016 en France » ; aucune décision du HCSF en ce sens n'a été retrouvée. Le HCSF a en revanche instauré en <b>2023</b> un coussin <b>sectoriel de 3 %</b> (expositions des banques systémiques aux grandes entreprises françaises très endettées). Plafond européen : 3 % sans accord, davantage sous conditions (CRD V), et non « 1 à 5 % ».</li>
+          <li><b>Coussin contracyclique</b> : <b>1 % depuis le 2 janvier 2024</b>, maintenu par le HCSF en 2026.</li>
+          <li><b>Banques systémiques</b> : liste FSB de novembre 2025 — BNP Paribas et Crédit Agricole à 1,5 %, Société Générale et BPCE à 1 %. Les surcharges « JP Morgan 2,5 %, Crédit Agricole 1,5 % » des notes datent d'une liste antérieure.</li>
+          <li><b>MSU</b> : environ <b>112</b> groupes supervisés directement en 2026 (le cours cite 130, puis 112).</li>
+          <li><b>Résolution</b> : le renflouement interne (bail-in) de la directive BRRD (2014) s'applique depuis le <b>1<sup>er</sup> janvier 2016</b> ; le CRU est opérationnel depuis 2016.</li>
+        </ul>
+      </div>
+
+<h2>Points encore à faire préciser</h2>
+<div class="tbl-scroll">
+<table class="tbl wrap">
+  <tr><th>Sujet</th><th>Ce que dit le cours</th><th>Pourquoi le vérifier</th></tr>
+  <tr><td>Chapitre 3</td><td>« ACPR pas fait » ; partie sur l'ACPR « à compléter »</td><td>Le chapitre sur les institutions est incomplet dans le document : les leçons 11 et 12 reprennent la fiche de synthèse et les notes complémentaires. À confirmer avec le cours oral.</td></tr>
+  <tr><td>Stress test 2014</td><td>Ajustement des provisions : 5,6 Md€ (France) contre 6,7 Md€ (Allemagne)</td><td>Chiffres non retrouvés dans le rapport de la BCE : ne pas les citer sans les avoir vérifiés.</td></tr>
+  <tr><td>Banques systémiques</td><td>« Coussin entre 1 et 2,5 % » pour les banques systémiques</td><td>Il s'agit sans doute du coussin des autres établissements systémiques (A-EIS, nationaux) ; pour les G-SIB, c'est 1 à 3,5 %.</td></tr>
+  <tr><td>Décision SREP</td><td>« Elle concerne 2 piliers » (liste vide)</td><td>Probablement l'exigence (P2R) et la recommandation (P2G) au titre du pilier 2.</td></tr>
+  <tr><td>Partiel</td><td>10 juin 2027 (date provisoire)</td><td>À confirmer.</td></tr>
+</table>
+</div>
+      <div class="lesson-nav">
+        <button class="btn" onclick="go('l1')">← Revoir le cours</button>
+        <button class="btn plum" onclick="go('test')">Passer le test final →</button>
+      </div>
+    </section>
+
+    <!-- ============ TEST FINAL ============ -->
+    <section class="view" data-view="test">
+      <span class="tag">Évaluation</span>
+      <h1 class="lesson-title">Test final adaptatif</h1>
+      <p class="subtitle">Quarante-deux questions rédigées par le site à partir du cours, dont cinq calculs vérifiés.</p>
+
+      <div class="intro-card">
+        <h2>🎯 Comment le lire</h2>
+        <p>Chaque erreur rouvre la leçon correspondante. Le bilan par chapitre, en bas, te dit où réviser en priorité. Pour les calculs, arrondis comme demandé dans la question.</p>
+      </div>
+
+      <div id="testQuestions"></div>
+
+      <div class="lesson-nav" id="testSubmitRow">
+        <button class="btn" onclick="go('l1')">← Revoir le cours</button>
+        <button class="btn plum" onclick="gradeTest()">Valider mes réponses ✓</button>
+      </div>
+
+      <div class="result" id="testResult">
+        <div class="score-lab">Ton score</div>
+        <div class="score-big" id="scoreBig">0</div>
+        <div class="msg" id="scoreMsg"></div>
+        <div class="chapbars" id="chapBars"></div>
+        <div style="margin-top:28px"><button class="btn plum" onclick="resetTest()">↻ Reprendre le test</button></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<button class="float-retry" id="floatRetry" onclick="resetTest()">↻ Reprendre le test</button>
+<button class="print-fab" onclick="imprimerFiche()" title="Imprimer cette leçon en fiche">🖨️ Fiche</button>
+<div class="xp-pop" id="xpPop"></div>
+
+<script src="lb.js"></script>
+<script src="progress.js"></script>
+<script>
+const SUBJECT_KEY = "Organismes de tutelle";
+
+/* ===================== ÉTAT ===================== */
+const LESSONS = [
+  {id:"l1", t:"Bilan bancaire et histoire", ch:1},
+  {id:"l2", t:"Régulation : définitions", ch:2},
+  {id:"l3", t:"Crises et instabilité", ch:2},
+  {id:"l4", t:"Risque systémique, TBTF", ch:2},
+  {id:"l5", t:"Micro et macroprudentiel", ch:2},
+  {id:"l6", t:"Loi bancaire de 2013", ch:3},
+  {id:"l7", t:"Comité de Bâle et Bâle I", ch:3},
+  {id:"l8", t:"Bâle II et Bâle III", ch:3},
+  {id:"l9", t:"Liquidité : LCR et NSFR", ch:3},
+  {id:"l10", t:"Stress tests, AQR, SREP", ch:3},
+  {id:"l11", t:"Union bancaire européenne", ch:4},
+  {id:"l12", t:"ACPR, HCSF : qui fait quoi", ch:4}
+];
+const SAVE = (window.P ? P.etat() : {done:{},xp:0,last:null});
+const state = { xp: SAVE.xp||0, done: Object.assign({}, SAVE.done), view:'l1' };
+
+/* ===================== NAVIGATION ===================== */
+/* ===================== NAVIGATION ===================== */
+function buildNav(){
+  [...new Set(LESSONS.map(l=>l.ch))].forEach(ch=>{
+    const nav = document.getElementById('navList'+ch);
+    if(!nav) return;
+    nav.innerHTML = '';
+    LESSONS.forEach((l,i)=>{
+      if(l.ch!==ch) return;
+      const d = document.createElement('div');
+      d.className = 'nav-item' + (state.done[l.id]?' done':'');
+      d.dataset.view = l.id;
+      d.onclick = ()=>go(l.id);
+      d.innerHTML = '<span class="num">'+(state.done[l.id]?'✓':(i+1))+'</span><span class="lab">'+l.t+'</span>';
+      nav.appendChild(d);
+    });
+  });
+  highlightNav();
+}
+function highlightNav(){
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.dataset.view===state.view));
+}
+function go(view){
+  state.view = view;
+  if(window.P && /^l\d+$/.test(view)) P.derniereLecon(view);
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active', v.dataset.view===view));
+  highlightNav();
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(window.innerWidth<=880) closeSidebar();
+}
+function imprimerFiche(){ window.print(); }
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+/* ===================== XP ===================== */
+function addXp(n){
+  state.xp += n;
+  if(window.P) P.ajouterXp(n);
+  document.getElementById('xpVal').textContent = state.xp;
+  popXp('+'+n+' XP');
+}
+function popXp(txt){
+  const p = document.getElementById('xpPop');
+  p.textContent = '★ '+txt;
+  p.classList.add('show');
+  clearTimeout(p._t);
+  p._t = setTimeout(()=>p.classList.remove('show'),1400);
+}
+function updateProgress(){
+  const pct = Math.round(Object.keys(state.done).length/LESSONS.length*100);
+  document.getElementById('progFill').style.width = pct+'%';
+  document.getElementById('progPct').textContent = pct+' %';
+}
+
+/* ===================== MINI-QUIZ ===================== */
+function pick(btn){
+  const quiz = btn.closest('.quiz');
+  if(quiz.classList.contains('answered')) return;
+  quiz.classList.add('answered');
+  const correct = btn.dataset.correct === 'true';
+  quiz.querySelectorAll('.opt').forEach(o=>{
+    o.disabled = true;
+    if(o.dataset.correct === 'true') o.classList.add('right');
+  });
+  if(!correct) btn.classList.add('wrong');
+  const fb = quiz.querySelector('.feedback');
+  if(fb) fb.hidden = false;
+  if(window.P){
+    const sec = quiz.closest('.view');
+    const lec = sec ? sec.dataset.view : '?';
+    const rang = sec ? [...sec.querySelectorAll('.quiz')].indexOf(quiz) : 0;
+    P.noterReponse('quiz:'+lec+':'+rang, correct, 'Leçon '+lec.replace('l',''));
+  }
+  if(correct) addXp(10);
+}
+function validate(id, quizCount){
+  const sec = document.querySelector('.view[data-view="'+id+'"]');
+  const answered = sec.querySelectorAll('.quiz.answered').length;
+  if(answered < quizCount){
+    popXp("Réponds aux "+quizCount+" quiz d'abord");
+    sec.querySelectorAll('.quiz:not(.answered)').forEach(q=>{ q.style.boxShadow='0 0 0 2px var(--plum)'; setTimeout(()=>q.style.boxShadow='',1200); });
+    return;
+  }
+  if(!state.done[id]){ state.done[id]=true; if(window.P) P.marquerLecon(id); addXp(50); buildNav(); updateProgress(); }
+  const idx = LESSONS.findIndex(l=>l.id===id);
+  const next = LESSONS[idx+1];
+  if(next) go(next.id); else go('redac');
+}
+
+/* ===================== QUESTIONS RÉDIGÉES =====================
+   Chaque critère est une notion attendue ; `k` liste les façons de
+   l'écrire (comparées sans accents ni majuscules). Un critère est
+   rempli dès qu'une de ses formes apparaît dans la réponse. */
+const REDAC = [
+ {
+  "lesson": "l1",
+  "q": "Présentez le bilan d'une banque et expliquez pourquoi les organismes de tutelle le surveillent.",
+  "crit": [
+   {
+    "t": "Actif = emplois (crédits, titres, réserves)",
+    "k": [
+     "emploi",
+     "actif"
+    ]
+   },
+   {
+    "t": "Passif = ressources (dépôts, dettes, fonds propres)",
+    "k": [
+     "ressource",
+     "passif"
+    ]
+   },
+   {
+    "t": "Les crédits font les dépôts",
+    "k": [
+     "credits font les depots",
+     "creation monetaire",
+     "cree un depot"
+    ]
+   },
+   {
+    "t": "Provisions contre le risque de crédit",
+    "k": [
+     "provision"
+    ]
+   },
+   {
+    "t": "Fonds propres pour absorber les pertes",
+    "k": [
+     "fonds propres"
+    ]
+   },
+   {
+    "t": "Garantie des dépôts 100 000 €",
+    "k": [
+     "100 000",
+     "100000"
+    ]
+   }
+  ],
+  "modele": "Le bilan d'une banque oppose l'<b>actif</b>, ses <b>emplois</b> (crédits aux ménages et aux entreprises, titres détenus, réserves et trésorerie, immobilisations), et le <b>passif</b>, ses <b>ressources</b> (dépôts de la clientèle, dettes de marché, titres émis, fonds propres, provisions). Comme <b>les crédits font les dépôts</b>, la capacité de création monétaire de la banque est quasi illimitée : il faut donc la surveiller. La tutelle vérifie la qualité des crédits et peut exiger des <b>provisions</b> contre le risque de crédit ; elle exige des <b>fonds propres</b> suffisants pour absorber les pertes, davantage pour les banques les plus connectées. Elle protège enfin les déposants, dont les avoirs sont garantis jusqu'à <b>100 000 €</b> par banque. Le modèle évolue : de plus en plus de titres à l'actif comme au passif, d'où une surveillance accrue de la liquidité et de la qualité des titres."
+ },
+ {
+  "lesson": "l2",
+  "q": "Distinguez régulation, supervision et réglementation bancaires, puis présentez les objectifs de la régulation.",
+  "crit": [
+   {
+    "t": "Régulation = réglementation + supervision",
+    "k": [
+     "reglementation + supervision",
+     "reglementation et la supervision",
+     "reglementation et supervision"
+    ]
+   },
+   {
+    "t": "Réglementation : règles légales imposées",
+    "k": [
+     "legale",
+     "reglementaire"
+    ]
+   },
+   {
+    "t": "Supervision : surveillance, le gendarme",
+    "k": [
+     "surveill",
+     "gendarme"
+    ]
+   },
+   {
+    "t": "Stabilité financière, risque systémique",
+    "k": [
+     "stabilite",
+     "systemique"
+    ]
+   },
+   {
+    "t": "Protection du consommateur",
+    "k": [
+     "consommateur",
+     "deposant"
+    ]
+   },
+   {
+    "t": "Trois piliers : micro, macro, prêteur en dernier ressort",
+    "k": [
+     "dernier ressort"
+    ]
+   }
+  ],
+  "modele": "La <b>réglementation</b> bancaire est l'ensemble des mesures <b>légales</b> et réglementaires imposées aux banques par les autorités nationales et internationales : c'est le code de la route. La <b>supervision</b> est la <b>surveillance</b> exercée par les autorités sur les banques de leur juridiction et l'application des règles : c'est le <b>gendarme</b>. La régulation réunit les deux : <b>régulation = réglementation + supervision</b> ; pour Mishkin, c'est l'ensemble des règles, incitations et pratiques publiques visant la stabilité financière. Son objectif premier est la <b>stabilité</b> financière, c'est-à-dire, pour Allen et Gale, prévenir le risque <b>systémique</b>. Objectifs secondaires : protection du <b>consommateur</b>, concurrence, lutte contre le blanchiment. Elle repose sur trois piliers : la politique microprudentielle (ratios de capital), la politique macroprudentielle (LTI, coussins contracycliques) et le prêteur en <b>dernier ressort</b> (injections de liquidités)."
+ },
+ {
+  "lesson": "l3",
+  "q": "Qu'est-ce qu'une crise bancaire ? Distinguez crise de liquidité et crise de solvabilité.",
+  "crit": [
+   {
+    "t": "Bordo 1985 : ruées, suspension de convertibilité",
+    "k": [
+     "convertibilite",
+     "ruee",
+     "run"
+    ]
+   },
+   {
+    "t": "Bordo 2001 : érosion du capital agrégé",
+    "k": [
+     "erosion",
+     "capital agrege",
+     "stress financier"
+    ]
+   },
+   {
+    "t": "Contagion, crise systémique",
+    "k": [
+     "contagion",
+     "systemique"
+    ]
+   },
+   {
+    "t": "Liquidité : retraits massifs au passif",
+    "k": [
+     "retrait",
+     "liquidite"
+    ]
+   },
+   {
+    "t": "Solvabilité : pertes à l'actif, fonds propres",
+    "k": [
+     "solvab",
+     "fonds propres"
+    ]
+   },
+   {
+    "t": "Intervention publique / banque centrale",
+    "k": [
+     "gouvernement",
+     "etat",
+     "banque centrale"
+    ]
+   }
+  ],
+  "modele": "Pour Bordo (1985), une crise bancaire est une situation où les <b>ruées</b> et faillites conduisent les banques à suspendre la <b>convertibilité</b> de leur passif ou forcent le gouvernement à intervenir à grande échelle ; pour Bordo (2001), c'est une période de <b>stress financier</b> entraînant une <b>érosion</b> du <b>capital agrégé</b> du système bancaire. Elle se caractérise par des ruées, des fermetures temporaires, des défauts de crédit, la détérioration des bilans, la <b>contagion</b> à tout le secteur, une crise <b>systémique</b> et l'intervention massive du <b>gouvernement</b>. La crise de <b>liquidité</b> frappe le passif : des <b>retraits</b> massifs obligent la banque à emprunter ou à vendre ses titres. La crise de <b>solvabilité</b> frappe l'actif : des pertes réduisent les <b>fonds propres</b>, jusqu'à les rendre négatifs. La première peut provoquer la seconde : les ventes forcées font chuter les prix, et la perte s'impute sur les fonds propres, d'où le rôle de la <b>banque centrale</b>."
+ },
+ {
+  "lesson": "l4",
+  "q": "Définissez le risque systémique et expliquez le problème posé par les banques « too big to fail ».",
+  "crit": [
+   {
+    "t": "Définition BCE : défaillance qui empêche les autres",
+    "k": [
+     "empeche",
+     "incapacite",
+     "contagion"
+    ]
+   },
+   {
+    "t": "Transmission à l'économie réelle",
+    "k": [
+     "economie reelle",
+     "recession",
+     "credit crunch"
+    ]
+   },
+   {
+    "t": "Lehman Brothers 2008",
+    "k": [
+     "lehman"
+    ]
+   },
+   {
+    "t": "TBTF : renflouée par les pouvoirs publics",
+    "k": [
+     "renflou",
+     "sauvee",
+     "pouvoirs publics"
+    ]
+   },
+   {
+    "t": "Aléa moral",
+    "k": [
+     "alea moral",
+     "plus de risque"
+    ]
+   },
+   {
+    "t": "G-SIB : surcharge de 1 à 3,5 %",
+    "k": [
+     "3,5",
+     "g-sib",
+     "gsib",
+     "systemiques"
+    ]
+   }
+  ],
+  "modele": "Pour la BCE, le risque systémique est le risque que l'<b>incapacité</b> d'un intervenant à honorer ses obligations <b>empêche</b> les autres d'honorer les leurs, avec des effets de <b>contagion</b> et des problèmes de liquidité ou de crédit qui menacent la stabilité du système. Le choc passe d'un segment de marché au système bancaire, puis au crédit (<b>credit crunch</b>) et à l'<b>économie réelle</b> (<b>récession</b>) : ce fut le cas avec la faillite de <b>Lehman</b> Brothers en 2008. Une banque <b>too big to fail</b> est si importante que sa faillite serait désastreuse : elle est <b>renflouée</b> par les <b>pouvoirs publics</b>. D'où un <b>aléa moral</b> : se sachant protégée, elle prend <b>plus de risques</b>. Réponses : limiter la taille, entretenir une ambiguïté constructive, et imposer aux banques systémiques (<b>G-SIB</b>, liste annuelle du FSB) une surcharge de fonds propres de 1 % à <b>3,5 %</b>."
+ },
+ {
+  "lesson": "l5",
+  "q": "Comparez les politiques microprudentielle et macroprudentielle.",
+  "crit": [
+   {
+    "t": "Micro : banque individuelle",
+    "k": [
+     "individuel",
+     "chaque banque",
+     "banque isolee"
+    ]
+   },
+   {
+    "t": "Macro : système dans son ensemble",
+    "k": [
+     "ensemble",
+     "systeme"
+    ]
+   },
+   {
+    "t": "Risque max : faillite / risque systémique",
+    "k": [
+     "faillite"
+    ]
+   },
+   {
+    "t": "Macro après 2008 / 2013",
+    "k": [
+     "2008",
+     "2013"
+    ]
+   },
+   {
+    "t": "Procyclicité",
+    "k": [
+     "procycl"
+    ]
+   },
+   {
+    "t": "Instruments : coussin contracyclique, G-SIB, risque systémique",
+    "k": [
+     "contracycl",
+     "coussin"
+    ]
+   }
+  ],
+  "modele": "La politique <b>microprudentielle</b> s'intéresse à <b>chaque banque</b> prise <b>individuellement</b> : superviser, limiter ses difficultés, protéger ses clients ; son risque maximal est la <b>faillite</b> d'une banque. Elle voit la crise comme un choc exogène sur une banque isolée (ruée à la Diamond et Dybvig), avec un risque systémique quasi nul ; son outil est le ratio de fonds propres. La politique <b>macroprudentielle</b>, apparue après <b>2008</b> et inscrite dans la régulation en <b>2013</b>, regarde le <b>système</b> dans son <b>ensemble</b> : elle veut éviter la <b>procyclicité</b>, la contagion et le coût pour l'économie réelle ; son risque maximal est le risque systémique. Elle voit la crise comme endogène (comportements moutonniers, myopie au désastre à la Minsky, cycle financier). Ses instruments : le <b>coussin contracyclique</b> (0 à 2,5 %), la surcharge des banques systémiques (1 à 3,5 %) et le coussin pour le risque systémique."
+ },
+ {
+  "lesson": "l6",
+  "q": "Présentez la loi bancaire française de 2013 et sa mesure de séparation.",
+  "crit": [
+   {
+    "t": "26 juillet 2013, séparation et régulation",
+    "k": [
+     "2013"
+    ]
+   },
+   {
+    "t": "Banque universelle maintenue",
+    "k": [
+     "universelle"
+    ]
+   },
+   {
+    "t": "Filiale ad hoc, compte propre",
+    "k": [
+     "filiale",
+     "compte propre"
+    ]
+   },
+   {
+    "t": "Interdits : trading haute fréquence, matières premières agricoles",
+    "k": [
+     "haute frequence",
+     "agricole"
+    ]
+   },
+   {
+    "t": "Transparence : paradis fiscaux, blanchiment",
+    "k": [
+     "paradis",
+     "blanchiment"
+    ]
+   },
+   {
+    "t": "Résolution, HCSF, pouvoirs ACPR/AMF",
+    "k": [
+     "resolution",
+     "hcsf",
+     "macroprudentiel"
+    ]
+   }
+  ],
+  "modele": "La loi du 26 juillet <b>2013</b> de séparation et de régulation des activités bancaires compte douze titres. Le premier sépare les activités utiles au financement de l'économie des activités spéculatives, mais maintient la banque <b>universelle</b> : les activités pour <b>compte propre</b> sont cantonnées dans une <b>filiale</b> ad hoc, régulée et financée à part, à qui sont interdits le trading à <b>haute fréquence</b> et la spéculation sur les dérivés de matières premières <b>agricoles</b>. C'est une filialisation limitée, non une séparation. Le titre 2 renforce la transparence : lutte contre les <b>paradis</b> fiscaux et le <b>blanchiment</b>, régulation des matières premières, encadrement du négoce à haute fréquence, répression des abus de marché. La loi crée aussi un régime de <b>résolution</b>, organise la surveillance <b>macroprudentielle</b> (création du <b>HCSF</b>), encadre les rémunérations et renforce les pouvoirs de l'AMF et de l'ACPR."
+ },
+ {
+  "lesson": "l7",
+  "q": "Présentez le Comité de Bâle et le ratio Cooke (Bâle I).",
+  "crit": [
+   {
+    "t": "Comité de Bâle créé en 1974, logé à la BRI",
+    "k": [
+     "1974",
+     "bri"
+    ]
+   },
+   {
+    "t": "Recommandations, consensus",
+    "k": [
+     "recommandation",
+     "consensus"
+    ]
+   },
+   {
+    "t": "Banque de France et ACPR",
+    "k": [
+     "acpr",
+     "banque de france"
+    ]
+   },
+   {
+    "t": "Ratio Cooke ≥ 8 %",
+    "k": [
+     "8 %",
+     "8%"
+    ]
+   },
+   {
+    "t": "Pondérations 0, 20, 50, 100 %",
+    "k": [
+     "ponder",
+     "50 %",
+     "50%"
+    ]
+   },
+   {
+    "t": "Tier 1 / Tier 2",
+    "k": [
+     "tier"
+    ]
+   }
+  ],
+  "modele": "Le Comité de Bâle sur le contrôle bancaire, créé en <b>1974</b>, réunit 45 institutions de 28 juridictions, dont la <b>Banque de France</b> et l'<b>ACPR</b>. Logé à la <b>BRI</b>, banque des 63 banques centrales qui en détiennent le capital, il adopte par <b>consensus</b> des <b>recommandations</b> que chaque juridiction transpose. Son premier accord (1988) crée le ratio Cooke : les fonds propres doivent représenter au moins <b>8 %</b> des engagements <b>pondérés</b> par les risques, dont 4 % de fonds propres de base. Pondérations : 0 % pour les États de l'OCDE, 20 % pour les banques et collectivités locales, <b>50 %</b> pour les prêts hypothécaires, 100 % pour les autres créances. Les fonds propres se divisent en <b>Tier</b> 1 (capital, réserves, moins le goodwill) et Tier 2 (fonds propres complémentaires : réserves de réévaluation, provisions générales, subordonnés)."
+ },
+ {
+  "lesson": "l8",
+  "q": "En quoi Bâle III renforce-t-il Bâle II ?",
+  "crit": [
+   {
+    "t": "Bâle II : 3 piliers, risque opérationnel",
+    "k": [
+     "operationnel",
+     "trois piliers",
+     "3 piliers"
+    ]
+   },
+   {
+    "t": "Crise des subprimes",
+    "k": [
+     "subprime",
+     "2007",
+     "crise"
+    ]
+   },
+   {
+    "t": "CET1 4,5 %, coussin de conservation 2,5 %, 10,5 %",
+    "k": [
+     "10,5",
+     "4,5"
+    ]
+   },
+   {
+    "t": "Ratio de levier 3 %",
+    "k": [
+     "levier"
+    ]
+   },
+   {
+    "t": "LCR et NSFR",
+    "k": [
+     "lcr",
+     "nsfr"
+    ]
+   },
+   {
+    "t": "CRD IV / CRR",
+    "k": [
+     "crd",
+     "crr"
+    ]
+   }
+  ],
+  "modele": "Bâle II (2004) conserve le seuil de 8 % mais affine le calcul (ratio McDonough) autour de <b>trois piliers</b> : exigences minimales (risque de crédit, de marché et, nouveau, <b>opérationnel</b>), surveillance prudentielle, discipline de marché. La <b>crise</b> des <b>subprimes</b> de 2007 en a montré les limites face aux risques de liquidité et systémique. Bâle III (2010), transposé en Europe par <b>CRD</b> IV et le <b>CRR</b> (entrée en vigueur le 17 juillet 2013), améliore la qualité des fonds propres : <b>4,5</b> % de CET1, 6 % de Tier 1, 8 % au total, plus un coussin de conservation de 2,5 %, soit <b>10,5</b> %. Il ajoute un ratio de <b>levier</b> (Tier 1 / exposition totale non pondérée, au moins 3 %), deux ratios de liquidité, le <b>LCR</b> (30 jours) et le <b>NSFR</b> (un an), et des coussins macroprudentiels (contracyclique, banques systémiques). Il a été finalisé en 2017 (CRR3 en 2025)."
+ },
+ {
+  "lesson": "l9",
+  "q": "Présentez les deux ratios de liquidité de Bâle III.",
+  "crit": [
+   {
+    "t": "LCR : actifs liquides / sorties nettes à 30 jours",
+    "k": [
+     "30 jours",
+     "trente jours"
+    ]
+   },
+   {
+    "t": "≥ 100 %",
+    "k": [
+     "100"
+    ]
+   },
+   {
+    "t": "Actifs liquides de haute qualité",
+    "k": [
+     "haute qualite",
+     "actifs liquides"
+    ]
+   },
+   {
+    "t": "NSFR : financement stable disponible / exigé",
+    "k": [
+     "financement stable"
+    ]
+   },
+   {
+    "t": "Horizon d'un an",
+    "k": [
+     "un an",
+     "1 an"
+    ]
+   },
+   {
+    "t": "Northern Rock / Bear Stearns",
+    "k": [
+     "northern",
+     "bear"
+    ]
+   }
+  ],
+  "modele": "Le <b>LCR</b> (<i>Liquidity Coverage Ratio</i>) rapporte l'encours d'<b>actifs liquides</b> de <b>haute qualité</b> (réserves, titres d'État, certaines obligations) aux sorties nettes de trésorerie sur <b>30 jours</b> de stress ; il doit être d'au moins <b>100</b> %, en permanence (dans l'Union depuis 2018). Il garantit que la banque survit un mois à une ruée ou à la fermeture du marché interbancaire : c'est le ratio « <b>Bear</b> Stearns ». Le <b>NSFR</b> (<i>Net Stable Funding Ratio</i>) rapporte le <b>financement stable</b> disponible (fonds propres, dépôts stables, dettes à plus d'un an) au financement stable exigé par les actifs et le hors bilan, sur <b>un an</b> ; lui aussi doit atteindre 100 % (dans l'Union depuis juin 2021). Il oblige à financer les actifs longs par des ressources stables plutôt que par des dettes très courtes : c'est le ratio « <b>Northern</b> Rock »."
+ },
+ {
+  "lesson": "l10",
+  "q": "Stress tests, AQR et SREP : présentez ces trois outils de la supervision européenne.",
+  "crit": [
+   {
+    "t": "Stress test : scénario de crise, fonds propres",
+    "k": [
+     "scenario",
+     "resistance"
+    ]
+   },
+   {
+    "t": "Central / adverse, 8 % et 5,5 %",
+    "k": [
+     "adverse",
+     "5,5"
+    ]
+   },
+   {
+    "t": "AQR : qualité des actifs, provisions",
+    "k": [
+     "aqr",
+     "qualite des actifs",
+     "provision"
+    ]
+   },
+   {
+    "t": "ABE / BCE",
+    "k": [
+     "abe",
+     "eba",
+     "bce"
+    ]
+   },
+   {
+    "t": "SREP annuel, 4 axes",
+    "k": [
+     "srep"
+    ]
+   },
+   {
+    "t": "Modèle d'activité, gouvernance, capital, liquidité",
+    "k": [
+     "gouvernance",
+     "modele"
+    ]
+   }
+  ],
+  "modele": "Les stress tests sont des tests de <b>résistance</b> : on applique un <b>scénario</b> central et un scénario <b>adverse</b> pour vérifier qu'il reste assez de fonds propres. Leur méthode est fixée par l'<b>ABE</b> ; en 2014, les seuils de CET1 étaient de 8 % (référence, 6 mois pour combler) et <b>5,5</b> % (adverse, 9 mois). L'<b>AQR</b>, revue de la <b>qualité des actifs</b> menée par la <b>BCE</b> en 2014, vérifie la valorisation des actifs, des garanties et le niveau des <b>provisions</b> : un échec se corrige par des provisions, un échec au stress test par des fonds propres. Le <b>SREP</b>, processus de contrôle et d'évaluation prudentiels, aboutit chaque année à une décision par banque, avec une méthode et un calendrier uniques. Il note de 1 à 4 quatre axes : <b>modèle</b> d'activité, <b>gouvernance</b> et gestion des risques, risques sur le capital, risques de liquidité et de financement, et intègre les stress tests."
+ },
+ {
+  "lesson": "l11",
+  "q": "Présentez l'architecture de l'Union bancaire européenne.",
+  "crit": [
+   {
+    "t": "MSU : BCE supervise depuis 2014",
+    "k": [
+     "msu",
+     "surveillance unique",
+     "2014"
+    ]
+   },
+   {
+    "t": "Seuil de 30 milliards",
+    "k": [
+     "30 milliards",
+     "20 %"
+    ]
+   },
+   {
+    "t": "ACPR pour les autres banques",
+    "k": [
+     "acpr"
+    ]
+   },
+   {
+    "t": "CERS : macroprudentiel européen",
+    "k": [
+     "cers",
+     "esrb"
+    ]
+   },
+   {
+    "t": "MRU / CRU / FRU",
+    "k": [
+     "fru",
+     "cru",
+     "resolution unique"
+    ]
+   },
+   {
+    "t": "Bail-in",
+    "k": [
+     "bail-in",
+     "bail in",
+     "renflouement interne"
+    ]
+   }
+  ],
+  "modele": "L'Union bancaire repose d'abord sur le <b>MSU</b> : depuis novembre <b>2014</b>, la BCE supervise directement les banques importantes de la zone euro (plus de <b>30 milliards</b> d'euros d'actifs, ou plus de <b>20 %</b> du PIB national, etc.), soit environ 112 groupes ; les autres restent supervisées par les autorités nationales, l'<b>ACPR</b> en France. Le conseil de surveillance prudentielle prépare les décisions. Au niveau macroprudentiel, le <b>CERS</b> (ESRB), créé en 2010, surveille le risque systémique dans toute l'Union ; l'ABE élabore les normes techniques. Le second pilier est le mécanisme de <b>résolution unique</b> : le <b>CRU</b> gère les défaillances et le <b>FRU</b>, financé par les banques, intervient en dernier recours. Depuis la directive BRRD, on pratique le <b>bail-in</b> : actionnaires et créanciers absorbent les pertes avant le contribuable."
+ },
+ {
+  "lesson": "l12",
+  "q": "Qui fait quoi dans la régulation bancaire en France ?",
+  "crit": [
+   {
+    "t": "ACPR : agrément, contrôle, résolution",
+    "k": [
+     "acpr"
+    ]
+   },
+   {
+    "t": "Adossée à la Banque de France",
+    "k": [
+     "banque de france"
+    ]
+   },
+   {
+    "t": "HCSF : macroprudentiel",
+    "k": [
+     "hcsf",
+     "macroprudentiel"
+    ]
+   },
+   {
+    "t": "Coussin contracyclique 1 %",
+    "k": [
+     "contracycl"
+    ]
+   },
+   {
+    "t": "Crédit immobilier : 35 %, 25 ans",
+    "k": [
+     "35",
+     "25 ans"
+    ]
+   },
+   {
+    "t": "AMF : marchés financiers",
+    "k": [
+     "amf",
+     "marches"
+    ]
+   }
+  ],
+  "modele": "L'<b>ACPR</b>, adossée à la <b>Banque de France</b> et présidée par son gouverneur, délivre les agréments, contrôle les banques et les assureurs, conduit la résolution et protège la clientèle ; elle supervise les banques moins importantes et participe au MSU. Le <b>HCSF</b>, créé par la loi de 2013 et présidé par le ministre de l'Économie, est l'autorité <b>macroprudentielle</b> : il fixe chaque trimestre le coussin <b>contracyclique</b> (1 % depuis janvier 2024) et encadre le crédit immobilier (taux d'effort de <b>35</b> % assurance comprise, durée de <b>25 ans</b>, 27 avec différé). L'<b>AMF</b> régule les <b>marchés</b> financiers et protège les investisseurs. La Banque de France, membre de l'Eurosystème et du Comité de Bâle, veille à la stabilité financière. Au-dessus : la BCE pour les grandes banques et la politique monétaire, l'ABE pour les normes, et le Comité de Bâle pour les standards."
+ }
+];
+
+function sansAccent(s){ return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[’']/g,"'"); }
+function renderRedac(){
+  const host = document.getElementById('redacList');
+  host.innerHTML = REDAC.map((r,i)=>
+    '<div class="annale redac" id="rd'+i+'">'+
+      '<div class="an-tag">Question '+(i+1)+'/'+REDAC.length+' · '+LESSONS.find(l=>l.id===r.lesson).t+'</div>'+
+      '<h3>'+r.q+'</h3>'+
+      '<label class="sr" for="rd'+i+'in">Ta réponse</label>'+
+      '<textarea id="rd'+i+'in" rows="6" placeholder="Rédige ta réponse ici, en phrases complètes…"></textarea>'+
+      '<div class="redac-btns"><button class="btn primary" onclick="corrigerRedac('+i+')">Corriger ma réponse</button>'+
+      '<button class="btn" onclick="go(\''+r.lesson+'\')">📖 Revoir la leçon</button></div>'+
+      '<div class="corrige" id="rd'+i+'cor"></div>'+
+    '</div>').join('');
+}
+function corrigerRedac(i){
+  const r = REDAC[i];
+  const txt = ' '+sansAccent(document.getElementById('rd'+i+'in').value)+' ';
+  const cor = document.getElementById('rd'+i+'cor');
+  if(txt.trim().length < 15){ popXp('Rédige au moins une phrase'); return; }
+  let ok = 0;
+  const lignes = r.crit.map(c=>{
+    const trouve = c.k.some(k=>txt.indexOf(sansAccent(k))>=0);
+    if(trouve) ok++;
+    return '<li class="'+(trouve?'ok':'ko')+'"><span aria-hidden="true">'+(trouve?'✓':'✗')+'</span> '+c.t+(trouve?'':' — <i>absent de ta réponse</i>')+'</li>';
+  }).join('');
+  const pct = Math.round(ok/r.crit.length*100);
+  const verdict = pct>=80 ? 'Réponse complète' : pct>=50 ? 'Réponse partielle' : 'Réponse insuffisante';
+  cor.innerHTML =
+    '<div class="redac-score '+(pct>=80?'ok':pct>=50?'mid':'ko')+'">'+verdict+' : '+ok+'/'+r.crit.length+' notions-clés</div>'+
+    '<ul class="crit">'+lignes+'</ul>'+
+    '<div class="corrige-head">✅ Réponse modèle</div>'+
+    '<p class="modele">'+r.modele+'</p>';
+  cor.classList.add('show');
+  if(window.P) P.noterReponse('redac:'+i, pct>=80, 'Questions rédigées');
+  if(!corrigerRedac.fait) corrigerRedac.fait = {};
+  if(!corrigerRedac.fait[i]){ corrigerRedac.fait[i]=1; addXp(5+ok*3); }
+}
+
+/* ===================== TEST FINAL ===================== */
+const TEST = [
+ {
+  "ch": "Rappels",
+  "lesson": "l1",
+  "type": "qcm",
+  "q": "À l'actif d'une banque, on trouve :",
+  "opts": [
+   "Les dépôts de la clientèle",
+   "Les crédits accordés",
+   "Les capitaux propres",
+   "Les titres émis par la banque"
+  ],
+  "correct": 1,
+  "ex": "L'actif regroupe les emplois : crédits, titres détenus, réserves, immobilisations."
+ },
+ {
+  "ch": "Rappels",
+  "lesson": "l1",
+  "type": "qcm",
+  "q": "Les fonds propres d'une banque servent d'abord à :",
+  "opts": [
+   "Payer les salaires",
+   "Absorber les pertes à l'actif",
+   "Financer la BCE",
+   "Rémunérer les déposants"
+  ],
+  "correct": 1,
+  "ex": "Une banque qui n'a plus de fonds propres est en faillite."
+ },
+ {
+  "ch": "Rappels",
+  "lesson": "l1",
+  "type": "qcm",
+  "q": "Quelle loi abroge en 1999 la séparation Glass-Steagall ?",
+  "opts": [
+   "Le Dodd-Frank Act",
+   "Le Gramm-Leach-Bliley Act",
+   "La loi bancaire française",
+   "Le Banking Act"
+  ],
+  "correct": 1,
+  "ex": "Le Gramm-Leach-Bliley Act (1999)."
+ },
+ {
+  "ch": "Rappels",
+  "lesson": "l1",
+  "type": "qcm",
+  "q": "La loi bancaire française de 1984 marque :",
+  "opts": [
+   "Le retour de la séparation des banques",
+   "Le décloisonnement et le triomphe de la banque universelle",
+   "La création de la BCE",
+   "La fin du franc"
+  ],
+  "correct": 1,
+  "ex": "Déréglementation et décloisonnement des activités."
+ },
+ {
+  "ch": "Rappels",
+  "lesson": "l1",
+  "type": "qcm",
+  "q": "Dans le modèle « octroyer et distribuer », la banque :",
+  "opts": [
+   "Garde ses crédits jusqu'à leur terme",
+   "Revend ses crédits sous forme de titres (titrisation)",
+   "Refuse tout crédit",
+   "Ne collecte plus de dépôts"
+  ],
+  "correct": 1,
+  "ex": "Le crédit sort du bilan par la titrisation."
+ },
+ {
+  "ch": "Théorie",
+  "lesson": "l2",
+  "type": "qcm",
+  "q": "La supervision bancaire, c'est :",
+  "opts": [
+   "Le code de la route",
+   "Le gendarme : la surveillance des banques",
+   "La politique monétaire",
+   "La garantie des dépôts"
+  ],
+  "correct": 1,
+  "ex": "Réglementation = règles ; supervision = surveillance et application."
+ },
+ {
+  "ch": "Théorie",
+  "lesson": "l2",
+  "type": "qcm",
+  "q": "Lequel n'est PAS un objectif secondaire de la régulation selon le cours ?",
+  "opts": [
+   "Protection du consommateur",
+   "Concurrence",
+   "Lutte contre le blanchiment",
+   "Maximiser le PNB des banques"
+  ],
+  "correct": 3,
+  "ex": "Objectif premier : stabilité financière ; secondaires : consommateur, concurrence, blanchiment."
+ },
+ {
+  "ch": "Théorie",
+  "lesson": "l2",
+  "type": "qcm",
+  "q": "La transformation de maturité expose les banques au risque :",
+  "opts": [
+   "De change",
+   "De liquidité",
+   "Opérationnel",
+   "Juridique"
+  ],
+  "correct": 1,
+  "ex": "Ressources courtes, emplois longs : la banque peut manquer de liquidités."
+ },
+ {
+  "ch": "Théorie",
+  "lesson": "l3",
+  "type": "qcm",
+  "q": "Une banque solvable peut-elle faire faillite ?",
+  "opts": [
+   "Non, jamais",
+   "Oui, faute de liquidité",
+   "Seulement si elle est cotée",
+   "Seulement hors zone euro"
+  ],
+  "correct": 1,
+  "ex": "Une ruée peut la forcer à brader ses actifs : la crise de liquidité devient crise de solvabilité."
+ },
+ {
+  "ch": "Théorie",
+  "lesson": "l3",
+  "type": "qcm",
+  "q": "L'instabilité financière se caractérise par des fluctuations :",
+  "opts": [
+   "Erratiques et limitées",
+   "Cycliques, durables et de forte amplitude",
+   "Toujours positives",
+   "Uniquement sur le change"
+  ],
+  "correct": 1,
+  "ex": "Elle débouche régulièrement sur une crise, à la différence de la volatilité."
+ },
+ {
+  "ch": "Théorie",
+  "lesson": "l3",
+  "type": "qcm",
+  "q": "Pour la BCE, la stabilité financière est avant tout :",
+  "opts": [
+   "L'absence d'inflation",
+   "La capacité du système à absorber les chocs",
+   "Un taux de change fixe",
+   "L'absence de faillite"
+  ],
+  "correct": 1,
+  "ex": "Le système financier absorbe les chocs sans perturber l'allocation de l'épargne."
+ },
+ {
+  "ch": "Théorie",
+  "lesson": "l4",
+  "type": "qcm",
+  "q": "Le « credit crunch » désigne :",
+  "opts": [
+   "Une baisse des taux",
+   "Un rationnement du crédit",
+   "Une hausse des dépôts",
+   "Une fusion de banques"
+  ],
+  "correct": 1,
+  "ex": "C'est l'étape qui transmet la crise bancaire à l'économie réelle."
+ },
+ {
+  "ch": "Théorie",
+  "lesson": "l4",
+  "type": "qcm",
+  "q": "Le principal effet pervers du « too big to fail » est :",
+  "opts": [
+   "L'aléa moral : plus de prise de risque",
+   "La baisse des dépôts",
+   "L'inflation",
+   "La disparition des petites banques"
+  ],
+  "correct": 0,
+  "ex": "La banque se sait protégée par l'État."
+ },
+ {
+  "ch": "Théorie",
+  "lesson": "l4",
+  "type": "qcm",
+  "q": "Quelle est la surcharge maximale prévue pour les banques systémiques mondiales ?",
+  "opts": [
+   "1 %",
+   "2,5 %",
+   "3,5 %",
+   "5 %"
+  ],
+  "correct": 2,
+  "ex": "De 1 % à 3,5 % ; la case à 3,5 % est vide."
+ },
+ {
+  "ch": "Théorie",
+  "lesson": "l4",
+  "type": "qcm",
+  "q": "Dans la liste du FSB de novembre 2025, BNP Paribas est dans la case à :",
+  "opts": [
+   "1 %",
+   "1,5 %",
+   "2,5 %",
+   "3,5 %"
+  ],
+  "correct": 1,
+  "ex": "BNP Paribas et Crédit Agricole : 1,5 % ; Société Générale et BPCE : 1 %."
+ },
+ {
+  "ch": "Théorie",
+  "lesson": "l5",
+  "type": "qcm",
+  "q": "La politique prudentielle se situe entre :",
+  "opts": [
+   "Le contrôle bancaire des années 1960 et le laissez-faire des années 1980",
+   "La guerre et la paix",
+   "La BCE et la Fed",
+   "Bâle II et Bâle III"
+  ],
+  "correct": 0,
+  "ex": "Elle n'entrave pas le marché du crédit mais incite à la prudence."
+ },
+ {
+  "ch": "Théorie",
+  "lesson": "l5",
+  "type": "qcm",
+  "q": "Le macroprudentiel voit la crise bancaire comme :",
+  "opts": [
+   "Exogène et isolée",
+   "Endogène, née du comportement des banques",
+   "Impossible",
+   "Purement monétaire"
+  ],
+  "correct": 1,
+  "ex": "Crise endogène à la Aglietta-Minsky, comportements moutonniers, procyclicité."
+ },
+ {
+  "ch": "Théorie",
+  "lesson": "l5",
+  "type": "qcm",
+  "q": "Un comportement procyclique :",
+  "opts": [
+   "Amortit le cycle",
+   "Amplifie le cycle",
+   "N'a pas d'effet",
+   "Concerne seulement l'État"
+  ],
+  "correct": 1,
+  "ex": "Toutes les banques prêtent ensemble dans le boom et freinent ensemble dans la crise."
+ },
+ {
+  "ch": "Pratique",
+  "lesson": "l6",
+  "type": "qcm",
+  "q": "La loi du 26 juillet 2013 est dite loi :",
+  "opts": [
+   "De modernisation de l'économie",
+   "De séparation et de régulation des activités bancaires",
+   "Pacte",
+   "Sapin 2"
+  ],
+  "correct": 1,
+  "ex": "Loi n° 2013-672 de séparation et de régulation des activités bancaires."
+ },
+ {
+  "ch": "Pratique",
+  "lesson": "l6",
+  "type": "qcm",
+  "q": "Quelle autorité est créée par la loi bancaire de 2013 ?",
+  "opts": [
+   "L'AMF",
+   "Le HCSF",
+   "L'ACPR",
+   "La BCE"
+  ],
+  "correct": 1,
+  "ex": "Le Haut Conseil de stabilité financière, autorité macroprudentielle."
+ },
+ {
+  "ch": "Pratique",
+  "lesson": "l7",
+  "type": "qcm",
+  "q": "La BRI appartient à :",
+  "opts": [
+   "Les États du G7",
+   "63 banques centrales",
+   "Les banques commerciales",
+   "Le FMI"
+  ],
+  "correct": 1,
+  "ex": "C'est la banque des banques centrales (63 membres)."
+ },
+ {
+  "ch": "Pratique",
+  "lesson": "l7",
+  "type": "num",
+  "q": "Bâle I. 100 M€ d'obligations d'État de l'OCDE, 50 M€ de prêts à des banques, 200 M€ de prêts hypothécaires, 150 M€ de crédits aux entreprises. Engagements pondérés ? (en M€)",
+  "answer": 260,
+  "tol": 0.5,
+  "unit": "M€",
+  "ex": "0 + 50 × 20 % + 200 × 50 % + 150 × 100 % = 10 + 100 + 150 = 260 M€."
+ },
+ {
+  "ch": "Pratique",
+  "lesson": "l7",
+  "type": "num",
+  "q": "Avec 260 M€ d'engagements pondérés, quel montant minimal de fonds propres exige le ratio Cooke ? (en M€, 1 décimale)",
+  "answer": 20.8,
+  "tol": 0.05,
+  "unit": "M€",
+  "ex": "8 % × 260 = 20,8 M€."
+ },
+ {
+  "ch": "Pratique",
+  "lesson": "l7",
+  "type": "qcm",
+  "q": "Dans les fonds propres de base, le goodwill (écart d'acquisition) est :",
+  "opts": [
+   "Ajouté",
+   "Déduit",
+   "Compté en Tier 2",
+   "Doublé"
+  ],
+  "correct": 1,
+  "ex": "Il ne peut pas absorber de pertes : il est déduit du Tier 1 (le cours l'ajoutait à tort)."
+ },
+ {
+  "ch": "Pratique",
+  "lesson": "l8",
+  "type": "qcm",
+  "q": "Bâle II date de :",
+  "opts": [
+   "1988",
+   "2004",
+   "2010",
+   "2017"
+  ],
+  "correct": 1,
+  "ex": "2004, ratio McDonough, appliqué en Europe en 2007-2008."
+ },
+ {
+  "ch": "Pratique",
+  "lesson": "l8",
+  "type": "qcm",
+  "q": "Le pilier 3 de Bâle II, c'est :",
+  "opts": [
+   "Les exigences minimales",
+   "La surveillance prudentielle",
+   "La discipline de marché et la transparence",
+   "La liquidité"
+  ],
+  "correct": 2,
+  "ex": "Publication des fonds propres et des méthodes d'évaluation des risques."
+ },
+ {
+  "ch": "Pratique",
+  "lesson": "l8",
+  "type": "num",
+  "q": "Bâle III : quel pourcentage minimal de CET1 (noyau dur), hors coussins ? (en %)",
+  "answer": 4.5,
+  "tol": 0.01,
+  "unit": "%",
+  "ex": "4,5 % de CET1, 6 % de Tier 1, 8 % au total, + 2,5 % de coussin de conservation."
+ },
+ {
+  "ch": "Pratique",
+  "lesson": "l8",
+  "type": "qcm",
+  "q": "Le paquet CRD IV est entré en vigueur le :",
+  "opts": [
+   "1er janvier 2008",
+   "17 juillet 2013",
+   "4 novembre 2014",
+   "1er janvier 2025"
+  ],
+  "correct": 1,
+  "ex": "Entrée en vigueur le 17 juillet 2013, application au 1er janvier 2014."
+ },
+ {
+  "ch": "Pratique",
+  "lesson": "l8",
+  "type": "num",
+  "q": "Tier 1 de 75 M€, exposition totale de 2 800 M€. Ratio de levier ? (en %, 2 décimales)",
+  "answer": 2.68,
+  "tol": 0.01,
+  "unit": "%",
+  "ex": "75 ÷ 2 800 = 2,68 %, sous le minimum de 3 %."
+ },
+ {
+  "ch": "Pratique",
+  "lesson": "l9",
+  "type": "qcm",
+  "q": "Le NSFR rapporte :",
+  "opts": [
+   "Les actifs liquides aux sorties à 30 jours",
+   "Le financement stable disponible au financement stable exigé",
+   "Le Tier 1 à l'exposition totale",
+   "Les crédits aux dépôts"
+  ],
+  "correct": 1,
+  "ex": "Horizon d'un an, au moins 100 %."
+ },
+ {
+  "ch": "Pratique",
+  "lesson": "l9",
+  "type": "num",
+  "q": "Actifs liquides : 900 M€ ; sorties à 30 jours : 1 200 M€ ; entrées : 400 M€. LCR ? (en %, 1 décimale)",
+  "answer": 112.5,
+  "tol": 0.05,
+  "unit": "%",
+  "ex": "900 ÷ (1 200 − 400) = 112,5 %."
+ },
+ {
+  "ch": "Pratique",
+  "lesson": "l9",
+  "type": "qcm",
+  "q": "Depuis quand le coussin contracyclique français est-il de 1 % ?",
+  "opts": [
+   "Octobre 2016",
+   "Janvier 2024",
+   "Janvier 2020",
+   "Il est à 0 %"
+  ],
+  "correct": 1,
+  "ex": "1 % depuis le 2 janvier 2024 (HCSF), maintenu en 2026."
+ },
+ {
+  "ch": "Pratique",
+  "lesson": "l10",
+  "type": "qcm",
+  "q": "Dans l'exercice de 2014, une insuffisance du scénario de référence devait être comblée en :",
+  "opts": [
+   "3 mois",
+   "6 mois",
+   "9 mois",
+   "2 ans"
+  ],
+  "correct": 1,
+  "ex": "6 mois (seuil 8 %) ; 9 mois pour l'adverse (seuil 5,5 %)."
+ },
+ {
+  "ch": "Pratique",
+  "lesson": "l10",
+  "type": "qcm",
+  "q": "Qui définit la méthode des stress tests européens ?",
+  "opts": [
+   "La BRI",
+   "L'Autorité bancaire européenne",
+   "L'AMF",
+   "Le FMI"
+  ],
+  "correct": 1,
+  "ex": "L'ABE (EBA)."
+ },
+ {
+  "ch": "Pratique",
+  "lesson": "l10",
+  "type": "qcm",
+  "q": "Dans le SREP, une note de 4 signifie :",
+  "opts": [
+   "Risque faible",
+   "Risque élevé",
+   "Banque excellente",
+   "Banque fermée"
+  ],
+  "correct": 1,
+  "ex": "Notes de 1 (risque faible) à 4 (risque élevé)."
+ },
+ {
+  "ch": "Pratique",
+  "lesson": "l10",
+  "type": "qcm",
+  "q": "Le stress test de 2017 portait sur :",
+  "opts": [
+   "Le risque de taux d'intérêt",
+   "Le risque climatique",
+   "Le blanchiment",
+   "Le Brexit"
+  ],
+  "correct": 0,
+  "ex": "Sensibilité de la marge nette d'intérêts et de la valeur économique des fonds propres aux variations de taux."
+ },
+ {
+  "ch": "Institutions",
+  "lesson": "l11",
+  "type": "qcm",
+  "q": "Le CERS (ESRB) est chargé :",
+  "opts": [
+   "De la supervision des grandes banques",
+   "De la surveillance macroprudentielle européenne",
+   "De la politique monétaire",
+   "De la garantie des dépôts"
+  ],
+  "correct": 1,
+  "ex": "Créé en 2010, il surveille le risque systémique dans l'Union."
+ },
+ {
+  "ch": "Institutions",
+  "lesson": "l11",
+  "type": "qcm",
+  "q": "Qui préside le conseil de surveillance prudentielle de la BCE depuis 2024 ?",
+  "opts": [
+   "Christine Lagarde",
+   "Claudia Buch",
+   "Andrea Enria",
+   "François Villeroy de Galhau"
+  ],
+  "correct": 1,
+  "ex": "Claudia Buch, depuis le 1er janvier 2024."
+ },
+ {
+  "ch": "Institutions",
+  "lesson": "l11",
+  "type": "qcm",
+  "q": "Le Fonds de résolution unique est financé par :",
+  "opts": [
+   "Les contribuables",
+   "Les banques",
+   "La BCE",
+   "Les déposants"
+  ],
+  "correct": 1,
+  "ex": "Les contributions des banques, avec une cible d'au moins 1 % des dépôts couverts."
+ },
+ {
+  "ch": "Institutions",
+  "lesson": "l12",
+  "type": "qcm",
+  "q": "Qui préside l'ACPR ?",
+  "opts": [
+   "Le ministre de l'Économie",
+   "Le gouverneur de la Banque de France",
+   "La présidente de la BCE",
+   "Le président de l'AMF"
+  ],
+  "correct": 1,
+  "ex": "L'ACPR est adossée à la Banque de France ; le HCSF est présidé par le ministre de l'Économie."
+ },
+ {
+  "ch": "Institutions",
+  "lesson": "l12",
+  "type": "qcm",
+  "q": "La norme du HCSF limite la durée d'un crédit immobilier à :",
+  "opts": [
+   "20 ans",
+   "25 ans (27 avec différé)",
+   "30 ans",
+   "35 ans"
+  ],
+  "correct": 1,
+  "ex": "Décision D-HCSF-2021-7, contraignante depuis 2022."
+ },
+ {
+  "ch": "Institutions",
+  "lesson": "l12",
+  "type": "qcm",
+  "q": "L'AMF régule :",
+  "opts": [
+   "Les banques",
+   "Les marchés financiers",
+   "Les assurances",
+   "La politique monétaire"
+  ],
+  "correct": 1,
+  "ex": "Les marchés et la protection des investisseurs ; banques et assurances relèvent de l'ACPR."
+ }
+];
+
+function renderTest(){
+  const c = document.getElementById('testQuestions');
+  c.innerHTML = '';
+  TEST.forEach((q,i)=>{
+    const div = document.createElement('div');
+    div.className = 'test-q'; div.id = 'tq'+i;
+    let body = '';
+    if(q.type==='qcm'){
+      body = '<div class="topt">' + q.opts.map((o,j)=>
+        '<button onclick="selOpt('+i+','+j+')" id="tq'+i+'o'+j+'">'+o+'</button>').join('') + '</div>';
+    } else {
+      body = '<input type="text" inputmode="decimal" autocomplete="off" class="num-input" id="tq'+i+'in" placeholder="…" aria-label="Ta réponse"><span class="unit">'+(q.unit||'')+'</span>';
+    }
+    div.innerHTML =
+      '<div class="tq-head"><span class="tq-num">Question '+(i+1)+'/'+TEST.length+'</span><span class="tq-chap">'+q.ch+'</span></div>'+
+      '<div class="tq-q">'+q.q+'</div>'+ body +
+      '<div class="remed" id="tq'+i+'rem"><div class="rt">⚠️ À revoir</div><div class="ra" id="tq'+i+'ra"></div>'+
+      '<div class="remed-btns"><button class="btn" onclick="go(\''+q.lesson+'\')">📖 Revoir la leçon</button>'+
+      '<button class="btn primary" onclick="dismissRemed('+i+')">Continuer →</button></div></div>';
+    c.appendChild(div);
+  });
+  document.getElementById('testResult').classList.remove('show');
+  document.getElementById('testSubmitRow').style.display = 'flex';
+  document.getElementById('floatRetry').classList.remove('show');
+  TEST._answers = {};
+}
+function selOpt(qi, oi){
+  if(document.getElementById('tq'+qi).classList.contains('graded')) return;
+  TEST._answers = TEST._answers || {};
+  TEST._answers[qi] = oi;
+  TEST[qi].opts.forEach((_,j)=>document.getElementById('tq'+qi+'o'+j).classList.toggle('sel', j===oi));
+}
+function lireNombre(v){ return parseFloat(String(v).replace(/[\s\u00a0\u202f]/g,'').replace(',', '.')); }   // « 1 000 », « 1,96 »
+function gradeTest(){
+  TEST._answers = TEST._answers || {};
+  let score = 0; const chap = {};
+  TEST.forEach((q,i)=>{
+    const box = document.getElementById('tq'+i);
+    box.classList.add('graded');
+    let ok = false;
+    if(q.type==='qcm'){
+      ok = TEST._answers[i] === q.correct;
+      q.opts.forEach((_,j)=>{ const b=document.getElementById('tq'+i+'o'+j); b.disabled=true;
+        if(j===q.correct) b.classList.add('sel'); });
+    } else {
+      const val = lireNombre(document.getElementById('tq'+i+'in').value);
+      ok = !isNaN(val) && Math.abs(val - q.answer) <= (q.tol||0) + 1e-9;
+      document.getElementById('tq'+i+'in').disabled = true;
+    }
+    if(window.P) P.noterReponse('test:'+i, ok, q.ch);
+    chap[q.ch] = chap[q.ch] || {ok:0,tot:0};
+    chap[q.ch].tot++;
+    if(ok){ score++; chap[q.ch].ok++; box.classList.add('ok'); }
+    else { box.classList.add('ko');
+      document.getElementById('tq'+i+'ra').innerHTML = q.ex;
+      document.getElementById('tq'+i+'rem').classList.add('show'); }
+  });
+  showResult(score, chap);
+}
+function dismissRemed(i){ document.getElementById('tq'+i+'rem').classList.remove('show'); }
+function showResult(score, chap){
+  document.getElementById('testSubmitRow').style.display = 'none';
+  document.getElementById('scoreBig').textContent = score+'/'+TEST.length;
+  let msg, col; const pct = score/TEST.length*100;
+  if(pct>=90){ msg="Excellent — tu es prêt pour les questions rédigées."; col=getCss('--teal'); }
+  else if(pct>=70){ msg="Très bon niveau. Revois les chapitres en orange ci-dessous."; col=getCss('--teal'); }
+  else if(pct>=50){ msg="Bon début. Concentre tes révisions sur les chapitres faibles."; col=getCss('--amber'); }
+  else { msg="Il reste du travail. Reprends les leçons signalées, puis réessaie."; col=getCss('--rust'); }
+  document.getElementById('scoreBig').style.color = col;
+  document.getElementById('scoreMsg').textContent = msg;
+  const bars = document.getElementById('chapBars');
+  bars.innerHTML = '';
+  Object.keys(chap).forEach(name=>{
+    const c = chap[name];
+    const p = Math.round(c.ok/c.tot*100);
+    const bc = p>=67?getCss('--teal'):p>=34?getCss('--amber'):getCss('--rust');
+    bars.innerHTML += '<div class="chapbar"><div class="cbl"><span>'+name+'</span><span>'+c.ok+'/'+c.tot+'</span></div>'+
+      '<div class="cbt"><div class="cbf" style="width:0;background:'+bc+'" data-w="'+p+'"></div></div></div>';
+  });
+  document.getElementById('testResult').classList.add('show');
+  document.getElementById('floatRetry').classList.add('show');
+  setTimeout(()=>document.querySelectorAll('.cbf').forEach(b=>b.style.width=b.dataset.w+'%'),120);
+  addXp(score*20);
+  if(window.P) P.meilleurScore('Test final', score, TEST.length);
+  document.getElementById('testResult').scrollIntoView({behavior:'smooth'});
+  if(window.LB){ try{ LB.record({subject:SUBJECT_KEY, mode:'Test final', correct:score, total:TEST.length, xp:state.xp}); }catch(e){} }
+}
+function resetTest(){ renderTest(); go('test'); }
+function getCss(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+
+/* ===================== APPLICATIONS ===================== */
+function toggleCorrige(btn){
+  const cor = btn.nextElementSibling;
+  const open = cor.classList.toggle('show');
+  btn.textContent = open ? 'Masquer le corrigé' : 'Voir le corrigé';
+}
+
+/* ===================== INIT ===================== */
+buildNav();
+updateProgress();
+renderRedac();
+renderTest();
+go((window.P && SAVE.last && document.querySelector('.view[data-view="'+SAVE.last+'"]')) ? SAVE.last : 'l1');
+try{ document.getElementById('lb-id-slot').appendChild(LB.idButton()); }catch(e){}
+</script>
+<script src="banque.js"></script>
+<script src="ui.js"></script>
+</body>
+</html>
