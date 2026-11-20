@@ -10,7 +10,7 @@
 
   /* ---------- 0. VERSION ---------- */
   /* Doit rester identique à VERSION en haut de sw.js. */
-  const VERSION_APP = '8.4.0';
+  const VERSION_APP = '8.4.1';
   const NOM_VERSION = 'Guinée';
   window.APP_VERSION = VERSION_APP;
 
@@ -408,7 +408,9 @@
     'marketing-numerique':   {yt:'suhvus2KxpY', duree:'10 min'},
     'etudes-marche':         {yt:'Czg3Q9YZK9U', duree:'8 min'},
     'systeme-bancaire':      {yt:'kV5Ruf3QC4I', duree:'9 min'},
-    'produits-derives-2':    {yt:'6r-4xpJ3KuU', duree:'8 min'}
+    'produits-derives-2':    {yt:'6r-4xpJ3KuU', duree:'8 min'},
+    'organismes-tutelle':    {yt:'z7TzWoaVsR8', duree:'10 min'},
+    'entreprise-banque':     {yt:'vc9j_V1rUtg', duree:'7 min'}
   };
   function lireLocal(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
   function ecrireLocal(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }

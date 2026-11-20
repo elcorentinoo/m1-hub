@@ -308,6 +308,8 @@ Livre, Sesterce, Florin, Ducat…
 La version s'affiche en bas du menu de navigation.
 
 HISTORIQUE
+  8.4.1            Vidéos de présentation : Les organismes de tutelle
+                   (z7TzWoaVsR8, 10 min) et L'entreprise banque (vc9j_V1rUtg, 7 min).
   8.4.0            DEUX NOUVEAUX COURS ET ARCHIVES (nom « Guinée » inchangé).
                    · L'entreprise banque (entreprise_banque.html, 4 leçons :
                      entreprise et banque, PNB, la banque est une entreprise,
